@@ -21,7 +21,7 @@ resource "null_resource" "delete_default_kube_dns_configmap" {
   count = "${local.custom_kube_dns_config ? 1 : 0}"
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/kube_auth_wrapper.sh ${var.project_id} ${var.credentials_path} ${var.region} ${var.cluster_name} ${path.module}/scripts/delete-default-resource.sh kube-system configmap kube-dns"
+    command = "${path.module}/scripts/kubectl_wrapper.sh ${var.project_id} ${var.credentials_path} ${var.region} ${var.cluster_name} ${path.module}/scripts/delete-default-resource.sh kube-system configmap kube-dns"
   }
 
   depends_on = ["google_container_cluster.primary", "google_container_node_pool.pools"]

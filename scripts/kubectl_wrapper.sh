@@ -31,7 +31,7 @@ shift 4
 export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=$CREDENTIALS
 
 RANDOM_ID="${RANDOM}_${RANDOM}"
-export TMPDIR="/tmp/kube_auth_wrapper_${CLUSTER_NAME}_${RANDOM_ID}"
+export TMPDIR="/tmp/kubectl_wrapper_${CLUSTER_NAME}_${RANDOM_ID}"
 
 function cleanup {
     rm -rf "${TMPDIR}"
