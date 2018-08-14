@@ -3,8 +3,6 @@
 This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.
 
 ## Requirements
-### Google Cloud SDK
-- [gcloud](https://cloud.google.com/sdk/install)
 ### Kubectl
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 ### Terraform plugins
@@ -132,6 +130,7 @@ The project has the following folders and files:
 
 ### Requirements
 - [bats](https://github.com/sstephenson/bats) 0.4.0
+- [gcloud](https://cloud.google.com/sdk/install)
 - [jq](https://stedolan.github.io/jq/) 1.5
 
 ### Integration test
