@@ -33,7 +33,6 @@ data "google_client_config" "default" {}
 
 module "gke" {
   source               = "../../"
-  credentials_path     = "${local.credentials_file_path}"
   project_id           = "${var.project_id}"
   cluster_name         = "deploy-service-cluster"
   region               = "${var.region}"

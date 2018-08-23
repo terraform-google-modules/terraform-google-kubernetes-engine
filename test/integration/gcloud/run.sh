@@ -57,9 +57,6 @@ module "gke" {
   source = "../../../"
   region = "$REGION"
   kubernetes_version = "$KUBERNETES_VERSION"
-
-  credentials_path = "\${local.credentials_file_path}"
-
   node_service_account = "$NODE_SERVICE_ACCOUNT"
 
   cluster_name        = "$CLUSTER_NAME"

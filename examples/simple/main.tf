@@ -24,7 +24,6 @@ provider "google" {
 
 module "gke" {
   source               = "../../"
-  credentials_path     = "${local.credentials_file_path}"
   project_id           = "${var.project_id}"
   cluster_name         = "simple-sample-cluster"
   region               = "${var.region}"
