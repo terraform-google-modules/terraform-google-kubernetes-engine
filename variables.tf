@@ -22,10 +22,6 @@ variable "region" {
   description = "The region to host the cluster in"
 }
 
-variable "credentials_path" {
-  description = "Path to a Service Account credentials file with permissions documented in the readme"
-}
-
 variable "cluster_name" {
   description = "The name of the cluster"
 }
