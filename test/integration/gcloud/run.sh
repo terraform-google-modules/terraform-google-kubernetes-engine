@@ -66,6 +66,10 @@ module "gke" {
   network    = "$NETWORK"
   subnetwork = "$SUBNETWORK"
 
+  http_load_balancing        = false
+  horizontal_pod_autoscaling = true
+  kubernetes_dashboard       = true
+
   network_policy = true
 
   ip_range_pods     = "$IP_RANGE_PODS"
