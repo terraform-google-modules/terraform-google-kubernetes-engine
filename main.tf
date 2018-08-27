@@ -26,6 +26,8 @@ locals {
   kubernetes_version     = "${var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_node_version}"
   node_version           = "${var.node_version != "" ? var.node_version : local.kubernetes_version}"
   custom_kube_dns_config = "${length(keys(var.stub_domains)) > 0 ? true : false}"
+
+  network_project_id = "${var.network_project_id != "" ? var.network_project_id : var.project_id}"
 }
 
 /******************************************
@@ -46,8 +48,8 @@ resource "google_container_cluster" "primary" {
 
   region = "${var.region}"
 
-  network            = "projects/${var.project_id}/global/networks/${var.network}"
-  subnetwork         = "projects/${var.project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
+  network            = "projects/${local.network_project_id}/global/networks/${var.network}"
+  subnetwork         = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
   min_master_version = "${local.kubernetes_version}"
   node_version       = "${local.node_version}"
 

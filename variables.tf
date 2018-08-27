@@ -39,6 +39,11 @@ variable "subnetwork" {
   description = "The subnetwork to host the cluster in"
 }
 
+variable "network_project_id" {
+  description = "The project ID of the shared VPC's host (for shared vpc support)"
+  default = ""
+}
+
 variable "kubernetes_version" {
   description = "The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region."
   default     = "1.10.5-gke.0"
