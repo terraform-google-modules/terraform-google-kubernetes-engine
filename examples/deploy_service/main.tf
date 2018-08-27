@@ -80,7 +80,7 @@ resource "kubernetes_service" "nginx-example" {
       target_port = 80
     }
 
-    type = "ClusterIP"
+    type = "LoadBalancer"
   }
 
   depends_on = ["module.gke"]
