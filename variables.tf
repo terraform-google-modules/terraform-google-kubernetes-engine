@@ -51,17 +51,17 @@ variable "node_version" {
 
 variable "horizontal_pod_autoscaling" {
   description = "Enable horizontal pod autoscaling addon"
-  default     = true
+  default     = false
 }
 
 variable "http_load_balancing" {
   description = "Enable httpload balancer addon"
-  default     = false
+  default     = true
 }
 
 variable "kubernetes_dashboard" {
   description = "Enable kubernetes dashboard addon"
-  default     = true
+  default     = false
 }
 
 variable "network_policy" {
