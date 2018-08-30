@@ -114,7 +114,7 @@ module "gke" {
     ]
   }
 
-  ip_non_masquerade_cidrs = [
+  non_masquerade_cidrs = [
     "10.0.0.0/8",
     "192.168.20.0/24",
     "192.168.21.0/24",
