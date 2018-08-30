@@ -15,13 +15,33 @@
 
 TEMPDIR=$(pwd)/test/integration/tmp
 TESTDIR=${BASH_SOURCE%/*}
-export TEST_ID="modules_gke_integration_gcloud_${RANDOM}"
-export KUBECONFIG="${TEMPDIR}/${TEST_ID}.kubeconfig"
+
+function export_vars() {
+  export CLUSTER_TYPE="$1"
+  export TEST_ID="modules_gke_integration_gcloud_${RANDOM}"
+  export KUBECONFIG="${TEMPDIR}/${CLUSTER_TYPE}/${TEST_ID}.kubeconfig"
+  if [[ $CLUSTER_TYPE = "regional" ]]; then
+    export CLUSTER_REGIONAL="true"
+    export CLUSTER_LOCATION="$REGIONAL_CLUSTER_LOCATION"
+    export CLUSTER_NAME="$REGIONAL_CLUSTER_NAME"
+    export IP_RANGE_PODS="$REGIONAL_IP_RANGE_PODS"
+    export IP_RANGE_SERVICES="$REGIONAL_IP_RANGE_SERVICES"
+  else
+    export CLUSTER_REGIONAL="false"
+    export CLUSTER_LOCATION="$ZONAL_CLUSTER_LOCATION"
+    export CLUSTER_NAME="$ZONAL_CLUSTER_NAME"
+    export IP_RANGE_PODS="$ZONAL_IP_RANGE_PODS"
+    export IP_RANGE_SERVICES="$ZONAL_IP_RANGE_SERVICES"
+    export ZONE="$ZONAL_ZONE"
+    export ADDITIONAL_ZONES="$ZONAL_ADDITIONAL_ZONES"
+  fi
+}
 
 # Activate test working directory
 function make_testdir() {
-  mkdir -p "$TEMPDIR"
-  cp -r "$TESTDIR"/* "$TEMPDIR"
+  CLUSTER_TYPE="$1"
+  mkdir -p "${TEMPDIR}/${CLUSTER_TYPE}"
+  cp -r "${TESTDIR}"/* "${TEMPDIR}/${CLUSTER_TYPE}/"
 }
 
 # Activate test config
@@ -43,7 +63,6 @@ function clean_workdir() {
 # Creates the main.tf file for Terraform
 function create_main_tf_file() {
   echo "Creating main.tf file"
-  touch main.tf
   cat <<EOF > main.tf
 locals {
   credentials_file_path    = "$CREDENTIALS_PATH"
@@ -53,27 +72,35 @@ provider "google" {
   credentials              = "\${file(local.credentials_file_path)}"
 }
 
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = "https://\${module.gke.endpoint}"
+  token                  = "\${data.google_client_config.default.access_token}"
+  cluster_ca_certificate = "\${base64decode(module.gke.ca_certificate)}"
+}
+
+data "google_client_config" "default" {}
+
 module "gke" {
-  source = "../../../"
-  region = "$REGION"
-  kubernetes_version = "$KUBERNETES_VERSION"
+  source               = "../../../../"
+  project_id           = "$PROJECT_ID"
+  name                 = "$CLUSTER_NAME"
+  description          = "Test GKE cluster"
+  regional             = $CLUSTER_REGIONAL
+  region               = "$REGION"
+  zone                 = "$ZONE"
+  additional_zones     = [$ADDITIONAL_ZONES]
+  kubernetes_version   = "$KUBERNETES_VERSION"
   node_service_account = "$NODE_SERVICE_ACCOUNT"
-
-  cluster_name        = "$CLUSTER_NAME"
-  cluster_description = "Test GKE cluster"
-
-  project_id = "$PROJECT_ID"
-  network    = "$NETWORK"
-  subnetwork = "$SUBNETWORK"
+  network              = "$NETWORK"
+  subnetwork           = "$SUBNETWORK"
+  ip_range_pods        = "$IP_RANGE_PODS"
+  ip_range_services    = "$IP_RANGE_SERVICES"
 
   http_load_balancing        = false
   horizontal_pod_autoscaling = true
   kubernetes_dashboard       = true
-
-  network_policy = true
-
-  ip_range_pods     = "$IP_RANGE_PODS"
-  ip_range_services = "$IP_RANGE_SERVICES"
+  network_policy             = true
 
   stub_domains {
     "example.com" = [
@@ -87,7 +114,7 @@ module "gke" {
     ]
   }
 
-  ip_masq_non_masquerade_cidrs = [
+  ip_non_masquerade_cidrs = [
     "10.0.0.0/8",
     "192.168.20.0/24",
     "192.168.21.0/24",
@@ -148,24 +175,75 @@ module "gke" {
     ]
   }
 }
+
+resource "kubernetes_pod" "nginx-example" {
+  metadata {
+    name = "nginx-example"
+
+    labels {
+      maintained_by = "terraform"
+      app           = "nginx-example"
+    }
+  }
+
+  spec {
+    container {
+      image = "nginx:1.7.9"
+      name  = "nginx-example"
+    }
+  }
+
+  depends_on = ["module.gke"]
+}
+
+resource "kubernetes_service" "nginx-example" {
+  metadata {
+    name = "terraform-example"
+  }
+
+  spec {
+    selector {
+      app = "\${kubernetes_pod.nginx-example.metadata.0.labels.app}"
+    }
+
+    session_affinity = "ClientIP"
+
+    port {
+      port        = 8080
+      target_port = 80
+    }
+
+    type = "LoadBalancer"
+  }
+
+  depends_on = ["module.gke"]
+}
+
 EOF
 }
 
 # Creates the outputs.tf file
 function create_outputs_file() {
   echo "Creating outputs.tf file"
-  touch outputs.tf
   cat <<'EOF' > outputs.tf
-output "cluster_name_example" {
-  value       = "${module.gke.cluster_name}"
+output "name_example" {
+  value       = "${module.gke.name}"
+}
+
+output "location_example" {
+  value       = "${module.gke.location}"
 }
 
 output "region_example" {
   value       = "${module.gke.region}"
 }
 
+output "zones_example" {
+  value       = "${module.gke.zones}"
+}
+
 output "endpoint_example" {
-  value       = "${module.gke.ca_certificate}"
+  value       = "${module.gke.endpoint}"
 }
 
 output "ca_certificate_example" {
@@ -184,6 +262,10 @@ output "node_version_example" {
     value       = "${module.gke.node_version}"
 }
 
+output "network_policy_example" {
+  value = "${module.gke.network_policy_enabled}"
+}
+
 output "http_load_balancing_example" {
     value       = "${module.gke.http_load_balancing_enabled}"
 }
@@ -200,6 +282,15 @@ output "node_pools_names_example" {
     value       = "${module.gke.node_pools_names}"
 }
 
+# For use in integration tests
+output "module_path" {
+    value       = "${path.module}/../../../../"
+}
+
+output "client_token" {
+    value       = "${base64encode(data.google_client_config.default.access_token)}"
+}
+
 EOF
 }
 
@@ -211,13 +302,21 @@ function run_bats() {
 }
 
 # Preparing environment
-make_testdir
-cd "$TEMPDIR" || exit
-activate_config
-create_main_tf_file
-create_outputs_file
+make_testdir regional
+make_testdir zonal
 
-# Call to bats
+cd "$TEMPDIR/regional" || exit
+activate_config
+export_vars regional
+create_main_tf_file regional
+create_outputs_file regional
+run_bats
+
+cd "$TEMPDIR/zonal" || exit
+activate_config
+export_vars zonal
+create_main_tf_file zonal
+create_outputs_file zonal
 run_bats
 
 # # # Clean the environment

@@ -14,57 +14,72 @@
  * limitations under the License.
  */
 
-output "cluster_name" {
+output "name" {
   description = "Cluster name"
-  value       = "${google_container_cluster.primary.name}"
+  value       = "${local.cluster_name}"
+}
+
+output "location" {
+  description = "Cluster location (region if regional cluster, zone if zonal cluster)"
+  value       = "${local.cluster_location}"
 }
 
 output "region" {
   description = "Cluster region"
-  value       = "${google_container_cluster.primary.region}"
+  value       = "${local.cluster_region}"
+}
+
+output "zones" {
+  description = "List of zones in which the cluster resides"
+  value       = "${local.cluster_zones}"
 }
 
 output "endpoint" {
   description = "Cluster endpoint"
-  value       = "${google_container_cluster.primary.endpoint}"
+  value       = "${local.cluster_endpoint}"
 }
 
 output "min_master_version" {
   description = "Minimum master kubernetes version"
-  value       = "${google_container_cluster.primary.min_master_version}"
+  value       = "${local.cluster_min_master_version}"
 }
 
 output "master_version" {
   description = "Current master kubernetes version"
-  value       = "${google_container_cluster.primary.master_version}"
+  value       = "${local.cluster_master_version}"
 }
 
 output "node_version" {
   description = "Current node kubernetes version"
-  value       = "${google_container_cluster.primary.node_version}"
+  value       = "${local.cluster_node_version}"
 }
 
 output "ca_certificate" {
   description = "Cluster ca certificate (base64 encoded)"
-  value       = "${google_container_cluster.primary.master_auth.0.cluster_ca_certificate}"
+  value       = "${local.cluster_ca_certificate}"
+}
+
+output "network_policy_enabled" {
+  description = "Whether network policy enabled"
+  value       = "${local.cluster_network_policy_enabled}"
 }
 
 output "http_load_balancing_enabled" {
   description = "Whether http load balancing enabled"
-  value       = "${google_container_cluster.primary.addons_config.0.http_load_balancing.0.disabled ? false : true}"
+  value       = "${local.cluster_http_load_balancing_enabled}"
 }
 
 output "horizontal_pod_autoscaling_enabled" {
   description = "Whether horizontal pod autoscaling enabled"
-  value       = "${google_container_cluster.primary.addons_config.0.horizontal_pod_autoscaling.0.disabled ? false : true}"
+  value       = "${local.cluster_horizontal_pod_autoscaling_enabled}"
 }
 
 output "kubernetes_dashboard_enabled" {
   description = "Whether kubernetes dashboard enabled"
-  value       = "${google_container_cluster.primary.addons_config.0.kubernetes_dashboard.0.disabled ? false : true}"
+  value       = "${local.cluster_kubernetes_dashboard_enabled}"
 }
 
 output "node_pools_names" {
   description = "List of node pools names"
-  value       = "${google_container_node_pool.pools.*.name}"
+  value       = "${local.cluster_node_pools_names}"
 }

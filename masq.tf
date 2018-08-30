@@ -18,7 +18,7 @@
   Create ip-masq-agent confimap
  *****************************************/
 resource "kubernetes_config_map" "ip-masq-agent" {
-  count = "${var.ip_masq_config_enabled || var.network_policy ? 1 : 0}"
+  count = "${var.network_policy ? 1 : 0}"
 
   metadata {
     name      = "ip-masq-agent"
@@ -32,11 +32,11 @@ resource "kubernetes_config_map" "ip-masq-agent" {
   data {
     config = <<EOF
 nonMasqueradeCIDRs:
-  - ${join("\n  - ", var.ip_masq_non_masquerade_cidrs)}
+  - ${join("\n  - ", var.non_masquerade_cidrs)}
 resyncInterval: ${var.ip_masq_resync_interval}
 masqLinkLocal: ${var.ip_masq_link_local}
 EOF
   }
 
-  depends_on = ["google_container_cluster.primary", "google_container_node_pool.pools"]
+  depends_on = ["data.google_client_config.default", "google_container_cluster.primary", "google_container_node_pool.pools", "google_container_cluster.zonal_primary", "google_container_node_pool.zonal_pools"]
 }

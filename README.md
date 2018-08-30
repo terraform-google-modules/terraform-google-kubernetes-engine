@@ -36,7 +36,7 @@ There are multiple examples included in the [examples](./examples/) folder but s
 module "gke" {
   source                     = "github.com/terraform-google-modules/terraform-google-kubernetes-engine"
   project_id                 = "<PROJECT ID>"
-  cluster_name               = "gke-test-1"
+  name                       = "gke-test-1"
   region                     = "us-central1"
   network                    = "vpc-01"
   subnetwork                 = "us-central1-01"
@@ -111,7 +111,7 @@ The resources/services/activations/deletions that this module will create/trigge
 - Create GKE Node Pool(s) with provided configuration and attach to cluster
 - Replace the default kube-dns configmap if `stub_domains` are provided
 - Activate network policy if `network_policy` is true
-- Add `ip-masq-agent` configmap with provided `masq_non_masquerade_cidrs` if `network_policy` is true or `masq_config_enabled` is true
+- Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `network_policy` is true
 
 ## File structure
 The project has the following folders and files:

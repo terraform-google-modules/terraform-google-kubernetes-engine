@@ -21,15 +21,25 @@
 
 ## These values you *MUST* modify to match your environment
 export PROJECT_ID="gke-test-integration"
+export CREDENTIALS_PATH="$HOME/sa-key.json"
 export NETWORK="vpc-01"
 export SUBNETWORK="us-east4-01"
 export IP_RANGE_PODS="us-east4-01-gke-01-pod"
 export IP_RANGE_SERVICES="us-east4-01-gke-01-service"
-export CREDENTIALS_PATH="$HOME/sa-key.json"
+export REGIONAL_IP_RANGE_PODS="us-east4-01-gke-01-pod"
+export REGIONAL_IP_RANGE_SERVICES="us-east4-01-gke-01-service"
+export ZONAL_IP_RANGE_PODS="us-east4-01-gke-02-pod"
+export ZONAL_IP_RANGE_SERVICES="us-east4-01-gke-02-service"
 
 ## These values you can potentially leave at the defaults
 export CLUSTER_NAME="int-test-cluster-01"
 export REGION="us-east4"
+export ZONE="us-east4-a"
 export KUBERNETES_VERSION="1.10.5-gke.4"
 export NODE_SERVICE_ACCOUNT=""
+export REGIONAL_CLUSTER_NAME="int-test-regional-01"
+export REGIONAL_CLUSTER_LOCATION="$REGION"
+export ZONAL_CLUSTER_NAME="int-test-zonal-01"
+export ZONAL_ADDITIONAL_ZONES='"us-east4-b", "us-east4-c"'
+export ZONAL_CLUSTER_LOCATION="$ZONE"
 export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=$CREDENTIALS_PATH

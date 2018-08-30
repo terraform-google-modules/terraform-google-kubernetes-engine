@@ -14,46 +14,22 @@
  * limitations under the License.
  */
 
-output "cluster_name_example" {
-  value = "${module.gke.cluster_name}"
-}
-
-output "region_example" {
-  value = "${module.gke.region}"
+output "name_example" {
+  description = "Cluster name"
+  value       = "${module.gke.name}"
 }
 
 output "endpoint_example" {
-  value = "${module.gke.ca_certificate}"
+  description = "Cluster endpoint"
+  value       = "${module.gke.ca_certificate}"
 }
 
-output "ca_certificate_example" {
-  value = "${module.gke.ca_certificate}"
+output "location_example" {
+  description = "Cluster location"
+  value       = "${module.gke.location}"
 }
 
-output "min_master_version_example" {
-  value = "${module.gke.min_master_version}"
-}
-
-output "master_version_example" {
-  value = "${module.gke.master_version}"
-}
-
-output "node_version_example" {
-  value = "${module.gke.node_version}"
-}
-
-output "http_load_balancing_example" {
-  value = "${module.gke.http_load_balancing_enabled}"
-}
-
-output "horizontal_pod_autoscaling_example" {
-  value = "${module.gke.horizontal_pod_autoscaling_enabled}"
-}
-
-output "kubernetes_dashboard_example" {
-  value = "${module.gke.kubernetes_dashboard_enabled}"
-}
-
-output "node_pools_names_example" {
-  value = "${module.gke.node_pools_names}"
+output "zones_example" {
+  description = "List of zones in which the cluster resides"
+  value       = "${module.gke.zones}"
 }
