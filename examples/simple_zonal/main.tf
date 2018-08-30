@@ -25,10 +25,11 @@ provider "google" {
 module "gke" {
   source               = "../../"
   project_id           = "${var.project_id}"
-  name                 = "shared-vpc-sample-cluster"
+  name                 = "simple-zonal-cluster"
+  regional             = false
   region               = "${var.region}"
+  zone                 = "${var.zone}"
   network              = "${var.network}"
-  network              = "${var.network_project_id}"
   subnetwork           = "${var.subnetwork}"
   ip_range_pods        = "${var.ip_range_pods}"
   ip_range_services    = "${var.ip_range_services}"

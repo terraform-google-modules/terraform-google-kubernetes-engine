@@ -25,7 +25,7 @@ provider "google" {
 module "gke" {
   source               = "../../"
   project_id           = "${var.project_id}"
-  cluster_name         = "simple-sample-cluster"
+  name                 = "simple-sample-cluster"
   region               = "${var.region}"
   network              = "${var.network}"
   subnetwork           = "${var.subnetwork}"

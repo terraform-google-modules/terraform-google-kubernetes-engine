@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
-output "cluster_name_example" {
-  value = "${module.gke.cluster_name}"
+output "name_example" {
+  description = "Cluster name"
+  value       = "${module.gke.name}"
 }
 
 output "endpoint_example" {
-  value = "${module.gke.ca_certificate}"
+  description = "Cluster endpoint"
+  value       = "${module.gke.ca_certificate}"
+}
+
+output "location_example" {
+  description = "Cluster location"
+  value       = "${module.gke.location}"
+}
+
+output "zones_example" {
+  description = "List of zones in which the cluster resides"
+  value       = "${module.gke.zones}"
 }

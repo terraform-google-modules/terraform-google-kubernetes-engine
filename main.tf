@@ -26,8 +26,102 @@ locals {
   kubernetes_version     = "${var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_node_version}"
   node_version           = "${var.node_version != "" ? var.node_version : local.kubernetes_version}"
   custom_kube_dns_config = "${length(keys(var.stub_domains)) > 0 ? true : false}"
+  network_project_id     = "${var.network_project_id != "" ? var.network_project_id : var.project_id}"
 
-  network_project_id = "${var.network_project_id != "" ? var.network_project_id : var.project_id}"
+  cluster_type = "${var.regional ? "regional" : "zonal"}"
+
+  cluster_type_output_name = {
+    regional = "${element(concat(google_container_cluster.primary.*.name, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.name, list("")), 0)}"
+  }
+
+  cluster_type_output_location = {
+    regional = "${element(concat(google_container_cluster.primary.*.region, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.zone, list("")), 0)}"
+  }
+
+  cluster_type_output_region = {
+    regional = "${element(concat(google_container_cluster.primary.*.region, list("")), 0)}"
+    zonal    = "${var.region}"
+  }
+
+  cluster_type_output_regional_zones = "${concat(google_container_cluster.primary.*.additional_zones, list(list()))}"
+
+  cluster_type_output_zones = {
+    regional = "${local.cluster_type_output_regional_zones[0]}"
+    zonal    = "${concat(google_container_cluster.zonal_primary.*.zone, var.additional_zones)}"
+  }
+
+  cluster_type_output_endpoint = {
+    regional = "${element(concat(google_container_cluster.primary.*.endpoint, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.endpoint, list("")), 0)}"
+  }
+
+  cluster_type_output_master_auth = {
+    regional = "${concat(google_container_cluster.primary.*.master_auth, list())}"
+    zonal    = "${concat(google_container_cluster.zonal_primary.*.master_auth, list())}"
+  }
+
+  cluster_type_output_master_version = {
+    regional = "${element(concat(google_container_cluster.primary.*.master_version, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.master_version, list("")), 0)}"
+  }
+
+  cluster_type_output_min_master_version = {
+    regional = "${element(concat(google_container_cluster.primary.*.min_master_version, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.min_master_version, list("")), 0)}"
+  }
+
+  cluster_type_output_node_version = {
+    regional = "${element(concat(google_container_cluster.primary.*.node_version, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.node_version, list("")), 0)}"
+  }
+
+  cluster_type_output_network_policy_enabled = {
+    regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.network_policy_config.0.disabled, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.network_policy_config.0.disabled, list("")), 0)}"
+  }
+
+  cluster_type_output_http_load_balancing_enabled = {
+    regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.http_load_balancing.0.disabled, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.http_load_balancing.0.disabled, list("")), 0)}"
+  }
+
+  cluster_type_output_horizontal_pod_autoscaling_enabled = {
+    regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.horizontal_pod_autoscaling.0.disabled, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.horizontal_pod_autoscaling.0.disabled, list("")), 0)}"
+  }
+
+  cluster_type_output_kubernetes_dashboard_enabled = {
+    regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.kubernetes_dashboard.0.disabled, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.kubernetes_dashboard.0.disabled, list("")), 0)}"
+  }
+
+  cluster_type_output_node_pools_names = {
+    regional = "${element(concat(google_container_node_pool.pools.*.name, list("")), 0)}"
+    zonal    = "${element(concat(google_container_node_pool.zonal_pools.*.name, list("")), 0)}"
+  }
+
+  cluster_master_auth_list_layer1 = "${local.cluster_type_output_master_auth[local.cluster_type]}"
+  cluster_master_auth_list_layer2 = "${local.cluster_master_auth_list_layer1[0]}"
+  cluster_master_auth_map         = "${local.cluster_master_auth_list_layer2[0]}"
+
+  # cluster locals
+  cluster_name               = "${local.cluster_type_output_name[local.cluster_type]}"
+  cluster_location           = "${local.cluster_type_output_location[local.cluster_type]}"
+  cluster_region             = "${local.cluster_type_output_region[local.cluster_type]}"
+  cluster_zones              = "${local.cluster_type_output_zones[local.cluster_type]}"
+  cluster_endpoint           = "${local.cluster_type_output_endpoint[local.cluster_type]}"
+  cluster_ca_certificate     = "${lookup(local.cluster_master_auth_map, "cluster_ca_certificate")}"
+  cluster_master_version     = "${local.cluster_type_output_master_version[local.cluster_type]}"
+  cluster_min_master_version = "${local.cluster_type_output_min_master_version[local.cluster_type]}"
+  cluster_node_version       = "${local.cluster_type_output_node_version[local.cluster_type]}"
+  cluster_node_pools_names   = "${local.cluster_type_output_node_pools_names[local.cluster_type]}"
+
+  cluster_network_policy_enabled             = "${local.cluster_type_output_network_policy_enabled[local.cluster_type]}"
+  cluster_http_load_balancing_enabled        = "${local.cluster_type_output_http_load_balancing_enabled[local.cluster_type]}"
+  cluster_horizontal_pod_autoscaling_enabled = "${local.cluster_type_output_horizontal_pod_autoscaling_enabled[local.cluster_type]}"
+  cluster_kubernetes_dashboard_enabled       = "${local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type]}"
 }
 
 /******************************************
@@ -36,115 +130,4 @@ locals {
 data "google_container_engine_versions" "region" {
   zone    = "${data.google_compute_zones.available.names[0]}"
   project = "${var.project_id}"
-}
-
-/******************************************
-  Create cluster
- *****************************************/
-resource "google_container_cluster" "primary" {
-  name        = "${var.cluster_name}"
-  description = "${var.cluster_description}"
-  project     = "${var.project_id}"
-
-  region = "${var.region}"
-
-  network            = "projects/${local.network_project_id}/global/networks/${var.network}"
-  subnetwork         = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
-  min_master_version = "${local.kubernetes_version}"
-  node_version       = "${local.node_version}"
-
-  addons_config {
-    http_load_balancing {
-      disabled = "${var.http_load_balancing ? 0 : 1}"
-    }
-
-    horizontal_pod_autoscaling {
-      disabled = "${var.horizontal_pod_autoscaling ? 0 : 1}"
-    }
-
-    kubernetes_dashboard {
-      disabled = "${var.kubernetes_dashboard ? 0 : 1}"
-    }
-
-    network_policy_config {
-      disabled = "${var.network_policy ? 0 : 1}"
-    }
-  }
-
-  ip_allocation_policy {
-    cluster_secondary_range_name  = "${var.ip_range_pods}"
-    services_secondary_range_name = "${var.ip_range_services}"
-  }
-
-  maintenance_policy {
-    daily_maintenance_window {
-      start_time = "${var.maintenance_start_time}"
-    }
-  }
-
-  lifecycle {
-    ignore_changes = ["node_pool"]
-  }
-
-  timeouts {
-    create = "30m"
-    update = "30m"
-    delete = "30m"
-  }
-
-  node_pool {
-    name = "default-pool"
-
-    node_config {
-      service_account = "${var.node_service_account != "" ? var.node_service_account : ""}"
-    }
-  }
-}
-
-/******************************************
-  Create node pools
- *****************************************/
-resource "google_container_node_pool" "pools" {
-  count              = "${length(var.node_pools)}"
-  name               = "${lookup(var.node_pools[count.index], "name")}"
-  project            = "${var.project_id}"
-  region             = "${var.region}"
-  cluster            = "${var.cluster_name}"
-  initial_node_count = "${lookup(var.node_pools[count.index], "min_count", 1)}"
-
-  autoscaling {
-    min_node_count = "${lookup(var.node_pools[count.index], "min_count", 1)}"
-    max_node_count = "${lookup(var.node_pools[count.index], "max_count", 100)}"
-  }
-
-  management {
-    auto_repair  = "${lookup(var.node_pools[count.index], "auto_repair", true)}"
-    auto_upgrade = "${lookup(var.node_pools[count.index], "auto_upgrade", true)}"
-  }
-
-  node_config {
-    image_type   = "${lookup(var.node_pools[count.index], "image_type", "COS")}"
-    machine_type = "${lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")}"
-    labels       = "${merge(map("cluster_name", var.cluster_name), map("node_pool", lookup(var.node_pools[count.index], "name")), var.node_pools_labels["all"], var.node_pools_labels[lookup(var.node_pools[count.index], "name")])}"
-    taint        = "${concat(var.node_pools_taints["all"], var.node_pools_taints[lookup(var.node_pools[count.index], "name")])}"
-    tags         = "${concat(list("gke-${var.cluster_name}"), list("gke-${var.cluster_name}-${lookup(var.node_pools[count.index], "name")}"), var.node_pools_tags["all"], var.node_pools_tags[lookup(var.node_pools[count.index], "name")])}"
-
-    disk_size_gb    = "${lookup(var.node_pools[count.index], "disk_size_gb", 100)}"
-    disk_type       = "${lookup(var.node_pools[count.index], "disk_type", "pd-standard")}"
-    service_account = "${var.node_service_account != "" ? var.node_service_account : ""}"
-
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform",
-    ]
-  }
-
-  lifecycle {
-    ignore_changes = ["initial_node_count"]
-  }
-
-  timeouts {
-    delete = "15m"
-  }
-
-  depends_on = ["google_container_cluster.primary"]
 }

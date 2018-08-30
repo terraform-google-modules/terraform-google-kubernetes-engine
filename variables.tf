@@ -15,38 +15,54 @@
  */
 
 variable "project_id" {
-  description = "The project ID to host the cluster in"
+  description = "The project ID to host the cluster in (required)"
 }
 
-variable "region" {
-  description = "The region to host the cluster in"
+variable "name" {
+  description = "The name of the cluster (required)"
 }
 
-variable "cluster_name" {
-  description = "The name of the cluster"
-}
-
-variable "cluster_description" {
+variable "description" {
   description = "The description of the cluster"
   default     = ""
 }
 
-variable "network" {
-  description = "The VPC network to host the cluster in"
+variable "regional" {
+  description = "Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!)"
+  default     = true
 }
 
-variable "subnetwork" {
-  description = "The subnetwork to host the cluster in"
+variable "region" {
+  description = "The region to host the cluster in (required)"
+}
+
+variable "zone" {
+  description = "The zone to host the cluster in (required if is a zonal cluster)"
+  default     = ""
+}
+
+variable "additional_zones" {
+  type        = "list"
+  description = "The zone to host the cluster in (optional: only used if is a zonal cluster)"
+  default     = []
+}
+
+variable "network" {
+  description = "The VPC network to host the cluster in (required)"
 }
 
 variable "network_project_id" {
   description = "The project ID of the shared VPC's host (for shared vpc support)"
-  default = ""
+  default     = ""
+}
+
+variable "subnetwork" {
+  description = "The subnetwork to host the cluster in (required)"
 }
 
 variable "kubernetes_version" {
   description = "The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region."
-  default     = "1.10.5-gke.0"
+  default     = "1.10.5-gke.4"
 }
 
 variable "node_version" {
@@ -139,15 +155,10 @@ variable "stub_domains" {
   default     = {}
 }
 
-variable "ip_masq_config_enabled" {
-  description = "Enable IP Masquerade Agent Configmap. Automatically enables if network_policy enabled."
-  default     = false
-}
-
-variable "ip_masq_non_masquerade_cidrs" {
+variable "non_masquerade_cidrs" {
   type        = "list"
   description = "List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading."
-  default     = ["10.0.0.0/8"]
+  default     = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 }
 
 variable "ip_masq_resync_interval" {

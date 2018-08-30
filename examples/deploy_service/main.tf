@@ -34,7 +34,7 @@ data "google_client_config" "default" {}
 module "gke" {
   source               = "../../"
   project_id           = "${var.project_id}"
-  cluster_name         = "deploy-service-cluster"
+  name                 = "deploy-service-cluster"
   region               = "${var.region}"
   network              = "${var.network}"
   subnetwork           = "${var.subnetwork}"
