@@ -20,7 +20,7 @@
 
   run terraform plan
   [ "$status" -eq 0 ]
-  [[ "$output" =~ 5\ to\ add ]]
+  [[ "$output" =~ 7\ to\ add ]]
   [[ "$output" =~ 0\ to\ change ]]
   [[ "$output" =~ 0\ to\ destroy ]]
 }
@@ -29,7 +29,7 @@
 
   run terraform apply -auto-approve
   [ "$status" -eq 0 ]
-  [[ "$output" =~ 5\ added ]]
+  [[ "$output" =~ 7\ added ]]
   [[ "$output" =~ 0\ changed ]]
   [[ "$output" =~ 0\ destroyed ]]
 }
@@ -254,5 +254,5 @@
 
   run terraform destroy -force
   [ "$status" -eq 0 ]
-  [[ "$output" =~ 5\ destroyed ]]
+  [[ "$output" =~ 7\ destroyed ]]
 }
