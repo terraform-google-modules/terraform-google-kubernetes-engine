@@ -98,12 +98,62 @@ Then perform the following commands on the root folder:
 - `terraform plan` to see the infrastructure plan
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
+[^]: (autogen_docs_start)
 
-#### Variables
-Please refer the /variables.tf file for the required and optional variables.
 
-#### Outputs
-Please refer the /outputs.tf file for the outputs that you can get with the `terraform output` command
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| additional_zones | The zone to host the cluster in (optional: only used if is a zonal cluster) | list | `<list>` | no |
+| description | The description of the cluster | string | `` | no |
+| horizontal_pod_autoscaling | Enable horizontal pod autoscaling addon | string | `false` | no |
+| http_load_balancing | Enable httpload balancer addon | string | `true` | no |
+| ip_masq_link_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `false` | no |
+| ip_masq_resync_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `60s` | no |
+| ip_range_pods | The secondary ip range to use for pods | string | - | yes |
+| ip_range_services | The secondary ip range to use for pods | string | - | yes |
+| kubernetes_dashboard | Enable kubernetes dashboard addon | string | `false` | no |
+| kubernetes_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `1.10.5-gke.4` | no |
+| maintenance_start_time | Time window specified for daily maintenance operations in RFC3339 format | string | `05:00` | no |
+| name | The name of the cluster (required) | string | - | yes |
+| network | The VPC network to host the cluster in (required) | string | - | yes |
+| network_policy | Enable network policy addon | string | `false` | no |
+| network_project_id | The project ID of the shared VPC's host (for shared vpc support) | string | `` | no |
+| node_pools | List of maps containing node pools | list | `<list>` | no |
+| node_pools_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
+| node_pools_tags | Map of lists containing node network tags by node-pool name | map | `<map>` | no |
+| node_pools_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
+| node_service_account | Service account to associate to the nodes. Defaults to the compute default service account on the project.) | string | `` | no |
+| node_version | The Kubernetes version of the node pools. Defaults kubernetes version (master) variable. Must set the same as master at initial creation. | string | `` | no |
+| non_masquerade_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list | `<list>` | no |
+| project_id | The project ID to host the cluster in (required) | string | - | yes |
+| region | The region to host the cluster in (required) | string | - | yes |
+| regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `true` | no |
+| stub_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
+| subnetwork | The subnetwork to host the cluster in (required) | string | - | yes |
+| zone | The zone to host the cluster in (required if is a zonal cluster) | string | `` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| ca_certificate | Cluster ca certificate (base64 encoded) |
+| endpoint | Cluster endpoint |
+| horizontal_pod_autoscaling_enabled | Whether horizontal pod autoscaling enabled |
+| http_load_balancing_enabled | Whether http load balancing enabled |
+| kubernetes_dashboard_enabled | Whether kubernetes dashboard enabled |
+| location | Cluster location (region if regional cluster, zone if zonal cluster) |
+| master_version | Current master kubernetes version |
+| min_master_version | Minimum master kubernetes version |
+| name | Cluster name |
+| network_policy_enabled | Whether network policy enabled |
+| node_pools_names | List of node pools names |
+| node_version | Current node kubernetes version |
+| region | Cluster region |
+| zones | List of zones in which the cluster resides |
+
+[^]: (autogen_docs_end)
 
 ## Infrastructure
 The resources/services/activations/deletions that this module will create/trigger are:
@@ -131,6 +181,13 @@ The project has the following folders and files:
 - [bundler](https://github.com/bundler/bundler)
 - [gcloud](https://cloud.google.com/sdk/install)
 - [jq](https://stedolan.github.io/jq/) 1.5
+- [terraform-docs](https://github.com/segmentio/terraform-docs/releases) 0.3.0
+
+### Autogeneration of documentation from .tf files
+Run
+```
+make generate_docs
+```
 
 ### Integration test
 #### Terraform integration tests
