@@ -64,6 +64,15 @@ check_headers:
 	@python test/verify_boilerplate.py
 
 # Integration tests
+
+.PHONY: regional_test_integration
+regional_test_integration:
+	./test/integration/gcloud/run.sh regional
+
+.PHONY: zonal_test_integration
+zonal_test_integration:
+	./test/integration/gcloud/run.sh zonal
+
 .PHONY: test_integration
-test_integration:
-	./test/integration/gcloud/run.sh
+test_integration: regional_test_integration zonal_test_integration
+	@echo "Running tests for regional and zonal clusters"

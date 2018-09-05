@@ -128,26 +128,30 @@ The project has the following folders and files:
 ## Testing
 
 ### Requirements
-- [bats](https://github.com/sstephenson/bats) 0.4.0
+- [bundler](https://github.com/bundler/bundler)
 - [gcloud](https://cloud.google.com/sdk/install)
 - [jq](https://stedolan.github.io/jq/) 1.5
 
 ### Integration test
-##### Terraform integration tests
-The integration tests for this module are built with bats, basically the test checks the following:
-- Perform `terraform init` command
-- Perform `terraform get` command
-- Perform `terraform plan` command and check that it'll create *n* resources, modify 0 resources and delete 0 resources
-- Perform `terraform apply -auto-approve` command and check that it has created the *n* resources, modified 0 resources and deleted 0 resources
-- Perform `terraform plan` command and check that it'll create 0 resources, modify 1 resources and delete 0 resources
-- Perform `terraform apply -auto-approve` command and check that it has created 0 resources, modified 1 resources and deleted 0 resources
-- Perform `gcloud` commands and check the infrastructure is in the desired state
-- Perform `kubectl` commands and check the infrastructure is in the desired state
-- Perform `terraform destroy -force` command and check that it has destroyed the *n* resources
+#### Terraform integration tests
+The integration tests for this module leverage [kitchen-terraform](https://github.com/newcontext-oss/kitchen-terraform) and [kitchen-inspec](https://github.com/inspec/kitchen-inspec).
+
+The tests will do the following:
+- Perform `bundle install` command
+  - Installs `kitchen-terraform` and `kitchen-inspec` gems
+- Perform `kitchen create` command
+  - Performs a `terraform init`
+- Perform `kitchen converge` command
+  - Performs a `terraform apply -auto-approve`
+- Perform `kitchen validate` command
+  - Performs inspec tests.
+    - Inspec tests shell out to gcloud to validate expected resources in GCP.
+- Permos `kitchen destroy` command
+  - Performs a `terraform destroy -force`
 
 You can use the following command to run the integration test in the root folder
 
-  `test/integration/gcloud/run.sh`
+  `make test_integration`
 
 ### Linting
 The makefile in this project will lint or sometimes just format any shell,
