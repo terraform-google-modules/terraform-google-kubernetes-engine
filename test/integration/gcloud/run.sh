@@ -13,11 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+if [ "$#" -lt 1 ]; then
+    >&2 echo "Must specify cluster type (regional/zonal)"
+    exit 1
+fi
+
+export CLUSTER_TYPE="$1"
+
 TEMPDIR=$(pwd)/test/integration/tmp
 TESTDIR=${BASH_SOURCE%/*}
 
 function export_vars() {
-  export CLUSTER_TYPE="$1"
   export TEST_ID="modules_gke_integration_gcloud_${RANDOM}"
   export KUBECONFIG="${TEMPDIR}/${CLUSTER_TYPE}/${TEST_ID}.kubeconfig"
   if [[ $CLUSTER_TYPE = "regional" ]]; then
@@ -39,9 +45,9 @@ function export_vars() {
 
 # Activate test working directory
 function make_testdir() {
-  CLUSTER_TYPE="$1"
   mkdir -p "${TEMPDIR}/${CLUSTER_TYPE}"
   cp -r "${TESTDIR}"/* "${TEMPDIR}/${CLUSTER_TYPE}/"
+  cp -r "$TESTDIR"/.kitchen.yml "${TEMPDIR}/${CLUSTER_TYPE}/"
 }
 
 # Activate test config
@@ -294,30 +300,30 @@ output "client_token" {
 EOF
 }
 
-# Execute bats tests
-function run_bats() {
-  # Call to bats
-  echo "Tests to execute: $(bats integration.bats -c)"
-  bats integration.bats
+# Install gems
+function bundle_install() {
+  bundle install
+}
+
+# Execute kitchen tests
+function run_kitchen() {
+  kitchen create
+  kitchen converge
+  kitchen converge # second time to enable network policy
+  kitchen verify
+  kitchen destroy
 }
 
 # Preparing environment
-make_testdir regional
-make_testdir zonal
+make_testdir
 
-cd "$TEMPDIR/regional" || exit
-activate_config
-export_vars regional
-create_main_tf_file regional
-create_outputs_file regional
-run_bats
-
-cd "$TEMPDIR/zonal" || exit
+cd "${TEMPDIR}/${CLUSTER_TYPE}/" || exit
 activate_config
 export_vars zonal
-create_main_tf_file zonal
-create_outputs_file zonal
-run_bats
+create_main_tf_file
+create_outputs_file
+bundle_install
+run_kitchen
 
 # # # Clean the environment
 cd - || exit
