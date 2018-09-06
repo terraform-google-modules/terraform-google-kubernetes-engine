@@ -39,15 +39,16 @@ module "gke" {
       min_count = 4
     },
     {
-      name         = "pool-02"
-      machine_type = "n1-standard-2"
-      min_count    = 2
-      max_count    = 3
-      disk_size_gb = 30
-      disk_type    = "pd-standard"
-      image_type   = "COS"
-      auto_repair  = false
-      auto_upgrade = false
+      name            = "pool-02"
+      machine_type    = "n1-standard-2"
+      min_count       = 2
+      max_count       = 3
+      disk_size_gb    = 30
+      disk_type       = "pd-standard"
+      image_type      = "COS"
+      auto_repair     = false
+      auto_upgrade    = false
+      service_account = "${var.pool_01_service_account}"
     },
   ]
 

@@ -28,18 +28,16 @@ function export_vars() {
   export KUBECONFIG="${TEMPDIR}/${CLUSTER_TYPE}/${TEST_ID}.kubeconfig"
   if [[ $CLUSTER_TYPE = "regional" ]]; then
     export CLUSTER_REGIONAL="true"
-    export CLUSTER_LOCATION="$REGIONAL_CLUSTER_LOCATION"
+    export CLUSTER_LOCATION="$REGIONAL_LOCATION"
     export CLUSTER_NAME="$REGIONAL_CLUSTER_NAME"
     export IP_RANGE_PODS="$REGIONAL_IP_RANGE_PODS"
     export IP_RANGE_SERVICES="$REGIONAL_IP_RANGE_SERVICES"
   else
     export CLUSTER_REGIONAL="false"
-    export CLUSTER_LOCATION="$ZONAL_CLUSTER_LOCATION"
+    export CLUSTER_LOCATION="$ZONAL_LOCATION"
     export CLUSTER_NAME="$ZONAL_CLUSTER_NAME"
     export IP_RANGE_PODS="$ZONAL_IP_RANGE_PODS"
     export IP_RANGE_SERVICES="$ZONAL_IP_RANGE_SERVICES"
-    export ZONE="$ZONAL_ZONE"
-    export ADDITIONAL_ZONES="$ZONAL_ADDITIONAL_ZONES"
   fi
 }
 
@@ -94,8 +92,7 @@ module "gke" {
   description          = "Test GKE cluster"
   regional             = $CLUSTER_REGIONAL
   region               = "$REGION"
-  zone                 = "$ZONE"
-  additional_zones     = [$ADDITIONAL_ZONES]
+  zones                = [$ZONES]
   kubernetes_version   = "$KUBERNETES_VERSION"
   node_service_account = "$NODE_SERVICE_ACCOUNT"
   network              = "$NETWORK"
@@ -128,15 +125,16 @@ module "gke" {
 
   node_pools = [
     {
-      name         = "pool-01"
-      machine_type = "n1-standard-1"
-      image_type   = "COS"
+      name                = "pool-01"
+      machine_type        = "n1-standard-1"
+      image_type          = "COS"
       initial_node_count = 2
-      min_count    = 1
-      max_count    = 2
-      auto_upgrade = false
-      disk_size_gb = 30
-      disk_type    = "pd-standard"
+      min_count          = 1
+      max_count          = 2
+      auto_upgrade       = false
+      disk_size_gb       = 30
+      disk_type          = "pd-standard"
+      service_account    = "$NODE_POOL_SERVICE_ACCOUNT"
     },
   ]
   node_pools_labels = {
@@ -236,6 +234,10 @@ output "name_example" {
   value       = "${module.gke.name}"
 }
 
+output "type_example" {
+  value       = "${module.gke.type}"
+}
+
 output "location_example" {
   value       = "${module.gke.location}"
 }
@@ -264,10 +266,6 @@ output "master_version_example" {
     value       = "${module.gke.master_version}"
 }
 
-output "node_version_example" {
-    value       = "${module.gke.node_version}"
-}
-
 output "network_policy_example" {
   value = "${module.gke.network_policy_enabled}"
 }
@@ -286,6 +284,10 @@ output "kubernetes_dashboard_example" {
 
 output "node_pools_names_example" {
     value       = "${module.gke.node_pools_names}"
+}
+
+output "node_pools_versions_example" {
+    value       = "${module.gke.node_pools_versions}"
 }
 
 # For use in integration tests

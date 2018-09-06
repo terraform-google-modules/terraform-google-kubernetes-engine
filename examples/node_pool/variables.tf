@@ -42,3 +42,7 @@ variable "node_service_account" {
   description = "Service account to associate to the nodes (defaults to the default service account on the project)"
   default     = ""
 }
+
+variable "pool_01_service_account" {
+  description = "Service account to associate to the nodes on pool-01"
+}

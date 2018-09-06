@@ -24,12 +24,6 @@ describe command('gcloud --project=${PROJECT_ID} container clusters --zone=${CLU
   its('stdout.strip') { should eq ENV['KUBERNETES_VERSION'] }
 end
 
-# Test the cluster is in the expected location
-describe command('gcloud --project=${PROJECT_ID} container clusters --zone=${CLUSTER_LOCATION} describe ${CLUSTER_NAME} --format=json | jq -cre \'.zone\'') do
-  its('exit_status') { should eq 0 }
-  its('stdout.strip') { should eq ENV['CLUSTER_LOCATION'] }
-end
-
 # Test the cluster is in the expected network
 describe command('gcloud --project=${PROJECT_ID} container clusters --zone=${CLUSTER_LOCATION} describe ${CLUSTER_NAME} --format=json | jq -cre \'.network\'') do
   its('exit_status') { should eq 0 }

@@ -37,3 +37,7 @@ output "zones_example" {
 output "node_pools_names_example" {
   value = "${module.gke.node_pools_names}"
 }
+
+output "node_pools_versions_example" {
+  value = "${module.gke.node_pools_versions}"
+}

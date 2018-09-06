@@ -22,7 +22,8 @@ variable "region" {
   description = "The region to host the cluster in"
 }
 
-variable "zone" {
+variable "zones" {
+  type        = "list"
   description = "The zone to host the cluster in (required if is a zonal cluster)"
 }
 

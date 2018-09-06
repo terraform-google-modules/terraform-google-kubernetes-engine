@@ -36,14 +36,9 @@ variable "region" {
   description = "The region to host the cluster in (required)"
 }
 
-variable "zone" {
-  description = "The zone to host the cluster in (required if is a zonal cluster)"
-  default     = ""
-}
-
-variable "additional_zones" {
+variable "zones" {
   type        = "list"
-  description = "The zone to host the cluster in (optional: only used if is a zonal cluster)"
+  description = "The zones to host the cluster in (optional if regional cluster / required if zonal)"
   default     = []
 }
 
@@ -62,11 +57,11 @@ variable "subnetwork" {
 
 variable "kubernetes_version" {
   description = "The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region."
-  default     = "1.10.5-gke.4"
+  default     = "1.10.6-gke.2"
 }
 
 variable "node_version" {
-  description = "The Kubernetes version of the node pools. Defaults kubernetes version (master) variable. Must set the same as master at initial creation."
+  description = "The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation."
   default     = ""
 }
 

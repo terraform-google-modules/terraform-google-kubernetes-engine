@@ -28,7 +28,7 @@ module "gke" {
   name                 = "simple-zonal-cluster"
   regional             = false
   region               = "${var.region}"
-  zone                 = "${var.zone}"
+  zones                = "${var.zones}"
   network              = "${var.network}"
   subnetwork           = "${var.subnetwork}"
   ip_range_pods        = "${var.ip_range_pods}"

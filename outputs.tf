@@ -19,6 +19,11 @@ output "name" {
   value       = "${local.cluster_name}"
 }
 
+output "type" {
+  description = "Cluster type (regional / zonal)"
+  value       = "${local.cluster_type}"
+}
+
 output "location" {
   description = "Cluster location (region if regional cluster, zone if zonal cluster)"
   value       = "${local.cluster_location}"
@@ -49,11 +54,6 @@ output "master_version" {
   value       = "${local.cluster_master_version}"
 }
 
-output "node_version" {
-  description = "Current node kubernetes version"
-  value       = "${local.cluster_node_version}"
-}
-
 output "ca_certificate" {
   description = "Cluster ca certificate (base64 encoded)"
   value       = "${local.cluster_ca_certificate}"
@@ -82,4 +82,9 @@ output "kubernetes_dashboard_enabled" {
 output "node_pools_names" {
   description = "List of node pools names"
   value       = "${local.cluster_node_pools_names}"
+}
+
+output "node_pools_versions" {
+  description = "List of node pools versions"
+  value       = "${local.cluster_node_pools_versions}"
 }
