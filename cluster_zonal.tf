@@ -23,13 +23,12 @@ resource "google_container_cluster" "zonal_primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  zone             = "${var.zone}"
-  additional_zones = "${var.additional_zones}"
+  zone             = "${var.zones[0]}"
+  additional_zones = "${slice(var.zones,1,length(var.zones))}"
 
   network            = "projects/${local.network_project_id}/global/networks/${var.network}"
   subnetwork         = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
   min_master_version = "${local.kubernetes_version}"
-  node_version       = "${local.node_version}"
 
   addons_config {
     http_load_balancing {
@@ -74,7 +73,7 @@ resource "google_container_cluster" "zonal_primary" {
     name = "default-pool"
 
     node_config {
-      service_account = "${var.node_service_account != "" ? var.node_service_account : ""}"
+      service_account = "${var.node_service_account}"
     }
   }
 }
@@ -86,8 +85,9 @@ resource "google_container_node_pool" "zonal_pools" {
   count              = "${var.regional ? 0 : length(var.node_pools)}"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
-  zone               = "${var.zone}"
+  zone               = "${var.zones[0]}"
   cluster            = "${var.name}"
+  version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "min_count", 1)}"
 
   autoscaling {
@@ -97,7 +97,7 @@ resource "google_container_node_pool" "zonal_pools" {
 
   management {
     auto_repair  = "${lookup(var.node_pools[count.index], "auto_repair", true)}"
-    auto_upgrade = "${lookup(var.node_pools[count.index], "auto_upgrade", true)}"
+    auto_upgrade = "${lookup(var.node_pools[count.index], "auto_upgrade", false)}"
   }
 
   node_config {
@@ -109,7 +109,7 @@ resource "google_container_node_pool" "zonal_pools" {
 
     disk_size_gb    = "${lookup(var.node_pools[count.index], "disk_size_gb", 100)}"
     disk_type       = "${lookup(var.node_pools[count.index], "disk_type", "pd-standard")}"
-    service_account = "${var.node_service_account != "" ? var.node_service_account : ""}"
+    service_account = "${lookup(var.node_pools[count.index], "service_account", var.node_service_account)}"
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
@@ -121,7 +121,9 @@ resource "google_container_node_pool" "zonal_pools" {
   }
 
   timeouts {
-    delete = "15m"
+    create = "30m"
+    update = "30m"
+    delete = "30m"
   }
 
   depends_on = ["google_container_cluster.zonal_primary"]

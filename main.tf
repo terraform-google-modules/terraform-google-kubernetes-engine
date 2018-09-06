@@ -46,10 +46,11 @@ locals {
   }
 
   cluster_type_output_regional_zones = "${concat(google_container_cluster.primary.*.additional_zones, list(list()))}"
+  cluster_type_output_zonal_zones    = "${concat(google_container_cluster.zonal_primary.*.additional_zones, list(list()))}"
 
   cluster_type_output_zones = {
     regional = "${local.cluster_type_output_regional_zones[0]}"
-    zonal    = "${concat(google_container_cluster.zonal_primary.*.zone, var.additional_zones)}"
+    zonal    = "${concat(google_container_cluster.zonal_primary.*.zone, local.cluster_type_output_zonal_zones[0])}"
   }
 
   cluster_type_output_endpoint = {
@@ -70,11 +71,6 @@ locals {
   cluster_type_output_min_master_version = {
     regional = "${element(concat(google_container_cluster.primary.*.min_master_version, list("")), 0)}"
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.min_master_version, list("")), 0)}"
-  }
-
-  cluster_type_output_node_version = {
-    regional = "${element(concat(google_container_cluster.primary.*.node_version, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.node_version, list("")), 0)}"
   }
 
   cluster_type_output_network_policy_enabled = {
@@ -98,8 +94,13 @@ locals {
   }
 
   cluster_type_output_node_pools_names = {
-    regional = "${element(concat(google_container_node_pool.pools.*.name, list("")), 0)}"
-    zonal    = "${element(concat(google_container_node_pool.zonal_pools.*.name, list("")), 0)}"
+    regional = "${concat(google_container_node_pool.pools.*.name, list(""))}"
+    zonal    = "${concat(google_container_node_pool.zonal_pools.*.name, list(""))}"
+  }
+
+  cluster_type_output_node_pools_versions = {
+    regional = "${concat(google_container_node_pool.pools.*.version, list(""))}"
+    zonal    = "${concat(google_container_node_pool.zonal_pools.*.version, list(""))}"
   }
 
   cluster_master_auth_list_layer1 = "${local.cluster_type_output_master_auth[local.cluster_type]}"
@@ -107,21 +108,21 @@ locals {
   cluster_master_auth_map         = "${local.cluster_master_auth_list_layer2[0]}"
 
   # cluster locals
-  cluster_name               = "${local.cluster_type_output_name[local.cluster_type]}"
-  cluster_location           = "${local.cluster_type_output_location[local.cluster_type]}"
-  cluster_region             = "${local.cluster_type_output_region[local.cluster_type]}"
-  cluster_zones              = "${local.cluster_type_output_zones[local.cluster_type]}"
-  cluster_endpoint           = "${local.cluster_type_output_endpoint[local.cluster_type]}"
-  cluster_ca_certificate     = "${lookup(local.cluster_master_auth_map, "cluster_ca_certificate")}"
-  cluster_master_version     = "${local.cluster_type_output_master_version[local.cluster_type]}"
-  cluster_min_master_version = "${local.cluster_type_output_min_master_version[local.cluster_type]}"
-  cluster_node_version       = "${local.cluster_type_output_node_version[local.cluster_type]}"
-  cluster_node_pools_names   = "${local.cluster_type_output_node_pools_names[local.cluster_type]}"
+  cluster_name                = "${local.cluster_type_output_name[local.cluster_type]}"
+  cluster_location            = "${local.cluster_type_output_location[local.cluster_type]}"
+  cluster_region              = "${local.cluster_type_output_region[local.cluster_type]}"
+  cluster_zones               = "${sort(local.cluster_type_output_zones[local.cluster_type])}"
+  cluster_endpoint            = "${local.cluster_type_output_endpoint[local.cluster_type]}"
+  cluster_ca_certificate      = "${lookup(local.cluster_master_auth_map, "cluster_ca_certificate")}"
+  cluster_master_version      = "${local.cluster_type_output_master_version[local.cluster_type]}"
+  cluster_min_master_version  = "${local.cluster_type_output_min_master_version[local.cluster_type]}"
+  cluster_node_pools_names    = "${local.cluster_type_output_node_pools_names[local.cluster_type]}"
+  cluster_node_pools_versions = "${local.cluster_type_output_node_pools_versions[local.cluster_type]}"
 
-  cluster_network_policy_enabled             = "${local.cluster_type_output_network_policy_enabled[local.cluster_type]}"
-  cluster_http_load_balancing_enabled        = "${local.cluster_type_output_http_load_balancing_enabled[local.cluster_type]}"
-  cluster_horizontal_pod_autoscaling_enabled = "${local.cluster_type_output_horizontal_pod_autoscaling_enabled[local.cluster_type]}"
-  cluster_kubernetes_dashboard_enabled       = "${local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type]}"
+  cluster_network_policy_enabled             = "${local.cluster_type_output_network_policy_enabled[local.cluster_type] ? false : true}"
+  cluster_http_load_balancing_enabled        = "${local.cluster_type_output_http_load_balancing_enabled[local.cluster_type] ? false : true}"
+  cluster_horizontal_pod_autoscaling_enabled = "${local.cluster_type_output_horizontal_pod_autoscaling_enabled[local.cluster_type] ? false : true}"
+  cluster_kubernetes_dashboard_enabled       = "${local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type] ? false : true}"
 }
 
 /******************************************

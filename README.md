@@ -38,6 +38,7 @@ module "gke" {
   project_id                 = "<PROJECT ID>"
   name                       = "gke-test-1"
   region                     = "us-central1"
+  zones                      = ["us-central1-a", "us-central1-b", "us-central1-f"]
   network                    = "vpc-01"
   subnetwork                 = "us-central1-01"
   ip_range_pods              = "us-central1-01-gke-01-pods"
@@ -105,7 +106,6 @@ Then perform the following commands on the root folder:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| additional_zones | The zone to host the cluster in (optional: only used if is a zonal cluster) | list | `<list>` | no |
 | description | The description of the cluster | string | `` | no |
 | horizontal_pod_autoscaling | Enable horizontal pod autoscaling addon | string | `false` | no |
 | http_load_balancing | Enable httpload balancer addon | string | `true` | no |
@@ -132,7 +132,7 @@ Then perform the following commands on the root folder:
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `true` | no |
 | stub_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | string | - | yes |
-| zone | The zone to host the cluster in (required if is a zonal cluster) | string | `` | no |
+| zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list | `<list>` | no |
 
 ## Outputs
 
@@ -202,7 +202,9 @@ The tests will do the following:
   - Performs a `terraform apply -auto-approve`
 - Perform `kitchen validate` command
   - Performs inspec tests.
-    - Inspec tests shell out to gcloud to validate expected resources in GCP.
+    - Shell out to `gcloud` to validate expected resources in GCP.
+    - Shell out to `kubectl` to validate expected resource in Kubernetes.
+    - Shell out to `terraform` to validate outputs.
 - Permos `kitchen destroy` command
   - Performs a `terraform destroy -force`
 
