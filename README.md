@@ -114,7 +114,7 @@ Then perform the following commands on the root folder:
 | ip_range_pods | The secondary ip range to use for pods | string | - | yes |
 | ip_range_services | The secondary ip range to use for pods | string | - | yes |
 | kubernetes_dashboard | Enable kubernetes dashboard addon | string | `false` | no |
-| kubernetes_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `1.10.5-gke.4` | no |
+| kubernetes_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `1.10.6-gke.2` | no |
 | maintenance_start_time | Time window specified for daily maintenance operations in RFC3339 format | string | `05:00` | no |
 | name | The name of the cluster (required) | string | - | yes |
 | network | The VPC network to host the cluster in (required) | string | - | yes |
@@ -125,7 +125,7 @@ Then perform the following commands on the root folder:
 | node_pools_tags | Map of lists containing node network tags by node-pool name | map | `<map>` | no |
 | node_pools_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
 | node_service_account | Service account to associate to the nodes. Defaults to the compute default service account on the project.) | string | `` | no |
-| node_version | The Kubernetes version of the node pools. Defaults kubernetes version (master) variable. Must set the same as master at initial creation. | string | `` | no |
+| node_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `` | no |
 | non_masquerade_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list | `<list>` | no |
 | project_id | The project ID to host the cluster in (required) | string | - | yes |
 | region | The region to host the cluster in (required) | string | - | yes |
@@ -149,8 +149,9 @@ Then perform the following commands on the root folder:
 | name | Cluster name |
 | network_policy_enabled | Whether network policy enabled |
 | node_pools_names | List of node pools names |
-| node_version | Current node kubernetes version |
+| node_pools_versions | List of node pools versions |
 | region | Cluster region |
+| type | Cluster type (regional / zonal) |
 | zones | List of zones in which the cluster resides |
 
 [^]: (autogen_docs_end)
