@@ -21,7 +21,7 @@ output "name_example" {
 
 output "endpoint_example" {
   description = "Cluster endpoint"
-  value       = "${module.gke.ca_certificate}"
+  value       = "${module.gke.endpoint}"
 }
 
 output "location_example" {
