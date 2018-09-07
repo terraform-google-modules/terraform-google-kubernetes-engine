@@ -16,5 +16,5 @@ ruby '2.4.2'
 
 source 'https://rubygems.org/' do
   gem 'kitchen-terraform', '~> 3.3'
-  gem 'kitchen-inspec', :git => 'https://github.com/StratoSpire/kitchen-inspec.git'
+  gem 'kitchen-inspec', :git => 'https://github.com/inspec/kitchen-inspec.git', :ref => '0590f1b'
 end
