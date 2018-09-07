@@ -251,10 +251,12 @@ output "zones_example" {
 }
 
 output "endpoint_example" {
+  sensitive   = true
   value       = "${module.gke.endpoint}"
 }
 
 output "ca_certificate_example" {
+  sensitive   = true
   value       = "${module.gke.ca_certificate}"
 }
 
@@ -296,6 +298,7 @@ output "module_path" {
 }
 
 output "client_token" {
+    sensitive   = true
     value       = "${base64encode(data.google_client_config.default.access_token)}"
 }
 

@@ -40,6 +40,7 @@ output "zones" {
 }
 
 output "endpoint" {
+  sensitive   = true
   description = "Cluster endpoint"
   value       = "${local.cluster_endpoint}"
 }
@@ -55,6 +56,7 @@ output "master_version" {
 }
 
 output "ca_certificate" {
+  sensitive   = true
   description = "Cluster ca certificate (base64 encoded)"
   value       = "${local.cluster_ca_certificate}"
 }
