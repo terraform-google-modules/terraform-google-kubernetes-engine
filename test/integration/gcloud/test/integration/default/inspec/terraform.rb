@@ -33,7 +33,7 @@ describe command('terraform output region_example') do
 end
 
 # Test the zones output
-describe command('/bin/sh -c "terraform output -json zones_example | jq -cre \'.value\'"') do
+describe command('terraform output -json zones_example | jq -cre \'.value\'') do
   its('stdout.strip') { should eq '[' + ENV['ZONES'] + ']' }
 end
 
