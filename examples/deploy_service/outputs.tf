@@ -20,6 +20,7 @@ output "name_example" {
 }
 
 output "endpoint_example" {
+  sensitive   = true
   description = "Cluster endpoint"
   value       = "${module.gke.endpoint}"
 }
