@@ -73,7 +73,7 @@ resource "google_container_cluster" "primary" {
     name = "default-pool"
 
     node_config {
-      service_account = "${var.node_service_account}"
+      service_account = "${lookup(var.node_pools[0], "service_account", "")}"
     }
   }
 }
@@ -109,7 +109,7 @@ resource "google_container_node_pool" "pools" {
 
     disk_size_gb    = "${lookup(var.node_pools[count.index], "disk_size_gb", 100)}"
     disk_type       = "${lookup(var.node_pools[count.index], "disk_type", "pd-standard")}"
-    service_account = "${lookup(var.node_pools[count.index], "service_account", var.node_service_account)}"
+    service_account = "${lookup(var.node_pools[count.index], "service_account", "")}"
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",

@@ -14,7 +14,6 @@ Expected variables:
 - `subnetwork`
 - `ip_range_pods`
 - `ip_range_services`
-- `node_service_account` - Only needed if you've deleted the default service account from your project
 
 To provision this example, run the following from within this directory:
 - `terraform init` to get the plugins

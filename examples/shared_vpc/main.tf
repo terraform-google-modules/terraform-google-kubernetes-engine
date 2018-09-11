@@ -23,14 +23,13 @@ provider "google" {
 }
 
 module "gke" {
-  source               = "../../"
-  project_id           = "${var.project_id}"
-  name                 = "shared-vpc-sample-cluster"
-  region               = "${var.region}"
-  network              = "${var.network}"
-  network              = "${var.network_project_id}"
-  subnetwork           = "${var.subnetwork}"
-  ip_range_pods        = "${var.ip_range_pods}"
-  ip_range_services    = "${var.ip_range_services}"
-  node_service_account = "${var.node_service_account}"
+  source            = "../../"
+  project_id        = "${var.project_id}"
+  name              = "shared-vpc-sample-cluster"
+  region            = "${var.region}"
+  network           = "${var.network}"
+  network           = "${var.network_project_id}"
+  subnetwork        = "${var.subnetwork}"
+  ip_range_pods     = "${var.ip_range_pods}"
+  ip_range_services = "${var.ip_range_services}"
 }

@@ -43,7 +43,6 @@ module "gke" {
   subnetwork                 = "us-central1-01"
   ip_range_pods              = "us-central1-01-gke-01-pods"
   ip_range_services          = "us-central1-01-gke-01-services"
-  node_service_account       = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
   http_load_balancing        = false
   horizontal_pod_autoscaling = true
   kubernetes_dashboard       = true
@@ -51,15 +50,16 @@ module "gke" {
 
   node_pools = [
     {
-      name         = "default-node-pool"
-      machine_type = "n1-standard-2"
-      min_count    = 1
-      max_count    = 100
-      disk_size_gb = 100
-      disk_type    = "pd-standard"
-      image_type   = "COS"
-      auto_repair  = true
-      auto_upgrade = true
+      name            = "default-node-pool"
+      machine_type    = "n1-standard-2"
+      min_count       = 1
+      max_count       = 100
+      disk_size_gb    = 100
+      disk_type       = "pd-standard"
+      image_type      = "COS"
+      auto_repair     = true
+      auto_upgrade    = true
+      service_account = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
     },
   ]
 
@@ -124,7 +124,6 @@ Then perform the following commands on the root folder:
 | node_pools_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
 | node_pools_tags | Map of lists containing node network tags by node-pool name | map | `<map>` | no |
 | node_pools_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
-| node_service_account | Service account to associate to the nodes. Defaults to the compute default service account on the project.) | string | `` | no |
 | node_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `` | no |
 | non_masquerade_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list | `<list>` | no |
 | project_id | The project ID to host the cluster in (required) | string | - | yes |
