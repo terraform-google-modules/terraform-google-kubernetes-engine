@@ -23,15 +23,14 @@ provider "google" {
 }
 
 module "gke" {
-  source               = "../../"
-  project_id           = "${var.project_id}"
-  name                 = "node-pool-cluster"
-  region               = "${var.region}"
-  network              = "${var.network}"
-  subnetwork           = "${var.subnetwork}"
-  ip_range_pods        = "${var.ip_range_pods}"
-  ip_range_services    = "${var.ip_range_services}"
-  node_service_account = "${var.node_service_account}"
+  source            = "../../"
+  project_id        = "${var.project_id}"
+  name              = "node-pool-cluster"
+  region            = "${var.region}"
+  network           = "${var.network}"
+  subnetwork        = "${var.subnetwork}"
+  ip_range_pods     = "${var.ip_range_pods}"
+  ip_range_services = "${var.ip_range_services}"
 
   node_pools = [
     {

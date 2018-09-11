@@ -98,11 +98,6 @@ variable "ip_range_services" {
   description = "The secondary ip range to use for pods"
 }
 
-variable "node_service_account" {
-  description = "Service account to associate to the nodes. Defaults to the compute default service account on the project.)"
-  default     = ""
-}
-
 variable "node_pools" {
   type        = "list"
   description = "List of maps containing node pools"

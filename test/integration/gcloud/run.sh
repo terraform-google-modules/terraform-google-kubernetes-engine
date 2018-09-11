@@ -94,7 +94,6 @@ module "gke" {
   region               = "$REGION"
   zones                = [$ZONES]
   kubernetes_version   = "$KUBERNETES_VERSION"
-  node_service_account = "$NODE_SERVICE_ACCOUNT"
   network              = "$NETWORK"
   subnetwork           = "$SUBNETWORK"
   ip_range_pods        = "$IP_RANGE_PODS"
