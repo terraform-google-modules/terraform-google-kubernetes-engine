@@ -2,39 +2,19 @@
 
 This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.
 
-## Requirements
-### Kubectl
-- [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
-### Terraform plugins
-- [Terraform](https://www.terraform.io/downloads.html) 0.10.x
-- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) plugin v1.8.0
-
-### Configure a Service Account
-In order to execute this module you must have a Service Account with the following:
-
-#### Roles
-The service account with the following roles:
-- roles/compute.viewer on the project
-- roles/container.clusterAdmin on the project
-
-### Enable API's
-In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:
-
-- Compute Engine API - compute.googleapis.com
-- Kubernetes Engine API - container.googleapis.com
-
-## Install
-
-### Terraform
-Be sure you have the correct Terraform version (0.10.x), you can choose the binary here:
-- https://releases.hashicorp.com/terraform/
+The resources/services/activations/deletions that this module will create/trigger are:
+- Create a GKE cluster with the provided addons
+- Create GKE Node Pool(s) with provided configuration and attach to cluster
+- Replace the default kube-dns configmap if `stub_domains` are provided
+- Activate network policy if `network_policy` is true
+- Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `network_policy` is true
 
 ## Usage
 There are multiple examples included in the [examples](./examples/) folder but simple usage is as follows:
 
 ```hcl
 module "gke" {
-  source                     = "github.com/terraform-google-modules/terraform-google-kubernetes-engine"
+  source                     = "github.com/terraform-google-modules/terraform-google-kubernetes-engine?ref=v0.1.0"
   project_id                 = "<PROJECT ID>"
   name                       = "gke-test-1"
   region                     = "us-central1"
@@ -155,13 +135,32 @@ Then perform the following commands on the root folder:
 
 [^]: (autogen_docs_end)
 
-## Infrastructure
-The resources/services/activations/deletions that this module will create/trigger are:
-- Create a GKE cluster with the provided addons
-- Create GKE Node Pool(s) with provided configuration and attach to cluster
-- Replace the default kube-dns configmap if `stub_domains` are provided
-- Activate network policy if `network_policy` is true
-- Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `network_policy` is true
+## Requirements
+### Kubectl
+- [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
+### Terraform plugins
+- [Terraform](https://www.terraform.io/downloads.html) 0.10.x
+- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) plugin v1.8.0
+
+### Configure a Service Account
+In order to execute this module you must have a Service Account with the following:
+
+#### Roles
+The service account with the following roles:
+- roles/compute.viewer on the project
+- roles/container.clusterAdmin on the project
+
+### Enable API's
+In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:
+
+- Compute Engine API - compute.googleapis.com
+- Kubernetes Engine API - container.googleapis.com
+
+## Install
+
+### Terraform
+Be sure you have the correct Terraform version (0.10.x), you can choose the binary here:
+- https://releases.hashicorp.com/terraform/
 
 ## File structure
 The project has the following folders and files:
