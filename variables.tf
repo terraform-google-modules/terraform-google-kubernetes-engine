@@ -65,6 +65,12 @@ variable "node_version" {
   default     = ""
 }
 
+variable "master_authorized_networks_config" {
+  description = "The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
+  type        = "list"
+  default     = []
+}
+
 variable "horizontal_pod_autoscaling" {
   description = "Enable horizontal pod autoscaling addon"
   default     = false

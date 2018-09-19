@@ -33,6 +33,8 @@ resource "google_container_cluster" "primary" {
   logging_service    = "${var.logging_service}"
   monitoring_service = "${var.monitoring_service}"
 
+  master_authorized_networks_config = "${var.master_authorized_networks_config}"
+
   addons_config {
     http_load_balancing {
       disabled = "${var.http_load_balancing ? 0 : 1}"
