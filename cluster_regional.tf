@@ -30,6 +30,9 @@ resource "google_container_cluster" "primary" {
   subnetwork         = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
   min_master_version = "${local.kubernetes_version}"
 
+  logging_service    = "${var.logging_service}"
+  monitoring_service = "${var.monitoring_service}"
+
   addons_config {
     http_load_balancing {
       disabled = "${var.http_load_balancing ? 0 : 1}"

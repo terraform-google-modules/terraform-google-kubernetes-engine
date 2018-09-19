@@ -73,6 +73,16 @@ locals {
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.min_master_version, list("")), 0)}"
   }
 
+  cluster_type_output_logging_service = {
+    regional = "${element(concat(google_container_cluster.primary.*.logging_service, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.logging_service, list("")), 0)}"
+  }
+
+  cluster_type_output_monitoring_service = {
+    regional = "${element(concat(google_container_cluster.primary.*.monitoring_service, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.monitoring_service, list("")), 0)}"
+  }
+
   cluster_type_output_network_policy_enabled = {
     regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.network_policy_config.0.disabled, list("")), 0)}"
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.network_policy_config.0.disabled, list("")), 0)}"
@@ -116,6 +126,8 @@ locals {
   cluster_ca_certificate      = "${lookup(local.cluster_master_auth_map, "cluster_ca_certificate")}"
   cluster_master_version      = "${local.cluster_type_output_master_version[local.cluster_type]}"
   cluster_min_master_version  = "${local.cluster_type_output_min_master_version[local.cluster_type]}"
+  cluster_logging_service     = "${local.cluster_type_output_logging_service[local.cluster_type]}"
+  cluster_monitoring_service  = "${local.cluster_type_output_monitoring_service[local.cluster_type]}"
   cluster_node_pools_names    = "${local.cluster_type_output_node_pools_names[local.cluster_type]}"
   cluster_node_pools_versions = "${local.cluster_type_output_node_pools_versions[local.cluster_type]}"
 

@@ -50,6 +50,16 @@ output "min_master_version" {
   value       = "${local.cluster_min_master_version}"
 }
 
+output "logging_service" {
+  description = "Logging service used"
+  value       = "${local.cluster_logging_service}"
+}
+
+output "monitoring_service" {
+  description = "Monitoring service used"
+  value       = "${local.cluster_monitoring_service}"
+}
+
 output "master_version" {
   description = "Current master kubernetes version"
   value       = "${local.cluster_master_version}"
