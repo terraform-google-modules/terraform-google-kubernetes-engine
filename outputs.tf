@@ -60,6 +60,11 @@ output "monitoring_service" {
   value       = "${local.cluster_monitoring_service}"
 }
 
+output "master_authorized_networks_config" {
+  description = "Networks from which access to master is permitted"
+  value       = "${var.master_authorized_networks_config}"
+}
+
 output "master_version" {
   description = "Current master kubernetes version"
   value       = "${local.cluster_master_version}"
