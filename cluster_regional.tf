@@ -30,8 +30,10 @@ resource "google_container_cluster" "primary" {
   subnetwork         = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
   min_master_version = "${local.kubernetes_version}"
 
-  logging_service    = "${var.logging_service}"
-  monitoring_service = "${var.monitoring_service}"
+  logging_service        = "${var.logging_service}"
+  monitoring_service     = "${var.monitoring_service}"
+  private_cluster        = "${var.private_cluster}"
+  master_ipv4_cidr_block = "${var.master_ipv4_cidr_block}"
 
   master_authorized_networks_config = "${var.master_authorized_networks_config}"
 

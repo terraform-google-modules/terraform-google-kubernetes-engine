@@ -83,6 +83,16 @@ locals {
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.monitoring_service, list("")), 0)}"
   }
 
+  cluster_type_output_private_cluster = {
+    regional = "${element(concat(google_container_cluster.primary.*.private_cluster, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.private_cluster, list("")), 0)}"
+  }
+
+  cluster_type_output_master_ipv4_cidr_block = {
+    regional = "${element(concat(google_container_cluster.primary.*.master_ipv4_cidr_block, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.master_ipv4_cidr_block, list("")), 0)}"
+  }
+
   cluster_type_output_network_policy_enabled = {
     regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.network_policy_config.0.disabled, list("")), 0)}"
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.network_policy_config.0.disabled, list("")), 0)}"
@@ -118,18 +128,20 @@ locals {
   cluster_master_auth_map         = "${local.cluster_master_auth_list_layer2[0]}"
 
   # cluster locals
-  cluster_name                = "${local.cluster_type_output_name[local.cluster_type]}"
-  cluster_location            = "${local.cluster_type_output_location[local.cluster_type]}"
-  cluster_region              = "${local.cluster_type_output_region[local.cluster_type]}"
-  cluster_zones               = "${sort(local.cluster_type_output_zones[local.cluster_type])}"
-  cluster_endpoint            = "${local.cluster_type_output_endpoint[local.cluster_type]}"
-  cluster_ca_certificate      = "${lookup(local.cluster_master_auth_map, "cluster_ca_certificate")}"
-  cluster_master_version      = "${local.cluster_type_output_master_version[local.cluster_type]}"
-  cluster_min_master_version  = "${local.cluster_type_output_min_master_version[local.cluster_type]}"
-  cluster_logging_service     = "${local.cluster_type_output_logging_service[local.cluster_type]}"
-  cluster_monitoring_service  = "${local.cluster_type_output_monitoring_service[local.cluster_type]}"
-  cluster_node_pools_names    = "${local.cluster_type_output_node_pools_names[local.cluster_type]}"
-  cluster_node_pools_versions = "${local.cluster_type_output_node_pools_versions[local.cluster_type]}"
+  cluster_name                   = "${local.cluster_type_output_name[local.cluster_type]}"
+  cluster_location               = "${local.cluster_type_output_location[local.cluster_type]}"
+  cluster_region                 = "${local.cluster_type_output_region[local.cluster_type]}"
+  cluster_zones                  = "${sort(local.cluster_type_output_zones[local.cluster_type])}"
+  cluster_endpoint               = "${local.cluster_type_output_endpoint[local.cluster_type]}"
+  cluster_ca_certificate         = "${lookup(local.cluster_master_auth_map, "cluster_ca_certificate")}"
+  cluster_master_version         = "${local.cluster_type_output_master_version[local.cluster_type]}"
+  cluster_min_master_version     = "${local.cluster_type_output_min_master_version[local.cluster_type]}"
+  cluster_logging_service        = "${local.cluster_type_output_logging_service[local.cluster_type]}"
+  cluster_monitoring_service     = "${local.cluster_type_output_monitoring_service[local.cluster_type]}"
+  cluster_private_cluster        = "${local.cluster_type_output_private_cluster[local.cluster_type]}"
+  cluster_master_ipv4_cidr_block = "${local.cluster_type_output_master_ipv4_cidr_block[local.cluster_type]}"
+  cluster_node_pools_names       = "${local.cluster_type_output_node_pools_names[local.cluster_type]}"
+  cluster_node_pools_versions    = "${local.cluster_type_output_node_pools_versions[local.cluster_type]}"
 
   cluster_network_policy_enabled             = "${local.cluster_type_output_network_policy_enabled[local.cluster_type] ? false : true}"
   cluster_http_load_balancing_enabled        = "${local.cluster_type_output_http_load_balancing_enabled[local.cluster_type] ? false : true}"
