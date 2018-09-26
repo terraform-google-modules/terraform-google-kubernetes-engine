@@ -95,7 +95,10 @@ Then perform the following commands on the root folder:
 | ip_range_services | The secondary ip range to use for pods | string | - | yes |
 | kubernetes_dashboard | Enable kubernetes dashboard addon | string | `false` | no |
 | kubernetes_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `1.10.6-gke.2` | no |
+| logging_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `logging.googleapis.com` | no |
 | maintenance_start_time | Time window specified for daily maintenance operations in RFC3339 format | string | `05:00` | no |
+| master_authorized_networks_config | The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)<br><br>  ### example format ###   master_authorized_networks_config = [{     cidr_blocks = [{       cidr_block   = "10.0.0.0/8"       display_name = "example_network"     }],   }] | list | `<list>` | no |
+| monitoring_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `monitoring.googleapis.com` | no |
 | name | The name of the cluster (required) | string | - | yes |
 | network | The VPC network to host the cluster in (required) | string | - | yes |
 | network_policy | Enable network policy addon | string | `false` | no |
@@ -123,8 +126,11 @@ Then perform the following commands on the root folder:
 | http_load_balancing_enabled | Whether http load balancing enabled |
 | kubernetes_dashboard_enabled | Whether kubernetes dashboard enabled |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |
+| logging_service | Logging service used |
+| master_authorized_networks_config | Networks from which access to master is permitted |
 | master_version | Current master kubernetes version |
 | min_master_version | Minimum master kubernetes version |
+| monitoring_service | Monitoring service used |
 | name | Cluster name |
 | network_policy_enabled | Whether network policy enabled |
 | node_pools_names | List of node pools names |
