@@ -80,3 +80,6 @@ zonal_test_integration:
 .PHONY: test_integration
 test_integration: regional_test_integration zonal_test_integration
 	@echo "Running tests for regional and zonal clusters"
+
+.PHONY: lint
+lint: check_shell check_python check_golang check_terraform check_docker check_base_files test_check_headers check_headers check_trailing_whitespace generate_docs
