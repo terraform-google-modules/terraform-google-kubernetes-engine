@@ -41,10 +41,6 @@ function basefiles() {
 function docker() {
   echo "Running hadolint on Dockerfiles"
   find . -name "Dockerfile" -exec hadolint {} \;
-  rc=$?
-  if [ $rc != 0 ]; then
-    exit 1
-  fi
 }
 
 # This function runs 'terraform validate' against all
@@ -53,10 +49,6 @@ function check_terraform() {
   echo "Running terraform validate"
   #shellcheck disable=SC2156
   find . -name "*.tf" -exec bash -c 'terraform validate --check-variables=false $(dirname "{}")' \;
-  rc=$?
-  if [ $rc != 0 ]; then
-    exit 1
-  fi
 }
 
 # This function runs 'go fmt' and 'go vet' on every file
@@ -64,15 +56,7 @@ function check_terraform() {
 function golang() {
   echo "Running go fmt and go vet"
   find . -name "*.go" -exec go fmt {} \;
-  rc=$?
-  if [ $rc != 0 ]; then
-    exit 1
-  fi
   find . -name "*.go" -exec go vet {} \;
-  rc=$?
-  if [ $rc != 0 ]; then
-    exit 1
-  fi
 }
 
 # This function runs the flake8 linter on every file
@@ -80,10 +64,6 @@ function golang() {
 function check_python() {
   echo "Running flake8"
   find . -name "*.py" -exec flake8 {} \;
-  rc=$?
-  if [ $rc != 0 ]; then
-    exit 1
-  fi
 }
 
 # This function runs the shellcheck linter on every
@@ -91,10 +71,6 @@ function check_python() {
 function check_shell() {
   echo "Running shellcheck"
   find . -name "*.sh" -exec shellcheck -x {} \;
-  rc=$?
-  if [ $rc != 0 ]; then
-    exit 1
-  fi
 }
 
 # This function makes sure that there is no trailing whitespace
@@ -104,7 +80,7 @@ function check_trailing_whitespace() {
   echo "The following lines have trailing whitespace"
   grep -r '[[:blank:]]$' --exclude-dir=".terraform" --exclude="*.png" --exclude="*.pyc" --exclude-dir=".git" .
   rc=$?
-  if [ $rc != 0 ]; then
+  if [ $rc = 0 ]; then
     exit 1
   fi
 }
@@ -112,7 +88,7 @@ function check_trailing_whitespace() {
 function generate_docs() {
   echo "Generating markdown docs with terraform-docs"
   TMPFILE=$(mktemp)
-  for j in $(for i in $(find . -type f | grep \.tf$) ; do dirname $i ; done | sort -u) ; do
+  for j in $(for i in $(find . -type f | grep \.tf$) ; do dirname "$i" ; done | sort -u) ; do
     terraform-docs markdown "$j" > "$TMPFILE"
     python helpers/combine_docfiles.py "$j"/README.md "$TMPFILE"
   done
