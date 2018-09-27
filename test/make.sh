@@ -40,7 +40,7 @@ function basefiles() {
 # every file named 'Dockerfile'
 function docker() {
   echo "Running hadolint on Dockerfiles"
-  find . -name "Dockerfile" -exec hadolint {} \;
+  find . -name "Dockerfile" -exec hadolint {} \; || exit 1
 }
 
 # This function runs 'terraform validate' against all
@@ -48,29 +48,29 @@ function docker() {
 function check_terraform() {
   echo "Running terraform validate"
   #shellcheck disable=SC2156
-  find . -name "*.tf" -exec bash -c 'terraform validate --check-variables=false $(dirname "{}")' \;
+  find . -name "*.tf" -exec bash -c 'terraform validate --check-variables=false $(dirname "{}")' \; || exit 1
 }
 
 # This function runs 'go fmt' and 'go vet' on every file
 # that ends in '.go'
 function golang() {
   echo "Running go fmt and go vet"
-  find . -name "*.go" -exec go fmt {} \;
-  find . -name "*.go" -exec go vet {} \;
+  find . -name "*.go" -exec go fmt {} \; || exit 1
+  find . -name "*.go" -exec go vet {} \; || exit 1
 }
 
 # This function runs the flake8 linter on every file
 # ending in '.py'
 function check_python() {
   echo "Running flake8"
-  find . -name "*.py" -exec flake8 {} \;
+  find . -name "*.py" -exec flake8 {} \; || exit 1
 }
 
 # This function runs the shellcheck linter on every
 # file ending in '.sh'
 function check_shell() {
   echo "Running shellcheck"
-  find . -name "*.sh" -exec shellcheck -x {} \;
+  find . -name "*.sh" -exec shellcheck -x {} \; || exit 1
 }
 
 # This function makes sure that there is no trailing whitespace
@@ -78,11 +78,7 @@ function check_shell() {
 # There are some exclusions
 function check_trailing_whitespace() {
   echo "The following lines have trailing whitespace"
-  grep -r '[[:blank:]]$' --exclude-dir=".terraform" --exclude="*.png" --exclude="*.pyc" --exclude-dir=".git" .
-  rc=$?
-  if [ $rc = 0 ]; then
-    exit 1
-  fi
+  grep -r '[[:blank:]]$' --exclude-dir=".terraform" --exclude="*.png" --exclude="*.pyc" --exclude-dir=".git" . || exit 1
 }
 
 function generate_docs() {
