@@ -6,7 +6,7 @@ before_install:
   - TFVERSION=0.11.8 bash -c 'curl -L "https://releases.hashicorp.com/terraform/${TFVERSION}/terraform_${TFVERSION}_linux_amd64.zip" -o /tmp/terraform.zip'
   - sudo unzip -d /usr/local/bin/ /tmp/terraform.zip
   - sudo chmod +x /usr/local/bin/terraform
-  - sudo apt-get update && apt-get install -y python-pip
+  - sudo apt-get update && sudo apt-get install -y python-pip
 
 sudo: required
 
