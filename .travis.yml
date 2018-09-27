@@ -9,7 +9,7 @@ before_install:
   - TFDOCSVERSION=0.4.0 bash -c 'curl -L "https://github.com/segmentio/terraform-docs/releases/download/v${TFDOCSVERSION}/terraform-docs-v${TFDOCSVERSION}-linux-amd64" -o /tmp/terraform-docs'
   - sudo mv /tmp/terraform-docs /usr/local/bin/terraform-docs
   - sudo chmod +x /usr/local/bin/terraform-docs
-  - sudo apt-get update && sudo apt-get install -y python-pip
+  - sudo apt-get update && sudo apt-get install -y python-flake8
 
 sudo: required
 
