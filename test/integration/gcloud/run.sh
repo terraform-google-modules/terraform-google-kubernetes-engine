@@ -311,11 +311,11 @@ function bundle_install() {
 
 # Execute kitchen tests
 function run_kitchen() {
-  kitchen create
-  kitchen converge
-  kitchen converge # second time to enable network policy
-  kitchen verify
-  kitchen destroy
+  bundle exec kitchen create
+  bundle exec kitchen converge
+  bundle exec kitchen converge # second time to enable network policy
+  bundle exec kitchen verify
+  bundle exec kitchen destroy
 }
 
 # Preparing environment
