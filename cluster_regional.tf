@@ -24,7 +24,7 @@ resource "google_container_cluster" "primary" {
   project     = "${var.project_id}"
 
   region           = "${var.region}"
-  additional_zones = "${var.zones}"
+  additional_zones = ["${coalescelist(compact(var.zones), data.google_compute_zones.available.names)}"]
 
   network            = "${data.google_compute_network.gke_network.self_link}"
   subnetwork         = "${data.google_compute_subnetwork.gke_subnetwork.self_link}"
