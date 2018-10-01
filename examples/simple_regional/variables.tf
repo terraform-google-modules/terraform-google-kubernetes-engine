@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-locals {
-  credentials_file_path = "${path.module}/sa-key.json"
+variable "project_id" {
+  description = "The project ID to host the cluster in"
 }
 
-provider "google" {
-  credentials = "${file(local.credentials_file_path)}"
-  region      = "${var.region}"
+variable "region" {
+  description = "The region to host the cluster in"
 }
 
-module "gke" {
-  source            = "../../"
-  project_id        = "${var.project_id}"
-  name              = "simple-zonal-cluster"
-  regional          = false
-  region            = "${var.region}"
-  zones             = "${var.zones}"
-  network           = "${var.network}"
-  subnetwork        = "${var.subnetwork}"
-  ip_range_pods     = "${var.ip_range_pods}"
-  ip_range_services = "${var.ip_range_services}"
+variable "network" {
+  description = "The VPC network to host the cluster in"
+}
+
+variable "subnetwork" {
+  description = "The subnetwork to host the cluster in"
+}
+
+variable "ip_range_pods" {
+  description = "The secondary ip range to use for pods"
+}
+
+variable "ip_range_services" {
+  description = "The secondary ip range to use for pods"
 }

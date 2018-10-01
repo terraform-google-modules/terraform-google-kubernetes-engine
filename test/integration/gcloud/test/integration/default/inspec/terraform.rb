@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require_relative '../../../../test/support/google_cloud.rb'
+
 # Test the name output
 describe command('terraform output name_example') do
   its('stdout.strip') { should eq ENV['CLUSTER_NAME'] }
@@ -34,7 +36,11 @@ end
 
 # Test the zones output
 describe command('terraform output -json zones_example | jq -cre \'.value\'') do
-  its('stdout.strip') { should eq '[' + ENV['ZONES'] + ']' }
+  if ENV['ZONES'] != ''
+    its('stdout.strip') { should eq '[' + ENV['ZONES'] + ']' }
+  else
+    its('stdout.strip') { should eq google_compute_service.get_region(ENV['PROJECT_ID'], ENV['REGION']).zones.map { |z| z.split("/").last }.to_json }
+  end
 end
 
 # Test the endpoint output

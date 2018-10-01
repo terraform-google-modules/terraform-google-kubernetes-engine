@@ -20,16 +20,15 @@ locals {
 
 provider "google" {
   credentials = "${file(local.credentials_file_path)}"
-  region      = "${var.region}"
+  region = "us-east4" # TODO remove
 }
 
 module "gke" {
   source            = "../../"
   project_id        = "${var.project_id}"
-  name              = "simple-zonal-cluster"
-  regional          = false
+  name              = "simple-regional-cluster"
+  regional          = true
   region            = "${var.region}"
-  zones             = "${var.zones}"
   network           = "${var.network}"
   subnetwork        = "${var.subnetwork}"
   ip_range_pods     = "${var.ip_range_pods}"
