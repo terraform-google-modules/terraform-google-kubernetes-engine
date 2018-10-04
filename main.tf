@@ -22,6 +22,11 @@ data "google_compute_zones" "available" {
   region  = "${var.region}"
 }
 
+resource "random_shuffle" "available_zones" {
+  input = ["${data.google_compute_zones.available.names}"]
+  result_count = 3
+}
+
 locals {
   kubernetes_version     = "${var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_node_version}"
   node_version           = "${var.node_version != "" ? var.node_version : local.kubernetes_version}"

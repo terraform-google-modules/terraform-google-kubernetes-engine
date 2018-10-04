@@ -39,7 +39,15 @@ describe command('terraform output -json zones_example | jq -cre \'.value\'') do
   if ENV['ZONES'] != ''
     its('stdout.strip') { should eq '[' + ENV['ZONES'] + ']' }
   else
-    its('stdout.strip') { should eq google_compute_service.get_region(ENV['PROJECT_ID'], ENV['REGION']).zones.map { |z| z.split("/").last }.to_json }
+    it "should be 3 zones in the region" do
+      zones = JSON.parse(subject.stdout.strip)
+      zones.count.should be 3
+
+      available_zones = google_compute_service.get_region(ENV['PROJECT_ID'], ENV['REGION']).zones.map { |z| z.split("/").last }
+      zones.each do |z|
+        available_zones.should include z
+      end
+    end
   end
 end
 
