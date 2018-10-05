@@ -20,7 +20,6 @@ locals {
 
 provider "google" {
   credentials = "${file(local.credentials_file_path)}"
-  region = "us-east4" # TODO remove
 }
 
 module "gke" {
