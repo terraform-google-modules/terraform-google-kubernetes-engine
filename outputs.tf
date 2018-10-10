@@ -65,6 +65,16 @@ output "master_authorized_networks_config" {
   value       = "${var.master_authorized_networks_config}"
 }
 
+output "private_cluster" {
+  description = "Private cluster or not"
+  value       = "${local.cluster_private_cluster}"
+}
+
+output "master_ipv4_cidr_block" {
+  description = "RFC1918 block for master vpc"
+  value       = "${local.cluster_master_ipv4_cidr_block}"
+}
+
 output "master_version" {
   description = "Current master kubernetes version"
   value       = "${local.cluster_master_version}"
