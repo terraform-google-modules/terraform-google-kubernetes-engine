@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-locals {
-  credentials_file_path = "${path.module}/sa-key.json"
+output "name_example" {
+  description = "Cluster name"
+  value       = "${module.gke.name}"
 }
 
-provider "google" {
-  credentials = "${file(local.credentials_file_path)}"
+output "endpoint_example" {
+  sensitive   = true
+  description = "Cluster endpoint"
+  value       = "${module.gke.endpoint}"
 }
 
-module "gke" {
-  source            = "../../"
-  project_id        = "${var.project_id}"
-  name              = "simple-sample-cluster"
-  region            = "${var.region}"
-  network           = "${var.network}"
-  subnetwork        = "${var.subnetwork}"
-  ip_range_pods     = "${var.ip_range_pods}"
-  ip_range_services = "${var.ip_range_services}"
+output "location_example" {
+  description = "Cluster location"
+  value       = "${module.gke.location}"
 }

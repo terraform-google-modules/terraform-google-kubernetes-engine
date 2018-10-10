@@ -27,17 +27,33 @@ function export_vars() {
   export TEST_ID="modules_gke_integration_gcloud_${RANDOM}"
   export KUBECONFIG="${TEMPDIR}/${CLUSTER_TYPE}/${TEST_ID}.kubeconfig"
   if [[ $CLUSTER_TYPE = "regional" ]]; then
+    if [ -f "./regional_config.sh" ]; then
+      source ./regional_config.sh
+    fi
     export CLUSTER_REGIONAL="true"
     export CLUSTER_LOCATION="$REGIONAL_LOCATION"
     export CLUSTER_NAME="$REGIONAL_CLUSTER_NAME"
     export IP_RANGE_PODS="$REGIONAL_IP_RANGE_PODS"
     export IP_RANGE_SERVICES="$REGIONAL_IP_RANGE_SERVICES"
   else
+    if [ -f "./zonal_config.sh" ]; then
+      source ./zonal_config.sh
+    fi
+    if [ -z "${ZONE}" ]; then
+      echo "Can not create a zonal cluster without specifying \$ZONE. Aborting..."
+      exit 1
+    fi
     export CLUSTER_REGIONAL="false"
     export CLUSTER_LOCATION="$ZONAL_LOCATION"
     export CLUSTER_NAME="$ZONAL_CLUSTER_NAME"
     export IP_RANGE_PODS="$ZONAL_IP_RANGE_PODS"
     export IP_RANGE_SERVICES="$ZONAL_IP_RANGE_SERVICES"
+  fi
+
+  if [ "${ZONE}" = "" ] && [ "${ADDITIONAL_ZONES}" = "" ]; then
+    export ZONES=""
+  else
+    export ZONES="\"$ZONE\",$ADDITIONAL_ZONES"
   fi
 }
 
