@@ -7,7 +7,11 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Changed
-- Updated network/subnetwork lookup to use data source (#16)
+
+## [v0.3.0] - 2018-10-10
+### Changed
+* Updated network/subnetwork lookup to use data source. #16
+* Make zone configuration optional when creating a regional cluster. #19
 
 ## [v0.2.0] - 2018-09-26
 
