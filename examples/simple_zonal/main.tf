@@ -20,6 +20,7 @@ locals {
 
 provider "google" {
   credentials = "${file(local.credentials_file_path)}"
+  region      = "${var.region}"
 }
 
 module "gke" {
