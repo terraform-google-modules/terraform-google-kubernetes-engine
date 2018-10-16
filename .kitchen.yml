@@ -25,12 +25,6 @@ platforms:
 
 verifier:
   name: terraform
-  systems:
-  - name: system
-    backend: local
-    controls:
-      - gcloud
-      - kubectl
 
 suites:
   - name: "simple_zonal"
@@ -38,7 +32,14 @@ suites:
       name: "terraform"
       command_timeout: 1800
       root_module_directory: test/fixtures/simple_zonal
-    provisioner:
-      name: terraform
       variable_files:
         - test/fixtures/simple_zonal/terraform.tfvars
+    verifier:
+      systems:
+      - name: system
+        backend: local
+        controls:
+          - gcloud
+          - kubectl
+    provisioner:
+      name: terraform

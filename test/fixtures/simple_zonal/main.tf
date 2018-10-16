@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+provider "google" {
+  credentials = "${var.credentials_path}"
+  region      = "${var.region}"
+}
+
 provider "google-beta" {
   credentials = "${var.credentials_path}"
   region      = "${var.region}"
