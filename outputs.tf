@@ -105,3 +105,29 @@ output "node_pools_versions" {
   description = "List of node pools versions"
   value       = "${local.cluster_node_pools_versions}"
 }
+
+/*
+output "private_cluster" {
+  description = "Whether the cluster is created as a private cluster or not"
+  value       = "${local.cluster_private}"
+}
+
+output "master_ipv4_cidr_block" {
+  description = "CIDR block for master VPC"
+  value       = "${local.cluster_master_ipv4_cidr_block}"
+}
+*/
+
+// DEBUGGING
+
+output "cluster_type_output_private_cluster_config" {
+  value = "${local.cluster_type_output_private_cluster_config}"
+}
+
+output "cluster_type_output_private_cluster_config_list_layer1" {
+  value = "${local.cluster_type_output_private_cluster_config_list_layer1}"
+}
+
+output "cluster_output_private_cluster_config" {
+  value = "${local.cluster_output_private_cluster_config}"
+}

@@ -189,3 +189,18 @@ variable "monitoring_service" {
   description = "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none"
   default     = "monitoring.googleapis.com"
 }
+
+variable "private_cluster_endpoint" {
+  description = "(Beta) Use the internal IP address of the master as the cluster endpoint"
+  default = false
+}
+
+variable "private_cluster_nodes" {
+  description = "(Beta) Create a private cluster, where nodes do not have public IP addreses"
+  default     = false
+}
+
+variable "master_ipv4_cidr_block" {
+  description = "(Beta) A private RFC1918 CIDR block for the master's VPC. Must not overlap with any subnet in the cluster's VPC. Must have a /28 subnet"
+  default     = "10.0.0.0/28"
+}

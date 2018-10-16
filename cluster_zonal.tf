@@ -18,6 +18,7 @@
   Create zonal cluster
  *****************************************/
 resource "google_container_cluster" "zonal_primary" {
+  provider    = "google-beta"
   count       = "${var.regional ? 0 : 1}"
   name        = "${var.name}"
   description = "${var.description}"
@@ -34,6 +35,12 @@ resource "google_container_cluster" "zonal_primary" {
   monitoring_service = "${var.monitoring_service}"
 
   master_authorized_networks_config = "${var.master_authorized_networks_config}"
+
+  private_cluster_config {
+    enable_private_endpoint = "${var.private_cluster_endpoint ? 1 : 0}"
+    enable_private_nodes    = "${var.private_cluster_nodes ? 1 : 0}"
+    master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
+  }
 
   addons_config {
     http_load_balancing {

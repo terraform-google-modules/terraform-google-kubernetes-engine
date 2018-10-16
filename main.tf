@@ -63,6 +63,23 @@ locals {
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.endpoint, list("")), 0)}"
   }
 
+  cluster_type_output_private_cluster_config = {
+    regional = "${concat(google_container_cluster.primary.*.private_cluster_config, list())}"
+    // zonal    = "${concat(google_container_cluster.zonal_primary.*.private_cluster_config, list())}"
+    zonal = "${list(google_container_cluster.zonal_primary.private_cluster_config)}"
+  }
+  cluster_type_output_private_cluster_config_list_layer1 = "${local.cluster_type_output_private_cluster_config[local.cluster_type]}"
+  // cluster_output_private_cluster_config = "${local.cluster_type_output_private_cluster_config_list_layer1[0]}"
+  cluster_output_private_cluster_config = "${google_container_cluster.zonal_primary.private_cluster_config}"
+
+  // cluster_type_output_private_endpoint = "${local.cluster_output_private_cluster_config["private_endpoint"]}"
+  /*
+  cluster_type_output_private_cluster = "${local.cluster_output_private_cluster_config["enable_private_nodes"]}"
+  cluster_type_output_master_ipv4_cidr_block = "${local.cluster_output_private_cluster_config["master_ipv4_cidr_block"]}"
+
+  cluster_type_output_endpoint = "${var.private_cluster_endpoint ? local.cluster_type_output_private_endpoint : local.cluster_type_output_public_endpoint}"
+  */
+
   cluster_type_output_master_auth = {
     regional = "${concat(google_container_cluster.primary.*.master_auth, list())}"
     zonal    = "${concat(google_container_cluster.zonal_primary.*.master_auth, list())}"
@@ -135,6 +152,10 @@ locals {
   cluster_monitoring_service  = "${local.cluster_type_output_monitoring_service[local.cluster_type]}"
   cluster_node_pools_names    = "${local.cluster_type_output_node_pools_names[local.cluster_type]}"
   cluster_node_pools_versions = "${local.cluster_type_output_node_pools_versions[local.cluster_type]}"
+  /*
+  cluster_private             = "${local.cluster_type_output_private_cluster[local.cluster_type]}"
+  cluster_master_ipv4_cidr_block             = "${local.cluster_type_output_master_ipv4_cidr_block[local.cluster_type]}"
+  */
 
   cluster_network_policy_enabled             = "${local.cluster_type_output_network_policy_enabled[local.cluster_type] ? false : true}"
   cluster_http_load_balancing_enabled        = "${local.cluster_type_output_http_load_balancing_enabled[local.cluster_type] ? false : true}"
