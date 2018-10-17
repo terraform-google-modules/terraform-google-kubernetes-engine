@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +14,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-driver:
-  name: "terraform"
-  command_timeout: 1800
-
-provisioner:
-  name: "terraform"
-
-transport:
-  name: exec
-
-platforms:
-  - name: local
-
-verifier:
-  name: inspec
-
-suites:
-  - name: "default"
+CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="$(pwd)/credentials.json"
+export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE

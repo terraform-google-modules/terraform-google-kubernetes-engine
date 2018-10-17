@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-locals {
-  credentials_file_path = "${path.module}/sa-key.json"
+provider "google" {
+  credentials = "${file(var.credentials_path)}"
+  region      = "${var.region}"
 }
 
-provider "google" {
-  credentials = "${file(local.credentials_file_path)}"
+provider "google-beta" {
+  credentials = "${file(var.credentials_path)}"
   region      = "${var.region}"
 }
 
 module "gke" {
-  source            = "../../"
+  source            = "../../../"
   project_id        = "${var.project_id}"
   name              = "simple-zonal-cluster"
   regional          = false
@@ -35,3 +36,5 @@ module "gke" {
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
 }
+
+data "google_client_config" "default" {}

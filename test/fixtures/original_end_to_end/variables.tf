@@ -18,13 +18,12 @@ variable "project_id" {
   description = "The project ID to host the cluster in"
 }
 
-variable "region" {
-  description = "The region to host the cluster in"
+variable "credentials_path" {
+  description = "The path to a Google Cloud Service Account credentials file"
 }
 
-variable "zones" {
-  type        = "list"
-  description = "The zone to host the cluster in (required if is a zonal cluster)"
+variable "region" {
+  description = "The region to host the cluster in"
 }
 
 variable "network" {
@@ -41,4 +40,14 @@ variable "ip_range_pods" {
 
 variable "ip_range_services" {
   description = "The secondary ip range to use for pods"
+}
+
+variable "node_pool_service_account" {
+  description = "The GCE SA for node pool instances to run as"
+  default = ""
+}
+
+variable "kubernetes_version" {
+  description = "The version of Kubernetes to deploy"
+  default = "latest"
 }

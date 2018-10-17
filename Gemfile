@@ -1,4 +1,3 @@
-#!/bin/bash
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,13 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ruby '2.4.2'
 
-#################################################################
-#   PLEASE FILL THE VARIABLES WITH VALID VALUES FOR TESTING     #
-#   DO NOT REMOVE ANY OF THE VARIABLES                          #
-#################################################################
-
-export ZONE="us-east4-a"
-export ADDITIONAL_ZONES='"us-east4-b","us-east4-c"'
-export ZONAL_LOCATION="$ZONE"
-
+source 'https://rubygems.org/' do
+  gem 'googleauth'
+  gem 'google-api-client'
+  gem 'kitchen-terraform', '~> 4.0.3'
+  gem 'kubeclient'
+end
