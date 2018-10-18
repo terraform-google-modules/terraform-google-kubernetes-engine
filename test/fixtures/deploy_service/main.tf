@@ -16,7 +16,7 @@
 
 provider "google" {
   credentials = "${file(var.credentials_path)}"
-  region = "${var.region}"
+  region      = "${var.region}"
 }
 
 provider "kubernetes" {

@@ -28,7 +28,7 @@ DOCKER_TAG_KITCHEN_TERRAFORM ?= ${BUILD_TERRAFORM_VERSION}_${BUILD_CLOUD_SDK_VER
 TEST_CONFIG_FILE_LOCATION := "./test/fixtures/config.sh"
 
 # All is the first target in the file so it will get picked up when you just run 'make' on its own
-all: check_shell check_python check_golang check_terraform check_docker check_base_files test_check_headers check_headers check_trailing_whitespace generate_examples generate_docs
+all: check_shell check_python check_golang check_terraform check_docker check_base_files test_check_headers check_headers check_trailing_whitespace generate_docs
 
 # The .PHONY directive tells make that this isn't a real target and so
 # the presence of a file named 'check_shell' won't cause this target to stop
@@ -152,7 +152,3 @@ docker_destroy:
 .PHONY: test_integration_docker
 test_integration_docker: docker_create docker_converge docker_verify docker_destroy
 	@echo "Running test-kitchen tests in docker"
-
-.PHONY: generate_examples
-generate_examples:
-	@python helpers/generate_examples.py
