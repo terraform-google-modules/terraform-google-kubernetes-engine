@@ -28,9 +28,9 @@ suites:
     driver:
       name: "terraform"
       command_timeout: 1800
-      root_module_directory: test/fixtures/deploy_service
+      root_module_directory: examples/deploy_service
       variable_files:
-        - test/fixtures/deploy_service/terraform.tfvars
+        - examples/deploy_service/terraform.tfvars
     verifier:
       name: terraform
       systems:
@@ -42,9 +42,9 @@ suites:
     driver:
       name: "terraform"
       command_timeout: 1800
-      root_module_directory: test/fixtures/node_pool
+      root_module_directory: examples/node_pool
       variable_files:
-        - test/fixtures/node_pool/terraform.tfvars
+        - examples/node_pool/terraform.tfvars
     verifier:
       name: terraform
       systems:
@@ -56,9 +56,9 @@ suites:
     driver:
       name: "terraform"
       command_timeout: 1800
-      root_module_directory: test/fixtures/simple_regional
+      root_module_directory: examples/simple_regional
       variable_files:
-        - test/fixtures/simple_regional/terraform.tfvars
+        - examples/simple_regional/terraform.tfvars
     verifier:
       name: terraform
       systems:
@@ -70,9 +70,9 @@ suites:
     driver:
       name: "terraform"
       command_timeout: 1800
-      root_module_directory: test/fixtures/simple_zonal
+      root_module_directory: examples/simple_zonal
       variable_files:
-        - test/fixtures/simple_zonal/terraform.tfvars
+        - examples/simple_zonal/terraform.tfvars
     verifier:
       name: terraform
       systems:
@@ -84,9 +84,9 @@ suites:
     driver:
       name: "terraform"
       command_timeout: 1800
-      root_module_directory: test/fixtures/stub_domain
+      root_module_directory: examples/stub_domain
       variable_files:
-        - test/fixtures/stub_domain/terraform.tfvars
+        - examples/stub_domain/terraform.tfvars
     verifier:
       name: terraform
       systems:
