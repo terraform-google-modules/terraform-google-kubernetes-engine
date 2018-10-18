@@ -42,12 +42,6 @@ variable "ip_range_services" {
   description = "The secondary ip range to use for pods"
 }
 
-variable "node_pool_service_account" {
-  description = "The GCE SA for node pool instances to run as"
-  default = ""
-}
-
-variable "kubernetes_version" {
-  description = "The version of Kubernetes to deploy"
-  default = "latest"
+variable "pool_01_service_account" {
+  description = "Service account to associate to the nodes on pool-01. Only needed if you have deleted or otherwise don't want to use the default compute service account"
 }

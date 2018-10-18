@@ -24,19 +24,20 @@ output "cluster_name" {
 }
 
 output "network" {
-  description = "Network the cluster is provisioned in"
-  value       = "${var.network}"
+  value = "${var.network}"
 }
 
 output "subnetwork" {
-  description = "Subnetwork the cluster is provisioned in"
-  value       = "${var.subnetwork}"
+  value = "${var.subnetwork}"
+}
+
+output "region_example" {
+  value = "${module.gke.region}"
 }
 
 output "kubernetes_endpoint" {
-  sensitive   = true
-  description = "Cluster endpoint"
-  value       = "${module.gke.endpoint}"
+  sensitive = true
+  value     = "${module.gke.endpoint}"
 }
 
 output "client_token" {
@@ -45,8 +46,7 @@ output "client_token" {
 }
 
 output "location" {
-  description = "Cluster location"
-  value       = "${module.gke.location}"
+  value = "${module.gke.location}"
 }
 
 output "ip_range_pods" {

@@ -1,6 +1,12 @@
-# Simple Regional Cluster
+# Deploy Service Cluster
 
-This example illustrates how to create a simple cluster.
+This example illustrates how to deploy a service to the created cluster using the kubernetes provider.
+
+It will:
+- Create a cluster
+- Configure authentication for the Kubernetes provider
+- Create an Nginx Pod
+- Create an Nginx Service
 
 [^]: (autogen_docs_start)
 

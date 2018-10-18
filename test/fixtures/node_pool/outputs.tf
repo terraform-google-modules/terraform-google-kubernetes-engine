@@ -32,21 +32,21 @@ output "subnetwork" {
 }
 
 output "region_example" {
-  value       = "${module.gke.region}"
+  value = "${module.gke.region}"
 }
 
 output "kubernetes_endpoint" {
-  sensitive   = true
-  value       = "${module.gke.endpoint}"
+  sensitive = true
+  value     = "${module.gke.endpoint}"
 }
 
 output "client_token" {
-    sensitive   = true
-    value       = "${base64encode(data.google_client_config.default.access_token)}"
+  sensitive = true
+  value     = "${base64encode(data.google_client_config.default.access_token)}"
 }
 
 output "location" {
-  value       = "${module.gke.location}"
+  value = "${module.gke.location}"
 }
 
 output "ip_range_pods" {
@@ -57,9 +57,4 @@ output "ip_range_pods" {
 output "ip_range_services" {
   description = "The secondary IP range used for services"
   value       = "${var.ip_range_services}"
-}
-
-output "master_kubernetes_version" {
-  description = "The master Kubernetes version"
-  value       = "${module.gke.master_version}"
 }

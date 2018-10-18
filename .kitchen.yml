@@ -24,6 +24,48 @@ platforms:
   - name: local
 
 suites:
+  - name: "deploy_service"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/deploy_service
+      variable_files:
+        - test/fixtures/deploy_service/terraform.tfvars
+    verifier:
+      name: terraform
+      systems:
+        - name: deploy_service
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "node_pool"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/node_pool
+      variable_files:
+        - test/fixtures/node_pool/terraform.tfvars
+    verifier:
+      name: terraform
+      systems:
+        - name: node_pool
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "simple_regional"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/simple_regional
+      variable_files:
+        - test/fixtures/simple_regional/terraform.tfvars
+    verifier:
+      name: terraform
+      systems:
+        - name: simple_regional
+          backend: local
+    provisioner:
+      name: terraform
   - name: "simple_zonal"
     driver:
       name: "terraform"
@@ -36,25 +78,19 @@ suites:
       systems:
         - name: simple_zonal
           backend: local
-          # controls:
-          #   - gcloud
-          #   - kubectl
     provisioner:
       name: terraform
-  - name: "original_end_to_end"
+  - name: "stub_domain"
     driver:
       name: "terraform"
       command_timeout: 1800
-      root_module_directory: test/fixtures/original_end_to_end
+      root_module_directory: test/fixtures/stub_domain
       variable_files:
-        - test/fixtures/original_end_to_end/terraform.tfvars
+        - test/fixtures/stub_domain/terraform.tfvars
     verifier:
       name: terraform
       systems:
-        - name: original_end_to_end
+        - name: stub_domain
           backend: local
-          # controls:
-          #   - gcloud
-          #   - kubectl
     provisioner:
       name: terraform

@@ -1,6 +1,6 @@
-# Simple Regional Cluster
+# Node Pool Cluster
 
-This example illustrates how to create a simple cluster.
+This example illustrates how to create a cluster with multiple custom node-pool configurations with node labels, taints, and network tags.
 
 [^]: (autogen_docs_start)
 

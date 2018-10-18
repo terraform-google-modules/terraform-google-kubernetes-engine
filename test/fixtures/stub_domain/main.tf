@@ -16,20 +16,31 @@
 
 provider "google" {
   credentials = "${file(var.credentials_path)}"
-  region      = "${var.region}"
+  region = "${var.region}"
 }
 
 module "gke" {
   source            = "../../../"
   project_id        = "${var.project_id}"
-  name              = "simple-zonal-cluster"
-  regional          = false
+  name              = "stub-domains-cluster"
   region            = "${var.region}"
-  zones             = "${var.zones}"
   network           = "${var.network}"
   subnetwork        = "${var.subnetwork}"
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
+  network_policy    = true
+
+  stub_domains {
+    "example.com" = [
+      "10.254.154.11",
+      "10.254.154.12",
+    ]
+
+    "example.net" = [
+      "10.254.154.11",
+      "10.254.154.12",
+    ]
+  }
 }
 
 data "google_client_config" "default" {}

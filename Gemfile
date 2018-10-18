@@ -19,4 +19,5 @@ source 'https://rubygems.org/' do
   gem 'google-api-client'
   gem 'kitchen-terraform', '~> 4.0.3'
   gem 'kubeclient'
+  gem 'rest-client'
 end

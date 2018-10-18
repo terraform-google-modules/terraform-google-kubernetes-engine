@@ -1,6 +1,11 @@
-# Simple Regional Cluster
+# Stub Domains Cluster
 
-This example illustrates how to create a simple cluster.
+This example illustrates how to create a cluster that adds custom stub domains to kube-dns.
+
+It will:
+- Create a cluster
+- Remove the default kube-dns configmap
+- Add a new kube-dns configmap with custom stub domains
 
 [^]: (autogen_docs_start)
 
