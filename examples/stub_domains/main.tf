@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-locals {
-  credentials_file_path = "${path.module}/sa-key.json"
-}
-
 provider "google" {
-  credentials = "${file(local.credentials_file_path)}"
+  credentials = "${file(var.credentials_path)}"
+  region      = "${var.region}"
 }
 
 module "gke" {
@@ -31,6 +28,7 @@ module "gke" {
   subnetwork        = "${var.subnetwork}"
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
+  network_policy    = true
 
   stub_domains {
     "example.com" = [
@@ -44,3 +42,5 @@ module "gke" {
     ]
   }
 }
+
+data "google_client_config" "default" {}
