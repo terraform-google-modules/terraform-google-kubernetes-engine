@@ -18,8 +18,8 @@
   Create zonal cluster
  *****************************************/
 resource "google_container_cluster" "zonal_primary" {
-  count       = "${var.regional ? 0 : 1}"
   provider    = "google-beta"
+  count       = "${(local.cluster_deployment_type == "zonal") ? 1 : 0 }"
   name        = "${var.name}"
   description = "${var.description}"
   project     = "${var.project_id}"
@@ -88,8 +88,8 @@ resource "google_container_cluster" "zonal_primary" {
   Create zonal node pools
  *****************************************/
 resource "google_container_node_pool" "zonal_pools" {
-  count              = "${var.regional ? 0 : length(var.node_pools)}"
   provider           = "google-beta"
+  count              = "${(local.cluster_deployment_type == "zonal") ? length(var.node_pools) : 0 }"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
   zone               = "${var.zones[0]}"

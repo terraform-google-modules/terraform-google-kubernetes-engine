@@ -15,17 +15,17 @@
  */
 
 /******************************************
-  Create regional cluster
+  Create zonal cluster
  *****************************************/
-resource "google_container_cluster" "primary" {
+resource "google_container_cluster" "zonal_primary_private" {
   provider    = "google-beta"
-  count       = "${(local.cluster_deployment_type == "regional") ? 1 : 0 }"
+  count       = "${(local.cluster_deployment_type == "zonal_private") ? 1 : 0 }"
   name        = "${var.name}"
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  region           = "${var.region}"
-  additional_zones = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
+  zone             = "${var.zones[0]}"
+  additional_zones = "${slice(var.zones,1,length(var.zones))}"
 
   network            = "${data.google_compute_network.gke_network.self_link}"
   subnetwork         = "${data.google_compute_subnetwork.gke_subnetwork.self_link}"
@@ -82,17 +82,23 @@ resource "google_container_cluster" "primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", "")}"
     }
   }
+
+  private_cluster_config {
+    enable_private_endpoint = "${var.private_cluster_config_enable_private_endpoint}"
+    enable_private_nodes    = "${var.private_cluster_config_enable_private_nodes}"
+    master_ipv4_cidr_block  = "${var.private_cluster_config_master_ipv4_cidr_block}"
+  }
 }
 
 /******************************************
-  Create regional node pools
+  Create zonal node pools
  *****************************************/
-resource "google_container_node_pool" "pools" {
+resource "google_container_node_pool" "zonal_pools_private" {
   provider           = "google-beta"
-  count              = "${(local.cluster_deployment_type == "regional") ? length(var.node_pools) : 0 }"
+  count              = "${(local.cluster_deployment_type == "zonal_private") ? length(var.node_pools) : 0 }"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
-  region             = "${var.region}"
+  zone               = "${var.zones[0]}"
   cluster            = "${var.name}"
   version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "min_count", 1)}"
@@ -104,7 +110,7 @@ resource "google_container_node_pool" "pools" {
 
   management {
     auto_repair  = "${lookup(var.node_pools[count.index], "auto_repair", true)}"
-    auto_upgrade = "${lookup(var.node_pools[count.index], "auto_upgrade", true)}"
+    auto_upgrade = "${lookup(var.node_pools[count.index], "auto_upgrade", false)}"
   }
 
   node_config {
@@ -133,5 +139,5 @@ resource "google_container_node_pool" "pools" {
     delete = "30m"
   }
 
-  depends_on = ["google_container_cluster.primary"]
+  depends_on = ["google_container_cluster.zonal_primary"]
 }

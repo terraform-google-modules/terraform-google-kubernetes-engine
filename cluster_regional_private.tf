@@ -17,9 +17,9 @@
 /******************************************
   Create regional cluster
  *****************************************/
-resource "google_container_cluster" "primary" {
+resource "google_container_cluster" "primary_private" {
   provider    = "google-beta"
-  count       = "${(local.cluster_deployment_type == "regional") ? 1 : 0 }"
+  count       = "${(local.cluster_deployment_type == "regional_private") ? 1 : 0 }"
   name        = "${var.name}"
   description = "${var.description}"
   project     = "${var.project_id}"
@@ -82,14 +82,20 @@ resource "google_container_cluster" "primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", "")}"
     }
   }
+
+  private_cluster_config {
+    enable_private_endpoint = "${var.private_cluster_config_enable_private_endpoint}"
+    enable_private_nodes    = "${var.private_cluster_config_enable_private_nodes}"
+    master_ipv4_cidr_block  = "${var.private_cluster_config_master_ipv4_cidr_block}"
+  }
 }
 
 /******************************************
   Create regional node pools
  *****************************************/
-resource "google_container_node_pool" "pools" {
+resource "google_container_node_pool" "pools_private" {
   provider           = "google-beta"
-  count              = "${(local.cluster_deployment_type == "regional") ? length(var.node_pools) : 0 }"
+  count              = "${(local.cluster_deployment_type == "regional_private") ? length(var.node_pools) : 0 }"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
   region             = "${var.region}"

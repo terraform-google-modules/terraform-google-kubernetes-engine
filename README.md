@@ -109,6 +109,10 @@ Then perform the following commands on the root folder:
 | node_pools_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
 | node_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `` | no |
 | non_masquerade_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list | `<list>` | no |
+| private | (Beta) Provision as a private cluster | string | `false` | no |
+| private_cluster_config_enable_private_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | string | `false` | no |
+| private_cluster_config_enable_private_nodes | (Beta) Whether nodes have internal IP addresses only | string | `false` | no |
+| private_cluster_config_master_ipv4_cidr_block | (Beta) The IP range in CIDR notation to use for the hosted master network | string | `10.0.0.0/28` | no |
 | project_id | The project ID to host the cluster in (required) | string | - | yes |
 | region | The region to host the cluster in (required) | string | - | yes |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `true` | no |
