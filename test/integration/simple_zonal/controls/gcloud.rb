@@ -13,6 +13,7 @@
 # limitations under the License.
 
 project_id = attribute('project_id')
+region = attribute('region')
 location = attribute('location')
 cluster_name = attribute('cluster_name')
 network = attribute('network')
@@ -38,6 +39,11 @@ control "gcloud" do
     describe "cluster" do
       it "is running" do
         expect(metadata['status']).to eq 'RUNNING'
+      end
+
+      it "is zonal" do
+        expect(metadata['zone']).to eq location
+        expect(metadata['zone']).not_to eq region
       end
 
       it "has the expected initial cluster version" do

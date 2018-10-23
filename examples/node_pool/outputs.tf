@@ -18,6 +18,10 @@ output "project_id" {
   value = "${var.project_id}"
 }
 
+output "region" {
+  value = "${var.region}"
+}
+
 output "cluster_name" {
   description = "Cluster name"
   value       = "${module.gke.name}"
@@ -43,6 +47,11 @@ output "kubernetes_endpoint" {
 output "client_token" {
   sensitive = true
   value     = "${base64encode(data.google_client_config.default.access_token)}"
+}
+
+output "ca_certificate" {
+  sensitive = true
+  value = "${module.gke.ca_certificate}"
 }
 
 output "location" {

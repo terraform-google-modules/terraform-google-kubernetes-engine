@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-provider "google" {
+provider "google-beta" {
   credentials = "${file(var.credentials_path)}"
   region      = "${var.region}"
 }
@@ -26,10 +26,12 @@ provider "kubernetes" {
   cluster_ca_certificate = "${base64decode(module.gke.ca_certificate)}"
 }
 
-data "google_client_config" "default" {}
+data "google_client_config" "default" {
+  provider = "google-beta"
+}
 
 module "gke" {
-  source            = "../../../"
+  source            = "../../"
   project_id        = "${var.project_id}"
   name              = "deploy-service-cluster"
   region            = "${var.region}"

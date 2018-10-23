@@ -22,25 +22,24 @@ provider "google-beta" {
 module "gke" {
   source            = "../../"
   project_id        = "${var.project_id}"
-  name              = "stub-domains-cluster"
+  name              = "simple-zonal-cluster-private"
+  regional          = false
   region            = "${var.region}"
+  zones             = "${var.zones}"
   network           = "${var.network}"
   subnetwork        = "${var.subnetwork}"
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
-  network_policy    = true
-
-  stub_domains {
-    "example.com" = [
-      "10.254.154.11",
-      "10.254.154.12",
-    ]
-
-    "example.net" = [
-      "10.254.154.11",
-      "10.254.154.12",
-    ]
-  }
+  private           = true
+  private_cluster_config_enable_private_endpoint = true
+  private_cluster_config_enable_private_nodes = true
+  private_cluster_config_master_ipv4_cidr_block  = "172.16.0.16/28"
+  master_authorized_networks_config = [{
+    cidr_blocks = [{
+      cidr_block = "10.0.0.0/8"
+      display_name = "VPC"
+    }]
+  }]
 }
 
 data "google_client_config" "default" {

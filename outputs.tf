@@ -105,3 +105,9 @@ output "node_pools_versions" {
   description = "List of node pools versions"
   value       = "${local.cluster_node_pools_versions}"
 }
+
+// DIAGNOSTICS
+
+output "deployment_type" {
+  value = "${local.cluster_deployment_type}"
+}

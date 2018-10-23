@@ -3,6 +3,9 @@ attributes:
   - name: project_id
     required: true
     type: string
+  - name: region
+    required: true
+    type: string
   - name: location
     required: true
     type: string
@@ -30,5 +33,8 @@ attributes:
     required: true
     type: string
   - name: client_token
+    required: true
+    type: string
+  - name: ca_certificate
     required: true
     type: string

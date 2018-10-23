@@ -41,8 +41,14 @@ control "gcloud" do
         expect(metadata['status']).to eq 'RUNNING'
       end
 
-      it "is regional" do
-        expect(metadata['zone']).to eq region
+      it "is zonal" do
+        expect(metadata['zone']).to eq location
+        expect(metadata['zone']).not_to eq region
+      end
+
+      it "is private" do
+        expect(metadata['privateClusterConfig']['enablePrivateEndpoint']).to eq true
+        expect(metadata['privateClusterConfig']['enablePrivateNodes']).to eq true
       end
 
       it "has the expected initial cluster version" do
@@ -138,8 +144,8 @@ control "gcloud" do
         expect(node_pool['management']['autoRepair']).to eq true
       end
 
-      it "has autoupgrade enabled" do
-        expect(node_pool['management']['autoUpgrade']).to eq true
+      it "has autoupgrade disabled" do
+        expect(node_pool['management']['autoUpgrade']).to eq nil
       end
     end
   end

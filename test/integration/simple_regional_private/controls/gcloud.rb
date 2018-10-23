@@ -45,6 +45,11 @@ control "gcloud" do
         expect(metadata['zone']).to eq region
       end
 
+      it "is private" do
+        expect(metadata['privateClusterConfig']['enablePrivateEndpoint']).to eq true
+        expect(metadata['privateClusterConfig']['enablePrivateNodes']).to eq true
+      end
+
       it "has the expected initial cluster version" do
         expect(metadata['initialClusterVersion']).to eq master_kubernetes_version
       end

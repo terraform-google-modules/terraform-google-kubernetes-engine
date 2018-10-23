@@ -19,6 +19,7 @@ require 'base64'
 
 kubernetes_endpoint = attribute('kubernetes_endpoint')
 client_token = attribute('client_token')
+ca_certificate = attribute('ca_certificate')
 
 control "kubectl" do
   title "Kubernetes configuration"
@@ -26,11 +27,14 @@ control "kubectl" do
   describe "kubernetes" do
     let(:kubernetes_http_endpoint) { "https://#{kubernetes_endpoint}/api" }
     let(:client) do
+      cert_store = OpenSSL::X509::Store.new
+      cert_store.add_cert(OpenSSL::X509::Certificate.new(Base64.decode64(ca_certificate)))
       Kubeclient::Client.new(
         kubernetes_http_endpoint,
         "v1",
         ssl_options: {
-          verify_ssl: OpenSSL::SSL::VERIFY_NONE,
+          cert_store: cert_store,
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
         },
         auth_options: {
           bearer_token: Base64.decode64(client_token),

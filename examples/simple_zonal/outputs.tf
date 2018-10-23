@@ -18,6 +18,10 @@ output "project_id" {
   value = "${var.project_id}"
 }
 
+output "region" {
+  value = "${var.region}"
+}
+
 output "cluster_name" {
   description = "Cluster name"
   value       = "${module.gke.name}"
