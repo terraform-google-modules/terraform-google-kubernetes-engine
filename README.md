@@ -185,7 +185,6 @@ The project has the following folders and files:
 ### Requirements
 - [bundler](https://github.com/bundler/bundler)
 - [gcloud](https://cloud.google.com/sdk/install)
-- [jq](https://stedolan.github.io/jq/) 1.5
 - [terraform-docs](https://github.com/segmentio/terraform-docs/releases) 0.3.0
 
 ### Autogeneration of documentation from .tf files
@@ -208,12 +207,13 @@ The tests will do the following:
 - Perform `kitchen validate` command
   - Performs inspec tests.
     - Shell out to `gcloud` to validate expected resources in GCP.
-    - Shell out to `kubectl` to validate expected resource in Kubernetes.
-    - Shell out to `terraform` to validate outputs.
-- Permos `kitchen destroy` command
+    - Interrogate the cluster to validate expected resource in Kubernetes.
+- Perform `kitchen destroy` command
   - Performs a `terraform destroy -force`
 
-You can use the following command to run the integration test in the root folder
+To configure the integration tests, run `make prepare_test_variables` and edit each of the files it outputs to reflect your existing GCP setup.
+
+You can then use the following command to run the integration test in the root folder
 
   `make test_integration`
 

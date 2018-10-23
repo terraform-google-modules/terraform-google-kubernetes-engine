@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-locals {
-  credentials_file_path = "${path.module}/sa-key.json"
-}
-
 provider "google" {
-  credentials = "${file(local.credentials_file_path)}"
+  credentials = "${file(var.credentials_path)}"
+  region      = "${var.region}"
 }
 
 module "gke" {
@@ -35,12 +32,12 @@ module "gke" {
   node_pools = [
     {
       name      = "pool-01"
-      min_count = 4
+      min_count = 2
     },
     {
       name            = "pool-02"
       machine_type    = "n1-standard-2"
-      min_count       = 2
+      min_count       = 1
       max_count       = 3
       disk_size_gb    = 30
       disk_type       = "pd-standard"
@@ -95,3 +92,5 @@ module "gke" {
     pool-02 = []
   }
 }
+
+data "google_client_config" "default" {}
