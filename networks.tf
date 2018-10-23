@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 data "google_compute_network" "gke_network" {
-  name    = "${var.network}"
-  project = "${local.network_project_id}"
+  provider = "google-beta"
+  name     = "${var.network}"
+  project  = "${local.network_project_id}"
 }
 
 data "google_compute_subnetwork" "gke_subnetwork" {
+  provider = "google-beta"
   name    = "${var.subnetwork}"
   region  = "${var.region}"
   project = "${local.network_project_id}"

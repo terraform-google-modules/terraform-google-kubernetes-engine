@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-provider "google" {
+provider "google-beta" {
   credentials = "${file(var.credentials_path)}"
   region      = "${var.region}"
 }
@@ -31,4 +31,6 @@ module "gke" {
   ip_range_services = "${var.ip_range_services}"
 }
 
-data "google_client_config" "default" {}
+data "google_client_config" "default" {
+  provider = "google-beta"
+}

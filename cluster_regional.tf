@@ -19,6 +19,7 @@
  *****************************************/
 resource "google_container_cluster" "primary" {
   count       = "${var.regional ? 1 : 0}"
+  provider    = "google-beta"
   name        = "${var.name}"
   description = "${var.description}"
   project     = "${var.project_id}"
@@ -88,6 +89,7 @@ resource "google_container_cluster" "primary" {
  *****************************************/
 resource "google_container_node_pool" "pools" {
   count              = "${var.regional ? length(var.node_pools) : 0}"
+  provider           = "google-beta"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
   region             = "${var.region}"
