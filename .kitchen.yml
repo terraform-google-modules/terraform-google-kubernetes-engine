@@ -80,6 +80,34 @@ suites:
           backend: local
     provisioner:
       name: terraform
+  - name: "simple_regional_private"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: examples/simple_regional_private
+      variable_files:
+        - test/fixtures/simple_regional_private/terraform.tfvars
+    verifier:
+      name: terraform
+      systems:
+        - name: simple_regional_private
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "simple_zonal_private"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: examples/simple_zonal_private
+      variable_files:
+        - test/fixtures/simple_zonal_private/terraform.tfvars
+    verifier:
+      name: terraform
+      systems:
+        - name: simple_zonal_private
+          backend: local
+    provisioner:
+      name: terraform
   - name: "stub_domains"
     driver:
       name: "terraform"

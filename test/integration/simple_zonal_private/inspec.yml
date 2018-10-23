@@ -1,0 +1,37 @@
+name: simple_zonal_private
+attributes:
+  - name: project_id
+    required: true
+    type: string
+  - name: region
+    required: true
+    type: string
+  - name: location
+    required: true
+    type: string
+  - name: cluster_name
+    required: true
+    type: string
+  - name: network
+    required: false
+    type: string
+    default: "default"
+  - name: subnetwork
+    required: false
+    type: string
+    default: "default"
+  - name: ip_range_pods
+    required: true
+    type: string
+  - name: ip_range_services
+    required: true
+    type: string
+  - name: master_kubernetes_version
+    required: true
+    type: string
+  - name: kubernetes_endpoint
+    required: true
+    type: string
+  - name: client_token
+    required: true
+    type: string
