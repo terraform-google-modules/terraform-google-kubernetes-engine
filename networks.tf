@@ -5,5 +5,6 @@ data "google_compute_network" "gke_network" {
 
 data "google_compute_subnetwork" "gke_subnetwork" {
   name    = "${var.subnetwork}"
+  region  = "${var.region}"
   project = "${local.network_project_id}"
 }
