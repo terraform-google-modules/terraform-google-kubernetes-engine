@@ -8,6 +8,9 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
 
+* Added suport for private clusters. #21
+* Migrated to [google-beta provider](https://github.com/terraform-providers/terraform-provider-google-beta) to support private clusters. #21
+
 ## [v0.3.0] - 2018-10-10
 ### Changed
 * Updated network/subnetwork lookup to use data source. #16
