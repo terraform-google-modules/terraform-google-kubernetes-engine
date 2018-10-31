@@ -33,6 +33,7 @@ crash.log
 
 # Kitchen files
 **/inspec.lock
+**.gem
 **/.kitchen
 **/.kitchen.local.yml
 **/Gemfile.lock
@@ -46,5 +47,3 @@ crash.log
 
 test/integration/gcloud/config.sh
 test/integration/tmp
-
-credentials.json

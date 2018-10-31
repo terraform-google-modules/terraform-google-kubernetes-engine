@@ -14,56 +14,31 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  value = "${var.project_id}"
-}
-
-output "region" {
-  value = "${var.region}"
-}
-
-output "cluster_name" {
+output "name_example" {
   description = "Cluster name"
   value       = "${module.gke.name}"
 }
 
-output "network" {
-  value = "${var.network}"
+output "endpoint_example" {
+  sensitive   = true
+  description = "Cluster endpoint"
+  value       = "${module.gke.endpoint}"
 }
 
-output "subnetwork" {
-  value = "${var.subnetwork}"
+output "location_example" {
+  description = "Cluster location"
+  value       = "${module.gke.location}"
 }
 
-output "region_example" {
-  value = "${module.gke.region}"
+output "zones_example" {
+  description = "List of zones in which the cluster resides"
+  value       = "${module.gke.zones}"
 }
 
-output "kubernetes_endpoint" {
-  sensitive = true
-  value     = "${module.gke.endpoint}"
+output "node_pools_names_example" {
+  value = "${module.gke.node_pools_names}"
 }
 
-output "client_token" {
-  sensitive = true
-  value     = "${base64encode(data.google_client_config.default.access_token)}"
-}
-
-output "ca_certificate" {
-  sensitive = true
-  value     = "${module.gke.ca_certificate}"
-}
-
-output "location" {
-  value = "${module.gke.location}"
-}
-
-output "ip_range_pods" {
-  description = "The secondary IP range used for pods"
-  value       = "${var.ip_range_pods}"
-}
-
-output "ip_range_services" {
-  description = "The secondary IP range used for services"
-  value       = "${var.ip_range_services}"
+output "node_pools_versions_example" {
+  value = "${module.gke.node_pools_versions}"
 }

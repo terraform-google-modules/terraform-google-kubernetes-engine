@@ -30,14 +30,14 @@ variable "subnetwork" {
   description = "The subnetwork to host the cluster in"
 }
 
+variable "network_project_id" {
+  description = "The project ID of the shared VPC's host"
+}
+
 variable "ip_range_pods" {
   description = "The secondary ip range to use for pods"
 }
 
 variable "ip_range_services" {
   description = "The secondary ip range to use for pods"
-}
-
-variable "pool_01_service_account" {
-  description = "Service account to associate to the nodes on pool-01"
 }
