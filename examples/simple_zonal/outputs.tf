@@ -14,56 +14,23 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  value = "${var.project_id}"
-}
-
-output "region" {
-  value = "${var.region}"
-}
-
-output "cluster_name" {
+output "name_example" {
   description = "Cluster name"
   value       = "${module.gke.name}"
 }
 
-output "network" {
-  description = "Network the cluster is provisioned in"
-  value       = "${var.network}"
-}
-
-output "subnetwork" {
-  description = "Subnetwork the cluster is provisioned in"
-  value       = "${var.subnetwork}"
-}
-
-output "kubernetes_endpoint" {
+output "endpoint_example" {
   sensitive   = true
   description = "Cluster endpoint"
   value       = "${module.gke.endpoint}"
 }
 
-output "client_token" {
-  sensitive = true
-  value     = "${base64encode(data.google_client_config.default.access_token)}"
-}
-
-output "location" {
+output "location_example" {
   description = "Cluster location"
   value       = "${module.gke.location}"
 }
 
-output "ip_range_pods" {
-  description = "The secondary IP range used for pods"
-  value       = "${var.ip_range_pods}"
-}
-
-output "ip_range_services" {
-  description = "The secondary IP range used for services"
-  value       = "${var.ip_range_services}"
-}
-
-output "master_kubernetes_version" {
-  description = "The master Kubernetes version"
-  value       = "${module.gke.master_version}"
+output "zones_example" {
+  description = "List of zones in which the cluster resides"
+  value       = "${module.gke.zones}"
 }
