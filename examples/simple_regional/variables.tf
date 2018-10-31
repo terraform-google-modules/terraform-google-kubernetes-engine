@@ -18,10 +18,6 @@ variable "project_id" {
   description = "The project ID to host the cluster in"
 }
 
-variable "credentials_path" {
-  description = "The path to a Google Cloud Service Account credentials file"
-}
-
 variable "region" {
   description = "The region to host the cluster in"
 }
