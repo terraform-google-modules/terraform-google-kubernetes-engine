@@ -18,6 +18,10 @@ variable "project_id" {
   description = "The project ID to host the cluster in"
 }
 
+variable "credentials_path" {
+  description = "The path to a Google Cloud Service Account credentials file"
+}
+
 variable "region" {
   description = "The region to host the cluster in"
 }
@@ -39,5 +43,5 @@ variable "ip_range_services" {
 }
 
 variable "pool_01_service_account" {
-  description = "Service account to associate to the nodes on pool-01"
+  description = "Service account to associate to the nodes on pool-01. Only needed if you have deleted or otherwise don't want to use the default compute service account"
 }

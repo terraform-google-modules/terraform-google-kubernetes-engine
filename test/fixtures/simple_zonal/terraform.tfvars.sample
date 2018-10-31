@@ -1,0 +1,8 @@
+project_id=""
+credentials_path="../../credentials.json"
+region="us-east4"
+zones=["us-east4-b","us-east4-c","us-east4-a"]
+network="vpc-01"
+subnetwork="us-east4-01"
+ip_range_pods="us-east4-01-gke-01-pod"
+ip_range_services="us-east4-01-gke-01-service"
