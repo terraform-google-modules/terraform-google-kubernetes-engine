@@ -14,7 +14,7 @@ There are multiple examples included in the [examples](./examples/) folder but s
 
 ```hcl
 module "gke" {
-  source                     = "github.com/terraform-google-modules/terraform-google-kubernetes-engine?ref=v0.1.0"
+  source                     = "terraform-google-modules/kubernetes-engine/google"
   project_id                 = "<PROJECT ID>"
   name                       = "gke-test-1"
   region                     = "us-central1"
