@@ -57,7 +57,7 @@ variable "subnetwork" {
 
 variable "kubernetes_version" {
   description = "The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region."
-  default     = "1.10.6-gke.2"
+  default     = "1.10.6"
 }
 
 variable "node_version" {
