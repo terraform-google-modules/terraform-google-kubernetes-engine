@@ -40,6 +40,7 @@ module "gke" {
   subnetwork        = "${var.subnetwork}"
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
+  kubernetes_version = "1.9.7-gke.11"
 }
 
 resource "kubernetes_pod" "nginx-example" {
