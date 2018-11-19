@@ -15,11 +15,12 @@
  */
 
 locals {
-  credentials_file_path = "${path.module}/sa-key.json"
+  cluster_type = "deploy-service"
 }
 
 provider "google" {
-  credentials = "${file(local.credentials_file_path)}"
+  credentials = "${file(local.credentials_path)}"
+  region      = "${local.region}"
 }
 
 provider "kubernetes" {
@@ -33,13 +34,13 @@ data "google_client_config" "default" {}
 
 module "gke" {
   source            = "../../"
-  project_id        = "${var.project_id}"
-  name              = "deploy-service-cluster"
-  region            = "${var.region}"
-  network           = "${var.network}"
-  subnetwork        = "${var.subnetwork}"
-  ip_range_pods     = "${var.ip_range_pods}"
-  ip_range_services = "${var.ip_range_services}"
+  project_id        = "${local.project_id}"
+  name              = "${local.cluster_type}-cluster"
+  region            = "${local.region}"
+  network           = "${local.network}"
+  subnetwork        = "${local.subnetwork}"
+  ip_range_pods     = "${local.ip_range_pods}"
+  ip_range_services = "${local.ip_range_services}"
   kubernetes_version = "1.9.7-gke.11"
 }
 

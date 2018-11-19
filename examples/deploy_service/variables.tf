@@ -37,3 +37,13 @@ variable "ip_range_pods" {
 variable "ip_range_services" {
   description = "The secondary ip range to use for pods"
 }
+
+locals {
+  project_id = "${var.project_id}"
+  credentials_path = "${var.credentials_path}"
+  region = "${var.region}"
+  network = "${var.network}"
+  subnetwork = "${var.subnetwork}"
+  ip_range_pods = "${var.ip_range_pods}"
+  ip_range_services = "${var.ip_range_services}"
+}
