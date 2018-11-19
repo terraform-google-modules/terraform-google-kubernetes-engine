@@ -1,0 +1,154 @@
+# Copyright 2018 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+driver:
+  name: "terraform"
+  command_timeout: 1800
+
+provisioner:
+  name: "terraform"
+
+platforms:
+  - name: local
+
+lifecycle:
+  pre_converge: cd test/fixtures/networks/ && terraform apply -auto-approve && cd -
+
+suites:
+  - name: "deploy_service"
+    lifecycle:
+      pre_converge:
+        - mv examples/deploy_service/variables.tf examples/deploy_service/variables.tf.disabled
+        - cp test/fixtures/all_examples/fixture_data.tf examples/deploy_service/fixture_data.tf
+      post_converge:
+        - rm -rf examples/deploy_service/fixture_data.tf
+        - mv examples/deploy_service/variables.tf.disabled examples/deploy_service/variables.tf
+      pre_destroy:
+        - mv examples/deploy_service/variables.tf examples/deploy_service/variables.tf.disabled
+        - cp test/fixtures/all_examples/fixture_data.tf examples/deploy_service/fixture_data.tf
+      post_destroy:
+        - rm -rf examples/deploy_service/fixture_data.tf
+        - mv examples/deploy_service/variables.tf.disabled examples/deploy_service/variables.tf
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: examples/deploy_service
+    verifier:
+      name: terraform
+      systems:
+        - name: deploy_service
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "node_pool"
+    lifecycle:
+      pre_converge:
+        - mv examples/node_pool/variables.tf examples/node_pool/variables.tf.disabled
+        - cp test/fixtures/all_examples/fixture_data.tf examples/node_pool/fixture_data.tf
+      post_converge:
+        - rm -rf examples/node_pool/fixture_data.tf
+        - mv examples/node_pool/variables.tf.disabled examples/node_pool/variables.tf
+      pre_destroy:
+        - mv examples/node_pool/variables.tf examples/node_pool/variables.tf.disabled
+        - cp test/fixtures/all_examples/fixture_data.tf examples/node_pool/fixture_data.tf
+      post_destroy:
+        - rm -rf examples/node_pool/fixture_data.tf
+        - mv examples/node_pool/variables.tf.disabled examples/node_pool/variables.tf
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: examples/node_pool
+    verifier:
+      name: terraform
+      systems:
+        - name: node_pool
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "simple_regional"
+    lifecycle:
+      pre_converge:
+        - mv examples/simple_regional/variables.tf examples/simple_regional/variables.tf.disabled
+        - cp test/fixtures/all_examples/fixture_data.tf examples/simple_regional/fixture_data.tf
+      post_converge:
+        - rm -rf examples/simple_regional/fixture_data.tf
+        - mv examples/simple_regional/variables.tf.disabled examples/simple_regional/variables.tf
+      pre_destroy:
+        - mv examples/simple_regional/variables.tf examples/simple_regional/variables.tf.disabled
+        - cp test/fixtures/all_examples/fixture_data.tf examples/simple_regional/fixture_data.tf
+      post_destroy:
+        - rm -rf examples/simple_regional/fixture_data.tf
+        - mv examples/simple_regional/variables.tf.disabled examples/simple_regional/variables.tf
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: examples/simple_regional
+    verifier:
+      name: terraform
+      systems:
+        - name: simple_regional
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "simple_zonal"
+    lifecycle:
+      pre_converge:
+        - mv examples/simple_zonal/variables.tf examples/simple_zonal/variables.tf.disabled
+        - cp test/fixtures/all_examples/fixture_data.tf examples/simple_zonal/fixture_data.tf
+      post_converge:
+        - rm -rf examples/simple_zonal/fixture_data.tf
+        - mv examples/simple_zonal/variables.tf.disabled examples/simple_zonal/variables.tf
+      pre_destroy:
+        - mv examples/simple_zonal/variables.tf examples/simple_zonal/variables.tf.disabled
+        - cp test/fixtures/all_examples/fixture_data.tf examples/simple_zonal/fixture_data.tf
+      post_destroy:
+        - rm -rf examples/simple_zonal/fixture_data.tf
+        - mv examples/simple_zonal/variables.tf.disabled examples/simple_zonal/variables.tf
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: examples/simple_zonal
+    verifier:
+      name: terraform
+      systems:
+        - name: simple_zonal
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "stub_domains"
+    lifecycle:
+      pre_converge:
+        - mv examples/stub_domains/variables.tf examples/stub_domains/variables.tf.disabled
+        - cp test/fixtures/all_examples/fixture_data.tf examples/stub_domains/fixture_data.tf
+      post_converge:
+        - rm -rf examples/stub_domains/fixture_data.tf
+        - mv examples/stub_domains/variables.tf.disabled examples/stub_domains/variables.tf
+      pre_destroy:
+        - mv examples/stub_domains/variables.tf examples/stub_domains/variables.tf.disabled
+        - cp test/fixtures/all_examples/fixture_data.tf examples/stub_domains/fixture_data.tf
+      post_destroy:
+        - rm -rf examples/stub_domains/fixture_data.tf
+        - mv examples/stub_domains/variables.tf.disabled examples/stub_domains/variables.tf
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: examples/stub_domains
+    verifier:
+      name: terraform
+      systems:
+        - name: stub_domains
+          backend: local
+    provisioner:
+      name: terraform

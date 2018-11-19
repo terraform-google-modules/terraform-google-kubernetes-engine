@@ -227,7 +227,7 @@ The tests will do the following:
 - Permos `kitchen destroy` command
   - Performs a `terraform destroy -force`
 
-You can use the following command to run the integration test in the root folder
+To configure the integration tests, `cp test/fixtures/networks/terraform.tfvars.sample test/fixtures/networks/terraform.tfvars` and edit to match your testing environment. You can then use the following command to run the integration test in the root folder
 
   `make test_integration`
 
