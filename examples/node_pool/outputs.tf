@@ -14,15 +14,39 @@
  * limitations under the License.
  */
 
-output "name_example" {
+output "project_id" {
+  value = "${local.project_id}"
+}
+
+output "region" {
+  value = "${local.region}"
+}
+
+output "cluster_name" {
   description = "Cluster name"
   value       = "${module.gke.name}"
 }
 
-output "endpoint_example" {
-  sensitive   = true
-  description = "Cluster endpoint"
-  value       = "${module.gke.endpoint}"
+output "network" {
+  value = "${local.network}"
+}
+
+output "subnetwork" {
+  value = "${local.subnetwork}"
+}
+
+output "region_example" {
+  value = "${module.gke.region}"
+}
+
+output "kubernetes_endpoint" {
+  sensitive = true
+  value     = "${module.gke.endpoint}"
+}
+
+output "client_token" {
+  sensitive = true
+  value     = "${base64encode(data.google_client_config.default.access_token)}"
 }
 
 output "location_example" {
@@ -35,10 +59,12 @@ output "zones_example" {
   value       = "${module.gke.zones}"
 }
 
-output "node_pools_names_example" {
-  value = "${module.gke.node_pools_names}"
+output "ip_range_pods" {
+  description = "The secondary IP range used for pods"
+  value       = "${local.ip_range_pods}"
 }
 
-output "node_pools_versions_example" {
-  value = "${module.gke.node_pools_versions}"
+output "ip_range_services" {
+  description = "The secondary IP range used for services"
+  value       = "${local.ip_range_services}"
 }

@@ -14,12 +14,30 @@
  * limitations under the License.
  */
 
-output "name_example" {
+output "project_id" {
+  value = "${local.project_id}"
+}
+
+output "region" {
+  value = "${local.region}"
+}
+
+output "cluster_name" {
   description = "Cluster name"
   value       = "${module.gke.name}"
 }
 
-output "endpoint_example" {
+output "network" {
+  description = "Network the cluster is provisioned in"
+  value       = "${local.network}"
+}
+
+output "subnetwork" {
+  description = "Subnetwork the cluster is provisioned in"
+  value       = "${local.subnetwork}"
+}
+
+output "kubernetes_endpoint" {
   sensitive   = true
   description = "Cluster endpoint"
   value       = "${module.gke.endpoint}"
@@ -30,7 +48,17 @@ output "location_example" {
   value       = "${module.gke.location}"
 }
 
-output "zones_example" {
-  description = "List of zones in which the cluster resides"
-  value       = "${module.gke.zones}"
+output "ip_range_pods" {
+  description = "The secondary IP range used for pods"
+  value       = "${local.ip_range_pods}"
+}
+
+output "ip_range_services" {
+  description = "The secondary IP range used for services"
+  value       = "${local.ip_range_services}"
+}
+
+output "master_kubernetes_version" {
+  description = "The master Kubernetes version"
+  value       = "${module.gke.master_version}"
 }
