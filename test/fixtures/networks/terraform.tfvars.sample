@@ -1,0 +1,3 @@
+project_id=""
+credentials_path_relative="../../../credentials.json"
+region="us-east4"
