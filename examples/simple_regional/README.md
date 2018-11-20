@@ -20,17 +20,9 @@ This example illustrates how to create a simple cluster.
 
 | Name | Description |
 |------|-------------|
-| cluster_name | Cluster name |
-| credentials_path |  |
-| ip_range_pods | The secondary IP range used for pods |
-| ip_range_services | The secondary IP range used for services |
-| kubernetes_endpoint | Cluster endpoint |
-| location | Cluster location |
-| master_kubernetes_version | The master Kubernetes version |
-| network | Network the cluster is provisioned in |
-| project_id |  |
-| region |  |
-| subnetwork | Subnetwork the cluster is provisioned in |
+| ca_certificate |  |
+| client_token |  |
+| kubernetes_endpoint |  |
 
 [^]: (autogen_docs_end)
 
