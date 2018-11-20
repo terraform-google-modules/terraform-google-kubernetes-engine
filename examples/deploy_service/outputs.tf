@@ -18,8 +18,12 @@ output "project_id" {
   value = "${local.project_id}"
 }
 
+output "credentials_path" {
+  value = "${local.credentials_path}"
+}
+
 output "region" {
-  value = "${local.region}"
+  value = "${module.gke.region}"
 }
 
 output "cluster_name" {
@@ -33,10 +37,6 @@ output "network" {
 
 output "subnetwork" {
   value = "${local.subnetwork}"
-}
-
-output "region_example" {
-  value = "${module.gke.region}"
 }
 
 output "kubernetes_endpoint" {
@@ -68,7 +68,12 @@ output "ip_range_services" {
   value       = "${local.ip_range_services}"
 }
 
-output "zones_example" {
+output "zones" {
   description = "List of zones in which the cluster resides"
   value       = "${module.gke.zones}"
+}
+
+output "master_kubernetes_version" {
+  description = "The master Kubernetes version"
+  value       = "${module.gke.master_version}"
 }

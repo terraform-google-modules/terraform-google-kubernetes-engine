@@ -81,7 +81,6 @@ test_integration:
 	bundle exec kitchen create
 	bundle exec kitchen converge
 	bundle exec kitchen converge
-	@echo "Waiting ${GCE_INSTANCE_INIT_WAIT_TIME} seconds for load balancer to come online..."
 	bundle exec kitchen verify
 	bundle exec kitchen destroy
 	cd test/fixtures/networks/ && terraform destroy -auto-approve && cd -

@@ -18,8 +18,12 @@ output "project_id" {
   value = "${local.project_id}"
 }
 
+output "credentials_path" {
+  value = "${local.credentials_path}"
+}
+
 output "region" {
-  value = "${local.region}"
+  value = "${module.gke.region}"
 }
 
 output "cluster_name" {
@@ -35,10 +39,6 @@ output "subnetwork" {
   value = "${local.subnetwork}"
 }
 
-output "region_example" {
-  value = "${module.gke.region}"
-}
-
 output "kubernetes_endpoint" {
   sensitive = true
   value     = "${module.gke.endpoint}"
@@ -49,12 +49,17 @@ output "client_token" {
   value     = "${base64encode(data.google_client_config.default.access_token)}"
 }
 
-output "location_example" {
+output "ca_certificate" {
+  sensitive = true
+  value     = "${module.gke.ca_certificate}"
+}
+
+output "location" {
   description = "Cluster location"
   value       = "${module.gke.location}"
 }
 
-output "zones_example" {
+output "zones" {
   description = "List of zones in which the cluster resides"
   value       = "${module.gke.zones}"
 }
