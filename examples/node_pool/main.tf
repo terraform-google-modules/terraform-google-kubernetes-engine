@@ -98,3 +98,5 @@ module "gke" {
     pool-02 = []
   }
 }
+
+data "google_client_config" "default" {}

@@ -78,7 +78,7 @@ function check_shell() {
 # There are some exclusions
 function check_trailing_whitespace() {
   echo "The following lines have trailing whitespace"
-  grep -r '[[:blank:]]$' --exclude-dir=".terraform" --exclude="*.png" --exclude="*.pyc" --exclude-dir=".git" .
+  grep -r '[[:blank:]]$' --exclude-dir=".terraform" --exclude-dir=".kitchen" --exclude="*.png" --exclude="*.pyc" --exclude-dir=".git" .
   rc=$?
   if [ $rc = 0 ]; then
     exit 1
@@ -88,6 +88,7 @@ function check_trailing_whitespace() {
 function generate_docs() {
   echo "Generating markdown docs with terraform-docs"
   TMPFILE=$(mktemp)
+  #shellcheck disable=2006,2086
   for j in `for i in $(find . -type f | grep \.tf$) ; do dirname $i ; done | sort -u` ; do
     terraform-docs markdown "$j" > "$TMPFILE"
     python helpers/combine_docfiles.py "$j"/README.md "$TMPFILE"

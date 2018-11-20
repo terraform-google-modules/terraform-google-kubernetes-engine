@@ -18,6 +18,10 @@ output "project_id" {
   value = "${local.project_id}"
 }
 
+output "credentials_path" {
+  value = "${local.credentials_path}"
+}
+
 output "region" {
   value = "${local.region}"
 }
@@ -43,7 +47,7 @@ output "kubernetes_endpoint" {
   value       = "${module.gke.endpoint}"
 }
 
-output "location_example" {
+output "location" {
   description = "Cluster location"
   value       = "${module.gke.location}"
 }

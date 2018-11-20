@@ -24,7 +24,7 @@ platforms:
   - name: local
 
 lifecycle:
-  pre_converge: cd test/fixtures/networks/ && terraform apply -auto-approve && cd -
+  pre_converge: cd test/fixtures/networks/ && terraform init && terraform apply -auto-approve && cd -
 
 suites:
   - name: "deploy_service"

@@ -39,7 +39,13 @@ mkdir "${TMPDIR}"
 
 export KUBECONFIG="${TMPDIR}/config"
 
-echo "${CA_CERTIFICATE}" | base64 --decode > "${TMPDIR}/ca_certificate"
+_b64_location=$(which base64)
+
+B64_ARG="-D"
+if [ "${_b64_location}" = "/bin/base64" ]; then
+    B64_ARG="-d"
+fi
+echo "${CA_CERTIFICATE}" | base64 ${B64_ARG} > "${TMPDIR}/ca_certificate"
 
 kubectl config set-cluster kubectl-wrapper --server="${HOST}" --certificate-authority="${TMPDIR}/ca_certificate" --embed-certs=true 1>/dev/null
 rm -f "${TMPDIR}/ca_certificate"

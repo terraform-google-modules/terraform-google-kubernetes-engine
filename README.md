@@ -97,7 +97,7 @@ Then perform the following commands on the root folder:
 | ip_range_pods | The secondary ip range to use for pods | string | - | yes |
 | ip_range_services | The secondary ip range to use for pods | string | - | yes |
 | kubernetes_dashboard | Enable kubernetes dashboard addon | string | `false` | no |
-| kubernetes_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `1.10.6-gke.2` | no |
+| kubernetes_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `latest` | no |
 | logging_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `logging.googleapis.com` | no |
 | maintenance_start_time | Time window specified for daily maintenance operations in RFC3339 format | string | `05:00` | no |
 | master_authorized_networks_config | The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)<br><br>  ### example format ###   master_authorized_networks_config = [{     cidr_blocks = [{       cidr_block   = "10.0.0.0/8"       display_name = "example_network"     }],   }] | list | `<list>` | no |
@@ -199,7 +199,6 @@ The project has the following folders and files:
 ### Requirements
 - [bundler](https://github.com/bundler/bundler)
 - [gcloud](https://cloud.google.com/sdk/install)
-- [jq](https://stedolan.github.io/jq/) 1.5
 - [terraform-docs](https://github.com/segmentio/terraform-docs/releases) 0.3.0
 
 ### Autogeneration of documentation from .tf files
@@ -222,9 +221,8 @@ The tests will do the following:
 - Perform `kitchen validate` command
   - Performs inspec tests.
     - Shell out to `gcloud` to validate expected resources in GCP.
-    - Shell out to `kubectl` to validate expected resource in Kubernetes.
-    - Shell out to `terraform` to validate outputs.
-- Permos `kitchen destroy` command
+    - Interrogate the cluster to validate expected resource in Kubernetes.
+- Perform `kitchen destroy` command
   - Performs a `terraform destroy -force`
 
 To configure the integration tests, `cp test/fixtures/networks/terraform.tfvars.sample test/fixtures/networks/terraform.tfvars` and edit to match your testing environment. You can then use the following command to run the integration test in the root folder

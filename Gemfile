@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'googleauth'
-require 'google/apis/compute_v1'
+ruby '2.4.2'
 
-def google_compute_service
-  Google::Apis::ComputeV1::ComputeService.new.tap do |service|
-    service.authorization = Google::Auth.get_application_default(['https://www.googleapis.com/auth/cloud-platform'])
-  end
+source 'https://rubygems.org/' do
+  gem 'kitchen-terraform', '~> 4.0.3'
+  gem 'kubeclient'
+  gem 'rest-client'
 end

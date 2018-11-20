@@ -47,3 +47,5 @@ crash.log
 
 test/integration/gcloud/config.sh
 test/integration/tmp
+
+credentials.json
