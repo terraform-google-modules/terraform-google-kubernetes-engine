@@ -28,18 +28,7 @@ It will:
 |------|-------------|
 | ca_certificate |  |
 | client_token |  |
-| cluster_name | Cluster name |
-| credentials_path |  |
-| ip_range_pods | The secondary IP range used for pods |
-| ip_range_services | The secondary IP range used for services |
 | kubernetes_endpoint |  |
-| location |  |
-| master_kubernetes_version | The master Kubernetes version |
-| network |  |
-| project_id |  |
-| region |  |
-| subnetwork |  |
-| zones | List of zones in which the cluster resides |
 
 [^]: (autogen_docs_end)
 

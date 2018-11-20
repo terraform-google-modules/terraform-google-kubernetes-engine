@@ -27,16 +27,7 @@ It will:
 |------|-------------|
 | ca_certificate |  |
 | client_token |  |
-| cluster_name | Cluster name |
-| credentials_path |  |
-| ip_range_pods | The secondary IP range used for pods |
-| ip_range_services | The secondary IP range used for services |
 | kubernetes_endpoint |  |
-| location |  |
-| network |  |
-| project_id |  |
-| region |  |
-| subnetwork |  |
 
 [^]: (autogen_docs_end)
 

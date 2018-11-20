@@ -30,17 +30,13 @@ suites:
   - name: "deploy_service"
     lifecycle:
       pre_converge:
-        - mv examples/deploy_service/variables.tf examples/deploy_service/variables.tf.disabled
-        - cp test/fixtures/all_examples/fixture_data.tf examples/deploy_service/fixture_data.tf
+        - ./test/fixtures/all_examples/install.sh deploy_service
       post_converge:
-        - rm -rf examples/deploy_service/fixture_data.tf
-        - mv examples/deploy_service/variables.tf.disabled examples/deploy_service/variables.tf
+        - ./test/fixtures/all_examples/uninstall.sh deploy_service
       pre_destroy:
-        - mv examples/deploy_service/variables.tf examples/deploy_service/variables.tf.disabled
-        - cp test/fixtures/all_examples/fixture_data.tf examples/deploy_service/fixture_data.tf
+        - ./test/fixtures/all_examples/install.sh deploy_service
       post_destroy:
-        - rm -rf examples/deploy_service/fixture_data.tf
-        - mv examples/deploy_service/variables.tf.disabled examples/deploy_service/variables.tf
+        - ./test/fixtures/all_examples/uninstall.sh deploy_service
     driver:
       name: "terraform"
       command_timeout: 1800
@@ -55,17 +51,13 @@ suites:
   - name: "node_pool"
     lifecycle:
       pre_converge:
-        - mv examples/node_pool/variables.tf examples/node_pool/variables.tf.disabled
-        - cp test/fixtures/all_examples/fixture_data.tf examples/node_pool/fixture_data.tf
+        - ./test/fixtures/all_examples/install.sh node_pool
       post_converge:
-        - rm -rf examples/node_pool/fixture_data.tf
-        - mv examples/node_pool/variables.tf.disabled examples/node_pool/variables.tf
+        - ./test/fixtures/all_examples/uninstall.sh node_pool
       pre_destroy:
-        - mv examples/node_pool/variables.tf examples/node_pool/variables.tf.disabled
-        - cp test/fixtures/all_examples/fixture_data.tf examples/node_pool/fixture_data.tf
+        - ./test/fixtures/all_examples/install.sh node_pool
       post_destroy:
-        - rm -rf examples/node_pool/fixture_data.tf
-        - mv examples/node_pool/variables.tf.disabled examples/node_pool/variables.tf
+        - ./test/fixtures/all_examples/uninstall.sh node_pool
     driver:
       name: "terraform"
       command_timeout: 1800
@@ -80,17 +72,13 @@ suites:
   - name: "simple_regional"
     lifecycle:
       pre_converge:
-        - mv examples/simple_regional/variables.tf examples/simple_regional/variables.tf.disabled
-        - cp test/fixtures/all_examples/fixture_data.tf examples/simple_regional/fixture_data.tf
+        - ./test/fixtures/all_examples/install.sh simple_regional
       post_converge:
-        - rm -rf examples/simple_regional/fixture_data.tf
-        - mv examples/simple_regional/variables.tf.disabled examples/simple_regional/variables.tf
+        - ./test/fixtures/all_examples/uninstall.sh simple_regional
       pre_destroy:
-        - mv examples/simple_regional/variables.tf examples/simple_regional/variables.tf.disabled
-        - cp test/fixtures/all_examples/fixture_data.tf examples/simple_regional/fixture_data.tf
+        - ./test/fixtures/all_examples/install.sh simple_regional
       post_destroy:
-        - rm -rf examples/simple_regional/fixture_data.tf
-        - mv examples/simple_regional/variables.tf.disabled examples/simple_regional/variables.tf
+        - ./test/fixtures/all_examples/uninstall.sh simple_regional
     driver:
       name: "terraform"
       command_timeout: 1800
@@ -105,17 +93,13 @@ suites:
   - name: "simple_zonal"
     lifecycle:
       pre_converge:
-        - mv examples/simple_zonal/variables.tf examples/simple_zonal/variables.tf.disabled
-        - cp test/fixtures/all_examples/fixture_data.tf examples/simple_zonal/fixture_data.tf
+        - ./test/fixtures/all_examples/install.sh simple_zonal
       post_converge:
-        - rm -rf examples/simple_zonal/fixture_data.tf
-        - mv examples/simple_zonal/variables.tf.disabled examples/simple_zonal/variables.tf
+        - ./test/fixtures/all_examples/uninstall.sh simple_zonal
       pre_destroy:
-        - mv examples/simple_zonal/variables.tf examples/simple_zonal/variables.tf.disabled
-        - cp test/fixtures/all_examples/fixture_data.tf examples/simple_zonal/fixture_data.tf
+        - ./test/fixtures/all_examples/install.sh simple_zonal
       post_destroy:
-        - rm -rf examples/simple_zonal/fixture_data.tf
-        - mv examples/simple_zonal/variables.tf.disabled examples/simple_zonal/variables.tf
+        - ./test/fixtures/all_examples/uninstall.sh simple_zonal
     driver:
       name: "terraform"
       command_timeout: 1800
@@ -130,17 +114,13 @@ suites:
   - name: "stub_domains"
     lifecycle:
       pre_converge:
-        - mv examples/stub_domains/variables.tf examples/stub_domains/variables.tf.disabled
-        - cp test/fixtures/all_examples/fixture_data.tf examples/stub_domains/fixture_data.tf
+        - ./test/fixtures/all_examples/install.sh stub_domains
       post_converge:
-        - rm -rf examples/stub_domains/fixture_data.tf
-        - mv examples/stub_domains/variables.tf.disabled examples/stub_domains/variables.tf
+        - ./test/fixtures/all_examples/uninstall.sh stub_domains
       pre_destroy:
-        - mv examples/stub_domains/variables.tf examples/stub_domains/variables.tf.disabled
-        - cp test/fixtures/all_examples/fixture_data.tf examples/stub_domains/fixture_data.tf
+        - ./test/fixtures/all_examples/install.sh stub_domains
       post_destroy:
-        - rm -rf examples/stub_domains/fixture_data.tf
-        - mv examples/stub_domains/variables.tf.disabled examples/stub_domains/variables.tf
+        - ./test/fixtures/all_examples/uninstall.sh stub_domains
     driver:
       name: "terraform"
       command_timeout: 1800

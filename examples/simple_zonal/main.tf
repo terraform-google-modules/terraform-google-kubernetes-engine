@@ -37,3 +37,5 @@ module "gke" {
   kubernetes_version = "1.9.7-gke.11"
   node_version = "1.9.7-gke.11"
 }
+
+data "google_client_config" "default" {}
