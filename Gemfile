@@ -16,6 +16,6 @@ ruby "~> 2.5"
 
 source 'https://rubygems.org/' do
   gem 'kitchen-terraform', '~> 4.0.3'
-  gem 'kubeclient'
+  gem "kubeclient", "~> 4.0"
   gem "rest-client", "~> 2.0"
 end
