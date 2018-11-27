@@ -15,11 +15,11 @@
 FROM alpine:3.8 as builder
 
 RUN apk add --no-cache \
-        bash=4.4.19-r1 \
-        git=2.18.1-r0 \
-        go=1.10.1-r0 \
-        make=4.2.1-r2 \
-        musl-dev=1.1.19-r10
+    bash=4.4.19-r1 \
+    git=2.18.1-r0 \
+    go=1.10.5-r0 \
+    make=4.2.1-r2 \
+    musl-dev=1.1.19-r10
 
 ENV APP_BASE_DIR="/cftk"
 
