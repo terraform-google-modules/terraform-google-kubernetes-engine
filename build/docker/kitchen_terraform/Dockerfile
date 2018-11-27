@@ -22,17 +22,17 @@ FROM $BUILD_TERRAFORM_IMAGE as cfkt_terraform
 FROM ruby:$BUILD_RUBY_VERSION-alpine
 
 RUN apk add --no-cache \
-        bash=4.3.42-r5 \
-        curl=7.60.0-r1 \
-        git=2.8.6-r0 \
-        g++=5.3.0-r0 \
-        jq=1.5-r2 \
-        make=4.1-r1 \
-        musl-dev=1.1.14-r16 \
-        python=2.7.14-r0 \
-        python-dev=2.7.14-r0 \
-        py-pip=8.1.2-r0 \
-        ca-certificates=20161130-r0
+    bash=4.4.19-r1 \
+    curl=7.61.1-r1 \
+    git=2.18.1-r0 \
+    g++=6.4.0-r9 \
+    jq=1.6_rc1-r1 \
+    make=4.2.1-r2 \
+    musl-dev=1.1.19-r10 \
+    python2=2.7.15-r1 \
+    python2-dev=2.7.15-r1 \
+    py2-pip=10.0.1-r0 \
+    ca-certificates=20171114-r3
 
 ADD https://storage.googleapis.com/kubernetes-release/release/v1.12.2/bin/linux/amd64/kubectl /usr/local/bin/kubectl
 RUN chmod +x /usr/local/bin/kubectl
