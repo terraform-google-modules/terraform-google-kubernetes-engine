@@ -47,12 +47,12 @@ RUN git fetch --all --tags --prune && \
 FROM alpine:3.8
 
 RUN apk add --no-cache \
-        bash=4.4.19-r1 \
-        curl=7.61.1-r0 \
-        git=2.18.0-r0 \
-        jq=1.6_rc1-r1 \
-        make=4.2.1-r2 \
-        python2=2.7.15-r1
+    bash=4.4.19-r1 \
+    curl=7.61.1-r1 \
+    git=2.18.1-r0 \
+    jq=1.6_rc1-r1 \
+    make=4.2.1-r2 \
+    python2=2.7.15-r1
 
 ENV APP_BASE_DIR="/cftk"
 
