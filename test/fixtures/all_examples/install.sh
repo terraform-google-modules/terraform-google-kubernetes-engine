@@ -30,6 +30,9 @@ if [ ! -d "${BASEDIR}/../../../examples/${EXAMPLE}" ]; then
 fi
 
 _example_path="${BASEDIR}/../../../examples/${EXAMPLE}"
-mv "${_example_path}/variables.tf" "${_example_path}/variables.tf.disabled"
+_variables_file="${_example_path}/variables.tf"
+if [ -f "${_variables_file}" ]; then
+  mv "${_variables_file}" "${_variables_file}.disabled"
+fi
 cp "${BASEDIR}/fixture_data.tf.fixture" "${_example_path}/fixture_data.tf"
 cp "${BASEDIR}/fixture_outputs.tf.fixture" "${_example_path}/fixture_outputs.tf"
