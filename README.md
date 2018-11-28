@@ -79,6 +79,8 @@ Then perform the following commands on the root folder:
 - `terraform plan` to see the infrastructure plan
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
+
+
 [^]: (autogen_docs_start)
 
 
@@ -142,6 +144,17 @@ Then perform the following commands on the root folder:
 [^]: (autogen_docs_end)
 
 ## Requirements
+
+Before this module can be used on a project, you must ensure that the following pre-requisites are fulfilled:
+
+1. Terraform and kubectl are [installed](#software-dependencies) on the machine where Terraform is executed.
+2. The Service Account you execute the module with has the right [permissions](#iam-roles).
+3. The Compute Engine and Kubernetes Engine APIs are [active](#enable-apis) on the project you will launch the cluster in.
+4. If you are using a Shared VPC, the APIs must also be activated on the Shared VPC host project and your service account needs the proper permissions there.
+
+The [project factory](https://github.com/terraform-google-modules/terraform-google-project-factory) can be used to provision projects with the correct APIs active and the necessary Shared VPC connections.
+
+### Software Dependencies
 ### Kubectl
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 ### Terraform plugins
@@ -151,12 +164,12 @@ Then perform the following commands on the root folder:
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the following:
 
-#### Roles
+#### IAM Roles
 The service account with the following roles:
 - roles/compute.viewer on the project
 - roles/container.clusterAdmin on the project
 
-### Enable API's
+### Enable APIs
 In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:
 
 - Compute Engine API - compute.googleapis.com
