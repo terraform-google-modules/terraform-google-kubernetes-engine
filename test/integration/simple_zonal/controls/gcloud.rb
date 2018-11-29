@@ -13,14 +13,8 @@
 # limitations under the License.
 
 project_id = attribute('project_id')
-region = attribute('region')
 location = attribute('location')
 cluster_name = attribute('cluster_name')
-network = attribute('network')
-subnetwork = attribute('subnetwork')
-ip_range_pods = attribute('ip_range_pods')
-ip_range_services = attribute('ip_range_services')
-master_kubernetes_version = attribute('master_kubernetes_version')
 
 credentials_path = attribute('credentials_path')
 ENV['CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE'] = credentials_path
@@ -45,31 +39,11 @@ control "gcloud" do
       end
 
       it "is zonal" do
-        expect(data['zone']).to eq location
-      end
-
-      it "is not regional" do
-        expect(data['zone']).not_to eq region
+        expect(data['location']).to match(/^(.*)[1-9]-[a-z]$/)
       end
 
       it "has the expected initial cluster version" do
-        expect(data['initialClusterVersion']).to eq master_kubernetes_version
-      end
-
-      it "is in the expected network" do
-        expect(data['network']).to eq network
-      end
-
-      it "is in the expected subnetwork" do
-        expect(data['subnetwork']).to eq subnetwork
-      end
-
-      it "has the expected secondary ip range for pods" do
-        expect(data['ipAllocationPolicy']['clusterSecondaryRangeName']).to eq ip_range_pods
-      end
-
-      it "has the expected secondary ip range for services" do
-        expect(data['ipAllocationPolicy']['servicesSecondaryRangeName']).to eq ip_range_services
+        expect(data['initialClusterVersion']).to eq "1.9.7-gke.11"
       end
 
       it "has the expected addon settings" do
@@ -104,7 +78,7 @@ control "gcloud" do
       let(:node_pool) { data['nodePools'].reject { |p| p['name'] == "default-pool" }.first }
 
       it "is running the expected version of Kubernetes" do
-        expect(node_pool['version']).to eq master_kubernetes_version
+        expect(node_pool['version']).to eq "1.9.7-gke.11"
       end
 
       it "has autoscaling enabled" do
