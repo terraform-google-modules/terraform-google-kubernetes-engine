@@ -57,6 +57,9 @@ control "gcloud" do
 
         it "exists" do
           expect(node_pool).not_to be_nil
+        end
+
+        it "is named correctly" do
           expect(node_pool['name']).to eq "pool-01"
         end
 
@@ -104,6 +107,9 @@ control "gcloud" do
 
         it "exists" do
           expect(node_pool).not_to be_nil
+        end
+
+        it "is named correctly" do
           expect(node_pool['name']).to eq "pool-02"
         end
 
