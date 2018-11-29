@@ -46,6 +46,9 @@ control "gcloud" do
 
       it "is zonal" do
         expect(data['zone']).to eq location
+      end
+
+      it "is not regional" do
         expect(data['zone']).not_to eq region
       end
 
