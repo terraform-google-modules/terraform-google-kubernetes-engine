@@ -65,62 +65,120 @@ control "gcloud" do
     describe "default node pool" do
       let(:default_node_pool) { data['nodePools'].select { |p| p['name'] == "default-pool" }.first }
 
-      it "has no initial node count" do
-        expect(default_node_pool['initialNodeCount']).to eq nil
-      end
-
-      it "does not have autoscaling enabled" do
-        expect(default_node_pool['autoscaling']).to eq nil
+      it "exists" do
+        expect(data['nodePools']).to include(
+          including(
+            "name" => "default-pool",
+          )
+        )
       end
     end
 
     describe "node pool" do
-      let(:node_pool) { data['nodePools'].reject { |p| p['name'] == "default-pool" }.first }
+      let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" } }
 
       it "is running the expected version of Kubernetes" do
-        expect(node_pool['version']).to eq "1.9.7-gke.11"
+        expect(node_pools).to include(
+          including(
+            "version" => "1.9.7-gke.11",
+          )
+        )
       end
 
       it "has autoscaling enabled" do
-        expect(node_pool['autoscaling']['enabled']).to eq true
+        expect(node_pools).to include(
+          including(
+            "autoscaling" => including(
+              "enabled" => true,
+            ),
+          )
+        )
       end
 
       it "has the expected minimum node count" do
-        expect(node_pool['autoscaling']['minNodeCount']).to eq 1
+        expect(node_pools).to include(
+          including(
+            "autoscaling" => including(
+              "minNodeCount" => 1,
+            ),
+          )
+        )
       end
 
       it "has the expected maximum node count" do
-        expect(node_pool['autoscaling']['maxNodeCount']).to eq 100
+        expect(node_pools).to include(
+          including(
+            "autoscaling" => including(
+              "maxNodeCount" => 100,
+            ),
+          )
+        )
       end
 
       it "is the expected machine type" do
-        expect(node_pool['config']['machineType']).to eq 'n1-standard-2'
+        expect(node_pools).to include(
+          including(
+            "config" => including(
+              "machineType" => "n1-standard-2",
+            ),
+          )
+        )
       end
 
       it "has the expected disk size" do
-        expect(node_pool['config']['diskSizeGb']).to eq 100
+        expect(node_pools).to include(
+          including(
+            "config" => including(
+              "diskSizeGb" => 100,
+            ),
+          )
+        )
       end
 
       it "has the expected labels" do
-        expect(node_pool['config']['labels']).to eq({
-          "cluster_name" => cluster_name,
-          "node_pool" => "default-node-pool",
-        })
+        expect(node_pools).to include(
+          including(
+            "config" => including(
+              "labels" => including(
+                "cluster_name" => cluster_name,
+                "node_pool" => "default-node-pool",
+              ),
+            ),
+          )
+        )
       end
 
       it "has the expected network tags" do
-        expect(node_pool['config']['tags']).to eq([
-          "gke-#{cluster_name}",
-          "gke-#{cluster_name}-default-node-pool",
-        ])
+        expect(node_pools).to include(
+          including(
+            "config" => including(
+              "tags" => match_array([
+                "gke-#{cluster_name}",
+                "gke-#{cluster_name}-default-node-pool",
+              ]),
+            ),
+          )
+        )
       end
 
       it "has autorepair enabled" do
-        expect(node_pool['management']['autoRepair']).to eq true
+        expect(node_pools).to include(
+          including(
+            "management" => including(
+              "autoRepair" => true,
+            ),
+          )
+        )
       end
 
       it "has autoupgrade enabled" do
-        expect(node_pool['management']['autoUpgrade']).to eq true
+        expect(node_pools).to include(
+          including(
+            "management" => including(
+              "autoUpgrade" => true,
+            ),
+          )
+        )
       end
     end
   end

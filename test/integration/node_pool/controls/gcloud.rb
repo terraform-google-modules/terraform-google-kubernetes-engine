@@ -33,18 +33,6 @@ control "gcloud" do
       end
     end
 
-    describe "default node pool" do
-      let(:default_node_pool) { data['nodePools'].select { |p| p['name'] == "default-pool" }.first }
-
-      it "has no initial node count" do
-        expect(default_node_pool['initialNodeCount']).to eq nil
-      end
-
-      it "does not have autoscaling enabled" do
-        expect(default_node_pool['autoscaling']).to eq nil
-      end
-    end
-
     describe "node pools" do
       let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" } }
 
@@ -53,120 +41,227 @@ control "gcloud" do
       end
 
       describe "pool-01" do
-        let(:node_pool) { node_pools.select { |p| p['name'] == "pool-01" }.first }
-
         it "exists" do
-          expect(node_pool).not_to be_nil
-        end
-
-        it "is named correctly" do
-          expect(node_pool['name']).to eq "pool-01"
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-01",
+            )
+          )
         end
 
         it "is the expected machine type" do
-          expect(node_pool['config']['machineType']).to eq 'n1-standard-2'
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-01",
+              "config" => including(
+                "machineType" => "n1-standard-2",
+              ),
+            )
+          )
         end
 
         it "has autoscaling enabled" do
-          expect(node_pool['autoscaling']['enabled']).to eq true
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-01",
+              "autoscaling" => including(
+                "enabled" => true,
+              ),
+            )
+          )
         end
 
         it "has the expected minimum node count" do
-          expect(node_pool['autoscaling']['minNodeCount']).to eq 4
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-01",
+              "autoscaling" => including(
+                "minNodeCount" => 4,
+              ),
+            )
+          )
         end
 
         it "has autorepair enabled" do
-          expect(node_pool['management']['autoRepair']).to eq true
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-01",
+              "management" => including(
+                "autoRepair" => true,
+              ),
+            )
+          )
         end
 
         it "has automatic upgrades enabled" do
-          expect(node_pool['management']['autoUpgrade']).to eq true
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-01",
+              "management" => including(
+                "autoUpgrade" => true,
+              ),
+            )
+          )
         end
 
         it "has the expected labels" do
-          expect(node_pool['config']['labels']).to eq({
-            "all-pools-example" => "true",
-            "pool-01-example" => "true",
-            "cluster_name" => cluster_name,
-            "node_pool" => "pool-01",
-          })
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-01",
+              "config" => including(
+                "labels" => {
+                  "all-pools-example" => "true",
+                  "pool-01-example" => "true",
+                  "cluster_name" => cluster_name,
+                  "node_pool" => "pool-01",
+                },
+              ),
+            )
+          )
         end
 
         it "has the expected network tags" do
-          expect(node_pool['config']['tags']).to match_array([
-            "all-node-example",
-            "pool-01-example",
-            "gke-node-pool-cluster",
-            "gke-node-pool-cluster-pool-01",
-          ])
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-01",
+              "config" => including(
+                "tags" => match_array([
+                  "all-node-example",
+                  "pool-01-example",
+                  "gke-node-pool-cluster",
+                  "gke-node-pool-cluster-pool-01",
+                ]),
+              ),
+            )
+          )
         end
       end
 
       describe "pool-02" do
-        let(:node_pool) { node_pools.select { |p| p['name'] == "pool-02" }.first }
-
         it "exists" do
-          expect(node_pool).not_to be_nil
-        end
-
-        it "is named correctly" do
-          expect(node_pool['name']).to eq "pool-02"
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-02",
+            )
+          )
         end
 
         it "is the expected machine type" do
-          expect(node_pool['config']['machineType']).to eq 'n1-standard-2'
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-02",
+              "config" => including(
+                "machineType" => "n1-standard-2",
+              ),
+            )
+          )
         end
 
         it "has autoscaling enabled" do
-          expect(node_pool['autoscaling']['enabled']).to eq true
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-02",
+              "autoscaling" => including(
+                "enabled" => true,
+              ),
+            )
+          )
         end
 
         it "has the expected minimum node count" do
-          expect(node_pool['autoscaling']['minNodeCount']).to eq 2
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-02",
+              "autoscaling" => including(
+                "minNodeCount" => 2,
+              ),
+            )
+          )
         end
 
         it "has the expected maximum node count" do
-          expect(node_pool['autoscaling']['maxNodeCount']).to eq 3
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-02",
+              "autoscaling" => including(
+                "maxNodeCount" => 3,
+              ),
+            )
+          )
         end
 
         it "has the expected disk size" do
-          expect(node_pool['config']['diskSizeGb']).to eq 30
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-02",
+              "config" => including(
+                "diskSizeGb" => 30,
+              ),
+            )
+          )
         end
 
         it "has the expected disk type" do
-          expect(node_pool['config']['diskType']).to eq "pd-standard"
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-02",
+              "config" => including(
+                "diskType" => "pd-standard",
+              ),
+            )
+          )
         end
 
         it "has the expected image type" do
-          expect(node_pool['config']['imageType']).to eq "COS"
-        end
-
-        it "has autorepair disabled" do
-          expect(node_pool['management']['autoRepair']).to eq nil
-        end
-
-        it "has automatic upgrades disabled" do
-          expect(node_pool['management']['autoUpgrade']).to eq nil
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-02",
+              "config" => including(
+                "imageType" => "COS",
+              ),
+            )
+          )
         end
 
         it "has the right service account" do
-          expect(node_pool['config']['serviceAccount']).to eq "default"
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-02",
+              "config" => including(
+                "serviceAccount" => "default",
+              ),
+            )
+          )
         end
 
         it "has the expected labels" do
-          expect(node_pool['config']['labels']).to eq({
-            "all-pools-example" => "true",
-            "cluster_name" => cluster_name,
-            "node_pool" => "pool-02",
-          })
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-02",
+              "config" => including(
+                "labels" => including(
+                  "all-pools-example" => "true",
+                  "cluster_name" => cluster_name,
+                  "node_pool" => "pool-02",
+                )
+              ),
+            )
+          )
         end
 
         it "has the expected network tags" do
-          expect(node_pool['config']['tags']).to match_array([
-            "all-node-example",
-            "gke-node-pool-cluster",
-            "gke-node-pool-cluster-pool-02",
-          ])
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-02",
+              "config" => including(
+                "tags" => match_array([
+                  "all-node-example",
+                  "gke-node-pool-cluster",
+                  "gke-node-pool-cluster-pool-02",
+                ])
+              ),
+            )
+          )
         end
       end
     end
