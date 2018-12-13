@@ -39,7 +39,7 @@ control "gcloud" do
       end
 
       it "has the expected initial cluster version" do
-        expect(data['initialClusterVersion']).to eq "1.9.7-gke.11"
+        expect(data['initialClusterVersion']).to eq "1.11.5-gke.4"
       end
     end
   end
