@@ -134,3 +134,18 @@ resource "google_container_node_pool" "zonal_pools" {
 
   depends_on = ["google_container_cluster.zonal_primary"]
 }
+
+resource "null_resource" "wait_for_zonal_cluster" {
+  count = "${var.regional ? 0 : 1}"
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
+  }
+
+  provisioner "local-exec" {
+    when = "destroy"
+    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
+  }
+
+  depends_on = ["google_container_cluster.zonal_primary", "google_container_node_pool.zonal_pools"]
+}
