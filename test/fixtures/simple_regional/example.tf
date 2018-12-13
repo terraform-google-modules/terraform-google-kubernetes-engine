@@ -17,12 +17,12 @@
 module "example" {
   source = "../../../examples/simple_regional"
 
-  project_id = "${var.project_id}"
-  credentials_path = "${local.credentials_path}"
-  region = "${var.region}"
-  network = "${google_compute_network.main.name}"
-  subnetwork = "${google_compute_subnetwork.main.name}"
-  ip_range_pods = "${google_compute_subnetwork.main.secondary_ip_range.0.range_name}"
-  ip_range_services = "${google_compute_subnetwork.main.secondary_ip_range.1.range_name}"
+  project_id                     = "${var.project_id}"
+  credentials_path               = "${local.credentials_path}"
+  region                         = "${var.region}"
+  network                        = "${google_compute_network.main.name}"
+  subnetwork                     = "${google_compute_subnetwork.main.name}"
+  ip_range_pods                  = "${google_compute_subnetwork.main.secondary_ip_range.0.range_name}"
+  ip_range_services              = "${google_compute_subnetwork.main.secondary_ip_range.1.range_name}"
   compute_engine_service_account = "${var.compute_engine_service_account}"
 }

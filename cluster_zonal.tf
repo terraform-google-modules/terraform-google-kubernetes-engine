@@ -143,7 +143,7 @@ resource "null_resource" "wait_for_zonal_cluster" {
   }
 
   provisioner "local-exec" {
-    when = "destroy"
+    when    = "destroy"
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
   }
 

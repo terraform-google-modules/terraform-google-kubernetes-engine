@@ -75,5 +75,5 @@ output "client_token" {
 
 output "ca_certificate" {
   description = "The cluster CA certificate"
-  value = "${module.example.ca_certificate}"
+  value       = "${module.example.ca_certificate}"
 }
