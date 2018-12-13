@@ -38,6 +38,6 @@ variable "ip_range_services" {
   description = "The secondary ip range to use for pods"
 }
 
-variable "pool_01_service_account" {
-  description = "Service account to associate to the nodes on pool-01"
+variable "compute_engine_service_account" {
+  description = "Service account to associate to the nodes in the cluster"
 }

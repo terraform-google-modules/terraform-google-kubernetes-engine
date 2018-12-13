@@ -223,17 +223,6 @@ control "gcloud" do
           )
         end
 
-        it "has the right service account" do
-          expect(data['nodePools']).to include(
-            including(
-              "name" => "pool-02",
-              "config" => including(
-                "serviceAccount" => "default",
-              ),
-            )
-          )
-        end
-
         it "has the expected labels" do
           expect(data['nodePools']).to include(
             including(

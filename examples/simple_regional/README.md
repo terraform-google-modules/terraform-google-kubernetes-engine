@@ -9,6 +9,7 @@ This example illustrates how to create a simple cluster.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| compute_engine_service_account | Service account to associate to the nodes in the cluster | string | - | yes |
 | ip_range_pods | The secondary ip range to use for pods | string | - | yes |
 | ip_range_services | The secondary ip range to use for pods | string | - | yes |
 | network | The VPC network to host the cluster in | string | - | yes |
