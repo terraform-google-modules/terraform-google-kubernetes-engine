@@ -39,6 +39,7 @@ module "gke" {
     {
       name      = "pool-01"
       min_count = 4
+      service_account = "${var.compute_engine_service_account}"
     },
     {
       name            = "pool-02"
@@ -50,7 +51,7 @@ module "gke" {
       image_type      = "COS"
       auto_repair     = false
       auto_upgrade    = false
-      service_account = "${local.pool_01_service_account}"
+      service_account = "${var.compute_engine_service_account}"
     },
   ]
 

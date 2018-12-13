@@ -35,6 +35,7 @@ module "gke" {
   network_policy = true
   kubernetes_version = "1.9.7-gke.11"
   node_version = "1.9.7-gke.11"
+  service_account    = "${var.compute_engine_service_account}"
 
   stub_domains {
     "example.com" = [

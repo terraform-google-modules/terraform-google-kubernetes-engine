@@ -51,4 +51,6 @@ locals {
   subnetwork = "${var.subnetwork}"
   ip_range_pods = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
+variable "compute_engine_service_account" {
+  description = "Service account to associate to the nodes in the cluster"
 }

@@ -9,10 +9,10 @@ This example illustrates how to create a cluster with multiple custom node-pool 
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| compute_engine_service_account | Service account to associate to the nodes in the cluster | string | - | yes |
 | ip_range_pods | The secondary ip range to use for pods | string | - | yes |
 | ip_range_services | The secondary ip range to use for pods | string | - | yes |
 | network | The VPC network to host the cluster in | string | - | yes |
-| pool_01_service_account | Service account to associate to the nodes on pool-01 | string | - | yes |
 | project_id | The project ID to host the cluster in | string | - | yes |
 | region | The region to host the cluster in | string | - | yes |
 | subnetwork | The subnetwork to host the cluster in | string | - | yes |

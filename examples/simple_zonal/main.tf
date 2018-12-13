@@ -36,6 +36,7 @@ module "gke" {
   ip_range_services = "${local.ip_range_services}"
   kubernetes_version = "1.9.7-gke.11"
   node_version = "1.9.7-gke.11"
+  service_account    = "${var.compute_engine_service_account}"
 }
 
 data "google_client_config" "default" {}
