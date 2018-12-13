@@ -101,6 +101,7 @@ docker_build_terraform:
 		--build-arg BUILD_CLOUD_SDK_VERSION=${BUILD_CLOUD_SDK_VERSION} \
 		--build-arg BUILD_PROVIDER_GOOGLE_VERSION=${BUILD_PROVIDER_GOOGLE_VERSION} \
 		--build-arg BUILD_PROVIDER_GSUITE_VERSION=${BUILD_PROVIDER_GSUITE_VERSION} \
+		--build-arg CREDENTIALS_FILE=${CREDENTIALS_FILE} \
 		-t ${DOCKER_IMAGE_TERRAFORM}:${DOCKER_TAG_TERRAFORM} .
 
 .PHONY: docker_build_kitchen_terraform
@@ -108,6 +109,7 @@ docker_build_kitchen_terraform:
 	docker build -f build/docker/kitchen_terraform/Dockerfile \
 		--build-arg BUILD_TERRAFORM_IMAGE="${DOCKER_IMAGE_TERRAFORM}:${DOCKER_TAG_TERRAFORM}" \
 		--build-arg BUILD_RUBY_VERSION="${BUILD_RUBY_VERSION}" \
+		--build-arg CREDENTIALS_FILE="${CREDENTIALS_FILE}" \
 		-t ${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} .
 
 # Run docker
