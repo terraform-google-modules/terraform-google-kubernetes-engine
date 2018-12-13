@@ -23,24 +23,12 @@ provisioner:
 platforms:
   - name: local
 
-lifecycle:
-  pre_converge: cd test/fixtures/networks/ && terraform init && terraform apply -auto-approve && cd -
-
 suites:
   - name: "deploy_service"
-    lifecycle:
-      pre_converge:
-        - ./test/fixtures/all_examples/install.sh deploy_service
-      post_converge:
-        - ./test/fixtures/all_examples/uninstall.sh deploy_service
-      pre_destroy:
-        - ./test/fixtures/all_examples/install.sh deploy_service
-      post_destroy:
-        - ./test/fixtures/all_examples/uninstall.sh deploy_service
     driver:
       name: "terraform"
       command_timeout: 1800
-      root_module_directory: examples/deploy_service
+      root_module_directory: test/fixtures/deploy_service
     verifier:
       name: terraform
       systems:
@@ -49,19 +37,10 @@ suites:
     provisioner:
       name: terraform
   - name: "node_pool"
-    lifecycle:
-      pre_converge:
-        - ./test/fixtures/all_examples/install.sh node_pool
-      post_converge:
-        - ./test/fixtures/all_examples/uninstall.sh node_pool
-      pre_destroy:
-        - ./test/fixtures/all_examples/install.sh node_pool
-      post_destroy:
-        - ./test/fixtures/all_examples/uninstall.sh node_pool
     driver:
       name: "terraform"
       command_timeout: 1800
-      root_module_directory: examples/node_pool
+      root_module_directory: test/fixtures/node_pool
     verifier:
       name: terraform
       systems:
@@ -70,19 +49,10 @@ suites:
     provisioner:
       name: terraform
   - name: "simple_regional"
-    lifecycle:
-      pre_converge:
-        - ./test/fixtures/all_examples/install.sh simple_regional
-      post_converge:
-        - ./test/fixtures/all_examples/uninstall.sh simple_regional
-      pre_destroy:
-        - ./test/fixtures/all_examples/install.sh simple_regional
-      post_destroy:
-        - ./test/fixtures/all_examples/uninstall.sh simple_regional
     driver:
       name: "terraform"
       command_timeout: 1800
-      root_module_directory: examples/simple_regional
+      root_module_directory: test/fixtures/simple_regional
     verifier:
       name: terraform
       systems:
@@ -91,19 +61,10 @@ suites:
     provisioner:
       name: terraform
   - name: "simple_zonal"
-    lifecycle:
-      pre_converge:
-        - ./test/fixtures/all_examples/install.sh simple_zonal
-      post_converge:
-        - ./test/fixtures/all_examples/uninstall.sh simple_zonal
-      pre_destroy:
-        - ./test/fixtures/all_examples/install.sh simple_zonal
-      post_destroy:
-        - ./test/fixtures/all_examples/uninstall.sh simple_zonal
     driver:
       name: "terraform"
       command_timeout: 1800
-      root_module_directory: examples/simple_zonal
+      root_module_directory: test/fixtures/simple_zonal
     verifier:
       name: terraform
       systems:
@@ -112,19 +73,10 @@ suites:
     provisioner:
       name: terraform
   - name: "stub_domains"
-    lifecycle:
-      pre_converge:
-        - ./test/fixtures/all_examples/install.sh stub_domains
-      post_converge:
-        - ./test/fixtures/all_examples/uninstall.sh stub_domains
-      pre_destroy:
-        - ./test/fixtures/all_examples/install.sh stub_domains
-      post_destroy:
-        - ./test/fixtures/all_examples/uninstall.sh stub_domains
     driver:
       name: "terraform"
       command_timeout: 1800
-      root_module_directory: examples/stub_domains
+      root_module_directory: test/fixtures/stub_domains
     verifier:
       name: terraform
       systems:
