@@ -39,6 +39,7 @@ mkdir "${TMPDIR}"
 
 export KUBECONFIG="${TMPDIR}/config"
 
+# shellcheck disable=SC1117
 base64 --help | grep "\--decode" && B64_ARG="--decode" || B64_ARG="-d"
 echo "${CA_CERTIFICATE}" | base64 ${B64_ARG} > "${TMPDIR}/ca_certificate"
 
