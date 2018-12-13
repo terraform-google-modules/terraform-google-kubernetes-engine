@@ -209,27 +209,56 @@ make generate_docs
 ```
 
 ### Integration test
-#### Terraform integration tests
-The integration tests for this module leverage
-[kitchen-terraform](https://github.com/newcontext-oss/kitchen-terraform).
 
-The tests will do the following:
-- Perform `bundle install` command
-  - Installs `kitchen-terraform` gem
-- Perform `kitchen create` command
-  - Performs a `terraform init`
-- Perform `kitchen converge` command
-  - Performs a `terraform apply -auto-approve`
-- Perform `kitchen validate` command
-  - Performs inspec tests.
-    - Shell out to `gcloud` to validate expected resources in GCP.
-    - Interrogate the cluster to validate expected resource in Kubernetes.
-- Perform `kitchen destroy` command
-  - Performs a `terraform destroy -force`
+Integration tests are run though [test-kitchen](https://github.com/test-kitchen/test-kitchen), [kitchen-terraform](https://github.com/newcontext-oss/kitchen-terraform), and [InSpec](https://github.com/inspec/inspec).
 
-To configure the integration tests, `cp test/fixtures/networks/terraform.tfvars.sample test/fixtures/networks/terraform.tfvars` and edit to match your testing environment. You can then use the following command to run the integration test in the root folder
+Five test-kitchen instances are defined:
 
-  `make test_integration`
+- `deploy_service`
+- `node_pool`
+- `simple_regional`
+- `simple_zonal`
+- `stub_domains`
+
+The test-kitchen instances in `test/fixtures/` wrap identically-named examples in the `examples/` directory.
+
+#### Setup
+
+1. Configure the [test fixtures](#test-configuration)
+2. Download a Service Account key with the necessary permissions and put it in the module's root directory with the name `credentials.json`.
+3. Build the Docker containers for testing:
+
+  ```
+  CREDENTIALS_FILE="credentials.json" make docker_build_terraform
+  CREDENTIALS_FILE="credentials.json" make docker_build_kitchen_terraform
+  ```
+4. Run the testing container in interactive mode:
+
+  ```
+  make docker_run
+  ```
+
+  The module root directory will be loaded into the Docker container at `/cftk/workdir/`.
+5. Run kitchen-terraform to test the infrastructure:
+
+  1. `kitchen create` creates Terraform state and downloads modules, if applicable.
+  2. `kitchen converge` creates the underlying resources. Run `kitchen converge <INSTANCE_NAME>` to create resources for a specific test case.
+  3. `kitchen verify` tests the created infrastructure. Run `kitchen verify <INSTANCE_NAME>` to run a specific test case.
+  4. `kitchen destroy` tears down the underlying resources created by `kitchen converge`. Run `kitchen destroy <INSTANCE_NAME>` to tear down resources for a specific test case.
+
+Alternatively, you can simply run `CREDENTIALS_FILE="credentials.json"  make test_integration_docker` to run all the test steps non-interactively.
+
+#### Test configuration
+
+Each test-kitchen instance is configured with a `variables.tfvars` file in the test fixture directory, e.g. `test/fixtures/node_pool/terraform.tfvars`. For convenience, since all of the variables are project-specific, these files have been symlinked to `test/fixtures/shared/terraform.tfvars`. Similarly, each test fixture has a `variables.tf` to define these variables, and an `outputs.tf` to facilitate providing necessary information for `inspec` to locate and query against created resources.
+
+Each test-kitchen instance creates a GCP Network and Subnetwork fixture to house resources, and may create any other necessary fixture data as needed.
+
+### Autogeneration of documentation from .tf files
+Run
+```
+make generate_docs
+```
 
 ### Linting
 The makefile in this project will lint or sometimes just format any shell,
