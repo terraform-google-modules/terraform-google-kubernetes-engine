@@ -1,3 +1,5 @@
 project_id=""
 credentials_path_relative="../../../credentials.json"
 region="us-east4"
+zones=["us-east4-a","us-east4-b","us-east4-c"]
+compute_engine_service_account=""

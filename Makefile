@@ -83,7 +83,6 @@ test_integration:
 	bundle exec kitchen converge
 	bundle exec kitchen verify
 	bundle exec kitchen destroy
-	cd test/fixtures/networks/ && terraform destroy -auto-approve && cd -
 
 .PHONY: generate_docs
 generate_docs:

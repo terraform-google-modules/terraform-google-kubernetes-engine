@@ -19,21 +19,21 @@ locals {
 }
 
 provider "google" {
-  credentials = "${file(local.credentials_path)}"
-  region      = "${local.region}"
+  credentials = "${file(var.credentials_path)}"
+  region      = "${var.region}"
 }
 
 module "gke" {
   source            = "../../"
-  project_id        = "${local.project_id}"
+  project_id        = "${var.project_id}"
   name              = "${local.cluster_type}-cluster"
-  region            = "${local.region}"
-  network           = "${local.network}"
-  subnetwork        = "${local.subnetwork}"
-  ip_range_pods     = "${local.ip_range_pods}"
-  ip_range_services = "${local.ip_range_services}"
-  kubernetes_version = "1.9.7-gke.11"
-  node_version = "1.9.7-gke.11"
+  region            = "${var.region}"
+  network           = "${var.network}"
+  subnetwork        = "${var.subnetwork}"
+  ip_range_pods     = "${var.ip_range_pods}"
+  ip_range_services = "${var.ip_range_services}"
+  kubernetes_version = "1.11.5-gke.4"
+  node_version = "1.11.5-gke.4"
 
   node_pools = [
     {

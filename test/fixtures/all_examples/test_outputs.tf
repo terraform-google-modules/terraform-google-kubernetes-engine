@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+// These outputs are used to test the module with kitchen-terraform
+// They do not need to be included in real-world uses of this module
+
 output "project_id" {
-  value = "${local.project_id}"
+  value = "${var.project_id}"
 }
 
 output "credentials_path" {
-  value = "${local.credentials_path}"
+  value = "${var.credentials_path}"
 }
 
 output "region" {
@@ -32,11 +35,11 @@ output "cluster_name" {
 }
 
 output "network" {
-  value = "${local.network}"
+  value = "${var.network}"
 }
 
 output "subnetwork" {
-  value = "${local.subnetwork}"
+  value = "${var.subnetwork}"
 }
 
 output "location" {
@@ -45,12 +48,12 @@ output "location" {
 
 output "ip_range_pods" {
   description = "The secondary IP range used for pods"
-  value       = "${local.ip_range_pods}"
+  value       = "${var.ip_range_pods}"
 }
 
 output "ip_range_services" {
   description = "The secondary IP range used for services"
-  value       = "${local.ip_range_services}"
+  value       = "${var.ip_range_services}"
 }
 
 output "zones" {
