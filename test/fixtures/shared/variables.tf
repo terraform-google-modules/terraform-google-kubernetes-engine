@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-variable "project_id" {
+variable "project_id" {}
 
-}
+variable "credentials_path_relative" {}
 
-variable "credentials_path_relative" {
-
-}
-
-variable "region" {
-
-}
+variable "region" {}
 
 variable "zones" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
-variable "compute_engine_service_account" {
-
-}
+variable "compute_engine_service_account" {}

@@ -49,6 +49,8 @@ function check_terraform() {
   echo "Running terraform validate"
   #shellcheck disable=SC2156
   find . -name "*.tf" -not -path "./test/fixtures/shared/*" -not -path "./test/fixtures/all_examples/*" -exec bash -c 'terraform validate --check-variables=false $(dirname "{}")' \;
+  echo "Running terraform fmt"
+  terraform fmt -check=true -write=false
 }
 
 # This function runs 'go fmt' and 'go vet' on every file
