@@ -38,6 +38,15 @@ resource "google_container_cluster" "zonal_primary" {
 
   master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
 
+  master_auth {
+    username = "${local.cluster_basic_auth_username}"
+    password = "${local.cluster_basic_auth_password}"
+
+    client_certificate_config {
+      issue_client_certificate = "${var.issue_client_certificate}"
+    }
+  }
+
   addons_config {
     http_load_balancing {
       disabled = "${var.http_load_balancing ? 0 : 1}"
