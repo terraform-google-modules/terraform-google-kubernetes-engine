@@ -164,7 +164,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | type | Cluster type (regional / zonal) |
 | zones | List of zones in which the cluster resides |
 
-[^]: (autogen_docs_end)
+[^]: (autogen_docs_end
 
 ## Requirements
 
