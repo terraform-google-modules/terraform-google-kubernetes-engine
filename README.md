@@ -52,6 +52,14 @@ module "gke" {
     }
   }
 
+  node_pools_metadata = {
+    all = {}
+
+    default-node-pool = {
+      shutdown-script = "${file(var.kube_shutdown_script)}"
+    }
+  }
+
   node_pools_taints = {
     all = []
 
@@ -109,6 +117,7 @@ Then perform the following commands on the root folder:
 | remove_default_node_pool | Boolean value determining removal of default node pool | bool | false | no |
 | node_pools | List of maps containing node pools | list | `<list>` | no |
 | node_pools_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
+| node_pools_metadata | Map of maps containing node metadata by node-pool name | map | `<map>` | no |
 | node_pools_tags | Map of lists containing node network tags by node-pool name | map | `<map>` | no |
 | node_pools_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
 | node_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `` | no |
