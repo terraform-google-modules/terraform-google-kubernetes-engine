@@ -40,6 +40,7 @@ module "gke" {
       auto_repair     = true
       auto_upgrade    = true
       service_account = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
+      preemptible     = false
     },
   ]
 
