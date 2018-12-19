@@ -138,6 +138,16 @@ variable "node_pools_labels" {
   }
 }
 
+variable "node_pools_metadata" {
+  type        = "map"
+  description = "Map of maps containing node metadata by node-pool name"
+
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
 variable "node_pools_taints" {
   type        = "map"
   description = "Map of lists containing node taints by node-pool name"
