@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-variable "project_id" {}
+variable "project_id" {
+  description = "The GCP project to use for integration tests"
+}
 
-variable "credentials_path_relative" {}
+variable "credentials_path_relative" {
+  description = "The relative path from the fixture directory to the GCP credentials file that will run Terraform tests"
+}
 
-variable "region" {}
+variable "region" {
+  description = "The GCP region to create and test resources in"
+}
 
 variable "zones" {
   type    = "list"
+  description = "The GCP zones to create and test resources in, for applicable tests"
   default = []
 }
 
-variable "compute_engine_service_account" {}
+variable "compute_engine_service_account" {
+  description = "The email address of the service account to associate with the GKE cluster"
+}
