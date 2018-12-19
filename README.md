@@ -40,6 +40,7 @@ module "gke" {
       auto_repair     = true
       auto_upgrade    = true
       service_account = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
+      preemptible     = false
     },
   ]
 
@@ -96,7 +97,7 @@ Then perform the following commands on the root folder:
 | ip_range_pods | The secondary ip range to use for pods | string | - | yes |
 | ip_range_services | The secondary ip range to use for pods | string | - | yes |
 | kubernetes_dashboard | Enable kubernetes dashboard addon | string | `false` | no |
-| kubernetes_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `1.10.6-gke.2` | no |
+| kubernetes_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `latest` | no |
 | logging_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `logging.googleapis.com` | no |
 | maintenance_start_time | Time window specified for daily maintenance operations in RFC3339 format | string | `05:00` | no |
 | master_authorized_networks_config | The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)<br><br>  ### example format ###   master_authorized_networks_config = [{     cidr_blocks = [{       cidr_block   = "10.0.0.0/8"       display_name = "example_network"     }],   }] | list | `<list>` | no |
@@ -114,6 +115,7 @@ Then perform the following commands on the root folder:
 | project_id | The project ID to host the cluster in (required) | string | - | yes |
 | region | The region to host the cluster in (required) | string | - | yes |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `true` | no |
+| service_account | The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account | string | `` | no |
 | stub_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | string | - | yes |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list | `<list>` | no |
@@ -162,12 +164,12 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 - [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) plugin v1.8.0
 
 ### Configure a Service Account
-In order to execute this module you must have a Service Account with the following:
-
-#### IAM Roles
-The service account with the following roles:
-- roles/compute.viewer on the project
-- roles/container.clusterAdmin on the project
+In order to execute this module you must have a Service Account with the
+following project roles:
+- roles/compute.viewer
+- roles/container.clusterAdmin
+- roles/container.developer
+- roles/iam.serviceAccountUser
 
 ### Enable APIs
 In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:
@@ -198,7 +200,6 @@ The project has the following folders and files:
 ### Requirements
 - [bundler](https://github.com/bundler/bundler)
 - [gcloud](https://cloud.google.com/sdk/install)
-- [jq](https://stedolan.github.io/jq/) 1.5
 - [terraform-docs](https://github.com/segmentio/terraform-docs/releases) 0.3.0
 
 ### Autogeneration of documentation from .tf files
@@ -208,27 +209,59 @@ make generate_docs
 ```
 
 ### Integration test
-#### Terraform integration tests
-The integration tests for this module leverage [kitchen-terraform](https://github.com/newcontext-oss/kitchen-terraform) and [kitchen-inspec](https://github.com/inspec/kitchen-inspec).
 
-The tests will do the following:
-- Perform `bundle install` command
-  - Installs `kitchen-terraform` and `kitchen-inspec` gems
-- Perform `kitchen create` command
-  - Performs a `terraform init`
-- Perform `kitchen converge` command
-  - Performs a `terraform apply -auto-approve`
-- Perform `kitchen validate` command
-  - Performs inspec tests.
-    - Shell out to `gcloud` to validate expected resources in GCP.
-    - Shell out to `kubectl` to validate expected resource in Kubernetes.
-    - Shell out to `terraform` to validate outputs.
-- Permos `kitchen destroy` command
-  - Performs a `terraform destroy -force`
+Integration tests are run though [test-kitchen](https://github.com/test-kitchen/test-kitchen), [kitchen-terraform](https://github.com/newcontext-oss/kitchen-terraform), and [InSpec](https://github.com/inspec/inspec).
 
-You can use the following command to run the integration test in the root folder
+Six test-kitchen instances are defined:
 
-  `make test_integration`
+- `deploy_service`
+- `node_pool`
+- `shared_vpc`
+- `simple_regional`
+- `simple_zonal`
+- `stub_domains`
+
+The test-kitchen instances in `test/fixtures/` wrap identically-named examples in the `examples/` directory.
+
+#### Setup
+
+1. Configure the [test fixtures](#test-configuration)
+2. Download a Service Account key with the necessary permissions and put it in the module's root directory with the name `credentials.json`.
+3. Build the Docker containers for testing:
+
+  ```
+  CREDENTIALS_FILE="credentials.json" make docker_build_terraform
+  CREDENTIALS_FILE="credentials.json" make docker_build_kitchen_terraform
+  ```
+4. Run the testing container in interactive mode:
+
+  ```
+  make docker_run
+  ```
+
+  The module root directory will be loaded into the Docker container at `/cftk/workdir/`.
+5. Run kitchen-terraform to test the infrastructure:
+
+  1. `kitchen create` creates Terraform state and downloads modules, if applicable.
+  2. `kitchen converge` creates the underlying resources. Run `kitchen converge <INSTANCE_NAME>` to create resources for a specific test case.
+  3. `kitchen verify` tests the created infrastructure. Run `kitchen verify <INSTANCE_NAME>` to run a specific test case.
+  4. `kitchen destroy` tears down the underlying resources created by `kitchen converge`. Run `kitchen destroy <INSTANCE_NAME>` to tear down resources for a specific test case.
+
+Alternatively, you can simply run `CREDENTIALS_FILE="credentials.json"  make test_integration_docker` to run all the test steps non-interactively.
+
+#### Test configuration
+
+Each test-kitchen instance is configured with a `variables.tfvars` file in the test fixture directory, e.g. `test/fixtures/node_pool/terraform.tfvars`.
+For convenience, since all of the variables are project-specific, these files have been symlinked to `test/fixtures/shared/terraform.tfvars`. 
+Similarly, each test fixture has a `variables.tf` to define these variables, and an `outputs.tf` to facilitate providing necessary information for `inspec` to locate and query against created resources.
+
+Each test-kitchen instance creates a GCP Network and Subnetwork fixture to house resources, and may create any other necessary fixture data as needed.
+
+### Autogeneration of documentation from .tf files
+Run
+```
+make generate_docs
+```
 
 ### Linting
 The makefile in this project will lint or sometimes just format any shell,
