@@ -24,7 +24,7 @@ resource "google_container_cluster" "zonal_primary" {
   project     = "${var.project_id}"
 
   zone             = "${var.zones[0]}"
-  additional_zones = "${slice(var.zones,1,length(var.zones))}"
+  additional_zones = ["${slice(var.zones,1,length(var.zones))}"]
 
   network            = "${data.google_compute_network.gke_network.self_link}"
   subnetwork         = "${data.google_compute_subnetwork.gke_subnetwork.self_link}"
@@ -78,7 +78,7 @@ resource "google_container_cluster" "zonal_primary" {
     name = "default-pool"
 
     node_config {
-      service_account = "${lookup(var.node_pools[0], "service_account", "")}"
+      service_account = "${lookup(var.node_pools[0], "service_account", var.service_account)}"
     }
   }
 }
@@ -114,7 +114,7 @@ resource "google_container_node_pool" "zonal_pools" {
 
     disk_size_gb    = "${lookup(var.node_pools[count.index], "disk_size_gb", 100)}"
     disk_type       = "${lookup(var.node_pools[count.index], "disk_type", "pd-standard")}"
-    service_account = "${lookup(var.node_pools[count.index], "service_account", "")}"
+    service_account = "${lookup(var.node_pools[count.index], "service_account", var.service_account)}"
     preemptible     = "${lookup(var.node_pools[count.index], "preemptible", false)}"
 
     oauth_scopes = [
@@ -143,7 +143,7 @@ resource "null_resource" "wait_for_zonal_cluster" {
   }
 
   provisioner "local-exec" {
-    when = "destroy"
+    when    = "destroy"
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
   }
 

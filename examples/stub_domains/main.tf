@@ -15,22 +15,27 @@
  */
 
 locals {
-  credentials_file_path = "${path.module}/sa-key.json"
+  cluster_type = "stub-domains"
 }
 
 provider "google" {
-  credentials = "${file(local.credentials_file_path)}"
+  credentials = "${file(var.credentials_path)}"
+  region      = "${var.region}"
 }
 
 module "gke" {
-  source            = "../../"
-  project_id        = "${var.project_id}"
-  name              = "stub-domains-cluster"
-  region            = "${var.region}"
-  network           = "${var.network}"
-  subnetwork        = "${var.subnetwork}"
-  ip_range_pods     = "${var.ip_range_pods}"
-  ip_range_services = "${var.ip_range_services}"
+  source             = "../../"
+  project_id         = "${var.project_id}"
+  name               = "${local.cluster_type}-cluster"
+  region             = "${var.region}"
+  network            = "${var.network}"
+  subnetwork         = "${var.subnetwork}"
+  ip_range_pods      = "${var.ip_range_pods}"
+  ip_range_services  = "${var.ip_range_services}"
+  network_policy     = true
+  kubernetes_version = "1.11.5-gke.4"
+  node_version       = "1.11.5-gke.4"
+  service_account    = "${var.compute_engine_service_account}"
 
   stub_domains {
     "example.com" = [
@@ -44,3 +49,5 @@ module "gke" {
     ]
   }
 }
+
+data "google_client_config" "default" {}
