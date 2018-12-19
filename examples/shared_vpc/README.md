@@ -1,15 +1,10 @@
 # Shared VPC Cluster
 
-This example illustrates how to create a simple cluster.
+This example illustrates how to create a simple cluster where the host network is not necessarily in the same project as the cluster.
 
-Expected variables:
-- `project_id`
-- `region`
-- `network`
-- `network_project_id`
-- `subnetwork`
-- `ip_range_pods`
-- `ip_range_services`
+[^]: (autogen_docs_start)
+
+[^]: (autogen_docs_end)
 
 To provision this example, run the following from within this directory:
 - `terraform init` to get the plugins

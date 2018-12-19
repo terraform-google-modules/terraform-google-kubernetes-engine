@@ -14,31 +14,16 @@
  * limitations under the License.
  */
 
-output "name_example" {
-  description = "Cluster name"
-  value       = "${module.gke.name}"
+output "kubernetes_endpoint" {
+  sensitive = true
+  value     = "${module.gke.endpoint}"
 }
 
-output "endpoint_example" {
-  sensitive   = true
-  description = "Cluster endpoint"
-  value       = "${module.gke.endpoint}"
+output "client_token" {
+  sensitive = true
+  value     = "${base64encode(data.google_client_config.default.access_token)}"
 }
 
-output "location_example" {
-  description = "Cluster location"
-  value       = "${module.gke.location}"
-}
-
-output "zones_example" {
-  description = "List of zones in which the cluster resides"
-  value       = "${module.gke.zones}"
-}
-
-output "node_pools_names_example" {
-  value = "${module.gke.node_pools_names}"
-}
-
-output "node_pools_versions_example" {
-  value = "${module.gke.node_pools_versions}"
+output "ca_certificate" {
+  value = "${module.gke.ca_certificate}"
 }

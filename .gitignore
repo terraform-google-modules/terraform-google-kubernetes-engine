@@ -38,12 +38,9 @@ crash.log
 **/.kitchen.local.yml
 **/Gemfile.lock
 
-# Ignore any .tfvars files that are generated automatically for each Terraform run. Most
-# .tfvars files are managed as part of configuration and so should be included in
-# version control.
-#
-# example.tfvars
-**/terraform.tfvars
+test/fixtures/shared/terraform.tfvars
 
 test/integration/gcloud/config.sh
 test/integration/tmp
+
+credentials.json

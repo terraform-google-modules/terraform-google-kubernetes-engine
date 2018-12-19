@@ -78,7 +78,7 @@ resource "google_container_cluster" "zonal_primary" {
     name = "default-pool"
 
     node_config {
-      service_account = "${lookup(var.node_pools[0], "service_account", "")}"
+      service_account = "${lookup(var.node_pools[0], "service_account", var.service_account)}"
     }
   }
 }
@@ -114,7 +114,7 @@ resource "google_container_node_pool" "zonal_pools" {
 
     disk_size_gb    = "${lookup(var.node_pools[count.index], "disk_size_gb", 100)}"
     disk_type       = "${lookup(var.node_pools[count.index], "disk_type", "pd-standard")}"
-    service_account = "${lookup(var.node_pools[count.index], "service_account", "")}"
+    service_account = "${lookup(var.node_pools[count.index], "service_account", var.service_account)}"
     preemptible     = "${lookup(var.node_pools[count.index], "preemptible", false)}"
 
     oauth_scopes = [
@@ -133,4 +133,19 @@ resource "google_container_node_pool" "zonal_pools" {
   }
 
   depends_on = ["google_container_cluster.zonal_primary"]
+}
+
+resource "null_resource" "wait_for_zonal_cluster" {
+  count = "${var.regional ? 0 : 1}"
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
+  }
+
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
+  }
+
+  depends_on = ["google_container_cluster.zonal_primary", "google_container_node_pool.zonal_pools"]
 }

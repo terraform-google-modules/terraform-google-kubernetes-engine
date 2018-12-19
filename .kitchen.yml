@@ -1,0 +1,98 @@
+# Copyright 2018 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+driver:
+  name: "terraform"
+  command_timeout: 1800
+
+provisioner:
+  name: "terraform"
+
+platforms:
+  - name: local
+
+suites:
+  - name: "deploy_service"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/deploy_service
+    verifier:
+      name: terraform
+      systems:
+        - name: deploy_service
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "node_pool"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/node_pool
+    verifier:
+      name: terraform
+      systems:
+        - name: node_pool
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "shared_vpc"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/shared_vpc
+    verifier:
+      name: terraform
+      systems:
+        - name: shared_vpc
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "simple_regional"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/simple_regional
+    verifier:
+      name: terraform
+      systems:
+        - name: simple_regional
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "simple_zonal"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/simple_zonal
+    verifier:
+      name: terraform
+      systems:
+        - name: simple_zonal
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "stub_domains"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/stub_domains
+    verifier:
+      name: terraform
+      systems:
+        - name: stub_domains
+          backend: local
+    provisioner:
+      name: terraform
