@@ -15,21 +15,27 @@
  */
 
 locals {
-  credentials_file_path = "${path.module}/sa-key.json"
+  cluster_type = "shared-vpc"
 }
 
 provider "google" {
-  credentials = "${file(local.credentials_file_path)}"
+  credentials = "${file(var.credentials_path)}"
+  region      = "${var.region}"
 }
 
 module "gke" {
   source             = "../../"
   project_id         = "${var.project_id}"
-  name               = "shared-vpc-sample-cluster"
+  name               = "${local.cluster_type}-cluster"
   region             = "${var.region}"
   network            = "${var.network}"
   network_project_id = "${var.network_project_id}"
   subnetwork         = "${var.subnetwork}"
   ip_range_pods      = "${var.ip_range_pods}"
   ip_range_services  = "${var.ip_range_services}"
+  kubernetes_version = "1.11.5-gke.4"
+  node_version       = "1.11.5-gke.4"
+  service_account    = "${var.compute_engine_service_account}"
 }
+
+data "google_client_config" "default" {}

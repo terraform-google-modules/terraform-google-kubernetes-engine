@@ -15,27 +15,31 @@
  */
 
 locals {
-  credentials_file_path = "${path.module}/sa-key.json"
+  cluster_type = "node-pool"
 }
 
 provider "google" {
-  credentials = "${file(local.credentials_file_path)}"
+  credentials = "${file(var.credentials_path)}"
+  region      = "${var.region}"
 }
 
 module "gke" {
-  source            = "../../"
-  project_id        = "${var.project_id}"
-  name              = "node-pool-cluster"
-  region            = "${var.region}"
-  network           = "${var.network}"
-  subnetwork        = "${var.subnetwork}"
-  ip_range_pods     = "${var.ip_range_pods}"
-  ip_range_services = "${var.ip_range_services}"
+  source             = "../../"
+  project_id         = "${var.project_id}"
+  name               = "${local.cluster_type}-cluster"
+  region             = "${var.region}"
+  network            = "${var.network}"
+  subnetwork         = "${var.subnetwork}"
+  ip_range_pods      = "${var.ip_range_pods}"
+  ip_range_services  = "${var.ip_range_services}"
+  kubernetes_version = "1.11.5-gke.4"
+  node_version       = "1.11.5-gke.4"
 
   node_pools = [
     {
-      name      = "pool-01"
-      min_count = 4
+      name            = "pool-01"
+      min_count       = 4
+      service_account = "${var.compute_engine_service_account}"
     },
     {
       name            = "pool-02"
@@ -47,7 +51,7 @@ module "gke" {
       image_type      = "COS"
       auto_repair     = false
       auto_upgrade    = false
-      service_account = "${var.pool_01_service_account}"
+      service_account = "${var.compute_engine_service_account}"
     },
   ]
 
@@ -95,3 +99,5 @@ module "gke" {
     pool-02 = []
   }
 }
+
+data "google_client_config" "default" {}
