@@ -8,6 +8,18 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
 
+## [v0.4.0] - 2018-12-19
+### Added
+* Added support for testing with kitchen-terraform. #33
+* Added support for preemptible nodes. #38
+
+### Changed
+* Updated default version to `1.10.6`. #31
+
+### Fixed
+* `region` argument on google_compute_subnetwork caused errors. #22
+* Added check to wait for GKE cluster to be `READY` before completing. #46
+
 ## [v0.3.0] - 2018-10-10
 ### Changed
 * Updated network/subnetwork lookup to use data source. #16
