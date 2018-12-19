@@ -48,6 +48,18 @@ suites:
           backend: local
     provisioner:
       name: terraform
+  - name: "shared_vpc"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/shared_vpc
+    verifier:
+      name: terraform
+      systems:
+        - name: shared_vpc
+          backend: local
+    provisioner:
+      name: terraform
   - name: "simple_regional"
     driver:
       name: "terraform"
