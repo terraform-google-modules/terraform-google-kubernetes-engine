@@ -27,9 +27,9 @@ variable "region" {
 }
 
 variable "zones" {
-  type    = "list"
+  type        = "list"
   description = "The GCP zones to create and test resources in, for applicable tests"
-  default = []
+  default     = []
 }
 
 variable "compute_engine_service_account" {
