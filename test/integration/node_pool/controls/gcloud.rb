@@ -76,7 +76,7 @@ control "gcloud" do
             including(
               "name" => "pool-01",
               "autoscaling" => including(
-                "minNodeCount" => 4,
+                "minNodeCount" => 1,
               ),
             )
           )
@@ -173,7 +173,7 @@ control "gcloud" do
             including(
               "name" => "pool-02",
               "autoscaling" => including(
-                "minNodeCount" => 2,
+                "minNodeCount" => 1,
               ),
             )
           )
@@ -184,7 +184,7 @@ control "gcloud" do
             including(
               "name" => "pool-02",
               "autoscaling" => including(
-                "maxNodeCount" => 3,
+                "maxNodeCount" => 2,
               ),
             )
           )
