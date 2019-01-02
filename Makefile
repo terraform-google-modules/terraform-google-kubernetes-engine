@@ -16,15 +16,11 @@
 SHELL := /usr/bin/env bash
 
 # Docker build config variables
-BUILD_TERRAFORM_VERSION ?= 0.11.10
-BUILD_CLOUD_SDK_VERSION ?= 216.0.0
-BUILD_PROVIDER_GOOGLE_VERSION ?= 1.17.1
-BUILD_PROVIDER_GSUITE_VERSION ?= 0.1.8
-DOCKER_IMAGE_TERRAFORM := cftk/terraform
-DOCKER_TAG_TERRAFORM ?= ${BUILD_TERRAFORM_VERSION}_${BUILD_CLOUD_SDK_VERSION}_${BUILD_PROVIDER_GOOGLE_VERSION}_${BUILD_PROVIDER_GSUITE_VERSION}
-BUILD_RUBY_VERSION := 2.5.3
-DOCKER_IMAGE_KITCHEN_TERRAFORM := cftk/kitchen_terraform
-DOCKER_TAG_KITCHEN_TERRAFORM ?= ${BUILD_TERRAFORM_VERSION}_${BUILD_CLOUD_SDK_VERSION}_${BUILD_PROVIDER_GOOGLE_VERSION}_${BUILD_PROVIDER_GSUITE_VERSION}
+DOCKER_ORG := gcr.io/cloud-foundation-cicd
+DOCKER_TAG_BASE_KITCHEN_TERRAFORM ?= 0.11.10_216.0.0_1.19.1_0.1.10
+DOCKER_REPO_BASE_KITCHEN_TERRAFORM := ${DOCKER_ORG}/cft/kitchen-terraform:${DOCKER_TAG_BASE_KITCHEN_TERRAFORM}
+DOCKER_TAG_KITCHEN_TERRAFORM ?= ${DOCKER_TAG_BASE_KITCHEN_TERRAFORM}
+DOCKER_IMAGE_KITCHEN_TERRAFORM := cft/kitchen-terraform_terraform-google-kubernetes-engine
 
 # All is the first target in the file so it will get picked up when you just run 'make' on its own
 all: check_shell check_python check_golang check_terraform check_docker check_base_files test_check_headers check_headers check_trailing_whitespace generate_docs
@@ -94,57 +90,51 @@ version:
 	@source helpers/version-repo.sh
 
 # Build Docker
-.PHONY: docker_build_terraform
-docker_build_terraform:
-	docker build -f build/docker/terraform/Dockerfile \
-		--build-arg BUILD_TERRAFORM_VERSION=${BUILD_TERRAFORM_VERSION} \
-		--build-arg BUILD_CLOUD_SDK_VERSION=${BUILD_CLOUD_SDK_VERSION} \
-		--build-arg BUILD_PROVIDER_GOOGLE_VERSION=${BUILD_PROVIDER_GOOGLE_VERSION} \
-		--build-arg BUILD_PROVIDER_GSUITE_VERSION=${BUILD_PROVIDER_GSUITE_VERSION} \
-		--build-arg CREDENTIALS_FILE=${CREDENTIALS_FILE} \
-		-t ${DOCKER_IMAGE_TERRAFORM}:${DOCKER_TAG_TERRAFORM} .
-
 .PHONY: docker_build_kitchen_terraform
 docker_build_kitchen_terraform:
 	docker build -f build/docker/kitchen_terraform/Dockerfile \
-		--build-arg BUILD_TERRAFORM_IMAGE="${DOCKER_IMAGE_TERRAFORM}:${DOCKER_TAG_TERRAFORM}" \
-		--build-arg BUILD_RUBY_VERSION="${BUILD_RUBY_VERSION}" \
-		--build-arg CREDENTIALS_FILE="${CREDENTIALS_FILE}" \
+		--build-arg BASE_IMAGE=${DOCKER_REPO_BASE_KITCHEN_TERRAFORM} \
 		-t ${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} .
+
+# Push Docker image
+.PHONY: docker_push_kitchen_terraform
+docker_push_kitchen_terraform:
+	docker tag ${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} ${DOCKER_ORG}/${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM}
+	docker push ${DOCKER_ORG}/${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM}
 
 # Run docker
 .PHONY: docker_run
 docker_run:
 	docker run --rm -it \
-		-v $(CURDIR):/cftk/workdir \
+		-v $(CURDIR):/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
 		/bin/bash
 
 .PHONY: docker_create
-docker_create: docker_build_terraform docker_build_kitchen_terraform
+docker_create: docker_build_kitchen_terraform
 	docker run --rm -it \
-		-v $(CURDIR):/cftk/workdir \
+		-v $(CURDIR):/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
 		/bin/bash -c "kitchen create"
 
 .PHONY: docker_converge
 docker_converge:
 	docker run --rm -it \
-		-v $(CURDIR):/cftk/workdir \
+		-v $(CURDIR):/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
 		/bin/bash -c "kitchen converge && kitchen converge"
 
 .PHONY: docker_verify
 docker_verify:
 	docker run --rm -it \
-		-v $(CURDIR):/cftk/workdir \
+		-v $(CURDIR):/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
 		/bin/bash -c "kitchen verify"
 
 .PHONY: docker_destroy
 docker_destroy:
 	docker run --rm -it \
-		-v $(CURDIR):/cftk/workdir \
+		-v $(CURDIR):/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
 		/bin/bash -c "kitchen destroy"
 
