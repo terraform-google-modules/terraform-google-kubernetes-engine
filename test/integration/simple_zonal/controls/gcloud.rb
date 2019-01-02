@@ -43,7 +43,7 @@ control "gcloud" do
       end
 
       it "has the expected initial cluster version" do
-        expect(data['initialClusterVersion']).to eq "1.11.4-gke.8"
+        expect(data['initialClusterVersion']).to eq "1.11.4-gke.13"
       end
 
       it "has the expected addon settings" do
@@ -80,7 +80,7 @@ control "gcloud" do
       it "is running the expected version of Kubernetes" do
         expect(node_pools).to include(
           including(
-            "version" => "1.11.4-gke.8",
+            "version" => "1.11.4-gke.13",
           )
         )
       end
