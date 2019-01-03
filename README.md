@@ -230,8 +230,8 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
 3. Build the Docker containers for testing:
 
   ```
-  CREDENTIALS_FILE="credentials.json" make docker_build_terraform
-  CREDENTIALS_FILE="credentials.json" make docker_build_kitchen_terraform
+  make docker_build_terraform
+  make docker_build_kitchen_terraform
   ```
 4. Run the testing container in interactive mode:
 
@@ -247,7 +247,7 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
   3. `kitchen verify` tests the created infrastructure. Run `kitchen verify <INSTANCE_NAME>` to run a specific test case.
   4. `kitchen destroy` tears down the underlying resources created by `kitchen converge`. Run `kitchen destroy <INSTANCE_NAME>` to tear down resources for a specific test case.
 
-Alternatively, you can simply run `CREDENTIALS_FILE="credentials.json"  make test_integration_docker` to run all the test steps non-interactively.
+Alternatively, you can simply run `make test_integration_docker` to run all the test steps non-interactively.
 
 #### Test configuration
 
