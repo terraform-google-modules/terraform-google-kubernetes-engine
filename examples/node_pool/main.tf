@@ -38,14 +38,14 @@ module "gke" {
   node_pools = [
     {
       name            = "pool-01"
-      min_count       = 4
+      min_count       = 1
       service_account = "${var.compute_engine_service_account}"
     },
     {
       name            = "pool-02"
       machine_type    = "n1-standard-2"
-      min_count       = 2
-      max_count       = 3
+      min_count       = 1
+      max_count       = 2
       disk_size_gb    = 30
       disk_type       = "pd-standard"
       image_type      = "COS"
