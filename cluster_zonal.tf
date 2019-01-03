@@ -19,7 +19,7 @@
  *****************************************/
 resource "google_container_cluster" "zonal_primary" {
   provider    = "google-beta"
-  count       = "${var.regional ? 0 : 1}"
+  count       = "${(local.cluster_deployment_type == "zonal") ? 1 : 0}"
   name        = "${var.name}"
   description = "${var.description}"
   project     = "${var.project_id}"
@@ -34,7 +34,7 @@ resource "google_container_cluster" "zonal_primary" {
   logging_service    = "${var.logging_service}"
   monitoring_service = "${var.monitoring_service}"
 
-  master_authorized_networks_config = "${var.master_authorized_networks_config}"
+  master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
 
   addons_config {
     http_load_balancing {
@@ -91,7 +91,7 @@ resource "google_container_cluster" "zonal_primary" {
  *****************************************/
 resource "google_container_node_pool" "zonal_pools" {
   provider           = "google-beta"
-  count              = "${var.regional ? 0 : length(var.node_pools)}"
+  count              = "${(local.cluster_deployment_type == "zonal") ? length(var.node_pools) : 0}"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
   zone               = "${var.zones[0]}"
@@ -141,7 +141,7 @@ resource "google_container_node_pool" "zonal_pools" {
 }
 
 resource "null_resource" "wait_for_zonal_cluster" {
-  count = "${var.regional ? 0 : 1}"
+  count = "${(local.cluster_deployment_type == "zonal") ? 1 : 0}"
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"

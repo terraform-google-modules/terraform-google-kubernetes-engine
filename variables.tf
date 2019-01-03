@@ -209,3 +209,23 @@ variable "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account"
   default     = ""
 }
+
+variable "private" {
+  description = "(Beta) Provision as a private cluster"
+  default     = false
+}
+
+variable "private_enable_private_endpoint" {
+  description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
+  default     = false
+}
+
+variable "private_enable_private_nodes" {
+  description = "(Beta) Whether nodes have internal IP addresses only"
+  default     = false
+}
+
+variable "private_master_ipv4_cidr_block" {
+  description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
+  default     = "10.0.0.0/28"
+}

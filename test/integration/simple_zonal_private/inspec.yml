@@ -1,0 +1,23 @@
+name: simple_zonal_private
+attributes:
+  - name: project_id
+    required: true
+    type: string
+  - name: credentials_path
+    required: true
+    type: string
+  - name: location
+    required: true
+    type: string
+  - name: cluster_name
+    required: true
+    type: string
+  - name: master_kubernetes_version
+    required: true
+    type: string
+  - name: kubernetes_endpoint
+    required: true
+    type: string
+  - name: client_token
+    required: true
+    type: string
