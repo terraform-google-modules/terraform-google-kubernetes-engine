@@ -7,6 +7,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Changed
+* Set `horizontal_pod_autoscaling` to `true` by default. #42
 
 ## [v0.4.0] - 2018-12-19
 ### Added
