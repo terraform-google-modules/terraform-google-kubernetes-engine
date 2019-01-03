@@ -117,6 +117,11 @@ variable "ip_range_services" {
   description = "The secondary ip range to use for pods"
 }
 
+variable "remove_default_node_pool" {
+  description = "Remove default node pool while setting up the cluster"
+  default     = false
+}
+
 variable "node_pools" {
   type        = "list"
   description = "List of maps containing node pools"
