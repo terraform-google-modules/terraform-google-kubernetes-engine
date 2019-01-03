@@ -18,7 +18,7 @@ locals {
   cluster_type = "stub-domains"
 }
 
-provider "google" {
+provider "google-beta" {
   credentials = "${file(var.credentials_path)}"
   region      = "${var.region}"
 }

@@ -24,17 +24,19 @@ resource "random_string" "suffix" {
   upper   = false
 }
 
-provider "google" {
+provider "google-beta" {
   credentials = "${file(local.credentials_path)}"
   project     = "${var.project_id}"
 }
 
 resource "google_compute_network" "main" {
+  provider                = "google-beta"
   name                    = "cft-gke-test-${random_string.suffix.result}"
   auto_create_subnetworks = "false"
 }
 
 resource "google_compute_subnetwork" "main" {
+  provider      = "google-beta"
   name          = "cft-gke-test-${random_string.suffix.result}"
   ip_cidr_range = "10.0.0.0/17"
   region        = "${var.region}"

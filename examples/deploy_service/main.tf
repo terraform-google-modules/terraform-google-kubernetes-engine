@@ -18,7 +18,7 @@ locals {
   cluster_type = "deploy-service"
 }
 
-provider "google" {
+provider "google-beta" {
   credentials = "${file(var.credentials_path)}"
   region      = "${var.region}"
 }
