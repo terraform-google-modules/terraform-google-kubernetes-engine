@@ -42,6 +42,10 @@ control "gcloud" do
         expect(data['location']).to match(/^(.*)[1-9]-[a-z]$/)
       end
 
+      it "is single zoned" do
+        expect(data['locations'].size).to eq 1
+      end
+
       it "has the expected initial cluster version" do
         expect(data['initialClusterVersion']).to eq "1.11.4-gke.13"
       end
