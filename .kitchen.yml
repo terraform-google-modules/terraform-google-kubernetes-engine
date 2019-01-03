@@ -96,15 +96,3 @@ suites:
           backend: local
     provisioner:
       name: terraform
-  - name: "single_zone"
-    driver:
-      name: "terraform"
-      command_timeout: 1800
-      root_module_directory: test/fixtures/single_zone
-    verifier:
-      name: terraform
-      systems:
-      - name: single_zone
-        backend: local
-    provisioner:
-      name: terraform
