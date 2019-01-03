@@ -104,6 +104,19 @@ control "gcloud" do
           )
         end
 
+        it "has the expected metadata" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-01",
+              "config" => including(
+                "metadata" => including(
+                  "shutdown-script" => File.open("examples/node_pool/data/shutdown-script.sh").read,
+                ),
+              ),
+            )
+          )
+        end
+
         it "has the expected labels" do
           expect(data['nodePools']).to include(
             including(
