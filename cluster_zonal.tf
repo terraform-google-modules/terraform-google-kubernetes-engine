@@ -26,8 +26,8 @@ resource "google_container_cluster" "zonal_primary" {
   zone             = "${var.zones[0]}"
   additional_zones = ["${slice(var.zones,1,length(var.zones))}"]
 
-  network            = "${data.google_compute_network.gke_network.self_link}"
-  subnetwork         = "${data.google_compute_subnetwork.gke_subnetwork.self_link}"
+  network            = "projects/${var.project_id}/global/networks/${data.google_compute_network.gke_network.name}"
+  subnetwork         = "projects/${var.project_id}/regions/${var.region}/subnetworks/${data.google_compute_subnetwork.gke_subnetwork.name}"
   min_master_version = "${local.kubernetes_version}"
 
   logging_service    = "${var.logging_service}"
