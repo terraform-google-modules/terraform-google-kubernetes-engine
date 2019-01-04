@@ -90,7 +90,7 @@ Then perform the following commands on the root folder:
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | description | The description of the cluster | string | `` | no |
-| horizontal_pod_autoscaling | Enable horizontal pod autoscaling addon | string | `false` | no |
+| horizontal_pod_autoscaling | Enable horizontal pod autoscaling addon | string | `true` | no |
 | http_load_balancing | Enable httpload balancer addon | string | `true` | no |
 | ip_masq_link_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `false` | no |
 | ip_masq_resync_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `60s` | no |
