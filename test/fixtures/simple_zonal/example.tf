@@ -20,7 +20,7 @@ module "example" {
   project_id                     = "${var.project_id}"
   credentials_path               = "${local.credentials_path}"
   region                         = "${var.region}"
-  zones                          = ["${slice(var.zones,1,1)}"]
+  zones                          = ["${slice(var.zones,0,1)}"]
   network                        = "${google_compute_network.main.name}"
   subnetwork                     = "${google_compute_subnetwork.main.name}"
   ip_range_pods                  = "${google_compute_subnetwork.main.secondary_ip_range.0.range_name}"
