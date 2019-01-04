@@ -26,8 +26,8 @@ resource "google_container_cluster" "primary" {
   region           = "${var.region}"
   additional_zones = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
 
-  network            = "projects/${data.google_compute_network.gke_network.project}/global/networks/${data.google_compute_network.gke_network.name}"
-  subnetwork         = "projects/${data.google_compute_network.gke_network.project}/regions/${var.region}/subnetworks/${data.google_compute_subnetwork.gke_subnetwork.name}"
+  network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+  subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   min_master_version = "${local.kubernetes_version}"
 
   logging_service    = "${var.logging_service}"
