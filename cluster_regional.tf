@@ -26,8 +26,8 @@ resource "google_container_cluster" "primary" {
   region           = "${var.region}"
   additional_zones = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
 
-  network            = "${data.google_compute_network.gke_network.self_link}"
-  subnetwork         = "${data.google_compute_subnetwork.gke_subnetwork.self_link}"
+  network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+  subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   min_master_version = "${local.kubernetes_version}"
 
   logging_service    = "${var.logging_service}"
@@ -81,6 +81,8 @@ resource "google_container_cluster" "primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", var.service_account)}"
     }
   }
+
+  remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
 /******************************************
@@ -110,7 +112,7 @@ resource "google_container_node_pool" "pools" {
     machine_type = "${lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")}"
     labels       = "${merge(map("cluster_name", var.name), map("node_pool", lookup(var.node_pools[count.index], "name")), var.node_pools_labels["all"], var.node_pools_labels[lookup(var.node_pools[count.index], "name")])}"
     taint        = "${concat(var.node_pools_taints["all"], var.node_pools_taints[lookup(var.node_pools[count.index], "name")])}"
-    tags         = "${concat(list("gke-${var.name}"), list("gke-${var.name}-${lookup(var.node_pools[count.index], "name")}"), var.node_pools_tags["all"], var.node_pools_tags[lookup(var.node_pools[count.index], "name")])}"
+    tags         = ["${concat(list("gke-${var.name}"), list("gke-${var.name}-${lookup(var.node_pools[count.index], "name")}"), var.node_pools_tags["all"], var.node_pools_tags[lookup(var.node_pools[count.index], "name")])}"]
 
     disk_size_gb    = "${lookup(var.node_pools[count.index], "disk_size_gb", 100)}"
     disk_type       = "${lookup(var.node_pools[count.index], "disk_type", "pd-standard")}"
