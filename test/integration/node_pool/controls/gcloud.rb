@@ -128,8 +128,8 @@ control "gcloud" do
                 "tags" => match_array([
                   "all-node-example",
                   "pool-01-example",
-                  "gke-node-pool-cluster",
-                  "gke-node-pool-cluster-pool-01",
+                  "gke-#{cluster_name}",
+                  "gke-#{cluster_name}-pool-01",
                 ]),
               ),
             )
@@ -245,8 +245,8 @@ control "gcloud" do
               "config" => including(
                 "tags" => match_array([
                   "all-node-example",
-                  "gke-node-pool-cluster",
-                  "gke-node-pool-cluster-pool-02",
+                  "gke-#{cluster_name}",
+                  "gke-#{cluster_name}-pool-02",
                 ])
               ),
             )
