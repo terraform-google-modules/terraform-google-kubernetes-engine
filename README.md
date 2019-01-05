@@ -106,6 +106,7 @@ Then perform the following commands on the root folder:
 | network | The VPC network to host the cluster in (required) | string | - | yes |
 | network_policy | Enable network policy addon | string | `false` | no |
 | network_project_id | The project ID of the shared VPC's host (for shared vpc support) | string | `` | no |
+| remove_default_node_pool | Boolean value determining removal of default node pool | bool | false | no |
 | node_pools | List of maps containing node pools | list | `<list>` | no |
 | node_pools_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
 | node_pools_tags | Map of lists containing node network tags by node-pool name | map | `<map>` | no |

@@ -26,8 +26,8 @@ resource "google_container_cluster" "zonal_primary" {
   zone             = "${var.zones[0]}"
   additional_zones = ["${slice(var.zones,1,length(var.zones))}"]
 
-  network            = "${data.google_compute_network.gke_network.self_link}"
-  subnetwork         = "${data.google_compute_subnetwork.gke_subnetwork.self_link}"
+  network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+  subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   min_master_version = "${local.kubernetes_version}"
 
   logging_service    = "${var.logging_service}"
@@ -81,6 +81,8 @@ resource "google_container_cluster" "zonal_primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", var.service_account)}"
     }
   }
+
+  remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
 /******************************************
