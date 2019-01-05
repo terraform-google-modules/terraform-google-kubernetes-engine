@@ -22,6 +22,11 @@ variable "credentials_path" {
   description = "The path to the GCP credentials JSON file"
 }
 
+variable "cluster_name_suffix" {
+  description = "A suffix to append to the default cluster name"
+  default     = ""
+}
+
 variable "region" {
   description = "The region to host the cluster in"
 }
