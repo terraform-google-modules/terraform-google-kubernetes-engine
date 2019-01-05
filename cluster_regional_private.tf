@@ -82,6 +82,12 @@ resource "google_container_cluster" "primary_private" {
       service_account = "${lookup(var.node_pools[0], "service_account", var.service_account)}"
     }
   }
+
+  private_cluster_config {
+    enable_private_endpoint = "${var.private_enable_private_endpoint}"
+    enable_private_nodes    = "${var.private_enable_private_nodes}"
+    master_ipv4_cidr_block  = "${var.private_master_ipv4_cidr_block}"
+  }
 }
 
 /******************************************
