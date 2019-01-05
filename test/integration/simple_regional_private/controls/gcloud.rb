@@ -53,9 +53,7 @@ control "gcloud" do
 
       it "has the expected addon settings" do
         expect(data['addonsConfig']).to eq({
-          "horizontalPodAutoscaling" => {
-            "disabled" => true,
-          },
+          "horizontalPodAutoscaling" => {},
           "httpLoadBalancing" => {},
           "kubernetesDashboard" => {
             "disabled" => true,
