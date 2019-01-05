@@ -56,7 +56,7 @@ module "gke" {
     all = {}
 
     default-node-pool = {
-      shutdown-script = "${file(var.kube_shutdown_script)}"
+      node-pool-metadata-custom-value = "my-node-pool"
     }
   }
 
