@@ -1,6 +1,6 @@
 # Disable Client Certificate
 
-This example illustrates how to create a simple cluster and disable deprecate security features:
+This example illustrates how to create a simple cluster and disable deprecated security features:
 
 * basic auth
 * client certificate
