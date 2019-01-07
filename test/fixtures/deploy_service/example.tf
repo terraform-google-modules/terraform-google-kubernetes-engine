@@ -19,6 +19,7 @@ module "example" {
 
   project_id                     = "${var.project_id}"
   credentials_path               = "${local.credentials_path}"
+  cluster_name_suffix            = "-${random_string.suffix.result}"
   region                         = "${var.region}"
   network                        = "${google_compute_network.main.name}"
   subnetwork                     = "${google_compute_subnetwork.main.name}"
