@@ -8,6 +8,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
 * Set `horizontal_pod_autoscaling` to `true` by default. #42
+* Add `remove_default_node_pool` set to `false` by default #15
 
 ## [v0.4.0] - 2018-12-19
 ### Added
