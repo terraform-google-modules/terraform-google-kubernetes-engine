@@ -44,11 +44,12 @@ suites:
       root_module_directory: test/fixtures/disable_client_cert
     verifier:
       name: terraform
+      color: false
       systems:
         - name: disable_client_cert
           backend: local
     provisioner:
-      name: terraform      
+      name: terraform
   - name: "node_pool"
     driver:
       name: "terraform"
