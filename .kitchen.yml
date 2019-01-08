@@ -31,6 +31,7 @@ suites:
       root_module_directory: test/fixtures/deploy_service
     verifier:
       name: terraform
+      color: false
       systems:
         - name: deploy_service
           backend: local
@@ -43,6 +44,7 @@ suites:
       root_module_directory: test/fixtures/node_pool
     verifier:
       name: terraform
+      color: false
       systems:
         - name: node_pool
           backend: local
@@ -55,6 +57,7 @@ suites:
       root_module_directory: test/fixtures/shared_vpc
     verifier:
       name: terraform
+      color: false
       systems:
         - name: shared_vpc
           backend: local
@@ -67,6 +70,7 @@ suites:
       root_module_directory: test/fixtures/simple_regional
     verifier:
       name: terraform
+      color: false
       systems:
         - name: simple_regional
           backend: local
@@ -79,6 +83,7 @@ suites:
       root_module_directory: test/fixtures/simple_zonal
     verifier:
       name: terraform
+      color: false
       systems:
         - name: simple_zonal
           backend: local
@@ -91,6 +96,7 @@ suites:
       root_module_directory: test/fixtures/stub_domains
     verifier:
       name: terraform
+      color: false
       systems:
         - name: stub_domains
           backend: local
