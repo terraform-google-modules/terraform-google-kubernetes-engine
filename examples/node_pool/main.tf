@@ -55,6 +55,16 @@ module "gke" {
     },
   ]
 
+  node_pools_metadata = {
+    all = {}
+
+    pool-01 = {
+      shutdown-script = "${file("${path.module}/data/shutdown-script.sh")}"
+    }
+
+    pool-02 = {}
+  }
+
   node_pools_labels = {
     all = {
       all-pools-example = "true"
