@@ -42,9 +42,14 @@ control "gcloud" do
         expect(data['masterAuth']['clientCertificate']).to be_nil
       end
 
-      it "does not have a basic auth enabled" do
-        expect(data['masterAuth']['username']).to be_nil
-        expect(data['masterAuth']['password']).to be_nil
+      describe "does not have a basic auth enabled" do
+        it "username is nil" do
+          expect(data['masterAuth']['username']).to be_nil
+        end
+
+        it "password is nil" do
+          expect(data['masterAuth']['password']).to be_nil
+        end
       end
     end
   end
