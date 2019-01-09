@@ -24,18 +24,16 @@ provider "google" {
 }
 
 module "gke" {
-  source             = "../../"
-  project_id         = "${var.project_id}"
-  name               = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional           = true
-  region             = "${var.region}"
-  network            = "${var.network}"
-  subnetwork         = "${var.subnetwork}"
-  ip_range_pods      = "${var.ip_range_pods}"
-  ip_range_services  = "${var.ip_range_services}"
-  kubernetes_version = "1.11.5-gke.4"
-  node_version       = "1.11.5-gke.4"
-  service_account    = "${var.compute_engine_service_account}"
+  source            = "../../"
+  project_id        = "${var.project_id}"
+  name              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  regional          = true
+  region            = "${var.region}"
+  network           = "${var.network}"
+  subnetwork        = "${var.subnetwork}"
+  ip_range_pods     = "${var.ip_range_pods}"
+  ip_range_services = "${var.ip_range_services}"
+  service_account   = "${var.compute_engine_service_account}"
 }
 
 data "google_client_config" "default" {}
