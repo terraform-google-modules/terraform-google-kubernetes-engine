@@ -24,7 +24,7 @@ DOCKER_TAG_KITCHEN_TERRAFORM ?= ${DOCKER_TAG_BASE_KITCHEN_TERRAFORM}
 DOCKER_IMAGE_KITCHEN_TERRAFORM := cft/kitchen-terraform_terraform-google-kubernetes-engine
 
 # All is the first target in the file so it will get picked up when you just run 'make' on its own
-all: check_shell check_python check_golang check_terraform check_docker check_base_files test_check_headers check_headers check_trailing_whitespace generate_docs
+all: check_shell check_python check_golang check_terraform check_docker check_base_files test_check_headers check_headers check_trailing_whitespace test_helpers generate_docs
 
 # The .PHONY directive tells make that this isn't a real target and so
 # the presence of a file named 'check_shell' won't cause this target to stop
@@ -71,6 +71,10 @@ check_headers:
 	@echo "Checking file headers"
 	@python test/verify_boilerplate.py
 
+.PHONY: test_helpers
+test_helpers:
+	./test/helpers/generate_modules/test_generate_modules.py
+
 # Integration tests
 .PHONY: test_integration
 test_integration:
@@ -84,6 +88,11 @@ test_integration:
 .PHONY: generate_docs
 generate_docs:
 	@source test/make.sh && generate_docs
+
+.PHONY: generate
+generate:
+	@pip install -r ./helpers/generate_modules/requirements.txt
+	@./helpers/generate_modules/generate_modules.py
 
 # Versioning
 .PHONY: version
