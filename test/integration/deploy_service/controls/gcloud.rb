@@ -37,10 +37,6 @@ control "gcloud" do
       it "is running" do
         expect(data['status']).to eq 'RUNNING'
       end
-
-      it "has the expected initial cluster version" do
-        expect(data['initialClusterVersion']).to eq "1.11.5-gke.4"
-      end
     end
   end
 end
