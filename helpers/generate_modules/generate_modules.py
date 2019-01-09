@@ -101,16 +101,22 @@ def root_outputs_tf(outputs):
     return buf
 
 
-def _copy_recursively(src, dest):
+def _copy_recursively_with_symlinks(src, dest):
     for node in os.listdir(src):
         src_path = os.path.join(src, node)
         dest_path = os.path.join(dest, node)
         if os.path.isdir(src_path):
             if not os.path.exists(dest_path):
                 os.mkdir(dest_path)
-            _copy_recursively(src_path, dest_path)
+            _copy_recursively_with_symlinks(src_path, dest_path)
         elif os.path.isfile(src_path):
-            shutil.copyfile(src_path, dest_path)
+            abs_src_path = os.path.abspath(src_path)
+            abs_dest_path = os.path.dirname(os.path.abspath(dest_path))
+            relative_path = os.path.relpath(abs_src_path, abs_dest_path)
+            try:
+                os.symlink(relative_path, dest_path)
+            except OSError:
+                print("Skipping" + dest_path)
 
 
 def create_submodules():
@@ -119,7 +125,7 @@ def create_submodules():
     modules = next(os.walk("./modules"))[1]
     for module in modules:
         dest_folder = os.path.join("./modules", module)
-        _copy_recursively("./autogen", dest_folder)
+        _copy_recursively_with_symlinks("./autogen", dest_folder)
 
 
 def create_root_module_wrapper():
