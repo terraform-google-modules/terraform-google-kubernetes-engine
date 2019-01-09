@@ -210,7 +210,7 @@ The project has the following folders and files:
 
 ## Submodules
 
-To more cleanly handle cases where desired functionality would require complex duplication of Terraform resources (i.e. [PR 51](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/51)), this repository is divided into multiple submodules. To ensure backwards compatibility with the module before this change, using the root of the repository as the source of a module will default to the [`public-cluster`](./modules/public-cluster) submodule.
+To more cleanly handle cases where desired functionality would require complex duplication of Terraform resources (i.e. [PR 51](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/51)), this repository is divided into multiple submodules. To ensure backwards compatibility with the module before this change, the root module of the repository defers to the [`public-cluster`](./modules/public-cluster) submodule.
 
 The following submodules currently exist:
 
