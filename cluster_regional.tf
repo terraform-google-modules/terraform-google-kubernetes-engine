@@ -95,7 +95,7 @@ resource "google_container_node_pool" "pools" {
   region             = "${var.region}"
   cluster            = "${var.name}"
   version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version)}"
-  initial_node_count = "${lookup(var.node_pools[count.index], "min_count", 1)}"
+  initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"
 
   autoscaling {
     min_node_count = "${lookup(var.node_pools[count.index], "min_count", 1)}"
