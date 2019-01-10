@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+{{ autogeneration_note }}
 
 /******************************************
-  Create regional cluster
+  Create zonal cluster
  *****************************************/
-resource "google_container_cluster" "primary" {
-  count       = "${var.regional ? 1 : 0}"
+resource "google_container_cluster" "zonal_primary" {
+  count       = "${var.regional ? 0 : 1}"
   name        = "${var.name}"
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  region           = "${var.region}"
-  additional_zones = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
+  zone             = "${var.zones[0]}"
+  additional_zones = ["${slice(var.zones,1,length(var.zones))}"]
 
   network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
@@ -88,13 +88,13 @@ resource "google_container_cluster" "primary" {
 }
 
 /******************************************
-  Create regional node pools
+  Create zonal node pools
  *****************************************/
-resource "google_container_node_pool" "pools" {
-  count              = "${var.regional ? length(var.node_pools) : 0}"
+resource "google_container_node_pool" "zonal_pools" {
+  count              = "${var.regional ? 0 : length(var.node_pools)}"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
-  region             = "${var.region}"
+  zone               = "${var.zones[0]}"
   cluster            = "${var.name}"
   version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"
@@ -106,7 +106,7 @@ resource "google_container_node_pool" "pools" {
 
   management {
     auto_repair  = "${lookup(var.node_pools[count.index], "auto_repair", true)}"
-    auto_upgrade = "${lookup(var.node_pools[count.index], "auto_upgrade", true)}"
+    auto_upgrade = "${lookup(var.node_pools[count.index], "auto_upgrade", false)}"
   }
 
   node_config {
@@ -137,11 +137,11 @@ resource "google_container_node_pool" "pools" {
     delete = "30m"
   }
 
-  depends_on = ["google_container_cluster.primary"]
+  depends_on = ["google_container_cluster.zonal_primary"]
 }
 
-resource "null_resource" "wait_for_regional_cluster" {
-  count = "${var.regional ? 1 : 0}"
+resource "null_resource" "wait_for_zonal_cluster" {
+  count = "${var.regional ? 0 : 1}"
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
@@ -152,5 +152,5 @@ resource "null_resource" "wait_for_regional_cluster" {
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
   }
 
-  depends_on = ["google_container_cluster.primary", "google_container_node_pool.pools"]
+  depends_on = ["google_container_cluster.zonal_primary", "google_container_node_pool.zonal_pools"]
 }

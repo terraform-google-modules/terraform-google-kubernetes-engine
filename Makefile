@@ -85,6 +85,11 @@ test_integration:
 generate_docs:
 	@source test/make.sh && generate_docs
 
+.PHONY: generate
+generate:
+	@pip install --user -r ./helpers/generate_modules/requirements.txt
+	@./helpers/generate_modules/generate_modules.py
+
 # Versioning
 .PHONY: version
 version:

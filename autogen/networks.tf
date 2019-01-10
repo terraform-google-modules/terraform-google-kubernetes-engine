@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+{{ autogeneration_note }}
 
 data "google_compute_network" "gke_network" {
   name    = "${var.network}"
