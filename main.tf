@@ -59,7 +59,7 @@ locals {
   cluster_type_output_zonal_zones    = "${concat(slice(var.zones, 1, length(var.zones)), list(""))}"
 
   cluster_type_output_zones = {
-    regional = "${local.cluster_type_output_regional_zones[0]}"
+     regional = "${local.cluster_type_output_regional_zones}"
     zonal    = "${concat(google_container_cluster.zonal_primary.*.zone, local.cluster_type_output_zonal_zones)}"
   }
 
