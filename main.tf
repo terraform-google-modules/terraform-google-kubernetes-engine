@@ -55,12 +55,12 @@ locals {
     zonal    = "${var.region}"
   }
 
-  cluster_type_output_regional_zones = "${concat(google_container_cluster.primary.*.additional_zones, list(list()))}"
-  cluster_type_output_zonal_zones    = "${concat(slice(var.zones,1,length(var.zones)), list(list()))}"
+  cluster_type_output_regional_zones = "${concat(google_container_cluster.primary.*.additional_zones, list("")}"
+  cluster_type_output_zonal_zones    = "${concat(slice(var.zones, 1, length(var.zones)), list(""))}"
 
   cluster_type_output_zones = {
     regional = "${local.cluster_type_output_regional_zones[0]}"
-    zonal    = "${concat(google_container_cluster.zonal_primary.*.zone, local.cluster_type_output_zonal_zones[0])}"
+    zonal    = "${concat(google_container_cluster.zonal_primary.*.zone, local.cluster_type_output_zonal_zones)}"
   }
 
   cluster_type_output_endpoint = {
