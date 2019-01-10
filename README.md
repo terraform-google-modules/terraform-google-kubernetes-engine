@@ -30,17 +30,18 @@ module "gke" {
 
   node_pools = [
     {
-      name            = "default-node-pool"
-      machine_type    = "n1-standard-2"
-      min_count       = 1
-      max_count       = 100
-      disk_size_gb    = 100
-      disk_type       = "pd-standard"
-      image_type      = "COS"
-      auto_repair     = true
-      auto_upgrade    = true
-      service_account = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
-      preemptible     = false
+      name               = "default-node-pool"
+      machine_type       = "n1-standard-2"
+      min_count          = 1
+      max_count          = 100
+      disk_size_gb       = 100
+      disk_type          = "pd-standard"
+      image_type         = "COS"
+      auto_repair        = true
+      auto_upgrade       = true
+      service_account    = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
+      preemptible        = false
+      initial_node_count = 80
     },
   ]
 
