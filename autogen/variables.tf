@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+{{ autogeneration_note }}
+
 variable "project_id" {
   description = "The project ID to host the cluster in (required)"
 }

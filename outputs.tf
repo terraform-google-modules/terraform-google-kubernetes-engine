@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// This file was automatically generated from a template in ./autogen
+
 output "name" {
   description = "Cluster name"
   value       = "${local.cluster_name}"

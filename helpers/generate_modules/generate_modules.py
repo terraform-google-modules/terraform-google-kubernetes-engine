@@ -20,20 +20,31 @@ import sys
 
 from jinja2 import Environment, FileSystemLoader
 
+TEMPLATE_FOLDER = "./autogen"
+
 
 def main(argv):
     env = Environment(
-        loader=FileSystemLoader('./autogen'),
+        loader=FileSystemLoader(TEMPLATE_FOLDER),
     )
-    template_options = {}
+    template_options = {
+        'autogeneration_note': '// This file was automatically generated ' +
+                               'from a template in {folder}'.format(
+                                   folder=TEMPLATE_FOLDER
+                               ),
+    }
     templates = env.list_templates()
     for template_file in templates:
         template = env.get_template(template_file)
         rendered = template.render(template_options)
         with open(os.path.join("./", template_file), "w") as f:
             f.write(rendered)
+            subprocess.call([
+                "terraform",
+                "fmt",
+                os.path.join("./", template_file)
+            ])
 
-    subprocess.call(["terraform", "fmt"])
 
 if __name__ == "__main__":
     main(sys.argv)
