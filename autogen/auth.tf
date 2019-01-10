@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+{{ autogeneration_note }}
 
-data "google_compute_network" "gke_network" {
-  name    = "${var.network}"
-  project = "${local.network_project_id}"
-}
+/******************************************
+  Retrieve authentication token
+ *****************************************/
+data "google_client_config" "default" {}
 
-data "google_compute_subnetwork" "gke_subnetwork" {
-  name    = "${var.subnetwork}"
-  region  = "${var.region}"
-  project = "${local.network_project_id}"
+/******************************************
+  Configure provider
+ *****************************************/
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = "https://${local.cluster_endpoint}"
+  token                  = "${data.google_client_config.default.access_token}"
+  cluster_ca_certificate = "${base64decode(local.cluster_ca_certificate)}"
 }
