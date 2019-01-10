@@ -10,6 +10,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 * Set `horizontal_pod_autoscaling` to `true` by default. #42
 * Add `remove_default_node_pool` set to `false` by default #15
 * Allow arbitrary key-value pairs to be set on node pool metadata. #52
+* Add `initial_node_count` parameter to node_pool block. #60 
 
 ## [v0.4.0] - 2018-12-19
 ### Added
