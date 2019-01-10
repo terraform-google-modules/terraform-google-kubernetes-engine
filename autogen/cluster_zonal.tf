@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+{{ autogeneration_note }}
+
 /******************************************
   Create zonal cluster
  *****************************************/

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+{{ autogeneration_note }}
+
 /******************************************
   Delete default kube-dns configmap
  *****************************************/

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// This file was automatically generated from a template in ./autogen
+
 /******************************************
   Retrieve authentication token
  *****************************************/
