@@ -1,1 +1,0 @@
-../../../autogen/scripts/kubectl_wrapper.sh
