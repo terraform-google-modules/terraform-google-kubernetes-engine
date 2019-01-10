@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import os
+import subprocess
 import sys
 
 from jinja2 import Environment, FileSystemLoader
@@ -32,6 +33,7 @@ def main(argv):
         with open(os.path.join("./", template_file), "w") as f:
             f.write(rendered)
 
+    subprocess.call(["terraform", "fmt"])
 
 if __name__ == "__main__":
     main(sys.argv)
