@@ -31,6 +31,11 @@ variable "region" {
   description = "The region to host the cluster in"
 }
 
+variable "zones" {
+  type        = "list"
+  description = "The zone to host the cluster in (required if is a zonal cluster)"
+}
+
 variable "network" {
   description = "The VPC network to host the cluster in"
 }
