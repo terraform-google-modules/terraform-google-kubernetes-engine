@@ -20,7 +20,7 @@
   Get available zones in region
  *****************************************/
 data "google_compute_zones" "available" {
-  provider = "google"
+  provider = "google-beta"
   project  = "${var.project_id}"
   region   = "${var.region}"
 }
@@ -149,7 +149,7 @@ locals {
   Get available container engine versions
  *****************************************/
 data "google_container_engine_versions" "region" {
-  provider = "google"
+  provider = "google-beta"
   zone     = "${data.google_compute_zones.available.names[0]}"
   project  = "${var.project_id}"
 }

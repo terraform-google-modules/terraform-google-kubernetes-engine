@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
-
-data "google_compute_network" "gke_network" {
-  provider = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
-  name     = "${var.network}"
-  project  = "${local.network_project_id}"
+output "kubernetes_endpoint" {
+  sensitive = true
+  value     = "${module.gke.endpoint}"
 }
 
-data "google_compute_subnetwork" "gke_subnetwork" {
-  provider = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
-  name     = "${var.subnetwork}"
-  region   = "${var.region}"
-  project  = "${local.network_project_id}"
+output "client_token" {
+  sensitive = true
+  value     = "${base64encode(data.google_client_config.default.access_token)}"
+}
+
+output "ca_certificate" {
+  value = "${module.gke.ca_certificate}"
 }

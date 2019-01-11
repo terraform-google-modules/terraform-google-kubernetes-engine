@@ -42,11 +42,11 @@ control "gcloud" do
         expect(data['location']).to match(/^.*[1-9]$/)
       end
 
-      it "uses the public master endpoint" do
+      it "uses the private endpoint" do
         expect(data['privateClusterConfig']['enablePrivateEndpoint']).to eq true
       end
 
-      it "uses public nodes" do
+      it "uses private nodes" do
         expect(data['privateClusterConfig']['enablePrivateNodes']).to eq true
       end
 
@@ -65,8 +65,6 @@ control "gcloud" do
     end
 
     describe "default node pool" do
-      let(:default_node_pool) { data['nodePools'].select { |p| p['name'] == "default-pool" }.first }
-
       it "exists" do
         expect(data['nodePools']).to include(
           including(

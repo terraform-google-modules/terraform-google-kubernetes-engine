@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
+// This file was automatically generated from a template in ./autogen
 
 /******************************************
   Retrieve authentication token
  *****************************************/
 data "google_client_config" "default" {
-  provider = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
+  provider = "google-beta"
 }
 
 /******************************************

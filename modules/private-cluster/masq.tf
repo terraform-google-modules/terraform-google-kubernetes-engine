@@ -17,18 +17,28 @@
 // This file was automatically generated from a template in ./autogen
 
 /******************************************
-  Retrieve authentication token
+  Create ip-masq-agent confimap
  *****************************************/
-data "google_client_config" "default" {
-  provider = "google"
-}
+resource "kubernetes_config_map" "ip-masq-agent" {
+  count = "${var.network_policy ? 1 : 0}"
 
-/******************************************
-  Configure provider
- *****************************************/
-provider "kubernetes" {
-  load_config_file       = false
-  host                   = "https://${local.cluster_endpoint}"
-  token                  = "${data.google_client_config.default.access_token}"
-  cluster_ca_certificate = "${base64decode(local.cluster_ca_certificate)}"
+  metadata {
+    name      = "ip-masq-agent"
+    namespace = "kube-system"
+
+    labels {
+      maintained_by = "terraform"
+    }
+  }
+
+  data {
+    config = <<EOF
+nonMasqueradeCIDRs:
+  - ${join("\n  - ", var.non_masquerade_cidrs)}
+resyncInterval: ${var.ip_masq_resync_interval}
+masqLinkLocal: ${var.ip_masq_link_local}
+EOF
+  }
+
+  depends_on = ["data.google_client_config.default", "google_container_cluster.primary", "google_container_node_pool.pools", "google_container_cluster.zonal_primary", "google_container_node_pool.zonal_pools"]
 }
