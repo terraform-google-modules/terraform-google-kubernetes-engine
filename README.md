@@ -232,12 +232,12 @@ Integration tests are run though [test-kitchen](https://github.com/test-kitchen/
 
 Six test-kitchen instances are defined:
 
-- `deploy_service`
-- `node_pool`
-- `shared_vpc`
-- `simple_regional`
-- `simple_zonal`
-- `stub_domains`
+- `deploy-service`
+- `node-pool`
+- `shared-vpc`
+- `simple-regional`
+- `simple-zonal`
+- `stub-domains`
 
 The test-kitchen instances in `test/fixtures/` wrap identically-named examples in the `examples/` directory.
 
@@ -245,10 +245,9 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
 
 1. Configure the [test fixtures](#test-configuration)
 2. Download a Service Account key with the necessary permissions and put it in the module's root directory with the name `credentials.json`.
-3. Build the Docker containers for testing:
+3. Build the Docker container for testing:
 
   ```
-  make docker_build_terraform
   make docker_build_kitchen_terraform
   ```
 4. Run the testing container in interactive mode:
@@ -257,7 +256,7 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
   make docker_run
   ```
 
-  The module root directory will be loaded into the Docker container at `/cftk/workdir/`.
+  The module root directory will be loaded into the Docker container at `/cft/workdir/`.
 5. Run kitchen-terraform to test the infrastructure:
 
   1. `kitchen create` creates Terraform state and downloads modules, if applicable.
