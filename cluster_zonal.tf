@@ -20,6 +20,7 @@
   Create zonal cluster
  *****************************************/
 resource "google_container_cluster" "zonal_primary" {
+  provider    = "google"
   count       = "${var.regional ? 0 : 1}"
   name        = "${var.name}"
   description = "${var.description}"
@@ -35,7 +36,7 @@ resource "google_container_cluster" "zonal_primary" {
   logging_service    = "${var.logging_service}"
   monitoring_service = "${var.monitoring_service}"
 
-  master_authorized_networks_config = "${var.master_authorized_networks_config}"
+  master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
 
   addons_config {
     http_load_balancing {
@@ -83,7 +84,6 @@ resource "google_container_cluster" "zonal_primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", var.service_account)}"
     }
   }
-
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
@@ -91,6 +91,7 @@ resource "google_container_cluster" "zonal_primary" {
   Create zonal node pools
  *****************************************/
 resource "google_container_node_pool" "zonal_pools" {
+  provider           = "google"
   count              = "${var.regional ? 0 : length(var.node_pools)}"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"

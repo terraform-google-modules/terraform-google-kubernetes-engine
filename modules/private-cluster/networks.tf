@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
+// This file was automatically generated from a template in ./autogen
 
 data "google_compute_network" "gke_network" {
-  provider = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
+  provider = "google-beta"
   name     = "${var.network}"
   project  = "${local.network_project_id}"
 }
 
 data "google_compute_subnetwork" "gke_subnetwork" {
-  provider = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
+  provider = "google-beta"
   name     = "${var.subnetwork}"
   region   = "${var.region}"
   project  = "${local.network_project_id}"

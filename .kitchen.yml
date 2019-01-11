@@ -76,6 +76,19 @@ suites:
           backend: local
     provisioner:
       name: terraform
+  - name: "simple_regional_private"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/simple_regional_private
+    verifier:
+      name: terraform
+      color: false
+      systems:
+        - name: simple_regional_private
+          backend: local
+    provisioner:
+      name: terraform
   - name: "simple_zonal"
     driver:
       name: "terraform"
@@ -86,6 +99,19 @@ suites:
       color: false
       systems:
         - name: simple_zonal
+          backend: local
+    provisioner:
+      name: terraform
+  - name: "simple_zonal_private"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/simple_zonal_private
+    verifier:
+      name: terraform
+      color: false
+      systems:
+        - name: simple_zonal_private
           backend: local
     provisioner:
       name: terraform

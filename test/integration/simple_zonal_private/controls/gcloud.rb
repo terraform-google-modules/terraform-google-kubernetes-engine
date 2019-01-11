@@ -38,15 +38,19 @@ control "gcloud" do
         expect(data['status']).to eq 'RUNNING'
       end
 
-      it "is regional" do
-        expect(data['location']).to match(/^.*[1-9]$/)
+      it "is zonal" do
+        expect(data['location']).to match(/^(.*)[1-9]-[a-z]$/)
       end
 
-      it "uses the public master endpoint" do
+      it "is single zoned" do
+        expect(data['locations'].size).to eq 1
+      end
+
+      it "uses the private master endpoint" do
         expect(data['privateClusterConfig']['enablePrivateEndpoint']).to eq true
       end
 
-      it "uses public nodes" do
+      it "uses private nodes" do
         expect(data['privateClusterConfig']['enablePrivateNodes']).to eq true
       end
 
@@ -65,8 +69,6 @@ control "gcloud" do
     end
 
     describe "default node pool" do
-      let(:default_node_pool) { data['nodePools'].select { |p| p['name'] == "default-pool" }.first }
-
       it "exists" do
         expect(data['nodePools']).to include(
           including(

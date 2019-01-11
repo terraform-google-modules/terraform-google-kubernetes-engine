@@ -20,8 +20,9 @@
   Get available zones in region
  *****************************************/
 data "google_compute_zones" "available" {
-  project = "${var.project_id}"
-  region  = "${var.region}"
+  provider = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
+  project  = "${var.project_id}"
+  region   = "${var.region}"
 }
 
 resource "random_shuffle" "available_zones" {
@@ -148,6 +149,7 @@ locals {
   Get available container engine versions
  *****************************************/
 data "google_container_engine_versions" "region" {
-  zone    = "${data.google_compute_zones.available.names[0]}"
-  project = "${var.project_id}"
+  provider = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
+  zone     = "${data.google_compute_zones.available.names[0]}"
+  project  = "${var.project_id}"
 }

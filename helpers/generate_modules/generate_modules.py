@@ -21,29 +21,63 @@ import sys
 from jinja2 import Environment, FileSystemLoader
 
 TEMPLATE_FOLDER = "./autogen"
+BASE_TEMPLATE_OPTIONS = {
+        'autogeneration_note': '// This file was automatically generated ' +
+                               'from a template in {folder}'.format(
+                                   folder=TEMPLATE_FOLDER
+                               ),
+}
+
+
+class Module(object):
+    path = None
+    options = {}
+
+    def __init__(self, path, template_options):
+        self.path = path
+        self.options = template_options
+
+    def template_options(self, base):
+        return {k: v for d in [base, self.options] for k, v in d.items()}
+
+
+MODULES = [
+    Module("./", {
+        'private_cluster': False,
+    }),
+    Module("./modules/private-cluster", {
+        'private_cluster': True,
+    }),
+]
+DEVNULL_FILE = open(os.devnull, 'w')
 
 
 def main(argv):
     env = Environment(
         loader=FileSystemLoader(TEMPLATE_FOLDER),
+        trim_blocks=True,
+        lstrip_blocks=True,
     )
-    template_options = {
-        'autogeneration_note': '// This file was automatically generated ' +
-                               'from a template in {folder}'.format(
-                                   folder=TEMPLATE_FOLDER
-                               ),
-    }
     templates = env.list_templates()
     for template_file in templates:
-        template = env.get_template(template_file)
-        rendered = template.render(template_options)
-        with open(os.path.join("./", template_file), "w") as f:
-            f.write(rendered)
-            subprocess.call([
-                "terraform",
-                "fmt",
-                os.path.join("./", template_file)
-            ])
+        for module in MODULES:
+            template = env.get_template(template_file)
+            rendered = template.render(
+                module.template_options(BASE_TEMPLATE_OPTIONS)
+            )
+            with open(os.path.join(module.path, template_file), "w") as f:
+                f.write(rendered)
+                subprocess.call(
+                    [
+                        "terraform",
+                        "fmt",
+                        os.path.join(module.path, template_file)
+                    ],
+                    stdout=DEVNULL_FILE,
+                    stderr=subprocess.STDOUT
+                )
+                if template_file.endswith(".sh"):
+                    os.chmod(os.path.join(module.path, template_file), 0o755)
 
 
 if __name__ == "__main__":
