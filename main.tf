@@ -156,7 +156,6 @@ locals {
 data "google_container_engine_versions" "region" {
   provider = "google-beta"
   region   = "${var.region}"
-  project  = "${var.project_id}"
 }
 
 data "google_container_engine_versions" "zone" {
