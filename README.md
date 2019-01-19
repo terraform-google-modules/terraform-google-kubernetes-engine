@@ -261,8 +261,9 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
 
   1. `kitchen create` creates Terraform state and downloads modules, if applicable.
   2. `kitchen converge` creates the underlying resources. Run `kitchen converge <INSTANCE_NAME>` to create resources for a specific test case.
-  3. `kitchen verify` tests the created infrastructure. Run `kitchen verify <INSTANCE_NAME>` to run a specific test case.
-  4. `kitchen destroy` tears down the underlying resources created by `kitchen converge`. Run `kitchen destroy <INSTANCE_NAME>` to tear down resources for a specific test case.
+  3. Run `kitchen converge` again. This is necessary due to an oddity in how `networkPolicyConfig` is handled by the upstream API. (See [#72](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/72) for details).
+  4. `kitchen verify` tests the created infrastructure. Run `kitchen verify <INSTANCE_NAME>` to run a specific test case.
+  5. `kitchen destroy` tears down the underlying resources created by `kitchen converge`. Run `kitchen destroy <INSTANCE_NAME>` to tear down resources for a specific test case.
 
 Alternatively, you can simply run `make test_integration_docker` to run all the test steps non-interactively.
 
