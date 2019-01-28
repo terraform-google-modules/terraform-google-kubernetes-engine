@@ -161,7 +161,7 @@ Then perform the following commands on the root folder:
 Before this module can be used on a project, you must ensure that the following pre-requisites are fulfilled:
 
 1. Terraform and kubectl are [installed](#software-dependencies) on the machine where Terraform is executed.
-2. The Service Account you execute the module with has the right [permissions](#iam-roles).
+2. The Service Account you execute the module with has the right [permissions](#configure-a-service-account).
 3. The Compute Engine and Kubernetes Engine APIs are [active](#enable-apis) on the project you will launch the cluster in.
 4. If you are using a Shared VPC, the APIs must also be activated on the Shared VPC host project and your service account needs the proper permissions there.
 
