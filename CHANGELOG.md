@@ -49,7 +49,9 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Added `disable_legacy_metadata_endpoints` parameter. [#114]
 
 ### Changed
-* Set `horizontal_pod_autoscaling` to `true` by default. Fixes [#42]. [#54]
+
+* Set `horizontal_pod_autoscaling` to `true` by default.
+  Fixes [#42]. [#54]
 * Update simple-zonal example GKE version to supported version. [#49]
 * Drop explicit version from simple_zonal example. [#74]
 * Remove explicit versions from test cases and examples. [#62]
