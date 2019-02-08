@@ -122,9 +122,7 @@ resource "google_container_node_pool" "zonal_pools" {
     service_account = "${lookup(var.node_pools[count.index], "service_account", var.service_account)}"
     preemptible     = "${lookup(var.node_pools[count.index], "preemptible", false)}"
 
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform",
-    ]
+    oauth_scopes = "${var.oauth_scopes}"
   }
 
   lifecycle {

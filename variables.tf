@@ -211,3 +211,11 @@ variable "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account"
   default     = ""
 }
+
+variable "oauth_scopes" {
+  type = "list"
+  description = "The oauth scope the GKE compute nodes are allowed to have"
+  default = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ]
+}
