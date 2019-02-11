@@ -167,11 +167,12 @@ Before this module can be used on a project, you must ensure that the following 
 The [project factory](https://github.com/terraform-google-modules/terraform-google-project-factory) can be used to provision projects with the correct APIs active and the necessary Shared VPC connections.
 
 ### Software Dependencies
-### Kubectl
+#### Kubectl
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
-### Terraform plugins
-- [Terraform](https://www.terraform.io/downloads.html) 0.10.x
-- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) plugin v1.8.0
+#### Terraform and Plugins
+- [Terraform](https://www.terraform.io/downloads.html) 0.11.x
+- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v1.8.0
+
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the
 following project roles:
@@ -185,12 +186,6 @@ In order to operate with the Service Account you must activate the following API
 
 - Compute Engine API - compute.googleapis.com
 - Kubernetes Engine API - container.googleapis.com
-
-## Install
-
-### Terraform
-Be sure you have the correct Terraform version (0.10.x), you can choose the binary here:
-- https://releases.hashicorp.com/terraform/
 
 ## File structure
 The project has the following folders and files:
