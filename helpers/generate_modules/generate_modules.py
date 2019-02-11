@@ -78,6 +78,7 @@ def main(argv):
                 )
                 if template_file.endswith(".sh"):
                     os.chmod(os.path.join(module.path, template_file), 0o755)
+    DEVNULL_FILE.close()
 
 
 if __name__ == "__main__":
