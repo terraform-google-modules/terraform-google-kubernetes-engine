@@ -101,6 +101,8 @@ Then perform the following commands on the root folder:
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | description | The description of the cluster | string | `` | no |
+| enable_private_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | string | `false` | no |
+| enable_private_nodes | (Beta) Whether nodes have internal IP addresses only | string | `false` | no |
 | horizontal_pod_autoscaling | Enable horizontal pod autoscaling addon | string | `true` | no |
 | http_load_balancing | Enable httpload balancer addon | string | `true` | no |
 | ip_masq_link_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `false` | no |
@@ -112,12 +114,12 @@ Then perform the following commands on the root folder:
 | logging_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `logging.googleapis.com` | no |
 | maintenance_start_time | Time window specified for daily maintenance operations in RFC3339 format | string | `05:00` | no |
 | master_authorized_networks_config | The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)<br><br>  ### example format ###   master_authorized_networks_config = [{     cidr_blocks = [{       cidr_block   = "10.0.0.0/8"       display_name = "example_network"     }],   }] | list | `<list>` | no |
+| master_ipv4_cidr_block | (Beta) The IP range in CIDR notation to use for the hosted master network | string | `10.0.0.0/28` | no |
 | monitoring_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `monitoring.googleapis.com` | no |
 | name | The name of the cluster (required) | string | - | yes |
 | network | The VPC network to host the cluster in (required) | string | - | yes |
 | network_policy | Enable network policy addon | string | `false` | no |
 | network_project_id | The project ID of the shared VPC's host (for shared vpc support) | string | `` | no |
-| remove_default_node_pool | Boolean value determining removal of default node pool | bool | false | no |
 | node_pools | List of maps containing node pools | list | `<list>` | no |
 | node_pools_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
 | node_pools_metadata | Map of maps containing node metadata by node-pool name | map | `<map>` | no |
@@ -128,6 +130,7 @@ Then perform the following commands on the root folder:
 | project_id | The project ID to host the cluster in (required) | string | - | yes |
 | region | The region to host the cluster in (required) | string | - | yes |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `true` | no |
+| remove_default_node_pool | Remove default node pool while setting up the cluster | string | `false` | no |
 | service_account | The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account | string | `` | no |
 | stub_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | string | - | yes |

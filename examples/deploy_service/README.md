@@ -15,6 +15,7 @@ It will:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| cluster_name_suffix | A suffix to append to the default cluster name | string | `` | no |
 | compute_engine_service_account | Service account to associate to the nodes in the cluster | string | - | yes |
 | credentials_path | The path to the GCP credentials JSON file | string | - | yes |
 | ip_range_pods | The secondary ip range to use for pods | string | - | yes |
