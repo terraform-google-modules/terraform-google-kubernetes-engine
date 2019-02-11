@@ -166,18 +166,22 @@ Then perform the following commands on the root folder:
 Before this module can be used on a project, you must ensure that the following pre-requisites are fulfilled:
 
 1. Terraform and kubectl are [installed](#software-dependencies) on the machine where Terraform is executed.
-2. The Service Account you execute the module with has the right [permissions](#iam-roles).
+2. The Service Account you execute the module with has the right [permissions](#configure-a-service-account).
 3. The Compute Engine and Kubernetes Engine APIs are [active](#enable-apis) on the project you will launch the cluster in.
 4. If you are using a Shared VPC, the APIs must also be activated on the Shared VPC host project and your service account needs the proper permissions there.
 
 The [project factory](https://github.com/terraform-google-modules/terraform-google-project-factory) can be used to provision projects with the correct APIs active and the necessary Shared VPC connections.
 
 ### Software Dependencies
-### Kubectl
+#### Kubectl
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
-### Terraform plugins
-- [Terraform](https://www.terraform.io/downloads.html) 0.10.x
-- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) plugin {% if private_cluster %}beta{% else %}v1.8.0{% endif %}
+#### Terraform and Plugins
+- [Terraform](https://www.terraform.io/downloads.html) 0.11.x
+{% if private_cluster %}
+- [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v1.20.0
+{% else %}
+- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v1.8.0
+{% endif %}
 
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the
@@ -192,12 +196,6 @@ In order to operate with the Service Account you must activate the following API
 
 - Compute Engine API - compute.googleapis.com
 - Kubernetes Engine API - container.googleapis.com
-
-## Install
-
-### Terraform
-Be sure you have the correct Terraform version (0.10.x), you can choose the binary here:
-- https://releases.hashicorp.com/terraform/
 
 ## File structure
 The project has the following folders and files:
@@ -237,12 +235,12 @@ Integration tests are run though [test-kitchen](https://github.com/test-kitchen/
 
 Six test-kitchen instances are defined:
 
-- `deploy_service`
-- `node_pool`
-- `shared_vpc`
-- `simple_regional`
-- `simple_zonal`
-- `stub_domains`
+- `deploy-service`
+- `node-pool`
+- `shared-vpc`
+- `simple-regional`
+- `simple-zonal`
+- `stub-domains`
 
 The test-kitchen instances in `test/fixtures/` wrap identically-named examples in the `examples/` directory.
 
@@ -250,10 +248,9 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
 
 1. Configure the [test fixtures](#test-configuration)
 2. Download a Service Account key with the necessary permissions and put it in the module's root directory with the name `credentials.json`.
-3. Build the Docker containers for testing:
+3. Build the Docker container for testing:
 
   ```
-  make docker_build_terraform
   make docker_build_kitchen_terraform
   ```
 4. Run the testing container in interactive mode:
@@ -262,13 +259,14 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
   make docker_run
   ```
 
-  The module root directory will be loaded into the Docker container at `/cftk/workdir/`.
+  The module root directory will be loaded into the Docker container at `/cft/workdir/`.
 5. Run kitchen-terraform to test the infrastructure:
 
   1. `kitchen create` creates Terraform state and downloads modules, if applicable.
   2. `kitchen converge` creates the underlying resources. Run `kitchen converge <INSTANCE_NAME>` to create resources for a specific test case.
-  3. `kitchen verify` tests the created infrastructure. Run `kitchen verify <INSTANCE_NAME>` to run a specific test case.
-  4. `kitchen destroy` tears down the underlying resources created by `kitchen converge`. Run `kitchen destroy <INSTANCE_NAME>` to tear down resources for a specific test case.
+  3. Run `kitchen converge` again. This is necessary due to an oddity in how `networkPolicyConfig` is handled by the upstream API. (See [#72](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/72) for details).
+  4. `kitchen verify` tests the created infrastructure. Run `kitchen verify <INSTANCE_NAME>` to run a specific test case.
+  5. `kitchen destroy` tears down the underlying resources created by `kitchen converge`. Run `kitchen destroy <INSTANCE_NAME>` to tear down resources for a specific test case.
 
 Alternatively, you can simply run `make test_integration_docker` to run all the test steps non-interactively.
 
