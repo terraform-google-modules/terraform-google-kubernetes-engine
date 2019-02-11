@@ -46,12 +46,8 @@ control "gcloud" do
         expect(data['locations'].size).to eq 1
       end
 
-      it "uses the public master endpoint" do
-        expect(data['privateClusterConfig']['enablePrivateEndpoint']).to eq true
-      end
-
-      it "uses public nodes" do
-        expect(data['privateClusterConfig']['enablePrivateNodes']).to eq true
+      it "uses public nodes and master endpoint" do
+        expect(data['privateClusterConfig']).to eq nil
       end
 
       it "has the expected addon settings" do
