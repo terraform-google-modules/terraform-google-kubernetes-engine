@@ -66,16 +66,18 @@ def main(argv):
                 module.template_options(BASE_TEMPLATE_OPTIONS)
             )
             with open(os.path.join(module.path, template_file), "w") as f:
-                f.write(rendered)
-                subprocess.call(
-                    [
-                        "terraform",
-                        "fmt",
-                        os.path.join(module.path, template_file)
-                    ],
-                    stdout=DEVNULL_FILE,
-                    stderr=subprocess.STDOUT
-                )
+                f.write(rendered.rstrip())
+                if template_file.endswith(".tf"):
+                    subprocess.call(
+                        [
+                            "terraform",
+                            "fmt",
+                            "-write=true",
+                            os.path.join(module.path, template_file)
+                        ],
+                        stdout=DEVNULL_FILE,
+                        stderr=subprocess.STDOUT
+                    )
                 if template_file.endswith(".sh"):
                     os.chmod(os.path.join(module.path, template_file), 0o755)
     DEVNULL_FILE.close()
