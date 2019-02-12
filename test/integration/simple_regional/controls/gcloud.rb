@@ -42,6 +42,10 @@ control "gcloud" do
         expect(data['location']).to match(/^.*[1-9]$/)
       end
 
+      it "uses public nodes and master endpoint" do
+        expect(data['privateClusterConfig']).to eq nil
+      end
+
       it "has the expected addon settings" do
         expect(data['addonsConfig']).to eq({
           "horizontalPodAutoscaling" => {},
