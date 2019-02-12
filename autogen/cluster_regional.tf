@@ -81,7 +81,7 @@ resource "google_container_cluster" "primary" {
     name = "default-pool"
 
     node_config {
-      service_account = "${lookup(var.node_pools[0], "service_account", (var.service_account == "create") ? element(concat(google_service_account.cluster_service_account.*.email, list("")), 0) : var.service_account)}"
+      service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
     }
   }
 {% if private_cluster %}
@@ -127,7 +127,7 @@ resource "google_container_node_pool" "pools" {
 
     disk_size_gb    = "${lookup(var.node_pools[count.index], "disk_size_gb", 100)}"
     disk_type       = "${lookup(var.node_pools[count.index], "disk_type", "pd-standard")}"
-    service_account = "${lookup(var.node_pools[count.index], "service_account", (var.service_account == "create") ? element(concat(google_service_account.cluster_service_account.*.email, list("")), 0) : var.service_account)}"
+    service_account = "${lookup(var.node_pools[count.index], "service_account", local.service_account)}"
     preemptible     = "${lookup(var.node_pools[count.index], "preemptible", false)}"
 
     oauth_scopes = [
