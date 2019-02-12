@@ -79,6 +79,10 @@ control "gcloud" do
     describe "node pool" do
       let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" } }
 
+      it "uses an automatically created service account" do
+        raise node_pools.to_json.inspect
+      end
+
       it "has autoscaling enabled" do
         expect(node_pools).to include(
           including(
