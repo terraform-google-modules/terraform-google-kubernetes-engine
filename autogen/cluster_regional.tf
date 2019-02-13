@@ -20,6 +20,7 @@
   Create regional cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
+  provider    = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
   count       = "${var.regional ? 1 : 0}"
   name        = "${var.name}"
   description = "${var.description}"
@@ -35,7 +36,7 @@ resource "google_container_cluster" "primary" {
   logging_service    = "${var.logging_service}"
   monitoring_service = "${var.monitoring_service}"
 
-  master_authorized_networks_config = "${var.master_authorized_networks_config}"
+  master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
 
   addons_config {
     http_load_balancing {
@@ -83,7 +84,13 @@ resource "google_container_cluster" "primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", var.service_account)}"
     }
   }
-
+{% if private_cluster %}
+  private_cluster_config {
+    enable_private_endpoint = "${var.enable_private_endpoint}"
+    enable_private_nodes    = "${var.enable_private_nodes}"
+    master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
+  }
+{% endif %}
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
@@ -91,6 +98,7 @@ resource "google_container_cluster" "primary" {
   Create regional node pools
  *****************************************/
 resource "google_container_node_pool" "pools" {
+  provider           = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
   count              = "${var.regional ? length(var.node_pools) : 0}"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
