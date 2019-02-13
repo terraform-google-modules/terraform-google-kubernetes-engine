@@ -27,3 +27,24 @@ resource "google_service_account" "cluster_service_account" {
   account_id   = "tf-gke-${substr(var.name, 0, 20)}"
   display_name = "Terraform-managed service account for cluster ${var.name}"
 }
+
+resource "google_project_iam_member" "cluster_service_account-log_writer" {
+  count   = "${var.service_account == "create" ? 1 : 0}"
+  project = "${google_service_account.cluster_service_account.project}"
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${google_service_account.cluster_service_account.email}"
+}
+
+resource "google_project_iam_member" "cluster_service_account-metric_writer" {
+  count   = "${var.service_account == "create" ? 1 : 0}"
+  project = "${google_project_iam_member.cluster_service_account-log_writer.project}"
+  role    = "roles/monitoring.metricWriter"
+  member  = "serviceAccount:${google_service_account.cluster_service_account.email}"
+}
+
+resource "google_project_iam_member" "cluster_service_account-monitoring_viewer" {
+  count   = "${var.service_account == "create" ? 1 : 0}"
+  project = "${google_project_iam_member.cluster_service_account-metric_writer.project}"
+  role    = "roles/monitoring.viewer"
+  member  = "serviceAccount:${google_service_account.cluster_service_account.email}"
+}
