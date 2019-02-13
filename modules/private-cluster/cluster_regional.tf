@@ -25,6 +25,7 @@ resource "google_container_cluster" "primary" {
   name        = "${var.name}"
   description = "${var.description}"
   project     = "${var.project_id}"
+  resource_labels = "${var.cluster_resource_labels}"
 
   region           = "${var.region}"
   additional_zones = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]

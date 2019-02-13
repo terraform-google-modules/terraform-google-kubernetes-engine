@@ -29,6 +29,14 @@ variable "description" {
   default     = ""
 }
 
+variable "cluster_resource_labels" {
+  type        = "map"
+  description = "Map containing cluster labels. Maximum of 64 labels"
+
+  default = {
+  }
+}
+
 variable "regional" {
   description = "Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!)"
   default     = true
