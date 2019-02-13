@@ -29,8 +29,8 @@ import os
 import re
 import sys
 
-insert_separator_regex = '(.*?\[\^\]\:\ \(autogen_docs_start\))(.*?)(\n\[\^\]\:\ \(autogen_docs_end\).*?$)'  # noqa: E501
-exclude_separator_regex = '(.*?)Copyright 20\d\d Google LLC.*?limitations under the License.(.*?)$'  # noqa: E501
+insert_separator_regex = r'(.*?\[\^\]\:\ \(autogen_docs_start\))(.*?)(\n\[\^\]\:\ \(autogen_docs_end\).*?$)'  # noqa: E501
+exclude_separator_regex = r'(.*?)Copyright 20\d\d Google LLC.*?limitations under the License.(.*?)$'  # noqa: E501
 
 if len(sys.argv) != 3:
     sys.exit(1)
@@ -42,14 +42,17 @@ input = open(sys.argv[1], "r").read()
 replace_content = open(sys.argv[2], "r").read()
 
 # Exclude the specified content from the replacement content
-groups = re.match(
+matched = re.match(
     exclude_separator_regex,
     replace_content,
     re.DOTALL
-).groups(0)
-replace_content = groups[0] + groups[1]
+)
 
-# Find where to put the replacement content, overwrite the input file
-groups = re.match(insert_separator_regex, input, re.DOTALL).groups(0)
-output = groups[0] + replace_content + groups[2]
-open(sys.argv[1], "w").write(output)
+if matched:
+    groups = matched.groups(0)
+    replace_content = groups[0] + groups[1]
+
+    # Find where to put the replacement content, overwrite the input file
+    groups = re.match(insert_separator_regex, input, re.DOTALL).groups(0)
+    output = groups[0] + replace_content + groups[2] + "\n"
+    open(sys.argv[1], "w").write(output)
