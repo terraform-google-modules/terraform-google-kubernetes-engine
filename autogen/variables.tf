@@ -236,7 +236,7 @@ variable "master_ipv4_cidr_block" {
 
 variable "enable_basic_auth" {
   description = "Basic authentication allows a user to authenticate to the cluster with a username and password. To maximize the security of your cluster, disable this option. Basic authentication is not recommended because it provides no confidentiality protection for transmitted credentials"
-  default = "true"
+  default = "false"
 }
 
 variable "basic_auth_username" {
