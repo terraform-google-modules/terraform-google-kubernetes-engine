@@ -80,7 +80,13 @@ control "gcloud" do
       let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" } }
 
       it "uses an automatically created service account" do
-        raise node_pools.to_json.inspect
+        expect(node_pools).to include(
+          including(
+            "config" => including(
+              "serviceAccount" => starting_with("tf-gke-simple-zonal-cluster@"),
+            ),
+          ),
+        )
       end
 
       it "has autoscaling enabled" do
