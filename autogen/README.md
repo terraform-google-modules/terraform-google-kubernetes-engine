@@ -189,6 +189,7 @@ following project roles:
 - roles/compute.viewer
 - roles/container.clusterAdmin
 - roles/container.developer
+- roles/iam.serviceAccountAdmin
 - roles/iam.serviceAccountUser
 
 ### Enable APIs
