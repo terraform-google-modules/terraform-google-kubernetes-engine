@@ -129,7 +129,6 @@ variable "disable_legacy_metadata_endpoints" {
   default     = "true"
 }
 
-
 variable "node_pools" {
   type        = "list"
   description = "List of maps containing node pools"
@@ -217,17 +216,38 @@ variable "service_account" {
   description = "The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created."
   default     = "create"
 }
+
 variable "enable_private_endpoint" {
-  description  = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
-  default      = false
+  description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
+  default     = false
 }
 
 variable "enable_private_nodes" {
-  description  = "(Beta) Whether nodes have internal IP addresses only"
-  default      = false
+  description = "(Beta) Whether nodes have internal IP addresses only"
+  default     = false
 }
 
 variable "master_ipv4_cidr_block" {
-  description  = "(Beta) The IP range in CIDR notation to use for the hosted master network"
-  default      = "10.0.0.0/28"
+  description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
+  default     = "10.0.0.0/28"
+}
+
+variable "enable_basic_auth" {
+  description = "Basic authentication allows a user to authenticate to the cluster with a username and password. To maximize the security of your cluster, disable this option. Basic authentication is not recommended because it provides no confidentiality protection for transmitted credentials"
+  default     = "false"
+}
+
+variable "basic_auth_username" {
+  description = "Kubernetes HTTP Basic auth username. Only used if `enable_basic_auth` is true"
+  default     = ""
+}
+
+variable "basic_auth_password" {
+  description = "Kubernetes HTTP Basic auth password. Only used if `enable_basic_auth` is true"
+  default     = ""
+}
+
+variable "issue_client_certificate" {
+  description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
+  default     = "false"
 }
