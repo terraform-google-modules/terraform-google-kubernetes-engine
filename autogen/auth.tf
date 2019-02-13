@@ -19,7 +19,9 @@
 /******************************************
   Retrieve authentication token
  *****************************************/
-data "google_client_config" "default" {}
+data "google_client_config" "default" {
+  provider = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
+}
 
 /******************************************
   Configure provider
