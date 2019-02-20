@@ -125,7 +125,7 @@ Then perform the following commands on the root folder:
 | region | The region to host the cluster in (required) | string | - | yes |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `true` | no |
 | remove_default_node_pool | Remove default node pool while setting up the cluster | string | `false` | no |
-| service_account | The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account | string | `` | no |
+| service_account | The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account. May also specify `create` to automatically create a cluster-specific service account | string | `` | no |
 | stub_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | string | - | yes |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list | `<list>` | no |
@@ -179,6 +179,7 @@ following project roles:
 - roles/compute.viewer
 - roles/container.clusterAdmin
 - roles/container.developer
+- roles/iam.serviceAccountAdmin
 - roles/iam.serviceAccountUser
 
 ### Enable APIs
