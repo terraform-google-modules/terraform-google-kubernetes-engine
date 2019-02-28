@@ -123,7 +123,9 @@ function generate_docs() {
   echo "Generating markdown docs with terraform-docs"
   local path tmpfile
   while read -r path; do
-    if [[ -e "${path}/README.md" ]]; then
+    if [[ $path =~ "autogen" ]]; then
+      echo "Skipping autogen directory ${path}"
+    elif [[ -e "${path}/README.md" ]]; then
       # shellcheck disable=SC2119
       tmpfile="$(maketemp)"
       echo "terraform-docs markdown ${path}"
