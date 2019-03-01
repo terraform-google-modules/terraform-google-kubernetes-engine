@@ -51,3 +51,12 @@ variable "ip_range_pods" {
 variable "ip_range_services" {
   description = "The secondary ip range to use for pods"
 }
+
+variable "cluster_resource_labels" {
+  type        = "map"
+  description = "Map containing cluster labels. Maximum of 64 labels"
+
+  default = {
+  }
+
+}

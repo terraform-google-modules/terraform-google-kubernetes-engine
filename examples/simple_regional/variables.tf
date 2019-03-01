@@ -50,3 +50,12 @@ variable "ip_range_services" {
 variable "compute_engine_service_account" {
   description = "Service account to associate to the nodes in the cluster"
 }
+
+variable "cluster_resource_labels" {
+  type        = "map"
+  description = "Map containing cluster labels. Maximum of 64 labels"
+
+  default = {
+  }
+
+}
