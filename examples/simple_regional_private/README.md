@@ -17,6 +17,7 @@ This example illustrates how to create a simple private cluster.
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
 | subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
+| cluster_resource_labels | Map containing cluster labels. Maximum of 64 labels | map | `<map>` | no |
 
 ## Outputs
 

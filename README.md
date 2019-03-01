@@ -96,6 +96,7 @@ Then perform the following commands on the root folder:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+<<<<<<< HEAD
 | description | The description of the cluster | string | `""` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | string | `"true"` | no |
 | http\_load\_balancing | Enable httpload balancer addon | string | `"true"` | no |
@@ -127,6 +128,7 @@ Then perform the following commands on the root folder:
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account. May also specify `create` to automatically create a cluster-specific service account | string | `""` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | string | n/a | yes |
+| cluster_resource_labels | Map containing cluster labels. Maximum of 64 labels | map | `<map>` | no |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list | `<list>` | no |
 
 ## Outputs

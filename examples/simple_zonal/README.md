@@ -17,6 +17,7 @@ This example illustrates how to create a simple cluster.
 | region | The region to host the cluster in | string | n/a | yes |
 | subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
 | zones | The zone to host the cluster in (required if is a zonal cluster) | list | n/a | yes |
+| cluster_name_suffix | A suffix to append to the default cluster name | string | `` | no |
 
 ## Outputs
 
