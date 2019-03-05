@@ -215,5 +215,5 @@ variable "monitoring_service" {
 
 variable "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account. May also specify `create` to automatically create a cluster-specific service account"
-  default     = ""
+  default     = "create"
 }
