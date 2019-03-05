@@ -21,10 +21,6 @@ output "project_id" {
   value = "${var.project_id}"
 }
 
-output "credentials_path" {
-  value = "${var.credentials_path}"
-}
-
 output "region" {
   value = "${module.gke.region}"
 }

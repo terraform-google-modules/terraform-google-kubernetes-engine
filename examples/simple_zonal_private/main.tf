@@ -19,9 +19,8 @@ locals {
 }
 
 provider "google-beta" {
-  version     = "~> 2.2"
-  credentials = "${file(var.credentials_path)}"
-  region      = "${var.region}"
+  version = "~> 2.2"
+  region  = "${var.region}"
 }
 
 data "google_compute_subnetwork" "subnetwork" {
