@@ -1,43 +1,24 @@
+# Project Cleanup Utility
+
+This is a simple utility that scans a GCP organization for projects matching certain criteria, and enqueues such projects for deletion. Currently supported criteria are the combination of:
+
+- **Age:** Only projects older than the configured age, in hours, will be marked for deletion.
+- **Key-Value Pair:** Only projects whose labels contain the provided key-value pair will be marked for deletion.
+
+## Environment Configuration
+
+The following environment variables may be specified to configure the cleanup utility:
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| `TARGET_TAG_NAME` | The tag name to match on for identifying projects to delete | string | n/a | yes |
+| `TARGET_TAG_VALUE` | The tag value to match on for identifying projects to delete | string | n/a | yes |
+| `MAX_PROJECT_AGE_HOURS` | The project age, in hours, at which point deletion should be considered | integer | n/a | yes |
 # Node Pool Cluster
 
 This example illustrates how to create a cluster with multiple custom node-pool configurations with node labels, taints, and network tags.
 
 [^]: (autogen_docs_start)
-
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
-| compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | string | n/a | yes |
-| credentials\_path | The path to the GCP credentials JSON file | string | n/a | yes |
-| ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
-| ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
-| network | The VPC network to host the cluster in | string | n/a | yes |
-| project\_id | The project ID to host the cluster in | string | n/a | yes |
-| region | The region to host the cluster in | string | n/a | yes |
-| subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
-| zones | The zone to host the cluster in (required if is a zonal cluster) | list | n/a | yes |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| ca\_certificate |  |
-| client\_token |  |
-| cluster\_name | Cluster name |
-| credentials\_path |  |
-| ip\_range\_pods | The secondary IP range used for pods |
-| ip\_range\_services | The secondary IP range used for services |
-| kubernetes\_endpoint |  |
-| location |  |
-| master\_kubernetes\_version | The master Kubernetes version |
-| network |  |
-| project\_id |  |
-| region |  |
-| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
-| subnetwork |  |
-| zones | List of zones in which the cluster resides |
 
 [^]: (autogen_docs_end)
 
