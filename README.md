@@ -118,6 +118,7 @@ Then perform the following commands on the root folder:
 | node_pools_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
 | node_pools_metadata | Map of maps containing node metadata by node-pool name | map | `<map>` | no |
 | node_pools_tags | Map of lists containing node network tags by node-pool name | map | `<map>` | no |
+| node_pools_oauth_scopes | Map of lists containing node oauth scopes by node-pool name | map | `<map>` | no |
 | node_pools_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
 | node_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `` | no |
 | non_masquerade_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list | `<list>` | no |
