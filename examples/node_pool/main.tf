@@ -34,6 +34,8 @@ module "gke" {
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
 
+  kubernetes_version = "1.11.6-gke.11"
+
   node_pools = [
     {
       name            = "pool-01"

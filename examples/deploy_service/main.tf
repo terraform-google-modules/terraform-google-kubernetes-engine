@@ -41,6 +41,8 @@ module "gke" {
   network    = "${var.network}"
   subnetwork = "${var.subnetwork}"
 
+  kubernetes_version = "1.11.6-gke.11"
+
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
   service_account   = "${var.compute_engine_service_account}"
