@@ -39,6 +39,8 @@ module "gke" {
       name            = "pool-01"
       min_count       = 1
       service_account = "${var.compute_engine_service_account}"
+      auto_repair     = false
+      auto_upgrade    = false
     },
     {
       name            = "pool-02"
