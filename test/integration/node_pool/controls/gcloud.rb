@@ -93,12 +93,12 @@ control "gcloud" do
           )
         end
 
-        it "has automatic upgrades enabled" do
+        it "has automatic upgrades disabled" do
           expect(data['nodePools']).to include(
             including(
               "name" => "pool-01",
               "management" => including(
-                "autoUpgrade" => true,
+                "autoUpgrade" => false,
               ),
             )
           )

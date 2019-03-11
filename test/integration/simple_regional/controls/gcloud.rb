@@ -161,15 +161,6 @@ control "gcloud" do
         )
       end
 
-      it "has autoupgrade disabled" do
-        expect(node_pools).to include(
-          including(
-            "management" => including(
-              "autoUpgrade" => false,
-            ),
-          )
-        )
-      end
     end
   end
 end
