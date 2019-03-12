@@ -21,6 +21,7 @@ locals {
 provider "google" {
   credentials = "${file(var.credentials_path)}"
   region      = "${var.region}"
+  version     = "~> 1.20"
 }
 
 provider "kubernetes" {
@@ -39,6 +40,8 @@ module "gke" {
   region     = "${var.region}"
   network    = "${var.network}"
   subnetwork = "${var.subnetwork}"
+
+  kubernetes_version = "1.11.7-gke.12"
 
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
