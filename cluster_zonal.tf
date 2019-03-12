@@ -108,7 +108,7 @@ resource "google_container_node_pool" "zonal_pools" {
 
   management {
     auto_repair  = "${lookup(var.node_pools[count.index], "auto_repair", true)}"
-    auto_upgrade = "${lookup(var.node_pools[count.index], "auto_upgrade", false)}"
+    auto_upgrade = "${lookup(var.node_pools[count.index], "auto_upgrade", true)}"
   }
 
   node_config {
