@@ -1,6 +1,6 @@
 # Terraform Kubernetes Engine Module
 
-This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc. {% if private_cluster %}This particular submodule creates a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters){% endif %}
+This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.{% if private_cluster %} This particular submodule creates a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters){% endif %}
 
 The resources/services/activations/deletions that this module will create/trigger are:
 - Create a GKE cluster with the provided addons
@@ -189,6 +189,7 @@ following project roles:
 - roles/compute.viewer
 - roles/container.clusterAdmin
 - roles/container.developer
+- roles/iam.serviceAccountAdmin
 - roles/iam.serviceAccountUser
 
 ### Enable APIs

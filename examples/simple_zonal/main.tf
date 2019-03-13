@@ -19,6 +19,7 @@ locals {
 }
 
 provider "google" {
+  version     = "~> 1.20"
   credentials = "${file(var.credentials_path)}"
   region      = "${var.region}"
 }
@@ -34,7 +35,7 @@ module "gke" {
   subnetwork        = "${var.subnetwork}"
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
-  service_account   = "${var.compute_engine_service_account}"
+  service_account   = "create"
 }
 
 data "google_client_config" "default" {}
