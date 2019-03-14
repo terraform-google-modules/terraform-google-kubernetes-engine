@@ -112,11 +112,11 @@ variable "maintenance_start_time" {
 }
 
 variable "ip_range_pods" {
-  description = "The secondary ip range to use for pods"
+  description = "The _name_ of the secondary subnet ip range to use for pods"
 }
 
 variable "ip_range_services" {
-  description = "The secondary ip range to use for pods"
+  description = "The _name_ of the secondary subnet ip range to use for services"
 }
 
 variable "remove_default_node_pool" {
