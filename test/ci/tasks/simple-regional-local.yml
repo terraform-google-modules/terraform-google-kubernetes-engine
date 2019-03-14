@@ -1,0 +1,31 @@
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: gcr.io/cloud-foundation-cicd/cft/kitchen-terraform_terraform-google-kubernetes-engine
+    tag: f6b7f4ec0a865371531657731b6d52673a0bcd64
+    username: _json_key
+    password: |-
+      <INSERT_KEY_JSON>
+
+inputs:
+  - name: terraform-google-kubernetes-engine
+
+caches:
+  - path: terraform-google-kubernetes-engine
+
+run:
+  path: bash
+  args: ["-c", "./test/ci_integration.sh"]
+  dir: terraform-google-kubernetes-engine
+
+params:
+  COMPUTE_ENGINE_SERVICE_ACCOUNT: COMPUTE_ENGINE_SERVICE_ACCOUNT
+  PROJECT_ID: PROJECT_ID
+  REGION: REGION
+  ZONES: ZONES
+  SERVICE_ACCOUNT_JSON: SERVICE_ACCOUNT_JSON
+  CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
+  GOOGLE_APPLICATION_CREDENTIALS: GOOGLE_APPLICATION_CREDENTIALS
+  SUITE: simple-regional-local

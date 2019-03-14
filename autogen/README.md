@@ -275,6 +275,8 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
 
 Alternatively, you can simply run `make test_integration_docker` to run all the test steps non-interactively.
 
+If you wish to parallelize running the test suites, it is also possible to offload the work onto Concourse to run each test suite for you using the command `make test_integration_concourse`. The `.concourse` directory will be created and contain all of the logs from the running test suites.
+
 #### Test configuration
 
 Each test-kitchen instance is configured with a `variables.tfvars` file in the test fixture directory, e.g. `test/fixtures/node_pool/terraform.tfvars`.
