@@ -98,3 +98,27 @@ function generate_docs() {
   done
   rm -f "$TMPFILE"
 }
+
+function check_generate() {
+  make generate
+  git diff --exit-codes
+}
+
+function check_generate_docs() {
+  TMPDIR=$(mktemp -d)
+  git worktree add --detach "$TMPDIR"
+  cd "$TMPDIR" || exit 1
+
+  make generate_docs
+  git diff --stat --exit-code
+  rc=$?
+  cd - || exit 1
+
+  if [[ $rc -ne 0 ]]; then
+    echo '`make generate_docs` creates a diff, run "make generate_docs" and commit the results'
+  fi
+  rm -rf "$TMPDIR"
+  git worktree prune
+
+  exit $rc
+}
