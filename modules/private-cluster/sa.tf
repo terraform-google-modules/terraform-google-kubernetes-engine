@@ -24,7 +24,7 @@ locals {
 resource "google_service_account" "cluster_service_account" {
   count        = "${var.service_account == "create" ? 1 : 0}"
   project      = "${var.project_id}"
-  account_id   = "tf-gke-${substr(var.name, 0, 20)}"
+  account_id   = "tf-gke-${substr(var.name, 0, min(20, length(var.name)))}"
   display_name = "Terraform-managed service account for cluster ${var.name}"
 }
 
