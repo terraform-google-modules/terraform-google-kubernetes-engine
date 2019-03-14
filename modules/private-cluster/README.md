@@ -277,9 +277,9 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
 
 Alternatively, you can simply run `make test_integration_docker` to run all the test steps non-interactively.
 
-If you wish to parallelize running the test suites, it is also possible to offload the work onto Concourse to run each test suite for you using the command `make test_integration_concourse`. The `.concourse` directory will be created and contain all of the logs from the running test suites.
+If you wish to parallelize running the test suites, it is also possible to offload the work onto Concourse to run each test suite by using the task files included in the `test/ci/tasks/` directory. The files need to be edited to change a few of the input parameters. You can find a helper script to make those changes for you automatically [here](https://gist.github.com/thefirstofthe300/e36394788d2ffad3333dddc816400557).
 
-When running tests locally, you will need to use your own test project environment. You can configure your environment by setting all of the following variables:
+When running tests locally and using the above script, you will need to use your own test project environment. You can configure your environment by setting all of the following variables:
 
 ```
 export COMPUTE_ENGINE_SERVICE_ACCOUNT="<EXISTING_SERVICE_ACCOUNT>"
