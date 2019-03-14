@@ -130,7 +130,7 @@ docker_create: docker_build_kitchen_terraform
 		-e GOOGLE_APPLICATION_CREDENTIALS=${CREDENTIALS_PATH} \
 		-v $(CURDIR):/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
-		/bin/bash -c "kitchen create"
+		/bin/bash -c "source test/ci_integration.sh && setup_environment && kitchen create"
 
 .PHONY: docker_converge
 docker_converge:
@@ -144,7 +144,7 @@ docker_converge:
 		-e GOOGLE_APPLICATION_CREDENTIALS=${CREDENTIALS_PATH} \
 		-v $(CURDIR):/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
-		/bin/bash -c "kitchen converge && kitchen converge"
+		/bin/bash -c "source test/ci_integration.sh && setup_environment && kitchen converge && kitchen converge"
 
 .PHONY: docker_verify
 docker_verify:
@@ -158,7 +158,7 @@ docker_verify:
 		-e GOOGLE_APPLICATION_CREDENTIALS=${CREDENTIALS_PATH} \
 		-v $(CURDIR):/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
-		/bin/bash -c "kitchen verify"
+		/bin/bash -c "source test/ci_integration.sh && setup_environment && kitchen verify"
 
 .PHONY: docker_destroy
 docker_destroy:
@@ -172,7 +172,7 @@ docker_destroy:
 		-e GOOGLE_APPLICATION_CREDENTIALS=${CREDENTIALS_PATH} \
 		-v $(CURDIR):/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
-		/bin/bash -c "kitchen destroy"
+		/bin/bash -c "source test/ci_integration.sh && setup_environment && kitchen destroy"
 
 .PHONY: test_integration_docker
 test_integration_docker:
