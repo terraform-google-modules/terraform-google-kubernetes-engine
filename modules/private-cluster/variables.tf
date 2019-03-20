@@ -116,7 +116,7 @@ variable "ip_range_pods" {
 }
 
 variable "ip_range_services" {
-  description = "The _name_ of the secondary subnet ip range to use for services"
+  description = "The _name_ of the secondary subnet range to use for services"
 }
 
 variable "remove_default_node_pool" {
