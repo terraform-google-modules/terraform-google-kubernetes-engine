@@ -15,17 +15,20 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Add `remove_default_node_pool` set to `false` by default. Fixes [#15]. [#55]
 * Allow arbitrary key-value pairs to be set on node pool metadata. [#52]
 * Add `initial_node_count` parameter to node_pool block. [#60]
+* Add test tasks to allow for parallelized local testing runs using Concourse [#109]
 
 ### Changed
 * Set `horizontal_pod_autoscaling` to `true` by default. Fixes [#42]. [#54]
 * Update simple-zonal example GKE version to supported version. [#49]
 * Remove explicit versions from test cases and examples. [#62]
 * Set up submodule structure for public and private clusters. [#61]
+* Update the google and google-beta providers to v2.2 [#106]
 
 ### Fixed
 * Zonal clusters can now accept a single zone. Fixes [#43]. [#50]
 * Drop explicit version from simple_zonal example. [#74]
 * Fix link to "configure a service account" [#73]
+* Fix issue with regional cluster roll outs causing version skews [#108]
 
 ## [v0.4.0] - 2018-12-19
 ### Added
@@ -67,6 +70,9 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#42]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/42
 [#15]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/15
 
+[#109]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/109
+[#108]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/108
+[#106]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/106
 [#80]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/80
 [#74]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/74
 [#73]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/73
