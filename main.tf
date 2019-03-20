@@ -31,10 +31,12 @@ resource "random_shuffle" "available_zones" {
 }
 
 locals {
-  kubernetes_version     = "${var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_node_version}"
-  node_version           = "${var.node_version != "" ? var.node_version : local.kubernetes_version}"
-  custom_kube_dns_config = "${length(keys(var.stub_domains)) > 0 ? true : false}"
-  network_project_id     = "${var.network_project_id != "" ? var.network_project_id : var.project_id}"
+  kubernetes_version_regional = "${var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version}"
+  kubernetes_version_zonal    = "${var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version}"
+  node_version_regional       = "${var.node_version != "" && var.regional ? var.node_version : local.kubernetes_version_regional}"
+  node_version_zonal          = "${var.node_version != "" && !var.regional ? var.node_version : local.kubernetes_version_zonal}"
+  custom_kube_dns_config      = "${length(keys(var.stub_domains)) > 0 ? true : false}"
+  network_project_id          = "${var.network_project_id != "" ? var.network_project_id : var.project_id}"
 
   cluster_type = "${var.regional ? "regional" : "zonal"}"
 
@@ -149,7 +151,17 @@ locals {
   Get available container engine versions
  *****************************************/
 data "google_container_engine_versions" "region" {
-  provider = "google"
-  zone     = "${data.google_compute_zones.available.names[0]}"
+  provider = "google-beta"
+  region   = "${var.region}"
   project  = "${var.project_id}"
+}
+
+data "google_container_engine_versions" "zone" {
+  // Work around to prevent a lack of zone declaration from causing regional cluster creation from erroring out due to error
+  //
+  //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
+  //
+  zone = "${var.zones[0] == "" ? data.google_compute_zones.available.names[0] : var.zones[0]}"
+
+  project = "${var.project_id}"
 }
