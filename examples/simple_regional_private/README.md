@@ -34,6 +34,7 @@ This example illustrates how to create a simple private cluster.
 | network |  |
 | project\_id |  |
 | region |  |
+| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | subnetwork |  |
 | zones | List of zones in which the cluster resides |
 
