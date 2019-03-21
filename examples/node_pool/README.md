@@ -17,6 +17,7 @@ This example illustrates how to create a cluster with multiple custom node-pool 
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
 | subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
+| zones | The zone to host the cluster in (required if is a zonal cluster) | list | n/a | yes |
 
 ## Outputs
 
@@ -34,6 +35,7 @@ This example illustrates how to create a cluster with multiple custom node-pool 
 | network |  |
 | project\_id |  |
 | region |  |
+| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | subnetwork |  |
 | zones | List of zones in which the cluster resides |
 
