@@ -91,7 +91,7 @@ resource "google_container_cluster" "primary" {
   Create regional node pools
  *****************************************/
 resource "google_container_node_pool" "pools" {
-  provider           = "google"
+  provider           = "google-beta"
   count              = "${var.regional ? length(var.node_pools) : 0}"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
