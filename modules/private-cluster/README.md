@@ -106,8 +106,8 @@ Then perform the following commands on the root folder:
 | http\_load\_balancing | Enable httpload balancer addon | string | `"true"` | no |
 | ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `"false"` | no |
 | ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `"60s"` | no |
-| ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
-| ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
+| ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | n/a | yes |
+| ip\_range\_services | The _name_ of the secondary subnet range to use for services | string | n/a | yes |
 | kubernetes\_dashboard | Enable kubernetes dashboard addon | string | `"false"` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com"` | no |
@@ -155,6 +155,7 @@ Then perform the following commands on the root folder:
 | node\_pools\_names | List of node pools names |
 | node\_pools\_versions | List of node pools versions |
 | region | Cluster region |
+| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | type | Cluster type (regional / zonal) |
 | zones | List of zones in which the cluster resides |
 
