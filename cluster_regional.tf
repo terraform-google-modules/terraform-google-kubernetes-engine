@@ -31,7 +31,7 @@ resource "google_container_cluster" "primary" {
 
   network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
-  min_master_version = "${local.kubernetes_version}"
+  min_master_version = "${local.kubernetes_version_regional}"
 
   logging_service    = "${var.logging_service}"
   monitoring_service = "${var.monitoring_service}"
@@ -84,7 +84,6 @@ resource "google_container_cluster" "primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
     }
   }
-
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
@@ -98,7 +97,7 @@ resource "google_container_node_pool" "pools" {
   project            = "${var.project_id}"
   region             = "${var.region}"
   cluster            = "${var.name}"
-  version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version)}"
+  version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version_regional)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"
 
   autoscaling {

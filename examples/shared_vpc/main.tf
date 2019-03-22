@@ -24,6 +24,11 @@ provider "google" {
   region      = "${var.region}"
 }
 
+provider "google-beta" {
+  credentials = "${file(var.credentials_path)}"
+  region      = "${var.region}"
+}
+
 module "gke" {
   source             = "../../"
   project_id         = "${var.project_id}"

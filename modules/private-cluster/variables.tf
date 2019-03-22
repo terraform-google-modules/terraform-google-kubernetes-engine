@@ -112,11 +112,11 @@ variable "maintenance_start_time" {
 }
 
 variable "ip_range_pods" {
-  description = "The secondary ip range to use for pods"
+  description = "The _name_ of the secondary subnet ip range to use for pods"
 }
 
 variable "ip_range_services" {
-  description = "The secondary ip range to use for pods"
+  description = "The _name_ of the secondary subnet range to use for services"
 }
 
 variable "remove_default_node_pool" {
@@ -211,18 +211,17 @@ variable "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account. May also specify `create` to automatically create a cluster-specific service account"
   default     = ""
 }
-
 variable "enable_private_endpoint" {
-  description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
-  default     = false
+  description  = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
+  default      = false
 }
 
 variable "enable_private_nodes" {
-  description = "(Beta) Whether nodes have internal IP addresses only"
-  default     = false
+  description  = "(Beta) Whether nodes have internal IP addresses only"
+  default      = false
 }
 
 variable "master_ipv4_cidr_block" {
-  description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
-  default     = "10.0.0.0/28"
+  description  = "(Beta) The IP range in CIDR notation to use for the hosted master network"
+  default      = "10.0.0.0/28"
 }
