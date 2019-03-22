@@ -111,6 +111,7 @@ control "gcloud" do
               "config" => including(
                 "metadata" => including(
                   "shutdown-script" => File.open("examples/node_pool/data/shutdown-script.sh").read,
+                  "disable-legacy-endpoints" => "false",
                 ),
               ),
             )
