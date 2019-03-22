@@ -107,3 +107,8 @@ output "node_pools_versions" {
   description = "List of node pools versions"
   value       = "${local.cluster_node_pools_versions}"
 }
+
+output "service_account" {
+  description = "The service account to default running nodes as if not overridden in `node_pools`."
+  value = "${local.service_account}"
+}
