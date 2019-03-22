@@ -21,3 +21,6 @@ attributes:
   - name: client_token
     required: true
     type: string
+  - name: service_account
+    required: true
+    type: string
