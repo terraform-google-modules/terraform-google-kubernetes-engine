@@ -191,6 +191,7 @@ following project roles:
 - roles/container.developer
 - roles/iam.serviceAccountAdmin
 - roles/iam.serviceAccountUser
+- roles/resourcemanager.projectIamAdmin (only required if `service_account` is set to `create`)
 
 ### Enable APIs
 In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:
@@ -249,6 +250,9 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
 
 1. Configure the [test fixtures](#test-configuration)
 2. Download a Service Account key with the necessary permissions and put it in the module's root directory with the name `credentials.json`.
+    - Requires the [permissions to run the module](#configure-a-service-account)
+    - Requires `roles/compute.networkAdmin` to create the test suite's networks
+    - Requires `roles/resourcemanager.projectIamAdmin` since service account creation is tested
 3. Build the Docker container for testing:
 
   ```

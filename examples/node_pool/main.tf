@@ -24,6 +24,11 @@ provider "google" {
   region      = "${var.region}"
 }
 
+provider "google-beta" {
+  credentials = "${file(var.credentials_path)}"
+  region      = "${var.region}"
+}
+
 module "gke" {
   source                   = "../../"
   project_id               = "${var.project_id}"
@@ -43,6 +48,7 @@ module "gke" {
       min_count       = 1
       max_count       = 2
       service_account = "${var.compute_engine_service_account}"
+      auto_upgrade    = true
     },
     {
       name            = "pool-02"
@@ -53,7 +59,6 @@ module "gke" {
       disk_type       = "pd-standard"
       image_type      = "COS"
       auto_repair     = false
-      auto_upgrade    = false
       service_account = "${var.compute_engine_service_account}"
     },
   ]

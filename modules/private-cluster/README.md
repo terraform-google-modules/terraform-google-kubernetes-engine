@@ -95,66 +95,65 @@ Then perform the following commands on the root folder:
 
 [^]: (autogen_docs_start)
 
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| description | The description of the cluster | string | `` | no |
-| enable_private_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | string | `false` | no |
-| enable_private_nodes | (Beta) Whether nodes have internal IP addresses only | string | `false` | no |
-| horizontal_pod_autoscaling | Enable horizontal pod autoscaling addon | string | `true` | no |
-| http_load_balancing | Enable httpload balancer addon | string | `true` | no |
-| ip_masq_link_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `false` | no |
-| ip_masq_resync_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `60s` | no |
-| ip_range_pods | The secondary ip range to use for pods | string | - | yes |
-| ip_range_services | The secondary ip range to use for pods | string | - | yes |
-| kubernetes_dashboard | Enable kubernetes dashboard addon | string | `false` | no |
-| kubernetes_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `latest` | no |
-| logging_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `logging.googleapis.com` | no |
-| maintenance_start_time | Time window specified for daily maintenance operations in RFC3339 format | string | `05:00` | no |
-| master_authorized_networks_config | The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)<br><br>  ### example format ###   master_authorized_networks_config = [{     cidr_blocks = [{       cidr_block   = "10.0.0.0/8"       display_name = "example_network"     }],   }] | list | `<list>` | no |
-| master_ipv4_cidr_block | (Beta) The IP range in CIDR notation to use for the hosted master network | string | `10.0.0.0/28` | no |
-| monitoring_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `monitoring.googleapis.com` | no |
-| name | The name of the cluster (required) | string | - | yes |
-| network | The VPC network to host the cluster in (required) | string | - | yes |
-| network_policy | Enable network policy addon | string | `false` | no |
-| network_project_id | The project ID of the shared VPC's host (for shared vpc support) | string | `` | no |
-| node_pools | List of maps containing node pools | list | `<list>` | no |
-| node_pools_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
-| node_pools_metadata | Map of maps containing node metadata by node-pool name | map | `<map>` | no |
-| node_pools_tags | Map of lists containing node network tags by node-pool name | map | `<map>` | no |
-| node_pools_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
-| node_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `` | no |
-| non_masquerade_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list | `<list>` | no |
-| project_id | The project ID to host the cluster in (required) | string | - | yes |
-| region | The region to host the cluster in (required) | string | - | yes |
-| regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `true` | no |
-| remove_default_node_pool | Remove default node pool while setting up the cluster | string | `false` | no |
-| service_account | The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account. May also specify `create` to automatically create a cluster-specific service account | string | `` | no |
-| stub_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
-| subnetwork | The subnetwork to host the cluster in (required) | string | - | yes |
+| description | The description of the cluster | string | `""` | no |
+| enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | string | `"false"` | no |
+| enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | string | `"false"` | no |
+| horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | string | `"true"` | no |
+| http\_load\_balancing | Enable httpload balancer addon | string | `"true"` | no |
+| ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `"false"` | no |
+| ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `"60s"` | no |
+| ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
+| ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
+| kubernetes\_dashboard | Enable kubernetes dashboard addon | string | `"false"` | no |
+| kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
+| logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com"` | no |
+| maintenance\_start\_time | Time window specified for daily maintenance operations in RFC3339 format | string | `"05:00"` | no |
+| master\_authorized\_networks\_config | The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)<br><br>  ### example format ###   master_authorized_networks_config = [{     cidr_blocks = [{       cidr_block   = "10.0.0.0/8"       display_name = "example_network"     }],   }] | list | `<list>` | no |
+| master\_ipv4\_cidr\_block | (Beta) The IP range in CIDR notation to use for the hosted master network | string | `"10.0.0.0/28"` | no |
+| monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com"` | no |
+| name | The name of the cluster (required) | string | n/a | yes |
+| network | The VPC network to host the cluster in (required) | string | n/a | yes |
+| network\_policy | Enable network policy addon | string | `"false"` | no |
+| network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
+| node\_pools | List of maps containing node pools | list | `<list>` | no |
+| node\_pools\_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
+| node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map | `<map>` | no |
+| node\_pools\_tags | Map of lists containing node network tags by node-pool name | map | `<map>` | no |
+| node\_pools\_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
+| node\_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `""` | no |
+| non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list | `<list>` | no |
+| project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
+| region | The region to host the cluster in (required) | string | n/a | yes |
+| regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `"true"` | no |
+| remove\_default\_node\_pool | Remove default node pool while setting up the cluster | string | `"false"` | no |
+| service\_account | The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account. May also specify `create` to automatically create a cluster-specific service account | string | `""` | no |
+| stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
+| subnetwork | The subnetwork to host the cluster in (required) | string | n/a | yes |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list | `<list>` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| ca_certificate | Cluster ca certificate (base64 encoded) |
+| ca\_certificate | Cluster ca certificate (base64 encoded) |
 | endpoint | Cluster endpoint |
-| horizontal_pod_autoscaling_enabled | Whether horizontal pod autoscaling enabled |
-| http_load_balancing_enabled | Whether http load balancing enabled |
-| kubernetes_dashboard_enabled | Whether kubernetes dashboard enabled |
+| horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
+| http\_load\_balancing\_enabled | Whether http load balancing enabled |
+| kubernetes\_dashboard\_enabled | Whether kubernetes dashboard enabled |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |
-| logging_service | Logging service used |
-| master_authorized_networks_config | Networks from which access to master is permitted |
-| master_version | Current master kubernetes version |
-| min_master_version | Minimum master kubernetes version |
-| monitoring_service | Monitoring service used |
+| logging\_service | Logging service used |
+| master\_authorized\_networks\_config | Networks from which access to master is permitted |
+| master\_version | Current master kubernetes version |
+| min\_master\_version | Minimum master kubernetes version |
+| monitoring\_service | Monitoring service used |
 | name | Cluster name |
-| network_policy_enabled | Whether network policy enabled |
-| node_pools_names | List of node pools names |
-| node_pools_versions | List of node pools versions |
+| network\_policy\_enabled | Whether network policy enabled |
+| node\_pools\_names | List of node pools names |
+| node\_pools\_versions | List of node pools versions |
 | region | Cluster region |
 | type | Cluster type (regional / zonal) |
 | zones | List of zones in which the cluster resides |
@@ -187,6 +186,7 @@ following project roles:
 - roles/container.developer
 - roles/iam.serviceAccountAdmin
 - roles/iam.serviceAccountUser
+- roles/resourcemanager.projectIamAdmin (only required if `service_account` is set to `create`)
 
 ### Enable APIs
 In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:
@@ -245,6 +245,9 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
 
 1. Configure the [test fixtures](#test-configuration)
 2. Download a Service Account key with the necessary permissions and put it in the module's root directory with the name `credentials.json`.
+    - Requires the [permissions to run the module](#configure-a-service-account)
+    - Requires `roles/compute.networkAdmin` to create the test suite's networks
+    - Requires `roles/resourcemanager.projectIamAdmin` since service account creation is tested
 3. Build the Docker container for testing:
 
   ```
