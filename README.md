@@ -89,7 +89,6 @@ Then perform the following commands on the root folder:
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
 
-
 [^]: (autogen_docs_start)
 
 ## Inputs
@@ -101,8 +100,8 @@ Then perform the following commands on the root folder:
 | http\_load\_balancing | Enable httpload balancer addon | string | `"true"` | no |
 | ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `"false"` | no |
 | ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `"60s"` | no |
-| ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | - | yes |
-| ip\_range\_services | The _name_ of the secondary subnet ip range to use for services | string | - | yes |
+| ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | n/a | yes |
+| ip\_range\_services | The _name_ of the secondary subnet range to use for services | string | n/a | yes |
 | kubernetes\_dashboard | Enable kubernetes dashboard addon | string | `"false"` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com"` | no |
@@ -149,6 +148,7 @@ Then perform the following commands on the root folder:
 | node\_pools\_names | List of node pools names |
 | node\_pools\_versions | List of node pools versions |
 | region | Cluster region |
+| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | type | Cluster type (regional / zonal) |
 | zones | List of zones in which the cluster resides |
 
@@ -170,7 +170,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.11.x
-- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v1.8.0
+- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.0.0
 
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the
@@ -263,6 +263,20 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
   5. `kitchen destroy` tears down the underlying resources created by `kitchen converge`. Run `kitchen destroy <INSTANCE_NAME>` to tear down resources for a specific test case.
 
 Alternatively, you can simply run `make test_integration_docker` to run all the test steps non-interactively.
+
+If you wish to parallelize running the test suites, it is also possible to offload the work onto Concourse to run each test suite for you using the command `make test_integration_concourse`. The `.concourse` directory will be created and contain all of the logs from the running test suites.
+
+When running tests locally, you will need to use your own test project environment. You can configure your environment by setting all of the following variables:
+
+```
+export COMPUTE_ENGINE_SERVICE_ACCOUNT="<EXISTING_SERVICE_ACCOUNT>"
+export PROJECT_ID="<PROJECT_TO_USE>"
+export REGION="<REGION_TO_USE>"
+export ZONES='["<LIST_OF_ZONES_TO_USE>"]'
+export SERVICE_ACCOUNT_JSON="$(cat "<PATH_TO_SERVICE_ACCOUNT_JSON>")"
+export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="<PATH_TO_SERVICE_ACCOUNT_JSON>"
+export GOOGLE_APPLICATION_CREDENTIALS="<PATH_TO_SERVICE_ACCOUNT_JSON>"
+```
 
 #### Test configuration
 
