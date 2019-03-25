@@ -8,27 +8,28 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
-## [v0.5.0] - 2019-02-28
+## [v1.0.0] - 2019-03-25
 ### Added
 * Allow creation of service accounts. [#80]
 * Add support for private clusters via submodule. [#69]
 * Add `remove_default_node_pool` set to `false` by default. Fixes [#15]. [#55]
 * Allow arbitrary key-value pairs to be set on node pool metadata. [#52]
 * Add `initial_node_count` parameter to node_pool block. [#60]
-* Add test tasks to allow for parallelized local testing runs using Concourse [#109]
+* Added `disable_legacy_metadata_endpoints` parameter. [#114]
 
 ### Changed
 * Set `horizontal_pod_autoscaling` to `true` by default. Fixes [#42]. [#54]
 * Update simple-zonal example GKE version to supported version. [#49]
+* Drop explicit version from simple_zonal example. [#74]
 * Remove explicit versions from test cases and examples. [#62]
 * Set up submodule structure for public and private clusters. [#61]
 * Update the google and google-beta providers to v2.2 [#106]
 
 ### Fixed
 * Zonal clusters can now accept a single zone. Fixes [#43]. [#50]
-* Drop explicit version from simple_zonal example. [#74]
 * Fix link to "configure a service account" [#73]
 * Fix issue with regional cluster roll outs causing version skews [#108]
+* Fix permanent metadata skew due to disable-legacy-endpoints keys [#114]
 
 ## [v0.4.0] - 2018-12-19
 ### Added
@@ -60,7 +61,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 * Initial release of module.
 
-[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v1.0.0...HEAD
+[v1.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.4.0...v1.0.0
 [v0.4.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.4.0...v0.5.0
 [v0.4.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.3.0...v0.4.0
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
@@ -80,6 +82,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#69]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/69
 [#62]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/62
 [#60]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/60
+[#55]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/55
 [#54]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/54
 [#52]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/52
 [#50]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/50
@@ -91,6 +94,5 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#22]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/22
 [#19]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/19
 [#16]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/16
-[#15]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/15
 [#10]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/10
 [#9]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/9
