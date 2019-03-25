@@ -15,6 +15,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Add `remove_default_node_pool` set to `false` by default. Fixes [#15]. [#55]
 * Allow arbitrary key-value pairs to be set on node pool metadata. [#52]
 * Add `initial_node_count` parameter to node_pool block. [#60]
+* Fix permanent metadata skew due to disable-legacy-endpoints keys [#114]
 
 ### Changed
 * Set `horizontal_pod_autoscaling` to `true` by default. Fixes [#42]. [#54]
@@ -69,7 +70,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#42]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/42
 [#15]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/15
 
-[#109]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/109
+[#114]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/114
 [#108]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/108
 [#106]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/106
 [#80]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/80
