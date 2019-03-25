@@ -56,6 +56,7 @@ variable "cluster_resource_labels" {
   description = "Map containing cluster labels. Maximum of 64 labels"
 
   default = {
+    created-by = "terraform"
   }
 
 }

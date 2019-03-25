@@ -43,6 +43,7 @@ setup_environment() {
   export TF_VAR_credentials_path_relative="../shared/credentials.json"
   export TF_VAR_region="$REGION"
   export TF_VAR_zones="$ZONES"
+  export TF_VAR_cluster_resource_labels="$CLUSTER_RESOURCE_LABELS"
   export TF_VAR_compute_engine_service_account="$COMPUTE_ENGINE_SERVICE_ACCOUNT"
 }
 
