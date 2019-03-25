@@ -126,7 +126,7 @@ variable "remove_default_node_pool" {
 
 variable "disable_legacy_metadata_endpoints" {
   description = "Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated."
-  default     = true
+  default     = "true"
 }
 
 
