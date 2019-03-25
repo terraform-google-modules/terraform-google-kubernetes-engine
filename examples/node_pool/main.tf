@@ -19,28 +19,30 @@ locals {
 }
 
 provider "google" {
-  version     = "~> 1.20"
+  version     = "~> 2.2"
   credentials = "${file(var.credentials_path)}"
   region      = "${var.region}"
 }
 
 provider "google-beta" {
+  version     = "~> 2.2"
   credentials = "${file(var.credentials_path)}"
   region      = "${var.region}"
 }
 
 module "gke" {
-  source                   = "../../"
-  project_id               = "${var.project_id}"
-  name                     = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                 = "false"
-  region                   = "${var.region}"
-  zones                    = "${var.zones}"
-  network                  = "${var.network}"
-  subnetwork               = "${var.subnetwork}"
-  ip_range_pods            = "${var.ip_range_pods}"
-  ip_range_services        = "${var.ip_range_services}"
-  remove_default_node_pool = "true"
+  source                            = "../../"
+  project_id                        = "${var.project_id}"
+  name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  regional                          = "false"
+  region                            = "${var.region}"
+  zones                             = "${var.zones}"
+  network                           = "${var.network}"
+  subnetwork                        = "${var.subnetwork}"
+  ip_range_pods                     = "${var.ip_range_pods}"
+  ip_range_services                 = "${var.ip_range_services}"
+  remove_default_node_pool          = "true"
+  disable_legacy_metadata_endpoints = "false"
 
   node_pools = [
     {
