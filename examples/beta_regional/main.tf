@@ -43,6 +43,49 @@ module "gke" {
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
   service_account   = "${var.compute_engine_service_account}"
+
+  node_pools = [
+    {
+      name            = "pool-01"
+      min_count       = 1
+      max_count       = 2
+      service_account = "${var.compute_engine_service_account}"
+      auto_upgrade    = true
+    },
+  ]
+
+  node_pools_metadata = {
+    all     = {}
+    pool-01 = {}
+  }
+
+  node_pools_labels = {
+    all = {}
+
+    pool-01 = {
+      pool-01-example = "true"
+    }
+  }
+
+  node_pools_taints = {
+    all = []
+
+    pool-01 = [
+      {
+        key    = "pool-01-example"
+        value  = "true"
+        effect = "PREFER_NO_SCHEDULE"
+      },
+    ]
+  }
+
+  node_pools_tags = {
+    all = []
+
+    pool-01 = [
+      "pool-01-example",
+    ]
+  }
 }
 
 data "google_client_config" "default" {}
