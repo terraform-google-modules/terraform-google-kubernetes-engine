@@ -157,7 +157,6 @@ data "google_container_engine_versions" "region" {
 }
 
 data "google_container_engine_versions" "zone" {
-  provider = "google-beta"
   // Work around to prevent a lack of zone declaration from causing regional cluster creation from erroring out due to error
   //
   //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
