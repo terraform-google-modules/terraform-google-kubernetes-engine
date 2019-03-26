@@ -35,3 +35,8 @@ variable "zones" {
 variable "compute_engine_service_account" {
   description = "The email address of the service account to associate with the GKE cluster"
 }
+
+variable "cluster_resource_labels" {
+  type        = "map"
+  description = "Map containing cluster labels. Maximum of 64 labels"
+}
