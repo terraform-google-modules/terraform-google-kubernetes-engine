@@ -89,6 +89,12 @@ Then perform the following commands on the root folder:
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
 
+## Upgrade to v1.0.0
+
+Version 1.0.0 of this module introduces a breaking change: adding the `disable-legacy-endpoints` metadata field to all node pools. This metadata is required by GKE and [determines whether the `/0.1/` and `/v1beta1/` paths are available in the nodes' metadata server](https://cloud.google.com/kubernetes-engine/docs/how-to/protecting-cluster-metadata#disable-legacy-apis). If your applications do not require access to the node's metadata server, you can leave the default value of `true` provided by the module. If your applications require access to the metadata server, be sure to read the linked documentation to see if you need to set the value for this field to `false` to allow your applications access to the above metadata server paths.
+
+In either case, upgrading to module version `v1.0.0` will trigger a recreation of all node pools in the cluster.
+
 [^]: (autogen_docs_start)
 
 ## Inputs
@@ -96,6 +102,7 @@ Then perform the following commands on the root folder:
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | description | The description of the cluster | string | `""` | no |
+| disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | string | `"true"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | string | `"true"` | no |
 | http\_load\_balancing | Enable httpload balancer addon | string | `"true"` | no |
 | ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `"false"` | no |
