@@ -58,6 +58,12 @@ control "gcloud" do
           },
         })
       end
+
+      it "has cluster resource labels" do
+        expect(data['resourceLabels']).to eq({
+            "created-by" => "terraform",
+             })
+      end
     end
 
     describe "default node pool" do
@@ -137,6 +143,10 @@ control "gcloud" do
           )
         )
       end
+
+
+
+
 
       it "has the expected network tags" do
         expect(node_pools).to include(
