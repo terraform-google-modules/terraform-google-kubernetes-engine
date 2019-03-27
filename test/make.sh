@@ -18,14 +18,12 @@
 # shebang has a '- e' flag, which causes it
 # to exit on error
 function check_bash() {
-find . -name "*.sh" | while IFS= read -d '' -r file;
-do
-  if [[ "$file" != *"bash -e"* ]];
-  then
-    echo "$file is missing shebang with -e";
-    exit 1;
-  fi;
-done;
+  find . -name "*.sh" | while IFS= read -d '' -r file; do
+    if [[ "$file" != *"bash -e"* ]]; then
+      echo "$file is missing shebang with -e"
+      exit 1
+    fi
+  done
 }
 
 # This function makes sure that the required files for
@@ -92,8 +90,8 @@ function generate_docs() {
   echo "Generating markdown docs with terraform-docs"
   TMPFILE=$(mktemp)
   #shellcheck disable=2006,2086
-  for j in `for i in $(find . -type f | grep \.tf$) ; do dirname $i ; done | sort -u` ; do
-    terraform-docs markdown "$j" > "$TMPFILE"
+  for j in $(find ./ -name '*.tf' -type f -exec dirname '{}' \; | sort -u | grep -v ./autogen); do
+    terraform-docs markdown "$j" >"$TMPFILE"
     python helpers/combine_docfiles.py "$j"/README.md "$TMPFILE"
   done
   rm -f "$TMPFILE"

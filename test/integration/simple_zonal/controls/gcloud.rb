@@ -15,6 +15,7 @@
 project_id = attribute('project_id')
 location = attribute('location')
 cluster_name = attribute('cluster_name')
+service_account = attribute('service_account')
 
 credentials_path = attribute('credentials_path')
 ENV['CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE'] = credentials_path
@@ -83,7 +84,7 @@ control "gcloud" do
         expect(node_pools).to include(
           including(
             "config" => including(
-              "serviceAccount" => starting_with("tf-gke-simple-zonal-cluster@"),
+              "serviceAccount" => service_account,
             ),
           ),
         )

@@ -19,23 +19,30 @@ locals {
 }
 
 provider "google" {
-  version     = "~> 1.20"
+  version     = "~> 2.2"
+  credentials = "${file(var.credentials_path)}"
+  region      = "${var.region}"
+}
+
+provider "google-beta" {
+  version     = "~> 2.2"
   credentials = "${file(var.credentials_path)}"
   region      = "${var.region}"
 }
 
 module "gke" {
-  source                   = "../../"
-  project_id               = "${var.project_id}"
-  name                     = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                 = "false"
-  region                   = "${var.region}"
-  zones                    = "${var.zones}"
-  network                  = "${var.network}"
-  subnetwork               = "${var.subnetwork}"
-  ip_range_pods            = "${var.ip_range_pods}"
-  ip_range_services        = "${var.ip_range_services}"
-  remove_default_node_pool = "true"
+  source                            = "../../"
+  project_id                        = "${var.project_id}"
+  name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  regional                          = "false"
+  region                            = "${var.region}"
+  zones                             = "${var.zones}"
+  network                           = "${var.network}"
+  subnetwork                        = "${var.subnetwork}"
+  ip_range_pods                     = "${var.ip_range_pods}"
+  ip_range_services                 = "${var.ip_range_services}"
+  remove_default_node_pool          = "true"
+  disable_legacy_metadata_endpoints = "false"
 
   node_pools = [
     {
@@ -43,6 +50,7 @@ module "gke" {
       min_count       = 1
       max_count       = 2
       service_account = "${var.compute_engine_service_account}"
+      auto_upgrade    = true
     },
     {
       name            = "pool-02"
@@ -53,7 +61,6 @@ module "gke" {
       disk_type       = "pd-standard"
       image_type      = "COS"
       auto_repair     = false
-      auto_upgrade    = false
       service_account = "${var.compute_engine_service_account}"
     },
   ]

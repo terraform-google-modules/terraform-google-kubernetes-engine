@@ -19,6 +19,13 @@ locals {
 }
 
 provider "google" {
+  version     = "~> 2.2"
+  credentials = "${file(var.credentials_path)}"
+  region      = "${var.region}"
+}
+
+provider "google-beta" {
+  version     = "~> 2.2"
   credentials = "${file(var.credentials_path)}"
   region      = "${var.region}"
 }
