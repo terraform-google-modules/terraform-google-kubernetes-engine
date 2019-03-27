@@ -4,36 +4,35 @@ This example illustrates how to create a simple cluster.
 
 [^]: (autogen_docs_start)
 
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cluster_name_suffix | A suffix to append to the default cluster name | string | `` | no |
-| ip_range_pods | The secondary ip range to use for pods | string | - | yes |
-| ip_range_services | The secondary ip range to use for pods | string | - | yes |
-| network | The VPC network to host the cluster in | string | - | yes |
-| project_id | The project ID to host the cluster in | string | - | yes |
-| region | The region to host the cluster in | string | - | yes |
-| subnetwork | The subnetwork to host the cluster in | string | - | yes |
-| zones | The zone to host the cluster in (required if is a zonal cluster) | list | - | yes |
+| cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
+| ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
+| ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
+| network | The VPC network to host the cluster in | string | n/a | yes |
+| project\_id | The project ID to host the cluster in | string | n/a | yes |
+| region | The region to host the cluster in | string | n/a | yes |
+| subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
+| zones | The zone to host the cluster in (required if is a zonal cluster) | list | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| ca_certificate |  |
-| client_token |  |
-| cluster_name | Cluster name |
-| ip_range_pods | The secondary IP range used for pods |
-| ip_range_services | The secondary IP range used for services |
-| kubernetes_endpoint |  |
+| ca\_certificate |  |
+| client\_token |  |
+| cluster\_name | Cluster name |
+| ip\_range\_pods | The secondary IP range used for pods |
+| ip\_range\_services | The secondary IP range used for services |
+| kubernetes\_endpoint |  |
 | location |  |
-| master_kubernetes_version | The master Kubernetes version |
+| master\_kubernetes\_version | The master Kubernetes version |
 | network |  |
-| project_id |  |
+| project\_id |  |
 | region |  |
-| service_account | The service account to default running nodes as if not overridden in `node_pools`. |
+| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | subnetwork |  |
 | zones | List of zones in which the cluster resides |
 
