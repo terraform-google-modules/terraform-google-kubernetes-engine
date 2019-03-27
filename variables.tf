@@ -112,17 +112,23 @@ variable "maintenance_start_time" {
 }
 
 variable "ip_range_pods" {
-  description = "The secondary ip range to use for pods"
+  description = "The _name_ of the secondary subnet ip range to use for pods"
 }
 
 variable "ip_range_services" {
-  description = "The secondary ip range to use for pods"
+  description = "The _name_ of the secondary subnet range to use for services"
 }
 
 variable "remove_default_node_pool" {
   description = "Remove default node pool while setting up the cluster"
   default     = false
 }
+
+variable "disable_legacy_metadata_endpoints" {
+  description = "Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated."
+  default     = "true"
+}
+
 
 variable "node_pools" {
   type        = "list"

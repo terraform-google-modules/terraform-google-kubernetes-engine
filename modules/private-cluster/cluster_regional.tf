@@ -31,7 +31,7 @@ resource "google_container_cluster" "primary" {
 
   network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
-  min_master_version = "${local.kubernetes_version}"
+  min_master_version = "${local.kubernetes_version_regional}"
 
   logging_service    = "${var.logging_service}"
   monitoring_service = "${var.monitoring_service}"
@@ -84,13 +84,11 @@ resource "google_container_cluster" "primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
     }
   }
-
   private_cluster_config {
     enable_private_endpoint = "${var.enable_private_endpoint}"
     enable_private_nodes    = "${var.enable_private_nodes}"
     master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
   }
-
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
@@ -104,7 +102,7 @@ resource "google_container_node_pool" "pools" {
   project            = "${var.project_id}"
   region             = "${var.region}"
   cluster            = "${var.name}"
-  version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version)}"
+  version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version_regional)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"
 
   autoscaling {
@@ -121,7 +119,7 @@ resource "google_container_node_pool" "pools" {
     image_type   = "${lookup(var.node_pools[count.index], "image_type", "COS")}"
     machine_type = "${lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")}"
     labels       = "${merge(map("cluster_name", var.name), map("node_pool", lookup(var.node_pools[count.index], "name")), var.node_pools_labels["all"], var.node_pools_labels[lookup(var.node_pools[count.index], "name")])}"
-    metadata     = "${merge(map("cluster_name", var.name), map("node_pool", lookup(var.node_pools[count.index], "name")), var.node_pools_metadata["all"], var.node_pools_metadata[lookup(var.node_pools[count.index], "name")])}"
+    metadata     = "${merge(map("cluster_name", var.name), map("node_pool", lookup(var.node_pools[count.index], "name")), var.node_pools_metadata["all"], var.node_pools_metadata[lookup(var.node_pools[count.index], "name")], map("disable-legacy-endpoints", var.disable_legacy_metadata_endpoints))}"
     taint        = "${concat(var.node_pools_taints["all"], var.node_pools_taints[lookup(var.node_pools[count.index], "name")])}"
     tags         = ["${concat(list("gke-${var.name}"), list("gke-${var.name}-${lookup(var.node_pools[count.index], "name")}"), var.node_pools_tags["all"], var.node_pools_tags[lookup(var.node_pools[count.index], "name")])}"]
 

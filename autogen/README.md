@@ -95,70 +95,13 @@ Then perform the following commands on the root folder:
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
 
+## Upgrade to v1.0.0
+
+Version 1.0.0 of this module introduces a breaking change: adding the `disable-legacy-endpoints` metadata field to all node pools. This metadata is required by GKE and [determines whether the `/0.1/` and `/v1beta1/` paths are available in the nodes' metadata server](https://cloud.google.com/kubernetes-engine/docs/how-to/protecting-cluster-metadata#disable-legacy-apis). If your applications do not require access to the node's metadata server, you can leave the default value of `true` provided by the module. If your applications require access to the metadata server, be sure to read the linked documentation to see if you need to set the value for this field to `false` to allow your applications access to the above metadata server paths.
+
+In either case, upgrading to module version `v1.0.0` will trigger a recreation of all node pools in the cluster.
 
 [^]: (autogen_docs_start)
-
-
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| description | The description of the cluster | string | `` | no |
-| horizontal_pod_autoscaling | Enable horizontal pod autoscaling addon | string | `true` | no |
-| http_load_balancing | Enable httpload balancer addon | string | `true` | no |
-| ip_masq_link_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `false` | no |
-| ip_masq_resync_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `60s` | no |
-| ip_range_pods | The secondary ip range to use for pods | string | - | yes |
-| ip_range_services | The secondary ip range to use for pods | string | - | yes |
-| kubernetes_dashboard | Enable kubernetes dashboard addon | string | `false` | no |
-| kubernetes_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `latest` | no |
-| logging_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `logging.googleapis.com` | no |
-| maintenance_start_time | Time window specified for daily maintenance operations in RFC3339 format | string | `05:00` | no |
-| master_authorized_networks_config | The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)<br><br>  ### example format ###   master_authorized_networks_config = [{     cidr_blocks = [{       cidr_block   = "10.0.0.0/8"       display_name = "example_network"     }],   }] | list | `<list>` | no |
-| monitoring_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `monitoring.googleapis.com` | no |
-| name | The name of the cluster (required) | string | - | yes |
-| network | The VPC network to host the cluster in (required) | string | - | yes |
-| network_policy | Enable network policy addon | string | `false` | no |
-| network_project_id | The project ID of the shared VPC's host (for shared vpc support) | string | `` | no |
-| remove_default_node_pool | Boolean value determining removal of default node pool | bool | false | no |
-| node_pools | List of maps containing node pools | list | `<list>` | no |
-| node_pools_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
-| node_pools_metadata | Map of maps containing node metadata by node-pool name | map | `<map>` | no |
-| node_pools_tags | Map of lists containing node network tags by node-pool name | map | `<map>` | no |
-| node_pools_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
-| node_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `` | no |
-| non_masquerade_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list | `<list>` | no |
-| project_id | The project ID to host the cluster in (required) | string | - | yes |
-| region | The region to host the cluster in (required) | string | - | yes |
-| regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `true` | no |
-| service_account | The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account | string | `` | no |
-| stub_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
-| subnetwork | The subnetwork to host the cluster in (required) | string | - | yes |
-| zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list | `<list>` | no |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| ca_certificate | Cluster ca certificate (base64 encoded) |
-| endpoint | Cluster endpoint |
-| horizontal_pod_autoscaling_enabled | Whether horizontal pod autoscaling enabled |
-| http_load_balancing_enabled | Whether http load balancing enabled |
-| kubernetes_dashboard_enabled | Whether kubernetes dashboard enabled |
-| location | Cluster location (region if regional cluster, zone if zonal cluster) |
-| logging_service | Logging service used |
-| master_authorized_networks_config | Networks from which access to master is permitted |
-| master_version | Current master kubernetes version |
-| min_master_version | Minimum master kubernetes version |
-| monitoring_service | Monitoring service used |
-| name | Cluster name |
-| network_policy_enabled | Whether network policy enabled |
-| node_pools_names | List of node pools names |
-| node_pools_versions | List of node pools versions |
-| region | Cluster region |
-| type | Cluster type (regional / zonal) |
-| zones | List of zones in which the cluster resides |
-
 [^]: (autogen_docs_end)
 
 ## Requirements
@@ -178,9 +121,9 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.11.x
 {% if private_cluster %}
-- [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v1.20.0
+- [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v2.0.0
 {% else %}
-- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v1.8.0
+- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.0.0
 {% endif %}
 
 ### Configure a Service Account
@@ -191,6 +134,7 @@ following project roles:
 - roles/container.developer
 - roles/iam.serviceAccountAdmin
 - roles/iam.serviceAccountUser
+- roles/resourcemanager.projectIamAdmin (only required if `service_account` is set to `create`)
 
 ### Enable APIs
 In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:
@@ -249,6 +193,9 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
 
 1. Configure the [test fixtures](#test-configuration)
 2. Download a Service Account key with the necessary permissions and put it in the module's root directory with the name `credentials.json`.
+    - Requires the [permissions to run the module](#configure-a-service-account)
+    - Requires `roles/compute.networkAdmin` to create the test suite's networks
+    - Requires `roles/resourcemanager.projectIamAdmin` since service account creation is tested
 3. Build the Docker container for testing:
 
   ```
@@ -270,6 +217,20 @@ The test-kitchen instances in `test/fixtures/` wrap identically-named examples i
   5. `kitchen destroy` tears down the underlying resources created by `kitchen converge`. Run `kitchen destroy <INSTANCE_NAME>` to tear down resources for a specific test case.
 
 Alternatively, you can simply run `make test_integration_docker` to run all the test steps non-interactively.
+
+If you wish to parallelize running the test suites, it is also possible to offload the work onto Concourse to run each test suite for you using the command `make test_integration_concourse`. The `.concourse` directory will be created and contain all of the logs from the running test suites.
+
+When running tests locally, you will need to use your own test project environment. You can configure your environment by setting all of the following variables:
+
+```
+export COMPUTE_ENGINE_SERVICE_ACCOUNT="<EXISTING_SERVICE_ACCOUNT>"
+export PROJECT_ID="<PROJECT_TO_USE>"
+export REGION="<REGION_TO_USE>"
+export ZONES='["<LIST_OF_ZONES_TO_USE>"]'
+export SERVICE_ACCOUNT_JSON="$(cat "<PATH_TO_SERVICE_ACCOUNT_JSON>")"
+export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="<PATH_TO_SERVICE_ACCOUNT_JSON>"
+export GOOGLE_APPLICATION_CREDENTIALS="<PATH_TO_SERVICE_ACCOUNT_JSON>"
+```
 
 #### Test configuration
 
