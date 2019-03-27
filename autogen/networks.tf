@@ -17,13 +17,13 @@
 {{ autogeneration_note }}
 
 data "google_compute_network" "gke_network" {
-  provider = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
+  provider = "{% if private_cluster or beta_cluster %}google-beta{% else %}google{% endif %}"
   name     = "${var.network}"
   project  = "${local.network_project_id}"
 }
 
 data "google_compute_subnetwork" "gke_subnetwork" {
-  provider = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
+  provider = "{% if private_cluster or beta_cluster %}google-beta{% else %}google{% endif %}"
   name     = "${var.subnetwork}"
   region   = "${var.region}"
   project  = "${local.network_project_id}"
