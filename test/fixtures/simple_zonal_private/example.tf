@@ -18,7 +18,6 @@ module "example" {
   source = "../../../examples/simple_zonal_private"
 
   project_id                     = "${var.project_id}"
-  credentials_path               = "${local.credentials_path}"
   cluster_name_suffix            = "-${random_string.suffix.result}"
   region                         = "${var.region}"
   zones                          = ["${slice(var.zones,0,1)}"]
