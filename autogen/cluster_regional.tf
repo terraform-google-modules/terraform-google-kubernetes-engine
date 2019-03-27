@@ -103,7 +103,7 @@ resource "google_container_node_pool" "pools" {
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
   region             = "${var.region}"
-  cluster            = "${var.name}"
+  cluster            = "${google_container_cluster.primary.name}"
   version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version_regional)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"
 
@@ -144,8 +144,6 @@ resource "google_container_node_pool" "pools" {
     update = "30m"
     delete = "30m"
   }
-
-  depends_on = ["google_container_cluster.primary"]
 }
 
 resource "null_resource" "wait_for_regional_cluster" {
