@@ -8,6 +8,9 @@ The resources/services/activations/deletions that this module will create/trigge
 - Activate network policy if `network_policy` is true
 - Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `network_policy` is true
 
+
+**Note**: You must run Terraform from a VM on the same VPC as your cluster, otherwise there will be issues connecting to the GKE master.
+
 ## Usage
 There are multiple examples included in the [examples](./examples/) folder but simple usage is as follows:
 
