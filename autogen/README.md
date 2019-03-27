@@ -1,6 +1,6 @@
 # Terraform Kubernetes Engine Module
 
-This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.{% if private_cluster %} This particular submodule creates a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters){% endif %}
+This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.{% if private_cluster %} This particular submodule creates a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters){% endif %}{% if beta_cluster %}Beta features are enabled on this submodule.{% endif %}
 
 The resources/services/activations/deletions that this module will create/trigger are:
 - Create a GKE cluster with the provided addons
@@ -31,6 +31,10 @@ module "gke" {
   enable_private_endpoint    = true
   enable_private_nodes       = true
   master_ipv4_cidr_block     = "10.0.0.0/28"
+  {% endif %}
+  {% if beta_cluster %}
+  istio = true
+  cloudrun = true
   {% endif %}
 
   node_pools = [
@@ -120,7 +124,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.11.x
-{% if private_cluster %}
+{% if private_cluster or beta_cluster %}
 - [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v2.0.0
 {% else %}
 - [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.0.0

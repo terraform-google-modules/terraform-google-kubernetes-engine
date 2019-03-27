@@ -233,3 +233,15 @@ variable "master_ipv4_cidr_block" {
   default      = "10.0.0.0/28"
 }
 {% endif %}
+
+{% if beta_cluster %}
+variable "istio" {
+  description = "(Beta) Enable Istio addon"
+  default     = false
+}
+
+variable "cloudrun" {
+  description = "(Beta) Enable CloudRun addon"
+  default     = false
+}
+{% endif %}
