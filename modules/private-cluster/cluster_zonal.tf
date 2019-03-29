@@ -55,10 +55,10 @@ resource "google_container_cluster" "zonal_primary" {
       disabled = "${var.network_policy ? 0 : 1}"
     }
   }
-  
+
   network_policy {
     provider = "CALICO"
-    enabled  = "${var.network_policy ? 1 : 0}"
+    enabled  = true
   }
 
   ip_allocation_policy {

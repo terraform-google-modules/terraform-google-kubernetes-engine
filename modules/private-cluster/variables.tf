@@ -102,7 +102,7 @@ variable "kubernetes_dashboard" {
 }
 
 variable "network_policy" {
-  description = "Enable network policy addon"
+  description = "Enable network policy addon (It also enables 'CALICO' network_policy provider)."
   default     = false
 }
 

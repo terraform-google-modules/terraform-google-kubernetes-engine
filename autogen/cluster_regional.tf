@@ -56,6 +56,11 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  network_policy {
+    provider = "CALICO"
+    enabled  = true
+  }
+
   ip_allocation_policy {
     cluster_secondary_range_name  = "${var.ip_range_pods}"
     services_secondary_range_name = "${var.ip_range_services}"
