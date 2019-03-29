@@ -28,7 +28,7 @@ DOCKER_IMAGE_KITCHEN_TERRAFORM := cft/kitchen-terraform_terraform-google-kuberne
 all: check generate_docs
 
 .PHONY: check
-check: check_shell check_python check_golang check_terraform check_docker check_base_files test_check_headers check_headers check_trailing_whitespace check_generate_docs
+check: check_shell check_python check_golang check_terraform check_docker check_base_files test_check_headers check_headers check_trailing_whitespace check_generate check_generate_docs
 
 # The .PHONY directive tells make that this isn't a real target and so
 # the presence of a file named 'check_shell' won't cause this target to stop
@@ -75,6 +75,10 @@ check_headers:
 	@echo "Checking file headers"
 	@python test/verify_boilerplate.py
 
+.PHONY: check_generate
+check_generate: ## Check that `make generate` does not generate a diff
+	@source test/make.sh && check_generate
+
 .PHONY: check_generate_docs
 check_generate_docs: ## Check that `make generate_docs` does not generate a diff
 	@source test/make.sh && check_generate_docs
@@ -90,8 +94,7 @@ generate_docs:
 
 .PHONY: generate
 generate:
-	@pip install --user -r ./helpers/generate_modules/requirements.txt
-	@./helpers/generate_modules/generate_modules.py
+	@source test/make.sh && generate
 
 # Versioning
 .PHONY: version
