@@ -108,7 +108,7 @@ variable "network_policy" {
 
 variable "network_policy_provider_enabled" {
   description = "Enable network policy provider: 'CALICO'. When set to 'true' it requires 'network_policy=true' to work properly."
-  deafault    = false
+  default    = false
 }
 
 variable "maintenance_start_time" {
