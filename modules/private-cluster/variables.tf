@@ -106,6 +106,11 @@ variable "network_policy" {
   default     = false
 }
 
+variable "network_policy_provider_enabled" {
+  description = "Enable network policy provider: 'CALICO'. When set to 'true' it requires 'network_policy=true' to work properly."
+  default    = false
+}
+
 variable "maintenance_start_time" {
   description = "Time window specified for daily maintenance operations in RFC3339 format"
   default     = "05:00"
