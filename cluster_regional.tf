@@ -142,6 +142,8 @@ resource "google_container_node_pool" "pools" {
     update = "30m"
     delete = "30m"
   }
+
+  depends_on = ["google_container_cluster.primary"]
 }
 
 resource "null_resource" "wait_for_regional_cluster" {
