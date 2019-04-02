@@ -118,6 +118,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | name | The name of the cluster (required) | string | n/a | yes |
 | network | The VPC network to host the cluster in (required) | string | n/a | yes |
 | network\_policy | Enable network policy addon (It also enables 'CALICO' network_policy provider). | string | `"false"` | no |
+| network\_policy\_provider | The name of the network policy provider. Default: 'CALICO' | string | `"CALICO"` | no |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
 | node\_pools | List of maps containing node pools | list | `<list>` | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
