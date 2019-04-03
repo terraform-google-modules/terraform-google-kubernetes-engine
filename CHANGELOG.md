@@ -10,6 +10,11 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [v2.0.0] - 2019-YY-ZZ
 
+### Changed
+
+* The `service_account` variable defaults  to `"create"` which causes a
+  cluster-specific service account to be created.
+
 ## [v1.0.1] - 2019-04-04
 
 ### Added
