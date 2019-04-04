@@ -41,3 +41,44 @@ module "kubernetes_engine" {
   service_account = "${module.project_factory.service_account_email}"
 }
 ```
+
+### Enabling Kubernetes Basic Authentication
+
+Starting with GKE v1.12, clusters will have Basic Authentication and
+client certificate issuance disabled by default. In previous versions
+of *kubernetes-engine*, Basic Authentication was enabled and configured with the username `"admin"` and an automatically generated password. Basic Authentication is now disabled by default and requires credentials to be provided to remain enabled.
+
+Using Basic Authentication causes Terraform to store the credentials in
+a state file. It is important to use a Terraform Backend which supports encryption at rest, like the [GCS Backend][gcs-backend]. The
+[Sensitive Data in State article][sensitive-data] provides more context
+and recommendations on how to handle scenarios like this.
+
+```hcl
+terraform {
+  backend "gcs" {
+    bucket = "terraform-state"
+  }
+}
+
+module "enabling-basic-auth" {
+  source  = "terraform-google-modules/kubernetes-engine/google"
+  version = "~> 2.0"
+
+  project_id = "${var.project_id}"
+  name       = "cluster-with-basic-auth"
+
+  basic_auth_username = "admin"
+  basic_auth_password = "s3crets!"
+
+  regional          = "true"
+  region            = "${var.region}"
+  network           = "${var.network}"
+  subnetwork        = "${var.subnetwork}"
+  ip_range_pods     = "${var.ip_range_pods}"
+  ip_range_services = "${var.ip_range_services}"
+  service_account   = "${var.compute_engine_service_account}"
+}
+```
+
+[gsc-backend]: https://www.terraform.io/docs/backends/types/gcs.html
+[sensitive-data]: https://www.terraform.io/docs/state/sensitive-data.html

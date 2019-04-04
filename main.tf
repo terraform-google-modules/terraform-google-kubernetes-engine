@@ -145,9 +145,6 @@ locals {
   cluster_http_load_balancing_enabled        = "${local.cluster_type_output_http_load_balancing_enabled[local.cluster_type] ? false : true}"
   cluster_horizontal_pod_autoscaling_enabled = "${local.cluster_type_output_horizontal_pod_autoscaling_enabled[local.cluster_type] ? false : true}"
   cluster_kubernetes_dashboard_enabled       = "${local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type] ? false : true}"
-
-  cluster_basic_auth_username = "${var.enable_basic_auth ? var.basic_auth_username : ""}"
-  cluster_basic_auth_password = "${var.enable_basic_auth ? var.basic_auth_password : ""}"
 }
 
 /******************************************
