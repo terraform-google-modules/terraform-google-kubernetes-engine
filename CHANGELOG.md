@@ -10,6 +10,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [v1.0.0] - 2019-03-25
 ### Added
+* Fix empty zone list. [#132]
 * Allow creation of service accounts. [#80]
 * Add support for private clusters via submodule. [#69]
 * Add `remove_default_node_pool` set to `false` by default. Fixes [#15]. [#55]
@@ -72,6 +73,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#42]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/42
 [#15]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/15
 
+[#132]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/132
 [#109]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/109
 [#108]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/108
 [#106]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/106
