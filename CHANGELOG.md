@@ -7,7 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
 ## [Unreleased]
+
+## [v1.0.1] - 2019-04-04
+
+### Added
+
+* Note about using Terraform with private clusters. [#121]
+
+### Changed
+
+* Optimized dependency between node pools and primary cluster. [#77]
+* Removed `credentials_path` variables from examples. [#89]
+
 ### Fixed
+
 * Fix empty zone list. [#132]
 
 ## [v1.0.0] - 2019-03-25
@@ -70,15 +83,14 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
-[#43]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/43
-[#42]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/42
-[#15]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/15
-
 [#132]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/132
+[#121]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/121
 [#109]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/109
 [#108]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/108
 [#106]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/106
+[#89]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/89
 [#80]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/80
+[#77]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/77
 [#74]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/74
 [#73]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/73
 [#61]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/61
@@ -91,11 +103,14 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#50]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/50
 [#49]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/49
 [#46]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/46
+[#43]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/43
+[#42]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/42
 [#38]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/38
 [#33]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/33
 [#31]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/31
 [#22]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/22
 [#19]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/19
 [#16]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/16
+[#15]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/15
 [#10]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/10
 [#9]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/9
