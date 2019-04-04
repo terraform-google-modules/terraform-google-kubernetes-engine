@@ -25,3 +25,6 @@ attributes:
   - name: service_account
     required: true
     type: string
+  - name: service_account_resource_name
+    required: true
+    type: string

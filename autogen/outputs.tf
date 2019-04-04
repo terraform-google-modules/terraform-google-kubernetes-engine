@@ -109,6 +109,11 @@ output "node_pools_versions" {
 }
 
 output "service_account" {
-  description = "The service account to default running nodes as if not overridden in `node_pools`."
+  description = "The name of the service account to default running nodes as if not overridden in `node_pools`."
   value = "${local.service_account}"
+}
+
+output "service_account_resource_name" {
+  description = "The resource name of the service account to default running nodes as if not overridden in `node_pools`."
+  value = "projects/${var.project_id}/serviceAccounts/${local.service_account}"
 }
