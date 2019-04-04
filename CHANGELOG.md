@@ -7,10 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
 ## [Unreleased]
+### Fixed
+* Fix empty zone list. [#132]
 
 ## [v1.0.0] - 2019-03-25
 ### Added
-* Fix empty zone list. [#132]
 * Allow creation of service accounts. [#80]
 * Add support for private clusters via submodule. [#69]
 * Add `remove_default_node_pool` set to `false` by default. Fixes [#15]. [#55]
