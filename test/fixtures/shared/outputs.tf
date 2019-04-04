@@ -78,3 +78,8 @@ output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
   value       = "${module.example.service_account}"
 }
+
+output "service_account_resource_name" {
+  description = "The resource name of the service account to default running nodes as if not overridden in `node_pools`."
+  value       = "${module.example.service_account_resource_name}"
+}

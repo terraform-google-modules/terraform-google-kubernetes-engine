@@ -160,7 +160,8 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | node\_pools\_names | List of node pools names |
 | node\_pools\_versions | List of node pools versions |
 | region | Cluster region |
-| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
+| service\_account | The name of the service account to default running nodes as if not overridden in `node_pools`. |
+| service\_account\_resource\_name | The resource name of the service account to default running nodes as if not overridden in `node_pools`. |
 | type | Cluster type (regional / zonal) |
 | zones | List of zones in which the cluster resides |
 
