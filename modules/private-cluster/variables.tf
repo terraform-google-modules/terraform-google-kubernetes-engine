@@ -232,18 +232,13 @@ variable "master_ipv4_cidr_block" {
   default     = "10.0.0.0/28"
 }
 
-variable "enable_basic_auth" {
-  description = "Basic authentication allows a user to authenticate to the cluster with a username and password. To maximize the security of your cluster, disable this option. Basic authentication is not recommended because it provides no confidentiality protection for transmitted credentials"
-  default     = "false"
-}
-
 variable "basic_auth_username" {
-  description = "Kubernetes HTTP Basic auth username. Only used if `enable_basic_auth` is true"
+  description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
   default     = ""
 }
 
 variable "basic_auth_password" {
-  description = "Kubernetes HTTP Basic auth password. Only used if `enable_basic_auth` is true"
+  description = "The password to be used with Basic Authentication."
   default     = ""
 }
 

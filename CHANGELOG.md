@@ -12,9 +12,6 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### Added
 
-* Add `enable_basic_auth` set to `true` by default. This will cause a
-  plan change for existing users. Enabling it will require them to set
-  a username and password. [#40]
 * Add `basic_auth_username` set to `""` by default. [#40]
 * Add `basic_auth_password` set to `""` by default. [#40]
 * Add `issue_client_certificate` set to `false` by default. [#40]
@@ -23,7 +20,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 * The `service_account` variable defaults  to `"create"` which causes a
   cluster-specific service account to be created.
-  
+* Disabled Basic Authentication by default. [#40]
+
 ## [v1.0.1] - 2019-04-04
 
 ### Added
