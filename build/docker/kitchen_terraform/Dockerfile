@@ -18,7 +18,7 @@ ARG BASE_IMAGE
 FROM $BASE_IMAGE
 
 RUN apk add --no-cache \
-    ca-certificates=20171114-r3
+    ca-certificates=20190108-r0
 
 ADD https://storage.googleapis.com/kubernetes-release/release/v1.12.2/bin/linux/amd64/kubectl /usr/local/bin/kubectl
 RUN chmod +x /usr/local/bin/kubectl

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
 ## [Unreleased]
+### Fixed
+* Fix empty zone list. [#132]
 
 ## [v1.0.0] - 2019-03-25
 ### Added
@@ -72,6 +74,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#42]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/42
 [#15]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/15
 
+[#132]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/132
 [#109]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/109
 [#108]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/108
 [#106]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/106

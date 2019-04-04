@@ -55,12 +55,12 @@ locals {
     zonal    = "${var.region}"
   }
 
-  cluster_type_output_regional_zones = "${concat(google_container_cluster.primary.*.additional_zones, list(list()))}"
-  cluster_type_output_zonal_zones    = "${concat(slice(var.zones,1,length(var.zones)), list(list()))}"
+  cluster_type_output_regional_zones = "${flatten(google_container_cluster.primary.*.node_locations)}"
+  cluster_type_output_zonal_zones    = "${slice(var.zones, 1, length(var.zones))}"
 
   cluster_type_output_zones = {
-    regional = "${local.cluster_type_output_regional_zones[0]}"
-    zonal    = "${concat(google_container_cluster.zonal_primary.*.zone, local.cluster_type_output_zonal_zones[0])}"
+    regional = "${local.cluster_type_output_regional_zones}"
+    zonal    = "${concat(google_container_cluster.zonal_primary.*.zone, local.cluster_type_output_zonal_zones)}"
   }
 
   cluster_type_output_endpoint = {
@@ -161,7 +161,6 @@ data "google_container_engine_versions" "zone" {
   //
   //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
   //
-  zone = "${var.zones[0] == "" ? data.google_compute_zones.available.names[0] : var.zones[0]}"
-
-  project = "${var.project_id}"
+  zone     = "${var.zones[0] == "" ? data.google_compute_zones.available.names[0] : var.zones[0]}"
+  project  = "${var.project_id}"
 }
