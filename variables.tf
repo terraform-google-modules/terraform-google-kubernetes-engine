@@ -213,6 +213,6 @@ variable "monitoring_service" {
 }
 
 variable "service_account" {
-  description = "The name of the service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created."
+  description = "The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created."
   default     = "create"
 }
