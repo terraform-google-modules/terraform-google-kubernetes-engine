@@ -29,11 +29,11 @@ output "ca_certificate" {
 }
 
 output "service_account" {
-  description = "The name of the service account to default running nodes as if not overridden in `node_pools`."
+  description = "The email address of the service account to default running nodes as if not overridden in `node_pools`."
   value       = "${module.gke.service_account}"
 }
 
-output "service_account_resource_name" {
-  description = "The resource name of the service account to default running nodes as if not overridden in `node_pools`."
-  value       = "${module.gke.service_account_resource_name}"
+output "service_account_name" {
+  description = "The name of the service account to default running nodes as if not overridden in `node_pools`."
+  value       = "${module.gke.service_account_name}"
 }
