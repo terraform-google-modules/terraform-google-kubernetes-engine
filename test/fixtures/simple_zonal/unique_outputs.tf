@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-output "service_account_resource_name" {
-  description = "The resource name of the service account to default running nodes as if not overridden in `node_pools`."
-  value       = "${module.example.service_account_resource_name}"
+output "service_account_name" {
+  description = "The name of the service account to default running nodes as if not overridden in `node_pools`."
+  value       = "${module.example.service_account_name}"
 }
