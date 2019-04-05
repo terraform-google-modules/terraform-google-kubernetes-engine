@@ -129,6 +129,7 @@ variable "disable_legacy_metadata_endpoints" {
   default     = "true"
 }
 
+
 variable "node_pools" {
   type        = "list"
   description = "List of maps containing node pools"
@@ -219,15 +220,15 @@ variable "service_account" {
 
 variable "basic_auth_username" {
   description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
-  default     = ""
+  default = ""
 }
 
 variable "basic_auth_password" {
   description = "The password to be used with Basic Authentication."
-  default     = ""
+  default = ""
 }
 
 variable "issue_client_certificate" {
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
-  default     = "false"
+  default = "false"
 }
