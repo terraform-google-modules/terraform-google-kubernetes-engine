@@ -214,8 +214,8 @@ variable "monitoring_service" {
 }
 
 variable "service_account" {
-  description = "The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account. May also specify `create` to automatically create a cluster-specific service account"
-  default     = ""
+  description = "The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created."
+  default     = "create"
 }
 variable "enable_private_endpoint" {
   description  = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
