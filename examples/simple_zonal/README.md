@@ -33,7 +33,6 @@ This example illustrates how to create a simple cluster.
 | project\_id |  |
 | region |  |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
-| service\_account\_name | The name of the service account to default running nodes as if not overridden in `node_pools`. |
 | subnetwork |  |
 | zones | List of zones in which the cluster resides |
 
