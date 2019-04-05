@@ -14,7 +14,7 @@
 
 control "gcp" do
   title "Native InSpec Resources"
-  describe google_service_account name: attribute("service_account_resource_name") do
+  describe google_service_account name: attribute("service_account_name") do
     its("display_name") { should eq "Terraform-managed service account for cluster #{attribute("cluster_name")}" }
     its("project_id") { should eq attribute("project_id") }
   end

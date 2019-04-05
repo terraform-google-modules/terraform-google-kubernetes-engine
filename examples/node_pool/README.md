@@ -33,7 +33,7 @@ This example illustrates how to create a cluster with multiple custom node-pool 
 | network |  |
 | project\_id |  |
 | region |  |
-| service\_account | The name of the service account to default running nodes as if not overridden in `node_pools`. |
+| service\_account | The email address of the service account to default running nodes as if not overridden in `node_pools`. |
 | subnetwork |  |
 | zones | List of zones in which the cluster resides |
 
