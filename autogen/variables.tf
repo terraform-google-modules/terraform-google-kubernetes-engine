@@ -129,7 +129,6 @@ variable "disable_legacy_metadata_endpoints" {
   default     = "true"
 }
 
-
 variable "node_pools" {
   type        = "list"
   description = "List of maps containing node pools"
@@ -219,17 +218,17 @@ variable "service_account" {
 }
 {% if private_cluster %}
 variable "enable_private_endpoint" {
-  description  = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
-  default      = false
+  description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
+  default     = false
 }
 
 variable "enable_private_nodes" {
-  description  = "(Beta) Whether nodes have internal IP addresses only"
-  default      = false
+  description = "(Beta) Whether nodes have internal IP addresses only"
+  default     = false
 }
 
 variable "master_ipv4_cidr_block" {
-  description  = "(Beta) The IP range in CIDR notation to use for the hosted master network"
-  default      = "10.0.0.0/28"
+  description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
+  default     = "10.0.0.0/28"
 }
 {% endif %}
