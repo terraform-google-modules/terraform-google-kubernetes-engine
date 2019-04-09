@@ -227,6 +227,11 @@ variable "service_account" {
   default     = "create"
 }
 
+variable "deploy_using_private_endpoint" {
+  description = "(Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment."
+  default     = "false"
+}
+
 variable "enable_private_endpoint" {
   description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
   default     = false
