@@ -217,6 +217,7 @@ variable "service_account" {
   default     = ""
 }
 {% if private_cluster %}
+
 variable "enable_private_endpoint" {
   description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
   default     = false
