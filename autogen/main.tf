@@ -65,14 +65,17 @@ locals {
 
 {% if private_cluster %}
   cluster_type_output_endpoint = {
-    regional = "${element(concat((
-      var.deploy_using_private_endpoint ? google_container_cluster.primary.*.private_endpoint :
-      google_container_cluster.primary.*.endpoint
-    ), list("")), 0)}"
-    zonal    = "${element(concat((
-      var.deploy_using_private_endpoint ? google_container_cluster.zonal_primary.*.private_endpoint :
-      google_container_cluster.zonal_primary.*.endpoint
-    ), list("")), 0)}"
+    regional = "${
+      var.deploy_using_private_endpoint ?
+      element(concat(google_container_cluster.primary.*.private_cluster_config.0.private_endpoint, list("")), 0) :
+      element(concat(google_container_cluster.primary.*.endpoint, list("")), 0)
+    }"
+
+    zonal = "${
+      var.deploy_using_private_endpoint ?
+      element(concat(google_container_cluster.zonal_primary.*.private_cluster_config.0.private_endpoint, list("")), 0) :
+      element(concat(google_container_cluster.zonal_primary.*.endpoint, list("")), 0)
+    }"
   }
 {% else %}
   cluster_type_output_endpoint = {
