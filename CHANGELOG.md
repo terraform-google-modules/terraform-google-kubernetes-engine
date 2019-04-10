@@ -11,6 +11,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 ### Added
 
 * Support for v2.6 and v2.7 of the Google providers. [#152]
+* `deploy_using_private_endpoint` variable on `private-cluster`
+  submodule. [#136]
 
 ### Fixed
 
@@ -122,6 +124,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#152]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/152
 [#151]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/151
 [#148]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/148
+[#136]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/136
 [#132]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/132
 [#121]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/121
 [#109]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/109
