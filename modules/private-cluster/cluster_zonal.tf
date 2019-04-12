@@ -26,8 +26,8 @@ resource "google_container_cluster" "zonal_primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  zone             = "${var.zones[0]}"
-  node_locations   = ["${slice(var.zones,1,length(var.zones))}"]
+  zone           = "${var.zones[0]}"
+  node_locations = ["${slice(var.zones,1,length(var.zones))}"]
 
   network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
@@ -93,11 +93,13 @@ resource "google_container_cluster" "zonal_primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
     }
   }
+
   private_cluster_config {
     enable_private_endpoint = "${var.enable_private_endpoint}"
     enable_private_nodes    = "${var.enable_private_nodes}"
     master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
   }
+
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
@@ -138,7 +140,8 @@ resource "google_container_node_pool" "zonal_pools" {
     preemptible     = "${lookup(var.node_pools[count.index], "preemptible", false)}"
 
     oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform",
+      "${concat(var.node_pools_oauth_scopes["all"],
+      var.node_pools_oauth_scopes[lookup(var.node_pools[count.index], "name")])}",
     ]
   }
 
