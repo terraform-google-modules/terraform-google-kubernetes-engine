@@ -8,6 +8,20 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+## [v2.0.0] - 2019-YY-ZZ
+
+### Added
+
+* Add `basic_auth_username` set to `""` by default. [#40]
+* Add `basic_auth_password` set to `""` by default. [#40]
+* Add `issue_client_certificate` set to `false` by default. [#40]
+
+### Changed
+
+* The `service_account` variable defaults  to `"create"` which causes a
+  cluster-specific service account to be created.
+* Disabled Basic Authentication by default. [#40]
+
 ## [v1.0.1] - 2019-04-04
 
 ### Added
@@ -33,7 +47,9 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Added `disable_legacy_metadata_endpoints` parameter. [#114]
 
 ### Changed
-* Set `horizontal_pod_autoscaling` to `true` by default. Fixes [#42]. [#54]
+
+* Set `horizontal_pod_autoscaling` to `true` by default.
+  Fixes [#42]. [#54]
 * Update simple-zonal example GKE version to supported version. [#49]
 * Drop explicit version from simple_zonal example. [#74]
 * Remove explicit versions from test cases and examples. [#62]
@@ -76,7 +92,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 * Initial release of module.
 
-[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v2.0.0...HEAD
+[v2.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v1.0.1...v2.0.0
 [v1.0.1]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v1.0.0...v1.0.1
 [v1.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.4.0...v1.0.0
 [v0.4.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.4.0...v0.5.0
@@ -106,6 +123,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#46]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/46
 [#43]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/43
 [#42]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/42
+[#40]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/40
 [#38]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/38
 [#33]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/33
 [#31]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/31

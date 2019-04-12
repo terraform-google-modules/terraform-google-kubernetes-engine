@@ -44,6 +44,14 @@ module "gke" {
     },
   ]
 
+  node_pools_oauth_scopes = {
+    all = []
+
+    default-node-pool = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ]
+  }
+
   node_pools_labels = {
     all = {}
 
@@ -89,6 +97,11 @@ Then perform the following commands on the root folder:
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
 
+## Upgrade to v2.0.0
+
+v2.0.0 is a breaking release. Refer to the
+[Upgrading to v2.0 guide][upgrading-to-v2.0] for details.
+
 ## Upgrade to v1.0.0
 
 Version 1.0.0 of this module introduces a breaking change: adding the `disable-legacy-endpoints` metadata field to all node pools. This metadata is required by GKE and [determines whether the `/0.1/` and `/v1beta1/` paths are available in the nodes' metadata server](https://cloud.google.com/kubernetes-engine/docs/how-to/protecting-cluster-metadata#disable-legacy-apis). If your applications do not require access to the node's metadata server, you can leave the default value of `true` provided by the module. If your applications require access to the metadata server, be sure to read the linked documentation to see if you need to set the value for this field to `false` to allow your applications access to the above metadata server paths.
@@ -101,6 +114,8 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| basic\_auth\_password | The password to be used with Basic Authentication. | string | `""` | no |
+| basic\_auth\_username | The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration. | string | `""` | no |
 | description | The description of the cluster | string | `""` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | string | `"true"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | string | `"true"` | no |
@@ -109,6 +124,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `"60s"` | no |
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The _name_ of the secondary subnet range to use for services | string | n/a | yes |
+| issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | string | `"false"` | no |
 | kubernetes\_dashboard | Enable kubernetes dashboard addon | string | `"false"` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com"` | no |
@@ -122,6 +138,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | node\_pools | List of maps containing node pools | list | `<list>` | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
 | node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map | `<map>` | no |
+| node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | map | `<map>` | no |
 | node\_pools\_tags | Map of lists containing node network tags by node-pool name | map | `<map>` | no |
 | node\_pools\_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
 | node\_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `""` | no |
@@ -130,7 +147,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | region | The region to host the cluster in (required) | string | n/a | yes |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `"true"` | no |
 | remove\_default\_node\_pool | Remove default node pool while setting up the cluster | string | `"false"` | no |
-| service\_account | The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account. May also specify `create` to automatically create a cluster-specific service account | string | `""` | no |
+| service\_account | The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created. | string | `"create"` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | string | n/a | yes |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list | `<list>` | no |
@@ -339,3 +356,5 @@ is a compiled language so there is no standard linter.
 * Terraform - terraform has a built-in linter in the 'terraform validate'
 command.
 * Dockerfiles - hadolint. Can be found in homebrew
+
+[upgrading-to-v2.0]: docs/upgrading_to_v2.0.md
