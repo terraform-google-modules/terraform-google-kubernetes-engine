@@ -44,12 +44,17 @@ module "kubernetes_engine" {
 
 ### Enabling Kubernetes Basic Authentication
 
-Starting with GKE v1.12, clusters will have Basic Authentication and
-client certificate issuance disabled by default. In previous versions
-of *kubernetes-engine*, Basic Authentication was enabled and configured with the username `"admin"` and an automatically generated password. Basic Authentication is now disabled by default and requires credentials to be provided to remain enabled.
+Starting with GKE v1.12, clusters will by default disable the Basic
+Authentication method of authenticating. In previous versions of
+*kubernetes-engine*, Basic Authentication was enabled and configured
+with the username `"admin"` and an automatically generated password if
+the managed version of Kubernetes was less than v1.12.
+Basic Authentication is now requires credentials to be provided to be
+enabled.
 
 Using Basic Authentication causes Terraform to store the credentials in
-a state file. It is important to use a Terraform Backend which supports encryption at rest, like the [GCS Backend][gcs-backend]. The
+a state file. It is important to use a Terraform Backend which supports
+encryption at rest, like the [GCS Backend][gcs-backend]. The
 [Sensitive Data in State article][sensitive-data] provides more context
 and recommendations on how to handle scenarios like this.
 
