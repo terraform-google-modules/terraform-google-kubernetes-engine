@@ -54,6 +54,7 @@ DEVNULL_FILE = open(os.devnull, 'w')
 
 def main(argv):
     env = Environment(
+        keep_trailing_newline=True,
         loader=FileSystemLoader(TEMPLATE_FOLDER),
         trim_blocks=True,
         lstrip_blocks=True,
