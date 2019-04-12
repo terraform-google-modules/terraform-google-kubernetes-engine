@@ -26,8 +26,8 @@ resource "google_container_cluster" "primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  region           = "${var.region}"
-  node_locations   = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
+  region         = "${var.region}"
+  node_locations = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
 
   network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
@@ -94,12 +94,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 {% if private_cluster %}
+
   private_cluster_config {
     enable_private_endpoint = "${var.enable_private_endpoint}"
     enable_private_nodes    = "${var.enable_private_nodes}"
     master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
   }
 {% endif %}
+
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
