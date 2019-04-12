@@ -15,6 +15,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Add `basic_auth_username` set to `""` by default. [#40]
 * Add `basic_auth_password` set to `""` by default. [#40]
 * Add `issue_client_certificate` set to `false` by default. [#40]
+* Add `node_pool_oauth_scopes` which enables overriding the default
+  node pool OAuth scopes. [#94]
 
 ### Changed
 
@@ -106,6 +108,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#109]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/109
 [#108]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/108
 [#106]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/106
+[#94]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/94
 [#89]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/89
 [#80]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/80
 [#77]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/77
