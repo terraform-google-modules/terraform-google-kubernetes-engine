@@ -140,7 +140,8 @@ resource "google_container_node_pool" "pools" {
     preemptible     = "${lookup(var.node_pools[count.index], "preemptible", false)}"
 
     oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform",
+      "${concat(var.node_pools_oauth_scopes["all"],
+      var.node_pools_oauth_scopes[lookup(var.node_pools[count.index], "name")])}",
     ]
   }
 
