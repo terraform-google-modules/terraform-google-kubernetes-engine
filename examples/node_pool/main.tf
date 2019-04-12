@@ -64,13 +64,13 @@ module "gke" {
   ]
 
   node_pools_oauth_scopes = {
-    all     = []
+    all = []
 
     pool-01 = []
-    
+
     pool-02 = []
   }
-  
+
   node_pools_metadata = {
     all = {}
 
