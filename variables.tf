@@ -129,7 +129,6 @@ variable "disable_legacy_metadata_endpoints" {
   default     = "true"
 }
 
-
 variable "node_pools" {
   type        = "list"
   description = "List of maps containing node pools"
