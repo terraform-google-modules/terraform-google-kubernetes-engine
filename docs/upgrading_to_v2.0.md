@@ -80,5 +80,33 @@ module "enabling-basic-auth" {
 }
 ```
 
+### Enabling Kubernetes Client Certificate
+
+Starting with GKE v1.12, clusters will disable by default the client
+certificate method of authenticating. In previous versions
+of *kubernetes-engine*, client certificate authentication was enabled
+if the managed version of Kubernetes was less than v1.12. Client
+certificate authentication must now be explicitly enabled.
+
+```hcl
+module "enabling-client-certificate" {
+  source  = "terraform-google-modules/kubernetes-engine/google"
+  version = "~> 2.0"
+
+  project_id = "${var.project_id}"
+  name       = "cluster-with-client-certificate"
+
+  issue_client_certificate = "true"
+
+  regional          = "true"
+  region            = "${var.region}"
+  network           = "${var.network}"
+  subnetwork        = "${var.subnetwork}"
+  ip_range_pods     = "${var.ip_range_pods}"
+  ip_range_services = "${var.ip_range_services}"
+  service_account   = "${var.compute_engine_service_account}"
+}
+```
+
 [gsc-backend]: https://www.terraform.io/docs/backends/types/gcs.html
 [sensitive-data]: https://www.terraform.io/docs/state/sensitive-data.html
