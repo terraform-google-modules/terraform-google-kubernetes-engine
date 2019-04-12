@@ -37,6 +37,19 @@ suites:
           backend: local
     provisioner:
       name: terraform
+  - name: "disable_client_cert"
+    driver:
+      name: "terraform"
+      command_timeout: 1800
+      root_module_directory: test/fixtures/disable_client_cert
+    verifier:
+      name: terraform
+      color: false
+      systems:
+        - name: disable_client_cert
+          backend: local
+    provisioner:
+      name: terraform
   - name: "node_pool"
     driver:
       name: "terraform"
@@ -98,8 +111,14 @@ suites:
       name: terraform
       color: false
       systems:
-        - name: simple_zonal
+        - name: gcloud
           backend: local
+          controls:
+            - gcloud
+        - name: gcp
+          backend: gcp
+          controls:
+            - gcp
     provisioner:
       name: terraform
   - name: "simple_zonal_private"

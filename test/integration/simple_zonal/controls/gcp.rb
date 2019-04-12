@@ -1,4 +1,3 @@
-#!/bin/bash
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,21 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
+control "gcp" do
+  title "Native InSpec Resources"
 
-PROJECT=$1
-CLUSTER_NAME=$2
-gcloud_command="gcloud container clusters list --project=$PROJECT --format=json"
-jq_query=".[] | select(.name==\"$CLUSTER_NAME\") | .status"
+  service_account = attribute("service_account")
+  project_id = attribute("project_id")
 
-echo "Waiting for cluster $2 in project $1 to reconcile..."
+  if service_account.start_with? "projects/"
+    service_account_name = service_account
+  else
+    service_account_name = "projects/#{project_id}/serviceAccounts/#{service_account}"
+  end
 
-current_status=$($gcloud_command | jq -r "$jq_query")
-
-while [[ "${current_status}" == "RECONCILING" ]]; do
-    printf "."
-    sleep 5
-    current_status=$($gcloud_command | jq -r "$jq_query")
-done
-
-echo "Cluster is ready!"
+  describe google_service_account name: service_account_name do
+    its("display_name") { should eq "Terraform-managed service account for cluster #{attribute("cluster_name")}" }
+    its("project_id") { should eq project_id }
+  end
+end

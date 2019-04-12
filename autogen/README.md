@@ -54,6 +54,14 @@ module "gke" {
     },
   ]
 
+  node_pools_oauth_scopes = {
+    all = []
+
+    default-node-pool = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ]
+  }
+
   node_pools_labels = {
     all = {}
 
@@ -98,6 +106,11 @@ Then perform the following commands on the root folder:
 - `terraform plan` to see the infrastructure plan
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
+
+## Upgrade to v2.0.0
+
+v2.0.0 is a breaking release. Refer to the
+[Upgrading to v2.0 guide][upgrading-to-v2.0] for details.
 
 ## Upgrade to v1.0.0
 
@@ -290,3 +303,9 @@ is a compiled language so there is no standard linter.
 * Terraform - terraform has a built-in linter in the 'terraform validate'
 command.
 * Dockerfiles - hadolint. Can be found in homebrew
+
+{% if private_cluster %}
+[upgrading-to-v2.0]: ../../docs/upgrading_to_v2.0.md
+{% else %}
+[upgrading-to-v2.0]: docs/upgrading_to_v2.0.md
+{% endif %}
