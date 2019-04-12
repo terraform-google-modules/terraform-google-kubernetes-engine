@@ -180,6 +180,16 @@ variable "node_pools_tags" {
   }
 }
 
+variable "node_pools_oauth_scopes" {
+  type        = "map"
+  description = "Map of lists containing node oauth scopes by node-pool name"
+
+  default = {
+    all               = ["https://www.googleapis.com/auth/cloud-platform"]
+    default-node-pool = []
+  }
+}
+
 variable "stub_domains" {
   type        = "map"
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"
