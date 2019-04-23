@@ -86,15 +86,8 @@ resource "google_container_cluster" "zonal_primary" {
     delete = "30m"
   }
 
-  node_pool {
-    name = "default-pool"
-
-    node_config {
-      service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
-    }
-  }
-
   remove_default_node_pool = "${var.remove_default_node_pool}"
+  initial_node_count       = 1
 }
 
 /******************************************
