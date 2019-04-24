@@ -39,6 +39,7 @@ module "gke" {
   ip_range_pods      = "${var.ip_range_pods}"
   ip_range_services  = "${var.ip_range_services}"
   service_account    = "${var.compute_engine_service_account}"
+  initial_node_count = 1
 }
 
 data "google_client_config" "default" {}

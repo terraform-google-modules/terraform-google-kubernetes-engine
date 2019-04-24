@@ -18,6 +18,11 @@ locals {
   cluster_type = "simple-regional-private"
 }
 
+provider "google" {
+  version = "~> 2.5"
+  region  = "${var.region}"
+}
+
 provider "google-beta" {
   version = "~> 2.5"
   region  = "${var.region}"
@@ -44,6 +49,7 @@ module "gke" {
   enable_private_endpoint = true
   enable_private_nodes    = true
   master_ipv4_cidr_block  = "172.16.0.0/28"
+  initial_node_count      = 1
 
   master_authorized_networks_config = [{
     cidr_blocks = [{

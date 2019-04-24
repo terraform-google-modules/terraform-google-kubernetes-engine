@@ -37,6 +37,7 @@ insert_separator_regex = r'(.*?\[\^\]\:\ \(autogen_docs_start\))(.*?)(\n\[\^\]\:
 exclude_separator_regex = r'(.*?)Copyright 20\d\d Google LLC.*?limitations under the License.(.*?)$'  # noqa: E501
 
 if len(sys.argv) != 3:
+    print("3 arguments must be given.")
     sys.exit(1)
 
 if not os.path.isfile(sys.argv[1]):

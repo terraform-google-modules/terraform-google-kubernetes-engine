@@ -86,8 +86,9 @@ resource "google_container_cluster" "zonal_primary" {
     delete = "30m"
   }
 
+
   remove_default_node_pool = "${var.remove_default_node_pool}"
-  initial_node_count       = 0
+  initial_node_count       = "${var.initial_node_count}"
 }
 
 /******************************************

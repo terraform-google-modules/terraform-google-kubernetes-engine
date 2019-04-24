@@ -65,8 +65,8 @@ control "gcloud" do
     describe "default node pool" do
       let(:default_node_pool) { data['nodePools'].select { |p| p['name'] == "default-pool" }.first }
 
-      it "has no initial node count" do
-        expect(default_node_pool['initialNodeCount']).to eq nil
+      it "has an initial node count of 1" do
+        expect(default_node_pool['initialNodeCount']).to eq 1
       end
 
       it "does not have autoscaling enabled" do

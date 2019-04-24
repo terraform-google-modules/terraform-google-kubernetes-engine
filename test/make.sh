@@ -46,10 +46,10 @@ function docker() {
 function check_terraform() {
   echo "Running terraform validate"
   #shellcheck disable=SC2156
-  find . -name "*.tf" -not -path "./autogen/*" -not -path "./test/fixtures/shared/*" -not -path "./test/fixtures/all_examples/*" -exec bash -c 'terraform validate --check-variables=false $(dirname "{}")' \;
+  find . -name "*.tf" -not -path "./autogen/*" -not -path "./test/fixtures/shared/*" -not -path "./test/fixtures/all_examples/*" -not -path "*.terraform*" -exec bash -c 'terraform validate --check-variables=false $(dirname "{}")' \;
   echo "Running terraform fmt"
   #shellcheck disable=SC2156
-  find . -name "*.tf" -not -path "./autogen/*" -not -path "./test/fixtures/shared/*" -not -path "./test/fixtures/all_examples/*" -exec bash -c 'terraform fmt -check=true -write=false "{}"' \;
+  find . -name "*.tf" -not -path "./autogen/*" -not -path "./test/fixtures/shared/*" -not -path "./test/fixtures/all_examples/*" -not -path "*.terraform*" -exec bash -c 'terraform fmt -check=true -write=false "{}"' \;
 }
 
 # This function runs 'go fmt' and 'go vet' on every file
@@ -78,10 +78,12 @@ function check_shell() {
 # in any files in the project.
 # There are some exclusions
 function check_trailing_whitespace() {
-  echo "The following lines have trailing whitespace"
-  grep -r '[[:blank:]]$' --exclude-dir=".terraform" --exclude-dir=".kitchen" --exclude="*.png" --exclude="*.pyc" --exclude-dir=".git" .
+  whitespace_check_cmd="grep -r '[[:blank:]]$' --exclude-dir=\".terraform\" --exclude-dir=\".kitchen\" --exclude=\"*.png\" --exclude=\"*.pyc\" --exclude-dir=\".git\" --exclude=\"terraform.tfvars\" ."
+  bash -c "${whitespace_check_cmd} -q"
   rc=$?
   if [ $rc = 0 ]; then
+    echo "The following lines have trailing whitespace: "
+    bash -c "${whitespace_check_cmd}"
     exit 1
   fi
 }
@@ -95,7 +97,7 @@ function generate_docs() {
   echo "Generating markdown docs with terraform-docs"
   TMPFILE=$(mktemp)
   #shellcheck disable=2006,2086
-  for j in $(find ./ -name '*.tf' -type f -exec dirname '{}' \; | sort -u | grep -v ./autogen); do
+  for j in $(find ./ -name '*.tf' -type f -not -path "*.terraform*" -exec dirname '{}' \; | sort -u | grep -v ./autogen); do
     terraform-docs markdown "$j" >"$TMPFILE"
     python helpers/combine_docfiles.py "$j"/README.md "$TMPFILE"
   done

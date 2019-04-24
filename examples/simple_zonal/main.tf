@@ -29,17 +29,18 @@ provider "google-beta" {
 }
 
 module "gke" {
-  source            = "../../"
-  project_id        = "${var.project_id}"
-  name              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional          = false
-  region            = "${var.region}"
-  zones             = "${var.zones}"
-  network           = "${var.network}"
-  subnetwork        = "${var.subnetwork}"
-  ip_range_pods     = "${var.ip_range_pods}"
-  ip_range_services = "${var.ip_range_services}"
-  service_account   = "create"
+  source             = "../../"
+  project_id         = "${var.project_id}"
+  name               = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  regional           = false
+  region             = "${var.region}"
+  zones              = "${var.zones}"
+  network            = "${var.network}"
+  subnetwork         = "${var.subnetwork}"
+  ip_range_pods      = "${var.ip_range_pods}"
+  ip_range_services  = "${var.ip_range_services}"
+  service_account    = "create"
+  initial_node_count = 1
 }
 
 data "google_client_config" "default" {}

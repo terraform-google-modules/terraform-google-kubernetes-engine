@@ -92,9 +92,12 @@ test_integration:
 generate_docs:
 	@source test/make.sh && generate_docs
 
-.PHONY: generate
-generate:
+.PHONY: generate_code
+generate_code:
 	@source test/make.sh && generate
+
+.PHONY: generate
+ generate: generate_code generate_docs
 
 # Versioning
 .PHONY: version

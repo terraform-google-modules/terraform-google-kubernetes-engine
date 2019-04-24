@@ -17,6 +17,18 @@ The resources/services/activations/deletions that this module will create/trigge
 There are multiple examples included in the [examples](./examples/) folder but simple usage is as follows:
 
 ```hcl
+provider "google" {
+  project = "<PROJECT ID>"
+  region  = "us-central1"
+  version = "~> 2.5"
+}
+
+provider "google-beta" {
+  project = "<PROJECT ID>"
+  region  = "us-central1"
+  version = "~> 2.5"
+}
+
 module "gke" {
   source                     = "terraform-google-modules/kubernetes-engine/google{% if private_cluster %}//modules/private-cluster{% endif %}"
   project_id                 = "<PROJECT ID>"
@@ -31,6 +43,8 @@ module "gke" {
   horizontal_pod_autoscaling = true
   kubernetes_dashboard       = true
   network_policy             = true
+  remove_default_node_pool   = true
+  initial_node_count         = 1
   {% if private_cluster %}
   enable_private_endpoint    = true
   enable_private_nodes       = true
@@ -63,19 +77,13 @@ module "gke" {
   }
 
   node_pools_labels = {
-    all = {}
-
-    default-node-pool = {
-      default-node-pool = "true"
-    }
+    all               = {}
+    default-node-pool = {}
   }
 
   node_pools_metadata = {
-    all = {}
-
-    default-node-pool = {
-      node-pool-metadata-custom-value = "my-node-pool"
-    }
+    all               = {}
+    default-node-pool = {}
   }
 
   node_pools_taints = {
@@ -91,11 +99,8 @@ module "gke" {
   }
 
   node_pools_tags = {
-    all = []
-
-    default-node-pool = [
-      "default-node-pool",
-    ]
+    all               = []
+    default-node-pool = []
   }
 }
 ```
@@ -138,9 +143,9 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.11.x
 {% if private_cluster %}
-- [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v2.0.0
+- [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v2.5.0
 {% else %}
-- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.0.0
+- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.5.0
 {% endif %}
 
 ### Configure a Service Account

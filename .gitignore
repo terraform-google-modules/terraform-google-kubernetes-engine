@@ -40,6 +40,7 @@ crash.log
 **/.kitchen
 **/.kitchen.local.yml
 **/Gemfile.lock
+terraform.tfvars
 
 test/fixtures/shared/terraform.tfvars
 

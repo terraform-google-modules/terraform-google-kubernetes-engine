@@ -19,8 +19,13 @@ locals {
 }
 
 provider "google" {
-  credentials = "${file(var.credentials_path)}"
-  region      = "${var.region}"
+  version = "~> 2.5"
+  region  = "${var.region}"
+}
+
+provider "google-beta" {
+  version = "~> 2.5"
+  region  = "${var.region}"
 }
 
 module "gke" {
@@ -36,6 +41,7 @@ module "gke" {
   ip_range_services        = "${var.ip_range_services}"
   service_account          = "${var.compute_engine_service_account}"
   issue_client_certificate = false
+  initial_node_count       = 1
 }
 
 data "google_client_config" "default" {}

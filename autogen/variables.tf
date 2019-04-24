@@ -258,3 +258,8 @@ variable "issue_client_certificate" {
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
   default     = "false"
 }
+
+variable "initial_node_count" {
+  description = "The initial size of the default cluster. Clusters having `remove_default_node_pool` set to `true` and any new clusters must specify this variable >= 1."
+  default     = 0
+}

@@ -150,7 +150,8 @@ def get_file_extension(filename):
 # These directories will be omitted from header checks
 SKIPPED_DIRS = [
     'Godeps', 'third_party', '_gopath', '_output',
-    '.git', 'vendor', '__init__.py', 'node_modules'
+    '.git', 'vendor', '__init__.py', 'node_modules',
+    '.terraform'
 ]
 
 

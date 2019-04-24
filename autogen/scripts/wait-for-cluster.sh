@@ -20,14 +20,21 @@ CLUSTER_NAME=$2
 gcloud_command="gcloud container clusters list --project=$PROJECT --format=json"
 jq_query=".[] | select(.name==\"$CLUSTER_NAME\") | .status"
 
-echo "Waiting for cluster $2 in project $1 to reconcile..."
-
-current_status=$($gcloud_command | jq -r "$jq_query")
-
-while [[ "${current_status}" == "RECONCILING" ]]; do
-    printf "."
-    sleep 5
+function check_cluster_readiness() {
     current_status=$($gcloud_command | jq -r "$jq_query")
-done
+    while [[ "${current_status}" == "RECONCILING" ]]; do
+        printf "Current status is ${current_status}..."
+        sleep 5
+        current_status=$($gcloud_command | jq -r "$jq_query")
+    done
+}
 
+echo "Waiting for cluster $2 in project $1 to reconcile..."
+check_cluster_readiness
+
+# a second check is needed as the READY state can flap back to RECONCILING on
+# new clusters: https://github.com/GoogleCloudPlatform/gke-stateful-applications-demo/blob/3261509a3dbb9f0b4c9538f462469669116fb689/README.md#troubleshooting
+echo "Confirming RUNNING state in 60 seconds..."
+sleep 60
+check_cluster_readiness
 echo "Cluster is ready!"

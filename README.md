@@ -12,6 +12,18 @@ The resources/services/activations/deletions that this module will create/trigge
 There are multiple examples included in the [examples](./examples/) folder but simple usage is as follows:
 
 ```hcl
+provider "google" {
+  project = "<PROJECT ID>"
+  region  = "us-central1"
+  version = "~> 2.5"
+}
+
+provider "google-beta" {
+  project = "<PROJECT ID>"
+  region  = "us-central1"
+  version = "~> 2.5"
+}
+
 module "gke" {
   source                     = "terraform-google-modules/kubernetes-engine/google"
   project_id                 = "<PROJECT ID>"
@@ -26,6 +38,8 @@ module "gke" {
   horizontal_pod_autoscaling = true
   kubernetes_dashboard       = true
   network_policy             = true
+  remove_default_node_pool   = true
+  initial_node_count         = 1
 
   node_pools = [
     {
@@ -53,19 +67,13 @@ module "gke" {
   }
 
   node_pools_labels = {
-    all = {}
-
-    default-node-pool = {
-      default-node-pool = "true"
-    }
+    all               = {}
+    default-node-pool = {}
   }
 
   node_pools_metadata = {
-    all = {}
-
-    default-node-pool = {
-      node-pool-metadata-custom-value = "my-node-pool"
-    }
+    all               = {}
+    default-node-pool = {}
   }
 
   node_pools_taints = {
@@ -81,11 +89,8 @@ module "gke" {
   }
 
   node_pools_tags = {
-    all = []
-
-    default-node-pool = [
-      "default-node-pool",
-    ]
+    all               = []
+    default-node-pool = []
   }
 }
 ```
@@ -120,6 +125,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | string | `"true"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | string | `"true"` | no |
 | http\_load\_balancing | Enable httpload balancer addon | string | `"true"` | no |
+| initial\_node\_count | The initial size of the default cluster. Clusters having `remove_default_node_pool` set to `true` and any new clusters must specify this variable >= 1. | string | `"0"` | no |
 | ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `"false"` | no |
 | ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `"60s"` | no |
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | n/a | yes |
@@ -194,7 +200,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.11.x
-- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.0.0
+- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.5.0
 
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the
