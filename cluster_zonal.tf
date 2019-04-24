@@ -26,7 +26,7 @@ resource "google_container_cluster" "zonal_primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  zone           = "${var.zones[0]}"
+  location       = "${var.zones[0]}"
   node_locations = ["${slice(var.zones,1,length(var.zones))}"]
 
   network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
@@ -87,7 +87,7 @@ resource "google_container_cluster" "zonal_primary" {
   }
 
   remove_default_node_pool = "${var.remove_default_node_pool}"
-  initial_node_count       = 1
+  initial_node_count       = 0
 }
 
 /******************************************
@@ -98,7 +98,7 @@ resource "google_container_node_pool" "zonal_pools" {
   count              = "${var.regional ? 0 : length(var.node_pools)}"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
-  zone               = "${var.zones[0]}"
+  location           = "${var.zones[0]}"
   cluster            = "${google_container_cluster.zonal_primary.name}"
   version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version_zonal)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"

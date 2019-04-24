@@ -8,6 +8,16 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+### Changed
+
+* `google_container_engine_versions` data lookups and cluster resources now use
+  the `location` attribute instead of `zone` or `region` (deprecated). This also
+  allowed 2 data lookups to collapse into one.
+* `initial_node_count` replaces the cluster's `node_pool` inline block as that
+  block no longer works with recent provider versions.
+* updated `combine_docfiles.py` to match that of
+  [terraform-google-module-template](https://github.com/terraform-google-modules/terraform-google-module-template)
+
 ## [v2.0.0] - 2019-04-12
 
 ### Added

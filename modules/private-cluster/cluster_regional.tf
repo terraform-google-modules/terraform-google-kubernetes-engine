@@ -26,7 +26,7 @@ resource "google_container_cluster" "primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  region         = "${var.region}"
+  location       = "${var.region}"
   node_locations = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
 
   network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
@@ -86,14 +86,6 @@ resource "google_container_cluster" "primary" {
     delete = "30m"
   }
 
-  node_pool {
-    name = "default-pool"
-
-    node_config {
-      service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
-    }
-  }
-
   private_cluster_config {
     enable_private_endpoint = "${var.enable_private_endpoint}"
     enable_private_nodes    = "${var.enable_private_nodes}"
@@ -101,6 +93,7 @@ resource "google_container_cluster" "primary" {
   }
 
   remove_default_node_pool = "${var.remove_default_node_pool}"
+  initial_node_count       = 0
 }
 
 /******************************************
@@ -111,7 +104,7 @@ resource "google_container_node_pool" "pools" {
   count              = "${var.regional ? length(var.node_pools) : 0}"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
-  region             = "${var.region}"
+  location           = "${var.region}"
   cluster            = "${google_container_cluster.primary.name}"
   version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version_regional)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"
