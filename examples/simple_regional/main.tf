@@ -19,12 +19,12 @@ locals {
 }
 
 provider "google" {
-  version = "~> 2.2"
+  version = "~> 2.3.0"
   region  = "${var.region}"
 }
 
 provider "google-beta" {
-  version = "~> 2.2"
+  version = "~> 2.3.0"
   region  = "${var.region}"
 }
 
@@ -38,7 +38,6 @@ module "gke" {
   subnetwork        = "${var.subnetwork}"
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
-  service_account   = "${var.compute_engine_service_account}"
 }
 
 data "google_client_config" "default" {}
