@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* This file was automatically generated from a template in ./autogen */
-
 /******************************************
   Create ip-masq-agent confimap
  *****************************************/
@@ -40,5 +38,5 @@ masqLinkLocal: ${var.ip_masq_link_local}
 EOF
   }
 
-  depends_on = ["data.google_client_config.default", "google_container_cluster.primary", "google_container_node_pool.pools", "google_container_cluster.zonal_primary", "google_container_node_pool.zonal_pools"]
+  depends_on = ["google_container_cluster.public", "google_container_cluster.private"]
 }

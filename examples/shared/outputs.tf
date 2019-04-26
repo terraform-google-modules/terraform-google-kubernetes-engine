@@ -61,3 +61,23 @@ output "master_kubernetes_version" {
   description = "The master Kubernetes version"
   value       = "${module.gke.master_version}"
 }
+
+output "client_key" {
+  sensitive = true
+  value     = "${module.gke.client_key}"
+}
+
+output "service_account" {
+  description = "The service account to default running nodes as if not overridden in `node_pools`."
+  value       = "${module.gke.service_account}"
+}
+
+output "kubernetes_endpoint" {
+  description = ""
+  value       = "${module.gke.endpoint}"
+}
+
+output "ca_certificate" {
+  description = ""
+  value       = "${module.gke.ca_certificate}"
+}

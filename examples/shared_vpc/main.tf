@@ -28,6 +28,14 @@ provider "google-beta" {
   region  = "${var.region}"
 }
 
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = "https://${module.gke.endpoint}"
+  token                  = "${data.google_client_config.default.access_token}"
+  cluster_ca_certificate = "${base64decode(module.gke.ca_certificate)}"
+  version                = "= v1.6.2"
+}
+
 module "gke" {
   source             = "../../"
   project_id         = "${var.project_id}"
@@ -38,8 +46,6 @@ module "gke" {
   subnetwork         = "${var.subnetwork}"
   ip_range_pods      = "${var.ip_range_pods}"
   ip_range_services  = "${var.ip_range_services}"
-  service_account    = "${var.compute_engine_service_account}"
-  initial_node_count = 1
 }
 
 data "google_client_config" "default" {}

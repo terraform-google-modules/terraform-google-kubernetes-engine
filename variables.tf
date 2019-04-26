@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* This file was automatically generated from a template in ./autogen */
-
 variable "project_id" {
   description = "The project ID to host the cluster in (required)"
 }
@@ -27,11 +25,6 @@ variable "name" {
 variable "description" {
   description = "The description of the cluster"
   default     = ""
-}
-
-variable "regional" {
-  description = "Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!)"
-  default     = true
 }
 
 variable "region" {
@@ -64,7 +57,7 @@ variable "kubernetes_version" {
 
 variable "node_version" {
   description = "The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation."
-  default     = ""
+  default     = "master"
 }
 
 variable "master_authorized_networks_config" {
@@ -121,7 +114,7 @@ variable "ip_range_services" {
 
 variable "remove_default_node_pool" {
   description = "Remove default node pool while setting up the cluster"
-  default     = false
+  default     = true
 }
 
 variable "disable_legacy_metadata_endpoints" {
@@ -170,26 +163,6 @@ variable "node_pools_taints" {
   }
 }
 
-variable "node_pools_tags" {
-  type        = "map"
-  description = "Map of lists containing node network tags by node-pool name"
-
-  default = {
-    all               = []
-    default-node-pool = []
-  }
-}
-
-variable "node_pools_oauth_scopes" {
-  type        = "map"
-  description = "Map of lists containing node oauth scopes by node-pool name"
-
-  default = {
-    all               = ["https://www.googleapis.com/auth/cloud-platform"]
-    default-node-pool = []
-  }
-}
-
 variable "stub_domains" {
   type        = "map"
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"
@@ -209,7 +182,7 @@ variable "ip_masq_resync_interval" {
 
 variable "ip_masq_link_local" {
   description = "Whether to masquerade traffic to the link-local prefix (169.254.0.0/16)."
-  default     = "false"
+  default     = false
 }
 
 variable "logging_service" {
@@ -224,10 +197,8 @@ variable "monitoring_service" {
 
 variable "service_account" {
   description = "The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created."
-  default     = "create"
+  default     = ""
 }
-
-/*  */
 
 variable "basic_auth_username" {
   description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
@@ -241,10 +212,31 @@ variable "basic_auth_password" {
 
 variable "issue_client_certificate" {
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
-  default     = "false"
+  default     = false
 }
 
 variable "initial_node_count" {
-  description = "The initial size of the default cluster. Clusters having `remove_default_node_pool` set to `true` and any new clusters must specify this variable >= 1."
-  default     = 0
+  description = "The initial size of the default cluster. New clusters should leave this set to `1` and allow the default `remove_default_node_pool = true` to delete the default cluster."
+  default     = 1
+}
+
+variable "node_pool_default_attributes" {
+  description = "A map of default attributes that override the local default value specified in the module. Valid keys and default values can be found in node_pools.tf:local.node_pool_default_attributes"
+  type        = "map"
+  default     = {}
+}
+
+variable "enable_private_endpoint" {
+  description = "Whether the master's internal IP address is used as the cluster endpoint"
+  default     = false
+}
+
+variable "enable_private_nodes" {
+  description = "Whether nodes have internal IP addresses only"
+  default     = false
+}
+
+variable "master_ipv4_cidr_block" {
+  description = "The IP range in CIDR notation to use for the hosted master network. This only applies if either `enable_private_nodes` or `enable_private_endpoint` are set to `true`"
+  default     = "10.0.0.0/28"
 }

@@ -12,17 +12,18 @@ This example illustrates how to create a simple cluster.
 | ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
 | network | The VPC network to host the cluster in | string | n/a | yes |
+| network\_project\_id | The project ID where the network exists | string | n/a | yes |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
 | subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
-| zones | The zone to host the cluster in (required if is a zonal cluster) | list | n/a | yes |
+| zones | The GCP zones to create and test resources in, for applicable tests | list | `<list>` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | ca\_certificate |  |
-| client\_token |  |
+| client\_key |  |
 | cluster\_name | Cluster name |
 | ip\_range\_pods | The secondary IP range used for pods |
 | ip\_range\_services | The secondary IP range used for services |

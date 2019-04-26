@@ -9,7 +9,6 @@ The resources/services/activations/deletions that this module will create/trigge
 - Activate network policy if `network_policy` is true
 - Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `network_policy` is true
 
-
 ## Usage
 
 There are multiple examples included in the [examples](./examples/) folder but simple usage is as follows:
@@ -41,8 +40,6 @@ module "gke" {
   horizontal_pod_autoscaling = true
   kubernetes_dashboard       = true
   network_policy             = true
-  remove_default_node_pool   = true
-  initial_node_count         = 1
 
   node_pools = [
     {
@@ -126,9 +123,11 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | basic\_auth\_username | The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration. | string | `""` | no |
 | description | The description of the cluster | string | `""` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | string | `"true"` | no |
+| enable\_private\_endpoint | Whether the master's internal IP address is used as the cluster endpoint | string | `"false"` | no |
+| enable\_private\_nodes | Whether nodes have internal IP addresses only | string | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | string | `"true"` | no |
 | http\_load\_balancing | Enable httpload balancer addon | string | `"true"` | no |
-| initial\_node\_count | The initial size of the default cluster. Clusters having `remove_default_node_pool` set to `true` and any new clusters must specify this variable >= 1. | string | `"0"` | no |
+| initial\_node\_count | The initial size of the default cluster. New clusters should leave this set to `1` and allow the default `remove_default_node_pool = true` to delete the default cluster. | string | `"1"` | no |
 | ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `"false"` | no |
 | ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `"60s"` | no |
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | n/a | yes |
@@ -139,24 +138,23 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com"` | no |
 | maintenance\_start\_time | Time window specified for daily maintenance operations in RFC3339 format | string | `"05:00"` | no |
 | master\_authorized\_networks\_config | The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)<br><br>  ### example format ###   master_authorized_networks_config = [{     cidr_blocks = [{       cidr_block   = "10.0.0.0/8"       display_name = "example_network"     }],   }] | list | `<list>` | no |
+| master\_ipv4\_cidr\_block | The IP range in CIDR notation to use for the hosted master network. This only applies if either `enable_private_nodes` or `enable_private_endpoint` are set to `true` | string | `"10.0.0.0/28"` | no |
 | monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com"` | no |
 | name | The name of the cluster (required) | string | n/a | yes |
 | network | The VPC network to host the cluster in (required) | string | n/a | yes |
 | network\_policy | Enable network policy addon | string | `"false"` | no |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
+| node\_pool\_default\_attributes | A map of default attributes that override the local default value specified in the module. Valid keys and default values can be found in node_pools.tf:local.node_pool_default_attributes | map | `<map>` | no |
 | node\_pools | List of maps containing node pools | list | `<list>` | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
 | node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map | `<map>` | no |
-| node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | map | `<map>` | no |
-| node\_pools\_tags | Map of lists containing node network tags by node-pool name | map | `<map>` | no |
 | node\_pools\_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
-| node\_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `""` | no |
+| node\_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `"master"` | no |
 | non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list | `<list>` | no |
 | project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
 | region | The region to host the cluster in (required) | string | n/a | yes |
-| regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `"true"` | no |
-| remove\_default\_node\_pool | Remove default node pool while setting up the cluster | string | `"false"` | no |
-| service\_account | The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created. | string | `"create"` | no |
+| remove\_default\_node\_pool | Remove default node pool while setting up the cluster | string | `"true"` | no |
+| service\_account | The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created. | string | `""` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | string | n/a | yes |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list | `<list>` | no |
@@ -165,24 +163,27 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 
 | Name | Description |
 |------|-------------|
-| ca\_certificate | Cluster ca certificate (base64 encoded) |
+| ca\_certificate | Base64 encoded public certificate that is the root of trust for the cluster. |
+| client\_certificate | Base64 encoded public certificate used by clients to authenticate to the cluster endpoint. |
+| client\_key | Base64 encoded private key used by clients to authenticate to the cluster endpoint. |
+| cluster\_location | Location of the cluster. |
+| cluster\_type | Type of cluster created (public/private). |
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
 | kubernetes\_dashboard\_enabled | Whether kubernetes dashboard enabled |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |
-| logging\_service | Logging service used |
+| logging\_service | Logging service used by the cluster. |
 | master\_authorized\_networks\_config | Networks from which access to master is permitted |
 | master\_version | Current master kubernetes version |
 | min\_master\_version | Minimum master kubernetes version |
-| monitoring\_service | Monitoring service used |
-| name | Cluster name |
+| monitoring\_service | Monitoring service used by the cluster. |
+| name | Cluster name. |
 | network\_policy\_enabled | Whether network policy enabled |
 | node\_pools\_names | List of node pools names |
 | node\_pools\_versions | List of node pools versions |
-| region | Cluster region |
+| region | Cluster region. |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
-| type | Cluster type (regional / zonal) |
 | zones | List of zones in which the cluster resides |
 
 [^]: (autogen_docs_end)
@@ -306,13 +307,11 @@ If you wish to parallelize running the test suites, it is also possible to offlo
 When running tests locally, you will need to use your own test project environment. You can configure your environment by setting all of the following variables:
 
 ```bash
-export COMPUTE_ENGINE_SERVICE_ACCOUNT="<EXISTING_SERVICE_ACCOUNT>"
 export PROJECT_ID="<PROJECT_TO_USE>"
 export REGION="<REGION_TO_USE>"
 export ZONES='["<LIST_OF_ZONES_TO_USE>"]'
-export SERVICE_ACCOUNT_JSON="$(cat "<PATH_TO_SERVICE_ACCOUNT_JSON>")"
-export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="<PATH_TO_SERVICE_ACCOUNT_JSON>"
-export GOOGLE_APPLICATION_CREDENTIALS="<PATH_TO_SERVICE_ACCOUNT_JSON>"
+# export SERVICE_ACCOUNT_JSON="$(cat "<PATH_TO_SERVICE_ACCOUNT_JSON>")"
+export SERVICE_ACCOUNT_JSON=`cat credentials.json`
 ```
 
 #### Test configuration
@@ -322,14 +321,6 @@ For convenience, since all of the variables are project-specific, these files ha
 Similarly, each test fixture has a `variables.tf` to define these variables, and an `outputs.tf` to facilitate providing necessary information for `inspec` to locate and query against created resources.
 
 Each test-kitchen instance creates a GCP Network and Subnetwork fixture to house resources, and may create any other necessary fixture data as needed.
-
-### Autogeneration of documentation from .tf files
-
-Run:
-
-```bash
-make generate_docs
-```
 
 ### Linting
 
@@ -351,16 +342,19 @@ Running shellcheck
 Running flake8
 Running go fmt and go vet
 Running terraform validate
+Running terraform fmt
+...
 Running hadolint on Dockerfiles
 Checking for required files
 Testing the validity of the header check
 ..
 ----------------------------------------------------------------------
-Ran 2 tests in 0.026s
+Ran 2 tests in 0.065s
 
 OK
 Checking file headers
-The following lines have trailing whitespace
+Docs were generated properly
+Generating markdown docs with terraform-docs
 ```
 
 The linters are as follows:

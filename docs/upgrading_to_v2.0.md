@@ -75,7 +75,6 @@ module "enabling-basic-auth" {
   basic_auth_username = "admin"
   basic_auth_password = "s3crets!"
 
-  regional          = "true"
   region            = "${var.region}"
   network           = "${var.network}"
   subnetwork        = "${var.subnetwork}"
@@ -103,7 +102,6 @@ module "enabling-client-certificate" {
 
   issue_client_certificate = "true"
 
-  regional          = "true"
   region            = "${var.region}"
   network           = "${var.network}"
   subnetwork        = "${var.subnetwork}"

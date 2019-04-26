@@ -18,7 +18,7 @@ require 'rest-client'
 require 'base64'
 
 kubernetes_endpoint = attribute('kubernetes_endpoint')
-client_token = attribute('client_token')
+client_key = attribute('client_key')
 ca_certificate = attribute('ca_certificate')
 
 control "kubectl" do
@@ -37,7 +37,7 @@ control "kubectl" do
           verify_ssl: OpenSSL::SSL::VERIFY_PEER,
         },
         auth_options: {
-          bearer_token: Base64.decode64(client_token),
+          bearer_token: Base64.decode64(client_key),
         },
       )
     end

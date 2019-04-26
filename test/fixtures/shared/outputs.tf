@@ -64,9 +64,9 @@ output "kubernetes_endpoint" {
   value     = "${module.example.kubernetes_endpoint}"
 }
 
-output "client_token" {
+output "client_key" {
   sensitive = true
-  value     = "${module.example.client_token}"
+  value     = "${module.example.client_key}"
 }
 
 output "ca_certificate" {

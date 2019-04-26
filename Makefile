@@ -28,7 +28,7 @@ DOCKER_IMAGE_KITCHEN_TERRAFORM := ${DOCKER_ORG}/cft/kitchen-terraform_terraform-
 all: check generate_docs
 
 .PHONY: check
-check: check_shell check_python check_golang check_terraform check_docker check_base_files test_check_headers check_headers check_trailing_whitespace check_generate check_generate_docs
+check: check_shell check_python check_golang check_terraform check_docker check_base_files test_check_headers check_headers check_trailing_whitespace check_generate_docs
 
 # The .PHONY directive tells make that this isn't a real target and so
 # the presence of a file named 'check_shell' won't cause this target to stop
@@ -75,10 +75,6 @@ check_headers:
 	@echo "Checking file headers"
 	@python test/verify_boilerplate.py
 
-.PHONY: check_generate
-check_generate: ## Check that `make generate` does not generate a diff
-	@source test/make.sh && check_generate
-
 .PHONY: check_generate_docs
 check_generate_docs: ## Check that `make generate_docs` does not generate a diff
 	@source test/make.sh && check_generate_docs
@@ -91,13 +87,6 @@ test_integration:
 .PHONY: generate_docs
 generate_docs:
 	@source test/make.sh && generate_docs
-
-.PHONY: generate_code
-generate_code:
-	@source test/make.sh && generate
-
-.PHONY: generate
- generate: generate_code generate_docs
 
 # Versioning
 .PHONY: version
@@ -121,7 +110,6 @@ docker_push_kitchen_terraform:
 .PHONY: docker_run
 docker_run:
 	docker run --rm -it \
-		-e COMPUTE_ENGINE_SERVICE_ACCOUNT \
 		-e PROJECT_ID \
 		-e REGION \
 		-e ZONES \
@@ -135,7 +123,6 @@ docker_run:
 .PHONY: docker_create
 docker_create: docker_build_kitchen_terraform
 	docker run --rm -it \
-		-e COMPUTE_ENGINE_SERVICE_ACCOUNT \
 		-e PROJECT_ID \
 		-e REGION \
 		-e ZONES \
@@ -149,7 +136,6 @@ docker_create: docker_build_kitchen_terraform
 .PHONY: docker_converge
 docker_converge:
 	docker run --rm -it \
-		-e COMPUTE_ENGINE_SERVICE_ACCOUNT \
 		-e PROJECT_ID \
 		-e REGION \
 		-e ZONES \
@@ -163,7 +149,6 @@ docker_converge:
 .PHONY: docker_verify
 docker_verify:
 	docker run --rm -it \
-		-e COMPUTE_ENGINE_SERVICE_ACCOUNT \
 		-e PROJECT_ID \
 		-e REGION \
 		-e ZONES \
@@ -177,7 +162,6 @@ docker_verify:
 .PHONY: docker_destroy
 docker_destroy:
 	docker run --rm -it \
-		-e COMPUTE_ENGINE_SERVICE_ACCOUNT \
 		-e PROJECT_ID \
 		-e REGION \
 		-e ZONES \
@@ -191,7 +175,6 @@ docker_destroy:
 .PHONY: test_integration_docker
 test_integration_docker:
 	docker run --rm -it \
-		-e COMPUTE_ENGINE_SERVICE_ACCOUNT \
 		-e PROJECT_ID \
 		-e REGION \
 		-e ZONES \

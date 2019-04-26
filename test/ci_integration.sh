@@ -29,9 +29,8 @@ finish() {
 setup_environment() {
   local tmpfile
   tmpfile="$(mktemp)"
-  echo "${SERVICE_ACCOUNT_JSON}" > "${tmpfile}"
-
-  echo "${SERVICE_ACCOUNT_JSON}" > "test/fixtures/shared/credentials.json"
+  echo "${SERVICE_ACCOUNT_JSON}" >"${tmpfile}"
+  echo "${SERVICE_ACCOUNT_JSON}" >"test/fixtures/shared/credentials.json"
 
   # gcloud variables
   export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="${tmpfile}"
@@ -43,7 +42,6 @@ setup_environment() {
   export TF_VAR_credentials_path_relative="../shared/credentials.json"
   export TF_VAR_region="$REGION"
   export TF_VAR_zones="$ZONES"
-  export TF_VAR_compute_engine_service_account="$COMPUTE_ENGINE_SERVICE_ACCOUNT"
 }
 
 main() {
@@ -59,8 +57,9 @@ main() {
   set -x
 
   # Execute the test lifecycle
+  # cannot use `kitchen test` as the initial destroy against the empty workspace
+  # causes errors. See: https://github.com/hashicorp/terraform/issues/17862
   kitchen create "$SUITE"
-  kitchen converge "$SUITE"
   kitchen converge "$SUITE"
   kitchen verify "$SUITE"
 }

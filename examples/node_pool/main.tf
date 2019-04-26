@@ -28,39 +28,41 @@ provider "google-beta" {
   region  = "${var.region}"
 }
 
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = "https://${module.gke.endpoint}"
+  token                  = "${data.google_client_config.default.access_token}"
+  cluster_ca_certificate = "${base64decode(module.gke.ca_certificate)}"
+  version                = "= v1.6.2"
+}
+
 module "gke" {
-  source                            = "../../"
-  project_id                        = "${var.project_id}"
-  name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                          = "false"
-  region                            = "${var.region}"
-  zones                             = "${var.zones}"
-  network                           = "${var.network}"
-  subnetwork                        = "${var.subnetwork}"
-  ip_range_pods                     = "${var.ip_range_pods}"
-  ip_range_services                 = "${var.ip_range_services}"
-  disable_legacy_metadata_endpoints = "false"
-  initial_node_count                = 1
-  remove_default_node_pool          = true
+  source            = "../../"
+  project_id        = "${var.project_id}"
+  name              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  region            = "${var.region}"
+  zones             = "${var.zones}"
+  network           = "${var.network}"
+  subnetwork        = "${var.subnetwork}"
+  ip_range_pods     = "${var.ip_range_pods}"
+  ip_range_services = "${var.ip_range_services}"
 
   node_pools = [
     {
-      name            = "pool-01"
-      min_count       = 1
-      max_count       = 2
-      service_account = "${var.compute_engine_service_account}"
-      auto_upgrade    = true
+      name         = "pool-01"
+      min_count    = 1
+      max_count    = 2
+      auto_upgrade = true
     },
     {
-      name            = "pool-02"
-      machine_type    = "n1-standard-2"
-      min_count       = 1
-      max_count       = 2
-      disk_size_gb    = 30
-      disk_type       = "pd-standard"
-      image_type      = "COS"
-      auto_repair     = false
-      service_account = "${var.compute_engine_service_account}"
+      name         = "pool-02"
+      machine_type = "n1-standard-2"
+      min_count    = 1
+      max_count    = 2
+      disk_size_gb = 30
+      disk_type    = "pd-standard"
+      image_type   = "COS"
+      auto_repair  = false
     },
   ]
 

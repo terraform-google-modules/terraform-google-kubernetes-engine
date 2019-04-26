@@ -14,7 +14,18 @@
  * limitations under the License.
  */
 
-/* This file was automatically generated from a template in ./autogen */
+data "google_client_config" "default" {
+  provider = "google"
+}
+
+/******************************************
+  Get available container engine versions
+ *****************************************/
+
+data "google_container_engine_versions" "available" {
+  location = "${local.location}"
+  project  = "${var.project_id}"
+}
 
 /******************************************
   Get available zones in region
@@ -31,127 +42,147 @@ resource "random_shuffle" "available_zones" {
 }
 
 locals {
-  kubernetes_version_regional = "${var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.available.latest_master_version}"
-  kubernetes_version_zonal    = "${var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.available.latest_master_version}"
-  node_version_regional       = "${var.node_version != "" && var.regional ? var.node_version : local.kubernetes_version_regional}"
-  node_version_zonal          = "${var.node_version != "" && !var.regional ? var.node_version : local.kubernetes_version_zonal}"
+  cluster_type                = "${var.enable_private_endpoint || var.enable_private_endpoint == "true" || var.enable_private_nodes || var.enable_private_nodes == "true" ? "private" : "public"}"
+  kubernetes_version          = "${var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.available.latest_master_version}"
+  node_version                = "${var.node_version != "master" ? var.node_version : local.kubernetes_version}"
   custom_kube_dns_config      = "${length(keys(var.stub_domains)) > 0 ? true : false}"
   network_project_id          = "${var.network_project_id != "" ? var.network_project_id : var.project_id}"
+  location                    = "${var.zones[0] == "" && length(var.zones) == 1 ? var.region : var.zones[0]}"
+  cluster_node_pools_versions = "${google_container_node_pool.main.*.version}"
 
-  cluster_type = "${var.regional ? "regional" : "zonal"}"
+  node_locations = "${coalescelist(
+    compact(var.zones),
+    sort(random_shuffle.available_zones.result)
+  )}"
 
-  cluster_type_output_name = {
-    regional = "${element(concat(google_container_cluster.primary.*.name, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.name, list("")), 0)}"
-  }
+  cluster_location = "${element(
+    flatten(
+      concat(
+        google_container_cluster.public.*.location,
+        google_container_cluster.private.*.location,
+        list(""),
+      )
+  ),0)}"
 
-  cluster_type_output_location = {
-    regional = "${element(concat(google_container_cluster.primary.*.region, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.zone, list("")), 0)}"
-  }
+  cluster_zones = "${compact(
+    concat(
+      local.node_locations,
+      google_container_cluster.private.*.zone,
+      list(""),
+  ))}"
 
-  cluster_type_output_region = {
-    regional = "${element(concat(google_container_cluster.primary.*.region, list("")), 0)}"
-    zonal    = "${var.region}"
-  }
+  cluster_endpoint = "${element(
+    concat(
+      google_container_cluster.public.*.endpoint,
+      google_container_cluster.private.*.endpoint,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_regional_zones = "${flatten(google_container_cluster.primary.*.node_locations)}"
-  cluster_type_output_zonal_zones    = "${slice(var.zones, 1, length(var.zones))}"
+  cluster_client_certificate = "${element(
+    concat(
+      google_container_cluster.public.*.master_auth.0.client_certificate,
+      google_container_cluster.private.*.master_auth.0.client_certificate,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_zones = {
-    regional = "${local.cluster_type_output_regional_zones}"
-    zonal    = "${concat(google_container_cluster.zonal_primary.*.zone, local.cluster_type_output_zonal_zones)}"
-  }
+  cluster_client_key = "${element(
+    concat(
+      google_container_cluster.private.*.master_auth.0.client_key,
+      google_container_cluster.public.*.master_auth.0.client_key,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_endpoint = {
-    regional = "${element(concat(google_container_cluster.primary.*.endpoint, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.endpoint, list("")), 0)}"
-  }
+  cluster_ca_certificate = "${element(
+    concat(
+      google_container_cluster.private.*.master_auth.0.cluster_ca_certificate,
+      google_container_cluster.public.*.master_auth.0.cluster_ca_certificate,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_master_auth = {
-    regional = "${concat(google_container_cluster.primary.*.master_auth, list())}"
-    zonal    = "${concat(google_container_cluster.zonal_primary.*.master_auth, list())}"
-  }
+  cluster_master_version = "${element(
+    concat(
+      google_container_cluster.public.*.master_version,
+      google_container_cluster.private.*.master_version,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_master_version = {
-    regional = "${element(concat(google_container_cluster.primary.*.master_version, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.master_version, list("")), 0)}"
-  }
+  cluster_min_master_version = "${element(
+    concat(
+      google_container_cluster.public.*.min_master_version,
+      google_container_cluster.private.*.min_master_version,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_min_master_version = {
-    regional = "${element(concat(google_container_cluster.primary.*.min_master_version, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.min_master_version, list("")), 0)}"
-  }
+  cluster_logging_service = "${element(
+    concat(
+      google_container_cluster.public.*.logging_service,
+      google_container_cluster.private.*.logging_service,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_logging_service = {
-    regional = "${element(concat(google_container_cluster.primary.*.logging_service, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.logging_service, list("")), 0)}"
-  }
+  cluster_monitoring_service = "${element(
+    concat(
+      google_container_cluster.public.*.monitoring_service,
+      google_container_cluster.private.*.monitoring_service,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_monitoring_service = {
-    regional = "${element(concat(google_container_cluster.primary.*.monitoring_service, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.monitoring_service, list("")), 0)}"
-  }
+  cluster_network_policy_enabled = "${element(
+    concat(
+      google_container_cluster.public.*.addons_config.0.network_policy_config.0.disabled,
+      google_container_cluster.private.*.addons_config.0.network_policy_config.0.disabled,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_network_policy_enabled = {
-    regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.network_policy_config.0.disabled, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.network_policy_config.0.disabled, list("")), 0)}"
-  }
+  cluster_http_load_balancing_enabled = "${element(
+    concat(
+      google_container_cluster.public.*.addons_config.0.http_load_balancing.0.disabled,
+      google_container_cluster.private.*.addons_config.0.http_load_balancing.0.disabled,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_http_load_balancing_enabled = {
-    regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.http_load_balancing.0.disabled, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.http_load_balancing.0.disabled, list("")), 0)}"
-  }
+  cluster_horizontal_pod_autoscaling_enabled = "${element(
+    concat(
+      google_container_cluster.public.*.addons_config.0.http_load_balancing.0.disabled,
+      google_container_cluster.private.*.addons_config.0.horizontal_pod_autoscaling.0.disabled,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_horizontal_pod_autoscaling_enabled = {
-    regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.horizontal_pod_autoscaling.0.disabled, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.horizontal_pod_autoscaling.0.disabled, list("")), 0)}"
-  }
+  cluster_kubernetes_dashboard_enabled = "${element(
+    concat(
+      google_container_cluster.public.*.addons_config.0.kubernetes_dashboard.0.disabled,
+      google_container_cluster.private.*.addons_config.0.kubernetes_dashboard.0.disabled,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_kubernetes_dashboard_enabled = {
-    regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.kubernetes_dashboard.0.disabled, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.kubernetes_dashboard.0.disabled, list("")), 0)}"
-  }
+  cluster_node_pools_names = "${element(
+    concat(
+      google_container_node_pool.main.*.name,
+      list(""),
+  ), 0)}"
 
-  cluster_type_output_node_pools_names = {
-    regional = "${concat(google_container_node_pool.pools.*.name, list(""))}"
-    zonal    = "${concat(google_container_node_pool.zonal_pools.*.name, list(""))}"
-  }
+  cluster_network = "${replace(
+    data.google_compute_network.gke_network.self_link,
+    "https://www.googleapis.com/compute/v1/",
+    "")
+  }"
 
-  cluster_type_output_node_pools_versions = {
-    regional = "${concat(google_container_node_pool.pools.*.version, list(""))}"
-    zonal    = "${concat(google_container_node_pool.zonal_pools.*.version, list(""))}"
-  }
-
-  cluster_master_auth_list_layer1 = "${local.cluster_type_output_master_auth[local.cluster_type]}"
-  cluster_master_auth_list_layer2 = "${local.cluster_master_auth_list_layer1[0]}"
-  cluster_master_auth_map         = "${local.cluster_master_auth_list_layer2[0]}"
-
-  # cluster locals
-  cluster_name                = "${local.cluster_type_output_name[local.cluster_type]}"
-  cluster_location            = "${local.cluster_type_output_location[local.cluster_type]}"
-  cluster_region              = "${local.cluster_type_output_region[local.cluster_type]}"
-  cluster_zones               = "${sort(local.cluster_type_output_zones[local.cluster_type])}"
-  cluster_endpoint            = "${local.cluster_type_output_endpoint[local.cluster_type]}"
-  cluster_ca_certificate      = "${lookup(local.cluster_master_auth_map, "cluster_ca_certificate")}"
-  cluster_master_version      = "${local.cluster_type_output_master_version[local.cluster_type]}"
-  cluster_min_master_version  = "${local.cluster_type_output_min_master_version[local.cluster_type]}"
-  cluster_logging_service     = "${local.cluster_type_output_logging_service[local.cluster_type]}"
-  cluster_monitoring_service  = "${local.cluster_type_output_monitoring_service[local.cluster_type]}"
-  cluster_node_pools_names    = "${local.cluster_type_output_node_pools_names[local.cluster_type]}"
-  cluster_node_pools_versions = "${local.cluster_type_output_node_pools_versions[local.cluster_type]}"
-
-  cluster_network_policy_enabled             = "${local.cluster_type_output_network_policy_enabled[local.cluster_type] ? false : true}"
-  cluster_http_load_balancing_enabled        = "${local.cluster_type_output_http_load_balancing_enabled[local.cluster_type] ? false : true}"
-  cluster_horizontal_pod_autoscaling_enabled = "${local.cluster_type_output_horizontal_pod_autoscaling_enabled[local.cluster_type] ? false : true}"
-  cluster_kubernetes_dashboard_enabled       = "${local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type] ? false : true}"
+  cluster_subnetwork = "${replace(
+    data.google_compute_subnetwork.gke_subnetwork.self_link,
+    "https://www.googleapis.com/compute/v1/",
+    "")
+  }"
 }
 
-/******************************************
-  Get available container engine versions
- *****************************************/
+resource "null_resource" "wait_for_cluster" {
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
+  }
 
-data "google_container_engine_versions" "available" {
-  location = "${var.regional || var.regional == "true" ? var.region : var.zones[0]}"
-  project  = "${var.project_id}"
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
+  }
+
+  depends_on = ["google_container_cluster.public", "google_container_cluster.private", "google_container_node_pool.main"]
 }

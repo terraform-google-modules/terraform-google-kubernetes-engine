@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* This file was automatically generated from a template in ./autogen */
-
 /******************************************
   Delete default kube-dns configmap
  *****************************************/
@@ -26,7 +24,7 @@ resource "null_resource" "delete_default_kube_dns_configmap" {
     command = "${path.module}/scripts/kubectl_wrapper.sh https://${local.cluster_endpoint} ${data.google_client_config.default.access_token} ${local.cluster_ca_certificate} ${path.module}/scripts/delete-default-resource.sh kube-system configmap kube-dns"
   }
 
-  depends_on = ["data.google_client_config.default", "google_container_cluster.primary", "google_container_node_pool.pools", "google_container_cluster.zonal_primary", "google_container_node_pool.zonal_pools"]
+  depends_on = ["data.google_client_config.default", "google_container_cluster.public", "google_container_node_pool.main", "google_container_cluster.private"]
 }
 
 /******************************************
@@ -50,5 +48,5 @@ ${jsonencode(var.stub_domains)}
 EOF
   }
 
-  depends_on = ["null_resource.delete_default_kube_dns_configmap", "data.google_client_config.default", "google_container_cluster.primary", "google_container_node_pool.pools", "google_container_cluster.zonal_primary", "google_container_node_pool.zonal_pools"]
+  depends_on = ["null_resource.delete_default_kube_dns_configmap", "data.google_client_config.default", "google_container_cluster.public", "google_container_node_pool.main", "google_container_cluster.private"]
 }

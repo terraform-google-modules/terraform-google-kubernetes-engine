@@ -12,6 +12,6 @@ attributes:
   - name: kubernetes_endpoint
     required: true
     type: string
-  - name: client_token
+  - name: client_key
     required: true
     type: string

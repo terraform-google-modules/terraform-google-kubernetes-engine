@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-/* This file was automatically generated from a template in ./autogen */
-
 locals {
-  service_account_list = "${compact(concat(google_service_account.cluster_service_account.*.email, list("dummy")))}"
-  service_account      = "${var.service_account == "create" ? element(local.service_account_list, 0) : var.service_account}"
+  create_service_account = "${var.service_account == "" ? true : false}"
+  service_account_list   = "${compact(concat(google_service_account.cluster_service_account.*.email, list("")))}"
+  service_account        = "${local.create_service_account ? element(local.service_account_list, 0) : var.service_account}"
 }
 
 resource "random_string" "cluster_service_account_suffix" {
@@ -29,29 +28,29 @@ resource "random_string" "cluster_service_account_suffix" {
 }
 
 resource "google_service_account" "cluster_service_account" {
-  count        = "${var.service_account == "create" ? 1 : 0}"
+  count        = "${local.create_service_account ? 1 : 0}"
   project      = "${var.project_id}"
   account_id   = "tf-gke-${substr(var.name, 0, min(15, length(var.name)))}-${random_string.cluster_service_account_suffix.result}"
   display_name = "Terraform-managed service account for cluster ${var.name}"
 }
 
 resource "google_project_iam_member" "cluster_service_account-log_writer" {
-  count   = "${var.service_account == "create" ? 1 : 0}"
-  project = "${google_service_account.cluster_service_account.project}"
+  count   = "${local.create_service_account ? 1 : 0}"
+  project = "${var.project_id}"
   role    = "roles/logging.logWriter"
   member  = "serviceAccount:${google_service_account.cluster_service_account.email}"
 }
 
 resource "google_project_iam_member" "cluster_service_account-metric_writer" {
-  count   = "${var.service_account == "create" ? 1 : 0}"
-  project = "${google_project_iam_member.cluster_service_account-log_writer.project}"
+  count   = "${local.create_service_account ? 1 : 0}"
+  project = "${var.project_id}"
   role    = "roles/monitoring.metricWriter"
   member  = "serviceAccount:${google_service_account.cluster_service_account.email}"
 }
 
 resource "google_project_iam_member" "cluster_service_account-monitoring_viewer" {
-  count   = "${var.service_account == "create" ? 1 : 0}"
-  project = "${google_project_iam_member.cluster_service_account-metric_writer.project}"
+  count   = "${local.create_service_account ? 1 : 0}"
+  project = "${var.project_id}"
   role    = "roles/monitoring.viewer"
   member  = "serviceAccount:${google_service_account.cluster_service_account.email}"
 }
