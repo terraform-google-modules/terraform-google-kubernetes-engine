@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
+/* {{ autogeneration_note }} */
 
 /******************************************
   Create zonal cluster
@@ -86,14 +86,15 @@ resource "google_container_cluster" "zonal_primary" {
     delete = "30m"
   }
 
-{% if private_cluster %}
+  /* {% if private_cluster %} */
 
   private_cluster_config {
     enable_private_endpoint = "${var.enable_private_endpoint}"
     enable_private_nodes    = "${var.enable_private_nodes}"
     master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
   }
-{% endif %}
+
+  /* {% endif %} */
 
   remove_default_node_pool = "${var.remove_default_node_pool}"
   initial_node_count       = "${var.initial_node_count}"

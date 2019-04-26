@@ -44,12 +44,12 @@ function docker() {
 # This function runs 'terraform validate' against all
 # files ending in '.tf'
 function check_terraform() {
-  echo "Running terraform validate"
   #shellcheck disable=SC2156
-  find . -name "*.tf" -not -path "./autogen/*" -not -path "./test/fixtures/shared/*" -not -path "./test/fixtures/all_examples/*" -not -path "*.terraform*" -exec bash -c 'terraform validate --check-variables=false $(dirname "{}")' \;
+  find . -name "*.tf" -not -path "./test/fixtures/shared/*" -not -path "./test/fixtures/all_examples/*" -not -path "*/.terraform/*" -exec bash -c 'terraform validate --check-variables=false $(dirname "{}")' \;
+  # TODO: doublecheck the find command below. Running manually it works, but under make, it only returns and lints ./test/fixtures/*/network.tf
   echo "Running terraform fmt"
   #shellcheck disable=SC2156
-  find . -name "*.tf" -not -path "./autogen/*" -not -path "./test/fixtures/shared/*" -not -path "./test/fixtures/all_examples/*" -not -path "*.terraform*" -exec bash -c 'terraform fmt -check=true -write=false "{}"' \;
+  find . -name "*.tf" -not -path "./test/fixtures/shared/*" -not -path "./test/fixtures/all_examples/*" -not -path "*/.terraform/*" -exec bash -c 'terraform fmt -check=true -write=false "{}"' \;
 }
 
 # This function runs 'go fmt' and 'go vet' on every file

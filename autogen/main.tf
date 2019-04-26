@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
+/* {{ autogeneration_note }} */
 
 /******************************************
   Get available zones in region

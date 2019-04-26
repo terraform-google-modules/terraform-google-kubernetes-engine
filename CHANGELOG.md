@@ -1,4 +1,5 @@
 # Change Log
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
@@ -26,6 +27,9 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * updated `combine_docfiles.py` to match that of
   [terraform-google-module-template](https://github.com/terraform-google-modules/terraform-google-module-template)
 * `make` tasks and `generation` processes improved around the edges
+* Documentation now adheres to markdownlint.
+* jinja syntax now wrapped in tf comments making all files in `/autogen`
+  lintable.
 
 ## [v2.0.0] - 2019-04-12
 
@@ -59,7 +63,9 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Fix empty zone list. [#132]
 
 ## [v1.0.0] - 2019-03-25
+
 ### Added
+
 * Allow creation of service accounts. [#80]
 * Add support for private clusters via submodule. [#69]
 * Add `remove_default_node_pool` set to `false` by default. Fixes [#15]. [#55]
@@ -78,25 +84,32 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Update the google and google-beta providers to v2.2 [#106]
 
 ### Fixed
+
 * Zonal clusters can now accept a single zone. Fixes [#43]. [#50]
 * Fix link to "configure a service account" [#73]
 * Fix issue with regional cluster roll outs causing version skews [#108]
 * Fix permanent metadata skew due to disable-legacy-endpoints keys [#114]
 
 ## [v0.4.0] - 2018-12-19
+
 ### Added
+
 * Added support for testing with kitchen-terraform. [#33]
 * Added support for preemptible nodes. [#38]
 
 ### Changed
+
 * Updated default version to `1.10.6`. [#31]
 
 ### Fixed
+
 * `region` argument on google_compute_subnetwork caused errors. [#22]
 * Added check to wait for GKE cluster to be `READY` before completing. [#46]
 
 ## [v0.3.0] - 2018-10-10
+
 ### Changed
+
 * Updated network/subnetwork lookup to use data source. [#16]
 * Make zone configuration optional when creating a regional cluster. [#19]
 

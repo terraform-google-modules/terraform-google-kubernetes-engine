@@ -13,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -e
 
 if [ "$#" -ne 3 ]; then
-    >&2 echo "3 arguments expected. Exiting."
+    echo >&2 "3 arguments expected. Exiting."
     exit 1
 fi
 
@@ -28,9 +27,9 @@ RESOURCE_NAME=$3
 RESOURCE_LIST=$(kubectl -n "${RESOURCE_NAMESPACE}" get "${RESOURCE_TYPE}" || exit 1)
 
 # Delete requested resource
-if [[ $RESOURCE_LIST = *"${RESOURCE_NAME}"* ]]; then
+if [[ $RESOURCE_LIST == *"${RESOURCE_NAME}"* ]]; then
     RESOURCE_MAINTAINED_LABEL=$(kubectl -n "${RESOURCE_NAMESPACE}" get "${RESOURCE_TYPE}" -o json "${RESOURCE_NAME}" | jq -r '.metadata.labels."maintained_by"')
-    if [[ $RESOURCE_MAINTAINED_LABEL = "terraform" ]]; then
+    if [[ $RESOURCE_MAINTAINED_LABEL == "terraform" ]]; then
         echo "Terraform maintained ${RESOURCE_NAME} ${RESOURCE_TYPE} appears to have already been created in ${RESOURCE_NAMESPACE} namespace"
     else
         echo "Deleting default ${RESOURCE_NAME} ${RESOURCE_TYPE} found in ${RESOURCE_NAMESPACE} namespace"

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+/* This file was automatically generated from a template in ./autogen */
 
 /******************************************
   Create zonal cluster
@@ -86,6 +86,7 @@ resource "google_container_cluster" "zonal_primary" {
     delete = "30m"
   }
 
+  /*  */
 
   remove_default_node_pool = "${var.remove_default_node_pool}"
   initial_node_count       = "${var.initial_node_count}"
