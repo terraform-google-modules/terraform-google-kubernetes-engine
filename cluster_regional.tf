@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+/* This file was automatically generated from a template in ./autogen */
 
 /******************************************
   Create regional cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  provider    = "google"
+  provider    = "google-beta"
   count       = "${var.regional ? 1 : 0}"
   name        = "${var.name}"
   description = "${var.description}"
@@ -85,6 +85,8 @@ resource "google_container_cluster" "primary" {
     update = "30m"
     delete = "30m"
   }
+
+  /*  */
 
   remove_default_node_pool = "${var.remove_default_node_pool}"
   initial_node_count       = "${var.initial_node_count}"

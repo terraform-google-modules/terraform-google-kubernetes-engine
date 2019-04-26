@@ -22,9 +22,8 @@ jq_query=".[] | select(.name==\"$CLUSTER_NAME\") | .status"
 
 function check_cluster_readiness() {
     current_status=$($gcloud_command | jq -r "$jq_query")
-    echo "Current status is ${current_status}"
     while [[ "${current_status}" == "RECONCILING" ]]; do
-        printf "."
+        echo "Current status is ${current_status}..."
         sleep 5
         current_status=$($gcloud_command | jq -r "$jq_query")
     done

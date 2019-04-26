@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
+/* {{ autogeneration_note }} */
 
 variable "project_id" {
   description = "The project ID to host the cluster in (required)"
@@ -226,7 +226,8 @@ variable "service_account" {
   description = "The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created."
   default     = "create"
 }
-{% if private_cluster %}
+
+/* {% if private_cluster %} */
 
 variable "enable_private_endpoint" {
   description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
@@ -242,7 +243,8 @@ variable "master_ipv4_cidr_block" {
   description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
   default     = "10.0.0.0/28"
 }
-{% endif %}
+
+/* {% endif %} */
 
 variable "basic_auth_username" {
   description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."

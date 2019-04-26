@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+/* This file was automatically generated from a template in ./autogen */
 
 variable "project_id" {
   description = "The project ID to host the cluster in (required)"
@@ -227,6 +227,8 @@ variable "service_account" {
   default     = "create"
 }
 
+/*  */
+
 variable "enable_private_endpoint" {
   description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
   default     = false
@@ -241,6 +243,8 @@ variable "master_ipv4_cidr_block" {
   description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
   default     = "10.0.0.0/28"
 }
+
+/*  */
 
 variable "basic_auth_username" {
   description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."

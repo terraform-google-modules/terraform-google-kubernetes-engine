@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
+/* {{ autogeneration_note }} */
 
 data "google_compute_network" "gke_network" {
   provider = "{% if private_cluster %}google-beta{%else %}google{% endif %}"

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+/* This file was automatically generated from a template in ./autogen */
 
 locals {
   service_account_list = "${compact(concat(google_service_account.cluster_service_account.*.email, list("dummy")))}"

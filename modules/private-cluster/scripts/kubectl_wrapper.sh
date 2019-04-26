@@ -13,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -e
 
 if [ "$#" -lt 3 ]; then
-    >&2 echo "Not all expected arguments set."
+    echo >&2 "Not all expected arguments set."
     exit 1
 fi
 
@@ -30,7 +29,7 @@ shift 3
 RANDOM_ID="${RANDOM}_${RANDOM}"
 export TMPDIR="/tmp/kubectl_wrapper_${RANDOM_ID}"
 
-function cleanup {
+function cleanup() {
     rm -rf "${TMPDIR}"
 }
 trap cleanup EXIT
@@ -41,7 +40,7 @@ export KUBECONFIG="${TMPDIR}/config"
 
 # shellcheck disable=SC1117
 base64 --help | grep "\--decode" && B64_ARG="--decode" || B64_ARG="-d"
-echo "${CA_CERTIFICATE}" | base64 ${B64_ARG} > "${TMPDIR}/ca_certificate"
+echo "${CA_CERTIFICATE}" | base64 ${B64_ARG} >"${TMPDIR}/ca_certificate"
 
 kubectl config set-cluster kubectl-wrapper --server="${HOST}" --certificate-authority="${TMPDIR}/ca_certificate" --embed-certs=true 1>/dev/null
 rm -f "${TMPDIR}/ca_certificate"

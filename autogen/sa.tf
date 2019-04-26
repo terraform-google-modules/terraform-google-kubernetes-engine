@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
+/* {{ autogeneration_note }} */
 
 locals {
   service_account_list = "${compact(concat(google_service_account.cluster_service_account.*.email, list("dummy")))}"
