@@ -19,12 +19,12 @@ locals {
 }
 
 provider "google" {
-  version = "~> 2.2"
+  version = "~> 2.3.0"
   region  = "${var.region}"
 }
 
 provider "google-beta" {
-  version = "~> 2.2"
+  version = "~> 2.3.0"
   region  = "${var.region}"
 }
 
@@ -44,8 +44,6 @@ module "gke" {
   region     = "${var.region}"
   network    = "${var.network}"
   subnetwork = "${var.subnetwork}"
-
-  kubernetes_version = "1.11.7-gke.12"
 
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
