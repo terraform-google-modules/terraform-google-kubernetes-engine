@@ -113,20 +113,30 @@ locals {
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.kubernetes_dashboard.0.disabled, list("")), 0)}"
   }
 
+  # BETA features
+  cluster_type_output_istio_enabled = {
+    regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.istio_config.0.disabled, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.istio_config.0.disabled, list("")), 0)}"
+  }
+
+  cluster_type_output_cloudrun_enabled = {
+    regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.cloudrun_config.0.disabled, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.cloudrun_config.0.disabled, list("")), 0)}"
+  }
+
+  # /BETA features
+
   cluster_type_output_node_pools_names = {
     regional = "${concat(google_container_node_pool.pools.*.name, list(""))}"
     zonal    = "${concat(google_container_node_pool.zonal_pools.*.name, list(""))}"
   }
-
   cluster_type_output_node_pools_versions = {
     regional = "${concat(google_container_node_pool.pools.*.version, list(""))}"
     zonal    = "${concat(google_container_node_pool.zonal_pools.*.version, list(""))}"
   }
-
   cluster_master_auth_list_layer1 = "${local.cluster_type_output_master_auth[local.cluster_type]}"
   cluster_master_auth_list_layer2 = "${local.cluster_master_auth_list_layer1[0]}"
   cluster_master_auth_map         = "${local.cluster_master_auth_list_layer2[0]}"
-
   # cluster locals
   cluster_name                = "${local.cluster_type_output_name[local.cluster_type]}"
   cluster_location            = "${local.cluster_type_output_location[local.cluster_type]}"
@@ -140,11 +150,15 @@ locals {
   cluster_monitoring_service  = "${local.cluster_type_output_monitoring_service[local.cluster_type]}"
   cluster_node_pools_names    = "${local.cluster_type_output_node_pools_names[local.cluster_type]}"
   cluster_node_pools_versions = "${local.cluster_type_output_node_pools_versions[local.cluster_type]}"
-
   cluster_network_policy_enabled             = "${local.cluster_type_output_network_policy_enabled[local.cluster_type] ? false : true}"
   cluster_http_load_balancing_enabled        = "${local.cluster_type_output_http_load_balancing_enabled[local.cluster_type] ? false : true}"
   cluster_horizontal_pod_autoscaling_enabled = "${local.cluster_type_output_horizontal_pod_autoscaling_enabled[local.cluster_type] ? false : true}"
   cluster_kubernetes_dashboard_enabled       = "${local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type] ? false : true}"
+  # BETA features
+  cluster_istio_enabled    = "${local.cluster_type_output_istio_enabled[local.cluster_type] ? false : true}"
+  cluster_cloudrun_enabled = "${local.cluster_type_output_cloudrun_enabled[local.cluster_type] ? false : true}"
+
+  # /BETA features
 }
 
 /******************************************
@@ -161,6 +175,7 @@ data "google_container_engine_versions" "zone" {
   //
   //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
   //
-  zone     = "${var.zones[0] == "" ? data.google_compute_zones.available.names[0] : var.zones[0]}"
-  project  = "${var.project_id}"
+  zone = "${var.zones[0] == "" ? data.google_compute_zones.available.names[0] : var.zones[0]}"
+
+  project = "${var.project_id}"
 }
