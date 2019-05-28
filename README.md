@@ -190,13 +190,11 @@ Before this module can be used on a project, you must ensure that the following 
 The [project factory](https://github.com/terraform-google-modules/terraform-google-project-factory) can be used to provision projects with the correct APIs active and the necessary Shared VPC connections.
 
 ### Software Dependencies
-#### CLI tools
+#### Kubectl
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
-- [jq](https://stedolan.github.io/jq/) 1.6.x
-
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.11.x
-- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.3
+- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.3, v2.6, v2.7
 
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the

@@ -8,6 +8,10 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+### Added
+
+* Support for v2.6 and v2.7 of the Google providers. [#152]
+
 ### Fixed
 
 * The dependency on jq has been documented in the README. [#151]
@@ -115,6 +119,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#152]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/152
 [#151]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/151
 [#148]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/148
 [#132]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/132
