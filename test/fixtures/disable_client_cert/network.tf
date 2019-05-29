@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-locals {
-  credentials_path = "${path.module}/${var.credentials_path_relative}"
-}
 
 resource "random_string" "suffix" {
   length  = 4
@@ -25,7 +22,6 @@ resource "random_string" "suffix" {
 }
 
 provider "google" {
-  credentials = "${file(local.credentials_path)}"
   project     = "${var.project_id}"
 }
 
