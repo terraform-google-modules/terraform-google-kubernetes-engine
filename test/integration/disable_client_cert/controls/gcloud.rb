@@ -17,7 +17,6 @@ location = attribute('location')
 cluster_name = attribute('cluster_name')
 
 credentials_path = attribute('credentials_path')
-#ENV['CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE'] = credentials_path
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
