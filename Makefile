@@ -18,7 +18,7 @@ SHELL := /usr/bin/env bash
 # Docker build config variables
 CREDENTIALS_PATH ?= /cft/workdir/credentials.json
 DOCKER_ORG := gcr.io/cloud-foundation-cicd
-DOCKER_TAG_BASE_KITCHEN_TERRAFORM ?= 20c18e5d0e8a5c669bd5306e523cc78b91cd6135
+DOCKER_TAG_BASE_KITCHEN_TERRAFORM ?= 1.3.0
 DOCKER_REPO_BASE_KITCHEN_TERRAFORM := ${DOCKER_ORG}/cft/kitchen-terraform:${DOCKER_TAG_BASE_KITCHEN_TERRAFORM}
 DOCKER_TAG_KITCHEN_TERRAFORM ?= ${DOCKER_TAG_BASE_KITCHEN_TERRAFORM}
 DOCKER_IMAGE_KITCHEN_TERRAFORM := ${DOCKER_ORG}/cft/kitchen-terraform_terraform-google-kubernetes-engine
