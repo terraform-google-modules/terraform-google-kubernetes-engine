@@ -20,6 +20,10 @@ driver:
 provisioner:
   name: "terraform"
 
+verifier:
+  name: terraform
+  color: false
+
 platforms:
   - name: local
 
@@ -147,3 +151,9 @@ suites:
           backend: local
     provisioner:
       name: terraform
+  - name: stub_domains_private
+    driver:
+      root_module_directory: test/fixtures/stub_domains_private
+      systems:
+        - name: stub_domains_private
+          backend: local

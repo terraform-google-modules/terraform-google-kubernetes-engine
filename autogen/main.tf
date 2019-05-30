@@ -63,10 +63,26 @@ locals {
     zonal    = "${concat(google_container_cluster.zonal_primary.*.zone, local.cluster_type_output_zonal_zones)}"
   }
 
+{% if private_cluster %}
+  cluster_type_output_endpoint = {
+    regional = "${
+      var.deploy_using_private_endpoint ?
+      element(concat(google_container_cluster.primary.*.private_cluster_config.0.private_endpoint, list("")), 0) :
+      element(concat(google_container_cluster.primary.*.endpoint, list("")), 0)
+    }"
+
+    zonal = "${
+      var.deploy_using_private_endpoint ?
+      element(concat(google_container_cluster.zonal_primary.*.private_cluster_config.0.private_endpoint, list("")), 0) :
+      element(concat(google_container_cluster.zonal_primary.*.endpoint, list("")), 0)
+    }"
+  }
+{% else %}
   cluster_type_output_endpoint = {
     regional = "${element(concat(google_container_cluster.primary.*.endpoint, list("")), 0)}"
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.endpoint, list("")), 0)}"
   }
+{% endif %}
 
   cluster_type_output_master_auth = {
     regional = "${concat(google_container_cluster.primary.*.master_auth, list())}"
