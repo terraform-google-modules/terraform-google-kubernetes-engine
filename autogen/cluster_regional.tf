@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+{{ autogeneration_note }}
 
 /******************************************
   Create regional cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  provider    = "google"
+  provider    = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
   count       = "${var.regional ? 1 : 0}"
   name        = "${var.name}"
   description = "${var.description}"
@@ -93,6 +93,14 @@ resource "google_container_cluster" "primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
     }
   }
+{% if private_cluster %}
+
+  private_cluster_config {
+    enable_private_endpoint = "${var.enable_private_endpoint}"
+    enable_private_nodes    = "${var.enable_private_nodes}"
+    master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
+  }
+{% endif %}
 
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
