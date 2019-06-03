@@ -20,7 +20,7 @@
   Create zonal cluster
  *****************************************/
 resource "google_container_cluster" "zonal_primary" {
-  provider    = "google-beta"
+  provider    = "google"
   count       = "${var.regional ? 0 : 1}"
   name        = "${var.name}"
   description = "${var.description}"
@@ -94,12 +94,6 @@ resource "google_container_cluster" "zonal_primary" {
     }
   }
 
-  private_cluster_config {
-    enable_private_endpoint = "${var.enable_private_endpoint}"
-    enable_private_nodes    = "${var.enable_private_nodes}"
-    master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
-  }
-
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
@@ -143,6 +137,11 @@ resource "google_container_node_pool" "zonal_pools" {
       "${concat(var.node_pools_oauth_scopes["all"],
       var.node_pools_oauth_scopes[lookup(var.node_pools[count.index], "name")])}",
     ]
+
+    guest_accelerator {
+      type  = "${lookup(var.node_pools[count.index], "accelerator_type", "")}"
+      count = "${lookup(var.node_pools[count.index], "accelerator_count", 0)}"
+    }
   }
 
   lifecycle {

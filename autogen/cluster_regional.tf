@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
+// This file was automatically generated from a template in ./autogen
 
 /******************************************
   Create regional cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  provider    = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
+  provider    = "google"
   count       = "${var.regional ? 1 : 0}"
   name        = "${var.name}"
   description = "${var.description}"
@@ -93,14 +93,6 @@ resource "google_container_cluster" "primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
     }
   }
-{% if private_cluster %}
-
-  private_cluster_config {
-    enable_private_endpoint = "${var.enable_private_endpoint}"
-    enable_private_nodes    = "${var.enable_private_nodes}"
-    master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
-  }
-{% endif %}
 
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
@@ -145,6 +137,11 @@ resource "google_container_node_pool" "pools" {
       "${concat(var.node_pools_oauth_scopes["all"],
       var.node_pools_oauth_scopes[lookup(var.node_pools[count.index], "name")])}",
     ]
+
+    guest_accelerator {
+      type  = "${lookup(var.node_pools[count.index], "accelerator_type", "")}"
+      count = "${lookup(var.node_pools[count.index], "accelerator_count", 0)}"
+    }
   }
 
   lifecycle {
