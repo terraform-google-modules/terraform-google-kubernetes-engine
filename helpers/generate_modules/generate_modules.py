@@ -22,9 +22,9 @@ from jinja2 import Environment, FileSystemLoader
 
 TEMPLATE_FOLDER = "./autogen"
 BASE_TEMPLATE_OPTIONS = {
-        'autogeneration_note': '// This file was automatically generated ' +
-                               'from a template in {folder}'.format(
-                                   folder=TEMPLATE_FOLDER
+    'autogeneration_note': '// This file was automatically generated ' +
+                           'from a template in {folder}'.format(
+                               folder=TEMPLATE_FOLDER
                                ),
 }
 
