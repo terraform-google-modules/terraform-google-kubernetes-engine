@@ -116,7 +116,6 @@ function check_generate() {
 
   if [[ $rc -ne 0 ]]; then
     echo '"make generate" creates a diff, run "make generate" and commit the results'
-    rc=0
   fi
   rm -rf "$TMPDIR"
   git worktree prune >/dev/null
@@ -138,7 +137,6 @@ function check_generate_docs() {
 
   if [[ $rc -ne 0 ]]; then
     echo '"make generate_docs" creates a diff, run "make generate_docs" and commit the results'
-    rc=0
   fi
   rm -rf "$TMPDIR"
   git worktree prune >/dev/null
