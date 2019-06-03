@@ -119,6 +119,11 @@ variable "ip_range_services" {
   description = "The _name_ of the secondary subnet range to use for services"
 }
 
+variable "initial_node_count" {
+  description = "The number of nodes to create in this cluster's default node pool."
+  default     = 0
+}
+
 variable "remove_default_node_pool" {
   description = "Remove default node pool while setting up the cluster"
   default     = false
