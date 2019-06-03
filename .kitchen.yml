@@ -39,6 +39,9 @@ suites:
       systems:
         - name: deploy_service
           backend: local
+    lifecycle:
+      pre_verify:
+        - sleep 10
     provisioner:
       name: terraform
   - name: "disable_client_cert"
