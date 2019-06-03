@@ -120,6 +120,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | string | `"true"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | string | `"true"` | no |
 | http\_load\_balancing | Enable httpload balancer addon | string | `"true"` | no |
+| initial\_node\_count | The number of nodes to create in this cluster's default node pool. | string | `"0"` | no |
 | ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `"false"` | no |
 | ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `"60s"` | no |
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | n/a | yes |
