@@ -10,7 +10,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### Added
 
-* Supprot for a guest accelerator in node pool configuration. [#157]
+* Support for a guest accelerator in node pool configuration. [#157]
 
 ## [v2.1.0] - 2019-05-30
 
