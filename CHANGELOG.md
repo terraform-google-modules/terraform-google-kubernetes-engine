@@ -11,6 +11,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 ### Added
 
 * Support for a guest accelerator in node pool configuration. [#157]
+* Support to scale the default node cluster. [#149]
 
 ## [v2.1.0] - 2019-05-30
 
@@ -131,6 +132,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#157]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/157
 [#152]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/152
 [#151]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/151
+[#149]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/149
 [#148]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/148
 [#136]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/136
 [#132]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/132
