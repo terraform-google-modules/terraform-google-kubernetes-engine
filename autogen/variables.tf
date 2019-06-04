@@ -89,7 +89,7 @@ variable "master_authorized_networks_config" {
 {% if private_cluster %}
 variable "enable_binary_authorization" {
 description = "Enable BinAuthZ Admission controller"
-default     = false
+  default     = false
 }
 {% endif %}
 
