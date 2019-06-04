@@ -35,10 +35,6 @@ suites:
       systems:
         - name: deploy_service
           backend: local
-    lifecycle:
-      pre_verify:
-        - echo "Sleeping for 60 seconds to allow resources to converge"
-        - sleep 60
   - name: "disable_client_cert"
     driver:
       root_module_directory: test/fixtures/disable_client_cert
