@@ -87,7 +87,8 @@ resource "google_container_cluster" "zonal_primary" {
   }
 
   node_pool {
-    name = "default-pool"
+    name               = "default-pool"
+    initial_node_count = "${var.initial_node_count}"
 
     node_config {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
