@@ -14,6 +14,7 @@ This example illustrates how to create a simple cluster and disable deprecated s
 | cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | string | n/a | yes |
 | credentials\_path | The path to the GCP credentials JSON file | string | n/a | yes |
+| enable\_binary\_authorization | Enable BinAuthZ Admission controller | string | `"false"` | no |
 | ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
 | network | The VPC network to host the cluster in | string | n/a | yes |
