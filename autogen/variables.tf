@@ -93,7 +93,6 @@ variable "enable_binary_authorization" {
 }
 
 {% endif %}
-
 variable "horizontal_pod_autoscaling" {
   description = "Enable horizontal pod autoscaling addon"
   default     = true
