@@ -91,6 +91,7 @@ variable "enable_binary_authorization" {
   description = "Enable BinAuthZ Admission controller"
   default     = false
 }
+
 {% endif %}
 
 variable "horizontal_pod_autoscaling" {
