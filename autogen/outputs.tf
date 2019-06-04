@@ -78,7 +78,6 @@ output "ca_certificate" {
   value       = "${local.cluster_ca_certificate}"
 }
 
-
 output "network_policy_enabled" {
   description = "Whether network policy enabled"
   value       = "${local.cluster_network_policy_enabled}"
