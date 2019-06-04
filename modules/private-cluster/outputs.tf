@@ -78,11 +78,6 @@ output "ca_certificate" {
   value       = "${local.cluster_ca_certificate}"
 }
 
-output "enable_binary_authorization" {
-description = "Enable BinAuthZ Admission controller"
-value = "${var.enable_binary_authorization}"
-}
-
 output "network_policy_enabled" {
   description = "Whether network policy enabled"
   value       = "${local.cluster_network_policy_enabled}"
