@@ -112,3 +112,11 @@ output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
   value       = "${local.service_account}"
 }
+
+{% if private_cluster %}
+output "pod_security_policy_enabled" {
+description = "Whether pod security policy is enabled"
+value       = "${local.cluster_pod_security_policy_enabled}"
+}
+
+{% endif %}
