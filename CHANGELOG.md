@@ -13,6 +13,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Add configuration flag for enable BinAuthZ Admission controller [#160]
 * Support for a guest accelerator in node pool configuration. [#157]
 * Support to scale the default node cluster. [#149]
+* Support for configuring the network policy provider. [#159]
 
 ## [v2.1.0] - 2019-05-30
 
@@ -130,6 +131,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#159]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/159
 [#157]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/157
 [#152]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/152
 [#151]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/151
