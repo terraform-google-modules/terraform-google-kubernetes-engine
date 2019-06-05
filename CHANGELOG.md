@@ -11,6 +11,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 ### Added
 
 * Add configuration flag for enable BinAuthZ Admission controller [#160]
+* Add configuration flag for `pod_security_policy_config` [#163]
 * Support for a guest accelerator in node pool configuration. [#157]
 * Support to scale the default node cluster. [#149]
 * Support for configuring the network policy provider. [#159]
