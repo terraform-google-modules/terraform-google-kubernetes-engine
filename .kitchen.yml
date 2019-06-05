@@ -30,93 +30,50 @@ platforms:
 suites:
   - name: "deploy_service"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/deploy_service
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: deploy_service
           backend: local
-    lifecycle:
-      pre_verify:
-        - sleep 10
-    provisioner:
-      name: terraform
   - name: "disable_client_cert"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/disable_client_cert
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: disable_client_cert
           backend: local
-    provisioner:
-      name: terraform
   - name: "node_pool"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/node_pool
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: node_pool
           backend: local
-    provisioner:
-      name: terraform
   - name: "shared_vpc"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/shared_vpc
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: shared_vpc
           backend: local
-    provisioner:
-      name: terraform
   - name: "simple_regional"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/simple_regional
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: simple_regional
           backend: local
-    provisioner:
-      name: terraform
   - name: "simple_regional_private"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/simple_regional_private
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: simple_regional_private
           backend: local
-    provisioner:
-      name: terraform
   - name: "simple_zonal"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/simple_zonal
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: gcloud
           backend: local
@@ -126,34 +83,20 @@ suites:
           backend: gcp
           controls:
             - gcp
-    provisioner:
-      name: terraform
   - name: "simple_zonal_private"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/simple_zonal_private
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: simple_zonal_private
           backend: local
-    provisioner:
-      name: terraform
   - name: "stub_domains"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/stub_domains
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: stub_domains
           backend: local
-    provisioner:
-      name: terraform
   - name: stub_domains_private
     driver:
       root_module_directory: test/fixtures/stub_domains_private
