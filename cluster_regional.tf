@@ -29,7 +29,13 @@ resource "google_container_cluster" "primary" {
   region         = "${var.region}"
   node_locations = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
 
-  network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+  network = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+
+  network_policy {
+    enabled  = "${var.network_policy}"
+    provider = "${var.network_policy_provider}"
+  }
+
   subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   min_master_version = "${local.kubernetes_version_regional}"
 
