@@ -29,7 +29,13 @@ resource "google_container_cluster" "zonal_primary" {
   zone           = "${var.zones[0]}"
   node_locations = ["${slice(var.zones,1,length(var.zones))}"]
 
-  network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+  network = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+
+  network_policy {
+    enabled  = "${var.network_policy}"
+    provider = "${var.network_policy_provider}"
+  }
+
   subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   min_master_version = "${local.kubernetes_version_zonal}"
 
