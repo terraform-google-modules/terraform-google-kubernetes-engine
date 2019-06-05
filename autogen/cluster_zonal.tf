@@ -44,6 +44,7 @@ resource "google_container_cluster" "zonal_primary" {
 
 {% if private_cluster %}
   enable_binary_authorization = "${var.enable_binary_authorization}"
+  pod_security_policy_config  = "${var.pod_security_policy_config}"
 {% endif %}
   master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
 
