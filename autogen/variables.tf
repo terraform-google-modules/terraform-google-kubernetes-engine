@@ -108,7 +108,7 @@ variable "network_policy" {
 
 variable "network_policy_provider" {
   description = "The network policy provider."
-  default     = "PROVIDER_UNSPECIFIED"
+  default     = "CALICO"
 }
 
 variable "maintenance_start_time" {
