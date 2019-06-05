@@ -61,7 +61,6 @@ main() {
   # Execute the test lifecycle
   kitchen create "$SUITE"
   kitchen converge "$SUITE"
-  kitchen converge "$SUITE"
   kitchen verify "$SUITE"
 }
 
