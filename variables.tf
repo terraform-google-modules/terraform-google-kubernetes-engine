@@ -86,7 +86,6 @@ variable "master_authorized_networks_config" {
   default = []
 }
 
-
 variable "horizontal_pod_autoscaling" {
   description = "Enable horizontal pod autoscaling addon"
   default     = true
