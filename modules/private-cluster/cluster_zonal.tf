@@ -43,7 +43,6 @@ resource "google_container_cluster" "zonal_primary" {
   monitoring_service = "${var.monitoring_service}"
 
   enable_binary_authorization = "${var.enable_binary_authorization}"
-
   master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
 
   master_auth {

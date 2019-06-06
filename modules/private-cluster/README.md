@@ -169,7 +169,6 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | Name | Description |
 |------|-------------|
 | ca\_certificate | Cluster ca certificate (base64 encoded) |
-| enable\_binary\_authorization | Enable BinAuthZ Admission controller |
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
