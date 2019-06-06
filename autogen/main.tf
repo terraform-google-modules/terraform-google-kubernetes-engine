@@ -146,7 +146,6 @@ locals {
   }
 
 {% endif %}
-
   cluster_master_auth_list_layer1 = "${local.cluster_type_output_master_auth[local.cluster_type]}"
   cluster_master_auth_list_layer2 = "${local.cluster_master_auth_list_layer1[0]}"
   cluster_master_auth_map         = "${local.cluster_master_auth_list_layer2[0]}"
