@@ -140,7 +140,7 @@ locals {
   }
 
 {% if private_cluster %}
-   cluster_type_output_pod_security_policy_enabled = {
+  cluster_type_output_pod_security_policy_enabled = {
     regional = "${element(concat(google_container_cluster.primary.*.pod_security_policy_config.0.enabled, list("")), 0)}"
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.pod_security_policy_config.0.enabled, list("")), 0)}"
   }
