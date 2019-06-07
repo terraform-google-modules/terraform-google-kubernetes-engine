@@ -88,37 +88,37 @@ variable "master_authorized_networks_config" {
 
 variable "enable_binary_authorization" {
   description = "Enable BinAuthZ Admission controller"
-  default = false
+  default     = false
 }
 
 variable "horizontal_pod_autoscaling" {
   description = "Enable horizontal pod autoscaling addon"
-  default = true
+  default     = true
 }
 
 variable "http_load_balancing" {
   description = "Enable httpload balancer addon"
-  default = true
+  default     = true
 }
 
 variable "kubernetes_dashboard" {
   description = "Enable kubernetes dashboard addon"
-  default = false
+  default     = false
 }
 
 variable "network_policy" {
   description = "Enable network policy addon"
-  default = false
+  default     = false
 }
 
 variable "network_policy_provider" {
   description = "The network policy provider."
-  default = "CALICO"
+  default     = "CALICO"
 }
 
 variable "maintenance_start_time" {
   description = "Time window specified for daily maintenance operations in RFC3339 format"
-  default = "05:00"
+  default     = "05:00"
 }
 
 variable "ip_range_pods" {
@@ -131,21 +131,21 @@ variable "ip_range_services" {
 
 variable "initial_node_count" {
   description = "The number of nodes to create in this cluster's default node pool."
-  default = 0
+  default     = 0
 }
 
 variable "remove_default_node_pool" {
   description = "Remove default node pool while setting up the cluster"
-  default = false
+  default     = false
 }
 
 variable "disable_legacy_metadata_endpoints" {
   description = "Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated."
-  default = "true"
+  default     = "true"
 }
 
 variable "node_pools" {
-  type = "list"
+  type        = "list"
   description = "List of maps containing node pools"
 
   default = [
@@ -156,123 +156,123 @@ variable "node_pools" {
 }
 
 variable "node_pools_labels" {
-  type = "map"
+  type        = "map"
   description = "Map of maps containing node labels by node-pool name"
 
   default = {
-    all = {}
+    all               = {}
     default-node-pool = {}
   }
 }
 
 variable "node_pools_metadata" {
-  type = "map"
+  type        = "map"
   description = "Map of maps containing node metadata by node-pool name"
 
   default = {
-    all = {}
+    all               = {}
     default-node-pool = {}
   }
 }
 
 variable "node_pools_taints" {
-  type = "map"
+  type        = "map"
   description = "Map of lists containing node taints by node-pool name"
 
   default = {
-    all = []
+    all               = []
     default-node-pool = []
   }
 }
 
 variable "node_pools_tags" {
-  type = "map"
+  type        = "map"
   description = "Map of lists containing node network tags by node-pool name"
 
   default = {
-    all = []
+    all               = []
     default-node-pool = []
   }
 }
 
 variable "node_pools_oauth_scopes" {
-  type = "map"
+  type        = "map"
   description = "Map of lists containing node oauth scopes by node-pool name"
 
   default = {
-    all = ["https://www.googleapis.com/auth/cloud-platform"]
+    all               = ["https://www.googleapis.com/auth/cloud-platform"]
     default-node-pool = []
   }
 }
 
 variable "stub_domains" {
-  type = "map"
+  type        = "map"
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"
-  default = {}
+  default     = {}
 }
 
 variable "non_masquerade_cidrs" {
-  type = "list"
+  type        = "list"
   description = "List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading."
-  default = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+  default     = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 }
 
 variable "ip_masq_resync_interval" {
   description = "The interval at which the agent attempts to sync its ConfigMap file from the disk."
-  default = "60s"
+  default     = "60s"
 }
 
 variable "ip_masq_link_local" {
   description = "Whether to masquerade traffic to the link-local prefix (169.254.0.0/16)."
-  default = "false"
+  default     = "false"
 }
 
 variable "logging_service" {
   description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
-  default = "logging.googleapis.com"
+  default     = "logging.googleapis.com"
 }
 
 variable "monitoring_service" {
   description = "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none"
-  default = "monitoring.googleapis.com"
+  default     = "monitoring.googleapis.com"
 }
 
 variable "service_account" {
   description = "The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created."
-  default = "create"
+  default     = "create"
 }
 
 variable "deploy_using_private_endpoint" {
   description = "(Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment."
-  default = "false"
+  default     = "false"
 }
 
 variable "enable_private_endpoint" {
   description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
-  default = false
+  default     = false
 }
 
 variable "enable_private_nodes" {
   description = "(Beta) Whether nodes have internal IP addresses only"
-  default = false
+  default     = false
 }
 
 variable "master_ipv4_cidr_block" {
   description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
-  default = "10.0.0.0/28"
+  default     = "10.0.0.0/28"
 }
 
 variable "basic_auth_username" {
   description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
-  default = ""
+  default     = ""
 }
 
 variable "basic_auth_password" {
   description = "The password to be used with Basic Authentication."
-  default = ""
+  default     = ""
 }
 
 variable "issue_client_certificate" {
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
-  default = "false"
+  default     = "false"
 }
