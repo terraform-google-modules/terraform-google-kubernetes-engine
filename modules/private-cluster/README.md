@@ -124,6 +124,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | string | `"false"` | no |
 | description | The description of the cluster | string | `""` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | string | `"true"` | no |
+| enable\_binary\_authorization | Enable BinAuthZ Admission controller | string | `"false"` | no |
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | string | `"false"` | no |
 | enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | string | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | string | `"true"` | no |
