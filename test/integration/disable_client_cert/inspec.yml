@@ -1,0 +1,14 @@
+name: disable_client_cert
+attributes:
+  - name: project_id
+    required: true
+    type: string
+  - name: credentials_path
+    required: true
+    type: string
+  - name: location
+    required: true
+    type: string
+  - name: cluster_name
+    required: true
+    type: string

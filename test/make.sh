@@ -86,6 +86,11 @@ function check_trailing_whitespace() {
   fi
 }
 
+function generate() {
+  pip install --user -r ./helpers/generate_modules/requirements.txt
+  ./helpers/generate_modules/generate_modules.py
+}
+
 function generate_docs() {
   echo "Generating markdown docs with terraform-docs"
   TMPFILE=$(mktemp)
@@ -95,4 +100,48 @@ function generate_docs() {
     python helpers/combine_docfiles.py "$j"/README.md "$TMPFILE"
   done
   rm -f "$TMPFILE"
+}
+
+function check_generate() {
+  TMPDIR=$(mktemp -d)
+  git worktree add --detach "$TMPDIR" >/dev/null
+  cd "$TMPDIR" || exit 1
+
+  generate >/dev/null
+  generate_docs >/dev/null
+
+  git diff --stat --exit-code >/dev/null
+  rc=$?
+  cd - >/dev/null || exit 1
+
+  if [[ $rc -ne 0 ]]; then
+    echo '"make generate" creates a diff, run "make generate" and commit the results'
+  fi
+  rm -rf "$TMPDIR"
+  git worktree prune >/dev/null
+
+  echo "Code was generated properly"
+
+  exit $rc
+}
+
+function check_generate_docs() {
+  TMPDIR=$(mktemp -d)
+  git worktree add --detach "$TMPDIR" >/dev/null
+  cd "$TMPDIR" || exit 1
+
+  generate_docs >/dev/null
+  git diff --stat --exit-code >/dev/null
+  rc=$?
+  cd - >/dev/null || exit 1
+
+  if [[ $rc -ne 0 ]]; then
+    echo '"make generate_docs" creates a diff, run "make generate_docs" and commit the results'
+  fi
+  rm -rf "$TMPDIR"
+  git worktree prune >/dev/null
+
+  echo "Docs were generated properly"
+
+  exit $rc
 }
