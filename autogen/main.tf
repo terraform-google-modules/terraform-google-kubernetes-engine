@@ -169,7 +169,7 @@ locals {
   cluster_horizontal_pod_autoscaling_enabled = "${local.cluster_type_output_horizontal_pod_autoscaling_enabled[local.cluster_type] ? false : true}"
   cluster_kubernetes_dashboard_enabled       = "${local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type] ? false : true}"
 {% if private_cluster %}
-  cluster_pod_security_policy_enabled        = "${local.cluster_type_output_pod_security_policy_enabled[local.cluster_type] ? false : true}"
+  cluster_pod_security_policy_enabled        = "${local.cluster_type_output_pod_security_policy_enabled[local.cluster_type] ? true : false}"
 {% endif %}
 }
 
