@@ -20,7 +20,7 @@
   Create zonal cluster
  *****************************************/
 resource "google_container_cluster" "zonal_primary" {
-  provider    = "google"
+  provider    = "google-beta"
   count       = "${var.regional ? 0 : 1}"
   name        = "${var.name}"
   description = "${var.description}"
