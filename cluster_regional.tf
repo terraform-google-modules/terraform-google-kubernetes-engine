@@ -20,7 +20,8 @@
   Create regional cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  provider    = "google"
+  //provider    = "google"
+  provider = "google-beta"
   count       = "${var.regional ? 1 : 0}"
   name        = "${var.name}"
   description = "${var.description}"
