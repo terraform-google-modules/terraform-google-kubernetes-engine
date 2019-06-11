@@ -70,6 +70,7 @@ resource "google_container_cluster" "zonal_primary" {
       disabled = "${var.network_policy ? 0 : 1}"
     }
   }
+  default_max_pods_per_node = "${var.default_max_pods_per_node}"
 
   ip_allocation_policy {
     cluster_secondary_range_name  = "${var.ip_range_pods}"
