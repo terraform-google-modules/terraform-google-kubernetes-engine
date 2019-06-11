@@ -26,7 +26,7 @@ resource "google_container_cluster" "zonal_primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  zone           = "${var.zones[0]}"
+  location       = "${var.zones[0]}"
   node_locations = ["${slice(var.zones,1,length(var.zones))}"]
 
   network = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
@@ -101,6 +101,7 @@ resource "google_container_cluster" "zonal_primary" {
     }
   }
   remove_default_node_pool = "${var.remove_default_node_pool}"
+  database_encryption      = "${var.database_encryption}"
 }
 
 /******************************************
