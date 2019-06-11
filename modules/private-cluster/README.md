@@ -121,6 +121,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 |------|-------------|:----:|:-----:|:-----:|
 | basic\_auth\_password | The password to be used with Basic Authentication. | string | `""` | no |
 | basic\_auth\_username | The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration. | string | `""` | no |
+| database\_encryption | Application-layer Secrets Encryption settings. Example:   database_encryption = [{     state = "ENCRYPTED",     key_name = "projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key"   }] | list | `<list>` | no |
 | deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | string | `"false"` | no |
 | description | The description of the cluster | string | `""` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | string | `"true"` | no |

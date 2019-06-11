@@ -26,7 +26,7 @@ resource "google_container_cluster" "primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  region         = "${var.region}"
+  location       = "${var.region}"
   node_locations = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
 
   network = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
@@ -108,6 +108,7 @@ resource "google_container_cluster" "primary" {
     master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
   }
   remove_default_node_pool = "${var.remove_default_node_pool}"
+  database_encryption      = "${var.database_encryption}"
 }
 
 /******************************************
