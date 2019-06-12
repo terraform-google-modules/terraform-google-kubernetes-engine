@@ -78,7 +78,7 @@ control "kubectl" do
               effect: "PreferNoSchedule",
               key: "all-pools-example",
               value: "true",
-            }
+            },
           ])
         end
       end
