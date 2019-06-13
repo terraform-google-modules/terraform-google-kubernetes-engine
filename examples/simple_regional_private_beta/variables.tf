@@ -60,3 +60,4 @@ variable "cloudrun" {
   description = "Boolean to enable / disable CloudRun"
   default     = true
 }
+
