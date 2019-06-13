@@ -18,46 +18,46 @@
 // They do not need to be included in real-world uses of this module
 
 output "project_id" {
-  value = "${var.project_id}"
+  value = var.project_id
 }
 
 output "region" {
-  value = "${module.gke.region}"
+  value = module.gke.region
 }
 
 output "cluster_name" {
   description = "Cluster name"
-  value       = "${module.gke.name}"
+  value       = module.gke.name
 }
 
 output "network" {
-  value = "${var.network}"
+  value = var.network
 }
 
 output "subnetwork" {
-  value = "${var.subnetwork}"
+  value = var.subnetwork
 }
 
 output "location" {
-  value = "${module.gke.location}"
+  value = module.gke.location
 }
 
 output "ip_range_pods" {
   description = "The secondary IP range used for pods"
-  value       = "${var.ip_range_pods}"
+  value       = var.ip_range_pods
 }
 
 output "ip_range_services" {
   description = "The secondary IP range used for services"
-  value       = "${var.ip_range_services}"
+  value       = var.ip_range_services
 }
 
 output "zones" {
   description = "List of zones in which the cluster resides"
-  value       = "${module.gke.zones}"
+  value       = module.gke.zones
 }
 
 output "master_kubernetes_version" {
   description = "The master Kubernetes version"
-  value       = "${module.gke.master_version}"
+  value       = module.gke.master_version
 }

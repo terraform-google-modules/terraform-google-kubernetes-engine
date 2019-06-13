@@ -8,6 +8,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 ## [v3.0.0] - 2019-07-08
 
 ### Added
@@ -15,6 +16,16 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Add configuration flag for enable BinAuthZ Admission controller [#160] [#188]
 * Add configuration flag for `pod_security_policy_config` [#163] [#188]
 * Support for a guest accelerator in node pool configuration. [#197]
+=======
+## [2.0.0] 2019-06-ZZ
+
+### Changed
+
+* Supported version of Terraform is 0.12. [#58]
+* Add configuration flag for enable BinAuthZ Admission controller [#160]
+* Add configuration flag for `pod_security_policy_config` [#163]
+* Support for a guest accelerator in node pool configuration. [#157]
+>>>>>>> Fixes #158: Add support for Terraform v0.12
 * Support to scale the default node cluster. [#149]
 * Support for configuring the network policy provider. [#159]
 * Support for database encryption. [#165]
