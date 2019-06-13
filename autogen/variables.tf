@@ -92,6 +92,14 @@ variable "enable_binary_authorization" {
   default     = false
 }
 
+variable "pod_security_policy_config" {
+  description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
+
+  default     = [{
+    "enabled" = false
+  }]
+}
+
 {% endif %}
 variable "horizontal_pod_autoscaling" {
   description = "Enable horizontal pod autoscaling addon"
