@@ -23,6 +23,7 @@ provisioner:
 verifier:
   name: terraform
   color: false
+  fail_fast: false
 
 platforms:
   - name: local
