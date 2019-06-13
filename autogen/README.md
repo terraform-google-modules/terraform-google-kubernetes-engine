@@ -143,9 +143,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 - [Terraform](https://www.terraform.io/downloads.html) 0.11.x
 {% if private_cluster or beta_cluster %}
 - [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v2.3, v2.6, v2.7
-{% else %}
 - [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.3, v2.6, v2.7
-{% endif %}
 
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the
