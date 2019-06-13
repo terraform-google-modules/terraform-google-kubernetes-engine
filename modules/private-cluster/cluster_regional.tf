@@ -20,72 +20,92 @@
   Create regional cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  provider    = "google-beta"
-  count       = "${var.regional ? 1 : 0}"
-  name        = "${var.name}"
-  description = "${var.description}"
-  project     = "${var.project_id}"
+  provider    = google-beta
+  count       = var.regional ? 1 : 0
+  name        = var.name
+  description = var.description
+  project     = var.project_id
 
-  region         = "${var.region}"
-  node_locations = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
+  region = var.region
 
-  network = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+  node_locations = coalescelist(
+    compact(var.zones),
+    sort(random_shuffle.available_zones.result),
+  )
+
+  network = data.google_compute_network.gke_network.self_link
 
   network_policy {
-    enabled  = "${var.network_policy}"
-    provider = "${var.network_policy_provider}"
+    enabled  = var.network_policy
+    provider = var.network_policy_provider
   }
 
-  subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
-  min_master_version = "${local.kubernetes_version_regional}"
+  subnetwork = data.google_compute_subnetwork.gke_subnetwork.self_link
+  min_master_version = local.kubernetes_version_regional
 
-  logging_service    = "${var.logging_service}"
-  monitoring_service = "${var.monitoring_service}"
+  logging_service    = var.logging_service
+  monitoring_service = var.monitoring_service
 
-  enable_binary_authorization       = "${var.enable_binary_authorization}"
-  pod_security_policy_config        = "${var.pod_security_policy_config}"
-  master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
+  dynamic "pod_security_policy_config" {
+    for_each = var.pod_security_policy_config
+    content {
+      enabled = pod_security_policy_config.value.enabled
+    }
+  }
+  enable_binary_authorization = var.enable_binary_authorization
+  dynamic "master_authorized_networks_config" {
+    for_each = var.master_authorized_networks_config
+    content {
+      dynamic "cidr_blocks" {
+        for_each = master_authorized_networks_config.value.cidr_blocks
+        content {
+          cidr_block   = lookup(cidr_blocks.value, "cidr_block", "")
+          display_name = lookup(cidr_blocks.value, "display_name", "")
+        }
+      }
+    }
+  }
 
   master_auth {
-    username = "${var.basic_auth_username}"
-    password = "${var.basic_auth_password}"
+    username = var.basic_auth_username
+    password = var.basic_auth_password
 
     client_certificate_config {
-      issue_client_certificate = "${var.issue_client_certificate}"
+      issue_client_certificate = var.issue_client_certificate
     }
   }
 
   addons_config {
     http_load_balancing {
-      disabled = "${var.http_load_balancing ? 0 : 1}"
+      disabled = !var.http_load_balancing
     }
 
     horizontal_pod_autoscaling {
-      disabled = "${var.horizontal_pod_autoscaling ? 0 : 1}"
+      disabled = !var.horizontal_pod_autoscaling
     }
 
     kubernetes_dashboard {
-      disabled = "${var.kubernetes_dashboard ? 0 : 1}"
+      disabled = !var.kubernetes_dashboard
     }
 
     network_policy_config {
-      disabled = "${var.network_policy ? 0 : 1}"
+      disabled = !var.network_policy
     }
   }
 
   ip_allocation_policy {
-    cluster_secondary_range_name  = "${var.ip_range_pods}"
-    services_secondary_range_name = "${var.ip_range_services}"
+    cluster_secondary_range_name  = var.ip_range_pods
+    services_secondary_range_name = var.ip_range_services
   }
 
   maintenance_policy {
     daily_maintenance_window {
-      start_time = "${var.maintenance_start_time}"
+      start_time = var.maintenance_start_time
     }
   }
 
   lifecycle {
-    ignore_changes = ["node_pool"]
+    ignore_changes = [node_pool]
   }
 
   timeouts {
@@ -96,71 +116,125 @@ resource "google_container_cluster" "primary" {
 
   node_pool {
     name               = "default-pool"
-    initial_node_count = "${var.initial_node_count}"
+    initial_node_count = var.initial_node_count
 
     node_config {
-      service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
+      service_account = lookup(var.node_pools[0], "service_account", local.service_account)
     }
   }
 
   private_cluster_config {
-    enable_private_endpoint = "${var.enable_private_endpoint}"
-    enable_private_nodes    = "${var.enable_private_nodes}"
-    master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
+    enable_private_endpoint = var.enable_private_endpoint
+    enable_private_nodes    = var.enable_private_nodes
+    master_ipv4_cidr_block  = var.master_ipv4_cidr_block
   }
 
-  remove_default_node_pool = "${var.remove_default_node_pool}"
+  remove_default_node_pool = var.remove_default_node_pool
 }
 
 /******************************************
   Create regional node pools
  *****************************************/
 resource "google_container_node_pool" "pools" {
-  provider           = "google-beta"
-  count              = "${var.regional ? length(var.node_pools) : 0}"
-  name               = "${lookup(var.node_pools[count.index], "name")}"
-  project            = "${var.project_id}"
-  region             = "${var.region}"
-  cluster            = "${google_container_cluster.primary.name}"
-  version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version_regional)}"
-  initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"
+  provider = google-beta
+  count    = var.regional ? length(var.node_pools) : 0
+  name     = var.node_pools[count.index]["name"]
+  project  = var.project_id
+  region   = var.region
+  cluster  = google_container_cluster.primary[0].name
+  version = lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(
+    var.node_pools[count.index],
+    "version",
+    local.node_version_regional,
+  )
+  initial_node_count = lookup(
+    var.node_pools[count.index],
+    "initial_node_count",
+    lookup(var.node_pools[count.index], "min_count", 1),
+  )
 
   autoscaling {
-    min_node_count = "${lookup(var.node_pools[count.index], "min_count", 1)}"
-    max_node_count = "${lookup(var.node_pools[count.index], "max_count", 100)}"
+    min_node_count = lookup(var.node_pools[count.index], "min_count", 1)
+    max_node_count = lookup(var.node_pools[count.index], "max_count", 100)
   }
 
   management {
-    auto_repair  = "${lookup(var.node_pools[count.index], "auto_repair", true)}"
-    auto_upgrade = "${lookup(var.node_pools[count.index], "auto_upgrade", true)}"
+    auto_repair  = lookup(var.node_pools[count.index], "auto_repair", true)
+    auto_upgrade = lookup(var.node_pools[count.index], "auto_upgrade", true)
   }
 
   node_config {
-    image_type   = "${lookup(var.node_pools[count.index], "image_type", "COS")}"
-    machine_type = "${lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")}"
-    labels       = "${merge(map("cluster_name", var.name), map("node_pool", lookup(var.node_pools[count.index], "name")), var.node_pools_labels["all"], var.node_pools_labels[lookup(var.node_pools[count.index], "name")])}"
-    metadata     = "${merge(map("cluster_name", var.name), map("node_pool", lookup(var.node_pools[count.index], "name")), var.node_pools_metadata["all"], var.node_pools_metadata[lookup(var.node_pools[count.index], "name")], map("disable-legacy-endpoints", var.disable_legacy_metadata_endpoints))}"
-    taint        = "${concat(var.node_pools_taints["all"], var.node_pools_taints[lookup(var.node_pools[count.index], "name")])}"
-    tags         = ["${concat(list("gke-${var.name}"), list("gke-${var.name}-${lookup(var.node_pools[count.index], "name")}"), var.node_pools_tags["all"], var.node_pools_tags[lookup(var.node_pools[count.index], "name")])}"]
+    image_type   = lookup(var.node_pools[count.index], "image_type", "COS")
+    machine_type = lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")
+    labels = merge(
+      {
+        "cluster_name" = var.name
+      },
+      {
+        "node_pool" = var.node_pools[count.index]["name"]
+      },
+      var.node_pools_labels["all"],
+      var.node_pools_labels[var.node_pools[count.index]["name"]],
+    )
+    metadata = merge(
+      {
+        "cluster_name" = var.name
+      },
+      {
+        "node_pool" = var.node_pools[count.index]["name"]
+      },
+      var.node_pools_metadata["all"],
+      var.node_pools_metadata[var.node_pools[count.index]["name"]],
+      {
+        "disable-legacy-endpoints" = var.disable_legacy_metadata_endpoints
+      },
+    )
+    dynamic "taint" {
+      for_each = concat(
+        var.node_pools_taints["all"],
+        var.node_pools_taints[var.node_pools[count.index]["name"]],
+      )
+      content {
+        effect = taint.value.effect
+        key    = taint.value.key
+        value  = taint.value.value
+      }
+    }
+    tags = concat(
+      ["gke-${var.name}"],
+      ["gke-${var.name}-${var.node_pools[count.index]["name"]}"],
+      var.node_pools_tags["all"],
+      var.node_pools_tags[var.node_pools[count.index]["name"]],
+    )
 
-    disk_size_gb    = "${lookup(var.node_pools[count.index], "disk_size_gb", 100)}"
-    disk_type       = "${lookup(var.node_pools[count.index], "disk_type", "pd-standard")}"
-    service_account = "${lookup(var.node_pools[count.index], "service_account", local.service_account)}"
-    preemptible     = "${lookup(var.node_pools[count.index], "preemptible", false)}"
+    disk_size_gb = lookup(var.node_pools[count.index], "disk_size_gb", 100)
+    disk_type    = lookup(var.node_pools[count.index], "disk_type", "pd-standard")
+    service_account = lookup(
+      var.node_pools[count.index],
+      "service_account",
+      local.service_account,
+    )
+    preemptible = lookup(var.node_pools[count.index], "preemptible", false)
 
-    oauth_scopes = [
-      "${concat(var.node_pools_oauth_scopes["all"],
-      var.node_pools_oauth_scopes[lookup(var.node_pools[count.index], "name")])}",
-    ]
+    oauth_scopes = concat(
+      var.node_pools_oauth_scopes["all"],
+      var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]]
+    )
 
-    guest_accelerator {
-      type  = "${lookup(var.node_pools[count.index], "accelerator_type", "")}"
-      count = "${lookup(var.node_pools[count.index], "accelerator_count", 0)}"
+    dynamic "guest_accelerator" {
+      for_each = lookup(var.node_pools[count.index], "accelerator_count", 0) > 0 ? [{
+        type  = lookup(var.node_pools[count.index], "accelerator_type", "")
+        count = lookup(var.node_pools[count.index], "accelerator_count", 0)
+      }] : []
+      content {
+        type = guest_accelerator.value.type
+        count = guest_accelerator.value.count
+      }
     }
   }
 
   lifecycle {
-    ignore_changes = ["initial_node_count"]
+    ignore_changes = [initial_node_count]
   }
 
   timeouts {
@@ -171,16 +245,19 @@ resource "google_container_node_pool" "pools" {
 }
 
 resource "null_resource" "wait_for_regional_cluster" {
-  count = "${var.regional ? 1 : 0}"
+  count = var.regional ? 1 : 0
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
   }
 
   provisioner "local-exec" {
-    when    = "destroy"
+    when    = destroy
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
   }
 
-  depends_on = ["google_container_cluster.primary", "google_container_node_pool.pools"]
+  depends_on = [
+    google_container_cluster.primary,
+    google_container_node_pool.pools,
+  ]
 }

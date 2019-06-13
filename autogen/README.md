@@ -66,7 +66,7 @@ module "gke" {
     all = {}
 
     default-node-pool = {
-      default-node-pool = "true"
+      default-node-pool = true
     }
   }
 
@@ -84,7 +84,7 @@ module "gke" {
     default-node-pool = [
       {
         key    = "default-node-pool"
-        value  = "true"
+        value  = true
         effect = "PREFER_NO_SCHEDULE"
       },
     ]
@@ -136,11 +136,11 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Kubectl
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
-- [Terraform](https://www.terraform.io/downloads.html) 0.11.x
+- [Terraform](https://www.terraform.io/downloads.html) 0.12.x
 {% if private_cluster %}
-- [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v2.3, v2.6, v2.7
+- [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v2.8
 {% else %}
-- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.3, v2.6, v2.7
+- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.8
 {% endif %}
 
 ### Configure a Service Account
