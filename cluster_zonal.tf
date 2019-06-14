@@ -26,10 +26,16 @@ resource "google_container_cluster" "zonal_primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  zone             = "${var.zones[0]}"
-  additional_zones = ["${slice(var.zones,1,length(var.zones))}"]
+  zone           = "${var.zones[0]}"
+  node_locations = ["${slice(var.zones,1,length(var.zones))}"]
 
-  network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+  network = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+
+  network_policy {
+    enabled  = "${var.network_policy}"
+    provider = "${var.network_policy_provider}"
+  }
+
   subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   min_master_version = "${local.kubernetes_version_zonal}"
 
@@ -37,6 +43,15 @@ resource "google_container_cluster" "zonal_primary" {
   monitoring_service = "${var.monitoring_service}"
 
   master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
+
+  master_auth {
+    username = "${var.basic_auth_username}"
+    password = "${var.basic_auth_password}"
+
+    client_certificate_config {
+      issue_client_certificate = "${var.issue_client_certificate}"
+    }
+  }
 
   addons_config {
     http_load_balancing {
@@ -78,12 +93,14 @@ resource "google_container_cluster" "zonal_primary" {
   }
 
   node_pool {
-    name = "default-pool"
+    name               = "default-pool"
+    initial_node_count = "${var.initial_node_count}"
 
     node_config {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
     }
   }
+
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
@@ -96,7 +113,7 @@ resource "google_container_node_pool" "zonal_pools" {
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
   zone               = "${var.zones[0]}"
-  cluster            = "${var.name}"
+  cluster            = "${google_container_cluster.zonal_primary.name}"
   version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version_zonal)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"
 
@@ -124,8 +141,14 @@ resource "google_container_node_pool" "zonal_pools" {
     preemptible     = "${lookup(var.node_pools[count.index], "preemptible", false)}"
 
     oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform",
+      "${concat(var.node_pools_oauth_scopes["all"],
+      var.node_pools_oauth_scopes[lookup(var.node_pools[count.index], "name")])}",
     ]
+
+    guest_accelerator {
+      type  = "${lookup(var.node_pools[count.index], "accelerator_type", "")}"
+      count = "${lookup(var.node_pools[count.index], "accelerator_count", 0)}"
+    }
   }
 
   lifecycle {
@@ -137,8 +160,6 @@ resource "google_container_node_pool" "zonal_pools" {
     update = "30m"
     delete = "30m"
   }
-
-  depends_on = ["google_container_cluster.zonal_primary"]
 }
 
 resource "null_resource" "wait_for_zonal_cluster" {

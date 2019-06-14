@@ -106,6 +106,11 @@ variable "network_policy" {
   default     = false
 }
 
+variable "network_policy_provider" {
+  description = "The network policy provider."
+  default     = "CALICO"
+}
+
 variable "maintenance_start_time" {
   description = "Time window specified for daily maintenance operations in RFC3339 format"
   default     = "05:00"
@@ -119,6 +124,11 @@ variable "ip_range_services" {
   description = "The _name_ of the secondary subnet range to use for services"
 }
 
+variable "initial_node_count" {
+  description = "The number of nodes to create in this cluster's default node pool."
+  default     = 0
+}
+
 variable "remove_default_node_pool" {
   description = "Remove default node pool while setting up the cluster"
   default     = false
@@ -128,7 +138,6 @@ variable "disable_legacy_metadata_endpoints" {
   description = "Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated."
   default     = "true"
 }
-
 
 variable "node_pools" {
   type        = "list"
@@ -181,6 +190,16 @@ variable "node_pools_tags" {
   }
 }
 
+variable "node_pools_oauth_scopes" {
+  type        = "map"
+  description = "Map of lists containing node oauth scopes by node-pool name"
+
+  default = {
+    all               = ["https://www.googleapis.com/auth/cloud-platform"]
+    default-node-pool = []
+  }
+}
+
 variable "stub_domains" {
   type        = "map"
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"
@@ -214,6 +233,21 @@ variable "monitoring_service" {
 }
 
 variable "service_account" {
-  description = "The service account to default running nodes as if not overridden in `node_pools`. Defaults to the compute engine default service account. May also specify `create` to automatically create a cluster-specific service account"
+  description = "The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created."
+  default     = "create"
+}
+
+variable "basic_auth_username" {
+  description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
   default     = ""
+}
+
+variable "basic_auth_password" {
+  description = "The password to be used with Basic Authentication."
+  default     = ""
+}
+
+variable "issue_client_certificate" {
+  description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
+  default     = "false"
 }

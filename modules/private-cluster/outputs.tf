@@ -110,5 +110,11 @@ output "node_pools_versions" {
 
 output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
-  value = "${local.service_account}"
+  value       = "${local.service_account}"
 }
+
+output "pod_security_policy_enabled" {
+  description = "Whether pod security policy is enabled"
+  value       = "${local.cluster_pod_security_policy_enabled}"
+}
+

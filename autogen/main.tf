@@ -55,18 +55,34 @@ locals {
     zonal    = "${var.region}"
   }
 
-  cluster_type_output_regional_zones = "${concat(google_container_cluster.primary.*.additional_zones, list(list()))}"
-  cluster_type_output_zonal_zones    = "${concat(slice(var.zones,1,length(var.zones)), list(list()))}"
+  cluster_type_output_regional_zones = "${flatten(google_container_cluster.primary.*.node_locations)}"
+  cluster_type_output_zonal_zones    = "${slice(var.zones, 1, length(var.zones))}"
 
   cluster_type_output_zones = {
-    regional = "${local.cluster_type_output_regional_zones[0]}"
-    zonal    = "${concat(google_container_cluster.zonal_primary.*.zone, local.cluster_type_output_zonal_zones[0])}"
+    regional = "${local.cluster_type_output_regional_zones}"
+    zonal    = "${concat(google_container_cluster.zonal_primary.*.zone, local.cluster_type_output_zonal_zones)}"
   }
 
+{% if private_cluster %}
+  cluster_type_output_endpoint = {
+    regional = "${
+      var.deploy_using_private_endpoint ?
+      element(concat(google_container_cluster.primary.*.private_cluster_config.0.private_endpoint, list("")), 0) :
+      element(concat(google_container_cluster.primary.*.endpoint, list("")), 0)
+    }"
+
+    zonal = "${
+      var.deploy_using_private_endpoint ?
+      element(concat(google_container_cluster.zonal_primary.*.private_cluster_config.0.private_endpoint, list("")), 0) :
+      element(concat(google_container_cluster.zonal_primary.*.endpoint, list("")), 0)
+    }"
+  }
+{% else %}
   cluster_type_output_endpoint = {
     regional = "${element(concat(google_container_cluster.primary.*.endpoint, list("")), 0)}"
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.endpoint, list("")), 0)}"
   }
+{% endif %}
 
   cluster_type_output_master_auth = {
     regional = "${concat(google_container_cluster.primary.*.master_auth, list())}"
@@ -137,6 +153,13 @@ locals {
     zonal    = "${concat(google_container_node_pool.zonal_pools.*.version, list(""))}"
   }
 
+{% if private_cluster %}
+  cluster_type_output_pod_security_policy_enabled = {
+    regional = "${element(concat(google_container_cluster.primary.*.pod_security_policy_config.0.enabled, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.pod_security_policy_config.0.enabled, list("")), 0)}"
+  }
+
+{% endif %}
   cluster_master_auth_list_layer1 = "${local.cluster_type_output_master_auth[local.cluster_type]}"
   cluster_master_auth_list_layer2 = "${local.cluster_master_auth_list_layer1[0]}"
   cluster_master_auth_map         = "${local.cluster_master_auth_list_layer2[0]}"
@@ -159,13 +182,15 @@ locals {
   cluster_http_load_balancing_enabled        = "${local.cluster_type_output_http_load_balancing_enabled[local.cluster_type] ? false : true}"
   cluster_horizontal_pod_autoscaling_enabled = "${local.cluster_type_output_horizontal_pod_autoscaling_enabled[local.cluster_type] ? false : true}"
   cluster_kubernetes_dashboard_enabled       = "${local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type] ? false : true}"
-
-  {% if beta_cluster %}
+{% if beta_cluster %}
   # BETA features
   cluster_istio_enabled    = "${local.cluster_type_output_istio_enabled[local.cluster_type] ? false : true}"
   cluster_cloudrun_enabled = "${local.cluster_type_output_cloudrun_enabled[local.cluster_type] ? false : true}"
   # /BETA features
-  {% endif %}
+{% endif %}
+{% if private_cluster %}
+  cluster_pod_security_policy_enabled        = "${local.cluster_type_output_pod_security_policy_enabled[local.cluster_type] ? true : false}"
+{% endif %}
 }
 
 /******************************************
@@ -183,5 +208,6 @@ data "google_container_engine_versions" "zone" {
   //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
   //
   zone     = "${var.zones[0] == "" ? data.google_compute_zones.available.names[0] : var.zones[0]}"
+
   project  = "${var.project_id}"
 }
