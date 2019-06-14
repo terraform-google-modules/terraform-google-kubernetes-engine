@@ -1,6 +1,6 @@
 # Database Encryption
 
-This example illustrates how to create a simple cluster with database encryption described in 
+This example illustrates how to create a simple cluster with database encryption described in
 https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-secrets
 
 [^]: (autogen_docs_start)
