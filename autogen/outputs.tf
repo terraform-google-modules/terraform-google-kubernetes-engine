@@ -110,7 +110,7 @@ output "node_pools_versions" {
 
 output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
-  value = "${local.service_account}"
+  value       = "${local.service_account}"
 }
 
 {% if beta_cluster %}
@@ -122,5 +122,12 @@ output "istio_enabled" {
 output "cloudrun_enabled" {
   description = "Whether CloudRun enabled"
   value       = "${local.cluster_cloudrun_enabled}"
+}
+{% endif %}
+
+{% if private_cluster %}
+output "pod_security_policy_enabled" {
+  description = "Whether pod security policy is enabled"
+  value       = "${local.cluster_pod_security_policy_enabled}"
 }
 {% endif %}

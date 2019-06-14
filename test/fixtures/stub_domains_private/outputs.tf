@@ -1,0 +1,1 @@
+../shared/outputs.tf

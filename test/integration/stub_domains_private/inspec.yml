@@ -1,0 +1,20 @@
+name: stub_domains_private
+attributes:
+  - name: ca_certificate
+    required: true
+    type: string
+  - name: client_token
+    required: true
+    type: string
+  - name: cluster_name
+    required: true
+    type: string
+  - name: kubernetes_endpoint
+    required: true
+    type: string
+  - name: location
+    required: true
+    type: string
+  - name: project_id
+    required: true
+    type: string
