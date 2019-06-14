@@ -159,7 +159,7 @@ locals {
   cluster_http_load_balancing_enabled        = "${local.cluster_type_output_http_load_balancing_enabled[local.cluster_type] ? false : true}"
   cluster_horizontal_pod_autoscaling_enabled = "${local.cluster_type_output_horizontal_pod_autoscaling_enabled[local.cluster_type] ? false : true}"
   cluster_kubernetes_dashboard_enabled       = "${local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type] ? false : true}"
-  cluster_pod_security_policy_enabled        = "${local.cluster_type_output_pod_security_policy_enabled[local.cluster_type] ? false : true}"
+  cluster_pod_security_policy_enabled        = "${local.cluster_type_output_pod_security_policy_enabled[local.cluster_type] ? true : false}"
 }
 
 /******************************************

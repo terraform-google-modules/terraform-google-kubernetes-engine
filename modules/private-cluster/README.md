@@ -147,6 +147,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | network\_policy | Enable network policy addon | string | `"false"` | no |
 | network\_policy\_provider | The network policy provider. | string | `"CALICO"` | no |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
+| node\_metadata | Specifies how node metadata is exposed to the workload running on the node | string | `"UNSPECIFIED"` | no |
 | node\_pools | List of maps containing node pools | list | `<list>` | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
 | node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map | `<map>` | no |

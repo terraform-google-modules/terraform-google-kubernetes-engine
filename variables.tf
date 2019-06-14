@@ -67,6 +67,11 @@ variable "node_version" {
   default     = ""
 }
 
+variable "node_metadata" {
+  description = "Specifies how node metadata is exposed to the workload running on the node"
+  default     = "UNSPECIFIED"
+}
+
 variable "master_authorized_networks_config" {
   type = "list"
 
