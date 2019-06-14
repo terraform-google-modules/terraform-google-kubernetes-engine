@@ -122,7 +122,6 @@ locals {
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.kubernetes_dashboard.0.disabled, list("")), 0)}"
   }
 
-
   cluster_type_output_node_pools_names = {
     regional = "${concat(google_container_node_pool.pools.*.name, list(""))}"
     zonal    = "${concat(google_container_node_pool.zonal_pools.*.name, list(""))}"
