@@ -104,3 +104,12 @@ suites:
       systems:
         - name: stub_domains_private
           backend: local
+  - name: "database_encryption"
+    driver:
+      root_module_directory: test/fixtures/database_encryption
+    verifier:
+      systems:
+        - name: gcloud
+          backend: local
+          controls:
+            - gcloud

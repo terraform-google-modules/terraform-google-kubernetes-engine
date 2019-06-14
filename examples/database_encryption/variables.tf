@@ -15,25 +15,40 @@
  */
 
 variable "project_id" {
-  description = "The GCP project to use for integration tests"
+  description = "The project ID to host the cluster in"
+}
+
+variable "cluster_name_suffix" {
+  description = "A suffix to append to the default cluster name"
+  default     = ""
 }
 
 variable "region" {
-  description = "The GCP region to create and test resources in"
+  description = "The region to host the cluster in"
 }
 
 variable "zones" {
   type        = "list"
-  description = "The GCP zones to create and test resources in, for applicable tests"
-  default     = []
+  description = "The zone to host the cluster in (required if is a zonal cluster)"
 }
 
-variable "compute_engine_service_account" {
-  description = "The email address of the service account to associate with the GKE cluster"
+variable "network" {
+  description = "The VPC network to host the cluster in"
+}
+
+variable "subnetwork" {
+  description = "The subnetwork to host the cluster in"
+}
+
+variable "ip_range_pods" {
+  description = "The secondary ip range to use for pods"
+}
+
+variable "ip_range_services" {
+  description = "The secondary ip range to use for pods"
 }
 
 variable "database_encryption" {
-  description = "Database encryption key and state"
   type        = "list"
-  default     = []
+  description = "Database encryption key and state"
 }

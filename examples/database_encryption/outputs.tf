@@ -14,26 +14,21 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The GCP project to use for integration tests"
+output "kubernetes_endpoint" {
+  sensitive = true
+  value     = "${module.gke.endpoint}"
 }
 
-variable "region" {
-  description = "The GCP region to create and test resources in"
+output "client_token" {
+  sensitive = true
+  value     = "${base64encode(data.google_client_config.default.access_token)}"
 }
 
-variable "zones" {
-  type        = "list"
-  description = "The GCP zones to create and test resources in, for applicable tests"
-  default     = []
+output "ca_certificate" {
+  value = "${module.gke.ca_certificate}"
 }
 
-variable "compute_engine_service_account" {
-  description = "The email address of the service account to associate with the GKE cluster"
-}
-
-variable "database_encryption" {
-  description = "Database encryption key and state"
-  type        = "list"
-  default     = []
+output "service_account" {
+  description = "The service account to default running nodes as if not overridden in `node_pools`."
+  value       = "${module.gke.service_account}"
 }
