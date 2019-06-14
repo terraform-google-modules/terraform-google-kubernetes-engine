@@ -114,7 +114,6 @@ resource "google_container_cluster" "zonal_primary" {
     }
   }
 {% if private_cluster %}
-
   private_cluster_config {
     enable_private_endpoint = "${var.enable_private_endpoint}"
     enable_private_nodes    = "${var.enable_private_nodes}"
