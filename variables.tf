@@ -123,6 +123,7 @@ variable "ip_range_pods" {
 variable "ip_range_services" {
   description = "The _name_ of the secondary subnet range to use for services"
 }
+
 variable "default_max_pods_per_node" {
   description = "The maximum number of pods to schedule per node"
   default     = 110
