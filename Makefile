@@ -125,7 +125,7 @@ docker_run:
 		-e SERVICE_ACCOUNT_JSON \
 		-e CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=${CREDENTIALS_PATH} \
 		-e GOOGLE_APPLICATION_CREDENTIALS=${CREDENTIALS_PATH} \
-		-v $(CURDIR):/cft/workdir \
+		-v "$(CURDIR)":/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
 		/bin/bash -c "source test/ci_integration.sh && setup_environment && exec /bin/bash"
 
@@ -139,7 +139,7 @@ docker_create: docker_build_kitchen_terraform
 		-e SERVICE_ACCOUNT_JSON \
 		-e CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=${CREDENTIALS_PATH} \
 		-e GOOGLE_APPLICATION_CREDENTIALS=${CREDENTIALS_PATH} \
-		-v $(CURDIR):/cft/workdir \
+		-v "$(CURDIR)":/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
 		/bin/bash -c "source test/ci_integration.sh && setup_environment && kitchen create"
 
@@ -153,7 +153,7 @@ docker_converge:
 		-e SERVICE_ACCOUNT_JSON \
 		-e CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=${CREDENTIALS_PATH} \
 		-e GOOGLE_APPLICATION_CREDENTIALS=${CREDENTIALS_PATH} \
-		-v $(CURDIR):/cft/workdir \
+		-v "$(CURDIR)":/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
 		/bin/bash -c "source test/ci_integration.sh && setup_environment && kitchen converge && kitchen converge"
 
@@ -167,7 +167,7 @@ docker_verify:
 		-e SERVICE_ACCOUNT_JSON \
 		-e CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=${CREDENTIALS_PATH} \
 		-e GOOGLE_APPLICATION_CREDENTIALS=${CREDENTIALS_PATH} \
-		-v $(CURDIR):/cft/workdir \
+		-v "$(CURDIR)":/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
 		/bin/bash -c "source test/ci_integration.sh && setup_environment && kitchen verify"
 
@@ -181,7 +181,7 @@ docker_destroy:
 		-e SERVICE_ACCOUNT_JSON \
 		-e CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=${CREDENTIALS_PATH} \
 		-e GOOGLE_APPLICATION_CREDENTIALS=${CREDENTIALS_PATH} \
-		-v $(CURDIR):/cft/workdir \
+		-v "$(CURDIR)":/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
 		/bin/bash -c "source test/ci_integration.sh && setup_environment && kitchen destroy"
 
@@ -193,6 +193,6 @@ test_integration_docker:
 		-e REGION \
 		-e ZONES \
 		-e SERVICE_ACCOUNT_JSON \
-		-v $(CURDIR):/cft/workdir \
+		-v "$(CURDIR)":/cft/workdir \
 		${DOCKER_IMAGE_KITCHEN_TERRAFORM}:${DOCKER_TAG_KITCHEN_TERRAFORM} \
 		/bin/bash -c "test/ci_integration.sh"
