@@ -65,10 +65,7 @@ module "gke" {
   ]
 
   node_pools_oauth_scopes = {
-    all = [
-      "https://www.googleapis.com/auth/monitoring",
-      "https://www.googleapis.com/auth/logging.write",
-    ]
+    all = []
 
     pool-01 = []
 
