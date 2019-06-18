@@ -41,7 +41,6 @@ module "gke" {
   ip_range_services                 = "${var.ip_range_services}"
   remove_default_node_pool          = "true"
   disable_legacy_metadata_endpoints = "false"
-  network_policy_provider = "PROVIDER_UNSPECIFIED"
 
   node_pools = [
     {
