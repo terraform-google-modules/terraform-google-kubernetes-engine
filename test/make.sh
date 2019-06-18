@@ -45,11 +45,12 @@ function docker() {
 # files ending in '.tf'
 function check_terraform() {
   echo "Running terraform validate"
-  #shellcheck disable=SC2156
-  find . -name "*.tf" -not -path "./autogen/*" -not -path "./test/fixtures/shared/*" -not -path "./test/fixtures/all_examples/*" -exec bash -c 'terraform validate --check-variables=false $(dirname "{}")' \;
-  echo "Running terraform fmt"
-  #shellcheck disable=SC2156
-  find . -name "*.tf" -not -path "./autogen/*" -not -path "./test/fixtures/shared/*" -not -path "./test/fixtures/all_examples/*" -exec bash -c 'terraform fmt -check=true -write=false "{}"' \;
+  find . -name "*.tf" \
+    -not -path "./autogen/*" \
+    -not -path "./test/fixtures/all_examples/*" \
+    -not -path "./test/fixtures/shared/*" \
+    -print0 \
+    | xargs -0 dirname | sort | uniq | xargs -L 1 -i{} bash -c 'terraform init "{}" > /dev/null && terraform validate "{}" && terraform fmt -check=true -write=false "{}"'
 }
 
 # This function runs 'go fmt' and 'go vet' on every file
