@@ -28,7 +28,6 @@ resource "google_container_cluster" "primary" {
   project     = var.project_id
 
   region = var.region
-
   node_locations = coalescelist(
     compact(var.zones),
     sort(random_shuffle.available_zones.result),
@@ -121,7 +120,6 @@ resource "google_container_cluster" "primary" {
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
     }
   }
-
 
   remove_default_node_pool = var.remove_default_node_pool
 }
