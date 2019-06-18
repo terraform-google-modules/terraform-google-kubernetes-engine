@@ -32,7 +32,6 @@ resource "google_container_cluster" "primary" {
   project     = var.project_id
 
   region = var.region
-
   node_locations = coalescelist(
     compact(var.zones),
     sort(random_shuffle.available_zones.result),
@@ -167,8 +166,8 @@ resource "google_container_cluster" "primary" {
     enable_private_nodes    = var.enable_private_nodes
     master_ipv4_cidr_block  = var.master_ipv4_cidr_block
   }
-{% endif %}
 
+{% endif %}
   remove_default_node_pool = var.remove_default_node_pool
 {% if beta_cluster %}
 
