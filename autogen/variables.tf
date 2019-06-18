@@ -310,5 +310,8 @@ variable "database_encryption" {
   }]
   EOF
   type        = "list"
-  default     = []
+  default     = [{
+    state     = "DECRYPTED"
+    key_name  = ""
+  }]
 }
