@@ -28,7 +28,7 @@ variable "region" {
 }
 
 variable "zones" {
-  type        = "list"
+  type        = list(string)
   description = "The zone to host the cluster in (required if is a zonal cluster)"
 }
 
@@ -47,3 +47,4 @@ variable "ip_range_pods" {
 variable "ip_range_services" {
   description = "The secondary ip range to use for pods"
 }
+

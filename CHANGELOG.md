@@ -8,8 +8,11 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
-### Added
+## [2.0.0] 2019-06-ZZ
 
+### Changed
+
+* Supported version of Terraform is 0.12. [#58]
 * Add configuration flag for enable BinAuthZ Admission controller [#160]
 * Add configuration flag for `pod_security_policy_config` [#163]
 * Support for a guest accelerator in node pool configuration. [#157]

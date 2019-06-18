@@ -19,35 +19,35 @@ locals {
 }
 
 provider "google" {
-  version = "~> 2.7.0"
-  region  = "${var.region}"
+  version = "~> 2.8.0"
+  region  = var.region
 }
 
 provider "google-beta" {
-  version = "~> 2.7.0"
-  region  = "${var.region}"
+  version = "~> 2.8.0"
+  region  = var.region
 }
 
 module "gke" {
   source                            = "../../"
-  project_id                        = "${var.project_id}"
+  project_id                        = var.project_id
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                          = "false"
-  region                            = "${var.region}"
-  zones                             = "${var.zones}"
-  network                           = "${var.network}"
-  subnetwork                        = "${var.subnetwork}"
-  ip_range_pods                     = "${var.ip_range_pods}"
-  ip_range_services                 = "${var.ip_range_services}"
-  remove_default_node_pool          = "true"
-  disable_legacy_metadata_endpoints = "false"
+  regional                          = false
+  region                            = var.region
+  zones                             = var.zones
+  network                           = var.network
+  subnetwork                        = var.subnetwork
+  ip_range_pods                     = var.ip_range_pods
+  ip_range_services                 = var.ip_range_services
+  remove_default_node_pool          = true
+  disable_legacy_metadata_endpoints = false
 
   node_pools = [
     {
       name            = "pool-01"
       min_count       = 1
       max_count       = 2
-      service_account = "${var.compute_engine_service_account}"
+      service_account = var.compute_engine_service_account
       auto_upgrade    = true
     },
     {
@@ -61,37 +61,31 @@ module "gke" {
       accelerator_type  = "nvidia-tesla-p4"
       image_type        = "COS"
       auto_repair       = false
-      service_account   = "${var.compute_engine_service_account}"
+      service_account   = var.compute_engine_service_account
     },
   ]
 
   node_pools_oauth_scopes = {
-    all = []
-
+    all     = []
     pool-01 = []
-
     pool-02 = []
   }
 
   node_pools_metadata = {
     all = {}
-
     pool-01 = {
-      shutdown-script = "${file("${path.module}/data/shutdown-script.sh")}"
+      shutdown-script = file("${path.module}/data/shutdown-script.sh")
     }
-
     pool-02 = {}
   }
 
   node_pools_labels = {
     all = {
-      all-pools-example = "true"
+      all-pools-example = true
     }
-
     pool-01 = {
-      pool-01-example = "true"
+      pool-01-example = true
     }
-
     pool-02 = {}
   }
 
@@ -99,19 +93,17 @@ module "gke" {
     all = [
       {
         key    = "all-pools-example"
-        value  = "true"
+        value  = true
         effect = "PREFER_NO_SCHEDULE"
       },
     ]
-
     pool-01 = [
       {
         key    = "pool-01-example"
-        value  = "true"
+        value  = true
         effect = "PREFER_NO_SCHEDULE"
       },
     ]
-
     pool-02 = []
   }
 
@@ -119,13 +111,13 @@ module "gke" {
     all = [
       "all-node-example",
     ]
-
     pool-01 = [
       "pool-01-example",
     ]
-
     pool-02 = []
   }
 }
 
-data "google_client_config" "default" {}
+data "google_client_config" "default" {
+}
+
