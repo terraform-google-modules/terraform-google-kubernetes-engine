@@ -31,9 +31,3 @@ variable "zones" {
 variable "compute_engine_service_account" {
   description = "The email address of the service account to associate with the GKE cluster"
 }
-
-variable "database_encryption" {
-  description = "Database encryption key and state"
-  type        = "list"
-  default     = []
-}
