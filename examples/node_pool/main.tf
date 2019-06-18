@@ -41,6 +41,7 @@ module "gke" {
   ip_range_services                 = "${var.ip_range_services}"
   remove_default_node_pool          = "true"
   disable_legacy_metadata_endpoints = "false"
+  network_policy_provider = "PROVIDER_UNSPECIFIED"
 
   node_pools = [
     {
@@ -57,8 +58,6 @@ module "gke" {
       max_count         = 2
       disk_size_gb      = 30
       disk_type         = "pd-standard"
-      accelerator_count = 1
-      accelerator_type  = "nvidia-tesla-p4"
       image_type        = "COS"
       auto_repair       = false
       service_account   = "${var.compute_engine_service_account}"
@@ -66,7 +65,10 @@ module "gke" {
   ]
 
   node_pools_oauth_scopes = {
-    all = []
+    all = [
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/logging.write",
+    ]
 
     pool-01 = []
 

@@ -16,8 +16,6 @@ project_id = attribute('project_id')
 location = attribute('location')
 cluster_name = attribute('cluster_name')
 
-expected_accelerators_count = "1"
-expected_accelerators_type = "nvidia-tesla-p4"
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
@@ -199,18 +197,6 @@ control "gcloud" do
               "name" => "pool-02",
               "autoscaling" => including(
                 "maxNodeCount" => 2,
-              ),
-            )
-          )
-        end
-
-        it "has the expected accelerators" do
-          expect(data['nodePools']).to include(
-            including(
-              "name" => "pool-02",
-              "config" => including(
-                "accelerators" => [{"acceleratorCount" => expected_accelerators_count,
-                                    "acceleratorType" => expected_accelerators_type}],
               ),
             )
           )
