@@ -36,7 +36,7 @@ resource "google_container_cluster" "zonal_primary" {
     provider = var.network_policy_provider
   }
 
-  subnetwork = data.google_compute_subnetwork.gke_subnetwork.self_link
+  subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
   min_master_version = local.kubernetes_version_zonal
 
   logging_service    = var.logging_service
@@ -67,19 +67,19 @@ resource "google_container_cluster" "zonal_primary" {
 
   addons_config {
     http_load_balancing {
-      disabled = !var.http_load_balancing
+      disabled = ! var.http_load_balancing
     }
 
     horizontal_pod_autoscaling {
-      disabled = !var.horizontal_pod_autoscaling
+      disabled = ! var.horizontal_pod_autoscaling
     }
 
     kubernetes_dashboard {
-      disabled = !var.kubernetes_dashboard
+      disabled = ! var.kubernetes_dashboard
     }
 
     network_policy_config {
-      disabled = !var.network_policy
+      disabled = ! var.network_policy
     }
   }
 
@@ -213,7 +213,7 @@ resource "google_container_node_pool" "zonal_pools" {
         count = lookup(var.node_pools[count.index], "accelerator_count", 0)
       }] : []
       content {
-        type = guest_accelerator.value.type
+        type  = guest_accelerator.value.type
         count = guest_accelerator.value.count
       }
     }

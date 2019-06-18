@@ -27,7 +27,6 @@ resource "google_container_cluster" "primary" {
   project     = var.project_id
 
   region = var.region
-
   node_locations = coalescelist(
     compact(var.zones),
     sort(random_shuffle.available_zones.result),
@@ -40,11 +39,13 @@ resource "google_container_cluster" "primary" {
     provider = var.network_policy_provider
   }
 
-  subnetwork = data.google_compute_subnetwork.gke_subnetwork.self_link
+  subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
   min_master_version = local.kubernetes_version_regional
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
+
+  enable_binary_authorization = var.enable_binary_authorization
 
   dynamic "pod_security_policy_config" {
     for_each = var.pod_security_policy_config
@@ -52,7 +53,7 @@ resource "google_container_cluster" "primary" {
       enabled = pod_security_policy_config.value.enabled
     }
   }
-  enable_binary_authorization = var.enable_binary_authorization
+
   dynamic "master_authorized_networks_config" {
     for_each = var.master_authorized_networks_config
     content {
@@ -77,19 +78,19 @@ resource "google_container_cluster" "primary" {
 
   addons_config {
     http_load_balancing {
-      disabled = !var.http_load_balancing
+      disabled = ! var.http_load_balancing
     }
 
     horizontal_pod_autoscaling {
-      disabled = !var.horizontal_pod_autoscaling
+      disabled = ! var.horizontal_pod_autoscaling
     }
 
     kubernetes_dashboard {
-      disabled = !var.kubernetes_dashboard
+      disabled = ! var.kubernetes_dashboard
     }
 
     network_policy_config {
-      disabled = !var.network_policy
+      disabled = ! var.network_policy
     }
   }
 
@@ -227,7 +228,7 @@ resource "google_container_node_pool" "pools" {
         count = lookup(var.node_pools[count.index], "accelerator_count", 0)
       }] : []
       content {
-        type = guest_accelerator.value.type
+        type  = guest_accelerator.value.type
         count = guest_accelerator.value.count
       }
     }
