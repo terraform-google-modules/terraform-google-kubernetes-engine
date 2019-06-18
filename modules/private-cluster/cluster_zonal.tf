@@ -108,7 +108,7 @@ resource "google_container_cluster" "zonal_primary" {
     master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
   }
   remove_default_node_pool = "${var.remove_default_node_pool}"
-  database_encryption      = "${var.database_encryption}"
+  database_encryption      = ["${var.database_encryption}"]
 }
 
 /******************************************
