@@ -14,48 +14,29 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
+// This file was automatically generated from a template in ./autogen
 
 /******************************************
   Create regional cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  provider    = "{% if private_cluster or beta_cluster %}google-beta{% else %}google{% endif %}"
+  provider    = "google-beta"
   count       = "${var.regional ? 1 : 0}"
   name        = "${var.name}"
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  region         = "${var.region}"
-  node_locations = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
+  region           = "${var.region}"
+  additional_zones = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
 
-  network = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
-
-  network_policy {
-    enabled  = "${var.network_policy}"
-    provider = "${var.network_policy_provider}"
-  }
-
+  network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   min_master_version = "${local.kubernetes_version_regional}"
 
   logging_service    = "${var.logging_service}"
   monitoring_service = "${var.monitoring_service}"
 
-{% if private_cluster %}
-  enable_binary_authorization       = "${var.enable_binary_authorization}"
-  pod_security_policy_config        = "${var.pod_security_policy_config}"
-{% endif %}
   master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
-
-  master_auth {
-    username = "${var.basic_auth_username}"
-    password = "${var.basic_auth_password}"
-
-    client_certificate_config {
-      issue_client_certificate = "${var.issue_client_certificate}"
-    }
-  }
 
   addons_config {
     http_load_balancing {
@@ -73,7 +54,7 @@ resource "google_container_cluster" "primary" {
     network_policy_config {
       disabled = "${var.network_policy ? 0 : 1}"
     }
-    {% if beta_cluster %}
+
     istio_config {
       disabled = "${var.istio ? 0 : 1}"
     }
@@ -81,7 +62,6 @@ resource "google_container_cluster" "primary" {
     cloudrun_config {
       disabled = "${var.cloudrun ? 0 : 1}"
     }
-    {% endif %}
   }
 
   ip_allocation_policy {
@@ -106,20 +86,13 @@ resource "google_container_cluster" "primary" {
   }
 
   node_pool {
-    name               = "default-pool"
-    initial_node_count = "${var.initial_node_count}"
+    name = "default-pool"
 
     node_config {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
     }
   }
-{% if private_cluster %}
-  private_cluster_config {
-    enable_private_endpoint = "${var.enable_private_endpoint}"
-    enable_private_nodes    = "${var.enable_private_nodes}"
-    master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
-  }
-{% endif %}
+
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
@@ -132,7 +105,7 @@ resource "google_container_node_pool" "pools" {
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
   region             = "${var.region}"
-  cluster            = "${google_container_cluster.primary.name}"
+  cluster            = "${var.name}"
   version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version_regional)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"
 
@@ -160,8 +133,7 @@ resource "google_container_node_pool" "pools" {
     preemptible     = "${lookup(var.node_pools[count.index], "preemptible", false)}"
 
     oauth_scopes = [
-      "${concat(var.node_pools_oauth_scopes["all"],
-      var.node_pools_oauth_scopes[lookup(var.node_pools[count.index], "name")])}",
+      "https://www.googleapis.com/auth/cloud-platform",
     ]
   }
 
@@ -174,6 +146,8 @@ resource "google_container_node_pool" "pools" {
     update = "30m"
     delete = "30m"
   }
+
+  depends_on = ["google_container_cluster.primary"]
 }
 
 resource "null_resource" "wait_for_regional_cluster" {

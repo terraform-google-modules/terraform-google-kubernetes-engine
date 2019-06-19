@@ -20,7 +20,7 @@
   Create zonal cluster
  *****************************************/
 resource "google_container_cluster" "zonal_primary" {
-  provider    = "{% if private_cluster %}google-beta{%else %}google{% endif %}"
+  provider    = "{% if private_cluster or beta_cluster %}google-beta{% else %}google{% endif %}"
   count       = "${var.regional ? 0 : 1}"
   name        = "${var.name}"
   description = "${var.description}"
@@ -73,6 +73,15 @@ resource "google_container_cluster" "zonal_primary" {
     network_policy_config {
       disabled = "${var.network_policy ? 0 : 1}"
     }
+    {% if beta_cluster %}
+    istio_config {
+      disabled = "${var.istio ? 0 : 1}"
+    }
+
+    cloudrun_config {
+      disabled = "${var.cloudrun ? 0 : 1}"
+    }
+    {% endif %}
   }
 
   ip_allocation_policy {
@@ -105,14 +114,12 @@ resource "google_container_cluster" "zonal_primary" {
     }
   }
 {% if private_cluster %}
-
   private_cluster_config {
     enable_private_endpoint = "${var.enable_private_endpoint}"
     enable_private_nodes    = "${var.enable_private_nodes}"
     master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
   }
 {% endif %}
-
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
