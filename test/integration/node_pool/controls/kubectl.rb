@@ -78,12 +78,7 @@ control "kubectl" do
               effect: "PreferNoSchedule",
               key: "all-pools-example",
               value: "true",
-            },
-            {
-              effect: "NoSchedule",
-              key: "nvidia.com/gpu",
-              value: "present",
-            },
+            }
           ])
         end
       end
