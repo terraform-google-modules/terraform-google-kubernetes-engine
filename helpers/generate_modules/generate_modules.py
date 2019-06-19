@@ -46,7 +46,15 @@ MODULES = [
         'private_cluster': False,
     }),
     Module("./modules/private-cluster", {
+        'private_cluster': True
+    }),
+    Module("./modules/beta-private-cluster", {
         'private_cluster': True,
+        'beta_cluster': True,
+    }),
+    Module("./modules/beta-public-cluster", {
+        'private_cluster': False,
+        'beta_cluster': True,
     }),
 ]
 DEVNULL_FILE = open(os.devnull, 'w')
