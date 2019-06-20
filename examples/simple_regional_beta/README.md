@@ -8,11 +8,13 @@ This example illustrates how to create a simple cluster with beta features.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| cloudrun | Boolean to enable / disable CloudRun | string | `"true"` | no |
 | cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | string | n/a | yes |
 | credentials\_path | The path to the GCP credentials JSON file | string | n/a | yes |
 | ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
+| istio | Boolean to enable / disable Istio | string | `"true"` | no |
 | network | The VPC network to host the cluster in | string | n/a | yes |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |

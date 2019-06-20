@@ -110,7 +110,7 @@ output "node_pools_versions" {
 
 output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
-  value = "${local.service_account}"
+  value       = "${local.service_account}"
 }
 
 output "istio_enabled" {
@@ -122,3 +122,4 @@ output "cloudrun_enabled" {
   description = "Whether CloudRun enabled"
   value       = "${local.cluster_cloudrun_enabled}"
 }
+
