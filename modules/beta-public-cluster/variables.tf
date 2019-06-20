@@ -237,7 +237,6 @@ variable "service_account" {
   default     = "create"
 }
 
-
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   default     = false
@@ -246,6 +245,23 @@ variable "istio" {
 variable "cloudrun" {
   description = "(Beta) Enable CloudRun addon"
   default     = false
+}
+
+variable "database_encryption" {
+  description = <<EOF
+  Application-layer Secrets Encryption settings. Example:
+  database_encryption = [{
+    state = "ENCRYPTED",
+    key_name = "projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key"
+  }]
+  EOF
+
+  type = "list"
+
+  default = [{
+    state    = "DECRYPTED"
+    key_name = ""
+  }]
 }
 
 variable "basic_auth_username" {

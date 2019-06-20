@@ -116,7 +116,6 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 |------|-------------|:----:|:-----:|:-----:|
 | basic\_auth\_password | The password to be used with Basic Authentication. | string | `""` | no |
 | basic\_auth\_username | The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration. | string | `""` | no |
-| database\_encryption | Application-layer Secrets Encryption settings. Example:   database_encryption = [{     state = "ENCRYPTED",     key_name = "projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key"   }] | list | `<list>` | no |
 | description | The description of the cluster | string | `""` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | string | `"true"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | string | `"true"` | no |
@@ -197,7 +196,6 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.11.x
-- [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v2.3, v2.6, v2.7
 - [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.3, v2.6, v2.7
 
 ### Configure a Service Account

@@ -284,6 +284,21 @@ variable "cloudrun" {
   description = "(Beta) Enable CloudRun addon"
   default     = false
 }
+
+variable "database_encryption" {
+  description = <<EOF
+  Application-layer Secrets Encryption settings. Example:
+  database_encryption = [{
+    state = "ENCRYPTED",
+    key_name = "projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key"
+  }]
+  EOF
+  type        = "list"
+  default     = [{
+    state     = "DECRYPTED"
+    key_name  = ""
+  }]
+}
 {% endif %}
 
 variable "basic_auth_username" {
@@ -299,19 +314,4 @@ variable "basic_auth_password" {
 variable "issue_client_certificate" {
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
   default     = "false"
-}
-
-variable "database_encryption" {
-  description = <<EOF
-  Application-layer Secrets Encryption settings. Example:
-  database_encryption = [{
-    state = "ENCRYPTED",
-    key_name = "projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key"
-  }]
-  EOF
-  type        = "list"
-  default     = [{
-    state     = "DECRYPTED"
-    key_name  = ""
-  }]
 }
