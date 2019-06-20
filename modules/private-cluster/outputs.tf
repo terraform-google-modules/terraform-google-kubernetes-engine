@@ -113,8 +113,8 @@ output "service_account" {
   value       = "${local.service_account}"
 }
 
+
 output "pod_security_policy_enabled" {
   description = "Whether pod security policy is enabled"
   value       = "${local.cluster_pod_security_policy_enabled}"
 }
-
