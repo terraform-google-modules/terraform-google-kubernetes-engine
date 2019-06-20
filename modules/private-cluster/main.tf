@@ -159,7 +159,7 @@ locals {
   cluster_http_load_balancing_enabled        = "${local.cluster_type_output_http_load_balancing_enabled[local.cluster_type] ? false : true}"
   cluster_horizontal_pod_autoscaling_enabled = "${local.cluster_type_output_horizontal_pod_autoscaling_enabled[local.cluster_type] ? false : true}"
   cluster_kubernetes_dashboard_enabled       = "${local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type] ? false : true}"
-  cluster_pod_security_policy_enabled        = "${local.cluster_type_output_pod_security_policy_enabled[local.cluster_type] ? false : true}"
+  cluster_pod_security_policy_enabled        = "${local.cluster_type_output_pod_security_policy_enabled[local.cluster_type] ? true : false}"
 }
 
 /******************************************
@@ -176,6 +176,7 @@ data "google_container_engine_versions" "zone" {
   //
   //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
   //
-  zone     = "${var.zones[0] == "" ? data.google_compute_zones.available.names[0] : var.zones[0]}"
-  project  = "${var.project_id}"
+  zone = "${var.zones[0] == "" ? data.google_compute_zones.available.names[0] : var.zones[0]}"
+
+  project = "${var.project_id}"
 }

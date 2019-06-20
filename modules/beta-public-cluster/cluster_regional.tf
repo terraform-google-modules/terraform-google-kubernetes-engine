@@ -26,10 +26,16 @@ resource "google_container_cluster" "primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  region           = "${var.region}"
-  additional_zones = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
+  region         = "${var.region}"
+  node_locations = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
 
-  network            = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+  network = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+
+  network_policy {
+    enabled  = "${var.network_policy}"
+    provider = "${var.network_policy_provider}"
+  }
+
   subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   min_master_version = "${local.kubernetes_version_regional}"
 
@@ -37,6 +43,15 @@ resource "google_container_cluster" "primary" {
   monitoring_service = "${var.monitoring_service}"
 
   master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
+
+  master_auth {
+    username = "${var.basic_auth_username}"
+    password = "${var.basic_auth_password}"
+
+    client_certificate_config {
+      issue_client_certificate = "${var.issue_client_certificate}"
+    }
+  }
 
   addons_config {
     http_load_balancing {
@@ -54,7 +69,6 @@ resource "google_container_cluster" "primary" {
     network_policy_config {
       disabled = "${var.network_policy ? 0 : 1}"
     }
-
     istio_config {
       disabled = "${var.istio ? 0 : 1}"
     }
@@ -86,13 +100,13 @@ resource "google_container_cluster" "primary" {
   }
 
   node_pool {
-    name = "default-pool"
+    name               = "default-pool"
+    initial_node_count = "${var.initial_node_count}"
 
     node_config {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
     }
   }
-
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 
@@ -105,7 +119,7 @@ resource "google_container_node_pool" "pools" {
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
   region             = "${var.region}"
-  cluster            = "${var.name}"
+  cluster            = "${google_container_cluster.primary.name}"
   version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version_regional)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"
 
@@ -133,7 +147,8 @@ resource "google_container_node_pool" "pools" {
     preemptible     = "${lookup(var.node_pools[count.index], "preemptible", false)}"
 
     oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform",
+      "${concat(var.node_pools_oauth_scopes["all"],
+      var.node_pools_oauth_scopes[lookup(var.node_pools[count.index], "name")])}",
     ]
   }
 
@@ -146,8 +161,6 @@ resource "google_container_node_pool" "pools" {
     update = "30m"
     delete = "30m"
   }
-
-  depends_on = ["google_container_cluster.primary"]
 }
 
 resource "null_resource" "wait_for_regional_cluster" {
