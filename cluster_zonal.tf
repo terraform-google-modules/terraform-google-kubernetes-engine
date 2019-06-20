@@ -20,7 +20,7 @@
   Create zonal cluster
  *****************************************/
 resource "google_container_cluster" "zonal_primary" {
-  provider    = "google-beta"
+  provider    = "google"
   count       = "${var.regional ? 0 : 1}"
   name        = "${var.name}"
   description = "${var.description}"
@@ -101,7 +101,6 @@ resource "google_container_cluster" "zonal_primary" {
     }
   }
   remove_default_node_pool = "${var.remove_default_node_pool}"
-  database_encryption      = ["${var.database_encryption}"]
 }
 
 /******************************************
