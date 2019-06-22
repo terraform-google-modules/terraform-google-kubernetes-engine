@@ -140,6 +140,10 @@ locals {
     regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.cloudrun_config.0.disabled, list("")), 0)}"
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.cloudrun_config.0.disabled, list("")), 0)}"
   }
+  cluster_type_output_pod_security_policy_enabled = {
+    regional = "${element(concat(google_container_cluster.primary.*.pod_security_policy_config.0.enabled, list("")), 0)}"
+    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.pod_security_policy_config.0.enabled, list("")), 0)}"
+  }
   # /BETA features
   {% endif %}
 
@@ -153,13 +157,6 @@ locals {
     zonal    = "${concat(google_container_node_pool.zonal_pools.*.version, list(""))}"
   }
 
-{% if private_cluster %}
-  cluster_type_output_pod_security_policy_enabled = {
-    regional = "${element(concat(google_container_cluster.primary.*.pod_security_policy_config.0.enabled, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.pod_security_policy_config.0.enabled, list("")), 0)}"
-  }
-
-{% endif %}
   cluster_master_auth_list_layer1 = "${local.cluster_type_output_master_auth[local.cluster_type]}"
   cluster_master_auth_list_layer2 = "${local.cluster_master_auth_list_layer1[0]}"
   cluster_master_auth_map         = "${local.cluster_master_auth_list_layer2[0]}"
@@ -184,10 +181,9 @@ locals {
   # BETA features
   cluster_istio_enabled    = "${local.cluster_type_output_istio_enabled[local.cluster_type] ? false : true}"
   cluster_cloudrun_enabled = "${local.cluster_type_output_cloudrun_enabled[local.cluster_type] ? false : true}"
-  # /BETA features
-{% endif %}
-{% if private_cluster %}
+
   cluster_pod_security_policy_enabled        = "${local.cluster_type_output_pod_security_policy_enabled[local.cluster_type] ? true : false}"
+  # /BETA features
 {% endif %}
 }
 

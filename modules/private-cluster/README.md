@@ -126,7 +126,6 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | string | `"false"` | no |
 | description | The description of the cluster | string | `""` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | string | `"true"` | no |
-| enable\_binary\_authorization | Enable BinAuthZ Admission controller | string | `"false"` | no |
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | string | `"false"` | no |
 | enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | string | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | string | `"true"` | no |
@@ -157,7 +156,6 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | node\_pools\_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
 | node\_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `""` | no |
 | non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list | `<list>` | no |
-| pod\_security\_policy\_config | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | list | `<list>` | no |
 | project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
 | region | The region to host the cluster in (required) | string | n/a | yes |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `"true"` | no |
@@ -186,7 +184,6 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | network\_policy\_enabled | Whether network policy enabled |
 | node\_pools\_names | List of node pools names |
 | node\_pools\_versions | List of node pools versions |
-| pod\_security\_policy\_enabled | Whether pod security policy is enabled |
 | region | Cluster region |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | type | Cluster type (regional / zonal) |
