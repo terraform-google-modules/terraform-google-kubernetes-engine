@@ -87,7 +87,7 @@ function check_trailing_whitespace() {
 }
 
 function generate() {
-  pip install --user -r ./helpers/generate_modules/requirements.txt
+  pip3 install --user -r ./helpers/generate_modules/requirements.txt
   ./helpers/generate_modules/generate_modules.py
 }
 
