@@ -15,6 +15,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Support for a guest accelerator in node pool configuration. [#157]
 * Support to scale the default node cluster. [#149]
 * Support for configuring the network policy provider. [#159]
+* Support for database encryption. [#165]
 
 ## [v2.1.0] - 2019-05-30
 
@@ -132,6 +133,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#165]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/165
 [#163]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/163
 [#160]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/160
 [#159]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/159
