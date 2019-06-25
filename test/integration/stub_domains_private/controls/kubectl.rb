@@ -59,26 +59,6 @@ control "kubectl" do
           })
         end
       end
-
-      describe "ipmasq" do
-        let(:ipmasq_configmap) { client.get_config_map("ip-masq-agent", "kube-system") }
-
-        it "is created by Terraform" do
-          expect(ipmasq_configmap.metadata.labels.maintained_by).to eq "terraform"
-        end
-
-        it "is configured properly" do
-          expect(YAML.load(ipmasq_configmap.data.config)).to eq({
-            "nonMasqueradeCIDRs" => [
-              "10.0.0.0/8",
-              "172.16.0.0/12",
-              "192.168.0.0/16",
-            ],
-            "resyncInterval" => "60s",
-            "masqLinkLocal" => false,
-          })
-        end
-      end
     end
   end
 end
