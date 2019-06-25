@@ -96,6 +96,10 @@ generate_docs:
 generate:
 	@source test/make.sh && generate
 
+.PHONY: dev
+dev: generate generate_docs
+	@echo "Updated files"
+
 # Versioning
 .PHONY: version
 version:
