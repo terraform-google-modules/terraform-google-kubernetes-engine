@@ -28,7 +28,7 @@ resource "google_container_cluster" "zonal_primary" {
 
   zone           = "${var.zones[0]}"
   node_locations = ["${slice(var.zones,1,length(var.zones))}"]
-
+  cluster_ipv4_cidr = "${var.cluster_ipv4_cidr}"
   network = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
 
   network_policy {
