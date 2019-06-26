@@ -77,25 +77,6 @@ variable "node_version" {
   default     = ""
 }
 
-variable "master_authorized_networks_config" {
-  type = list(object({cidr_blocks=list(object({cidr_block=string,display_name=string}))}))
-
-  description = <<EOF
-  The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)
-
-  ### example format ###
-  master_authorized_networks_config = [{
-    cidr_blocks = [{
-      cidr_block   = "10.0.0.0/8"
-      display_name = "example_network"
-    }],
-  }]
-
-  EOF
-
-  default = []
-}
-
 variable "horizontal_pod_autoscaling" {
   type        = bool
   description = "Enable horizontal pod autoscaling addon"
@@ -273,6 +254,29 @@ variable "service_account" {
   description = "The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created."
   default     = "create"
 }
+
+variable "basic_auth_username" {
+  type        = string
+  description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
+  default     = ""
+}
+
+variable "basic_auth_password" {
+  type        = string
+  description = "The password to be used with Basic Authentication."
+  default     = ""
+}
+
+variable "issue_client_certificate" {
+  type        = bool
+  description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
+  default     = false
+}
+
+variable "cluster_ipv4_cidr" {
+  default     = ""
+  description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
+}
 {% if private_cluster %}
 
 variable "deploy_using_private_endpoint" {
@@ -300,6 +304,7 @@ variable "master_ipv4_cidr_block" {
 }
 {% endif %}
 {% if beta_cluster %}
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   default     = false
@@ -308,21 +313,6 @@ variable "istio" {
 variable "cloudrun" {
   description = "(Beta) Enable CloudRun addon"
   default     = false
-}
-
-variable "database_encryption" {
-  description = <<EOF
-  Application-layer Secrets Encryption settings. Example:
-  database_encryption = [{
-    state = "ENCRYPTED",
-    key_name = "projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key"
-  }]
-  EOF
-  type        = "list"
-  default     = [{
-    state     = "DECRYPTED"
-    key_name  = ""
-  }]
 }
 
 variable "enable_binary_authorization" {
@@ -341,27 +331,37 @@ variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
   default     = "UNSPECIFIED"
 }
+
+variable "database_encryption" {
+  description = <<-EOF
+  Application-layer Secrets Encryption settings. Example:
+  database_encryption = [{
+    state    = "ENCRYPTED",
+    key_name = "projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key"
+  }]
+  EOF
+  type        = "list"
+  default     = [{
+    state     = "DECRYPTED"
+    key_name  = ""
+  }]
+}
 {% endif %}
 
-variable "basic_auth_username" {
-  type        = string
-  description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
-  default     = ""
-}
+variable "master_authorized_networks_config" {
+  type = list(object({cidr_blocks = list(object({cidr_block = string, display_name = string}))}))
 
-variable "basic_auth_password" {
-  type        = string
-  description = "The password to be used with Basic Authentication."
-  default     = ""
-}
+  description = <<-EOF
+  The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)
 
-variable "issue_client_certificate" {
-  type        = bool
-  description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
-  default     = false
-}
+  ### example format ###
+  master_authorized_networks_config = [{
+    cidr_blocks = [{
+      cidr_block   = "10.0.0.0/8"
+      display_name = "example_network"
+    }],
+  }]
+  EOF
 
-variable "cluster_ipv4_cidr" {
-  default     = ""
-  description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
+  default = []
 }

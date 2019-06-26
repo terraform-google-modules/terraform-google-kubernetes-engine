@@ -97,10 +97,15 @@ function generate_docs() {
   TMPFILE=$(mktemp)
   #shellcheck disable=2006,2086
   for j in $(find ./ -name '*.tf' -type f -exec dirname '{}' \; | sort -u | grep -v ./autogen); do
-    terraform-docs markdown "$j" >"$TMPFILE"
-    python helpers/combine_docfiles.py "$j"/README.md "$TMPFILE"
+    if [[ -e "${j}/README.md" ]]; then
+      # script seem to be designed to work into current directory
+      cd $j && echo "Working in ${j} ..."
+      terraform_docs.sh . && echo Success! || echo "Warning! Exit code: ${?}"
+      cd - >/dev/null
+    else
+      echo "Skipping ${j} because README.md does not exist."
+    fi
   done
-  rm -f "$TMPFILE"
 }
 
 function check_generate() {

@@ -120,8 +120,8 @@ Version 1.0.0 of this module introduces a breaking change: adding the `disable-l
 
 In either case, upgrading to module version `v1.0.0` will trigger a recreation of all node pools in the cluster.
 
-[^]: (autogen_docs_start)
-[^]: (autogen_docs_end)
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Requirements
 
