@@ -118,8 +118,83 @@ Version 1.0.0 of this module introduces a breaking change: adding the `disable-l
 
 In either case, upgrading to module version `v1.0.0` will trigger a recreation of all node pools in the cluster.
 
-[^]: (autogen_docs_start)
-[^]: (autogen_docs_end)
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| basic\_auth\_password | The password to be used with Basic Authentication. | string | `""` | no |
+| basic\_auth\_username | The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration. | string | `""` | no |
+| deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | bool | `"false"` | no |
+| description | The description of the cluster | string | `""` | no |
+| disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | bool | `"true"` | no |
+| enable\_binary\_authorization | Enable BinAuthZ Admission controller | string | `"false"` | no |
+| enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | bool | `"false"` | no |
+| enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | bool | `"false"` | no |
+| horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | bool | `"true"` | no |
+| http\_load\_balancing | Enable httpload balancer addon | bool | `"true"` | no |
+| initial\_node\_count | The number of nodes to create in this cluster's default node pool. | number | `"0"` | no |
+| ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | bool | `"false"` | no |
+| ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `"60s"` | no |
+| ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | n/a | yes |
+| ip\_range\_services | The _name_ of the secondary subnet range to use for services | string | n/a | yes |
+| issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | bool | `"false"` | no |
+| kubernetes\_dashboard | Enable kubernetes dashboard addon | bool | `"false"` | no |
+| kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
+| logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com"` | no |
+| maintenance\_start\_time | Time window specified for daily maintenance operations in RFC3339 format | string | `"05:00"` | no |
+| master\_authorized\_networks\_config | The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists) | object | `<list>` | no |
+| master\_ipv4\_cidr\_block | (Beta) The IP range in CIDR notation to use for the hosted master network | string | `"10.0.0.0/28"` | no |
+| monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com"` | no |
+| name | The name of the cluster (required) | string | n/a | yes |
+| network | The VPC network to host the cluster in (required) | string | n/a | yes |
+| network\_policy | Enable network policy addon | bool | `"false"` | no |
+| network\_policy\_provider | The network policy provider. | string | `"CALICO"` | no |
+| network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
+| node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
+| node\_pools\_labels | Map of maps containing node labels by node-pool name | map(map(string)) | `<map>` | no |
+| node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map(map(string)) | `<map>` | no |
+| node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | map(list(string)) | `<map>` | no |
+| node\_pools\_tags | Map of lists containing node network tags by node-pool name | map(list(string)) | `<map>` | no |
+| node\_pools\_taints | Map of lists containing node taints by node-pool name | object | `<map>` | no |
+| node\_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `""` | no |
+| non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list(string) | `<list>` | no |
+| pod\_security\_policy\_config | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | object | `<list>` | no |
+| project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
+| region | The region to host the cluster in (required) | string | n/a | yes |
+| regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |
+| remove\_default\_node\_pool | Remove default node pool while setting up the cluster | bool | `"false"` | no |
+| service\_account | The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created. | string | `"create"` | no |
+| stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map(list(string)) | `<map>` | no |
+| subnetwork | The subnetwork to host the cluster in (required) | string | n/a | yes |
+| zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list(string) | `<list>` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| ca\_certificate | Cluster ca certificate (base64 encoded) |
+| endpoint | Cluster endpoint |
+| horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
+| http\_load\_balancing\_enabled | Whether http load balancing enabled |
+| kubernetes\_dashboard\_enabled | Whether kubernetes dashboard enabled |
+| location | Cluster location (region if regional cluster, zone if zonal cluster) |
+| logging\_service | Logging service used |
+| master\_authorized\_networks\_config | Networks from which access to master is permitted |
+| master\_version | Current master kubernetes version |
+| min\_master\_version | Minimum master kubernetes version |
+| monitoring\_service | Monitoring service used |
+| name | Cluster name |
+| network\_policy\_enabled | Whether network policy enabled |
+| node\_pools\_names | List of node pools names |
+| node\_pools\_versions | List of node pools versions |
+| pod\_security\_policy\_enabled | Whether pod security policy is enabled |
+| region | Cluster region |
+| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
+| type | Cluster type (regional / zonal) |
+| zones | List of zones in which the cluster resides |
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Requirements
 
