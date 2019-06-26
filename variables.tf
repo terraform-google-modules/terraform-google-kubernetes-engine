@@ -222,6 +222,11 @@ variable "ip_masq_link_local" {
   default     = "false"
 }
 
+variable "configure_ip_masq" {
+  description = "Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server."
+  default     = "false"
+}
+
 variable "logging_service" {
   description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
   default     = "logging.googleapis.com"
