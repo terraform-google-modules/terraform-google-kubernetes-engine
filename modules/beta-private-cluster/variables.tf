@@ -311,3 +311,8 @@ variable "issue_client_certificate" {
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
   default     = "false"
 }
+
+variable "cluster_ipv4_cidr" {
+  default     = ""
+  description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
+}
