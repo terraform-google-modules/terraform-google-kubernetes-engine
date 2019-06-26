@@ -251,8 +251,8 @@ variable "service_account" {
   description = "The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created."
   default     = "create"
 }
-
 {% if private_cluster %}
+
 variable "deploy_using_private_endpoint" {
   description = "(Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment."
   default     = "false"
@@ -273,8 +273,8 @@ variable "master_ipv4_cidr_block" {
   default     = "10.0.0.0/28"
 }
 {% endif %}
-
 {% if beta_cluster %}
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   default     = false
