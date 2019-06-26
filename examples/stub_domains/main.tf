@@ -40,6 +40,8 @@ module "gke" {
   network_policy    = true
   service_account   = "${var.compute_engine_service_account}"
 
+  configure_ip_masq = true
+
   stub_domains {
     "example.com" = [
       "10.254.154.11",

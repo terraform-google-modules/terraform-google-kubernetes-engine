@@ -20,7 +20,7 @@
   Create ip-masq-agent confimap
  *****************************************/
 resource "kubernetes_config_map" "ip-masq-agent" {
-  count = "${var.network_policy ? 1 : 0}"
+  count = "${var.configure_ip_masq ? 1 : 0}"
 
   metadata {
     name      = "ip-masq-agent"
