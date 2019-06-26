@@ -26,10 +26,10 @@ resource "google_container_cluster" "zonal_primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  zone           = "${var.zones[0]}"
-  node_locations = ["${slice(var.zones,1,length(var.zones))}"]
-
-  network = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+  zone              = "${var.zones[0]}"
+  node_locations    = ["${slice(var.zones,1,length(var.zones))}"]
+  cluster_ipv4_cidr = "${var.cluster_ipv4_cidr}"
+  network           = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
 
   network_policy {
     enabled  = "${var.network_policy}"
@@ -71,6 +71,7 @@ resource "google_container_cluster" "zonal_primary" {
     network_policy_config {
       disabled = "${var.network_policy ? 0 : 1}"
     }
+
     istio_config {
       disabled = "${var.istio ? 0 : 1}"
     }
@@ -109,11 +110,13 @@ resource "google_container_cluster" "zonal_primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
     }
   }
+
   private_cluster_config {
     enable_private_endpoint = "${var.enable_private_endpoint}"
     enable_private_nodes    = "${var.enable_private_nodes}"
     master_ipv4_cidr_block  = "${var.master_ipv4_cidr_block}"
   }
+
   remove_default_node_pool = "${var.remove_default_node_pool}"
   database_encryption      = ["${var.database_encryption}"]
 }
