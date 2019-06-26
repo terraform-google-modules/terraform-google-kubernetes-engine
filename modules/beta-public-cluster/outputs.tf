@@ -122,4 +122,3 @@ output "cloudrun_enabled" {
   description = "Whether CloudRun enabled"
   value       = "${local.cluster_cloudrun_enabled}"
 }
-
