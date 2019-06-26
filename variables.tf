@@ -78,90 +78,77 @@ variable "node_version" {
 }
 
 variable "master_authorized_networks_config" {
-  type = list(object({ cidr_blocks = list(object({ cidr_block = string, display_name = string })) }))
-
-  description = <<EOF
-  The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)
-
-  ### example format ###
-  master_authorized_networks_config = [{
-    cidr_blocks = [{
-      cidr_block   = "10.0.0.0/8"
-      display_name = "example_network"
-    }],
-  }]
-
-  EOF
-
-  default = []
+  type        = list(object({ cidr_blocks = list(object({ cidr_block = string, display_name = string })) }))
+  description = "The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)"
+  default     = []
 }
 
 variable "horizontal_pod_autoscaling" {
-  type = bool
+  type        = bool
   description = "Enable horizontal pod autoscaling addon"
-  default = true
+  default     = true
 }
 
 variable "http_load_balancing" {
-  type = bool
+  type        = bool
   description = "Enable httpload balancer addon"
-  default = true
+  default     = true
 }
 
 variable "kubernetes_dashboard" {
-  type = bool
+  type        = bool
   description = "Enable kubernetes dashboard addon"
-  default = false
+  default     = false
 }
 
 variable "network_policy" {
-  type = bool
+  type        = bool
   description = "Enable network policy addon"
-  default = false
+  default     = false
 }
 
 variable "network_policy_provider" {
-  type = string
+  type        = string
   description = "The network policy provider."
-  default = "CALICO"
+  default     = "CALICO"
 }
 
 variable "maintenance_start_time" {
-  type = string
+  type        = string
   description = "Time window specified for daily maintenance operations in RFC3339 format"
-  default = "05:00"
+  default     = "05:00"
 }
 
 variable "ip_range_pods" {
-  type = string
+  type        = string
   description = "The _name_ of the secondary subnet ip range to use for pods"
 }
 
 variable "ip_range_services" {
-  type = string
+  type        = string
   description = "The _name_ of the secondary subnet range to use for services"
 }
 
 variable "initial_node_count" {
-  type = number
+  type        = number
   description = "The number of nodes to create in this cluster's default node pool."
-  default = 0
+  default     = 0
 }
 
 variable "remove_default_node_pool" {
-  type = bool
+  type        = bool
   description = "Remove default node pool while setting up the cluster"
-  default = false
+  default     = false
 }
 
 variable "disable_legacy_metadata_endpoints" {
-  type = bool
+  type        = bool
   description = "Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated."
-  default = true
+  default     = true
 }
 
 variable "node_pools" {
-  type = list(map(string))
+  type        = list(map(string))
   description = "List of maps containing node pools"
 
   default = [
@@ -172,111 +159,111 @@ variable "node_pools" {
 }
 
 variable "node_pools_labels" {
-  type = map(map(string))
+  type        = map(map(string))
   description = "Map of maps containing node labels by node-pool name"
 
   default = {
-    all = {}
+    all               = {}
     default-node-pool = {}
   }
 }
 
 variable "node_pools_metadata" {
-  type = map(map(string))
+  type        = map(map(string))
   description = "Map of maps containing node metadata by node-pool name"
 
   default = {
-    all = {}
+    all               = {}
     default-node-pool = {}
   }
 }
 
 variable "node_pools_taints" {
-  type = map(list(object({ key = string, value = string, effect = string })))
+  type        = map(list(object({ key = string, value = string, effect = string })))
   description = "Map of lists containing node taints by node-pool name"
 
   default = {
-    all = []
+    all               = []
     default-node-pool = []
   }
 }
 
 variable "node_pools_tags" {
-  type = map(list(string))
+  type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
 
   default = {
-    all = []
+    all               = []
     default-node-pool = []
   }
 }
 
 variable "node_pools_oauth_scopes" {
-  type = map(list(string))
+  type        = map(list(string))
   description = "Map of lists containing node oauth scopes by node-pool name"
 
   default = {
-    all = ["https://www.googleapis.com/auth/cloud-platform"]
+    all               = ["https://www.googleapis.com/auth/cloud-platform"]
     default-node-pool = []
   }
 }
 
 variable "stub_domains" {
-  type = map(list(string))
+  type        = map(list(string))
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"
-  default = {}
+  default     = {}
 }
 
 variable "non_masquerade_cidrs" {
-  type = list(string)
+  type        = list(string)
   description = "List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading."
-  default = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+  default     = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 }
 
 variable "ip_masq_resync_interval" {
-  type = string
+  type        = string
   description = "The interval at which the agent attempts to sync its ConfigMap file from the disk."
-  default = "60s"
+  default     = "60s"
 }
 
 variable "ip_masq_link_local" {
-  type = bool
+  type        = bool
   description = "Whether to masquerade traffic to the link-local prefix (169.254.0.0/16)."
-  default = false
+  default     = false
 }
 
 variable "logging_service" {
-  type = string
+  type        = string
   description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
-  default = "logging.googleapis.com"
+  default     = "logging.googleapis.com"
 }
 
 variable "monitoring_service" {
-  type = string
+  type        = string
   description = "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none"
-  default = "monitoring.googleapis.com"
+  default     = "monitoring.googleapis.com"
 }
 
 variable "service_account" {
-  type = string
+  type        = string
   description = "The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created."
-  default = "create"
+  default     = "create"
 }
 
 variable "basic_auth_username" {
-  type = string
+  type        = string
   description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
-  default = ""
+  default     = ""
 }
 
 variable "basic_auth_password" {
-  type = string
+  type        = string
   description = "The password to be used with Basic Authentication."
-  default = ""
+  default     = ""
 }
 
 variable "issue_client_certificate" {
-  type = bool
+  type        = bool
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
-  default = false
+  default     = false
 }

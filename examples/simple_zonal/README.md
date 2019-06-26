@@ -2,8 +2,7 @@
 
 This example illustrates how to create a simple cluster.
 
-[^]: (autogen_docs_start)
-
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -15,7 +14,7 @@ This example illustrates how to create a simple cluster.
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
 | subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
-| zones | The zone to host the cluster in (required if is a zonal cluster) | list | n/a | yes |
+| zones | The zone to host the cluster in (required if is a zonal cluster) | list(string) | n/a | yes |
 
 ## Outputs
 
@@ -36,7 +35,7 @@ This example illustrates how to create a simple cluster.
 | subnetwork |  |
 | zones | List of zones in which the cluster resides |
 
-[^]: (autogen_docs_end)
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 To provision this example, run the following from within this directory:
 - `terraform init` to get the plugins
