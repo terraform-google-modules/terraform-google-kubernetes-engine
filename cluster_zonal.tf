@@ -26,10 +26,10 @@ resource "google_container_cluster" "zonal_primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  zone           = "${var.zones[0]}"
-  node_locations = ["${slice(var.zones,1,length(var.zones))}"]
+  zone              = "${var.zones[0]}"
+  node_locations    = ["${slice(var.zones,1,length(var.zones))}"]
   cluster_ipv4_cidr = "${var.cluster_ipv4_cidr}"
-  network = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+  network           = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
 
   network_policy {
     enabled  = "${var.network_policy}"
@@ -100,6 +100,7 @@ resource "google_container_cluster" "zonal_primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
     }
   }
+
   remove_default_node_pool = "${var.remove_default_node_pool}"
 }
 

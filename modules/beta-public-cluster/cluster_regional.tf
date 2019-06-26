@@ -26,10 +26,10 @@ resource "google_container_cluster" "primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  region         = "${var.region}"
-  node_locations = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
+  region            = "${var.region}"
+  node_locations    = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
   cluster_ipv4_cidr = "${var.cluster_ipv4_cidr}"
-  network = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
+  network           = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
 
   network_policy {
     enabled  = "${var.network_policy}"
@@ -69,6 +69,7 @@ resource "google_container_cluster" "primary" {
     network_policy_config {
       disabled = "${var.network_policy ? 0 : 1}"
     }
+
     istio_config {
       disabled = "${var.istio ? 0 : 1}"
     }
@@ -107,6 +108,7 @@ resource "google_container_cluster" "primary" {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
     }
   }
+
   remove_default_node_pool = "${var.remove_default_node_pool}"
   database_encryption      = ["${var.database_encryption}"]
 }
