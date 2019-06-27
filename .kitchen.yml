@@ -104,3 +104,16 @@ suites:
       systems:
         - name: stub_domains_private
           backend: local
+  - name: "beta_public_cluster"
+    driver:
+      root_module_directory: test/fixtures/beta_public_cluster
+    verifier:
+      systems:
+        - name: gcloud
+          backend: local
+          controls:
+            - gcloud
+        - name: gcp
+          backend: gcp
+          controls:
+            - gcp
