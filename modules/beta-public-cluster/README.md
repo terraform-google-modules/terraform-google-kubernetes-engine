@@ -1,12 +1,14 @@
 # Terraform Kubernetes Engine Module
 
-This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.Beta features are enabled on this submodule.
+This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.Beta features are enabled in this submodule.
 The resources/services/activations/deletions that this module will create/trigger are:
 - Create a GKE cluster with the provided addons
 - Create GKE Node Pool(s) with provided configuration and attach to cluster
 - Replace the default kube-dns configmap if `stub_domains` are provided
 - Activate network policy if `network_policy` is true
-- Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `network_policy` is true
+- Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `configure_ip_masq` is true
+
+Sub modules are provided from creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
 
 ## Usage
 There are multiple examples included in the [examples](./examples/) folder but simple usage is as follows:
@@ -92,6 +94,7 @@ module "gke" {
 }
 ```
 
+<!-- do not understand what this is about -->
 Then perform the following commands on the root folder:
 
 - `terraform init` to get the plugins
@@ -230,14 +233,15 @@ In order to operate with the Service Account you must activate the following API
 The project has the following folders and files:
 
 - /: root folder
-- /examples: examples for using this module
-- /helpers: Helper scripts
-- /scripts: Scripts for specific tasks on module (see Infrastructure section on this file)
-- /test: Folders with files for testing the module (see Testing section on this file)
-- /main.tf: main file for this module, contains all the resources to create
-- /variables.tf: all the variables for the module
-- /output.tf: the outputs of the module
-- /readme.MD: this file
+- /examples: Examples for using this module and sub module.
+- /helpers: Helper scripts.
+- /scripts: Scripts for specific tasks on module (see Infrastructure section on this file).
+- /test: Folders with files for testing the module (see Testing section on this file).
+- /main.tf: `main` file for the public module, contains all the resources to create.
+- /variables.tf: Variables for the public cluster module.
+- /output.tf: The outputs for the public cluster module.
+- /README.MD: This file.
+- /modules: Private and beta sub modules.
 
 ## Templating
 
