@@ -42,6 +42,7 @@ resource "google_container_cluster" "zonal_primary" {
   logging_service    = "${var.logging_service}"
   monitoring_service = "${var.monitoring_service}"
 
+
   master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
 
   master_auth {
