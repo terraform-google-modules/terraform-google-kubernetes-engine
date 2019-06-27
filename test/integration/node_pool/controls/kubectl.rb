@@ -73,13 +73,13 @@ control "kubectl" do
         end
 
         it "has the expected taints" do
-          expect(taints).to include(
+          expect(taints).to eq([
             {
               effect: "PreferNoSchedule",
               key: "all-pools-example",
               value: "true",
             }
-          )
+          ])
         end
       end
     end
