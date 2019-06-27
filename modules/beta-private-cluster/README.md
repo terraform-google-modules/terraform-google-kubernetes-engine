@@ -121,16 +121,19 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| authenticator\_groups\_config | Configuration for the Google Groups for GKE feature.  This block has a field named 'security_group' which lists RBAC security group for use with Google security groups in Kubernetes RBAC. | list | `<list>` | no |
 | basic\_auth\_password | The password to be used with Basic Authentication. | string | `""` | no |
 | basic\_auth\_username | The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration. | string | `""` | no |
 | cloudrun | (Beta) Enable CloudRun addon | string | `"false"` | no |
 | cluster\_ipv4\_cidr | The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR. | string | `""` | no |
 | configure\_ip\_masq | Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server. | string | `"false"` | no |
 | database\_encryption | Application-layer Secrets Encryption settings. Example:   database_encryption = [{     state = "ENCRYPTED",     key_name = "projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key"   }] | list | `<list>` | no |
+| default\_max\_pods\_per\_node | The default maximum number of pods per node in this cluster. Note that this does not work on node pools which are 'route-based' - that is, node pools belonging to clusters that do not have IP Aliasing enabled. | string | `"110"` | no |
 | deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | string | `"false"` | no |
 | description | The description of the cluster | string | `""` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | string | `"true"` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | string | `"false"` | no |
+| enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network. | string | `"false"` | no |
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | string | `"false"` | no |
 | enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | string | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | string | `"true"` | no |
@@ -170,6 +173,8 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created. | string | `"create"` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | string | n/a | yes |
+| vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it. | string | `"false"` | no |
+| workload\_identity\_config | Workload Identity allows Kubernetes service accounts to act as a user-managed Google IAM Service Account. | string | `"UNSPECIFIED"` | no |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list | `<list>` | no |
 
 ## Outputs

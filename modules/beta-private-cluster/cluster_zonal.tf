@@ -42,8 +42,15 @@ resource "google_container_cluster" "zonal_primary" {
   logging_service    = "${var.logging_service}"
   monitoring_service = "${var.monitoring_service}"
 
-  enable_binary_authorization       = "${var.enable_binary_authorization}"
-  pod_security_policy_config        = "${var.pod_security_policy_config}"
+  database_encryption      = ["${var.database_encryption}"]
+  vertical_pod_autoscaling = "${list(map("enabled", var.vertical_pod_autoscaling))}"
+  workload_identity_config = "${list(map("identity_namespace", var.workload_identity_config))}"
+
+  authenticator_groups_config = "${var.authenticator_groups_config}"
+  default_max_pods_per_node   = "${var.default_max_pods_per_node}"
+  enable_intranode_visibility = "${var.enable_intranode_visibility}"
+  enable_binary_authorization = "${var.enable_binary_authorization}"
+  pod_security_policy_config  = "${var.pod_security_policy_config}"
 
   master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
 
@@ -72,7 +79,6 @@ resource "google_container_cluster" "zonal_primary" {
     network_policy_config {
       disabled = "${var.network_policy ? 0 : 1}"
     }
-
     istio_config {
       disabled = "${var.istio ? 0 : 1}"
     }
@@ -119,7 +125,6 @@ resource "google_container_cluster" "zonal_primary" {
   }
 
   remove_default_node_pool = "${var.remove_default_node_pool}"
-  database_encryption      = ["${var.database_encryption}"]
 }
 
 /******************************************

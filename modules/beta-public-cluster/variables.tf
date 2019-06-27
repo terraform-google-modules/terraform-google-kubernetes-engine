@@ -282,6 +282,32 @@ variable "pod_security_policy_config" {
   }]
 }
 
+variable "authenticator_groups_config" {
+  description = "Configuration for the Google Groups for GKE feature.  This block has a field named 'security_group' which lists RBAC security group for use with Google security groups in Kubernetes RBAC."
+  default     = []
+}
+
+variable "vertical_pod_autoscaling" {
+  description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it."
+  default     = false
+}
+
+// TODO document "UNSPECIFIED", "SECURE", "EXPOSE", "GKE_METADATA_SERVER"
+variable "workload_identity_config" {
+  description = "Workload Identity allows Kubernetes service accounts to act as a user-managed Google IAM Service Account."
+  default     = "UNSPECIFIED"
+}
+
+variable "enable_intranode_visibility" {
+  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network."
+  default     = "false"
+}
+
+variable "default_max_pods_per_node" {
+  description = "The default maximum number of pods per node in this cluster. Note that this does not work on node pools which are 'route-based' - that is, node pools belonging to clusters that do not have IP Aliasing enabled."
+  default     = "110"
+}
+
 variable "basic_auth_username" {
   description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
   default     = ""

@@ -42,6 +42,8 @@ resource "google_container_cluster" "primary" {
   logging_service    = "${var.logging_service}"
   monitoring_service = "${var.monitoring_service}"
 
+
+
   master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
 
   master_auth {
@@ -166,6 +168,7 @@ resource "google_container_node_pool" "pools" {
     update = "30m"
     delete = "30m"
   }
+
 }
 
 resource "null_resource" "wait_for_regional_cluster" {

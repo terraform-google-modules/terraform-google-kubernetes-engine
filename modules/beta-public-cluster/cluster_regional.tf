@@ -42,8 +42,17 @@ resource "google_container_cluster" "primary" {
   logging_service    = "${var.logging_service}"
   monitoring_service = "${var.monitoring_service}"
 
-  enable_binary_authorization       = "${var.enable_binary_authorization}"
-  pod_security_policy_config        = "${var.pod_security_policy_config}"
+  database_encryption      = ["${var.database_encryption}"]
+  vertical_pod_autoscaling = "${list(map("enabled", var.vertical_pod_autoscaling))}"
+  workload_identity_config = "${list(map("identity_namespace", var.workload_identity_config))}"
+
+  authenticator_groups_config = "${var.authenticator_groups_config}"
+  default_max_pods_per_node   = "${var.default_max_pods_per_node}"
+  enable_intranode_visibility = "${var.enable_intranode_visibility}"
+  enable_binary_authorization = "${var.enable_binary_authorization}"
+  pod_security_policy_config  = "${var.pod_security_policy_config}"
+
+
   master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
 
   master_auth {
@@ -112,7 +121,6 @@ resource "google_container_cluster" "primary" {
   }
 
   remove_default_node_pool = "${var.remove_default_node_pool}"
-  database_encryption      = ["${var.database_encryption}"]
 }
 
 /******************************************
@@ -171,6 +179,7 @@ resource "google_container_node_pool" "pools" {
     update = "30m"
     delete = "30m"
   }
+
 }
 
 resource "null_resource" "wait_for_regional_cluster" {
