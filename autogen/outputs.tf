@@ -113,7 +113,6 @@ output "service_account" {
   value       = "${local.service_account}"
 }
 {% if beta_cluster %}
-
 output "istio_enabled" {
   description = "Whether Istio is enabled"
   value       = "${local.cluster_istio_enabled}"
@@ -123,8 +122,6 @@ output "cloudrun_enabled" {
   description = "Whether CloudRun enabled"
   value       = "${local.cluster_cloudrun_enabled}"
 }
-{% endif %}
-{% if private_cluster %}
 
 output "pod_security_policy_enabled" {
   description = "Whether pod security policy is enabled"
