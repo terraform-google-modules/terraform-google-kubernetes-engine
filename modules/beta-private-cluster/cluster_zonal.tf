@@ -55,6 +55,8 @@ resource "google_container_cluster" "zonal_primary" {
     }
   }
 
+  enable_legacy_abac = "${var.enable_legacy_abac}"
+
   addons_config {
     http_load_balancing {
       disabled = "${var.http_load_balancing ? 0 : 1}"
@@ -81,10 +83,7 @@ resource "google_container_cluster" "zonal_primary" {
     }
   }
 
-  ip_allocation_policy {
-    cluster_secondary_range_name  = "${var.ip_range_pods}"
-    services_secondary_range_name = "${var.ip_range_services}"
-  }
+  ip_allocation_policy = ["${var.ip_allocation_policy}"]
 
   maintenance_policy {
     daily_maintenance_window {
@@ -129,7 +128,7 @@ resource "google_container_node_pool" "zonal_pools" {
   count              = "${var.regional ? 0 : length(var.node_pools)}"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
-  zone               = "${var.zones[0]}"
+  location           = "${var.zones[0]}"
   cluster            = "${google_container_cluster.zonal_primary.name}"
   version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version_zonal)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"

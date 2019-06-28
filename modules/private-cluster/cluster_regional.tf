@@ -26,7 +26,7 @@ resource "google_container_cluster" "primary" {
   description = "${var.description}"
   project     = "${var.project_id}"
 
-  region            = "${var.region}"
+  location          = "${var.location}"
   node_locations    = ["${coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result))}"]
   cluster_ipv4_cidr = "${var.cluster_ipv4_cidr}"
   network           = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
@@ -55,6 +55,8 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  enable_legacy_abac = "${var.enable_legacy_abac}"
+
   addons_config {
     http_load_balancing {
       disabled = "${var.http_load_balancing ? 0 : 1}"
@@ -73,10 +75,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  ip_allocation_policy {
-    cluster_secondary_range_name  = "${var.ip_range_pods}"
-    services_secondary_range_name = "${var.ip_range_services}"
-  }
+  ip_allocation_policy = ["${var.ip_allocation_policy}"]
 
   maintenance_policy {
     daily_maintenance_window {
@@ -120,7 +119,7 @@ resource "google_container_node_pool" "pools" {
   count              = "${var.regional ? length(var.node_pools) : 0}"
   name               = "${lookup(var.node_pools[count.index], "name")}"
   project            = "${var.project_id}"
-  region             = "${var.region}"
+  location           = "${var.location}"
   cluster            = "${google_container_cluster.primary.name}"
   version            = "${lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(var.node_pools[count.index], "version", local.node_version_regional)}"
   initial_node_count = "${lookup(var.node_pools[count.index], "initial_node_count", lookup(var.node_pools[count.index], "min_count", 1))}"

@@ -261,3 +261,18 @@ variable "cluster_ipv4_cidr" {
   default     = ""
   description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
 }
+
+variable "ip_allocation_policy" {
+  default     = []
+  description = "Configuration for cluster IP allocation. As of now, only pre-allocated subnetworks (custom type with secondary ranges) are supported. This will activate IP aliases."
+}
+
+variable "location" {
+  default     = ""
+  description = "The location (region or zone) in which the cluster master will be created, as well as the default node location. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region, and with default node locations in those zones as well."
+}
+
+variable "enable_legacy_abac" {
+  default     = false
+  description = "Whether the ABAC authorizer is enabled for this cluster. When enabled, identities in the system, including service accounts, nodes, and controllers, will have statically granted permissions beyond those provided by the RBAC configuration or IAM. Defaults to false"
+}
