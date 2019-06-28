@@ -19,7 +19,12 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Submodules for public and private clusters with beta features. [#124] [#188]
 * Support for configuring cluster IPv4 CIDRs. [#193]
 * Support for configuring IP Masquerade. [#187]
-* Support for v2.8 and v2.9 of the Google providers. [#198]
+* Support for v2.9 of the Google providers. [#198]
+
+### Fixed
+
+* Dropped support for v2.7 of the Google providers; these versions were
+  incompatible with the guest accelerator. [#198]
 
 ## [v2.1.0] - 2019-05-30
 
