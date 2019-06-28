@@ -19,6 +19,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Submodules for public and private clusters with beta features. [#124] [#188]
 * Support for configuring cluster IPv4 CIDRs. [#193]
 * Support for configuring IP Masquerade. [#187]
+* Support for v2.8 and v2.9 of the Google providers. [#198]
 
 ## [v2.1.0] - 2019-05-30
 
@@ -136,6 +137,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#198]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/198
 [#197]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/197
 [#193]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/193
 [#188]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/188
