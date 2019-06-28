@@ -42,10 +42,11 @@ resource "google_container_cluster" "zonal_primary" {
   logging_service    = "${var.logging_service}"
   monitoring_service = "${var.monitoring_service}"
 
-{% if private_cluster %}
+  {% if beta_cluster %}
   enable_binary_authorization       = "${var.enable_binary_authorization}"
   pod_security_policy_config        = "${var.pod_security_policy_config}"
-{% endif %}
+  {% endif %}
+
   master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
 
   master_auth {
@@ -168,6 +169,11 @@ resource "google_container_node_pool" "zonal_pools" {
       "${concat(var.node_pools_oauth_scopes["all"],
       var.node_pools_oauth_scopes[lookup(var.node_pools[count.index], "name")])}",
     ]
+
+    guest_accelerator {
+      type  = "${lookup(var.node_pools[count.index], "accelerator_type", "")}"
+      count = "${lookup(var.node_pools[count.index], "accelerator_count", 0)}"
+    }
   }
 
   lifecycle {

@@ -86,21 +86,6 @@ variable "master_authorized_networks_config" {
   default = []
 }
 
-{% if private_cluster %}
-variable "enable_binary_authorization" {
-  description = "Enable BinAuthZ Admission controller"
-  default     = false
-}
-
-variable "pod_security_policy_config" {
-  description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
-
-  default     = [{
-    "enabled" = false
-  }]
-}
-
-{% endif %}
 variable "horizontal_pod_autoscaling" {
   description = "Enable horizontal pod autoscaling addon"
   default     = true
@@ -279,7 +264,6 @@ variable "master_ipv4_cidr_block" {
 }
 {% endif %}
 {% if beta_cluster %}
-
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   default     = false
@@ -302,6 +286,18 @@ variable "database_encryption" {
   default     = [{
     state     = "DECRYPTED"
     key_name  = ""
+  }]
+}
+
+variable "enable_binary_authorization" {
+  description = "Enable BinAuthZ Admission controller"
+  default     = false
+}
+
+variable "pod_security_policy_config" {
+  description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
+  default     = [{
+    "enabled" = false
   }]
 }
 {% endif %}

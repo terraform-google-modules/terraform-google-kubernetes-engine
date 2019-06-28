@@ -269,6 +269,19 @@ variable "database_encryption" {
   }]
 }
 
+variable "enable_binary_authorization" {
+  description = "Enable BinAuthZ Admission controller"
+  default     = false
+}
+
+variable "pod_security_policy_config" {
+  description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
+
+  default = [{
+    "enabled" = false
+  }]
+}
+
 variable "basic_auth_username" {
   description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
   default     = ""
