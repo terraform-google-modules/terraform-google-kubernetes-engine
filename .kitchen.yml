@@ -104,3 +104,10 @@ suites:
       systems:
         - name: stub_domains_private
           backend: local
+  - name: "workload_metadata_config"
+    driver:
+      root_module_directory: test/fixtures/workload_metadata_config
+    verifier:
+      systems:
+        - name: workload_metadata_config
+          backend: local
