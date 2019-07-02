@@ -107,6 +107,11 @@ resource "google_container_cluster" "zonal_primary" {
 
     node_config {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
+      {% if beta_cluster %}
+      workload_metadata_config {
+        node_metadata = "${var.node_metadata}"
+      }
+      {% endif %}
     }
   }
 {% if private_cluster %}
