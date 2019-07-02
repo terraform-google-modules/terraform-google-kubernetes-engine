@@ -14,13 +14,14 @@ To migrate from the root module to the `beta-public-cluster` submodule,
 update a Terraform configuration like the following example:
 
 ```diff
-module "kubernetes_engine_private_cluster" {
+ module "kubernetes_engine_private_cluster" {
 -  source  = "terraform-google-modules/kubernetes-engine/google"
 +  source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
 -  version = "~> 2.0"
 +  version = "~> 3.0"
 
-  # ...
+   # ...
+ }
 ```
 
 To migrate from the old `private-cluster` submodule to the new
@@ -28,14 +29,14 @@ To migrate from the old `private-cluster` submodule to the new
 like the following example:
 
 ```diff
-module "kubernetes_engine_private_cluster" {
+ module "kubernetes_engine_private_cluster" {
 -  source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
 +  source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
 -  version = "~> 2.0"
 +  version = "~> 3.0"
 
-  # ...
-}
+   # ...
+ }
 ```
 
 ### IP Masqeurade
@@ -46,13 +47,13 @@ explicit toggle. To continue using IP Masquerade, update a Terraform
 configuration like the following example:
 
 ```diff
-module "kubernetes_engine_private_cluster" {
-  source  = "terraform-google-modules/kubernetes-engine/google"
+ module "kubernetes_engine_private_cluster" {
+   source  = "terraform-google-modules/kubernetes-engine/google"
 -  version = "~> 2.0"
 +  version = "~> 3.0"
 
 +  configure_ip_masq = "true"
-  # ...
-}
+   # ...
+ }
 ```
 
