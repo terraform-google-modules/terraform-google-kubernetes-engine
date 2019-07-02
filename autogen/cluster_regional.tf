@@ -75,9 +75,7 @@ resource "google_container_cluster" "primary" {
       disabled = "${var.istio ? 0 : 1}"
     }
 
-    cloudrun_config {
-      disabled = "${var.cloudrun ? 0 : 1}"
-    }
+    cloudrun_config = "${local.cluster_cloudrun_config["${var.cloudrun ? "enabled" : "disabled"}"]}"
     {% endif %}
   }
 
