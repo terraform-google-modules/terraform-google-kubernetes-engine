@@ -30,11 +30,7 @@ resource "google_container_cluster" "zonal_primary" {
   node_locations    = ["${slice(var.zones,1,length(var.zones))}"]
   cluster_ipv4_cidr = "${var.cluster_ipv4_cidr}"
   network           = "${replace(data.google_compute_network.gke_network.self_link, "https://www.googleapis.com/compute/v1/", "")}"
-
-  network_policy {
-    enabled  = "${var.network_policy}"
-    provider = "${var.network_policy_provider}"
-  }
+  network_policy    = "${local.cluster_network_policy["${var.network_policy ? "enabled" : "disabled"}"]}"
 
   subnetwork         = "${replace(data.google_compute_subnetwork.gke_subnetwork.self_link, "https://www.googleapis.com/compute/v1/", "")}"
   min_master_version = "${local.kubernetes_version_zonal}"

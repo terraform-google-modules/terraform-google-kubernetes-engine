@@ -40,6 +40,25 @@ locals {
 
   cluster_type = "${var.regional ? "regional" : "zonal"}"
 
+  cluster_network_policy = {
+    enabled = [{
+      enabled  = "true"
+      provider = "${var.network_policy_provider}"
+    }]
+
+    disabled = [{
+      enabled = "false"
+    }]
+  }
+
+  cluster_cloudrun_config = {
+    enabled = [{
+      disabled = "false"
+    }]
+
+    disabled = []
+  }
+
   cluster_type_output_name = {
     regional = "${element(concat(google_container_cluster.primary.*.name, list("")), 0)}"
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.name, list("")), 0)}"
