@@ -155,6 +155,10 @@ resource "google_container_node_pool" "zonal_pools" {
       type  = "${lookup(var.node_pools[count.index], "accelerator_type", "")}"
       count = "${lookup(var.node_pools[count.index], "accelerator_count", 0)}"
     }
+
+    workload_metadata_config {
+      node_metadata = "${var.node_metadata}"
+    }
   }
 
   lifecycle {
