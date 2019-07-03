@@ -108,9 +108,7 @@ resource "google_container_cluster" "zonal_primary" {
     node_config {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
       {% if beta_cluster %}
-      workload_metadata_config {
-        node_metadata = "${var.node_metadata}"
-      }
+      workload_metadata_config = "${local.cluster_node_metadata_config["${var.node_metadata == "UNSPECIFIED" ? "unspecified" : "specified"}"]}"
       {% endif %}
     }
   }
@@ -176,9 +174,7 @@ resource "google_container_node_pool" "zonal_pools" {
     }
     {% if beta_cluster %}
 
-    workload_metadata_config {
-      node_metadata = "${var.node_metadata}"
-    }
+    workload_metadata_config = "${local.cluster_node_metadata_config["${var.node_metadata == "UNSPECIFIED" ? "unspecified" : "specified"}"]}"
     {% endif %}
   }
 
