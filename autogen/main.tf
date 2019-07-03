@@ -52,7 +52,14 @@ locals {
     enabled  = [{disabled = "false"}]
     disabled = []
   }
+{% if beta_cluster %}
 
+  cluster_node_metadata_config = {
+    specified   = [{node_metadata = "${var.node_metadata}"}]
+    unspecified = []
+  }
+
+{% endif %}
   cluster_type_output_name = {
     regional = "${element(concat(google_container_cluster.primary.*.name, list("")), 0)}"
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.name, list("")), 0)}"
