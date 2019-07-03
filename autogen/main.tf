@@ -40,6 +40,19 @@ locals {
 
   cluster_type = "${var.regional ? "regional" : "zonal"}"
 
+  cluster_network_policy = {
+    enabled = [{
+      enabled  = "true"
+      provider = "${var.network_policy_provider}"
+    }]
+    disabled = [{enabled = "false"}]
+  }
+
+  cluster_cloudrun_config = {
+    enabled  = [{disabled = "false"}]
+    disabled = []
+  }
+
   cluster_type_output_name = {
     regional = "${element(concat(google_container_cluster.primary.*.name, list("")), 0)}"
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.name, list("")), 0)}"
@@ -136,10 +149,6 @@ locals {
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.istio_config.0.disabled, list("")), 0)}"
   }
 
-  cluster_type_output_cloudrun_enabled = {
-    regional = "${element(concat(google_container_cluster.primary.*.addons_config.0.cloudrun_config.0.disabled, list("")), 0)}"
-    zonal    = "${element(concat(google_container_cluster.zonal_primary.*.addons_config.0.cloudrun_config.0.disabled, list("")), 0)}"
-  }
   cluster_type_output_pod_security_policy_enabled = {
     regional = "${element(concat(google_container_cluster.primary.*.pod_security_policy_config.0.enabled, list("")), 0)}"
     zonal    = "${element(concat(google_container_cluster.zonal_primary.*.pod_security_policy_config.0.enabled, list("")), 0)}"
@@ -180,7 +189,7 @@ locals {
 {% if beta_cluster %}
   # BETA features
   cluster_istio_enabled    = "${local.cluster_type_output_istio_enabled[local.cluster_type] ? false : true}"
-  cluster_cloudrun_enabled = "${local.cluster_type_output_cloudrun_enabled[local.cluster_type] ? false : true}"
+  cluster_cloudrun_enabled = "${var.cloudrun}"
 
   cluster_pod_security_policy_enabled        = "${local.cluster_type_output_pod_security_policy_enabled[local.cluster_type] ? true : false}"
   # /BETA features
