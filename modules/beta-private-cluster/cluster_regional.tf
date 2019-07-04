@@ -102,6 +102,7 @@ resource "google_container_cluster" "primary" {
 
     node_config {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
+      workload_metadata_config = "${local.cluster_node_metadata_config["${var.node_metadata == "UNSPECIFIED" ? "unspecified" : "specified"}"]}"
     }
   }
 
@@ -160,6 +161,8 @@ resource "google_container_node_pool" "pools" {
       type  = "${lookup(var.node_pools[count.index], "accelerator_type", "")}"
       count = "${lookup(var.node_pools[count.index], "accelerator_count", 0)}"
     }
+
+    workload_metadata_config = "${local.cluster_node_metadata_config["${var.node_metadata == "UNSPECIFIED" ? "unspecified" : "specified"}"]}"
   }
 
   lifecycle {
