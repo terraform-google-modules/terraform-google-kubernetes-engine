@@ -282,6 +282,11 @@ variable "pod_security_policy_config" {
   }]
 }
 
+variable "node_metadata" {
+  description = "Specifies how node metadata is exposed to the workload running on the node"
+  default     = "UNSPECIFIED"
+}
+
 variable "basic_auth_username" {
   description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
   default     = ""

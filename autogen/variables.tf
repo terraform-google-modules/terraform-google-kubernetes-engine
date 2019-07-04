@@ -300,6 +300,11 @@ variable "pod_security_policy_config" {
     "enabled" = false
   }]
 }
+
+variable "node_metadata" {
+  description = "Specifies how node metadata is exposed to the workload running on the node"
+  default     = "UNSPECIFIED"
+}
 {% endif %}
 
 variable "basic_auth_username" {
