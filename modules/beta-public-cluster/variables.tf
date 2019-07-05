@@ -206,6 +206,12 @@ variable "stub_domains" {
   default     = {}
 }
 
+variable "upstream_nameservers" {
+  type        = "list"
+  description = "If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf"
+  default     = []
+}
+
 variable "non_masquerade_cidrs" {
   type        = "list"
   description = "List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading."
