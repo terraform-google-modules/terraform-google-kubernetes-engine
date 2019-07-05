@@ -14,47 +14,33 @@
  * limitations under the License.
  */
 
+locals {
+  cluster_type = "domains-nameservers"
+}
+
+provider "google" {
+  version = "~> 2.9.0"
+  region  = "${var.region}"
+}
+
 provider "google-beta" {
   version = "~> 2.9.0"
   region  = "${var.region}"
 }
 
-provider "random" {
-  version = "~> 2.1"
-}
-
-data "google_compute_subnetwork" "subnetwork" {
-  name    = "${var.subnetwork}"
-  project = "${var.project_id}"
-  region  = "${var.region}"
-}
-
 module "gke" {
-  source = "../../modules/private-cluster"
-
+  source            = "../../"
+  project_id        = "${var.project_id}"
+  name              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  region            = "${var.region}"
+  network           = "${var.network}"
+  subnetwork        = "${var.subnetwork}"
   ip_range_pods     = "${var.ip_range_pods}"
   ip_range_services = "${var.ip_range_services}"
-  name              = "stub-domains-private-cluster${var.cluster_name_suffix}"
-  network           = "${var.network}"
-  project_id        = "${var.project_id}"
-  region            = "${var.region}"
-  subnetwork        = "${var.subnetwork}"
+  network_policy    = true
+  service_account   = "${var.compute_engine_service_account}"
 
-  deploy_using_private_endpoint = "true"
-  enable_private_endpoint       = "false"
-  enable_private_nodes          = "true"
-
-  master_authorized_networks_config = [{
-    cidr_blocks = [{
-      cidr_block   = "${data.google_compute_subnetwork.subnetwork.ip_cidr_range}"
-      display_name = "VPC"
-    }]
-  }]
-
-  master_ipv4_cidr_block = "172.16.0.0/28"
-
-  network_policy  = "true"
-  service_account = "${var.compute_engine_service_account}"
+  configure_ip_masq = true
 
   stub_domains {
     "example.com" = [
@@ -67,6 +53,8 @@ module "gke" {
       "10.254.154.12",
     ]
   }
+
+  upstream_nameservers = ["8.8.8.8", "8.8.4.4"]
 }
 
 data "google_client_config" "default" {}
