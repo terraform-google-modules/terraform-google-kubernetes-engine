@@ -90,6 +90,7 @@ resource "kubernetes_config_map" "kube-dns-upstream-nameservers-and-stub-domains
     upstreamNameservers = <<EOF
 ${jsonencode(var.upstream_nameservers)}
 EOF
+
     stubDomains = <<EOF
 ${jsonencode(var.stub_domains)}
 EOF
