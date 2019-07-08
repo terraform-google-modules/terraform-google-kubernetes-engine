@@ -26,8 +26,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### Fixed
 
-* Dropped support for v2.7 of the Google providers; these versions were
-  incompatible with the guest accelerator. [#198]
+* Dropped support for versions of the Google provider earlier than v2.9; these versions multiple
+  incompatibilities with the module. [#198]
 
 ## [v2.1.0] - 2019-05-30
 
