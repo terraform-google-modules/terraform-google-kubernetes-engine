@@ -99,6 +99,11 @@ Then perform the following commands on the root folder:
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
 
+## Upgrade to v3.0.0
+
+v3.0.0 is a breaking release. Refer to the
+[Upgrading to v3.0 guide][upgrading-to-v3.0] for details.
+
 ## Upgrade to v2.0.0
 
 v2.0.0 is a breaking release. Refer to the
@@ -162,6 +167,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created. | string | `"create"` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | string | n/a | yes |
+| upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | list | `<list>` | no |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list | `<list>` | no |
 
 ## Outputs
@@ -209,7 +215,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.11.x
-- [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v2.3, v2.6, v2.9
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v2.9
 
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the
@@ -377,3 +383,5 @@ command.
 * Dockerfiles - hadolint. Can be found in homebrew
 
 [upgrading-to-v2.0]: docs/upgrading_to_v2.0.md
+[upgrading-to-v3.0]: ../../docs/upgrading_to_v3.0.md
+[terraform-provider-google-beta]: https://github.com/terraform-providers/terraform-provider-google-beta
