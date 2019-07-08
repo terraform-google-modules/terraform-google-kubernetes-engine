@@ -111,6 +111,11 @@ Then perform the following commands on the root folder:
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
 
+## Upgrade to v3.0.0
+
+v3.0.0 is a breaking release. Refer to the
+[Upgrading to v3.0 guide][upgrading-to-v3.0] for details.
+
 ## Upgrade to v2.0.0
 
 v2.0.0 is a breaking release. Refer to the
@@ -316,6 +321,11 @@ command.
 [upgrading-to-v2.0]: ../../docs/upgrading_to_v2.0.md
 {% else %}
 [upgrading-to-v2.0]: docs/upgrading_to_v2.0.md
+{% endif %}
+{% if private_cluster or beta_cluster %}
+[upgrading-to-v3.0]: ../../docs/upgrading_to_v3.0.md
+{% else %}
+[upgrading-to-v3.0]: docs/upgrading_to_v3.0.md
 {% endif %}
 {% if private_cluster or beta_cluster %}
 [terraform-provider-google-beta]: https://github.com/terraform-providers/terraform-provider-google-beta
