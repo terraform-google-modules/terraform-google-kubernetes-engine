@@ -22,6 +22,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Support for configuring cluster IPv4 CIDRs. [#193]
 * Support for configuring IP Masquerade. [#187]
 * Support for v2.9 of the Google providers. [#198]
+* Support for upstreamNameservers. [#207]
 
 ### Fixed
 
@@ -145,6 +146,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#207]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/207
 [#203]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/203
 [#198]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/198
 [#197]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/197
