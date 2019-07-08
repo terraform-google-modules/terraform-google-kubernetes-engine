@@ -8,6 +8,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+## [v3.0.0] - 2019-07-08
+
 ### Added
 
 * Add configuration flag for enable BinAuthZ Admission controller [#160] [#188]
@@ -16,15 +18,16 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Support to scale the default node cluster. [#149]
 * Support for configuring the network policy provider. [#159]
 * Support for database encryption. [#165]
-* Submodules for public and private clusters with beta features. [#124] [#188]
+* Submodules for public and private clusters with beta features. [#124] [#188] [#203]
 * Support for configuring cluster IPv4 CIDRs. [#193]
 * Support for configuring IP Masquerade. [#187]
 * Support for v2.9 of the Google providers. [#198]
+* Support for upstreamNameservers. [#207]
 
 ### Fixed
 
-* Dropped support for v2.7 of the Google providers; these versions were
-  incompatible with the guest accelerator. [#198]
+* Dropped support for versions of the Google provider earlier than v2.9; these versions multiple
+  incompatibilities with the module. [#198]
 
 ## [v2.1.0] - 2019-05-30
 
@@ -131,7 +134,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 * Initial release of module.
 
-[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v3.0.0...HEAD
+[v3.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v2.1.0...v3.0.0
 [v2.1.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v2.0.1...v2.1.0
 [v2.0.1]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v2.0.0...v2.0.1
 [v2.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v1.0.1...v2.0.0
@@ -142,6 +146,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#207]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/207
+[#203]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/203
 [#198]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/198
 [#197]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/197
 [#193]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/193

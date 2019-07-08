@@ -1,0 +1,18 @@
+---
+
+platform: linux
+
+inputs:
+- name: pull-request
+  path: terraform-google-kubernetes-engine
+
+run:
+  path: make
+  args: ['test_integration']
+  dir: terraform-google-kubernetes-engine
+
+params:
+  SUITE: "stub-domains-upstream-nameservers-local"
+  COMPUTE_ENGINE_SERVICE_ACCOUNT: ""
+  REGION: "us-east4"
+  ZONES: '["us-east4-a", "us-east4-b", "us-east4-c"]'

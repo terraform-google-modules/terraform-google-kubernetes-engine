@@ -36,6 +36,7 @@ locals {
   node_version_regional       = "${var.node_version != "" && var.regional ? var.node_version : local.kubernetes_version_regional}"
   node_version_zonal          = "${var.node_version != "" && !var.regional ? var.node_version : local.kubernetes_version_zonal}"
   custom_kube_dns_config      = "${length(keys(var.stub_domains)) > 0 ? true : false}"
+  upstream_nameservers_config = "${length(var.upstream_nameservers) > 0 ? true : false}"
   network_project_id          = "${var.network_project_id != "" ? var.network_project_id : var.project_id}"
 
   cluster_type = "${var.regional ? "regional" : "zonal"}"
@@ -191,8 +192,8 @@ locals {
   cluster_horizontal_pod_autoscaling_enabled = "${local.cluster_type_output_horizontal_pod_autoscaling_enabled[local.cluster_type] ? false : true}"
   cluster_kubernetes_dashboard_enabled       = "${local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type] ? false : true}"
   # BETA features
-  cluster_istio_enabled    = "${local.cluster_type_output_istio_enabled[local.cluster_type] ? false : true}"
-  cluster_cloudrun_enabled = "${var.cloudrun}"
+  cluster_istio_enabled               = "${local.cluster_type_output_istio_enabled[local.cluster_type] ? false : true}"
+  cluster_cloudrun_enabled            = "${var.cloudrun}"
   cluster_pod_security_policy_enabled = "${local.cluster_type_output_pod_security_policy_enabled[local.cluster_type] ? true : false}"
 
   # /BETA features
