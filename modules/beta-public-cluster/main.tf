@@ -36,6 +36,7 @@ locals {
   node_version_regional       = "${var.node_version != "" && var.regional ? var.node_version : local.kubernetes_version_regional}"
   node_version_zonal          = "${var.node_version != "" && !var.regional ? var.node_version : local.kubernetes_version_zonal}"
   custom_kube_dns_config      = "${length(keys(var.stub_domains)) > 0 ? true : false}"
+  upstream_nameservers_config = "${length(var.upstream_nameservers) > 0 ? true : false}"
   network_project_id          = "${var.network_project_id != "" ? var.network_project_id : var.project_id}"
 
   cluster_type = "${var.regional ? "regional" : "zonal"}"
