@@ -97,6 +97,11 @@ Then perform the following commands on the root folder:
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
 
+## Upgrade to v3.0.0
+
+v3.0.0 is a breaking release. Refer to the
+[Upgrading to v3.0 guide][upgrading-to-v3.0] for details.
+
 ## Upgrade to v2.0.0
 
 v2.0.0 is a breaking release. Refer to the
@@ -367,3 +372,5 @@ command.
 * Dockerfiles - hadolint. Can be found in homebrew
 
 [upgrading-to-v2.0]: docs/upgrading_to_v2.0.md
+[upgrading-to-v3.0]: docs/upgrading_to_v3.0.md
+[terraform-provider-google]: https://github.com/terraform-providers/terraform-provider-google
