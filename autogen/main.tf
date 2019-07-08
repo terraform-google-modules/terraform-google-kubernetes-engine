@@ -196,9 +196,8 @@ locals {
   cluster_kubernetes_dashboard_enabled       = "${local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type] ? false : true}"
 {% if beta_cluster %}
   # BETA features
-  cluster_istio_enabled    = "${local.cluster_type_output_istio_enabled[local.cluster_type] ? false : true}"
-  cluster_cloudrun_enabled = "${var.cloudrun}"
-
+  cluster_istio_enabled                      = "${local.cluster_type_output_istio_enabled[local.cluster_type] ? false : true}"
+  cluster_cloudrun_enabled                   = "${var.cloudrun}"
   cluster_pod_security_policy_enabled        = "${local.cluster_type_output_pod_security_policy_enabled[local.cluster_type] ? true : false}"
   # /BETA features
 {% endif %}

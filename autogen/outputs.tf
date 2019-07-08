@@ -113,6 +113,7 @@ output "service_account" {
   value       = "${local.service_account}"
 }
 {% if beta_cluster %}
+
 output "istio_enabled" {
   description = "Whether Istio is enabled"
   value       = "${local.cluster_istio_enabled}"

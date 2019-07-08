@@ -39,10 +39,10 @@ resource "google_container_cluster" "zonal_primary" {
   monitoring_service = "${var.monitoring_service}"
 
   {% if beta_cluster %}
-  enable_binary_authorization       = "${var.enable_binary_authorization}"
-  pod_security_policy_config        = "${var.pod_security_policy_config}"
-  {% endif %}
+  enable_binary_authorization = "${var.enable_binary_authorization}"
+  pod_security_policy_config  = "${var.pod_security_policy_config}"
 
+  {% endif %}
   master_authorized_networks_config = ["${var.master_authorized_networks_config}"]
 
   master_auth {
@@ -108,6 +108,7 @@ resource "google_container_cluster" "zonal_primary" {
     node_config {
       service_account = "${lookup(var.node_pools[0], "service_account", local.service_account)}"
       {% if beta_cluster %}
+
       workload_metadata_config = "${local.cluster_node_metadata_config["${var.node_metadata == "UNSPECIFIED" ? "unspecified" : "specified"}"]}"
       {% endif %}
     }
