@@ -77,6 +77,12 @@ variable "node_version" {
   default     = ""
 }
 
+variable "master_authorized_networks_config" {
+  type        = list(object({ cidr_blocks = list(object({ cidr_block = string, display_name = string })) }))
+  description = "The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
+  default     = []
+}
+
 variable "horizontal_pod_autoscaling" {
   type        = bool
   description = "Enable horizontal pod autoscaling addon"
@@ -278,9 +284,19 @@ variable "cluster_ipv4_cidr" {
   description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
 }
 
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   default     = false
+}
+
+variable "database_encryption" {
+  description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
+  type        = list(object({ state = string, key_name = string }))
+  default = [{
+    state    = "DECRYPTED"
+    key_name = ""
+  }]
 }
 
 variable "cloudrun" {
@@ -303,37 +319,4 @@ variable "pod_security_policy_config" {
 variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
   default     = "UNSPECIFIED"
-}
-
-variable "database_encryption" {
-  description = <<-EOF
-  Application-layer Secrets Encryption settings. Example:
-  database_encryption = [{
-    state    = "ENCRYPTED",
-    key_name = "projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key"
-  }]
-  EOF
-  type = "list"
-  default = [{
-    state = "DECRYPTED"
-    key_name = ""
-  }]
-}
-
-variable "master_authorized_networks_config" {
-  type = list(object({ cidr_blocks = list(object({ cidr_block = string, display_name = string })) }))
-
-  description = <<-EOF
-  The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)
-
-  ### example format ###
-  master_authorized_networks_config = [{
-    cidr_blocks = [{
-      cidr_block   = "10.0.0.0/8"
-      display_name = "example_network"
-    }],
-  }]
-  EOF
-
-  default = []
 }

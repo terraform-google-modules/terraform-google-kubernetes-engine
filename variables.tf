@@ -77,6 +77,12 @@ variable "node_version" {
   default     = ""
 }
 
+variable "master_authorized_networks_config" {
+  type        = list(object({ cidr_blocks = list(object({ cidr_block = string, display_name = string })) }))
+  description = "The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
+  default     = []
+}
+
 variable "horizontal_pod_autoscaling" {
   type        = bool
   description = "Enable horizontal pod autoscaling addon"
@@ -278,20 +284,3 @@ variable "cluster_ipv4_cidr" {
   description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
 }
 
-variable "master_authorized_networks_config" {
-  type = list(object({ cidr_blocks = list(object({ cidr_block = string, display_name = string })) }))
-
-  description = <<-EOF
-  The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)
-
-  ### example format ###
-  master_authorized_networks_config = [{
-    cidr_blocks = [{
-      cidr_block   = "10.0.0.0/8"
-      display_name = "example_network"
-    }],
-  }]
-  EOF
-
-  default = []
-}
