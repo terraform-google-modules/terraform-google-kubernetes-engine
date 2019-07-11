@@ -254,16 +254,15 @@ resource "google_container_node_pool" "zonal_pools" {
       var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]],
     )
 
-    dynamic "guest_accelerator" {
-      for_each = lookup(var.node_pools[count.index], "accelerator_count", 0) > 0 ? [{
+    guest_accelerator = [
+      for guest_accelerator in lookup(var.node_pools[count.index], "accelerator_count", 0) > 0 ? [{
         type  = lookup(var.node_pools[count.index], "accelerator_type", "")
         count = lookup(var.node_pools[count.index], "accelerator_count", 0)
-      }] : []
-      content {
-        type  = guest_accelerator.value.type
-        count = guest_accelerator.value.count
+        }] : [] : {
+        type  = guest_accelerator["type"]
+        count = guest_accelerator["count"]
       }
-    }
+    ]
 
     dynamic "workload_metadata_config" {
       for_each = local.cluster_node_metadata_config
