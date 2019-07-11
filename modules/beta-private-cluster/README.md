@@ -10,6 +10,14 @@ The resources/services/activations/deletions that this module will create/trigge
 
 **Note**: You must run Terraform from a VM on the same VPC as your cluster, otherwise there will be issues connecting to the GKE master.
 
+
+## Compatibility
+
+This module is meant for use with Terraform 0.12. If you haven't
+[upgraded][terraform-0.12-upgrade] and need a Terraform
+0.11.x-compatible version of this module, the last released version
+intended for Terraform 0.11.x is [3.0.0].
+
 ## Usage
 There are multiple examples included in the [examples](./examples/) folder but simple usage is as follows:
 
@@ -393,3 +401,5 @@ command.
 [upgrading-to-v2.0]: ../../docs/upgrading_to_v2.0.md
 [upgrading-to-v3.0]: ../../docs/upgrading_to_v3.0.md
 [terraform-provider-google-beta]: https://github.com/terraform-providers/terraform-provider-google-beta
+[3.0.0]: https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/3.0.0
+[terraform-0.12-upgrade]: https://www.terraform.io/upgrade-guides/0-12.html
