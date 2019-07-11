@@ -43,6 +43,7 @@ locals {
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
   upstream_nameservers_config = length(var.upstream_nameservers) > 0
   network_project_id          = var.network_project_id != "" ? var.network_project_id : var.project_id
+  zone_count = length(var.zones)
 
   cluster_type = var.regional ? "regional" : "zonal"
 
@@ -84,7 +85,7 @@ locals {
   }
 
   cluster_type_output_regional_zones = flatten(google_container_cluster.primary.*.node_locations)
-  cluster_type_output_zonal_zones    = slice(var.zones, 1, length(var.zones))
+  cluster_type_output_zonal_zones    = local.zone_count > 1 ? slice(var.zones, 1, local.zone_count) : []
 
   cluster_type_output_zones = {
     regional = local.cluster_type_output_regional_zones
@@ -306,7 +307,7 @@ data "google_container_engine_versions" "zone" {
   //
   //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
   //
-  zone = var.zones[0] == "" ? data.google_compute_zones.available.names[0] : var.zones[0]
+  zone = local.zone_count == 0 ? data.google_compute_zones.available.names[0] : var.zones[0]
 
   project = var.project_id
 }
