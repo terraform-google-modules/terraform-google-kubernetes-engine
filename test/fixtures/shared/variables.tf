@@ -23,7 +23,7 @@ variable "region" {
 }
 
 variable "zones" {
-  type        = "list"
+  type        = list(string)
   description = "The GCP zones to create and test resources in, for applicable tests"
   default     = []
 }
@@ -31,3 +31,4 @@ variable "zones" {
 variable "compute_engine_service_account" {
   description = "The email address of the service account to associate with the GKE cluster"
 }
+

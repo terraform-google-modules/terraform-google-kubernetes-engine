@@ -8,6 +8,12 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+## [4.0.0] 2019-07-ZZ
+
+### Changed
+
+* Supported version of Terraform is 0.12. [#58]
+
 ## [v3.0.0] - 2019-07-08
 
 ### Added

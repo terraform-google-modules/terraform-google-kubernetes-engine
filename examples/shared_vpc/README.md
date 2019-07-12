@@ -2,8 +2,7 @@
 
 This example illustrates how to create a simple cluster where the host network is not necessarily in the same project as the cluster.
 
-[^]: (autogen_docs_start)
-
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -37,7 +36,7 @@ This example illustrates how to create a simple cluster where the host network i
 | subnetwork |  |
 | zones | List of zones in which the cluster resides |
 
-[^]: (autogen_docs_end)
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 To provision this example, run the following from within this directory:
 - `terraform init` to get the plugins
