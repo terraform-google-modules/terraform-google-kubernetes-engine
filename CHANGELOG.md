@@ -8,11 +8,11 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
-## [4.0.0] 2019-07-ZZ
+## [4.0.0] 2019-07-12
 
 ### Changed
 
-* Supported version of Terraform is 0.12. [#58]
+* Supported version of Terraform is 0.12. [#177]
 
 ## [v3.0.0] - 2019-07-08
 
@@ -159,6 +159,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#193]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/193
 [#188]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/188
 [#187]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/187
+[#177]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/177
 [#165]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/165
 [#163]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/163
 [#160]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/160
