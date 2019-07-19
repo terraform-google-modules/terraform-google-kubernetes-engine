@@ -22,10 +22,10 @@
 resource "google_container_cluster" "primary" {
   provider = google-beta
 
-  count       = var.regional ? 1 : 0
-  name        = var.name
-  description = var.description
-  project     = var.project_id
+  count           = var.regional ? 1 : 0
+  name            = var.name
+  description     = var.description
+  project         = var.project_id
   resource_labels = var.cluster_resource_labels
 
   region = var.region
