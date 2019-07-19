@@ -22,10 +22,11 @@
 resource "google_container_cluster" "zonal_primary" {
   provider = google-beta
 
-  count       = var.regional ? 0 : 1
-  name        = var.name
-  description = var.description
-  project     = var.project_id
+  count           = var.regional ? 0 : 1
+  name            = var.name
+  description     = var.description
+  project         = var.project_id
+  resource_labels = var.cluster_resource_labels
 
   zone              = var.zones[0]
   node_locations    = slice(var.zones, 1, length(var.zones))
