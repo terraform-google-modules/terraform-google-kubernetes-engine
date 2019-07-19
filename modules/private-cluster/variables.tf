@@ -78,7 +78,7 @@ variable "node_version" {
 }
 
 variable "master_authorized_networks_config" {
-  type        = list(object({ cidr_blocks = list(object({ cidr_block = string, display_name = string })) }))
+  type        = list(object({cidr_blocks = list(object({cidr_block = string, display_name = string}))}))
   description = "The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
   default     = []
 }
@@ -179,7 +179,7 @@ variable "node_pools_metadata" {
 }
 
 variable "node_pools_taints" {
-  type        = map(list(object({ key = string, value = string, effect = string })))
+  type        = map(list(object({key=string,value=string,effect=string})))
   description = "Map of lists containing node taints by node-pool name"
 
   default = {
@@ -282,6 +282,12 @@ variable "issue_client_certificate" {
 variable "cluster_ipv4_cidr" {
   default     = ""
   description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
+}
+
+variable "cluster_resource_labels" {
+  type        = map(string)
+  description = "The GCE resource labels (a map of key/value pairs) to be applied to the cluster"
+  default     = {}
 }
 
 
