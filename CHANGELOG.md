@@ -11,7 +11,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 * Support for GCE cluster resource_labels. [#210]
 
-## [4.0.0] 2019-07-12
+## [v4.0.0] 2019-07-12
 
 ### Changed
 
@@ -144,6 +144,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Initial release of module.
 
 [Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v3.0.0...HEAD
+[v4.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v3.0.0...v4.0.0
 [v3.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v2.1.0...v3.0.0
 [v2.1.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v2.0.1...v2.1.0
 [v2.0.1]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v2.0.0...v2.0.1
@@ -155,6 +156,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#210]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/210
 [#207]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/207
 [#203]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/203
 [#198]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/198
