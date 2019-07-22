@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
 ## [Unreleased]
+### Added
+
+* Support for GCE cluster resource_labels. [#210]
 
 ## [4.0.0] 2019-07-12
 
