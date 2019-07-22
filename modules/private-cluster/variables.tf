@@ -78,7 +78,7 @@ variable "node_version" {
 }
 
 variable "master_authorized_networks_config" {
-  type        = list(object({cidr_blocks = list(object({cidr_block = string, display_name = string}))}))
+  type        = list(object({ cidr_blocks = list(object({ cidr_block = string, display_name = string })) }))
   description = "The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
   default     = []
 }
@@ -179,7 +179,7 @@ variable "node_pools_metadata" {
 }
 
 variable "node_pools_taints" {
-  type        = map(list(object({key=string,value=string,effect=string})))
+  type        = map(list(object({ key = string, value = string, effect = string })))
   description = "Map of lists containing node taints by node-pool name"
 
   default = {

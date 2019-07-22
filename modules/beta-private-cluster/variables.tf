@@ -78,7 +78,7 @@ variable "node_version" {
 }
 
 variable "master_authorized_networks_config" {
-  type        = list(object({cidr_blocks = list(object({cidr_block = string, display_name = string}))}))
+  type        = list(object({ cidr_blocks = list(object({ cidr_block = string, display_name = string })) }))
   description = "The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
   default     = []
 }
@@ -179,7 +179,7 @@ variable "node_pools_metadata" {
 }
 
 variable "node_pools_taints" {
-  type        = map(list(object({key=string,value=string,effect=string})))
+  type        = map(list(object({ key = string, value = string, effect = string })))
   description = "Map of lists containing node taints by node-pool name"
 
   default = {
@@ -322,10 +322,10 @@ variable "istio" {
 
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
-  type        = list(object({state = string, key_name = string}))
-  default     = [{
-    state     = "DECRYPTED"
-    key_name  = ""
+  type        = list(object({ state = string, key_name = string }))
+  default = [{
+    state    = "DECRYPTED"
+    key_name = ""
   }]
 }
 
@@ -341,7 +341,7 @@ variable "enable_binary_authorization" {
 
 variable "pod_security_policy_config" {
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
-  default     = [{
+  default = [{
     "enabled" = false
   }]
 }
