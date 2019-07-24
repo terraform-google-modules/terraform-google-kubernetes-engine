@@ -11,6 +11,10 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 * Support for GCE cluster resource_labels. [#210]
 
+### Changed
+
+* `endpoint` output depends on cluster and node pool resources to avoid a race condition. [#214]
+
 ## [v4.0.0] 2019-07-12
 
 ### Changed
@@ -156,6 +160,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#214]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/214
 [#210]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/210
 [#207]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/207
 [#203]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/203
