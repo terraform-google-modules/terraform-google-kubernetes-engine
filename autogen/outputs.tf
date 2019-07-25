@@ -144,12 +144,12 @@ output "pod_security_policy_enabled" {
 
 output "intranode_visibility_enabled" {
   description = "Whether intra-node visibility is enabled"
-  value       = var.enable_intranode_visibility
+  value       = local.cluster_intranode_visibility_enabled
 }
 
 output "vertical_pod_autoscaling_enabled" {
   description = "Whether veritical pod autoscaling is enabled"
-  value       = var.enable_vertical_pod_autoscaling
+  value       = local.cluster_vertical_pod_autoscaling_enabled
 }
 
 {% endif %}
