@@ -9,7 +9,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 ## [Unreleased]
 ### Added
 
-* Support for Intranode Visbiility (IV) and Veritical Pod Autoscaling (VPA) beta features [#]
+* Support for Intranode Visbiility (IV) and Veritical Pod Autoscaling (VPA) beta features [#216]
 
 ## [v4.1.0] 2019-07-24
 
