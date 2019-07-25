@@ -45,13 +45,13 @@ output "endpoint" {
   sensitive   = true
   description = "Cluster endpoint"
   value       = local.cluster_endpoint
-  depends_on  = [
+  depends_on = [
     /* Nominally, the endpoint is populated as soon as it is known to Terraform.
     * However, the cluster may not be in a usable state yet.  Therefore any
     * resources dependent on the cluster being up will fail to deploy.  With
     * this explicit dependency, dependent resources can wait for the cluster
     * to be up.
-    */ 
+    */
     google_container_cluster.primary,
     google_container_node_pool.pools,
     google_container_cluster.zonal_primary,
@@ -139,5 +139,15 @@ output "cloudrun_enabled" {
 output "pod_security_policy_enabled" {
   description = "Whether pod security policy is enabled"
   value       = local.cluster_pod_security_policy_enabled
+}
+
+output "intranode_visibility_enabled" {
+  description = "Whether intra-node visibility is enabled"
+  value       = var.enable_intranode_visibility
+}
+
+output "vertical_pod_autoscaling_enabled" {
+  description = "Whether veritical pod autoscaling is enabled"
+  value       = var.enable_vertical_pod_autoscaling
 }
 

@@ -251,6 +251,16 @@ locals {
     regional = element(concat(google_container_cluster.primary.*.pod_security_policy_config.0.enabled, [""]), 0)
     zonal    = element(concat(google_container_cluster.zonal_primary.*.pod_security_policy_config.0.enabled, [""]), 0)
   }
+
+  cluster_type_output_intranode_visbility_enabled = {
+    regional = element(concat(google_container_cluster.primary.*.enable_intranode_visibility, [""]), 0)
+    zonal    = element(concat(google_container_cluster.zonal_primary.*.enable_intranode_visibility, [""]), 0)
+  }
+
+  cluster_type_output_vertical_pod_autoscaling_enabled = {
+    regional = element(concat(google_container_cluster.primary.*.vertical_pod_autoscaling.0.enabled, [""]), 0)
+    zonal    = element(concat(google_container_cluster.zonal_primary.*.vertical_pod_autoscaling.0.enabled, [""]), 0)
+  }
   # /BETA features
   {% endif %}
 
@@ -286,9 +296,11 @@ locals {
   cluster_kubernetes_dashboard_enabled       = !local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type]
 {% if beta_cluster %}
   # BETA features
-  cluster_istio_enabled               = !local.cluster_type_output_istio_enabled[local.cluster_type]
-  cluster_cloudrun_enabled            = var.cloudrun
-  cluster_pod_security_policy_enabled = local.cluster_type_output_pod_security_policy_enabled[local.cluster_type]
+  cluster_istio_enabled                     = !local.cluster_type_output_istio_enabled[local.cluster_type]
+  cluster_cloudrun_enabled                  = var.cloudrun
+  cluster_pod_security_policy_enabled       = local.cluster_type_output_pod_security_policy_enabled[local.cluster_type]
+  cluster_intranode_visibility_enabled      = local.cluster_intranode_visibility_enabled[local.cluster_type]
+  cluster_vertical_pod_autoscaling_enabled  = local.cluster_type_output_vertical_pod_autoscaling_enabled[local.cluster_type]
   # /BETA features
 {% endif %}
 }
