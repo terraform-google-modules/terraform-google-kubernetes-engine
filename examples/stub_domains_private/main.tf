@@ -15,8 +15,8 @@
  */
 
 provider "google-beta" {
-  version = "~> 2.2"
-  region  = "${var.region}"
+  version = "~> 2.9.0"
+  region  = var.region
 }
 
 provider "random" {
@@ -24,44 +24,47 @@ provider "random" {
 }
 
 data "google_compute_subnetwork" "subnetwork" {
-  name    = "${var.subnetwork}"
-  project = "${var.project_id}"
-  region  = "${var.region}"
+  name    = var.subnetwork
+  project = var.project_id
+  region  = var.region
 }
 
 module "gke" {
   source = "../../modules/private-cluster"
 
-  ip_range_pods     = "${var.ip_range_pods}"
-  ip_range_services = "${var.ip_range_services}"
+  ip_range_pods     = var.ip_range_pods
+  ip_range_services = var.ip_range_services
   name              = "stub-domains-private-cluster${var.cluster_name_suffix}"
-  network           = "${var.network}"
-  project_id        = "${var.project_id}"
-  region            = "${var.region}"
-  subnetwork        = "${var.subnetwork}"
+  network           = var.network
+  project_id        = var.project_id
+  region            = var.region
+  subnetwork        = var.subnetwork
 
-  deploy_using_private_endpoint = "true"
-  enable_private_endpoint       = "false"
-  enable_private_nodes          = "true"
+  deploy_using_private_endpoint = true
+  enable_private_endpoint       = false
+  enable_private_nodes          = true
 
-  master_authorized_networks_config = [{
-    cidr_blocks = [{
-      cidr_block   = "${data.google_compute_subnetwork.subnetwork.ip_cidr_range}"
-      display_name = "VPC"
-    }]
-  }]
+  master_authorized_networks_config = [
+    {
+      cidr_blocks = [
+        {
+          cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
+          display_name = "VPC"
+        },
+      ]
+    },
+  ]
 
   master_ipv4_cidr_block = "172.16.0.0/28"
 
-  network_policy  = "true"
-  service_account = "${var.compute_engine_service_account}"
+  network_policy  = true
+  service_account = var.compute_engine_service_account
 
-  stub_domains {
+  stub_domains = {
     "example.com" = [
       "10.254.154.11",
       "10.254.154.12",
     ]
-
     "example.net" = [
       "10.254.154.11",
       "10.254.154.12",
@@ -69,4 +72,5 @@ module "gke" {
   }
 }
 
-data "google_client_config" "default" {}
+data "google_client_config" "default" {
+}
