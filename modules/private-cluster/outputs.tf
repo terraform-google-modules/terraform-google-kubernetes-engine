@@ -51,7 +51,7 @@ output "endpoint" {
     * resources dependent on the cluster being up will fail to deploy.  With
     * this explicit dependency, dependent resources can wait for the cluster
     * to be up.
-    */ 
+    */
     google_container_cluster.primary,
     google_container_node_pool.pools,
     google_container_cluster.zonal_primary,

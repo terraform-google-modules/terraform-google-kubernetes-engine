@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
 ## [Unreleased]
+### Added
+
+* Support for Intranode Visbiility (IV) and Veritical Pod Autoscaling (VPA) beta features [#216]
 
 ## [v4.1.0] 2019-07-24
 
@@ -164,6 +167,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#216]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/216
 [#214]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/214
 [#210]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/210
 [#207]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/207

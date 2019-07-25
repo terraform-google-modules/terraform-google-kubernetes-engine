@@ -58,6 +58,11 @@ resource "google_container_cluster" "primary" {
 
 {% if beta_cluster %}
   enable_binary_authorization = var.enable_binary_authorization
+  enable_intranode_visibility = var.enable_intranode_visibility
+
+  vertical_pod_autoscaling {
+    enabled = var.enable_vertical_pod_autoscaling
+  }
 
   dynamic "pod_security_policy_config" {
     for_each = var.pod_security_policy_config
