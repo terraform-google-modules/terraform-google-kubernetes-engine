@@ -167,6 +167,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#216]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/216
 [#214]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/214
 [#210]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/210
 [#207]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/207
