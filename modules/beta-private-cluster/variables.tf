@@ -350,3 +350,15 @@ variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
   default     = "UNSPECIFIED"
 }
+
+variable "enable_intranode_visibility" {
+  type        = bool
+  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
+  default     = false
+}
+
+variable "enable_vertical_pod_autoscaling" {
+  type        = bool
+  description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
+  default     = false
+}
