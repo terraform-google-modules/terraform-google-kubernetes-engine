@@ -19,42 +19,43 @@ locals {
 }
 
 provider "google" {
-  version = "~> 2.7.0"
-  region  = "${var.region}"
+  version = "~> 2.9.0"
+  region  = var.region
 }
 
 provider "google-beta" {
-  version = "~> 2.7.0"
-  region  = "${var.region}"
+  version = "~> 2.9.0"
+  region  = var.region
 }
 
 provider "kubernetes" {
   load_config_file       = false
   host                   = "https://${module.gke.endpoint}"
-  token                  = "${data.google_client_config.default.access_token}"
-  cluster_ca_certificate = "${base64decode(module.gke.ca_certificate)}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
 }
 
-data "google_client_config" "default" {}
+data "google_client_config" "default" {
+}
 
 module "gke" {
   source     = "../../"
-  project_id = "${var.project_id}"
+  project_id = var.project_id
   name       = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  region     = "${var.region}"
-  network    = "${var.network}"
-  subnetwork = "${var.subnetwork}"
+  region     = var.region
+  network    = var.network
+  subnetwork = var.subnetwork
 
-  ip_range_pods     = "${var.ip_range_pods}"
-  ip_range_services = "${var.ip_range_services}"
-  service_account   = "${var.compute_engine_service_account}"
+  ip_range_pods     = var.ip_range_pods
+  ip_range_services = var.ip_range_services
+  service_account   = var.compute_engine_service_account
 }
 
 resource "kubernetes_pod" "nginx-example" {
   metadata {
     name = "nginx-example"
 
-    labels {
+    labels = {
       maintained_by = "terraform"
       app           = "nginx-example"
     }
@@ -67,7 +68,7 @@ resource "kubernetes_pod" "nginx-example" {
     }
   }
 
-  depends_on = ["module.gke"]
+  depends_on = [module.gke]
 }
 
 resource "kubernetes_service" "nginx-example" {
@@ -76,8 +77,8 @@ resource "kubernetes_service" "nginx-example" {
   }
 
   spec {
-    selector {
-      app = "${kubernetes_pod.nginx-example.metadata.0.labels.app}"
+    selector = {
+      app = kubernetes_pod.nginx-example.metadata[0].labels.app
     }
 
     session_affinity = "ClientIP"
@@ -90,5 +91,5 @@ resource "kubernetes_service" "nginx-example" {
     type = "LoadBalancer"
   }
 
-  depends_on = ["module.gke"]
+  depends_on = [module.gke]
 }

@@ -12,6 +12,14 @@ Sub modules are provided from creating private clusters, beta private clusters, 
 
 **Note**: You must run Terraform from a VM on the same VPC as your cluster, otherwise there will be issues connecting to the GKE master.
 
+
+## Compatibility
+
+This module is meant for use with Terraform 0.12. If you haven't
+[upgraded][terraform-0.12-upgrade] and need a Terraform
+0.11.x-compatible version of this module, the last released version
+intended for Terraform 0.11.x is [3.0.0].
+
 ## Usage
 There are multiple examples included in the [examples](./examples/) folder but simple usage is as follows:
 
@@ -65,7 +73,7 @@ module "gke" {
     all = {}
 
     default-node-pool = {
-      default-node-pool = "true"
+      default-node-pool = true
     }
   }
 
@@ -83,7 +91,7 @@ module "gke" {
     default-node-pool = [
       {
         key    = "default-node-pool"
-        value  = "true"
+        value  = true
         effect = "PREFER_NO_SCHEDULE"
       },
     ]
@@ -107,6 +115,11 @@ Then perform the following commands on the root folder:
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
 
+## Upgrade to v3.0.0
+
+v3.0.0 is a breaking release. Refer to the
+[Upgrading to v3.0 guide][upgrading-to-v3.0] for details.
+
 ## Upgrade to v2.0.0
 
 v2.0.0 is a breaking release. Refer to the
@@ -118,8 +131,7 @@ Version 1.0.0 of this module introduces a breaking change: adding the `disable-l
 
 In either case, upgrading to module version `v1.0.0` will trigger a recreation of all node pools in the cluster.
 
-[^]: (autogen_docs_start)
-
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -128,52 +140,57 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | basic\_auth\_username | The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration. | string | `""` | no |
 | cloudrun | (Beta) Enable CloudRun addon | string | `"false"` | no |
 | cluster\_ipv4\_cidr | The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR. | string | `""` | no |
+| cluster\_resource\_labels | The GCE resource labels (a map of key/value pairs) to be applied to the cluster | map(string) | `<map>` | no |
 | configure\_ip\_masq | Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server. | string | `"false"` | no |
-| database\_encryption | Application-layer Secrets Encryption settings. Example:   database_encryption = [{     state = "ENCRYPTED",     key_name = "projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key"   }] | list | `<list>` | no |
-| deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | string | `"false"` | no |
+| database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key. | object | `<list>` | no |
+| deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | bool | `"false"` | no |
 | description | The description of the cluster | string | `""` | no |
-| disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | string | `"true"` | no |
+| disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | bool | `"true"` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | string | `"false"` | no |
-| enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | string | `"false"` | no |
-| enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | string | `"false"` | no |
-| horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | string | `"true"` | no |
-| http\_load\_balancing | Enable httpload balancer addon | string | `"true"` | no |
-| initial\_node\_count | The number of nodes to create in this cluster's default node pool. | string | `"0"` | no |
-| ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | string | `"false"` | no |
+| enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | bool | `"false"` | no |
+| enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | bool | `"false"` | no |
+| enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | bool | `"false"` | no |
+| enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | bool | `"false"` | no |
+| horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | bool | `"true"` | no |
+| http\_load\_balancing | Enable httpload balancer addon | bool | `"true"` | no |
+| initial\_node\_count | The number of nodes to create in this cluster's default node pool. | number | `"0"` | no |
+| ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | bool | `"false"` | no |
 | ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `"60s"` | no |
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The _name_ of the secondary subnet range to use for services | string | n/a | yes |
-| issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | string | `"false"` | no |
+| issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | bool | `"false"` | no |
 | istio | (Beta) Enable Istio addon | string | `"false"` | no |
-| kubernetes\_dashboard | Enable kubernetes dashboard addon | string | `"false"` | no |
+| kubernetes\_dashboard | Enable kubernetes dashboard addon | bool | `"false"` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com"` | no |
 | maintenance\_start\_time | Time window specified for daily maintenance operations in RFC3339 format | string | `"05:00"` | no |
-| master\_authorized\_networks\_config | The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)<br><br>  ### example format ###   master_authorized_networks_config = [{     cidr_blocks = [{       cidr_block   = "10.0.0.0/8"       display_name = "example_network"     }],   }] | list | `<list>` | no |
+| master\_authorized\_networks\_config | The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists). | object | `<list>` | no |
 | master\_ipv4\_cidr\_block | (Beta) The IP range in CIDR notation to use for the hosted master network | string | `"10.0.0.0/28"` | no |
 | monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com"` | no |
 | name | The name of the cluster (required) | string | n/a | yes |
 | network | The VPC network to host the cluster in (required) | string | n/a | yes |
-| network\_policy | Enable network policy addon | string | `"false"` | no |
+| network\_policy | Enable network policy addon | bool | `"false"` | no |
 | network\_policy\_provider | The network policy provider. | string | `"CALICO"` | no |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
-| node\_pools | List of maps containing node pools | list | `<list>` | no |
-| node\_pools\_labels | Map of maps containing node labels by node-pool name | map | `<map>` | no |
-| node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map | `<map>` | no |
-| node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | map | `<map>` | no |
-| node\_pools\_tags | Map of lists containing node network tags by node-pool name | map | `<map>` | no |
-| node\_pools\_taints | Map of lists containing node taints by node-pool name | map | `<map>` | no |
+| node\_metadata | Specifies how node metadata is exposed to the workload running on the node | string | `"UNSPECIFIED"` | no |
+| node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
+| node\_pools\_labels | Map of maps containing node labels by node-pool name | map(map(string)) | `<map>` | no |
+| node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map(map(string)) | `<map>` | no |
+| node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | map(list(string)) | `<map>` | no |
+| node\_pools\_tags | Map of lists containing node network tags by node-pool name | map(list(string)) | `<map>` | no |
+| node\_pools\_taints | Map of lists containing node taints by node-pool name | object | `<map>` | no |
 | node\_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `""` | no |
-| non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list | `<list>` | no |
+| non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list(string) | `<list>` | no |
 | pod\_security\_policy\_config | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | list | `<list>` | no |
 | project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
 | region | The region to host the cluster in (required) | string | n/a | yes |
-| regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | string | `"true"` | no |
-| remove\_default\_node\_pool | Remove default node pool while setting up the cluster | string | `"false"` | no |
+| regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |
+| remove\_default\_node\_pool | Remove default node pool while setting up the cluster | bool | `"false"` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created. | string | `"create"` | no |
-| stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map | `<map>` | no |
+| stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map(list(string)) | `<map>` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | string | n/a | yes |
-| zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list | `<list>` | no |
+| upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | list | `<list>` | no |
+| zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list(string) | `<list>` | no |
 
 ## Outputs
 
@@ -184,6 +201,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
+| intranode\_visibility\_enabled | Whether intra-node visibility is enabled |
 | istio\_enabled | Whether Istio is enabled |
 | kubernetes\_dashboard\_enabled | Whether kubernetes dashboard enabled |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |
@@ -200,9 +218,10 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | region | Cluster region |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | type | Cluster type (regional / zonal) |
+| vertical\_pod\_autoscaling\_enabled | Whether veritical pod autoscaling is enabled |
 | zones | List of zones in which the cluster resides |
 
-[^]: (autogen_docs_end)
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Requirements
 
@@ -219,8 +238,8 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Kubectl
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
-- [Terraform](https://www.terraform.io/downloads.html) 0.11.x
-- [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v2.3, v2.6, v2.7
+- [Terraform](https://www.terraform.io/downloads.html) 0.12
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v2.9
 
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the
@@ -389,3 +408,7 @@ command.
 * Dockerfiles - hadolint. Can be found in homebrew
 
 [upgrading-to-v2.0]: ../../docs/upgrading_to_v2.0.md
+[upgrading-to-v3.0]: ../../docs/upgrading_to_v3.0.md
+[terraform-provider-google-beta]: https://github.com/terraform-providers/terraform-provider-google-beta
+[3.0.0]: https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/3.0.0
+[terraform-0.12-upgrade]: https://www.terraform.io/upgrade-guides/0-12.html

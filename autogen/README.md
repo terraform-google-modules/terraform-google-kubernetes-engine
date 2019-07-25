@@ -15,6 +15,14 @@ Sub modules are provided from creating private clusters, beta private clusters, 
 **Note**: You must run Terraform from a VM on the same VPC as your cluster, otherwise there will be issues connecting to the GKE master.
 
   {% endif %}
+
+## Compatibility
+
+This module is meant for use with Terraform 0.12. If you haven't
+[upgraded][terraform-0.12-upgrade] and need a Terraform
+0.11.x-compatible version of this module, the last released version
+intended for Terraform 0.11.x is [3.0.0].
+
 ## Usage
 There are multiple examples included in the [examples](./examples/) folder but simple usage is as follows:
 
@@ -72,7 +80,7 @@ module "gke" {
     all = {}
 
     default-node-pool = {
-      default-node-pool = "true"
+      default-node-pool = true
     }
   }
 
@@ -90,7 +98,7 @@ module "gke" {
     default-node-pool = [
       {
         key    = "default-node-pool"
-        value  = "true"
+        value  = true
         effect = "PREFER_NO_SCHEDULE"
       },
     ]
@@ -114,6 +122,11 @@ Then perform the following commands on the root folder:
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
 
+## Upgrade to v3.0.0
+
+v3.0.0 is a breaking release. Refer to the
+[Upgrading to v3.0 guide][upgrading-to-v3.0] for details.
+
 ## Upgrade to v2.0.0
 
 v2.0.0 is a breaking release. Refer to the
@@ -125,8 +138,8 @@ Version 1.0.0 of this module introduces a breaking change: adding the `disable-l
 
 In either case, upgrading to module version `v1.0.0` will trigger a recreation of all node pools in the cluster.
 
-[^]: (autogen_docs_start)
-[^]: (autogen_docs_end)
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Requirements
 
@@ -143,11 +156,11 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Kubectl
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
-- [Terraform](https://www.terraform.io/downloads.html) 0.11.x
+- [Terraform](https://www.terraform.io/downloads.html) 0.12
 {% if private_cluster or beta_cluster %}
-- [terraform-provider-google-beta](https://github.com/terraform-providers/terraform-provider-google-beta) v2.3, v2.6, v2.7
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v2.9
 {% else %}
-- [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) v2.3, v2.6, v2.7
+- [Terraform Provider for GCP][terraform-provider-google] v2.9
 {% endif %}
 
 ### Configure a Service Account
@@ -321,3 +334,15 @@ command.
 {% else %}
 [upgrading-to-v2.0]: docs/upgrading_to_v2.0.md
 {% endif %}
+{% if private_cluster or beta_cluster %}
+[upgrading-to-v3.0]: ../../docs/upgrading_to_v3.0.md
+{% else %}
+[upgrading-to-v3.0]: docs/upgrading_to_v3.0.md
+{% endif %}
+{% if private_cluster or beta_cluster %}
+[terraform-provider-google-beta]: https://github.com/terraform-providers/terraform-provider-google-beta
+{% else %}
+[terraform-provider-google]: https://github.com/terraform-providers/terraform-provider-google
+{% endif %}
+[3.0.0]: https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/3.0.0
+[terraform-0.12-upgrade]: https://www.terraform.io/upgrade-guides/0-12.html

@@ -9,8 +9,7 @@ It will:
 - Remove the default kube-dns configmap
 - Add a new kube-dns configmap with custom stub domains
 
-[^]: (autogen_docs_start)
-
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -43,7 +42,7 @@ It will:
 | subnetwork |  |
 | zones | List of zones in which the cluster resides |
 
-[^]: (autogen_docs_end)
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 To provision this example, run the following from within this directory:
 
