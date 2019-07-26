@@ -125,3 +125,10 @@ suites:
       systems:
         - name: workload_metadata_config
           backend: local
+  - name: "beta_cluster"
+    driver:
+      root_module_directory: test/fixtures/beta_cluster
+    verifier:
+      systems:
+        - name: beta_cluster
+          backend: local
