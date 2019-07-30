@@ -50,6 +50,7 @@ resource "google_container_cluster" "zonal_primary" {
 
   enable_binary_authorization = var.enable_binary_authorization
   enable_intranode_visibility = var.enable_intranode_visibility
+  default_max_pods_per_node   = var.default_max_pods_per_node
 
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
@@ -191,7 +192,6 @@ resource "google_container_node_pool" "zonal_pools" {
     lookup(var.node_pools[count.index], "min_count", 1),
   )
   max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", 110)
-
   autoscaling {
     min_node_count = lookup(var.node_pools[count.index], "min_count", 1)
     max_node_count = lookup(var.node_pools[count.index], "max_count", 100)
