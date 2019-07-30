@@ -22,12 +22,11 @@
 resource "google_container_cluster" "primary" {
   provider = google-beta
 
-  count                     = var.regional ? 1 : 0
-  name                      = var.name
-  description               = var.description
-  project                   = var.project_id
-  resource_labels           = var.cluster_resource_labels
-  default_max_pods_per_node = var.default_max_pods_per_node
+  count           = var.regional ? 1 : 0
+  name            = var.name
+  description     = var.description
+  project         = var.project_id
+  resource_labels = var.cluster_resource_labels
 
   region = var.region
   node_locations = coalescelist(
@@ -55,6 +54,7 @@ resource "google_container_cluster" "primary" {
 
   enable_binary_authorization = var.enable_binary_authorization
   enable_intranode_visibility = var.enable_intranode_visibility
+  default_max_pods_per_node   = var.default_max_pods_per_node
 
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
