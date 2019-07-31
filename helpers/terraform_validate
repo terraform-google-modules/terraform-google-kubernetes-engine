@@ -1,0 +1,23 @@
+#! /bin/bash
+#
+# Copyright 2019 Google LLC. This software is provided as-is, without warranty
+# or representation for any use or purpose. Your use of it is subject to your
+# agreement with Google.
+#
+# This script initializes modules so that terraform validate as of 0.12 behaves
+# as expected and does not issue errors such as:
+#
+# Error: Module not installed
+#
+#   on test/fixtures/shared_vpc_no_subnets/main.tf line 37:
+#   37: module "project-factory" {
+#
+# This module is not yet installed. Run "terraform init" to install all modules
+# required by this configuration.
+
+# The first and only argument to this script is the directory containing *.tf
+# files to validate.  This directory is assumed to be a root module.
+
+cd "$1"
+terraform init -backend=false
+terraform validate
