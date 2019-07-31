@@ -17,19 +17,22 @@
 // This file was automatically generated from a template in ./autogen
 
 /******************************************
-  Create zonal cluster
+  Create Container Cluster
  *****************************************/
-resource "google_container_cluster" "zonal_primary" {
-  provider = google
+resource "google_container_cluster" "primary" {
+  provider = google-beta
 
-  count           = var.regional ? 0 : 1
-  name            = var.name
-  description     = var.description
-  project         = var.project_id
-  resource_labels = var.cluster_resource_labels
 
-  zone              = var.zones[0]
-  node_locations    = slice(var.zones, 1, length(var.zones))
+  name              = var.name
+  description       = var.description
+  project           = var.project_id
+  resource_labels   = var.cluster_resource_labels
+
+  location          = local.location
+  node_locations = coalescelist(
+    compact(var.zones),
+    sort(random_shuffle.available_zones.result),
+  )
   cluster_ipv4_cidr = var.cluster_ipv4_cidr
   network           = data.google_compute_network.gke_network.self_link
 
@@ -43,7 +46,7 @@ resource "google_container_cluster" "zonal_primary" {
   }
 
   subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
-  min_master_version = local.kubernetes_version_zonal
+  min_master_version = local.kubernetes_master_version
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
@@ -118,24 +121,29 @@ resource "google_container_cluster" "zonal_primary" {
     }
   }
 
+  private_cluster_config {
+    enable_private_endpoint = var.enable_private_endpoint
+    enable_private_nodes    = var.enable_private_nodes
+    master_ipv4_cidr_block  = var.master_ipv4_cidr_block
+  }
 
   remove_default_node_pool = var.remove_default_node_pool
 }
 
 /******************************************
-  Create zonal node pools
+  Create Container Cluster node pools
  *****************************************/
-resource "google_container_node_pool" "zonal_pools" {
+resource "google_container_node_pool" "pools" {
   provider = google-beta
-  count    = var.regional ? 0 : length(var.node_pools)
+  count    = length(var.node_pools)
   name     = var.node_pools[count.index]["name"]
   project  = var.project_id
-  zone     = var.zones[0]
-  cluster  = google_container_cluster.zonal_primary[0].name
+  location     = local.location
+  cluster  = google_container_cluster.primary.name
   version = lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(
     var.node_pools[count.index],
     "version",
-    local.node_version_zonal,
+    local.kubernetes_node_version,
   )
   initial_node_count = lookup(
     var.node_pools[count.index],
@@ -190,7 +198,6 @@ resource "google_container_node_pool" "zonal_pools" {
         value  = taint.value.value
       }
     }
-
     tags = concat(
       ["gke-${var.name}"],
       ["gke-${var.name}-${var.node_pools[count.index]["name"]}"],
@@ -234,7 +241,7 @@ resource "google_container_node_pool" "zonal_pools" {
   }
 }
 
-resource "null_resource" "wait_for_zonal_cluster" {
+resource "null_resource" "wait_for_cluster" {
   count = var.regional ? 0 : 1
 
   provisioner "local-exec" {
@@ -247,7 +254,7 @@ resource "null_resource" "wait_for_zonal_cluster" {
   }
 
   depends_on = [
-    google_container_cluster.zonal_primary,
-    google_container_node_pool.zonal_pools,
+    google_container_cluster.primary,
+    google_container_node_pool.pools,
   ]
 }

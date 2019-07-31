@@ -22,8 +22,8 @@
 data "google_compute_zones" "available" {
   provider = google
 
-  project = var.project_id
-  region  = var.region
+  project  = var.project_id
+  region   = var.region
 }
 
 resource "random_shuffle" "available_zones" {
@@ -32,225 +32,71 @@ resource "random_shuffle" "available_zones" {
 }
 
 locals {
-  kubernetes_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version
-  kubernetes_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
-  node_version_regional       = var.node_version != "" && var.regional ? var.node_version : local.kubernetes_version_regional
-  node_version_zonal          = var.node_version != "" && ! var.regional ? var.node_version : local.kubernetes_version_zonal
+
+  location                    = var.regional ? var.region : var.zones[0]
+
+  latest_kubernetes_version   = var.regional ? data.google_container_engine_versions.region.latest_master_version : data.google_container_engine_versions.zone.latest_master_version
+  kubernetes_master_version      = var.kubernetes_version != "latest" ? var.kubernetes_version : local.latest_kubernetes_version
+  kubernetes_node_version        = var.node_version != "" ? var.kubernetes_version : local.kubernetes_master_version
+
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
   upstream_nameservers_config = length(var.upstream_nameservers) > 0
   network_project_id          = var.network_project_id != "" ? var.network_project_id : var.project_id
   zone_count                  = length(var.zones)
-
   cluster_type = var.regional ? "regional" : "zonal"
-
+        
   cluster_network_policy = var.network_policy ? [{
     enabled  = true
     provider = var.network_policy_provider
-    }] : [{
-    enabled  = false
+  }] : [{
+    enabled = false
     provider = null
   }]
 
-  cluster_type_output_name = {
-    regional = element(concat(google_container_cluster.primary.*.name, [""]), 0)
-    zonal = element(
-      concat(google_container_cluster.zonal_primary.*.name, [""]),
-      0,
-    )
-  }
 
-  cluster_type_output_location = {
-    regional = element(concat(google_container_cluster.primary.*.region, [""]), 0)
-    zonal = element(
-      concat(google_container_cluster.zonal_primary.*.zone, [""]),
-      0,
-    )
-  }
+  cluster_output_name = element(concat(google_container_cluster.primary.*.name, [""]), 0)
+  cluster_output_location = element(concat(google_container_cluster.primary.*.location, [""]), 0)
+  cluster_output_region = element(concat(google_container_cluster.primary.*.region, [""]), 0)
+  cluster_output_regional_zones = flatten(google_container_cluster.primary.*.node_locations)
+  cluster_output_zonal_zones    = local.zone_count > 1 ? slice(var.zones, 1, local.zone_count) : []
+  cluster_output_zones = local.cluster_output_regional_zones
 
-  cluster_type_output_region = {
-    regional = element(concat(google_container_cluster.primary.*.region, [""]), 0)
-    zonal    = var.region
-  }
+  cluster_output_endpoint = element(concat(google_container_cluster.primary.*.endpoint, [""]), 0)
 
-  cluster_type_output_regional_zones = flatten(google_container_cluster.primary.*.node_locations)
-  cluster_type_output_zonal_zones    = local.zone_count > 1 ? slice(var.zones, 1, local.zone_count) : []
-
-  cluster_type_output_zones = {
-    regional = local.cluster_type_output_regional_zones
-    zonal = concat(
-      google_container_cluster.zonal_primary.*.zone,
-      local.cluster_type_output_zonal_zones,
-    )
-  }
-
-  cluster_type_output_endpoint = {
-    regional = element(concat(google_container_cluster.primary.*.endpoint, [""]), 0)
-    zonal = element(
-      concat(google_container_cluster.zonal_primary.*.endpoint, [""]),
-      0,
-    )
-  }
-
-  cluster_type_output_master_auth = {
-    regional = concat(google_container_cluster.primary.*.master_auth, [])
-    zonal    = concat(google_container_cluster.zonal_primary.*.master_auth, [])
-  }
-
-  cluster_type_output_master_version = {
-    regional = element(
-      concat(google_container_cluster.primary.*.master_version, [""]),
-      0,
-    )
-    zonal = element(
-      concat(
-        google_container_cluster.zonal_primary.*.master_version,
-        [""],
-      ),
-      0,
-    )
-  }
-
-  cluster_type_output_min_master_version = {
-    regional = element(
-      concat(google_container_cluster.primary.*.min_master_version, [""]),
-      0,
-    )
-    zonal = element(
-      concat(
-        google_container_cluster.zonal_primary.*.min_master_version,
-        [""],
-      ),
-      0,
-    )
-  }
-
-  cluster_type_output_logging_service = {
-    regional = element(
-      concat(google_container_cluster.primary.*.logging_service, [""]),
-      0,
-    )
-    zonal = element(
-      concat(
-        google_container_cluster.zonal_primary.*.logging_service,
-        [""],
-      ),
-      0,
-    )
-  }
-
-  cluster_type_output_monitoring_service = {
-    regional = element(
-      concat(google_container_cluster.primary.*.monitoring_service, [""]),
-      0,
-    )
-    zonal = element(
-      concat(
-        google_container_cluster.zonal_primary.*.monitoring_service,
-        [""],
-      ),
-      0,
-    )
-  }
-
-  cluster_type_output_network_policy_enabled = {
-    regional = element(
-      concat(
-        google_container_cluster.primary.*.addons_config.0.network_policy_config.0.disabled,
-        [""],
-      ),
-      0,
-    )
-    zonal = element(
-      concat(
-        google_container_cluster.zonal_primary.*.addons_config.0.network_policy_config.0.disabled,
-        [""],
-      ),
-      0,
-    )
-  }
-
-  cluster_type_output_http_load_balancing_enabled = {
-    regional = element(
-      concat(
-        google_container_cluster.primary.*.addons_config.0.http_load_balancing.0.disabled,
-        [""],
-      ),
-      0,
-    )
-    zonal = element(
-      concat(
-        google_container_cluster.zonal_primary.*.addons_config.0.http_load_balancing.0.disabled,
-        [""],
-      ),
-      0,
-    )
-  }
-
-  cluster_type_output_horizontal_pod_autoscaling_enabled = {
-    regional = element(
-      concat(
-        google_container_cluster.primary.*.addons_config.0.horizontal_pod_autoscaling.0.disabled,
-        [""],
-      ),
-      0,
-    )
-    zonal = element(
-      concat(
-        google_container_cluster.zonal_primary.*.addons_config.0.horizontal_pod_autoscaling.0.disabled,
-        [""],
-      ),
-      0,
-    )
-  }
-
-  cluster_type_output_kubernetes_dashboard_enabled = {
-    regional = element(
-      concat(
-        google_container_cluster.primary.*.addons_config.0.kubernetes_dashboard.0.disabled,
-        [""],
-      ),
-      0,
-    )
-    zonal = element(
-      concat(
-        google_container_cluster.zonal_primary.*.addons_config.0.kubernetes_dashboard.0.disabled,
-        [""],
-      ),
-      0,
-    )
-  }
+  cluster_output_master_auth = concat(google_container_cluster.primary.*.master_auth, [])
+  cluster_output_master_version = element(concat(google_container_cluster.primary.*.master_version, [""]), 0,)
+  cluster_output_min_master_version = element(concat(google_container_cluster.primary.*.min_master_version, [""]), 0, )
+  cluster_output_logging_service = element(concat(google_container_cluster.primary.*.logging_service, [""]), 0, )
+  cluster_output_monitoring_service = element(concat(google_container_cluster.primary.*.monitoring_service, [""]), 0, )
+  cluster_output_network_policy_enabled = element(concat(google_container_cluster.primary.*.addons_config.0.network_policy_config.0.disabled, [""]), 0, )
+  cluster_output_http_load_balancing_enabled = element(concat(google_container_cluster.primary.*.addons_config.0.http_load_balancing.0.disabled, [""], ), 0, )
+  cluster_output_horizontal_pod_autoscaling_enabled = element(concat(google_container_cluster.primary.*.addons_config.0.horizontal_pod_autoscaling.0.disabled,[""],),0,)
+  cluster_output_kubernetes_dashboard_enabled = element(concat(google_container_cluster.primary.*.addons_config.0.kubernetes_dashboard.0.disabled, [""],),0,)
 
 
-  cluster_type_output_node_pools_names = {
-    regional = concat(google_container_node_pool.pools.*.name, [""])
-    zonal    = concat(google_container_node_pool.zonal_pools.*.name, [""])
-  }
+  cluster_output_node_pools_names =  concat(google_container_node_pool.pools.*.name, [""])
+  cluster_output_node_pools_versions = concat(google_container_node_pool.pools.*.version, [""])
 
-  cluster_type_output_node_pools_versions = {
-    regional = concat(google_container_node_pool.pools.*.version, [""])
-    zonal    = concat(google_container_node_pool.zonal_pools.*.version, [""])
-  }
-
-  cluster_master_auth_list_layer1 = local.cluster_type_output_master_auth[local.cluster_type]
+  cluster_master_auth_list_layer1 = local.cluster_output_master_auth
   cluster_master_auth_list_layer2 = local.cluster_master_auth_list_layer1[0]
   cluster_master_auth_map         = local.cluster_master_auth_list_layer2[0]
   # cluster locals
-  cluster_name                               = local.cluster_type_output_name[local.cluster_type]
-  cluster_location                           = local.cluster_type_output_location[local.cluster_type]
-  cluster_region                             = local.cluster_type_output_region[local.cluster_type]
-  cluster_zones                              = sort(local.cluster_type_output_zones[local.cluster_type])
-  cluster_endpoint                           = local.cluster_type_output_endpoint[local.cluster_type]
+  cluster_name                               = local.cluster_output_name
+  cluster_location                           = local.cluster_output_location
+  cluster_region                             = local.cluster_output_region
+  cluster_zones                              = sort(local.cluster_output_zones)
+  cluster_endpoint                           = local.cluster_output_endpoint
   cluster_ca_certificate                     = local.cluster_master_auth_map["cluster_ca_certificate"]
-  cluster_master_version                     = local.cluster_type_output_master_version[local.cluster_type]
-  cluster_min_master_version                 = local.cluster_type_output_min_master_version[local.cluster_type]
-  cluster_logging_service                    = local.cluster_type_output_logging_service[local.cluster_type]
-  cluster_monitoring_service                 = local.cluster_type_output_monitoring_service[local.cluster_type]
-  cluster_node_pools_names                   = local.cluster_type_output_node_pools_names[local.cluster_type]
-  cluster_node_pools_versions                = local.cluster_type_output_node_pools_versions[local.cluster_type]
-  cluster_network_policy_enabled             = ! local.cluster_type_output_network_policy_enabled[local.cluster_type]
-  cluster_http_load_balancing_enabled        = ! local.cluster_type_output_http_load_balancing_enabled[local.cluster_type]
-  cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_type_output_horizontal_pod_autoscaling_enabled[local.cluster_type]
-  cluster_kubernetes_dashboard_enabled       = ! local.cluster_type_output_kubernetes_dashboard_enabled[local.cluster_type]
+  cluster_master_version                     = local.cluster_output_master_version
+  cluster_min_master_version                 = local.cluster_output_min_master_version
+  cluster_logging_service                    = local.cluster_output_logging_service
+  cluster_monitoring_service                 = local.cluster_output_monitoring_service
+  cluster_node_pools_names                   = local.cluster_output_node_pools_names
+  cluster_node_pools_versions                = local.cluster_output_node_pools_versions
+  cluster_network_policy_enabled             = !local.cluster_output_network_policy_enabled
+  cluster_http_load_balancing_enabled        = !local.cluster_output_http_load_balancing_enabled
+  cluster_horizontal_pod_autoscaling_enabled = !local.cluster_output_horizontal_pod_autoscaling_enabled
+  cluster_kubernetes_dashboard_enabled       = !local.cluster_output_kubernetes_dashboard_enabled
 }
 
 /******************************************

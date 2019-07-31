@@ -14,30 +14,25 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
+// This file was automatically generated from a template in ./autogen
 
 /******************************************
-  Create regional cluster
+  Create Container Cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  {% if private_cluster or beta_cluster %}
   provider = google-beta
-  {% else %}
-  provider = google
-  {% endif %}
 
-  count           = var.regional ? 1 : 0
+
   name            = var.name
   description     = var.description
   project         = var.project_id
   resource_labels = var.cluster_resource_labels
 
-  region = var.region
+  location = local.location
   node_locations = coalescelist(
     compact(var.zones),
     sort(random_shuffle.available_zones.result),
   )
-
   cluster_ipv4_cidr = var.cluster_ipv4_cidr
   network           = data.google_compute_network.gke_network.self_link
 
@@ -51,12 +46,11 @@ resource "google_container_cluster" "primary" {
   }
 
   subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
-  min_master_version = local.kubernetes_version_regional
+  min_master_version = local.kubernetes_master_version
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
-{% if beta_cluster %}
   enable_binary_authorization = var.enable_binary_authorization
   enable_intranode_visibility = var.enable_intranode_visibility
 
@@ -71,7 +65,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-{% endif %}
   dynamic "master_authorized_networks_config" {
     for_each = var.master_authorized_networks_config
     content {
@@ -110,7 +103,6 @@ resource "google_container_cluster" "primary" {
     network_policy_config {
       disabled = ! var.network_policy
     }
-    {% if beta_cluster %}
 
     istio_config {
       disabled = ! var.istio
@@ -123,7 +115,6 @@ resource "google_container_cluster" "primary" {
         disabled = cloudrun_config.value.disabled
       }
     }
-    {% endif %}
   }
 
   ip_allocation_policy {
@@ -153,7 +144,6 @@ resource "google_container_cluster" "primary" {
 
     node_config {
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
-      {% if beta_cluster %}
 
       dynamic "workload_metadata_config" {
         for_each = local.cluster_node_metadata_config
@@ -162,20 +152,11 @@ resource "google_container_cluster" "primary" {
           node_metadata = workload_metadata_config.value.node_metadata
         }
       }
-      {% endif %}
     }
   }
 
-{% if private_cluster %}
-  private_cluster_config {
-    enable_private_endpoint = var.enable_private_endpoint
-    enable_private_nodes    = var.enable_private_nodes
-    master_ipv4_cidr_block  = var.master_ipv4_cidr_block
-  }
 
-{% endif %}
   remove_default_node_pool = var.remove_default_node_pool
-{% if beta_cluster %}
 
   dynamic "database_encryption" {
     for_each = var.database_encryption
@@ -185,23 +166,22 @@ resource "google_container_cluster" "primary" {
       state    = database_encryption.value.state
     }
   }
-{% endif %}
 }
 
 /******************************************
-  Create regional node pools
+  Create Container Cluster node pools
  *****************************************/
 resource "google_container_node_pool" "pools" {
   provider = google-beta
-  count    = var.regional ? length(var.node_pools) : 0
+  count    = length(var.node_pools)
   name     = var.node_pools[count.index]["name"]
   project  = var.project_id
-  region   = var.region
-  cluster  = google_container_cluster.primary[0].name
+  location = local.location
+  cluster  = google_container_cluster.primary.name
   version = lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(
     var.node_pools[count.index],
     "version",
-    local.node_version_regional,
+    local.kubernetes_node_version,
   )
   initial_node_count = lookup(
     var.node_pools[count.index],
@@ -216,7 +196,7 @@ resource "google_container_node_pool" "pools" {
 
   management {
     auto_repair  = lookup(var.node_pools[count.index], "auto_repair", true)
-    auto_upgrade = lookup(var.node_pools[count.index], "auto_upgrade", true)
+    auto_upgrade = lookup(var.node_pools[count.index], "auto_upgrade", false)
   }
 
   node_config {
@@ -274,7 +254,7 @@ resource "google_container_node_pool" "pools" {
 
     oauth_scopes = concat(
       var.node_pools_oauth_scopes["all"],
-      var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]]
+      var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]],
     )
 
     guest_accelerator = [
@@ -286,7 +266,6 @@ resource "google_container_node_pool" "pools" {
         count = guest_accelerator["count"]
       }
     ]
-    {% if beta_cluster %}
 
     dynamic "workload_metadata_config" {
       for_each = local.cluster_node_metadata_config
@@ -295,7 +274,6 @@ resource "google_container_node_pool" "pools" {
         node_metadata = workload_metadata_config.value.node_metadata
       }
     }
-    {% endif %}
   }
 
   lifecycle {
@@ -309,8 +287,8 @@ resource "google_container_node_pool" "pools" {
   }
 }
 
-resource "null_resource" "wait_for_regional_cluster" {
-  count = var.regional ? 1 : 0
+resource "null_resource" "wait_for_cluster" {
+  count = var.regional ? 0 : 1
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
