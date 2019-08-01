@@ -210,7 +210,7 @@ resource "google_container_node_pool" "pools" {
     lookup(var.node_pools[count.index], "min_count", 1),
   )
   {% if beta_cluster %}
-  max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", 110)
+  max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", null)
   {% endif %}
 
   autoscaling {

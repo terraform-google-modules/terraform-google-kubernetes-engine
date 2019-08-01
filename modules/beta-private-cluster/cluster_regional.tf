@@ -195,7 +195,7 @@ resource "google_container_node_pool" "pools" {
     "initial_node_count",
     lookup(var.node_pools[count.index], "min_count", 1),
   )
-  max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", 110)
+  max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", null)
 
   autoscaling {
     min_node_count = lookup(var.node_pools[count.index], "min_count", 1)
