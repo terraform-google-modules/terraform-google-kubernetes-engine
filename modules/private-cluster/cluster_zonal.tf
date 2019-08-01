@@ -147,7 +147,6 @@ resource "google_container_node_pool" "zonal_pools" {
     "initial_node_count",
     lookup(var.node_pools[count.index], "min_count", 1),
   )
-
   autoscaling {
     min_node_count = lookup(var.node_pools[count.index], "min_count", 1)
     max_node_count = lookup(var.node_pools[count.index], "max_count", 100)

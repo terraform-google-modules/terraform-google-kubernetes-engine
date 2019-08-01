@@ -320,6 +320,11 @@ variable "istio" {
   default     = false
 }
 
+variable "default_max_pods_per_node" {
+  description = "The maximum number of pods to schedule per node"
+  default     = 110
+}
+
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
   type        = list(object({ state = string, key_name = string }))
