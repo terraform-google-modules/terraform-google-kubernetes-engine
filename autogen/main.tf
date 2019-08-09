@@ -20,7 +20,7 @@
   Get available zones in region
  *****************************************/
 data "google_compute_zones" "available" {
-  {% if private_cluster or beta_cluster %}
+  {% if beta_cluster %}
   provider = google-beta
   {% else %}
   provider = google

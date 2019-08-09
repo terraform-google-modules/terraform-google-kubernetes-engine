@@ -161,7 +161,6 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map(map(string)) | `<map>` | no |
 | node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | map(list(string)) | `<map>` | no |
 | node\_pools\_tags | Map of lists containing node network tags by node-pool name | map(list(string)) | `<map>` | no |
-| node\_pools\_taints | Map of lists containing node taints by node-pool name | object | `<map>` | no |
 | node\_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `""` | no |
 | non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list(string) | `<list>` | no |
 | project\_id | The project ID to host the cluster in (required) | string | n/a | yes |

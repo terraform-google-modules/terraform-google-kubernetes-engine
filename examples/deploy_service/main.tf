@@ -23,11 +23,6 @@ provider "google" {
   region  = var.region
 }
 
-provider "google-beta" {
-  version = "~> 2.12.0"
-  region  = var.region
-}
-
 provider "kubernetes" {
   load_config_file       = false
   host                   = "https://${module.gke.endpoint}"

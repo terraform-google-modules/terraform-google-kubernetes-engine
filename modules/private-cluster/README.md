@@ -170,7 +170,6 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map(map(string)) | `<map>` | no |
 | node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | map(list(string)) | `<map>` | no |
 | node\_pools\_tags | Map of lists containing node network tags by node-pool name | map(list(string)) | `<map>` | no |
-| node\_pools\_taints | Map of lists containing node taints by node-pool name | object | `<map>` | no |
 | node\_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `""` | no |
 | non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list(string) | `<list>` | no |
 | project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
@@ -225,7 +224,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.12
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v2.9
+- [Terraform Provider for GCP][terraform-provider-google] v2.9
 
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the
@@ -395,6 +394,6 @@ command.
 
 [upgrading-to-v2.0]: ../../docs/upgrading_to_v2.0.md
 [upgrading-to-v3.0]: ../../docs/upgrading_to_v3.0.md
-[terraform-provider-google-beta]: https://github.com/terraform-providers/terraform-provider-google-beta
+[terraform-provider-google]: https://github.com/terraform-providers/terraform-provider-google
 [3.0.0]: https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/3.0.0
 [terraform-0.12-upgrade]: https://www.terraform.io/upgrade-guides/0-12.html
