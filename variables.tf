@@ -178,16 +178,6 @@ variable "node_pools_metadata" {
   }
 }
 
-variable "node_pools_taints" {
-  type        = map(list(object({ key = string, value = string, effect = string })))
-  description = "Map of lists containing node taints by node-pool name"
-
-  default = {
-    all               = []
-    default-node-pool = []
-  }
-}
-
 variable "node_pools_tags" {
   type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
