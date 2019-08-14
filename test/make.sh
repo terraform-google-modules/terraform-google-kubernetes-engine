@@ -84,7 +84,7 @@ function check_terraform() {
     | compat_xargs -0 -n1 dirname \
     | sort -u \
     | compat_xargs -t -n1 -i{} bash -c \
-    'terraform init "{}" > /dev/null && terraform validate "{}" && terraform fmt -check=true -write=false "{}"'
+    'terraform init "{}" && terraform validate "{}" && terraform fmt -check=true -write=false -diff "{}"'
 }
 
 # This function runs 'go fmt' and 'go vet' on every file

@@ -39,6 +39,7 @@ module "gke" {
   subnetwork              = var.subnetwork
   ip_range_pods           = var.ip_range_pods
   ip_range_services       = var.ip_range_services
+  create_service_account  = false
   service_account         = var.compute_engine_service_account
   enable_private_endpoint = true
   enable_private_nodes    = true

@@ -39,6 +39,7 @@ module "gke" {
   subnetwork                        = var.subnetwork
   ip_range_pods                     = var.ip_range_pods
   ip_range_services                 = var.ip_range_services
+  create_service_account            = false
   remove_default_node_pool          = true
   disable_legacy_metadata_endpoints = false
 
