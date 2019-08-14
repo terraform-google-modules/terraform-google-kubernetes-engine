@@ -376,4 +376,11 @@ variable "enable_intranode_visibility" {
   description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
   default     = false
 }
+
+variable "identity_namespace" {
+  type        = string
+  description = "Workload Identity namespace"
+  default     = ""
+}
+
 {% endif %}
