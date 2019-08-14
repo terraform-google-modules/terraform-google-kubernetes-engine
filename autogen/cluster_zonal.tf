@@ -182,6 +182,10 @@ resource "google_container_cluster" "zonal_primary" {
       state    = database_encryption.value.state
     }
   }
+
+  workload_identity_config {
+    identity_namespace = var.identity_namespace
+  }
 {% endif %}
 }
 
