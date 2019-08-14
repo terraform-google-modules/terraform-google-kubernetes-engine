@@ -255,10 +255,16 @@ variable "monitoring_service" {
   default     = "monitoring.googleapis.com"
 }
 
+variable "create_service_account" {
+  type        = bool
+  description = "Defines if service account specified to run nodes should be created."
+  default     = true
+}
+
 variable "service_account" {
   type        = string
-  description = "The service account to run nodes as if not overridden in `node_pools`. The default value will cause a cluster-specific service account to be created."
-  default     = "create"
+  description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
+  default     = ""
 }
 
 variable "basic_auth_username" {
