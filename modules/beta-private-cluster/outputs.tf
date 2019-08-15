@@ -54,8 +54,6 @@ output "endpoint" {
     */
     google_container_cluster.primary,
     google_container_node_pool.pools,
-    google_container_cluster.zonal_primary,
-    google_container_node_pool.zonal_pools,
   ]
 }
 
