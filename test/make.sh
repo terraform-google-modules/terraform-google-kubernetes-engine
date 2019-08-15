@@ -38,6 +38,7 @@ find_files() {
   find "${pth}" '(' \
     -path '*/.git' -o \
     -path '*/.terraform' -o \
+    -path '*/.kitchen' -o \
     -path './autogen' -o \
     -path './test/fixtures/all_examples' -o \
     -path './test/fixtures/shared' ')' \
@@ -46,7 +47,7 @@ find_files() {
 
 # Compatibility with both GNU and BSD style xargs.
 compat_xargs() {
-  local compat=()
+  local compat=() rval
   # Test if xargs is GNU or BSD style.  GNU xargs will succeed with status 0
   # when given --no-run-if-empty and no input on STDIN.  BSD xargs will fail and
   # exit status non-zero If xargs fails, assume it is BSD style and proceed.
@@ -55,6 +56,11 @@ compat_xargs() {
     compat=("--no-run-if-empty")
   fi
   xargs "${compat[@]}" "$@"
+  rval="$?"
+  if [[ -z "${NOWARN:-}" ]] && [[ "${rval}" -gt 0 ]]; then
+    echo "Warning: compat_xargs $* failed with exit code ${rval}" >&2
+  fi
+  return "${rval}"
 }
 
 # This function makes sure that the required files for
@@ -67,24 +73,28 @@ function basefiles() {
   done
 }
 
-# This function runs the hadolint linter on
-# every file named 'Dockerfile'
-function docker() {
-  echo "Running hadolint on Dockerfiles"
-  find_files . -name "Dockerfile" -print0 \
-    | compat_xargs -0 hadolint
-}
-
 # This function runs 'terraform validate' and 'terraform fmt'
 # against all directory paths which contain *.tf files.
 function check_terraform() {
-  set -e
-  echo "Running terraform validate and terraform fmt"
+  local rval=125
+  # fmt is before validate for faster feedback, validate requires terraform
+  # init which takes time.
+  echo "Running terraform fmt"
   find_files . -name "*.tf" -print0 \
     | compat_xargs -0 -n1 dirname \
     | sort -u \
-    | compat_xargs -t -n1 -i{} bash -c \
-    'terraform init "{}" && terraform validate "{}" && terraform fmt -check=true -write=false -diff "{}"'
+    | compat_xargs -t -n1 terraform fmt -diff -check=true -write=false
+  rval="$?"
+  if [[ "${rval}" -gt 0 ]]; then
+    echo "Error: terraform fmt failed with exit code ${rval}" >&2
+    echo "Check the output for diffs and correct using terraform fmt <dir>" >&2
+    return "${rval}"
+  fi
+  echo "Running terraform validate"
+  find_files . -not -path "./test/fixtures/shared/*" -name "*.tf" -print0 \
+    | compat_xargs -0 -n1 dirname \
+    | sort -u \
+    | compat_xargs -t -n1 helpers/terraform_validate
 }
 
 # This function runs 'go fmt' and 'go vet' on every file
@@ -118,7 +128,7 @@ function check_trailing_whitespace() {
   echo "Checking for trailing whitespace"
   find_files . -print \
     | grep -v -E '\.(pyc|png)$' \
-    | compat_xargs grep -H -n '[[:blank:]]$'
+    | NOWARN=1 compat_xargs grep -H -n '[[:blank:]]$'
   rc=$?
   if [[ ${rc} -eq 0 ]]; then
     return 1
@@ -132,15 +142,18 @@ function generate() {
 
 function generate_docs() {
   echo "Generating markdown docs with terraform-docs"
-  local path
-  while read -r path; do
-    if [[ -e "${path}/README.md" ]]; then
-      # script seem to be designed to work into current directory
-      cd "${path}" && echo "Working in ${path} ..."
-      terraform_docs.sh . && echo Success! || echo "Warning! Exit code: ${?}"
-      cd - >/dev/null
+  local pth helper_dir rval
+  helper_dir="$(pwd)/helpers"
+  while read -r pth; do
+    if [[ -e "${pth}/README.md" ]]; then
+      (cd "${pth}" || return 3; "${helper_dir}"/terraform_docs .;)
+      rval="$?"
+      if [[ "${rval}" -gt 0 ]]; then
+        echo "Error: terraform_docs in ${pth} exit code: ${rval}" >&2
+        return "${rval}"
+      fi
     else
-      echo "Skipping ${path} because README.md does not exist."
+      echo "Skipping ${pth} because README.md does not exist."
     fi
   done < <(find_files . -name '*.tf' -print0 \
     | compat_xargs -0 -n1 dirname \

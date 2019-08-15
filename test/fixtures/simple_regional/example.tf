@@ -26,4 +26,3 @@ module "example" {
   ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   compute_engine_service_account = var.compute_engine_service_account
 }
-
