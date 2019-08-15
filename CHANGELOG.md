@@ -10,6 +10,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 ### Added
 
 * Support for Intranode Visbiility (IV) and Veritical Pod Autoscaling (VPA) beta features [#216]
+* Support for Workload Identity beta feature [#234]
 
 ## [v4.1.0] 2019-07-24
 
