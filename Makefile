@@ -26,7 +26,7 @@ DOCKER_REPO_BASE_KITCHEN_TERRAFORM := ${DOCKER_ORG}/cft/kitchen-terraform:${DOCK
 all: check generate_docs
 
 .PHONY: check
-check: check_shell check_python check_golang check_terraform check_docker check_base_files test_check_headers check_headers check_trailing_whitespace check_generate check_generate_docs
+check: check_shell check_python check_golang check_terraform check_base_files test_check_headers check_headers check_trailing_whitespace check_generate check_generate_docs
 
 # The .PHONY directive tells make that this isn't a real target and so
 # the presence of a file named 'check_shell' won't cause this target to stop
@@ -46,10 +46,6 @@ check_golang:
 .PHONY: check_terraform
 check_terraform:
 	@source test/make.sh && check_terraform
-
-.PHONY: check_docker
-check_docker:
-	@source test/make.sh && docker
 
 .PHONY: check_base_files
 check_base_files:
