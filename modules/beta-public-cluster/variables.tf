@@ -352,8 +352,8 @@ variable "enable_vertical_pod_autoscaling" {
 
 variable "identity_namespace" {
   description = "Workload Identity namespace"
-  type        = list(string)
-  default     = []
+  type        = string
+  default     = ""
 }
 
 
