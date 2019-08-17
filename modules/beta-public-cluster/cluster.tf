@@ -164,8 +164,12 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  workload_identity_config {
-    identity_namespace = var.identity_namespace
+  dynamic "workload_identity_config" {
+    for_each = var.identity_namespace
+
+    content {
+      identity_namespace = identity_namespace
+    }
   }
 }
 
