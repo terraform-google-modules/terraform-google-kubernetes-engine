@@ -364,6 +364,7 @@ variable "pod_security_policy_config" {
 }
 
 variable "resource_usage_export_dataset_id" {
+  type        = string
   description = "The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic."
   default     = ""
 }

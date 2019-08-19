@@ -61,12 +61,13 @@ resource "google_container_cluster" "primary" {
       enabled = pod_security_policy_config.value.enabled
     }
   }
+
   dynamic "resource_usage_export_config" {
     for_each = var.resource_usage_export_dataset_id != "" ? [var.resource_usage_export_dataset_id] : []
     content {
       enable_network_egress_metering = true
       bigquery_destination {
-        dataset_id = resource_usage_export_dataset_id.value
+        dataset_id = resource_usage_export_config.value
       }
     }
   }
