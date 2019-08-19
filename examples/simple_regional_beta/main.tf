@@ -19,13 +19,13 @@ locals {
 }
 
 provider "google" {
-  version = "~> 2.12.0"
+  version     = "~> 2.12.0"
   credentials = file(var.credentials_path)
   region      = var.region
 }
 
 provider "google-beta" {
-  version = "~> 2.12.0"
+  version     = "~> 2.12.0"
   credentials = file(var.credentials_path)
   region      = var.region
 }
