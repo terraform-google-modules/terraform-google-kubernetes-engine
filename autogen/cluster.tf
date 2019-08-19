@@ -183,10 +183,10 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "workload_identity_config" {
-    for_each = list(var.identity_namespace)
+    for_each = local.cluster_workload_identity_config
 
     content {
-      identity_namespace = local.cluster_workload_identity_config.identity_namespace
+      identity_namespace = workload_identity_config.value.identity_namespace
     }
   }
 {% endif %}
