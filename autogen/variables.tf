@@ -378,9 +378,10 @@ variable "enable_intranode_visibility" {
 }
 
 variable "identity_namespace" {
-  type        = string
   description = "Workload Identity namespace"
+  type        = string
   default     = ""
 }
+
 
 {% endif %}
