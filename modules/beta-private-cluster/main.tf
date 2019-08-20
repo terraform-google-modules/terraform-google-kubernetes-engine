@@ -66,6 +66,10 @@ locals {
     node_metadata = var.node_metadata
   }]
 
+  cluster_authenticator_security_group = var.authenticator_security_group == "" ? [] : [{
+    security_group = var.authenticator_security_group
+  }]
+
 
   cluster_output_name           = google_container_cluster.primary.name
   cluster_output_location       = google_container_cluster.primary.location
