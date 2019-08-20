@@ -176,6 +176,13 @@ resource "google_container_cluster" "primary" {
       identity_namespace = workload_identity_config.value.identity_namespace
     }
   }
+
+  dynamic "authenticator_groups_config" {
+    for_each = local.cluster_authenticator_security_group
+    content {
+      security_group = authenticator_groups_config.value.security_group
+    }
+  }
 }
 
 /******************************************
