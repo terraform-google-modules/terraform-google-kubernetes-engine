@@ -381,8 +381,14 @@ variable "enable_vertical_pod_autoscaling" {
 }
 
 variable "identity_namespace" {
-  type        = string
   description = "Workload Identity namespace"
+  type        = string
   default     = ""
+}
+
+variable "authenticator_security_group" {
+  type        = string
+  description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
+  default     = null
 }
 

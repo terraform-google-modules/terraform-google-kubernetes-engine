@@ -66,6 +66,10 @@ locals {
     node_metadata = var.node_metadata
   }]
 
+  cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
+    security_group = var.authenticator_security_group
+  }]
+
 
   cluster_output_name           = google_container_cluster.primary.name
   cluster_output_location       = google_container_cluster.primary.location
@@ -123,6 +127,9 @@ locals {
   cluster_pod_security_policy_enabled      = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled
   cluster_vertical_pod_autoscaling_enabled = local.cluster_output_vertical_pod_autoscaling_enabled
+  cluster_workload_identity_config = var.identity_namespace == "" ? [] : [{
+    identity_namespace = var.identity_namespace
+  }]
   # /BETA features
 }
 
