@@ -27,6 +27,6 @@ data "google_client_config" "default" {
   Configure provider
  *****************************************/
 provider "kubernetes" {
-  load_config_file       = false
-  version = "~> 1.1"
+  load_config_file = false
+  version          = "~> 1.1"
 }
