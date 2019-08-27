@@ -261,6 +261,12 @@ variable "create_service_account" {
   default     = true
 }
 
+variable "grant_registry_access" {
+  type        = bool
+  description = "Grants created cluster-specific service account storage.objectViewer role."
+  default     = false
+}
+
 variable "service_account" {
   type        = string
   description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
@@ -378,9 +384,15 @@ variable "enable_intranode_visibility" {
 }
 
 variable "identity_namespace" {
-  type        = string
   description = "Workload Identity namespace"
+  type        = string
   default     = ""
+}
+
+variable "authenticator_security_group" {
+  type        = string
+  description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
+  default     = null
 }
 
 {% endif %}
