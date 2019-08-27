@@ -365,7 +365,8 @@ variable "pod_security_policy_config" {
 
 variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
-  default     = "UNSPECIFIED"
+  default     = "SECURE"
+  type        = string
 }
 
 variable "enable_intranode_visibility" {
