@@ -190,8 +190,9 @@ resource "google_container_node_pool" "pools" {
       var.node_pools_tags[var.node_pools[count.index]["name"]],
     )
 
-    disk_size_gb = lookup(var.node_pools[count.index], "disk_size_gb", 100)
-    disk_type    = lookup(var.node_pools[count.index], "disk_type", "pd-standard")
+    local_ssd_count = lookup(var.node_pools[count.index], "local_ssd_count", 0)
+    disk_size_gb    = lookup(var.node_pools[count.index], "disk_size_gb", 100)
+    disk_type       = lookup(var.node_pools[count.index], "disk_type", "pd-standard")
     service_account = lookup(
       var.node_pools[count.index],
       "service_account",
