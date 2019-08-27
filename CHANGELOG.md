@@ -14,6 +14,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Support for setting node_locations on node pools. [#303]
 * Fix for specifying  `node_count` on node pools when autoscaling is disabled. [#311]
 * Added submodule for installing Anthos Config Management. [#268]
+* Support for `local_ssd_count` in node pool configuration. [#244]
 
 ## [v5.1.1] - 2019-10-25
 
@@ -245,6 +246,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [#238]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/238
 [#241]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/241
 [#250]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/250
+[#244]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/244
 [#236]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/236
 [#217]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/217
 [#234]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/234
