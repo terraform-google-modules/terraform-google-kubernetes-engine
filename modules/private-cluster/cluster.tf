@@ -152,8 +152,8 @@ resource "google_container_node_pool" "pools" {
   dynamic "autoscaling" {
     for_each = lookup(var.node_pools[count.index], "autoscaling", true) ? [var.node_pools[count.index]] : []
     content {
-      min_node_count = autoscaling.value.min_count
-      max_node_count = autoscaling.value.max_count
+      min_node_count = lookup(autoscaling.value, "min_count", 1)
+      max_node_count = lookup(autoscaling.value, "max_count", 100)
     }
   }
 
