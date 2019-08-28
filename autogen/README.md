@@ -157,7 +157,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.12
-{% if private_cluster or beta_cluster %}
+{% if beta_cluster %}
 - [Terraform Provider for GCP Beta][terraform-provider-google-beta] v2.9
 {% else %}
 - [Terraform Provider for GCP][terraform-provider-google] v2.9
@@ -339,7 +339,7 @@ command.
 {% else %}
 [upgrading-to-v3.0]: docs/upgrading_to_v3.0.md
 {% endif %}
-{% if private_cluster or beta_cluster %}
+{% if beta_cluster %}
 [terraform-provider-google-beta]: https://github.com/terraform-providers/terraform-provider-google-beta
 {% else %}
 [terraform-provider-google]: https://github.com/terraform-providers/terraform-provider-google

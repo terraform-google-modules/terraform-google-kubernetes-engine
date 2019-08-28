@@ -20,7 +20,7 @@
   Create Container Cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  {% if private_cluster or beta_cluster %}
+  {% if beta_cluster %}
   provider = google-beta
   {% else %}
   provider = google
@@ -220,7 +220,11 @@ resource "google_container_cluster" "primary" {
   Create Container Cluster node pools
  *****************************************/
 resource "google_container_node_pool" "pools" {
+  {% if beta_cluster %}
   provider = google-beta
+  {% else %}
+  provider = google
+  {% endif %}
   count    = length(var.node_pools)
   name     = var.node_pools[count.index]["name"]
   project  = var.project_id
@@ -281,6 +285,7 @@ resource "google_container_node_pool" "pools" {
         "disable-legacy-endpoints" = var.disable_legacy_metadata_endpoints
       },
     )
+    {% if beta_cluster %}
     dynamic "taint" {
       for_each = concat(
         var.node_pools_taints["all"],
@@ -292,6 +297,7 @@ resource "google_container_node_pool" "pools" {
         value  = taint.value.value
       }
     }
+    {% endif %}
     tags = concat(
       ["gke-${var.name}"],
       ["gke-${var.name}-${var.node_pools[count.index]["name"]}"],
