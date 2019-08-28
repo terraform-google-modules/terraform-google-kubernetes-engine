@@ -62,6 +62,15 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "resource_usage_export_config" {
+    for_each = var.resource_usage_export_dataset_id != "" ? [var.resource_usage_export_dataset_id] : []
+    content {
+      enable_network_egress_metering = true
+      bigquery_destination {
+        dataset_id = resource_usage_export_config.value
+      }
+    }
+  }
   dynamic "master_authorized_networks_config" {
     for_each = var.master_authorized_networks_config
     content {
