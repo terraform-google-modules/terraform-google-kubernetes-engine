@@ -14,6 +14,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Support for Intranode Visbiility (IV) and Veritical Pod Autoscaling (VPA) beta features [#216]
 * Support for Workload Identity beta feature [#234]
 * Support for Google Groups based RBAC beta feature [#217]
+* Support for disabling node pool autoscaling by setting `autoscaling` to `false` within the node pool variable. [#250]
 
 ## [v4.1.0] 2019-07-24
 
@@ -172,6 +173,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
 [#241]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/241
+[#250]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/250
 [#236]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/236
 [#217]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/217
 [#234]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/234
