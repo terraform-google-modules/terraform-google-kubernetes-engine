@@ -167,6 +167,14 @@ resource "google_container_cluster" "primary" {
           node_metadata = workload_metadata_config.value.node_metadata
         }
       }
+
+      dynamic "sandbox_config" {
+        for_each = local.cluster_sandbox_enabled
+
+        content {
+          sandbox_type = sandbox_config.value
+        }
+      }
       {% endif %}
     }
   }
@@ -232,9 +240,14 @@ resource "google_container_node_pool" "pools" {
   max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", null)
   {% endif %}
 
-  autoscaling {
-    min_node_count = lookup(var.node_pools[count.index], "min_count", 1)
-    max_node_count = lookup(var.node_pools[count.index], "max_count", 100)
+  node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "min_count", 1)
+
+  dynamic "autoscaling" {
+    for_each = lookup(var.node_pools[count.index], "autoscaling", true) ? [var.node_pools[count.index]] : []
+    content {
+      min_node_count = lookup(autoscaling.value, "min_count", 1)
+      max_node_count = lookup(autoscaling.value, "max_count", 100)
+    }
   }
 
   management {
