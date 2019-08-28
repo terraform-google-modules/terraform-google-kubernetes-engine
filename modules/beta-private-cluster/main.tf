@@ -70,6 +70,8 @@ locals {
     security_group = var.authenticator_security_group
   }]
 
+  cluster_sandbox_enabled = var.sandbox_enabled ? ["gvisor"] : []
+
 
   cluster_output_name           = google_container_cluster.primary.name
   cluster_output_location       = google_container_cluster.primary.location
