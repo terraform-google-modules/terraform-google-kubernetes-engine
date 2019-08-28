@@ -71,6 +71,12 @@ locals {
     node_metadata = var.node_metadata
   }]
 
+  cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
+    security_group = var.authenticator_security_group
+  }]
+
+  cluster_sandbox_enabled = var.sandbox_enabled ? ["gvisor"] : []
+
 {% endif %}
 
   cluster_output_name           = google_container_cluster.primary.name

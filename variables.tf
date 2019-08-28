@@ -251,6 +251,12 @@ variable "create_service_account" {
   default     = true
 }
 
+variable "grant_registry_access" {
+  type        = bool
+  description = "Grants created cluster-specific service account storage.objectViewer role."
+  default     = false
+}
+
 variable "service_account" {
   type        = string
   description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
