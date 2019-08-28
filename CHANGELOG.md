@@ -9,6 +9,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 ## [Unreleased]
 ### Added
 
+* Added support for resource usage export config [#238]
 * Added `sandbox_enabled` variable to use GKE Sandbox [#241]
 * Added `grant_registry_access` variable to grant Container Registry access to created SA [#236]
 * Support for Intranode Visbiility (IV) and Veritical Pod Autoscaling (VPA) beta features [#216]
@@ -172,6 +173,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#238]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/238
 [#241]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/241
 [#250]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/250
 [#236]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/236
