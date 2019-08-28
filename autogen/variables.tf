@@ -178,6 +178,7 @@ variable "node_pools_metadata" {
   }
 }
 
+{% if beta_cluster %}
 variable "node_pools_taints" {
   type        = map(list(object({key=string,value=string,effect=string})))
   description = "Map of lists containing node taints by node-pool name"
@@ -188,6 +189,7 @@ variable "node_pools_taints" {
   }
 }
 
+{% endif %}
 variable "node_pools_tags" {
   type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
