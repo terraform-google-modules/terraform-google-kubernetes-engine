@@ -46,13 +46,16 @@ MODULES = [
         'private_cluster': False,
     }),
     Module("./modules/private-cluster", {
+        'module_path': '//modules/private-cluster',
         'private_cluster': True
     }),
     Module("./modules/beta-private-cluster", {
+        'module_path': '//modules/beta-private-cluster',
         'private_cluster': True,
         'beta_cluster': True,
     }),
     Module("./modules/beta-public-cluster", {
+        'module_path': '//modules/beta-public-cluster',
         'private_cluster': False,
         'beta_cluster': True,
     }),
