@@ -129,10 +129,27 @@ resource "google_container_cluster" "primary" {
 /******************************************
   Create Container Cluster node pools
  *****************************************/
+resource "random_id" "name" {
+  # if any node_pool definition has a create_before_destroy key, then create random_id names
+  count = length(compact([for node_pool in var.node_pools : lookup(node_pool, "create_before_destroy", "")])) > 0 ? length(var.node_pools) : 0
+
+  byte_length = 2
+  prefix      = format("%s-", lookup(var.node_pools[count.index], "name"))
+
+  keepers = {
+    disk_size_gb    = lookup(var.node_pools[count.index], "disk_size_gb", 100)
+    disk_type       = lookup(var.node_pools[count.index], "disk_type", "pd-standard")
+    preemptible     = lookup(var.node_pools[count.index], "preemptible", false)
+    local_ssd_count = lookup(var.node_pools[count.index], "local_ssd_count", 0)
+    image_type      = lookup(var.node_pools[count.index], "image_type", "COS")
+    machine_type    = lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")
+  }
+}
+
 resource "google_container_node_pool" "pools" {
   provider = google
   count    = length(var.node_pools)
-  name     = var.node_pools[count.index]["name"]
+  name     = lookup(var.node_pools[count.index], "create_before_destroy", false) ? random_id.name.*.hex[count.index] : lookup(var.node_pools[count.index], "name")
   project  = var.project_id
   location = local.location
   cluster  = google_container_cluster.primary.name
@@ -222,6 +239,7 @@ resource "google_container_node_pool" "pools" {
 
   lifecycle {
     ignore_changes = [initial_node_count]
+    create_before_destroy = lookup(var.node_pools[count.index], "create_before_destroy", null)
   }
 
   timeouts {
