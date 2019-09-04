@@ -135,7 +135,7 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
-    ignore_changes = [node_pool]
+    ignore_changes = [node_pool, initial_node_count]
   }
 
   timeouts {
@@ -144,7 +144,6 @@ resource "google_container_cluster" "primary" {
     delete = "30m"
   }
 
-  initial_node_count = var.initial_node_count
   node_pool {
     name               = "default-pool"
     initial_node_count = var.initial_node_count
