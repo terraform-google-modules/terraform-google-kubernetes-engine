@@ -28,7 +28,7 @@ There are multiple examples included in the [examples](./examples/) folder but s
 
 ```hcl
 module "gke" {
-  source                     = "terraform-google-modules/kubernetes-engine/google{% if private_cluster %}//modules/private-cluster{% endif %}"
+  source                     = "terraform-google-modules/kubernetes-engine/google{{ module_path }}"
   project_id                 = "<PROJECT ID>"
   name                       = "gke-test-1"
   region                     = "us-central1"
