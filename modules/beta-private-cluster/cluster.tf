@@ -206,9 +206,7 @@ resource "google_container_cluster" "primary" {
   Create Container Cluster node pools
  *****************************************/
 resource "random_id" "name" {
-  # if any node_pool definition has a create_before_destroy key, then create random_id names
-  count = length(compact([for node_pool in var.node_pools : lookup(node_pool, "create_before_destroy", "")])) > 0 ? length(var.node_pools) : 0
-
+  count       = length(var.node_pools)
   byte_length = 2
   prefix      = format("%s-", lookup(var.node_pools[count.index], "name"))
 
