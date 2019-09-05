@@ -129,19 +129,56 @@ resource "google_container_cluster" "primary" {
 /******************************************
   Create Container Cluster node pools
  *****************************************/
+locals {
+  force_node_pool_recreation_resources = [
+    "disk_size_gb",
+    "disk_type",
+    "accelerator_count",
+    "accelerator_type",
+    "local_ssd_count",
+    "machine_type",
+    "preemptible",
+    "service_account",
+  ]
+}
+
 resource "random_id" "name" {
   count       = length(var.node_pools)
   byte_length = 2
   prefix      = format("%s-", lookup(var.node_pools[count.index], "name"))
-
-  keepers = {
-    disk_size_gb    = lookup(var.node_pools[count.index], "disk_size_gb", 100)
-    disk_type       = lookup(var.node_pools[count.index], "disk_type", "pd-standard")
-    preemptible     = lookup(var.node_pools[count.index], "preemptible", false)
-    local_ssd_count = lookup(var.node_pools[count.index], "local_ssd_count", 0)
-    image_type      = lookup(var.node_pools[count.index], "image_type", "COS")
-    machine_type    = lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")
-  }
+  keepers = merge(
+    zipmap(
+      local.force_node_pool_recreation_resources,
+      [for keeper in local.force_node_pool_recreation_resources : lookup(var.node_pools[count.index], keeper, "")]
+    ),
+    {
+      labels_all = join(",", keys(var.node_pools_labels["all"]), values(var.node_pools_labels["all"]))
+    },
+    {
+      labels_node_pool = join(",", keys(var.node_pools_labels[var.node_pools[count.index]["name"]]), values(var.node_pools_labels[var.node_pools[count.index]["name"]]))
+    },
+    {
+      metadata_all = join(",", keys(var.node_pools_metadata["all"]), values(var.node_pools_metadata["all"]))
+    },
+    {
+      metadata_node_pool = join(",",
+        keys(var.node_pools_metadata[var.node_pools[count.index]["name"]]),
+        values(var.node_pools_metadata[var.node_pools[count.index]["name"]])
+      )
+    },
+    {
+      oauth_scopes_all = join(",", var.node_pools_oauth_scopes["all"])
+    },
+    {
+      oauth_scopes_node_pool = join(",", var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]])
+    },
+    {
+      tags_all = join(",", var.node_pools_tags["all"])
+    },
+    {
+      tags_node_pool = join(",", var.node_pools_tags[var.node_pools[count.index]["name"]])
+    }
+  )
 }
 
 resource "google_container_node_pool" "pools" {
@@ -236,7 +273,7 @@ resource "google_container_node_pool" "pools" {
   }
 
   lifecycle {
-    ignore_changes = [initial_node_count]
+    ignore_changes        = [initial_node_count]
     create_before_destroy = lookup(var.node_pools[count.index], "create_before_destroy", null)
   }
 
