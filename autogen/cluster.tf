@@ -143,7 +143,7 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
-    ignore_changes = [node_pool]
+    ignore_changes = [node_pool, initial_node_count]
   }
 
   timeouts {
