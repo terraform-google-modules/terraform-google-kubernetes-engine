@@ -112,8 +112,8 @@ locals {
   # /BETA features
   {% endif %}
 
-  cluster_output_node_pools_names    = concat(google_container_node_pool.pools.*.name, [""])
-  cluster_output_node_pools_versions = concat(google_container_node_pool.pools.*.version, [""])
+  cluster_output_node_pools_names    = concat(google_container_node_pool.pools0.*.name, google_container_node_pool.pools1.*.name, [""])
+  cluster_output_node_pools_versions = concat(google_container_node_pool.pools0.*.version, google_container_node_pool.pools1.*.version, [""])
 
   cluster_master_auth_list_layer1 = local.cluster_output_master_auth
   cluster_master_auth_list_layer2 = local.cluster_master_auth_list_layer1[0]

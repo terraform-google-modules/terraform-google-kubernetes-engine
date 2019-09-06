@@ -271,14 +271,19 @@ resource "random_id" "name" {
   )
 }
 
-resource "google_container_node_pool" "pools" {
+{% for create_before_destroy_value in ["true", "false"] %}
+resource "google_container_node_pool" "pools{{ loop.index0 }}" {
   {% if beta_cluster %}
   provider = google-beta
   {% else %}
   provider = google
   {% endif %}
-  count    = length(var.node_pools)
-  name     = lookup(var.node_pools[count.index], "create_before_destroy", false) ? random_id.name.*.hex[count.index] : lookup(var.node_pools[count.index], "name")
+  {% if create_before_destroy_value == "true" %}
+  count    = var.node_pools_create_before_destroy ? length(var.node_pools) : 0
+  {% else %}
+  count    = var.node_pools_create_before_destroy ? 0 : length(var.node_pools)
+  {% endif %}
+  name     = var.node_pools_create_before_destroy ? random_id.name.*.hex[count.index] : lookup(var.node_pools[count.index], "name")
   project  = var.project_id
   location = local.location
   cluster  = google_container_cluster.primary.name
@@ -394,7 +399,7 @@ resource "google_container_node_pool" "pools" {
 
   lifecycle {
     ignore_changes = [initial_node_count]
-    create_before_destroy = lookup(var.node_pools[count.index], "create_before_destroy", null)
+    create_before_destroy = {{ create_before_destroy_value }}
   }
 
   timeouts {
@@ -404,6 +409,7 @@ resource "google_container_node_pool" "pools" {
   }
 }
 
+{% endfor %}
 resource "null_resource" "wait_for_cluster" {
 
   provisioner "local-exec" {
@@ -417,6 +423,7 @@ resource "null_resource" "wait_for_cluster" {
 
   depends_on = [
     google_container_cluster.primary,
-    google_container_node_pool.pools,
+    google_container_node_pool.pools0,
+    google_container_node_pool.pools1,
   ]
 }
