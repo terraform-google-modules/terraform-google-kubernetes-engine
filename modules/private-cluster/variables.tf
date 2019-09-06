@@ -198,6 +198,12 @@ variable "node_pools_oauth_scopes" {
   }
 }
 
+variable "node_pools_create_before_destroy" {
+  type        = bool
+  description = "Create a new node pool, then destroy the old node pool. Default behavior is destroy node pool then recreate it"
+  default     = false
+}
+
 variable "stub_domains" {
   type        = map(list(string))
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"

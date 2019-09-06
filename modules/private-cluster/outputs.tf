@@ -53,7 +53,8 @@ output "endpoint" {
     * to be up.
     */
     google_container_cluster.primary,
-    google_container_node_pool.pools,
+    google_container_node_pool.pools0,
+    google_container_node_pool.pools1,
   ]
 }
 

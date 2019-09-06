@@ -29,7 +29,8 @@ resource "null_resource" "delete_default_kube_dns_configmap" {
   depends_on = [
     data.google_client_config.default,
     google_container_cluster.primary,
-    google_container_node_pool.pools,
+    google_container_node_pool.pools0,
+    google_container_node_pool.pools1,
   ]
 }
 
@@ -58,7 +59,8 @@ EOF
     null_resource.delete_default_kube_dns_configmap,
     data.google_client_config.default,
     google_container_cluster.primary,
-    google_container_node_pool.pools,
+    google_container_node_pool.pools0,
+    google_container_node_pool.pools1,
   ]
 }
 
@@ -85,7 +87,8 @@ EOF
     null_resource.delete_default_kube_dns_configmap,
     data.google_client_config.default,
     google_container_cluster.primary,
-    google_container_node_pool.pools,
+    google_container_node_pool.pools0,
+    google_container_node_pool.pools1,
   ]
 }
 
@@ -115,6 +118,7 @@ EOF
     null_resource.delete_default_kube_dns_configmap,
     data.google_client_config.default,
     google_container_cluster.primary,
-    google_container_node_pool.pools,
+    google_container_node_pool.pools0,
+    google_container_node_pool.pools1,
   ]
 }
