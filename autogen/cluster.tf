@@ -271,8 +271,12 @@ resource "random_id" "name" {
   )
 }
 
-{% for create_before_destroy_value in ["true", "false"] %}
-resource "google_container_node_pool" "pools{{ loop.index0 }}" {
+{% for create_before_destroy_value in ["false", "true"] %}
+{% if create_before_destroy_value == "false" %}
+resource "google_container_node_pool" "pools" {
+{% else %}
+resource "google_container_node_pool" "pools_lifecycle_variant" {
+{% endif %}
   {% if beta_cluster %}
   provider = google-beta
   {% else %}
@@ -423,7 +427,7 @@ resource "null_resource" "wait_for_cluster" {
 
   depends_on = [
     google_container_cluster.primary,
-    google_container_node_pool.pools0,
-    google_container_node_pool.pools1,
+    google_container_node_pool.pools,
+    google_container_node_pool.pools_lifecycle_variant,
   ]
 }
