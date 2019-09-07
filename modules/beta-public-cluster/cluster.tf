@@ -214,7 +214,7 @@ locals {
 }
 
 resource "random_id" "name" {
-  count       = length(var.node_pools)
+  count       = var.node_pools_create_before_destroy ? length(var.node_pools) : 0
   byte_length = 2
   prefix      = format("%s-", lookup(var.node_pools[count.index], "name"))
   keepers = merge(
