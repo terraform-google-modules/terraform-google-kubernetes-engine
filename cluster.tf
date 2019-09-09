@@ -147,31 +147,32 @@ resource "random_id" "name" {
       [for keeper in local.force_node_pool_recreation_resources : lookup(var.node_pools[count.index], keeper, "")]
     ),
     {
-      labels_all = join(",", keys(var.node_pools_labels["all"]), values(var.node_pools_labels["all"]))
+      labels = join(",",
+        keys(var.node_pools_labels["all"]),
+        keys(var.node_pools_labels[var.node_pools[count.index]["name"]]),
+        values(var.node_pools_labels["all"]),
+        values(var.node_pools_labels[var.node_pools[count.index]["name"]])
+      )
     },
     {
-      labels_node_pool = join(",", keys(var.node_pools_labels[var.node_pools[count.index]["name"]]), values(var.node_pools_labels[var.node_pools[count.index]["name"]]))
-    },
-    {
-      metadata_all = join(",", keys(var.node_pools_metadata["all"]), values(var.node_pools_metadata["all"]))
-    },
-    {
-      metadata_node_pool = join(",",
+      metadata = join(",",
+        keys(var.node_pools_metadata["all"]),
         keys(var.node_pools_metadata[var.node_pools[count.index]["name"]]),
+        values(var.node_pools_metadata["all"]),
         values(var.node_pools_metadata[var.node_pools[count.index]["name"]])
       )
     },
     {
-      oauth_scopes_all = join(",", var.node_pools_oauth_scopes["all"])
+      oauth_scopes = join(",",
+        var.node_pools_oauth_scopes["all"],
+        var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]]
+      )
     },
     {
-      oauth_scopes_node_pool = join(",", var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]])
-    },
-    {
-      tags_all = join(",", var.node_pools_tags["all"])
-    },
-    {
-      tags_node_pool = join(",", var.node_pools_tags[var.node_pools[count.index]["name"]])
+      tags = join(",",
+        var.node_pools_tags["all"],
+        var.node_pools_tags[var.node_pools[count.index]["name"]]
+      )
     }
   )
 }
