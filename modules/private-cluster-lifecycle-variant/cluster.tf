@@ -142,6 +142,8 @@ locals {
   ]
 }
 
+# This keepers list is based on the terraform google provider schemaNodeConfig
+# resources where "ForceNew" is "true"
 resource "random_id" "name" {
   count       = length(var.node_pools)
   byte_length = 2
