@@ -219,6 +219,7 @@ resource "google_container_cluster" "primary" {
 /******************************************
   Create Container Cluster node pools
  *****************************************/
+{% if lifecycle_variant %}
 locals {
   force_node_pool_recreation_resources = [
     "disk_size_gb",
@@ -233,7 +234,7 @@ locals {
 }
 
 resource "random_id" "name" {
-  count       = var.node_pools_create_before_destroy ? length(var.node_pools) : 0
+  count       = length(var.node_pools)
   byte_length = 2
   prefix      = format("%s-", lookup(var.node_pools[count.index], "name"))
   keepers = merge(
@@ -272,23 +273,19 @@ resource "random_id" "name" {
   )
 }
 
-{% for create_before_destroy_value in ["false", "true"] %}
-{% if create_before_destroy_value == "false" %}
-resource "google_container_node_pool" "pools" {
-{% else %}
-resource "google_container_node_pool" "pools_lifecycle_variant" {
 {% endif %}
+resource "google_container_node_pool" "pools" {
   {% if beta_cluster %}
   provider = google-beta
   {% else %}
   provider = google
   {% endif %}
-  {% if create_before_destroy_value == "true" %}
-  count    = var.node_pools_create_before_destroy ? length(var.node_pools) : 0
+  count    = length(var.node_pools)
+  {% if lifecycle_variant %}
+  name     = random_id.name.*.hex[count.index]
   {% else %}
-  count    = var.node_pools_create_before_destroy ? 0 : length(var.node_pools)
+  name     = lookup(var.node_pools[count.index], "name")
   {% endif %}
-  name     = var.node_pools_create_before_destroy ? random_id.name.*.hex[count.index] : lookup(var.node_pools[count.index], "name")
   project  = var.project_id
   location = local.location
   cluster  = google_container_cluster.primary.name
@@ -404,7 +401,9 @@ resource "google_container_node_pool" "pools_lifecycle_variant" {
 
   lifecycle {
     ignore_changes = [initial_node_count]
-    create_before_destroy = {{ create_before_destroy_value }}
+    {% if lifecycle_variant %}
+    create_before_destroy = true
+    {% endif %}
   }
 
   timeouts {
@@ -414,7 +413,6 @@ resource "google_container_node_pool" "pools_lifecycle_variant" {
   }
 }
 
-{% endfor %}
 resource "null_resource" "wait_for_cluster" {
 
   provisioner "local-exec" {
@@ -429,6 +427,5 @@ resource "null_resource" "wait_for_cluster" {
   depends_on = [
     google_container_cluster.primary,
     google_container_node_pool.pools,
-    google_container_node_pool.pools_lifecycle_variant,
   ]
 }

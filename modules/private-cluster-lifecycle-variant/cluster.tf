@@ -129,10 +129,63 @@ resource "google_container_cluster" "primary" {
 /******************************************
   Create Container Cluster node pools
  *****************************************/
+locals {
+  force_node_pool_recreation_resources = [
+    "disk_size_gb",
+    "disk_type",
+    "accelerator_count",
+    "accelerator_type",
+    "local_ssd_count",
+    "machine_type",
+    "preemptible",
+    "service_account",
+  ]
+}
+
+resource "random_id" "name" {
+  count       = length(var.node_pools)
+  byte_length = 2
+  prefix      = format("%s-", lookup(var.node_pools[count.index], "name"))
+  keepers = merge(
+    zipmap(
+      local.force_node_pool_recreation_resources,
+      [for keeper in local.force_node_pool_recreation_resources : lookup(var.node_pools[count.index], keeper, "")]
+    ),
+    {
+      labels = join(",",
+        keys(var.node_pools_labels["all"]),
+        keys(var.node_pools_labels[var.node_pools[count.index]["name"]]),
+        values(var.node_pools_labels["all"]),
+        values(var.node_pools_labels[var.node_pools[count.index]["name"]])
+      )
+    },
+    {
+      metadata = join(",",
+        keys(var.node_pools_metadata["all"]),
+        keys(var.node_pools_metadata[var.node_pools[count.index]["name"]]),
+        values(var.node_pools_metadata["all"]),
+        values(var.node_pools_metadata[var.node_pools[count.index]["name"]])
+      )
+    },
+    {
+      oauth_scopes = join(",",
+        var.node_pools_oauth_scopes["all"],
+        var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]]
+      )
+    },
+    {
+      tags = join(",",
+        var.node_pools_tags["all"],
+        var.node_pools_tags[var.node_pools[count.index]["name"]]
+      )
+    }
+  )
+}
+
 resource "google_container_node_pool" "pools" {
   provider = google
   count    = length(var.node_pools)
-  name     = lookup(var.node_pools[count.index], "name")
+  name     = random_id.name.*.hex[count.index]
   project  = var.project_id
   location = local.location
   cluster  = google_container_cluster.primary.name
@@ -221,7 +274,8 @@ resource "google_container_node_pool" "pools" {
   }
 
   lifecycle {
-    ignore_changes = [initial_node_count]
+    ignore_changes        = [initial_node_count]
+    create_before_destroy = true
   }
 
   timeouts {
