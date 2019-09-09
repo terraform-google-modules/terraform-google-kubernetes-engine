@@ -54,6 +54,11 @@ MODULES = [
         'private_cluster': True,
         'beta_cluster': True,
     }),
+    Module("./modules/private-cluster-lifecycle-variant", {
+        'module_path': '//modules/private-cluster-lifecycle-variant',
+        'private_cluster': True,
+        'lifecycle_variant': True,
+    }),
     Module("./modules/beta-public-cluster", {
         'module_path': '//modules/beta-public-cluster',
         'private_cluster': False,

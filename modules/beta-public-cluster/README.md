@@ -170,7 +170,6 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
 | node\_metadata | Specifies how node metadata is exposed to the workload running on the node | string | `"UNSPECIFIED"` | no |
 | node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
-| node\_pools\_create\_before\_destroy | Create a new node pool, then destroy the old node pool. Default behavior is destroy node pool then recreate it | bool | `"false"` | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | map(map(string)) | `<map>` | no |
 | node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map(map(string)) | `<map>` | no |
 | node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | map(list(string)) | `<map>` | no |
