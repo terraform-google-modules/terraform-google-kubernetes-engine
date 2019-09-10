@@ -287,7 +287,7 @@ resource "google_container_node_pool" "pools" {
   {% if update_variant %}
   name     = random_id.name.*.hex[count.index]
   {% else %}
-  name     = lookup(var.node_pools[count.index], "name")
+  name     = var.node_pools[count.index]["name"]
   {% endif %}
   project  = var.project_id
   location = local.location

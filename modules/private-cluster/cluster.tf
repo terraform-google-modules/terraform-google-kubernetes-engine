@@ -132,7 +132,7 @@ resource "google_container_cluster" "primary" {
 resource "google_container_node_pool" "pools" {
   provider = google
   count    = length(var.node_pools)
-  name     = lookup(var.node_pools[count.index], "name")
+  name     = var.node_pools[count.index]["name"]
   project  = var.project_id
   location = local.location
   cluster  = google_container_cluster.primary.name
