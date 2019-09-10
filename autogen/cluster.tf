@@ -219,7 +219,7 @@ resource "google_container_cluster" "primary" {
 /******************************************
   Create Container Cluster node pools
  *****************************************/
-{% if lifecycle_variant %}
+{% if update_variant %}
 locals {
   force_node_pool_recreation_resources = [
     "disk_size_gb",
@@ -234,7 +234,8 @@ locals {
 }
 
 # This keepers list is based on the terraform google provider schemaNodeConfig
-# resources where "ForceNew" is "true"
+# resources where "ForceNew" is "true". schemaNodeConfig can be found in node_config.go at
+# https://github.com/terraform-providers/terraform-provider-google/blob/master/google/node_config.go#L22
 resource "random_id" "name" {
   count       = length(var.node_pools)
   byte_length = 2
@@ -283,7 +284,7 @@ resource "google_container_node_pool" "pools" {
   provider = google
   {% endif %}
   count    = length(var.node_pools)
-  {% if lifecycle_variant %}
+  {% if update_variant %}
   name     = random_id.name.*.hex[count.index]
   {% else %}
   name     = lookup(var.node_pools[count.index], "name")
@@ -403,7 +404,7 @@ resource "google_container_node_pool" "pools" {
 
   lifecycle {
     ignore_changes = [initial_node_count]
-    {% if lifecycle_variant %}
+    {% if update_variant %}
     create_before_destroy = true
     {% endif %}
   }
