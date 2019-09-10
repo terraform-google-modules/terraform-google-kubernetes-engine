@@ -104,7 +104,7 @@ locals {
 
 {% if beta_cluster %}
   # BETA features
-  cluster_output_istio_enabled                    = google_container_cluster.primary.addons_config.0.istio_config.0.disabled
+  cluster_output_istio_disabled                   = google_container_cluster.primary.addons_config.0.istio_config != null && length(google_container_cluster.primary.addons_config.0.istio_config) == 1 ? google_container_cluster.primary.addons_config.0.istio_config.0.disabled : false
   cluster_output_pod_security_policy_enabled      = google_container_cluster.primary.pod_security_policy_config != null && length(google_container_cluster.primary.pod_security_policy_config) == 1 ? google_container_cluster.primary.pod_security_policy_config.0.enabled : false
   cluster_output_intranode_visbility_enabled      = google_container_cluster.primary.enable_intranode_visibility
   cluster_output_vertical_pod_autoscaling_enabled = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling.0.enabled : false
@@ -137,7 +137,7 @@ locals {
   cluster_kubernetes_dashboard_enabled       = ! local.cluster_output_kubernetes_dashboard_enabled
 {% if beta_cluster %}
   # BETA features
-  cluster_istio_enabled                    = ! local.cluster_output_istio_enabled
+  cluster_istio_enabled                    = ! local.cluster_output_istio_disabled
   cluster_cloudrun_enabled                 = var.cloudrun
   cluster_pod_security_policy_enabled      = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled
