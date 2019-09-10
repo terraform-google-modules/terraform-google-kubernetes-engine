@@ -25,7 +25,7 @@ There are multiple examples included in the [examples](./examples/) folder but s
 
 ```hcl
 module "gke" {
-  source                     = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster-lifecycle-variant"
+  source                     = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster-update-variant"
   project_id                 = "<PROJECT ID>"
   name                       = "gke-test-1"
   region                     = "us-central1"
