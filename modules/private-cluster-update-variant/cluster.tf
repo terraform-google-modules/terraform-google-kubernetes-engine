@@ -156,30 +156,46 @@ resource "random_id" "name" {
     ),
     {
       labels = join(",",
-        keys(var.node_pools_labels["all"]),
-        keys(var.node_pools_labels[var.node_pools[count.index]["name"]]),
-        values(var.node_pools_labels["all"]),
-        values(var.node_pools_labels[var.node_pools[count.index]["name"]])
+        sort(
+          concat(
+            keys(var.node_pools_labels["all"]),
+            values(var.node_pools_labels["all"]),
+            keys(var.node_pools_labels[var.node_pools[count.index]["name"]]),
+            values(var.node_pools_labels[var.node_pools[count.index]["name"]])
+          )
+        )
       )
     },
     {
       metadata = join(",",
-        keys(var.node_pools_metadata["all"]),
-        keys(var.node_pools_metadata[var.node_pools[count.index]["name"]]),
-        values(var.node_pools_metadata["all"]),
-        values(var.node_pools_metadata[var.node_pools[count.index]["name"]])
+        sort(
+          concat(
+            keys(var.node_pools_metadata["all"]),
+            values(var.node_pools_metadata["all"]),
+            keys(var.node_pools_metadata[var.node_pools[count.index]["name"]]),
+            values(var.node_pools_metadata[var.node_pools[count.index]["name"]])
+          )
+        )
       )
     },
     {
       oauth_scopes = join(",",
-        var.node_pools_oauth_scopes["all"],
-        var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]]
+        sort(
+          concat(
+            var.node_pools_oauth_scopes["all"],
+            var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]]
+          )
+        )
       )
     },
     {
       tags = join(",",
-        var.node_pools_tags["all"],
-        var.node_pools_tags[var.node_pools[count.index]["name"]]
+        sort(
+          concat(
+            var.node_pools_tags["all"],
+            var.node_pools_tags[var.node_pools[count.index]["name"]]
+          )
+        )
       )
     }
   )
