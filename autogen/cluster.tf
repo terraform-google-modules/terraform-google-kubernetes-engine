@@ -20,7 +20,7 @@
   Create Container Cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  {% if private_cluster or beta_cluster %}
+  {% if beta_cluster %}
   provider = google-beta
   {% else %}
   provider = google
@@ -67,6 +67,15 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "resource_usage_export_config" {
+    for_each = var.resource_usage_export_dataset_id != "" ? [var.resource_usage_export_dataset_id] : []
+    content {
+      enable_network_egress_metering = true
+      bigquery_destination {
+        dataset_id = resource_usage_export_config.value
+      }
+    }
+  }
 {% endif %}
   dynamic "master_authorized_networks_config" {
     for_each = var.master_authorized_networks_config
@@ -134,7 +143,7 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
-    ignore_changes = [node_pool]
+    ignore_changes = [node_pool, initial_node_count]
   }
 
   timeouts {
@@ -156,6 +165,14 @@ resource "google_container_cluster" "primary" {
 
         content {
           node_metadata = workload_metadata_config.value.node_metadata
+        }
+      }
+
+      dynamic "sandbox_config" {
+        for_each = local.cluster_sandbox_enabled
+
+        content {
+          sandbox_type = sandbox_config.value
         }
       }
       {% endif %}
@@ -203,7 +220,11 @@ resource "google_container_cluster" "primary" {
   Create Container Cluster node pools
  *****************************************/
 resource "google_container_node_pool" "pools" {
+  {% if beta_cluster %}
   provider = google-beta
+  {% else %}
+  provider = google
+  {% endif %}
   count    = length(var.node_pools)
   name     = var.node_pools[count.index]["name"]
   project  = var.project_id
@@ -223,9 +244,14 @@ resource "google_container_node_pool" "pools" {
   max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", null)
   {% endif %}
 
-  autoscaling {
-    min_node_count = lookup(var.node_pools[count.index], "min_count", 1)
-    max_node_count = lookup(var.node_pools[count.index], "max_count", 100)
+  node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "min_count", 1)
+
+  dynamic "autoscaling" {
+    for_each = lookup(var.node_pools[count.index], "autoscaling", true) ? [var.node_pools[count.index]] : []
+    content {
+      min_node_count = lookup(autoscaling.value, "min_count", 1)
+      max_node_count = lookup(autoscaling.value, "max_count", 100)
+    }
   }
 
   management {
@@ -259,6 +285,7 @@ resource "google_container_node_pool" "pools" {
         "disable-legacy-endpoints" = var.disable_legacy_metadata_endpoints
       },
     )
+    {% if beta_cluster %}
     dynamic "taint" {
       for_each = concat(
         var.node_pools_taints["all"],
@@ -270,6 +297,7 @@ resource "google_container_node_pool" "pools" {
         value  = taint.value.value
       }
     }
+    {% endif %}
     tags = concat(
       ["gke-${var.name}"],
       ["gke-${var.name}-${var.node_pools[count.index]["name"]}"],
