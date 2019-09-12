@@ -11,9 +11,9 @@ Extending the adopted spec, each change should have a link to its corresponding 
 ### Changed
 
 * All Beta functionality removed from non-beta clusters, some properties like node_pool taints available only in beta cluster now [#228]
+* **Breaking**: Enabled metadata-concealment by default [#248]
 
 ### Added
-
 * Added support for resource usage export config [#238]
 * Added `sandbox_enabled` variable to use GKE Sandbox [#241]
 * Added `grant_registry_access` variable to grant Container Registry access to created SA [#236]
@@ -178,6 +178,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#248]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/248
 [#228]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/228
 [#238]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/238
 [#241]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/241
