@@ -17,14 +17,14 @@
 // This file was automatically generated from a template in ./autogen
 
 data "google_compute_network" "gke_network" {
-  provider = google-beta
+  provider = google
 
   name    = var.network
   project = local.network_project_id
 }
 
 data "google_compute_subnetwork" "gke_subnetwork" {
-  provider = google-beta
+  provider = google
 
   name    = var.subnetwork
   region  = var.region
