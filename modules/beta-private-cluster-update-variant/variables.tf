@@ -371,7 +371,8 @@ variable "resource_usage_export_dataset_id" {
 
 variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
-  default     = "UNSPECIFIED"
+  default     = "SECURE"
+  type        = string
 }
 
 variable "sandbox_enabled" {
