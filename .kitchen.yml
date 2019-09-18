@@ -29,13 +29,15 @@ platforms:
   - name: local
 
 suites:
-  - name: "deploy_service"
-    driver:
-      root_module_directory: test/fixtures/deploy_service
-    verifier:
-      systems:
-        - name: deploy_service
-          backend: local
+# Disabled due to issue #274
+# (https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/274)
+#  - name: "deploy_service"
+#    driver:
+#      root_module_directory: test/fixtures/deploy_service
+#    verifier:
+#      systems:
+#        - name: deploy_service
+#          backend: local
   - name: "disable_client_cert"
     driver:
       root_module_directory: test/fixtures/disable_client_cert
@@ -43,13 +45,15 @@ suites:
       systems:
         - name: disable_client_cert
           backend: local
-  - name: "node_pool"
-    driver:
-      root_module_directory: test/fixtures/node_pool
-    verifier:
-      systems:
-        - name: node_pool
-          backend: local
+# Disabled due to issue #274
+# (https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/274)
+#  - name: "node_pool"
+#    driver:
+#      root_module_directory: test/fixtures/node_pool
+#    verifier:
+#      systems:
+#        - name: node_pool
+#          backend: local
   - name: "shared_vpc"
     driver:
       root_module_directory: test/fixtures/shared_vpc
@@ -98,12 +102,14 @@ suites:
       systems:
         - name: stub_domains
           backend: local
-  - name: stub_domains_private
-    driver:
-      root_module_directory: test/fixtures/stub_domains_private
-      systems:
-        - name: stub_domains_private
-          backend: local
+# Disabled due to issue #264
+# (https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/264)
+#  - name: stub_domains_private
+#    driver:
+#      root_module_directory: test/fixtures/stub_domains_private
+#      systems:
+#        - name: stub_domains_private
+#          backend: local
   - name: "upstream_nameservers"
     driver:
       root_module_directory: test/fixtures/upstream_nameservers

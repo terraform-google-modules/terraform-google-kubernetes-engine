@@ -8,3 +8,4 @@ test/fixtures/*/terraform.tfstate.d
 examples/.kitchen
 examples/*/.terraform
 examples/*/terraform.tfstate.d
+
