@@ -85,6 +85,14 @@ resource "google_container_cluster" "primary" {
     network_policy_config {
       disabled = ! var.network_policy
     }
+
+  }
+
+  dynamic "workload_identity_config" {
+    for_each = local.cluster_workload_identity_namespace
+    content {
+      identity_namespace = local.cluster_workload_identity_namespace[0]
+    }
   }
 
   ip_allocation_policy {

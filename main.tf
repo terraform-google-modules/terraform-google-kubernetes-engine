@@ -60,6 +60,8 @@ locals {
     provider = null
   }]
 
+  cluster_workload_identity_namespace = var.workload_identity ? ["${var.project_id}.svc.id.goog"] : []
+
 
   cluster_output_name           = google_container_cluster.primary.name
   cluster_output_location       = google_container_cluster.primary.location
@@ -79,7 +81,7 @@ locals {
   cluster_output_http_load_balancing_enabled        = google_container_cluster.primary.addons_config.0.http_load_balancing.0.disabled
   cluster_output_horizontal_pod_autoscaling_enabled = google_container_cluster.primary.addons_config.0.horizontal_pod_autoscaling.0.disabled
   cluster_output_kubernetes_dashboard_enabled       = google_container_cluster.primary.addons_config.0.kubernetes_dashboard.0.disabled
-
+  cluster_output_workload_identity_enabled          = true
 
   cluster_output_node_pools_names    = concat(google_container_node_pool.pools.*.name, [""])
   cluster_output_node_pools_versions = concat(google_container_node_pool.pools.*.version, [""])
@@ -104,6 +106,7 @@ locals {
   cluster_http_load_balancing_enabled        = ! local.cluster_output_http_load_balancing_enabled
   cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled
   cluster_kubernetes_dashboard_enabled       = ! local.cluster_output_kubernetes_dashboard_enabled
+  cluster_workload_identity_enabled          = ! local.cluster_output_workload_identity_enabled
 }
 
 /******************************************

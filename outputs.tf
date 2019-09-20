@@ -108,6 +108,11 @@ output "kubernetes_dashboard_enabled" {
   value       = local.cluster_kubernetes_dashboard_enabled
 }
 
+output "workload_identity_enabled" {
+  description = "Whether cluster workload identity enabled"
+  value       = local.cluster_workload_identity_enabled
+}
+
 output "node_pools_names" {
   description = "List of node pools names"
   value       = local.cluster_node_pools_names

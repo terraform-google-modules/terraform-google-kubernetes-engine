@@ -292,3 +292,8 @@ variable "cluster_resource_labels" {
   default     = {}
 }
 
+variable "workload_identity" {
+  type        = bool
+  description = "Enable the workload identity addon (beta)"
+  default     = false
+}
