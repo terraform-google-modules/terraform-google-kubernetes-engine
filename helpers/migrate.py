@@ -34,6 +34,13 @@ MIGRATIONS = [
         "rename": "pools",
         "module": ""
     },
+    {
+        "resource_type": "null_resource",
+        "name": "wait_for_zonal_cluster",
+        "rename": "wait_for_cluster",
+        "module": "",
+        "plural": False
+    },
 ]
 
 class ModuleMigration:
@@ -59,6 +66,9 @@ class ModuleMigration:
             # Update the copied resource with the "rename" value if it is set
             if "rename" in migration:
                 new.name = migration["rename"]
+
+            old.plural = migration.get("plural", True)
+            new.plural = migration.get("plural", True)
 
             pair = (old.path(), new.path())
             moves.append(pair)
@@ -177,7 +187,7 @@ class TerraformResource:
         if parts[0] == '':
             del parts[0]
         path = ".".join(parts)
-        if self.index is not -1:
+        if self.index is not -1 and self.plural:
             path = "{0}[{1}]".format(path, self.index)
         return path
 
@@ -276,6 +286,7 @@ def migrate(statefile=None, dryrun=False):
         if dryrun:
             print(" ".join(argv))
         else:
+            argv = [arg.strip('"') for arg in argv]
             subprocess.run(argv, check=True, encoding='utf-8')
 
 def main(argv):
@@ -285,7 +296,7 @@ def main(argv):
     # print("cp {} {}".format(args.oldstate, args.newstate))
     # shutil.copy(args.oldstate, args.newstate)
 
-    migrate(dryrun=True)
+    migrate(dryrun=args.dryrun)
 
 def argparser():
     parser = argparse.ArgumentParser(description='Migrate Terraform state')
@@ -294,9 +305,9 @@ def argparser():
     #                          'modified)')
     # parser.add_argument('newstate', metavar='newstate.json',
     #                     help='The path to the new state file')
-    # parser.add_argument('--dryrun', action='store_true',
-    #                     help='Print the `terraform state mv` commands instead '
-    #                          'of running the commands.')
+    parser.add_argument('--dryrun', action='store_true',
+                        help='Print the `terraform state mv` commands instead '
+                             'of running the commands.')
     return parser
 
 
