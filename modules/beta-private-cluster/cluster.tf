@@ -250,7 +250,7 @@ resource "google_container_node_pool" "pools" {
         "node_pool" = var.node_pools[count.index]["name"]
       },
       var.node_pools_labels["all"],
-      var.node_pools_labels[var.node_pools[count.index]["name"]],
+      lookup(var.node_pools_labels, var.node_pools[count.index]["name"], [])
     )
     metadata = merge(
       {
@@ -268,7 +268,7 @@ resource "google_container_node_pool" "pools" {
     dynamic "taint" {
       for_each = concat(
         var.node_pools_taints["all"],
-        var.node_pools_taints[var.node_pools[count.index]["name"]],
+        lookup(var.node_pools_taints, var.node_pools[count.index]["name"], [])
       )
       content {
         effect = taint.value.effect
@@ -280,7 +280,7 @@ resource "google_container_node_pool" "pools" {
       ["gke-${var.name}"],
       ["gke-${var.name}-${var.node_pools[count.index]["name"]}"],
       var.node_pools_tags["all"],
-      var.node_pools_tags[var.node_pools[count.index]["name"]],
+      lookup(var.node_pools_tags, var.node_pools[count.index]["name"], []),
     )
 
     disk_size_gb = lookup(var.node_pools[count.index], "disk_size_gb", 100)
