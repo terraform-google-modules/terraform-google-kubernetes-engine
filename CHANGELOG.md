@@ -8,10 +8,15 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+## [v5.0.0] - 2019-XX-XX
+v5.0.0 is a backwards-incompatible release. Please see the [upgrading guide](./docs/upgrading_to_v5.0.md).
+
+The v5.0.0 module requires using the [2.12 version](https://github.com/terraform-providers/terraform-provider-google/blob/master/CHANGELOG.md#2120-august-01-2019) of the Google provider.
+
 ### Changed
 
-* All Beta functionality removed from non-beta clusters, some properties like node_pool taints available only in beta cluster now [#228]
 * **Breaking**: Enabled metadata-concealment by default [#248]
+* All beta functionality removed from non-beta clusters, moved `node_pool_taints` to beta modules [#228]
 
 ### Added
 * Added support for resource usage export config [#238]
@@ -21,6 +26,10 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Support for Workload Identity beta feature [#234]
 * Support for Google Groups based RBAC beta feature [#217]
 * Support for disabling node pool autoscaling by setting `autoscaling` to `false` within the node pool variable. [#250]
+
+### Fixed
+
+* Fixed issue with passing a dynamically created Service Account to the module. [#27]
 
 ## [v4.1.0] 2019-07-24
 
@@ -164,7 +173,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 * Initial release of module.
 
-[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v4.1.0...HEAD
+[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.0.0...HEAD
+[v5.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v4.1.0...v5.0.0
 [v4.1.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v4.0.0...v4.1.0
 [v4.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v3.0.0...v4.0.0
 [v3.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v2.1.0...v3.0.0
@@ -186,6 +196,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#236]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/236
 [#217]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/217
 [#234]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/234
+[#27]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/27
 [#216]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/216
 [#214]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/214
 [#210]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/210
