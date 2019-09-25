@@ -46,19 +46,16 @@ If you are using regional clusters, no migration is needed. If you are using zon
 
 1. Download the script
 
-    ```
+    ```sh
     curl -O https://raw.githubusercontent.com/terraform-google-modules/terraform-google-kubernetes-engine/v5.0.0/helpers/migrate.py
     chmod +x migrate.py
     ```
 
-2. Execute the migration script
+2. Run the script in dryrun mode to confirm the expected changes:
 
-    ```
-    ./migrate.py
-    ```
+    ```sh
+    $ ./migrate.py --dryrun
 
-    Output will be similar to the following:
-    ```
     ---- Migrating the following modules:
     -- module.gke-cluster-dev.module.gke
     ---- Commands to run:
@@ -66,6 +63,20 @@ If you are using regional clusters, no migration is needed. If you are using zon
     terraform state mv "module.gke-cluster-dev.module.gke.google_container_node_pool.zonal_pools[0]" "module.gke-cluster-dev.module.gke.google_container_node_pool.pools[0]"
     ```
 
-3. Execute the provided state migration commands (backups are automatically created).
+3. Execute the migration script
+
+    ```sh
+    $ ./migrate.py
+
+    ---- Migrating the following modules:
+    -- module.gke-cluster-dev.module.gke
+    ---- Commands to run:
+    Move "module.gke-cluster-dev.module.gke.google_container_cluster.zonal_primary[0]" to "module.gke-cluster-dev.module.gke.google_container_cluster.primary[0]"
+    Successfully moved 1 object(s).
+    Move "module.gke-cluster-dev.module.gke.google_container_node_pool.zonal_pools[0]" to "module.gke-cluster-dev.module.gke.google_container_node_pool.pools[0]"
+    Successfully moved 1 object(s).
+    Move "module.gke-cluster-dev.module.gke.null_resource.wait_for_zonal_cluster" to "module.gke-cluster-dev.module.gke.null_resource.wait_for_cluster"
+    Successfully moved 1 object(s).
+    ```
 
 4. Run `terraform plan` to confirm no changes are expected.

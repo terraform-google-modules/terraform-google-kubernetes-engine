@@ -300,11 +300,6 @@ def main(argv):
 
 def argparser():
     parser = argparse.ArgumentParser(description='Migrate Terraform state')
-    # parser.add_argument('oldstate', metavar='oldstate.json',
-    #                     help='The current Terraform state (will not be '
-    #                          'modified)')
-    # parser.add_argument('newstate', metavar='newstate.json',
-    #                     help='The path to the new state file')
     parser.add_argument('--dryrun', action='store_true',
                         help='Print the `terraform state mv` commands instead '
                              'of running the commands.')
