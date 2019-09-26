@@ -168,7 +168,7 @@ resource "google_container_node_pool" "pools" {
         "node_pool" = var.node_pools[count.index]["name"]
       },
       var.node_pools_labels["all"],
-      lookup(var.node_pools_labels, var.node_pools[count.index]["name"], []),
+      lookup(var.node_pools_labels, var.node_pools[count.index]["name"], {}),
     )
     metadata = merge(
       {
