@@ -139,6 +139,102 @@ Version 1.0.0 of this module introduces a breaking change: adding the `disable-l
 In either case, upgrading to module version `v1.0.0` will trigger a recreation of all node pools in the cluster.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | string | `"null"` | no |
+| basic\_auth\_password | The password to be used with Basic Authentication. | string | `""` | no |
+| basic\_auth\_username | The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration. | string | `""` | no |
+| cloudrun | (Beta) Enable CloudRun addon | string | `"false"` | no |
+| cluster\_ipv4\_cidr | The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR. | string | `""` | no |
+| cluster\_resource\_labels | The GCE resource labels (a map of key/value pairs) to be applied to the cluster | map(string) | `<map>` | no |
+| configure\_ip\_masq | Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server. | string | `"false"` | no |
+| create\_service\_account | Defines if service account specified to run nodes should be created. | bool | `"true"` | no |
+| database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key. | object | `<list>` | no |
+| default\_max\_pods\_per\_node | The maximum number of pods to schedule per node | string | `"110"` | no |
+| deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | bool | `"false"` | no |
+| description | The description of the cluster | string | `""` | no |
+| disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | bool | `"true"` | no |
+| enable\_binary\_authorization | Enable BinAuthZ Admission controller | string | `"false"` | no |
+| enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | bool | `"false"` | no |
+| enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | bool | `"false"` | no |
+| enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | bool | `"false"` | no |
+| enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | bool | `"false"` | no |
+| grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | bool | `"false"` | no |
+| horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | bool | `"true"` | no |
+| http\_load\_balancing | Enable httpload balancer addon | bool | `"true"` | no |
+| identity\_namespace | Workload Identity namespace | string | `""` | no |
+| initial\_node\_count | The number of nodes to create in this cluster's default node pool. | number | `"0"` | no |
+| ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | bool | `"false"` | no |
+| ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `"60s"` | no |
+| ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | n/a | yes |
+| ip\_range\_services | The _name_ of the secondary subnet range to use for services | string | n/a | yes |
+| issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | bool | `"false"` | no |
+| istio | (Beta) Enable Istio addon | string | `"false"` | no |
+| kubernetes\_dashboard | Enable kubernetes dashboard addon | bool | `"false"` | no |
+| kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
+| logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com"` | no |
+| maintenance\_start\_time | Time window specified for daily maintenance operations in RFC3339 format | string | `"05:00"` | no |
+| master\_authorized\_networks\_config | The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists). | object | `<list>` | no |
+| master\_ipv4\_cidr\_block | (Beta) The IP range in CIDR notation to use for the hosted master network | string | `"10.0.0.0/28"` | no |
+| monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com"` | no |
+| name | The name of the cluster (required) | string | n/a | yes |
+| network | The VPC network to host the cluster in (required) | string | n/a | yes |
+| network\_policy | Enable network policy addon | bool | `"false"` | no |
+| network\_policy\_provider | The network policy provider. | string | `"CALICO"` | no |
+| network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
+| node\_metadata | Specifies how node metadata is exposed to the workload running on the node | string | `"SECURE"` | no |
+| node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
+| node\_pools\_labels | Map of maps containing node labels by node-pool name | map(map(string)) | `<map>` | no |
+| node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map(map(string)) | `<map>` | no |
+| node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | map(list(string)) | `<map>` | no |
+| node\_pools\_tags | Map of lists containing node network tags by node-pool name | map(list(string)) | `<map>` | no |
+| node\_pools\_taints | Map of lists containing node taints by node-pool name | object | `<map>` | no |
+| node\_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `""` | no |
+| non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list(string) | `<list>` | no |
+| pod\_security\_policy\_config | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | list | `<list>` | no |
+| project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
+| region | The region to host the cluster in (required) | string | n/a | yes |
+| regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |
+| remove\_default\_node\_pool | Remove default node pool while setting up the cluster | bool | `"false"` | no |
+| resource\_usage\_export\_dataset\_id | The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | string | `""` | no |
+| sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` and `node_version` = `1.12.7-gke.17` or later to use it). | bool | `"false"` | no |
+| service\_account | The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created. | string | `""` | no |
+| stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map(list(string)) | `<map>` | no |
+| subnetwork | The subnetwork to host the cluster in (required) | string | n/a | yes |
+| upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | list | `<list>` | no |
+| zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list(string) | `<list>` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| ca\_certificate | Cluster ca certificate (base64 encoded) |
+| cloudrun\_enabled | Whether CloudRun enabled |
+| endpoint | Cluster endpoint |
+| horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
+| http\_load\_balancing\_enabled | Whether http load balancing enabled |
+| intranode\_visibility\_enabled | Whether intra-node visibility is enabled |
+| istio\_enabled | Whether Istio is enabled |
+| kubernetes\_dashboard\_enabled | Whether kubernetes dashboard enabled |
+| location | Cluster location (region if regional cluster, zone if zonal cluster) |
+| logging\_service | Logging service used |
+| master\_authorized\_networks\_config | Networks from which access to master is permitted |
+| master\_version | Current master kubernetes version |
+| min\_master\_version | Minimum master kubernetes version |
+| monitoring\_service | Monitoring service used |
+| name | Cluster name |
+| network\_policy\_enabled | Whether network policy enabled |
+| node\_pools\_names | List of node pools names |
+| node\_pools\_versions | List of node pools versions |
+| pod\_security\_policy\_enabled | Whether pod security policy is enabled |
+| region | Cluster region |
+| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
+| type | Cluster type (regional / zonal) |
+| vertical\_pod\_autoscaling\_enabled | Whether veritical pod autoscaling is enabled |
+| zones | List of zones in which the cluster resides |
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Requirements
@@ -193,141 +289,6 @@ The project has the following folders and files:
 - /README.MD: This file.
 - /modules: Private and beta sub modules.
 
-## Templating
-
-To more cleanly handle cases where desired functionality would require complex duplication of Terraform resources (i.e. [PR 51](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/51)), this repository is largely generated from the [`autogen`](/autogen) directory.
-
-The root module is generated by running `make generate`. Changes to this repository should be made in the [`autogen`](/autogen) directory where appropriate.
-
-Note: The correct sequence to update the repo using autogen functionality is to run
-`make generate && make generate_docs`.  This will create the various Terraform files, and then
-generate the Terraform documentation using `terraform-docs`.
-
-## Testing
-
-### Requirements
-- [bundler](https://github.com/bundler/bundler)
-- [gcloud](https://cloud.google.com/sdk/install)
-- [terraform-docs](https://github.com/segmentio/terraform-docs/releases) 0.6.0
-
-### Autogeneration of documentation from .tf files
-Run
-```
-make generate_docs
-```
-
-### Integration test
-
-Integration tests are run though [test-kitchen](https://github.com/test-kitchen/test-kitchen), [kitchen-terraform](https://github.com/newcontext-oss/kitchen-terraform), and [InSpec](https://github.com/inspec/inspec).
-
-Six test-kitchen instances are defined:
-
-- `deploy-service`
-- `node-pool`
-- `shared-vpc`
-- `simple-regional`
-- `simple-zonal`
-- `stub-domains`
-
-The test-kitchen instances in `test/fixtures/` wrap identically-named examples in the `examples/` directory.
-
-#### Setup
-
-1. Configure the [test fixtures](#test-configuration)
-2. Download a Service Account key with the necessary permissions and put it in the module's root directory with the name `credentials.json`.
-    - Requires the [permissions to run the module](#configure-a-service-account)
-    - Requires `roles/compute.networkAdmin` to create the test suite's networks
-    - Requires `roles/resourcemanager.projectIamAdmin` since service account creation is tested
-3. Build the Docker container for testing:
-
-  ```
-  make docker_build_kitchen_terraform
-  ```
-4. Run the testing container in interactive mode:
-
-  ```
-  make docker_run
-  ```
-
-  The module root directory will be loaded into the Docker container at `/cft/workdir/`.
-5. Run kitchen-terraform to test the infrastructure:
-
-  1. `kitchen create` creates Terraform state and downloads modules, if applicable.
-  2. `kitchen converge` creates the underlying resources. Run `kitchen converge <INSTANCE_NAME>` to create resources for a specific test case.
-  3. Run `kitchen converge` again. This is necessary due to an oddity in how `networkPolicyConfig` is handled by the upstream API. (See [#72](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/72) for details).
-  4. `kitchen verify` tests the created infrastructure. Run `kitchen verify <INSTANCE_NAME>` to run a specific test case.
-  5. `kitchen destroy` tears down the underlying resources created by `kitchen converge`. Run `kitchen destroy <INSTANCE_NAME>` to tear down resources for a specific test case.
-
-Alternatively, you can simply run `make test_integration_docker` to run all the test steps non-interactively.
-
-If you wish to parallelize running the test suites, it is also possible to offload the work onto Concourse to run each test suite for you using the command `make test_integration_concourse`. The `.concourse` directory will be created and contain all of the logs from the running test suites.
-
-When running tests locally, you will need to use your own test project environment. You can configure your environment by setting all of the following variables:
-
-```
-export COMPUTE_ENGINE_SERVICE_ACCOUNT="<EXISTING_SERVICE_ACCOUNT>"
-export PROJECT_ID="<PROJECT_TO_USE>"
-export REGION="<REGION_TO_USE>"
-export ZONES='["<LIST_OF_ZONES_TO_USE>"]'
-export SERVICE_ACCOUNT_JSON="$(cat "<PATH_TO_SERVICE_ACCOUNT_JSON>")"
-export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="<PATH_TO_SERVICE_ACCOUNT_JSON>"
-export GOOGLE_APPLICATION_CREDENTIALS="<PATH_TO_SERVICE_ACCOUNT_JSON>"
-```
-
-#### Test configuration
-
-Each test-kitchen instance is configured with a `variables.tfvars` file in the test fixture directory, e.g. `test/fixtures/node_pool/terraform.tfvars`.
-For convenience, since all of the variables are project-specific, these files have been symlinked to `test/fixtures/shared/terraform.tfvars`.
-Similarly, each test fixture has a `variables.tf` to define these variables, and an `outputs.tf` to facilitate providing necessary information for `inspec` to locate and query against created resources.
-
-Each test-kitchen instance creates a GCP Network and Subnetwork fixture to house resources, and may create any other necessary fixture data as needed.
-
-### Autogeneration of documentation from .tf files
-Run
-```
-make generate_docs
-```
-
-### Linting
-The makefile in this project will lint or sometimes just format any shell,
-Python, golang, Terraform, or Dockerfiles. The linters will only be run if
-the makefile finds files with the appropriate file extension.
-
-All of the linter checks are in the default make target, so you just have to
-run
-
-```
-make -s
-```
-
-The -s is for 'silent'. Successful output looks like this
-
-```
-Running shellcheck
-Running flake8
-Running go fmt and go vet
-Running terraform validate
-Running hadolint on Dockerfiles
-Checking for required files
-Testing the validity of the header check
-..
-----------------------------------------------------------------------
-Ran 2 tests in 0.026s
-
-OK
-Checking file headers
-The following lines have trailing whitespace
-```
-
-The linters
-are as follows:
-* Shell - shellcheck. Can be found in homebrew
-* Python - flake8. Can be installed with 'pip install flake8'
-* Golang - gofmt. gofmt comes with the standard golang installation. golang
-is a compiled language so there is no standard linter.
-* Terraform - terraform has a built-in linter in the 'terraform validate'
-command.
-* Dockerfiles - hadolint. Can be found in homebrew
 
 {% if private_cluster %}
 [upgrading-to-v2.0]: ../../docs/upgrading_to_v2.0.md

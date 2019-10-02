@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-variable "project_id" {
-  description = "The GCP project to use for integration tests"
+variable "org_id" {
+  description = "The numeric organization id"
 }
 
-variable "region" {
-  description = "The GCP region to create and test resources in"
-  default     = "us-east4"
+variable "folder_id" {
+  description = "The folder to deploy in"
 }
 
-variable "zones" {
-  type        = list(string)
-  description = "The GCP zones to create and test resources in, for applicable tests"
-  default     = ["us-east4-a", "us-east4-b", "us-east4-c"]
+variable "billing_account" {
+  description = "The billing account id associated with the project, e.g. XXXXXX-YYYYYY-ZZZZZZ"
 }
-
-variable "compute_engine_service_account" {
-  description = "The email address of the service account to associate with the GKE cluster"
-}
-
