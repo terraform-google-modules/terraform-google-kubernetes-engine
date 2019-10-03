@@ -15,7 +15,7 @@
  */
 
 locals {
-  cluster_type = "simple-regional-private"
+  cluster_type = "simple-zonal-private"
 }
 
 provider "google" {

@@ -19,9 +19,8 @@ locals {
 }
 
 provider "google-beta" {
-  version     = "~> 2.12.0"
-  credentials = file(var.credentials_path)
-  region      = var.region
+  version = "~> 2.12.0"
+  region  = var.region
 }
 
 module "gke" {
