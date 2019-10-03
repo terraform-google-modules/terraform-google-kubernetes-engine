@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The GCP project to use for integration tests"
+terraform {
+  required_version = ">= 0.12"
 }
 
-variable "region" {
-  description = "The GCP region to create and test resources in"
-  default     = "us-east4"
+provider "google" {
+  version = "~> 2.13.0"
 }
 
-variable "zones" {
-  type        = list(string)
-  description = "The GCP zones to create and test resources in, for applicable tests"
-  default     = ["us-east4-a", "us-east4-b", "us-east4-c"]
+provider "google-beta" {
+  version = "~> 2.13.0"
 }
-
-variable "compute_engine_service_account" {
-  description = "The email address of the service account to associate with the GKE cluster"
-}
-

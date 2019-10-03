@@ -12,20 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-control "gcp" do
-  title "Native InSpec Resources"
-
-  service_account = attribute("service_account")
-  project_id = attribute("project_id")
-
-  if service_account.start_with? "projects/"
-    service_account_name = service_account
-  else
-    service_account_name = "projects/#{project_id}/serviceAccounts/#{service_account}"
-  end
-
-  describe google_service_account name: service_account_name do
-    its("display_name") { should eq "Terraform-managed service account for cluster #{attribute("cluster_name")}" }
-    its("project_id") { should eq project_id }
-  end
-end
+steps:
+- id: 'lint-generation'
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && check_generate']
+- id: 'lint-tests'
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/usr/local/bin/test_lint.sh']
+tags:
+- 'ci'
+- 'lint'
+substitutions:
+  _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '0.1.0'
