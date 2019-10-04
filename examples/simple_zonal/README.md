@@ -7,6 +7,9 @@ This example illustrates how to create a simple cluster.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| acm\_policy\_dir | Subfolder containing configs in Ahtons config management Git repo | string | `"foo-corp"` | no |
+| acm\_sync\_branch | Anthos config management Git branch | string | `"1.0.0"` | no |
+| acm\_sync\_repo | Anthos config management Git repo | string | `"git@github.com:GoogleCloudPlatform/csp-config-management.git"` | no |
 | cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
 | ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
@@ -20,6 +23,7 @@ This example illustrates how to create a simple cluster.
 
 | Name | Description |
 |------|-------------|
+| acm\_git\_creds\_public | Public key of SSH keypair to allow the Anthos Operator to authenticate to your Git repository. |
 | ca\_certificate |  |
 | client\_token |  |
 | cluster\_name | Cluster name |
