@@ -17,16 +17,6 @@
 module "example" {
   source = "../../../examples/workload_metadata_config"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5258f89... Removing a few conflicting files.
-=======
->>>>>>> 244108e... Removing a few conflicting files.
-=======
->>>>>>> 5258f89... Removing a few conflicting files.
   project_id          = var.project_id
   cluster_name_suffix = "-${random_string.suffix.result}"
   region              = var.region
@@ -35,30 +25,5 @@ module "example" {
   subnetwork          = google_compute_subnetwork.main.name
   ip_range_pods       = google_compute_subnetwork.main.secondary_ip_range[0].range_name
   ip_range_services   = google_compute_subnetwork.main.secondary_ip_range[1].range_name
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  project_id                     = var.project_id
-  cluster_name_suffix            = "-${random_string.suffix.result}"
-  region                         = var.region
-  zones                          = slice(var.zones, 0, 1)
-  network                        = google_compute_network.main.name
-  subnetwork                     = google_compute_subnetwork.main.name
-  ip_range_pods                  = google_compute_subnetwork.main.secondary_ip_range[0].range_name
-  ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> d791335... Removed the custom test for create_service_account
-=======
->>>>>>> 5258f89... Removing a few conflicting files.
-=======
->>>>>>> e7f04bb... Removed the custom test for create_service_account
-=======
->>>>>>> 244108e... Removing a few conflicting files.
-=======
->>>>>>> d791335... Removed the custom test for create_service_account
-=======
->>>>>>> 5258f89... Removing a few conflicting files.
   registry_project_id = var.registry_project_id
 }
