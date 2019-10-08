@@ -323,6 +323,7 @@ resource "google_container_node_pool" "pools" {
 }
 
 resource "null_resource" "wait_for_cluster" {
+  count = var.skip_provisioners ? 1 : 0
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
