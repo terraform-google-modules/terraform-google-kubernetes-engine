@@ -1,6 +1,6 @@
 # Terraform Kubernetes Engine Module
 
-This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.
+This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc. This particular submodule creates a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters)
 The resources/services/activations/deletions that this module will create/trigger are:
 - Create a GKE cluster with the provided addons
 - Create GKE Node Pool(s) with provided configuration and attach to cluster
@@ -9,6 +9,8 @@ The resources/services/activations/deletions that this module will create/trigge
 - Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `configure_ip_masq` is true
 
 Sub modules are provided from creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
+
+**Note**: You must run Terraform from a VM on the same VPC as your cluster, otherwise there will be issues connecting to the GKE master.
 
 
 ## Compatibility
@@ -23,7 +25,7 @@ There are multiple examples included in the [examples](./examples/) folder but s
 
 ```hcl
 module "gke" {
-  source                     = "terraform-google-modules/kubernetes-engine/google"
+  source                     = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster-update-variant"
   project_id                 = "<PROJECT ID>"
   name                       = "gke-test-1"
   region                     = "us-central1"
@@ -36,6 +38,9 @@ module "gke" {
   horizontal_pod_autoscaling = true
   kubernetes_dashboard       = true
   network_policy             = true
+  enable_private_endpoint    = true
+  enable_private_nodes       = true
+  master_ipv4_cidr_block     = "10.0.0.0/28"
 
   node_pools = [
     {
@@ -135,8 +140,11 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | cluster\_resource\_labels | The GCE resource labels (a map of key/value pairs) to be applied to the cluster | map(string) | `<map>` | no |
 | configure\_ip\_masq | Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server. | string | `"false"` | no |
 | create\_service\_account | Defines if service account specified to run nodes should be created. | bool | `"true"` | no |
+| deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | bool | `"false"` | no |
 | description | The description of the cluster | string | `""` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | bool | `"true"` | no |
+| enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | bool | `"false"` | no |
+| enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | bool | `"false"` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | bool | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | bool | `"true"` | no |
 | http\_load\_balancing | Enable httpload balancer addon | bool | `"true"` | no |
@@ -151,6 +159,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com"` | no |
 | maintenance\_start\_time | Time window specified for daily maintenance operations in RFC3339 format | string | `"05:00"` | no |
 | master\_authorized\_networks\_config | The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists). | object | `<list>` | no |
+| master\_ipv4\_cidr\_block | (Beta) The IP range in CIDR notation to use for the hosted master network | string | `"10.0.0.0/28"` | no |
 | monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com"` | no |
 | name | The name of the cluster (required) | string | n/a | yes |
 | network | The VPC network to host the cluster in (required) | string | n/a | yes |
@@ -249,8 +258,8 @@ The project has the following folders and files:
 - /modules: Private and beta sub modules.
 
 
-[upgrading-to-v2.0]: docs/upgrading_to_v2.0.md
-[upgrading-to-v3.0]: docs/upgrading_to_v3.0.md
+[upgrading-to-v2.0]: ../../docs/upgrading_to_v2.0.md
+[upgrading-to-v3.0]: ../../docs/upgrading_to_v3.0.md
 [terraform-provider-google]: https://github.com/terraform-providers/terraform-provider-google
 [3.0.0]: https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/3.0.0
 [terraform-0.12-upgrade]: https://www.terraform.io/upgrade-guides/0-12.html

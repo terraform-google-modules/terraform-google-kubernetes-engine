@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
+// This file was automatically generated from a template in ./autogen
 
 /******************************************
   Create Container Cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  {% if beta_cluster %}
   provider = google-beta
-  {% else %}
-  provider = google
-  {% endif %}
 
   name            = var.name
   description     = var.description
@@ -51,7 +47,6 @@ resource "google_container_cluster" "primary" {
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
-{% if beta_cluster %}
   enable_binary_authorization = var.enable_binary_authorization
   enable_intranode_visibility = var.enable_intranode_visibility
   default_max_pods_per_node   = var.default_max_pods_per_node
@@ -76,7 +71,6 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-{% endif %}
   dynamic "master_authorized_networks_config" {
     for_each = var.master_authorized_networks_config
     content {
@@ -115,7 +109,6 @@ resource "google_container_cluster" "primary" {
     network_policy_config {
       disabled = ! var.network_policy
     }
-    {% if beta_cluster %}
 
     istio_config {
       disabled = ! var.istio
@@ -128,7 +121,6 @@ resource "google_container_cluster" "primary" {
         disabled = cloudrun_config.value.disabled
       }
     }
-    {% endif %}
   }
 
   ip_allocation_policy {
@@ -158,7 +150,6 @@ resource "google_container_cluster" "primary" {
 
     node_config {
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
-      {% if beta_cluster %}
 
       dynamic "workload_metadata_config" {
         for_each = local.cluster_node_metadata_config
@@ -175,20 +166,16 @@ resource "google_container_cluster" "primary" {
           sandbox_type = sandbox_config.value
         }
       }
-      {% endif %}
     }
   }
 
-{% if private_cluster %}
   private_cluster_config {
     enable_private_endpoint = var.enable_private_endpoint
     enable_private_nodes    = var.enable_private_nodes
     master_ipv4_cidr_block  = var.master_ipv4_cidr_block
   }
-{% endif %}
 
   remove_default_node_pool = var.remove_default_node_pool
-{% if beta_cluster %}
 
   dynamic "database_encryption" {
     for_each = var.database_encryption
@@ -213,13 +200,11 @@ resource "google_container_cluster" "primary" {
       security_group = authenticator_groups_config.value.security_group
     }
   }
-{% endif %}
 }
 
 /******************************************
   Create Container Cluster node pools
  *****************************************/
-{% if update_variant %}
 locals {
   force_node_pool_recreation_resources = [
     "disk_size_gb",
@@ -292,19 +277,10 @@ resource "random_id" "name" {
   )
 }
 
-{% endif %}
 resource "google_container_node_pool" "pools" {
-  {% if beta_cluster %}
   provider = google-beta
-  {% else %}
-  provider = google
-  {% endif %}
   count    = length(var.node_pools)
-  {% if update_variant %}
   name     = random_id.name.*.hex[count.index]
-  {% else %}
-  name     = var.node_pools[count.index]["name"]
-  {% endif %}
   project  = var.project_id
   location = local.location
   cluster  = google_container_cluster.primary.name
@@ -318,9 +294,7 @@ resource "google_container_node_pool" "pools" {
     "initial_node_count",
     lookup(var.node_pools[count.index], "min_count", 1),
   )
-  {% if beta_cluster %}
   max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", null)
-  {% endif %}
 
   node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "min_count", 1)
 
@@ -363,7 +337,6 @@ resource "google_container_node_pool" "pools" {
         "disable-legacy-endpoints" = var.disable_legacy_metadata_endpoints
       },
     )
-    {% if beta_cluster %}
     dynamic "taint" {
       for_each = concat(
         var.node_pools_taints["all"],
@@ -375,7 +348,6 @@ resource "google_container_node_pool" "pools" {
         value  = taint.value.value
       }
     }
-    {% endif %}
     tags = concat(
       ["gke-${var.name}"],
       ["gke-${var.name}-${var.node_pools[count.index]["name"]}"],
@@ -406,7 +378,6 @@ resource "google_container_node_pool" "pools" {
         count = guest_accelerator["count"]
       }
     ]
-    {% if beta_cluster %}
 
     dynamic "workload_metadata_config" {
       for_each = local.cluster_node_metadata_config
@@ -415,14 +386,11 @@ resource "google_container_node_pool" "pools" {
         node_metadata = workload_metadata_config.value.node_metadata
       }
     }
-    {% endif %}
   }
 
   lifecycle {
-    ignore_changes = [initial_node_count]
-    {% if update_variant %}
+    ignore_changes        = [initial_node_count]
     create_before_destroy = true
-    {% endif %}
   }
 
   timeouts {
