@@ -49,16 +49,3 @@ function check_generate() {
   rm -Rf "${tempdir}"
   return $((rval))
 }
-
-find_files() {
-  local pth="$1"
-  shift
-    find "${pth}" '(' \
-    -path '*/.git' -o \
-    -path '*/.terraform' -o \
-    -path '*/.kitchen' -o \
-    -path './autogen' -o \
-    -path './test/fixtures/all_examples' -o \
-    -path './test/fixtures/shared' ')' \
-    -prune -o -type f "$@"
-}

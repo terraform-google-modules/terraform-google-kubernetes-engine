@@ -131,3 +131,10 @@ suites:
       systems:
         - name: workload_metadata_config
           backend: local
+  - name: "sandbox_enabled"
+    driver:
+      root_module_directory: test/fixtures/sandbox_enabled
+    verifier:
+      systems:
+        - name: sandbox_enabled
+          backend: local
