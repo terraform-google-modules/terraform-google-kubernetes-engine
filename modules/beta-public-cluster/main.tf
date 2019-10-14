@@ -71,6 +71,8 @@ locals {
     security_group = var.authenticator_security_group
   }]
 
+  cluster_sandbox_enabled = var.sandbox_enabled ? ["gvisor"] : []
+
 
   cluster_output_name           = google_container_cluster.primary.name
   cluster_output_location       = google_container_cluster.primary.location
@@ -92,10 +94,10 @@ locals {
   cluster_output_kubernetes_dashboard_enabled       = google_container_cluster.primary.addons_config.0.kubernetes_dashboard.0.disabled
 
   # BETA features
-  cluster_output_istio_enabled                    = google_container_cluster.primary.addons_config.0.istio_config.0.disabled
-  cluster_output_pod_security_policy_enabled      = google_container_cluster.primary.pod_security_policy_config.0.enabled
+  cluster_output_istio_disabled                   = google_container_cluster.primary.addons_config.0.istio_config != null && length(google_container_cluster.primary.addons_config.0.istio_config) == 1 ? google_container_cluster.primary.addons_config.0.istio_config.0.disabled : false
+  cluster_output_pod_security_policy_enabled      = google_container_cluster.primary.pod_security_policy_config != null && length(google_container_cluster.primary.pod_security_policy_config) == 1 ? google_container_cluster.primary.pod_security_policy_config.0.enabled : false
   cluster_output_intranode_visbility_enabled      = google_container_cluster.primary.enable_intranode_visibility
-  cluster_output_vertical_pod_autoscaling_enabled = google_container_cluster.primary.vertical_pod_autoscaling.0.enabled
+  cluster_output_vertical_pod_autoscaling_enabled = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling.0.enabled : false
 
   # /BETA features
 
@@ -123,7 +125,7 @@ locals {
   cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled
   cluster_kubernetes_dashboard_enabled       = ! local.cluster_output_kubernetes_dashboard_enabled
   # BETA features
-  cluster_istio_enabled                    = ! local.cluster_output_istio_enabled
+  cluster_istio_enabled                    = ! local.cluster_output_istio_disabled
   cluster_cloudrun_enabled                 = var.cloudrun
   cluster_pod_security_policy_enabled      = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled

@@ -99,7 +99,7 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
-    ignore_changes = [node_pool]
+    ignore_changes = [node_pool, initial_node_count]
   }
 
   timeouts {
@@ -125,7 +125,7 @@ resource "google_container_cluster" "primary" {
   Create Container Cluster node pools
  *****************************************/
 resource "google_container_node_pool" "pools" {
-  provider = google-beta
+  provider = google
   count    = length(var.node_pools)
   name     = var.node_pools[count.index]["name"]
   project  = var.project_id
@@ -142,9 +142,14 @@ resource "google_container_node_pool" "pools" {
     lookup(var.node_pools[count.index], "min_count", 1),
   )
 
-  autoscaling {
-    min_node_count = lookup(var.node_pools[count.index], "min_count", 1)
-    max_node_count = lookup(var.node_pools[count.index], "max_count", 100)
+  node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "min_count", 1)
+
+  dynamic "autoscaling" {
+    for_each = lookup(var.node_pools[count.index], "autoscaling", true) ? [var.node_pools[count.index]] : []
+    content {
+      min_node_count = lookup(autoscaling.value, "min_count", 1)
+      max_node_count = lookup(autoscaling.value, "max_count", 100)
+    }
   }
 
   management {
@@ -178,17 +183,6 @@ resource "google_container_node_pool" "pools" {
         "disable-legacy-endpoints" = var.disable_legacy_metadata_endpoints
       },
     )
-    dynamic "taint" {
-      for_each = concat(
-        var.node_pools_taints["all"],
-        var.node_pools_taints[var.node_pools[count.index]["name"]],
-      )
-      content {
-        effect = taint.value.effect
-        key    = taint.value.key
-        value  = taint.value.value
-      }
-    }
     tags = concat(
       ["gke-${var.name}"],
       ["gke-${var.name}-${var.node_pools[count.index]["name"]}"],

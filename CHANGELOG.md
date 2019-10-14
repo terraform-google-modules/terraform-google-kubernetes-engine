@@ -7,13 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
 ## [Unreleased]
-### Added
+
+### Changed
 
 * Made `region` variable optional for zonal clusters [#247]
+
+### Added
+
+* Added [private](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/modules/private-cluster-update-variant) and [beta private](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/modules/beta-private-cluster-update-variant) variants which allow node pools to be created before being destroyed. [#256]
+
+## [v5.0.0] - 2019-09-25
+v5.0.0 is a backwards-incompatible release. Please see the [upgrading guide](./docs/upgrading_to_v5.0.md).
+
+The v5.0.0 module requires using the [2.12 version](https://github.com/terraform-providers/terraform-provider-google/blob/master/CHANGELOG.md#2120-august-01-2019) of the Google provider.
+
+### Changed
+
+* **Breaking**: Enabled metadata-concealment by default [#248]
+* All beta functionality removed from non-beta clusters, moved `node_pool_taints` to beta modules [#228]
+
+### Added
+* Added support for resource usage export config [#238]
+* Added `sandbox_enabled` variable to use GKE Sandbox [#241]
 * Added `grant_registry_access` variable to grant Container Registry access to created SA [#236]
 * Support for Intranode Visbiility (IV) and Veritical Pod Autoscaling (VPA) beta features [#216]
 * Support for Workload Identity beta feature [#234]
 * Support for Google Groups based RBAC beta feature [#217]
+* Support for disabling node pool autoscaling by setting `autoscaling` to `false` within the node pool variable. [#250]
+
+### Fixed
+
+* Fixed issue with passing a dynamically created Service Account to the module. [#27]
 
 ## [v4.1.0] 2019-07-24
 
@@ -32,6 +56,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Supported version of Terraform is 0.12. [#177]
 
 ## [v3.0.0] - 2019-07-08
+v3.0.0 is a breaking release. Refer to the
+[Upgrading to v3.0 guide][upgrading-to-v3.0] for details.
 
 ### Added
 
@@ -72,6 +98,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
   2.3. [#148]
 
 ## [v2.0.0] - 2019-04-12
+v2.0.0 is a breaking release. Refer to the
+[Upgrading to v2.0 guide][upgrading-to-v2.0] for details.
 
 ### Added
 
@@ -103,6 +131,10 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Fix empty zone list. [#132]
 
 ## [v1.0.0] - 2019-03-25
+Version 1.0.0 of this module introduces a breaking change: adding the `disable-legacy-endpoints` metadata field to all node pools. This metadata is required by GKE and [determines whether the `/0.1/` and `/v1beta1/` paths are available in the nodes' metadata server](https://cloud.google.com/kubernetes-engine/docs/how-to/protecting-cluster-metadata#disable-legacy-apis). If your applications do not require access to the node's metadata server, you can leave the default value of `true` provided by the module. If your applications require access to the metadata server, be sure to read the linked documentation to see if you need to set the value for this field to `false` to allow your applications access to the above metadata server paths.
+
+In either case, upgrading to module version `v1.0.0` will trigger a recreation of all node pools in the cluster.
+
 ### Added
 * Allow creation of service accounts. [#80]
 * Add support for private clusters via submodule. [#69]
@@ -157,7 +189,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 * Initial release of module.
 
-[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v4.1.0...HEAD
+[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.0.0...HEAD
+[v5.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v4.1.0...v5.0.0
 [v4.1.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v4.0.0...v4.1.0
 [v4.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v3.0.0...v4.0.0
 [v3.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v2.1.0...v3.0.0
@@ -172,9 +205,16 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
 [#247]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/247
+[#256]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/256
+[#248]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/248
+[#228]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/228
+[#238]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/238
+[#241]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/241
+[#250]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/250
 [#236]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/236
 [#217]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/217
 [#234]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/234
+[#27]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/27
 [#216]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/216
 [#214]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/214
 [#210]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/210
@@ -229,3 +269,9 @@ Extending the adopted spec, each change should have a link to its corresponding 
 [#15]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/15
 [#10]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/10
 [#9]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/9
+
+[upgrading-to-v2.0]: docs/upgrading_to_v2.0.md
+[upgrading-to-v3.0]: docs/upgrading_to_v3.0.md
+[terraform-provider-google]: https://github.com/terraform-providers/terraform-provider-google
+[3.0.0]: https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/3.0.0
+[terraform-0.12-upgrade]: https://www.terraform.io/upgrade-guides/0-12.html
