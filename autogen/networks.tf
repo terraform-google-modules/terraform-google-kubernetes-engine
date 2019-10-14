@@ -17,7 +17,7 @@
 {{ autogeneration_note }}
 
 data "google_compute_network" "gke_network" {
-  {% if private_cluster or beta_cluster %}
+  {% if beta_cluster %}
   provider = google-beta
   {% else %}
   provider = google
@@ -28,7 +28,7 @@ data "google_compute_network" "gke_network" {
 }
 
 data "google_compute_subnetwork" "gke_subnetwork" {
-  {% if private_cluster or beta_cluster %}
+  {% if beta_cluster %}
   provider = google-beta
   {% else %}
   provider = google

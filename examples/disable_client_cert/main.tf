@@ -23,11 +23,6 @@ provider "google" {
   region  = var.region
 }
 
-provider "google-beta" {
-  version = "~> 2.12.0"
-  region  = var.region
-}
-
 module "gke" {
   source = "../../"
 

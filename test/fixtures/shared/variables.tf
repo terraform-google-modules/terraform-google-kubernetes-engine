@@ -20,12 +20,13 @@ variable "project_id" {
 
 variable "region" {
   description = "The GCP region to create and test resources in"
+  default     = "us-east4"
 }
 
 variable "zones" {
   type        = list(string)
   description = "The GCP zones to create and test resources in, for applicable tests"
-  default     = []
+  default     = ["us-east4-a", "us-east4-b", "us-east4-c"]
 }
 
 variable "compute_engine_service_account" {

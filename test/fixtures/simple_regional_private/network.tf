@@ -20,10 +20,6 @@ resource "random_string" "suffix" {
   upper   = false
 }
 
-provider "google-beta" {
-  project = var.project_id
-}
-
 resource "google_compute_network" "main" {
   project                 = var.project_id
   name                    = "cft-gke-test-${random_string.suffix.result}"

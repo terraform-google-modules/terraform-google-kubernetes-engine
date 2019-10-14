@@ -18,7 +18,7 @@ locals {
   cluster_type = "simple-regional-private"
 }
 
-provider "google-beta" {
+provider "google" {
   version = "~> 2.12.0"
   region  = var.region
 }
