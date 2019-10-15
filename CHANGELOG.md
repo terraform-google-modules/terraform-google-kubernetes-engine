@@ -8,6 +8,10 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+### Changed
+
+* Made `region` variable optional for zonal clusters [#247]
+
 ### Added
 
 * Added [private](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/modules/private-cluster-update-variant) and [beta private](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/modules/beta-private-cluster-update-variant) variants which allow node pools to be created before being destroyed. [#256]
@@ -200,6 +204,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#247]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/247
 [#256]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/256
 [#248]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/248
 [#228]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/228
