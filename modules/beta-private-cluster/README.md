@@ -153,6 +153,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | bool | `"false"` | no |
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | bool | `"false"` | no |
 | enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | bool | `"false"` | no |
+| enable\_release\_channel | (Beta) Whether release channel is configured for this cluster. | bool | `"false"` | no |
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | bool | `"false"` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | bool | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | bool | `"true"` | no |
@@ -224,6 +225,8 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | node\_pools\_versions | List of node pools versions |
 | pod\_security\_policy\_enabled | Whether pod security policy is enabled |
 | region | Cluster region |
+| release\_channel | The release channel of this cluster |
+| release\_channel\_enabled | Whether release channel is enabled |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | type | Cluster type (regional / zonal) |
 | vertical\_pod\_autoscaling\_enabled | Whether veritical pod autoscaling is enabled |
