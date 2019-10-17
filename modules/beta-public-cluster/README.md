@@ -179,7 +179,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list(string) | `<list>` | no |
 | pod\_security\_policy\_config | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | list | `<list>` | no |
 | project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
-| region | The region to host the cluster in (required) | string | n/a | yes |
+| region | The region to host the cluster in (optional if zonal cluster / required if regional) | string | `"null"` | no |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |
 | registry\_project\_id | Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project. | string | `""` | no |
 | remove\_default\_node\_pool | Remove default node pool while setting up the cluster | bool | `"false"` | no |

@@ -18,7 +18,6 @@ import argparse
 import copy
 import subprocess
 import sys
-import shutil
 import re
 
 MIGRATIONS = [
@@ -42,6 +41,7 @@ MIGRATIONS = [
         "plural": False
     },
 ]
+
 
 class ModuleMigration:
     """
@@ -88,6 +88,7 @@ class ModuleMigration:
             to_move += [(r, migration) for r in matching_resources]
 
         return to_move
+
 
 class TerraformModule:
     """
@@ -171,7 +172,7 @@ class TerraformResource:
         self.module = module
         self.resource_type = resource_type
 
-        find_suffix = re.match('(^.+)\[(\d+)\]', name)
+        find_suffix = re.match(r'(^.+)\[(\d+)\]', name)
         if find_suffix:
             self.name = find_suffix.group(1)
             self.index = find_suffix.group(2)
@@ -187,7 +188,7 @@ class TerraformResource:
         if parts[0] == '':
             del parts[0]
         path = ".".join(parts)
-        if self.index is not -1 and self.plural:
+        if self.index != -1 and self.plural:
             path = "{0}[{1}]".format(path, self.index)
         return path
 
@@ -197,6 +198,7 @@ class TerraformResource:
             self.module,
             self.resource_type,
             self.name)
+
 
 def group_by_module(resources):
     """
@@ -241,7 +243,11 @@ def state_changes_for_module(module, statefile=None):
 
     for (old, new) in migration.moves():
         wrapper = '"{0}"'
-        argv = ["terraform", "state", "mv", wrapper.format(old), wrapper.format(new)]
+        argv = ["terraform",
+                "state",
+                "mv",
+                wrapper.format(old),
+                wrapper.format(new)]
         commands.append(argv)
 
     return commands
@@ -265,8 +271,8 @@ def migrate(statefile=None, dryrun=False):
 
     # Filter our list of Terraform modules down to anything that looks like a
     # zonal GKE module. We key this off the presence off of
-    # `google_container_cluster.zonal_primary` since that should almost always be
-    # unique to a GKE module.
+    # `google_container_cluster.zonal_primary` since that should almost always
+    # be unique to a GKE module.
     modules_to_migrate = [
         module for module in modules
         if module.has_resource("google_container_cluster", "zonal_primary")
@@ -289,6 +295,7 @@ def migrate(statefile=None, dryrun=False):
             argv = [arg.strip('"') for arg in argv]
             subprocess.run(argv, check=True, encoding='utf-8')
 
+
 def main(argv):
     parser = argparser()
     args = parser.parse_args(argv[1:])
@@ -297,6 +304,7 @@ def main(argv):
     # shutil.copy(args.oldstate, args.newstate)
 
     migrate(dryrun=args.dryrun)
+
 
 def argparser():
     parser = argparse.ArgumentParser(description='Migrate Terraform state')
