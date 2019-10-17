@@ -417,4 +417,15 @@ variable "authenticator_security_group" {
   default     = null
 }
 
+variable "enable_release_channel" {
+  type        = bool
+  description = "(Beta) Whether release channel is configured for this cluster."
+  default     = false
+}
+
+variable "release_channel" {
+  type        = string
+  description = "(Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
+  default     = "UNSPECIFIED"
+}
 {% endif %}
