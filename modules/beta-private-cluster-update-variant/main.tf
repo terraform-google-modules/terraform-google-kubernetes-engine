@@ -23,7 +23,7 @@ data "google_compute_zones" "available" {
   provider = google-beta
 
   project = var.project_id
-  region  = var.region
+  region  = local.region
 }
 
 resource "random_shuffle" "available_zones" {
@@ -34,6 +34,7 @@ resource "random_shuffle" "available_zones" {
 locals {
   // location
   location = var.regional ? var.region : var.zones[0]
+  region   = var.region == null ? join("-", slice(split("-", var.zones[0]), 0, 2)) : var.region
   // for regional cluster - use var.zones if provided, use available otherwise, for zonal cluster use var.zones with first element extracted
   node_locations = var.regional ? coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result)) : slice(var.zones, 1, length(var.zones))
   // kuberentes version
@@ -43,6 +44,8 @@ locals {
   node_version_zonal      = var.node_version != "" && ! var.regional ? var.node_version : local.master_version_zonal
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
   node_version            = var.regional ? local.node_version_regional : local.node_version_zonal
+  release_channel         = var.enable_release_channel ? [{ channel : var.release_channel }] : []
+
 
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
   upstream_nameservers_config = length(var.upstream_nameservers) > 0

@@ -40,7 +40,8 @@ variable "regional" {
 
 variable "region" {
   type        = string
-  description = "The region to host the cluster in (required)"
+  description = "The region to host the cluster in (optional if zonal cluster / required if regional)"
+  default     = null
 }
 
 variable "zones" {
@@ -405,3 +406,14 @@ variable "authenticator_security_group" {
   default     = null
 }
 
+variable "enable_release_channel" {
+  type        = bool
+  description = "(Beta) Whether release channel is configured for this cluster."
+  default     = false
+}
+
+variable "release_channel" {
+  type        = string
+  description = "(Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
+  default     = "UNSPECIFIED"
+}
