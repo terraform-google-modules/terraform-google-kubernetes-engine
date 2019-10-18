@@ -40,8 +40,9 @@ module "gke" {
   subnetwork              = var.subnetwork
   ip_range_pods           = var.ip_range_pods
   ip_range_services       = var.ip_range_services
-  create_service_account  = false
-  service_account         = var.compute_engine_service_account
+  create_service_account  = true
+  grant_registry_access   = true
+  registry_project_id     = var.registry_project_id
   enable_private_endpoint = true
   enable_private_nodes    = true
   master_ipv4_cidr_block  = "172.16.0.0/28"
