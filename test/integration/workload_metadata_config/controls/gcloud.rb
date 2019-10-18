@@ -13,8 +13,10 @@
 # limitations under the License.
 
 project_id = attribute('project_id')
+registry_project_id = attribute('registry_project_id')
 location = attribute('location')
 cluster_name = attribute('cluster_name')
+service_account = attribute('service_account')
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
@@ -53,6 +55,22 @@ control "gcloud" do
       it "is secure" do
         expect(data["nodeConfig"]["workloadMetadataConfig"]["nodeMetadata"]).to eq 'SECURE'
       end
+    end
+  end
+
+  describe command("gcloud projects get-iam-policy #{registry_project_id} --format=json") do
+    its(:exit_status) { should eq 0 }
+    its(:stderr) { should eq '' }
+
+    let!(:iam) do
+      if subject.exit_status == 0
+        JSON.parse(subject.stdout)
+      else
+        {}
+      end
+    end
+    it "has expected registry roles" do
+      expect(iam['bindings']).to include("members" => ["serviceAccount:#{service_account}"], "role" => "roles/storage.objectViewer")
     end
   end
 end
