@@ -22,21 +22,11 @@ This example illustrates how to create a VPC and a simple cluster.
 |------|-------------|
 | ca\_certificate |  |
 | client\_token |  |
-| cluster\_name | Cluster name |
-| ip\_range\_pods | The secondary IP range used for pods |
-| ip\_range\_services | The secondary IP range used for services |
 | kubernetes\_endpoint |  |
-| location |  |
-| master\_kubernetes\_version | The master Kubernetes version |
-| network |  |
 | network\_name | The name of the VPC being created |
-| project\_id |  |
-| region |  |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | subnet\_names | The name of the subnet being created |
 | subnet\_secondary\_ranges | The secondary ranges associated with the subnet |
-| subnetwork |  |
-| zones | List of zones in which the cluster resides |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
