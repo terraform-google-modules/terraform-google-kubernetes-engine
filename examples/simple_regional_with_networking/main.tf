@@ -1,0 +1,68 @@
+/**
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+locals {
+  cluster_type = "simple-regional"
+}
+
+provider "google" {
+  version = "~> 2.12.0"
+  region  = var.region
+}
+
+module "gcp-network" {
+  source       = "terraform-google-modules/network/google"
+  project_id   = var.project_id
+  network_name = var.network_name
+
+  subnets = [
+    {
+      subnet_name   = var.subnetwork
+      subnet_ip     = "10.0.0.0/17"
+      subnet_region = var.region
+    },
+  ]
+
+  secondary_ranges = {
+    "${var.subnetwork}" = [
+      {
+        range_name    = var.ip_range_pods
+        ip_cidr_range = "192.168.0.0/18"
+      },
+      {
+        range_name    = var.ip_range_services
+        ip_cidr_range = "192.168.64.0/18"
+      },
+    ]
+  }
+}
+
+module "gke" {
+  source                 = "terraform-google-modules/kubernetes-engine/google"
+  project_id             = var.project_id
+  name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  regional               = true
+  region                 = var.region
+  network                = var.network_name
+  subnetwork             = var.subnetwork
+  ip_range_pods          = var.ip_range_pods
+  ip_range_services      = var.ip_range_services
+  create_service_account = false
+  service_account        = var.compute_engine_service_account
+}
+
+data "google_client_config" "default" {
+}
