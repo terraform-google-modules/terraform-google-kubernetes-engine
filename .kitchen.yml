@@ -68,6 +68,13 @@ suites:
       systems:
         - name: simple_regional
           backend: local
+  - name: "simple_regional_with_networking"
+    driver:
+      root_module_directory: test/fixtures/simple_regional_with_networking
+    verifier:
+      systems:
+        - name: simple_regional_with_networking
+          backend: local
   - name: "simple_regional_private"
     driver:
       root_module_directory: test/fixtures/simple_regional_private
