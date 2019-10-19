@@ -25,8 +25,9 @@ provider "google" {
 
 module "gcp-network" {
   source       = "terraform-google-modules/network/google"
+  version = "~> 1.4.0"
   project_id   = var.project_id
-  network_name = var.network_name
+  network_name = var.network
 
   subnets = [
     {
@@ -51,13 +52,13 @@ module "gcp-network" {
 }
 
 module "gke" {
-  source                 = "terraform-google-modules/kubernetes-engine/google"
+  source                 = "../../"
   project_id             = var.project_id
   name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   regional               = true
   region                 = var.region
-  network                = var.network_name
-  subnetwork             = var.subnetwork
+  network                = module.gcp-network.network_name
+  subnetwork             = module.gcp-network.subnets_names[0]
   ip_range_pods          = var.ip_range_pods
   ip_range_services      = var.ip_range_services
   create_service_account = false
