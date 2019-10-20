@@ -108,6 +108,22 @@ Then perform the following commands on the root folder:
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
 
+## Upgrade to v3.0.0
+
+v3.0.0 is a breaking release. Refer to the
+[Upgrading to v3.0 guide][upgrading-to-v3.0] for details.
+
+## Upgrade to v2.0.0
+
+v2.0.0 is a breaking release. Refer to the
+[Upgrading to v2.0 guide][upgrading-to-v2.0] for details.
+
+## Upgrade to v1.0.0
+
+Version 1.0.0 of this module introduces a breaking change: adding the `disable-legacy-endpoints` metadata field to all node pools. This metadata is required by GKE and [determines whether the `/0.1/` and `/v1beta1/` paths are available in the nodes' metadata server](https://cloud.google.com/kubernetes-engine/docs/how-to/protecting-cluster-metadata#disable-legacy-apis). If your applications do not require access to the node's metadata server, you can leave the default value of `true` provided by the module. If your applications require access to the metadata server, be sure to read the linked documentation to see if you need to set the value for this field to `false` to allow your applications access to the above metadata server paths.
+
+In either case, upgrading to module version `v1.0.0` will trigger a recreation of all node pools in the cluster.
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
@@ -149,8 +165,9 @@ Then perform the following commands on the root folder:
 | node\_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `""` | no |
 | non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list(string) | `<list>` | no |
 | project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
-| region | The region to host the cluster in (required) | string | n/a | yes |
+| region | The region to host the cluster in (optional if zonal cluster / required if regional) | string | `"null"` | no |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |
+| registry\_project\_id | Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project. | string | `""` | no |
 | remove\_default\_node\_pool | Remove default node pool while setting up the cluster | bool | `"false"` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created. | string | `""` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map(list(string)) | `<map>` | no |
@@ -211,6 +228,9 @@ following project roles:
 - roles/iam.serviceAccountAdmin
 - roles/iam.serviceAccountUser
 - roles/resourcemanager.projectIamAdmin (only required if `service_account` is set to `create`)
+
+Additionally, if `service_account` is set to `create` and `grant_registry_access` is requested, the service account requires the following role on the `registry_project_id` project:
+- roles/resourcemanager.projectIamAdmin
 
 ### Enable APIs
 In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:
