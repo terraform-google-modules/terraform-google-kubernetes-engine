@@ -219,6 +219,80 @@ resource "google_container_cluster" "primary" {
 /******************************************
   Create Container Cluster node pools
  *****************************************/
+{% if update_variant %}
+locals {
+  force_node_pool_recreation_resources = [
+    "disk_size_gb",
+    "disk_type",
+    "accelerator_count",
+    "accelerator_type",
+    "local_ssd_count",
+    "machine_type",
+    "preemptible",
+    "service_account",
+  ]
+}
+
+# This keepers list is based on the terraform google provider schemaNodeConfig
+# resources where "ForceNew" is "true". schemaNodeConfig can be found in node_config.go at
+# https://github.com/terraform-providers/terraform-provider-google/blob/master/google/node_config.go#L22
+resource "random_id" "name" {
+  count       = length(var.node_pools)
+  byte_length = 2
+  prefix      = format("%s-", lookup(var.node_pools[count.index], "name"))
+  keepers = merge(
+    zipmap(
+      local.force_node_pool_recreation_resources,
+      [for keeper in local.force_node_pool_recreation_resources : lookup(var.node_pools[count.index], keeper, "")]
+    ),
+    {
+      labels = join(",",
+        sort(
+          concat(
+            keys(var.node_pools_labels["all"]),
+            values(var.node_pools_labels["all"]),
+            keys(var.node_pools_labels[var.node_pools[count.index]["name"]]),
+            values(var.node_pools_labels[var.node_pools[count.index]["name"]])
+          )
+        )
+      )
+    },
+    {
+      metadata = join(",",
+        sort(
+          concat(
+            keys(var.node_pools_metadata["all"]),
+            values(var.node_pools_metadata["all"]),
+            keys(var.node_pools_metadata[var.node_pools[count.index]["name"]]),
+            values(var.node_pools_metadata[var.node_pools[count.index]["name"]])
+          )
+        )
+      )
+    },
+    {
+      oauth_scopes = join(",",
+        sort(
+          concat(
+            var.node_pools_oauth_scopes["all"],
+            var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]]
+          )
+        )
+      )
+    },
+    {
+      tags = join(",",
+        sort(
+          concat(
+            var.node_pools_tags["all"],
+            var.node_pools_tags[var.node_pools[count.index]["name"]]
+          )
+        )
+      )
+    }
+  )
+}
+
+{% endif %}
 resource "google_container_node_pool" "pools" {
   {% if beta_cluster %}
   provider = google-beta
@@ -226,7 +300,11 @@ resource "google_container_node_pool" "pools" {
   provider = google
   {% endif %}
   count    = length(var.node_pools)
+  {% if update_variant %}
+  name     = random_id.name.*.hex[count.index]
+  {% else %}
   name     = var.node_pools[count.index]["name"]
+  {% endif %}
   project  = var.project_id
   location = local.location
   cluster  = google_container_cluster.primary.name
@@ -342,6 +420,9 @@ resource "google_container_node_pool" "pools" {
 
   lifecycle {
     ignore_changes = [initial_node_count]
+    {% if update_variant %}
+    create_before_destroy = true
+    {% endif %}
   }
 
   timeouts {
