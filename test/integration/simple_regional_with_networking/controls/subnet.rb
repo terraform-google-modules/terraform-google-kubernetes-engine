@@ -18,14 +18,11 @@ subnet_name = attribute('subnet_name')
 region = attribute('region')
 ip_range_pods_name = attribute('ip_range_pods_name')
 ip_range_services_name = attribute('ip_range_services_name')
-
 control "subnet" do
     title "gcp subnetwork configuration"
-  
     describe command("gcloud compute networks subnets describe #{subnet_name} --project=#{project_id} --region=#{region} --format=json") do
       its(:exit_status) { should eq 0 }
       its(:stderr) { should eq '' }
-  
       let(:data) do
         if subject.exit_status == 0
           JSON.parse(subject.stdout)

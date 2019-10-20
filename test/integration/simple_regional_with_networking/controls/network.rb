@@ -15,18 +15,14 @@
 project_id = attribute('project_id')
 network_name = attribute('network_name')
 subnet_name = attribute('subnet_name')
-
 control "network" do
     title "gcp network configuration"
-    
     describe google_compute_network(
       project: project_id,
       name: network_name
     ) do
       it { should exist }
       its ('subnetworks.count') { should eq 1 }
-      its ('subnetworks.first') { should match subnet_name}
+      its ('subnetworks.first') { should match subnet_name }
     end
   end
-
-  
