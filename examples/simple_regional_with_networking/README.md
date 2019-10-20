@@ -11,7 +11,7 @@ This example illustrates how to create a VPC and a simple cluster.
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | string | n/a | yes |
 | ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
-| network\_name | The VPC network created to host the cluster in | string | n/a | yes |
+| network | The VPC network created to host the cluster in | string | n/a | yes |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
 | subnetwork | The subnetwork created to host the cluster in | string | n/a | yes |
@@ -22,11 +22,21 @@ This example illustrates how to create a VPC and a simple cluster.
 |------|-------------|
 | ca\_certificate |  |
 | client\_token |  |
+| cluster\_name | Cluster name |
+| ip\_range\_pods | The secondary IP range used for pods |
+| ip\_range\_services | The secondary IP range used for services |
 | kubernetes\_endpoint |  |
+| location |  |
+| master\_kubernetes\_version | The master Kubernetes version |
+| network |  |
 | network\_name | The name of the VPC being created |
+| project\_id |  |
+| region |  |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | subnet\_names | The name of the subnet being created |
 | subnet\_secondary\_ranges | The secondary ranges associated with the subnet |
+| subnetwork |  |
+| zones | List of zones in which the cluster resides |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

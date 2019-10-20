@@ -1,17 +1,18 @@
-
-# Copyright 2019 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+/**
+ * Copyright 2018 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 resource "random_string" "suffix" {
   length  = 4
@@ -19,10 +20,10 @@ resource "random_string" "suffix" {
   upper   = false
 }
 locals {
-  network = "gke-network-${random_string.suffix.result}"
-  subnetwork = "gke-subnetwork-${random_string.suffix.result}"
-  ip_range_pods="gke-ip-range-pods-${random_string.suffix.result}"
-  ip_range_services="gke-ip-range-svc-${random_string.suffix.result}"
+  network           = "gke-network-${random_string.suffix.result}"
+  subnetwork        = "gke-subnetwork-${random_string.suffix.result}"
+  ip_range_pods     = "gke-ip-range-pods-${random_string.suffix.result}"
+  ip_range_services = "gke-ip-range-svc-${random_string.suffix.result}"
 }
 module "example" {
   source = "../../../examples/simple_regional_with_networking"
