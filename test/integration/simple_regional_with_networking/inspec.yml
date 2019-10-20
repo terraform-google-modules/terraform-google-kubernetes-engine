@@ -2,7 +2,7 @@ name: simple_regional_with_networking
 depends:
   - name: inspec-gcp
     git: https://github.com/inspec/inspec-gcp.git
-    tag: v0.11.0
+    tag: v0.10.0
 attributes:
   - name: project_id
     required: true
@@ -26,5 +26,11 @@ attributes:
     required: true
     type: string
   - name: region
+    required: true
+    type: string
+  - name: ip_range_pods_name
+    required: true
+    type: string
+  - name: ip_range_services_name
     required: true
     type: string

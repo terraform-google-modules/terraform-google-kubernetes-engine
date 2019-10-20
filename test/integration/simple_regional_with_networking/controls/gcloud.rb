@@ -15,9 +15,6 @@
 project_id = attribute('project_id')
 location = attribute('location')
 cluster_name = attribute('cluster_name')
-network_name = attribute('network_name')
-subnet_name = attribute('subnet_name')
-region = attribute('region')
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
@@ -169,33 +166,6 @@ control "gcloud" do
             ),
           )
         )
-      end
-    end
-  end
-end
-
-control "network" do
-  title "gcp network configuration"
-
-  describe google_compute_network(
-    project: project_id,
-    name: network_name
-  ) do
-    it { should exist }
-  end
-end
-control "subnetwork" do
-  title "gcp subnetwork configuration"
-
-  describe command("gcloud compute networks subnets describe #{subnet_name} --project=#{project_id} --region=#{region} --format=json") do
-    its(:exit_status) { should eq 0 }
-    its(:stderr) { should eq '' }
-
-    let(:data) do
-      if subject.exit_status == 0
-        JSON.parse(subject.stdout)
-      else
-        {}
       end
     end
   end

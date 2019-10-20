@@ -62,3 +62,12 @@ output "region" {
   value       = module.example.region
 }
 
+output "ip_range_pods_name" {
+  description = "The secondary range name for pods"
+  value       = local.ip_range_pods
+}
+
+output "ip_range_services_name" {
+  description = "The secondary range name for services"
+  value       = local.ip_range_services
+}
