@@ -251,22 +251,14 @@ resource "google_container_node_pool" "pools" {
     image_type   = lookup(var.node_pools[count.index], "image_type", "COS")
     machine_type = lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")
     labels = merge(
-      {
-        "cluster_name" = var.name
-      },
-      {
-        "node_pool" = var.node_pools[count.index]["name"]
-      },
+      lookup(lookup(var.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(var.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
       var.node_pools_labels["all"],
       var.node_pools_labels[var.node_pools[count.index]["name"]],
     )
     metadata = merge(
-      {
-        "cluster_name" = var.name
-      },
-      {
-        "node_pool" = var.node_pools[count.index]["name"]
-      },
+      lookup(lookup(var.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(var.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
       var.node_pools_metadata["all"],
       var.node_pools_metadata[var.node_pools[count.index]["name"]],
       {
@@ -285,8 +277,8 @@ resource "google_container_node_pool" "pools" {
       }
     }
     tags = concat(
-      ["gke-${var.name}"],
-      ["gke-${var.name}-${var.node_pools[count.index]["name"]}"],
+      lookup(var.node_pools_tags, "default_values", [true, true])[0] ? ["gke-${var.name}"] : [],
+      lookup(var.node_pools_tags, "default_values", [true, true])[1] ? ["gke-${var.name}-${var.node_pools[count.index]["name"]}"] : [],
       var.node_pools_tags["all"],
       var.node_pools_tags[var.node_pools[count.index]["name"]],
     )
