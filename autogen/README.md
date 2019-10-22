@@ -186,6 +186,12 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
 | node\_metadata | Specifies how node metadata is exposed to the workload running on the node | string | `"SECURE"` | no |
 | node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
+| disk\_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | string | `"pd-standard"` | no |
+| image\_type | The image type to use for this node | string | n/a | no |
+| disk\_size\_gb | Size of the disk attached to each node, specified in GB | number | `"100"` | no |
+| preemptible | This represents whether or not the underlying node VMs are preemptible | bool | `"false"` | no |
+| service\_account | The service account to be used by the Node VMs | string | `"default"` | no |
+| machine\_type | The name of a Google Compute Engine machine type | string | `"n1-standard-1"` | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | map(map(string)) | `<map>` | no |
 | node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map(map(string)) | `<map>` | no |
 | node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | map(list(string)) | `<map>` | no |
