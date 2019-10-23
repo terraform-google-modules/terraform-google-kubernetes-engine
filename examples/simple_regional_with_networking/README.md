@@ -7,6 +7,7 @@ This example illustrates how to create a VPC and a simple cluster.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
 | ip\_range\_pods | The secondary ip range to use for pods | string | `"ip-range-pods"` | no |
 | ip\_range\_services | The secondary ip range to use for pods | string | `"ip-range-scv"` | no |
 | network | The VPC network created to host the cluster in | string | `"gke-network"` | no |
