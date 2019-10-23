@@ -27,6 +27,6 @@ data "google_compute_subnetwork" "gke_subnetwork" {
   provider = google-beta
 
   name    = var.subnetwork
-  region  = var.region
+  region  = local.region
   project = local.network_project_id
 }
