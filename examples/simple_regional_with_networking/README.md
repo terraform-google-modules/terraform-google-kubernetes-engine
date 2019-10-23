@@ -7,14 +7,12 @@ This example illustrates how to create a VPC and a simple cluster.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
-| compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | string | n/a | yes |
-| ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
-| ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
-| network | The VPC network created to host the cluster in | string | n/a | yes |
+| ip\_range\_pods | The secondary ip range to use for pods | string | `"ip-range-pods"` | no |
+| ip\_range\_services | The secondary ip range to use for pods | string | `"ip-range-scv"` | no |
+| network | The VPC network created to host the cluster in | string | `"gke-network"` | no |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
-| region | The region to host the cluster in | string | n/a | yes |
-| subnetwork | The subnetwork created to host the cluster in | string | n/a | yes |
+| region | The region to host the cluster in | string | `"us-central1"` | no |
+| subnetwork | The subnetwork created to host the cluster in | string | `"gke-subnet"` | no |
 
 ## Outputs
 
