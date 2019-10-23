@@ -50,7 +50,7 @@ module "gcp-network" {
 module "gke" {
   source                 = "../../"
   project_id             = var.project_id
-  name                   = "simple-regional-cluster"
+  name                   = "simple-regional-cluster-${var.cluster_name_suffix}"
   regional               = true
   region                 = var.region
   network                = module.gcp-network.network_name
