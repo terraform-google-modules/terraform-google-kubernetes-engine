@@ -49,12 +49,12 @@ output "service_account" {
 
 output "network_name" {
   description = "The name of the VPC being created"
-  value       = var.network
+  value       = module.example.network
 }
 
 output "subnet_name" {
   description = "The name of the subnet being created"
-  value       = var.subnetwork
+  value       = module.example.subnetwork
 }
 
 output "region" {
@@ -64,10 +64,10 @@ output "region" {
 
 output "ip_range_pods_name" {
   description = "The secondary range name for pods"
-  value       = var.ip_range_pods
+  value       = module.example.ip_range_pods
 }
 
 output "ip_range_services_name" {
   description = "The secondary range name for services"
-  value       = var.ip_range_services
+  value       = module.example.ip_range_services
 }
