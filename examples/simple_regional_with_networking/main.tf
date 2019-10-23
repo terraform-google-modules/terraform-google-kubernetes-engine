@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-locals {
-  cluster_type = "simple-regional"
-}
-
 provider "google" {
   version = "~> 2.12.0"
   region  = var.region
@@ -54,15 +50,14 @@ module "gcp-network" {
 module "gke" {
   source                 = "../../"
   project_id             = var.project_id
-  name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  name                   = "simple-regional-cluster"
   regional               = true
   region                 = var.region
   network                = module.gcp-network.network_name
   subnetwork             = module.gcp-network.subnets_names[0]
   ip_range_pods          = var.ip_range_pods
   ip_range_services      = var.ip_range_services
-  create_service_account = false
-  service_account        = var.compute_engine_service_account
+  create_service_account = true
 }
 
 data "google_client_config" "default" {

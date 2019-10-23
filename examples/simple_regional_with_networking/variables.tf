@@ -18,32 +18,28 @@ variable "project_id" {
   description = "The project ID to host the cluster in"
 }
 
-variable "cluster_name_suffix" {
-  description = "A suffix to append to the default cluster name"
-  default     = ""
-}
-
 variable "region" {
   description = "The region to host the cluster in"
+  default     = "us-central1"
 }
 
 variable "network" {
   description = "The VPC network created to host the cluster in"
+  default     = "gke-network"
 }
 
 variable "subnetwork" {
   description = "The subnetwork created to host the cluster in"
+  default     = "gke-subnet"
 }
 
 variable "ip_range_pods" {
   description = "The secondary ip range to use for pods"
+  default     = "ip-range-pods"
 }
 
 variable "ip_range_services" {
   description = "The secondary ip range to use for pods"
-}
-
-variable "compute_engine_service_account" {
-  description = "Service account to associate to the nodes in the cluster"
+  default     = "ip-range-scv"
 }
 
