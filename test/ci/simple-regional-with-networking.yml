@@ -12,7 +12,7 @@ run:
   dir: terraform-google-kubernetes-engine
 
 params:
-  SUITE: "imple-regional-with-networking-local"
+  SUITE: "simple-regional-with-networking-local"
   COMPUTE_ENGINE_SERVICE_ACCOUNT: ""
   REGION: "us-east4"
   ZONES: '["us-east4-a", "us-east4-b", "us-east4-c"]'
