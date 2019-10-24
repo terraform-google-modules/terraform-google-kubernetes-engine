@@ -15,6 +15,10 @@
 
 set -e
 
+if [ -n "${GOOGLE_APPLICATION_CREDENTIALS}" ]; then
+    export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=${GOOGLE_APPLICATION_CREDENTIALS}
+fi
+
 PROJECT=$1
 CLUSTER_NAME=$2
 gcloud_command="gcloud container clusters list --project=$PROJECT --format=json"
