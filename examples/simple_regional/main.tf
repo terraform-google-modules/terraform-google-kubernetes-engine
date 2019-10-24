@@ -35,6 +35,7 @@ module "gke" {
   ip_range_services      = var.ip_range_services
   create_service_account = false
   service_account        = var.compute_engine_service_account
+  skip_provisioners      = var.skip_provisioners
 }
 
 data "google_client_config" "default" {

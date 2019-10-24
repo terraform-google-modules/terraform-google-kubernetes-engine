@@ -311,6 +311,11 @@ variable "cluster_resource_labels" {
   default     = {}
 }
 
+variable "skip_provisioners" {
+  type        = bool
+  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
+  default     = false
+}
 {% if private_cluster %}
 
 variable "deploy_using_private_endpoint" {
