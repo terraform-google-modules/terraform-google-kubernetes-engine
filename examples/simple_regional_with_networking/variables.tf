@@ -18,9 +18,9 @@ variable "project_id" {
   description = "The project ID to host the cluster in"
 }
 
-variable "cluster_name_suffix" {
-  description = "A suffix to append to the default cluster name"
-  default     = ""
+variable "cluster_name" {
+  description = "The name for the GKE cluster"
+  default     = "gke-on-vpc-cluster"
 }
 
 variable "region" {
@@ -38,12 +38,12 @@ variable "subnetwork" {
   default     = "gke-subnet"
 }
 
-variable "ip_range_pods" {
+variable "ip_range_pods_name" {
   description = "The secondary ip range to use for pods"
   default     = "ip-range-pods"
 }
 
-variable "ip_range_services" {
+variable "ip_range_services_name" {
   description = "The secondary ip range to use for pods"
   default     = "ip-range-scv"
 }

@@ -29,8 +29,13 @@ output "ca_certificate" {
 }
 
 output "service_account" {
-  description = "The service account to default running nodes as if not overridden in `node_pools`."
+  description = "The default service account used for running nodes."
   value       = module.gke.service_account
+}
+
+output "cluster_name" {
+  description = "Cluster name"
+  value       = module.gke.name
 }
 
 output "network_name" {
@@ -38,12 +43,15 @@ output "network_name" {
   value       = module.gcp-network.network_name
 }
 
-output "subnet_names" {
+output "subnet_name" {
   description = "The name of the subnet being created"
-  value       = module.gcp-network.subnets_names
+  value       = module.gcp-network.subnets_name
 }
 
 output "subnet_secondary_ranges" {
   description = "The secondary ranges associated with the subnet"
   value       = module.gcp-network.subnets_secondary_ranges
 }
+
+
+

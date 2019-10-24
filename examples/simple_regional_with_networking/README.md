@@ -7,9 +7,9 @@ This example illustrates how to create a VPC and a simple cluster.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
-| ip\_range\_pods | The secondary ip range to use for pods | string | `"ip-range-pods"` | no |
-| ip\_range\_services | The secondary ip range to use for pods | string | `"ip-range-scv"` | no |
+| cluster\_name | The name for the GKE cluster | string | `"gke-on-vpc-cluster"` | no |
+| ip\_range\_pods\_name | The secondary ip range to use for pods | string | `"ip-range-pods"` | no |
+| ip\_range\_services\_name | The secondary ip range to use for pods | string | `"ip-range-scv"` | no |
 | network | The VPC network created to host the cluster in | string | `"gke-network"` | no |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | `"us-central1"` | no |
@@ -22,8 +22,8 @@ This example illustrates how to create a VPC and a simple cluster.
 | ca\_certificate |  |
 | client\_token |  |
 | cluster\_name | Cluster name |
-| ip\_range\_pods | The secondary IP range used for pods |
-| ip\_range\_services | The secondary IP range used for services |
+| ip\_range\_pods\_name | The secondary IP range used for pods |
+| ip\_range\_services\_name | The secondary IP range used for services |
 | kubernetes\_endpoint |  |
 | location |  |
 | master\_kubernetes\_version | The master Kubernetes version |
@@ -31,8 +31,8 @@ This example illustrates how to create a VPC and a simple cluster.
 | network\_name | The name of the VPC being created |
 | project\_id |  |
 | region |  |
-| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
-| subnet\_names | The name of the subnet being created |
+| service\_account | The default service account used for running nodes. |
+| subnet\_name | The name of the subnet being created |
 | subnet\_secondary\_ranges | The secondary ranges associated with the subnet |
 | subnetwork |  |
 | zones | List of zones in which the cluster resides |

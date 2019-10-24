@@ -23,11 +23,6 @@ resource "random_string" "suffix" {
 module "example" {
   source = "../../../examples/simple_regional_with_networking"
 
-  project_id          = var.project_id
-  cluster_name_suffix = "-${random_string.suffix.result}"
-  region              = var.region
-  network             = "${var.network}-${random_string.suffix.result}"
-  subnetwork          = "${var.subnetwork}-${random_string.suffix.result}"
-  ip_range_pods       = "${var.ip_range_pods}-${random_string.suffix.result}"
-  ip_range_services   = "${var.ip_range_services}-${random_string.suffix.result}"
+  project_id = var.project_id
+  region     = var.region
 }
