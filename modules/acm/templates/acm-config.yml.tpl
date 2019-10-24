@@ -10,3 +10,4 @@ spec:
     syncBranch: ${sync_branch}
     secretType: ${secret_type}
     policyDir: ${policy_dir}
+
