@@ -36,11 +36,11 @@ module "gcp-network" {
   secondary_ranges = {
     "${var.subnetwork}" = [
       {
-        range_name    = var.ip_range_pods
+        range_name    = var.ip_range_pods_name
         ip_cidr_range = "192.168.0.0/18"
       },
       {
-        range_name    = var.ip_range_services
+        range_name    = var.ip_range_services_name
         ip_cidr_range = "192.168.64.0/18"
       },
     ]
@@ -50,13 +50,13 @@ module "gcp-network" {
 module "gke" {
   source                 = "../../"
   project_id             = var.project_id
-  name                   = "simple-regional-cluster-${var.cluster_name_suffix}"
+  name                   = var.cluster_name
   regional               = true
   region                 = var.region
   network                = module.gcp-network.network_name
   subnetwork             = module.gcp-network.subnets_names[0]
-  ip_range_pods          = var.ip_range_pods
-  ip_range_services      = var.ip_range_services
+  ip_range_pods          = var.ip_range_pods_name
+  ip_range_services      = var.ip_range_services_name
   create_service_account = true
 }
 

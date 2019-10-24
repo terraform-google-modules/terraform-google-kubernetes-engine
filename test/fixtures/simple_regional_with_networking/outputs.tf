@@ -43,7 +43,7 @@ output "ca_certificate" {
 }
 
 output "service_account" {
-  description = "The service account to default running nodes as if not overridden in `node_pools`."
+  description = "The default service account used for running nodes."
   value       = module.example.service_account
 }
 
@@ -64,10 +64,10 @@ output "region" {
 
 output "ip_range_pods_name" {
   description = "The secondary range name for pods"
-  value       = module.example.ip_range_pods
+  value       = module.example.ip_range_pods_name
 }
 
 output "ip_range_services_name" {
   description = "The secondary range name for services"
-  value       = module.example.ip_range_services
+  value       = module.example.ip_range_services_name
 }
