@@ -188,18 +188,20 @@ In order to operate with the Service Account you must activate the following API
 ## node_pools Variable
 The node_pools variable takes the following parameters:
 
-name - (Optional) The name of the node pool. If left blank, Terraform will auto-generate a unique name
-min_count - (Required) Minimum number of nodes in the NodePool. Must be >=0 and <= max_count
-max_count - (Required) Maximum number of nodes in the NodePool. Must be >= min_count
-machine_type - (Optional) The name of a Google Compute Engine machine type. Defaults to n1-standard-1
-disk_size_gb - (Optional) Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. Defaults to 100GB
-disk_type - (Optional) Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd'). If unspecified, the default disk type is 'pd-standard'
-image_type - (Optional) The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool
-preemptible - (Optional) A boolean that represents whether or not the underlying node VMs are preemptible
-service_account - (Optional) The service account to be used by the Node VMs. If not specified, the "default" service account is used
-initial_node_count - (Optional) The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource
-auto_repair - (Optional) Whether the nodes will be automatically repaired
-auto_upgrade - (Optional) Whether the nodes will be automatically upgraded
+| Name | Description | Requirement | 
+| --- | --- | --- |
+| name | The name of the node pool. If left blank, Terraform will auto-generate a unique name | Optional |
+| min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count | Required |
+| max_count | Maximum number of nodes in the NodePool. Must be >= min_count | Required |
+| machine_type | The name of a Google Compute Engine machine type. Defaults to n1-standard-1 | Optional |
+| disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. Defaults to 100GB | Optional |
+| disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd'). If unspecified, the default disk type is 'pd-standard' | Optional |
+| image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | Optional |
+| preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | Optional |
+| service_account | The service account to be used by the Node VMs. If not specified, the "default" service account is used | Optional |
+| initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource | Optional |
+| auto_repair | Whether the nodes will be automatically repaired | Optional |
+| auto_upgrade | Whether the nodes will be automatically upgraded | Optional |
 
 ## File structure
 The project has the following folders and files:
