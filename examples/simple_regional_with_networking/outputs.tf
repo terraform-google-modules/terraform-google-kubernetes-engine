@@ -45,7 +45,7 @@ output "network_name" {
 
 output "subnet_name" {
   description = "The name of the subnet being created"
-  value       = module.gcp-network.subnets_name
+  value       = module.gcp-network.subnets_names
 }
 
 output "subnet_secondary_ranges" {
