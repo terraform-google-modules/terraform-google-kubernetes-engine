@@ -8,6 +8,10 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+### Fixed
+
+* Fixed bug with setting up sandboxing on nodes. [#286]
+
 ## [v5.1.0] - 2019-10-24
 
 ### Added
@@ -214,6 +218,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#286]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/286
 [#285]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/285
 [#284]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/284
 [#282]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/282
