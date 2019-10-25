@@ -47,3 +47,8 @@ variable "compute_engine_service_account" {
   description = "Service account to associate to the nodes in the cluster"
 }
 
+variable "skip_provisioners" {
+  type        = bool
+  description = "Flag to skip local-exec provisioners"
+  default     = false
+}
