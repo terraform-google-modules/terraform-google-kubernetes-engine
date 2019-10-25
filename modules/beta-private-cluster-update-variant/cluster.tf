@@ -158,14 +158,6 @@ resource "google_container_cluster" "primary" {
           node_metadata = workload_metadata_config.value.node_metadata
         }
       }
-
-      dynamic "sandbox_config" {
-        for_each = local.cluster_sandbox_enabled
-
-        content {
-          sandbox_type = sandbox_config.value
-        }
-      }
     }
   }
 
@@ -376,6 +368,14 @@ resource "google_container_node_pool" "pools" {
 
       content {
         node_metadata = workload_metadata_config.value.node_metadata
+      }
+    }
+
+    dynamic "sandbox_config" {
+      for_each = local.cluster_sandbox_enabled
+
+      content {
+        sandbox_type = sandbox_config.value
       }
     }
   }
