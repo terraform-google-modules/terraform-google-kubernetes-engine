@@ -19,12 +19,12 @@ This example illustrates how to create a VPC and a simple cluster.
 
 | Name | Description |
 |------|-------------|
-| ca\_certificate |  |
-| client\_token |  |
+| ca\_certificate | The cluster ca certificate (base64 encoded) |
+| client\_token | The bearer token for auth |
 | cluster\_name | Cluster name |
 | ip\_range\_pods\_name | The secondary IP range used for pods |
 | ip\_range\_services\_name | The secondary IP range used for services |
-| kubernetes\_endpoint |  |
+| kubernetes\_endpoint | The cluster endpoint |
 | location |  |
 | master\_kubernetes\_version | The master Kubernetes version |
 | network |  |

@@ -15,17 +15,20 @@
  */
 
 output "kubernetes_endpoint" {
-  sensitive = true
-  value     = module.gke.endpoint
+  description = "The cluster endpoint"
+  sensitive   = true
+  value       = module.gke.endpoint
 }
 
 output "client_token" {
-  sensitive = true
-  value     = base64encode(data.google_client_config.default.access_token)
+  description = "The bearer token for auth"
+  sensitive   = true
+  value       = base64encode(data.google_client_config.default.access_token)
 }
 
 output "ca_certificate" {
-  value = module.gke.ca_certificate
+  description = "The cluster ca certificate (base64 encoded)"
+  value       = module.gke.ca_certificate
 }
 
 output "service_account" {
