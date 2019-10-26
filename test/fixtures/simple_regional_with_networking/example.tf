@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-resource "random_string" "suffix" {
-  length  = 4
-  special = false
-  upper   = false
-}
-
 module "example" {
   source = "../../../examples/simple_regional_with_networking"
 

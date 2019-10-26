@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-provider "google" {
-  version = "~> 2.12.0"
-  region  = var.region
-}
-
 module "gcp-network" {
   source       = "terraform-google-modules/network/google"
   version      = "~> 1.4.0"
