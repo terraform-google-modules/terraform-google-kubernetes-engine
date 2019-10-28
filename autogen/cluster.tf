@@ -177,14 +177,6 @@ resource "google_container_cluster" "primary" {
           node_metadata = workload_metadata_config.value.node_metadata
         }
       }
-
-      dynamic "sandbox_config" {
-        for_each = local.cluster_sandbox_enabled
-
-        content {
-          sandbox_type = sandbox_config.value
-        }
-      }
       {% endif %}
     }
   }
@@ -417,6 +409,14 @@ resource "google_container_node_pool" "pools" {
         node_metadata = workload_metadata_config.value.node_metadata
       }
     }
+
+    dynamic "sandbox_config" {
+      for_each = local.cluster_sandbox_enabled
+
+      content {
+        sandbox_type = sandbox_config.value
+      }
+    }
     {% endif %}
   }
 
@@ -435,6 +435,7 @@ resource "google_container_node_pool" "pools" {
 }
 
 resource "null_resource" "wait_for_cluster" {
+  count = var.skip_provisioners ? 0 : 1
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
