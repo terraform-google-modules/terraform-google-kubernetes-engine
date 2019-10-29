@@ -41,6 +41,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "release_channel" {
+    for_each = local.release_channel
+
+    content {
+      channel = release_channel.value.channel
+    }
+  }
+
   subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
   min_master_version = local.master_version
 
