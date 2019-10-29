@@ -15,10 +15,8 @@ See [examples/simple_zonal](../../examples/simple_zonal) cluster example.
 
 ## Installation
 
-Module automate installation steps described at [Installing Anthos Config Management](https://cloud.google.com/anthos-config-management/docs/how-to/installing) page.
-Git access provisioned via "Using an SSH keypair" option, to finish authorization add SSH public from **git\_creds\_public**
-output variable to your account at your Git server.
-
+This module automates the instructions described in the [Installing Anthos Config Management](https://cloud.google.com/anthos-config-management/docs/how-to/installing) guide.
+To enable Git access to the configuration repository over SSH, complete step 2 in the [Using an SSH keypair](https://cloud.google.com/anthos-config-management/docs/how-to/installing#git-creds-ssh) section using the SSH public key from the **git\_creds\_public** output.
 
  <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
