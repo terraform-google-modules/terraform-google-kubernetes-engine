@@ -46,12 +46,8 @@ resource "google_container_cluster" "primary" {
   }
 
 {% if beta_cluster %}
-  dynamic "release_channel" {
-    for_each = local.release_channel
-
-    content {
-      channel = release_channel.value.channel
-    }
+  release_channel {
+    channel = var.release_channel
   }
 {% endif %}
 

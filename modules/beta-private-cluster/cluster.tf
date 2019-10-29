@@ -41,12 +41,8 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  dynamic "release_channel" {
-    for_each = local.release_channel
-
-    content {
-      channel = release_channel.value.channel
-    }
+  release_channel {
+    channel = var.release_channel
   }
 
   subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
