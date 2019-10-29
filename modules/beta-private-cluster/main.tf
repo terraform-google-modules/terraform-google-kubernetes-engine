@@ -44,8 +44,6 @@ locals {
   node_version_zonal      = var.node_version != "" && ! var.regional ? var.node_version : local.master_version_zonal
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
   node_version            = var.regional ? local.node_version_regional : local.node_version_zonal
-  release_channel         = var.enable_release_channel ? [{ channel : var.release_channel }] : []
-
 
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
   upstream_nameservers_config = length(var.upstream_nameservers) > 0
