@@ -167,14 +167,6 @@ resource "google_container_cluster" "primary" {
           node_metadata = workload_metadata_config.value.node_metadata
         }
       }
-
-      dynamic "sandbox_config" {
-        for_each = local.cluster_sandbox_enabled
-
-        content {
-          sandbox_type = sandbox_config.value
-        }
-      }
       {% endif %}
     }
   }
@@ -219,6 +211,80 @@ resource "google_container_cluster" "primary" {
 /******************************************
   Create Container Cluster node pools
  *****************************************/
+{% if update_variant %}
+locals {
+  force_node_pool_recreation_resources = [
+    "disk_size_gb",
+    "disk_type",
+    "accelerator_count",
+    "accelerator_type",
+    "local_ssd_count",
+    "machine_type",
+    "preemptible",
+    "service_account",
+  ]
+}
+
+# This keepers list is based on the terraform google provider schemaNodeConfig
+# resources where "ForceNew" is "true". schemaNodeConfig can be found in node_config.go at
+# https://github.com/terraform-providers/terraform-provider-google/blob/master/google/node_config.go#L22
+resource "random_id" "name" {
+  count       = length(var.node_pools)
+  byte_length = 2
+  prefix      = format("%s-", lookup(var.node_pools[count.index], "name"))
+  keepers = merge(
+    zipmap(
+      local.force_node_pool_recreation_resources,
+      [for keeper in local.force_node_pool_recreation_resources : lookup(var.node_pools[count.index], keeper, "")]
+    ),
+    {
+      labels = join(",",
+        sort(
+          concat(
+            keys(var.node_pools_labels["all"]),
+            values(var.node_pools_labels["all"]),
+            keys(var.node_pools_labels[var.node_pools[count.index]["name"]]),
+            values(var.node_pools_labels[var.node_pools[count.index]["name"]])
+          )
+        )
+      )
+    },
+    {
+      metadata = join(",",
+        sort(
+          concat(
+            keys(var.node_pools_metadata["all"]),
+            values(var.node_pools_metadata["all"]),
+            keys(var.node_pools_metadata[var.node_pools[count.index]["name"]]),
+            values(var.node_pools_metadata[var.node_pools[count.index]["name"]])
+          )
+        )
+      )
+    },
+    {
+      oauth_scopes = join(",",
+        sort(
+          concat(
+            var.node_pools_oauth_scopes["all"],
+            var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]]
+          )
+        )
+      )
+    },
+    {
+      tags = join(",",
+        sort(
+          concat(
+            var.node_pools_tags["all"],
+            var.node_pools_tags[var.node_pools[count.index]["name"]]
+          )
+        )
+      )
+    }
+  )
+}
+
+{% endif %}
 resource "google_container_node_pool" "pools" {
   {% if beta_cluster %}
   provider = google-beta
@@ -226,7 +292,11 @@ resource "google_container_node_pool" "pools" {
   provider = google
   {% endif %}
   count    = length(var.node_pools)
+  {% if update_variant %}
+  name     = random_id.name.*.hex[count.index]
+  {% else %}
   name     = var.node_pools[count.index]["name"]
+  {% endif %}
   project  = var.project_id
   location = local.location
   cluster  = google_container_cluster.primary.name
@@ -263,22 +333,14 @@ resource "google_container_node_pool" "pools" {
     image_type   = lookup(var.node_pools[count.index], "image_type", "COS")
     machine_type = lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")
     labels = merge(
-      {
-        "cluster_name" = var.name
-      },
-      {
-        "node_pool" = var.node_pools[count.index]["name"]
-      },
+      lookup(lookup(var.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(var.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
       var.node_pools_labels["all"],
       lookup(var.node_pools_labels, var.node_pools[count.index]["name"], {})
     )
     metadata = merge(
-      {
-        "cluster_name" = var.name
-      },
-      {
-        "node_pool" = var.node_pools[count.index]["name"]
-      },
+      lookup(lookup(var.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(var.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
       var.node_pools_metadata["all"],
       var.node_pools_metadata[var.node_pools[count.index]["name"]],
       {
@@ -299,8 +361,8 @@ resource "google_container_node_pool" "pools" {
     }
     {% endif %}
     tags = concat(
-      ["gke-${var.name}"],
-      ["gke-${var.name}-${var.node_pools[count.index]["name"]}"],
+      lookup(var.node_pools_tags, "default_values", [true, true])[0] ? ["gke-${var.name}"] : [],
+      lookup(var.node_pools_tags, "default_values", [true, true])[1] ? ["gke-${var.name}-${var.node_pools[count.index]["name"]}"] : [],
       var.node_pools_tags["all"],
       lookup(var.node_pools_tags, var.node_pools[count.index]["name"], [])
     )
@@ -337,11 +399,22 @@ resource "google_container_node_pool" "pools" {
         node_metadata = workload_metadata_config.value.node_metadata
       }
     }
+
+    dynamic "sandbox_config" {
+      for_each = local.cluster_sandbox_enabled
+
+      content {
+        sandbox_type = sandbox_config.value
+      }
+    }
     {% endif %}
   }
 
   lifecycle {
     ignore_changes = [initial_node_count]
+    {% if update_variant %}
+    create_before_destroy = true
+    {% endif %}
   }
 
   timeouts {
@@ -352,6 +425,7 @@ resource "google_container_node_pool" "pools" {
 }
 
 resource "null_resource" "wait_for_cluster" {
+  count = var.skip_provisioners ? 0 : 1
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
