@@ -20,7 +20,7 @@
   Create Container Cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  {% if private_cluster or beta_cluster %}
+  {% if beta_cluster %}
   provider = google-beta
   {% else %}
   provider = google
@@ -45,6 +45,16 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+{% if beta_cluster %}
+  dynamic "release_channel" {
+    for_each = local.release_channel
+
+    content {
+      channel = release_channel.value.channel
+    }
+  }
+{% endif %}
+
   subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
   min_master_version = local.master_version
 
@@ -67,6 +77,15 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "resource_usage_export_config" {
+    for_each = var.resource_usage_export_dataset_id != "" ? [var.resource_usage_export_dataset_id] : []
+    content {
+      enable_network_egress_metering = true
+      bigquery_destination {
+        dataset_id = resource_usage_export_config.value
+      }
+    }
+  }
 {% endif %}
   dynamic "master_authorized_networks_config" {
     for_each = var.master_authorized_networks_config
@@ -134,7 +153,7 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
-    ignore_changes = [node_pool]
+    ignore_changes = [node_pool, initial_node_count]
   }
 
   timeouts {
@@ -202,10 +221,92 @@ resource "google_container_cluster" "primary" {
 /******************************************
   Create Container Cluster node pools
  *****************************************/
+{% if update_variant %}
+locals {
+  force_node_pool_recreation_resources = [
+    "disk_size_gb",
+    "disk_type",
+    "accelerator_count",
+    "accelerator_type",
+    "local_ssd_count",
+    "machine_type",
+    "preemptible",
+    "service_account",
+  ]
+}
+
+# This keepers list is based on the terraform google provider schemaNodeConfig
+# resources where "ForceNew" is "true". schemaNodeConfig can be found in node_config.go at
+# https://github.com/terraform-providers/terraform-provider-google/blob/master/google/node_config.go#L22
+resource "random_id" "name" {
+  count       = length(var.node_pools)
+  byte_length = 2
+  prefix      = format("%s-", lookup(var.node_pools[count.index], "name"))
+  keepers = merge(
+    zipmap(
+      local.force_node_pool_recreation_resources,
+      [for keeper in local.force_node_pool_recreation_resources : lookup(var.node_pools[count.index], keeper, "")]
+    ),
+    {
+      labels = join(",",
+        sort(
+          concat(
+            keys(var.node_pools_labels["all"]),
+            values(var.node_pools_labels["all"]),
+            keys(var.node_pools_labels[var.node_pools[count.index]["name"]]),
+            values(var.node_pools_labels[var.node_pools[count.index]["name"]])
+          )
+        )
+      )
+    },
+    {
+      metadata = join(",",
+        sort(
+          concat(
+            keys(var.node_pools_metadata["all"]),
+            values(var.node_pools_metadata["all"]),
+            keys(var.node_pools_metadata[var.node_pools[count.index]["name"]]),
+            values(var.node_pools_metadata[var.node_pools[count.index]["name"]])
+          )
+        )
+      )
+    },
+    {
+      oauth_scopes = join(",",
+        sort(
+          concat(
+            var.node_pools_oauth_scopes["all"],
+            var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]]
+          )
+        )
+      )
+    },
+    {
+      tags = join(",",
+        sort(
+          concat(
+            var.node_pools_tags["all"],
+            var.node_pools_tags[var.node_pools[count.index]["name"]]
+          )
+        )
+      )
+    }
+  )
+}
+
+{% endif %}
 resource "google_container_node_pool" "pools" {
+  {% if beta_cluster %}
   provider = google-beta
+  {% else %}
+  provider = google
+  {% endif %}
   count    = length(var.node_pools)
+  {% if update_variant %}
+  name     = random_id.name.*.hex[count.index]
+  {% else %}
   name     = var.node_pools[count.index]["name"]
+  {% endif %}
   project  = var.project_id
   location = local.location
   cluster  = google_container_cluster.primary.name
@@ -223,9 +324,14 @@ resource "google_container_node_pool" "pools" {
   max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", null)
   {% endif %}
 
-  autoscaling {
-    min_node_count = lookup(var.node_pools[count.index], "min_count", 1)
-    max_node_count = lookup(var.node_pools[count.index], "max_count", 100)
+  node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "min_count", 1)
+
+  dynamic "autoscaling" {
+    for_each = lookup(var.node_pools[count.index], "autoscaling", true) ? [var.node_pools[count.index]] : []
+    content {
+      min_node_count = lookup(autoscaling.value, "min_count", 1)
+      max_node_count = lookup(autoscaling.value, "max_count", 100)
+    }
   }
 
   management {
@@ -237,28 +343,21 @@ resource "google_container_node_pool" "pools" {
     image_type   = lookup(var.node_pools[count.index], "image_type", "COS")
     machine_type = lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")
     labels = merge(
-      {
-        "cluster_name" = var.name
-      },
-      {
-        "node_pool" = var.node_pools[count.index]["name"]
-      },
+      lookup(lookup(var.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(var.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
       var.node_pools_labels["all"],
       var.node_pools_labels[var.node_pools[count.index]["name"]],
     )
     metadata = merge(
-      {
-        "cluster_name" = var.name
-      },
-      {
-        "node_pool" = var.node_pools[count.index]["name"]
-      },
+      lookup(lookup(var.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(var.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
       var.node_pools_metadata["all"],
       var.node_pools_metadata[var.node_pools[count.index]["name"]],
       {
         "disable-legacy-endpoints" = var.disable_legacy_metadata_endpoints
       },
     )
+    {% if beta_cluster %}
     dynamic "taint" {
       for_each = concat(
         var.node_pools_taints["all"],
@@ -270,9 +369,10 @@ resource "google_container_node_pool" "pools" {
         value  = taint.value.value
       }
     }
+    {% endif %}
     tags = concat(
-      ["gke-${var.name}"],
-      ["gke-${var.name}-${var.node_pools[count.index]["name"]}"],
+      lookup(var.node_pools_tags, "default_values", [true, true])[0] ? ["gke-${var.name}"] : [],
+      lookup(var.node_pools_tags, "default_values", [true, true])[1] ? ["gke-${var.name}-${var.node_pools[count.index]["name"]}"] : [],
       var.node_pools_tags["all"],
       var.node_pools_tags[var.node_pools[count.index]["name"]],
     )
@@ -309,11 +409,22 @@ resource "google_container_node_pool" "pools" {
         node_metadata = workload_metadata_config.value.node_metadata
       }
     }
+
+    dynamic "sandbox_config" {
+      for_each = local.cluster_sandbox_enabled
+
+      content {
+        sandbox_type = sandbox_config.value
+      }
+    }
     {% endif %}
   }
 
   lifecycle {
     ignore_changes = [initial_node_count]
+    {% if update_variant %}
+    create_before_destroy = true
+    {% endif %}
   }
 
   timeouts {
@@ -324,6 +435,7 @@ resource "google_container_node_pool" "pools" {
 }
 
 resource "null_resource" "wait_for_cluster" {
+  count = var.skip_provisioners ? 0 : 1
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"

@@ -18,18 +18,13 @@ locals {
   cluster_type = "node-pool"
 }
 
-provider "google" {
-  version = "~> 2.12.0"
-  region  = var.region
-}
-
 provider "google-beta" {
-  version = "~> 2.12.0"
+  version = "~> 2.18.0"
   region  = var.region
 }
 
 module "gke" {
-  source                            = "../../"
+  source                            = "../../modules/beta-public-cluster/"
   project_id                        = var.project_id
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   regional                          = false

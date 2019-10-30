@@ -20,7 +20,7 @@
   Create Container Cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  provider = google-beta
+  provider = google
 
   name            = var.name
   description     = var.description
@@ -40,6 +40,7 @@ resource "google_container_cluster" "primary" {
       provider = network_policy.value.provider
     }
   }
+
 
   subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
   min_master_version = local.master_version
@@ -99,7 +100,7 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
-    ignore_changes = [node_pool]
+    ignore_changes = [node_pool, initial_node_count]
   }
 
   timeouts {
@@ -130,7 +131,7 @@ resource "google_container_cluster" "primary" {
   Create Container Cluster node pools
  *****************************************/
 resource "google_container_node_pool" "pools" {
-  provider = google-beta
+  provider = google
   count    = length(var.node_pools)
   name     = var.node_pools[count.index]["name"]
   project  = var.project_id
@@ -147,9 +148,14 @@ resource "google_container_node_pool" "pools" {
     lookup(var.node_pools[count.index], "min_count", 1),
   )
 
-  autoscaling {
-    min_node_count = lookup(var.node_pools[count.index], "min_count", 1)
-    max_node_count = lookup(var.node_pools[count.index], "max_count", 100)
+  node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "min_count", 1)
+
+  dynamic "autoscaling" {
+    for_each = lookup(var.node_pools[count.index], "autoscaling", true) ? [var.node_pools[count.index]] : []
+    content {
+      min_node_count = lookup(autoscaling.value, "min_count", 1)
+      max_node_count = lookup(autoscaling.value, "max_count", 100)
+    }
   }
 
   management {
@@ -161,42 +167,23 @@ resource "google_container_node_pool" "pools" {
     image_type   = lookup(var.node_pools[count.index], "image_type", "COS")
     machine_type = lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")
     labels = merge(
-      {
-        "cluster_name" = var.name
-      },
-      {
-        "node_pool" = var.node_pools[count.index]["name"]
-      },
+      lookup(lookup(var.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(var.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
       var.node_pools_labels["all"],
       var.node_pools_labels[var.node_pools[count.index]["name"]],
     )
     metadata = merge(
-      {
-        "cluster_name" = var.name
-      },
-      {
-        "node_pool" = var.node_pools[count.index]["name"]
-      },
+      lookup(lookup(var.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(var.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
       var.node_pools_metadata["all"],
       var.node_pools_metadata[var.node_pools[count.index]["name"]],
       {
         "disable-legacy-endpoints" = var.disable_legacy_metadata_endpoints
       },
     )
-    dynamic "taint" {
-      for_each = concat(
-        var.node_pools_taints["all"],
-        var.node_pools_taints[var.node_pools[count.index]["name"]],
-      )
-      content {
-        effect = taint.value.effect
-        key    = taint.value.key
-        value  = taint.value.value
-      }
-    }
     tags = concat(
-      ["gke-${var.name}"],
-      ["gke-${var.name}-${var.node_pools[count.index]["name"]}"],
+      lookup(var.node_pools_tags, "default_values", [true, true])[0] ? ["gke-${var.name}"] : [],
+      lookup(var.node_pools_tags, "default_values", [true, true])[1] ? ["gke-${var.name}-${var.node_pools[count.index]["name"]}"] : [],
       var.node_pools_tags["all"],
       var.node_pools_tags[var.node_pools[count.index]["name"]],
     )
@@ -238,6 +225,7 @@ resource "google_container_node_pool" "pools" {
 }
 
 resource "null_resource" "wait_for_cluster" {
+  count = var.skip_provisioners ? 0 : 1
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"

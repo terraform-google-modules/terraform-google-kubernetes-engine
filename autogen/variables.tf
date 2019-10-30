@@ -40,7 +40,8 @@ variable "regional" {
 
 variable "region" {
   type        = string
-  description = "The region to host the cluster in (required)"
+  description = "The region to host the cluster in (optional if zonal cluster / required if regional)"
+  default     = null
 }
 
 variable "zones" {
@@ -178,6 +179,7 @@ variable "node_pools_metadata" {
   }
 }
 
+{% if beta_cluster %}
 variable "node_pools_taints" {
   type        = map(list(object({key=string,value=string,effect=string})))
   description = "Map of lists containing node taints by node-pool name"
@@ -188,6 +190,7 @@ variable "node_pools_taints" {
   }
 }
 
+{% endif %}
 variable "node_pools_tags" {
   type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
@@ -267,6 +270,12 @@ variable "grant_registry_access" {
   default     = false
 }
 
+variable "registry_project_id" {
+  type        = string
+  description = "Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project."
+  default     = ""
+}
+
 variable "service_account" {
   type        = string
   description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
@@ -302,6 +311,11 @@ variable "cluster_resource_labels" {
   default     = {}
 }
 
+variable "skip_provisioners" {
+  type        = bool
+  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
+  default     = false
+}
 {% if private_cluster %}
 
 variable "deploy_using_private_endpoint" {
@@ -366,9 +380,22 @@ variable "pod_security_policy_config" {
   }]
 }
 
+variable "resource_usage_export_dataset_id" {
+  type        = string
+  description = "The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic."
+  default     = ""
+}
+
 variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
-  default     = "UNSPECIFIED"
+  default     = "SECURE"
+  type        = string
+}
+
+variable "sandbox_enabled" {
+  type        = bool
+  description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` and `node_version` = `1.12.7-gke.17` or later to use it)."
+  default     = false
 }
 
 variable "enable_intranode_visibility" {
@@ -377,7 +404,7 @@ variable "enable_intranode_visibility" {
   default     = false
 }
 
- variable "enable_vertical_pod_autoscaling" {
+variable "enable_vertical_pod_autoscaling" {
   type        = bool
   description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
   default     = false
@@ -395,4 +422,9 @@ variable "authenticator_security_group" {
   default     = null
 }
 
+variable "release_channel" {
+  type        = string
+  description = "(Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
+  default     = null
+}
 {% endif %}

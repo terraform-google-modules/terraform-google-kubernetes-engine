@@ -23,7 +23,7 @@ data "google_compute_zones" "available" {
   provider = google-beta
 
   project = var.project_id
-  region  = var.region
+  region  = local.region
 }
 
 resource "random_shuffle" "available_zones" {
@@ -34,6 +34,7 @@ resource "random_shuffle" "available_zones" {
 locals {
   // location
   location = var.regional ? var.region : var.zones[0]
+  region   = var.region == null ? join("-", slice(split("-", var.zones[0]), 0, 2)) : var.region
   // for regional cluster - use var.zones if provided, use available otherwise, for zonal cluster use var.zones with first element extracted
   node_locations = var.regional ? coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result)) : slice(var.zones, 1, length(var.zones))
   // kuberentes version
@@ -43,6 +44,8 @@ locals {
   node_version_zonal      = var.node_version != "" && ! var.regional ? var.node_version : local.master_version_zonal
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
   node_version            = var.regional ? local.node_version_regional : local.node_version_zonal
+  release_channel         = var.release_channel != null ? [{ channel : var.release_channel }] : []
+
 
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
   upstream_nameservers_config = length(var.upstream_nameservers) > 0
@@ -70,6 +73,8 @@ locals {
     security_group = var.authenticator_security_group
   }]
 
+  cluster_sandbox_enabled = var.sandbox_enabled ? ["gvisor"] : []
+
 
   cluster_output_name           = google_container_cluster.primary.name
   cluster_output_location       = google_container_cluster.primary.location
@@ -91,10 +96,10 @@ locals {
   cluster_output_kubernetes_dashboard_enabled       = google_container_cluster.primary.addons_config.0.kubernetes_dashboard.0.disabled
 
   # BETA features
-  cluster_output_istio_enabled                    = google_container_cluster.primary.addons_config.0.istio_config.0.disabled
-  cluster_output_pod_security_policy_enabled      = google_container_cluster.primary.pod_security_policy_config.0.enabled
+  cluster_output_istio_disabled                   = google_container_cluster.primary.addons_config.0.istio_config != null && length(google_container_cluster.primary.addons_config.0.istio_config) == 1 ? google_container_cluster.primary.addons_config.0.istio_config.0.disabled : false
+  cluster_output_pod_security_policy_enabled      = google_container_cluster.primary.pod_security_policy_config != null && length(google_container_cluster.primary.pod_security_policy_config) == 1 ? google_container_cluster.primary.pod_security_policy_config.0.enabled : false
   cluster_output_intranode_visbility_enabled      = google_container_cluster.primary.enable_intranode_visibility
-  cluster_output_vertical_pod_autoscaling_enabled = google_container_cluster.primary.vertical_pod_autoscaling.0.enabled
+  cluster_output_vertical_pod_autoscaling_enabled = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling.0.enabled : false
 
   # /BETA features
 
@@ -122,7 +127,7 @@ locals {
   cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled
   cluster_kubernetes_dashboard_enabled       = ! local.cluster_output_kubernetes_dashboard_enabled
   # BETA features
-  cluster_istio_enabled                    = ! local.cluster_output_istio_enabled
+  cluster_istio_enabled                    = ! local.cluster_output_istio_disabled
   cluster_cloudrun_enabled                 = var.cloudrun
   cluster_pod_security_policy_enabled      = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled
