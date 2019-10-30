@@ -45,6 +45,16 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+{% if beta_cluster %}
+  dynamic "release_channel" {
+    for_each = local.release_channel
+
+    content {
+      channel = release_channel.value.channel
+    }
+  }
+{% endif %}
+
   subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
   min_master_version = local.master_version
 
@@ -165,14 +175,6 @@ resource "google_container_cluster" "primary" {
 
         content {
           node_metadata = workload_metadata_config.value.node_metadata
-        }
-      }
-
-      dynamic "sandbox_config" {
-        for_each = local.cluster_sandbox_enabled
-
-        content {
-          sandbox_type = sandbox_config.value
         }
       }
       {% endif %}
@@ -405,6 +407,14 @@ resource "google_container_node_pool" "pools" {
 
       content {
         node_metadata = workload_metadata_config.value.node_metadata
+      }
+    }
+
+    dynamic "sandbox_config" {
+      for_each = local.cluster_sandbox_enabled
+
+      content {
+        sandbox_type = sandbox_config.value
       }
     }
     {% endif %}

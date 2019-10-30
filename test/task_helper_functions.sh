@@ -32,8 +32,9 @@ function check_generate() {
     --exclude '*/.kitchen' \
     --exclude '*/.git' \
     /workspace "${tempdir}" >/dev/null 2>/dev/null
-  cd "${tempdir}" || exit 1
+  cd "${tempdir}/workspace" || exit 1
   generate >/dev/null 2>/dev/null
+  generate_docs >/dev/null 2>/dev/null
   diff -r \
     --exclude=".terraform" \
     --exclude=".kitchen" \
