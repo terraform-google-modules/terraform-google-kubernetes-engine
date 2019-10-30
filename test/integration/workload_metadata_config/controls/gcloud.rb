@@ -1,10 +1,10 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,8 +13,10 @@
 # limitations under the License.
 
 project_id = attribute('project_id')
+registry_project_id = attribute('registry_project_id')
 location = attribute('location')
 cluster_name = attribute('cluster_name')
+service_account = attribute('service_account')
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
@@ -53,6 +55,22 @@ control "gcloud" do
       it "is secure" do
         expect(data["nodeConfig"]["workloadMetadataConfig"]["nodeMetadata"]).to eq 'SECURE'
       end
+    end
+  end
+
+  describe command("gcloud projects get-iam-policy #{registry_project_id} --format=json") do
+    its(:exit_status) { should eq 0 }
+    its(:stderr) { should eq '' }
+
+    let!(:iam) do
+      if subject.exit_status == 0
+        JSON.parse(subject.stdout)
+      else
+        {}
+      end
+    end
+    it "has expected registry roles" do
+      expect(iam['bindings']).to include("members" => ["serviceAccount:#{service_account}"], "role" => "roles/storage.objectViewer")
     end
   end
 end

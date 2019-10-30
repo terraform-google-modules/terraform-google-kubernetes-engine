@@ -20,15 +20,20 @@ variable "project_id" {
 
 variable "region" {
   description = "The GCP region to create and test resources in"
+  default     = "us-east4"
 }
 
 variable "zones" {
   type        = list(string)
   description = "The GCP zones to create and test resources in, for applicable tests"
-  default     = []
+  default     = ["us-east4-a", "us-east4-b", "us-east4-c"]
 }
 
 variable "compute_engine_service_account" {
   description = "The email address of the service account to associate with the GKE cluster"
+}
+
+variable "registry_project_id" {
+  description = "Project to use for granting access to the GCR registry, if requested"
 }
 

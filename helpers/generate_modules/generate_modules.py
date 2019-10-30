@@ -54,6 +54,17 @@ MODULES = [
         'private_cluster': True,
         'beta_cluster': True,
     }),
+    Module("./modules/private-cluster-update-variant", {
+        'module_path': '//modules/private-cluster-update-variant',
+        'private_cluster': True,
+        'update_variant': True,
+    }),
+    Module("./modules/beta-private-cluster-update-variant", {
+        'module_path': '//modules/beta-private-cluster-update-variant',
+        'private_cluster': True,
+        'update_variant': True,
+        'beta_cluster': True,
+    }),
     Module("./modules/beta-public-cluster", {
         'module_path': '//modules/beta-public-cluster',
         'private_cluster': False,
