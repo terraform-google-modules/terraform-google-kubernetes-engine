@@ -56,3 +56,32 @@ variable "cloudrun" {
   description = "Boolean to enable / disable CloudRun"
   default     = true
 }
+
+variable "node_metadata" {
+  description = "Specifies how node metadata is exposed to the workload running on the node"
+  default     = "SECURE"
+  type        = string
+}
+
+variable "sandbox_enabled" {
+  type        = bool
+  description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` and `node_version` = `1.12.7-gke.17` or later to use it)."
+  default     = false
+}
+
+variable "remove_default_node_pool" {
+  type        = bool
+  description = "Remove default node pool while setting up the cluster"
+  default     = false
+}
+
+variable "node_pools" {
+  type        = list(map(string))
+  description = "List of maps containing node pools"
+
+  default = [
+    {
+      name = "default-node-pool"
+    },
+  ]
+}
