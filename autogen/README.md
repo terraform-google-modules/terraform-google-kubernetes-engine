@@ -183,14 +183,14 @@ In order to operate with the Service Account you must activate the following API
 - Compute Engine API - compute.googleapis.com
 - Kubernetes Engine API - container.googleapis.com
 
-## node_pools Variable
+## node_pools variable
 The node_pools variable takes the following parameters:
 
 | Name | Description | Requirement | 
 | --- | --- | --- |
 | name | The name of the node pool. If left blank, Terraform will auto-generate a unique name | Optional |
-| min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count | Required |
-| max_count | Maximum number of nodes in the NodePool. Must be >= min_count | Required |
+| min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Default value is 1 | Optional |
+| max_count | Maximum number of nodes in the NodePool. Must be >= min_count. Default value is 100 | Optional |
 | machine_type | The name of a Google Compute Engine machine type. Defaults to n1-standard-1 | Optional |
 | disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. Defaults to 100GB | Optional |
 | disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd'). If unspecified, the default disk type is 'pd-standard' | Optional |
