@@ -45,6 +45,7 @@ locals {
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
   node_version            = var.regional ? local.node_version_regional : local.node_version_zonal
 
+
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
   upstream_nameservers_config = length(var.upstream_nameservers) > 0
   network_project_id          = var.network_project_id != "" ? var.network_project_id : var.project_id

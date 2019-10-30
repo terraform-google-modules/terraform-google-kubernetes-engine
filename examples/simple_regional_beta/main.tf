@@ -19,7 +19,7 @@ locals {
 }
 
 provider "google-beta" {
-  version = "~> 2.12.0"
+  version = "~> 2.18.0"
   region  = var.region
 }
 
@@ -45,4 +45,3 @@ module "gke" {
 
 data "google_client_config" "default" {
 }
-
