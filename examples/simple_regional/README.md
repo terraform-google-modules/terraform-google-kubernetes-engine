@@ -14,6 +14,7 @@ This example illustrates how to create a simple cluster.
 | network | The VPC network to host the cluster in | string | n/a | yes |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
+| skip\_provisioners | Flag to skip local-exec provisioners | bool | `"false"` | no |
 | subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
 
 ## Outputs
@@ -31,7 +32,7 @@ This example illustrates how to create a simple cluster.
 | network |  |
 | project\_id |  |
 | region |  |
-| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
+| service\_account | The default service account used for running nodes. |
 | subnetwork |  |
 | zones | List of zones in which the cluster resides |
 

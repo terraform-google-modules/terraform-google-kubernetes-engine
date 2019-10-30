@@ -268,6 +268,12 @@ variable "grant_registry_access" {
   default     = false
 }
 
+variable "registry_project_id" {
+  type        = string
+  description = "Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project."
+  default     = ""
+}
+
 variable "service_account" {
   type        = string
   description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
@@ -303,6 +309,11 @@ variable "cluster_resource_labels" {
   default     = {}
 }
 
+variable "skip_provisioners" {
+  type        = bool
+  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
+  default     = false
+}
 
 variable "istio" {
   description = "(Beta) Enable Istio addon"
@@ -382,3 +393,8 @@ variable "authenticator_security_group" {
   default     = null
 }
 
+variable "release_channel" {
+  type        = string
+  description = "(Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
+  default     = null
+}
