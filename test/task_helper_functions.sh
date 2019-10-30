@@ -32,8 +32,9 @@ function check_generate() {
     --exclude '*/.kitchen' \
     --exclude '*/.git' \
     /workspace "${tempdir}" >/dev/null 2>/dev/null
-  cd "${tempdir}" || exit 1
+  cd "${tempdir}/workspace" || exit 1
   generate >/dev/null 2>/dev/null
+  generate_docs >/dev/null 2>/dev/null
   diff -r \
     --exclude=".terraform" \
     --exclude=".kitchen" \
@@ -48,17 +49,4 @@ function check_generate() {
   cd /workspace || exit 1
   rm -Rf "${tempdir}"
   return $((rval))
-}
-
-find_files() {
-  local pth="$1"
-  shift
-    find "${pth}" '(' \
-    -path '*/.git' -o \
-    -path '*/.terraform' -o \
-    -path '*/.kitchen' -o \
-    -path './autogen' -o \
-    -path './test/fixtures/all_examples' -o \
-    -path './test/fixtures/shared' ')' \
-    -prune -o -type f "$@"
 }
