@@ -173,6 +173,9 @@ following project roles:
 - roles/iam.serviceAccountUser
 - roles/resourcemanager.projectIamAdmin (only required if `service_account` is set to `create`)
 
+Additionally, if `service_account` is set to `create` and `grant_registry_access` is requested, the service account requires the following role on the `registry_project_id` project:
+- roles/resourcemanager.projectIamAdmin
+
 ### Enable APIs
 In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:
 

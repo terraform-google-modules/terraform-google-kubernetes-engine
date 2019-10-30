@@ -29,7 +29,7 @@ output "ca_certificate" {
 }
 
 output "service_account" {
-  description = "The service account to default running nodes as if not overridden in `node_pools`."
+  description = "The default service account used for running nodes."
   value       = module.gke.service_account
 }
 

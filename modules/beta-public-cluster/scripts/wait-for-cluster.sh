@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,11 @@
 # limitations under the License.
 
 set -e
+
+# shellcheck disable=SC2034
+if [ -n "${GOOGLE_APPLICATION_CREDENTIALS}" ]; then
+    export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="${GOOGLE_APPLICATION_CREDENTIALS}"
+fi
 
 PROJECT=$1
 CLUSTER_NAME=$2
