@@ -427,4 +427,10 @@ variable "release_channel" {
   description = "(Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
   default     = null
 }
+
+variable "enable_shielded_nodes" {
+  type = bool
+  description = "Enable Shielded Nodes features on all nodes in this cluster"
+  default = false
+}
 {% endif %}
