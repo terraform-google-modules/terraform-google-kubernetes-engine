@@ -19,8 +19,8 @@ locals {
 }
 
 provider "google-beta" {
-  version     = "~> 2.18.0"
-  region      = var.region
+  version = "~> 2.18.0"
+  region  = var.region
 }
 
 data "google_compute_subnetwork" "subnetwork" {
