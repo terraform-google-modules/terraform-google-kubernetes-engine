@@ -149,3 +149,7 @@ output "vertical_pod_autoscaling_enabled" {
   value       = local.cluster_vertical_pod_autoscaling_enabled
 }
 
+output "release_channel" {
+  description = "The release channel of this cluster"
+  value       = var.release_channel
+}
