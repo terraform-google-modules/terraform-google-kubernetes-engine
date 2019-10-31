@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 0.12"
+variable "project_id" {
+  description = "The project ID to host the cluster in"
 }
 
-provider "google" {
-  version = "~> 2.18.0"
-}
-
-provider "google-beta" {
-  version = "~> 2.18.0"
+variable "region" {
+  description = "The region to host the cluster in"
+  default     = "us-east4"
 }

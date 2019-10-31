@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2018 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 0.12"
-}
+module "example" {
+  source = "../../../examples/simple_regional_with_networking"
 
-provider "google" {
-  version = "~> 2.18.0"
-}
-
-provider "google-beta" {
-  version = "~> 2.18.0"
+  project_id = var.project_id
+  region     = var.region
 }
