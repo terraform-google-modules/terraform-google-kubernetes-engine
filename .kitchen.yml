@@ -45,15 +45,13 @@ suites:
       systems:
         - name: disable_client_cert
           backend: local
-# Disabled due to issue #274
-# (https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/274)
-#  - name: "node_pool"
-#    driver:
-#      root_module_directory: test/fixtures/node_pool
-#    verifier:
-#      systems:
-#        - name: node_pool
-#          backend: local
+  - name: "node_pool"
+    driver:
+      root_module_directory: test/fixtures/node_pool
+    verifier:
+      systems:
+        - name: node_pool
+          backend: local
   - name: "shared_vpc"
     driver:
       root_module_directory: test/fixtures/shared_vpc
