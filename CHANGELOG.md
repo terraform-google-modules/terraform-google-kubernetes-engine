@@ -8,6 +8,10 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+### Added
+
+* Support for Shielded Nodes beta feature via `enabled_shielded_nodes` variable. [#300]
+
 ## [v5.1.1] - 2019-10-25
 
 ### Fixed
