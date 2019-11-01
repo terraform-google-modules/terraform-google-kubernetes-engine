@@ -15,12 +15,8 @@
  */
 
 provider "google" {
-  version = "~> 2.12.0"
+  version = "~> 2.18.0"
   region  = var.region
-}
-
-provider "random" {
-  version = "~> 2.1"
 }
 
 data "google_compute_subnetwork" "subnetwork" {
