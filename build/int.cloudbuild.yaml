@@ -130,7 +130,7 @@ steps:
   waitFor:
     - create simple-zonal-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge simple-zonal-local']
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && env > /dev/null && kitchen_do converge simple-zonal-local']
 - id: verify simple-zonal-local
   waitFor:
     - converge simple-zonal-local
