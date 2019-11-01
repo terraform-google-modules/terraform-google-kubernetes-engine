@@ -190,7 +190,7 @@ The node_pools variable takes the following parameters:
 
 | Name | Description | Default | Requirement | 
 | --- | --- | --- | --- |
-| name | The name of the node pool | "" | Optional |
+| name | The name of the node pool | " " | Optional |
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
 | min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count | 1 | Optional |
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
@@ -199,7 +199,7 @@ The node_pools variable takes the following parameters:
 | disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |
 | image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | COS | Optional |
 | preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
-| service_account | The service account to be used by the Node VMs | "" | Optional |
+| service_account | The service account to be used by the Node VMs | " " | Optional |
 | initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource | 0 | Optional |
 | auto_repair | Whether the nodes will be automatically repaired | true | Optional |
 | auto_upgrade | Whether the nodes will be automatically upgraded | true | Optional |
