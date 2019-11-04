@@ -36,7 +36,7 @@ resource "tls_private_key" "git_creds" {
 
 resource "null_resource" "acm_operator_config" {
   provisioner "local-exec" {
-    command = "gsutil cp gs://config-management-release/released/latest/config-management-operator.yaml ${path.module}/config-management-operator.yaml"
+    command = "CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=$GOOGLE_APPLICATION_CREDENTIALS gsutil cp gs://config-management-release/released/latest/config-management-operator.yaml ${path.module}/config-management-operator.yaml"
   }
 
   provisioner "local-exec" {
