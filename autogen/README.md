@@ -192,6 +192,7 @@ The node_pools variable takes the following parameters:
 | --- | --- | --- | --- |
 | name | The name of the node pool | " " | Optional |
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
+| node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters | " " | Optional |
 | min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count | 1 | Optional |
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
 | machine_type | The name of a Google Compute Engine machine type | n1-standard-2 | Optional |
