@@ -14,28 +14,37 @@
  * limitations under the License.
  */
 
-variable "project_ids" {
-  type        = list(string)
-  description = "The GCP projects to use for integration tests"
+variable "project_id" {
+  description = "The project ID to host the cluster in"
+}
+
+variable "cluster_name_suffix" {
+  description = "A suffix to append to the default cluster name"
+  default     = ""
 }
 
 variable "region" {
-  description = "The GCP region to create and test resources in"
-  default     = "us-central1"
+  description = "The region to host the cluster in"
 }
 
 variable "zones" {
   type        = list(string)
-  description = "The GCP zones to create and test resources in, for applicable tests"
-  default     = ["us-central1-a", "us-central1-b", "us-central1-c"]
+  description = "The zone to host the cluster in (required if is a zonal cluster)"
 }
 
-variable "compute_engine_service_accounts" {
-  type        = list(string)
-  description = "The email addresses of the service account to associate with the GKE cluster"
+variable "network" {
+  description = "The VPC network to host the cluster in"
 }
 
-variable "registry_project_id" {
-  description = "Project to use for granting access to the GCR registry, if requested"
-  default = ""
+variable "subnetwork" {
+  description = "The subnetwork to host the cluster in"
 }
+
+variable "ip_range_pods" {
+  description = "The secondary ip range to use for pods"
+}
+
+variable "ip_range_services" {
+  description = "The secondary ip range to use for pods"
+}
+

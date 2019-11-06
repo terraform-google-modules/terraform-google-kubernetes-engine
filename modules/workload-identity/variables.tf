@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 0.12"
+variable "name" {
+  description = "Name for both service accounts"
+  type        = string
 }
 
-provider "google" {
-<<<<<<< HEAD
-  version = "2.20.1"
+variable "namespace" {
+  description = "Namespace for k8s service account"
+  default     = "default"
+  type        = string
 }
 
-provider "google-beta" {
-  version = "2.20.1"
-=======
-  version = "~> 2.20.1"
+variable "project_id" {
+  description = "GCP project ID"
+  type        = string
 }
 
-provider "google-beta" {
-  version = "~> 2.20.1"
->>>>>>> initial workload identity addition
+variable "use_existing_k8s_sa" {
+  description = "Use an existing kubernetes service account instead of creating one"
+  default     = false
+  type        = bool
 }
