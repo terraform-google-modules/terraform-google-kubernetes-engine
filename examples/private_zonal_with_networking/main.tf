@@ -22,9 +22,9 @@ module "gcp-network" {
 
   subnets = [
     {
-      subnet_name   = var.subnetwork
-      subnet_ip     = "10.0.0.0/17"
-      subnet_region = var.region
+      subnet_name           = var.subnetwork
+      subnet_ip             = "10.0.0.0/17"
+      subnet_region         = var.region
       subnet_private_access = "true"
     },
   ]
@@ -44,24 +44,24 @@ module "gcp-network" {
 }
 
 data "google_compute_subnetwork" "subnetwork" {
-  name    = var.subnetwork
-  project = var.project_id
-  region  = var.region
+  name       = var.subnetwork
+  project    = var.project_id
+  region     = var.region
   depends_on = [module.gcp-network]
 }
 
 module "gke" {
-  source                  = "../../modules/beta-private-cluster/"
-  project_id              = var.project_id
-  name                    = var.cluster_name
-  regional                = false
-  region                  = var.region
-  zones                   = slice(var.zones, 0, 1)
+  source     = "../../modules/beta-private-cluster/"
+  project_id = var.project_id
+  name       = var.cluster_name
+  regional   = false
+  region     = var.region
+  zones      = slice(var.zones, 0, 1)
 
   // This craziness gets a plain network name from the reference link which is the
   // only way to force cluster creation to wait on network creation without a
   // depends_on link.  Tests use terraform 0.12.6, which does not have regex or regexall
-  network                 = reverse(split("/", data.google_compute_subnetwork.subnetwork.network))[0]
+  network = reverse(split("/", data.google_compute_subnetwork.subnetwork.network))[0]
 
   subnetwork              = data.google_compute_subnetwork.subnetwork.name
   ip_range_pods           = var.ip_range_pods_name
