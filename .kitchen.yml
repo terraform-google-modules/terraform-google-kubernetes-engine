@@ -141,6 +141,19 @@ suites:
         systems:
           - name: stub_domains_upstream_nameservers
             backend: local
+  - name: "workload_identity"
+    driver:
+      root_module_directory: test/fixtures/workload_identity
+    verifier:
+      systems:
+        - name: gcloud
+          backend: local
+          controls:
+            - gcloud
+        - name: gcp
+          backend: gcp
+          controls:
+            - gcp
   - name: "workload_metadata_config"
     driver:
       root_module_directory: test/fixtures/workload_metadata_config
