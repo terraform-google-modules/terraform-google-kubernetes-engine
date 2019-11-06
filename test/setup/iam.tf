@@ -16,6 +16,7 @@
 
 locals {
   int_required_roles = [
+    "roles/cloudkms.admin",
     "roles/cloudkms.cryptoKeyEncrypterDecrypter",
     "roles/compute.networkAdmin",
     "roles/container.admin",
@@ -57,4 +58,13 @@ resource "google_project_iam_member" "int_test" {
 
 resource "google_service_account_key" "int_test" {
   service_account_id = google_service_account.int_test.id
+}
+
+resource "google_project_iam_binding" "kubernetes_engine_kms_access" {
+  project = module.gke-project.project_id
+  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+  members = [
+    "serviceAccount:service-${module.gke-project.project_number}@container-engine-robot.iam.gserviceaccount.com",
+  ]
 }
