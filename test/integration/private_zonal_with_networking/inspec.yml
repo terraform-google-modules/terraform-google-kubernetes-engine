@@ -1,4 +1,4 @@
-name: simple_regional_with_networking
+name: private_zonal_with_networking
 depends:
   - name: inspec-gcp
     git: https://github.com/inspec/inspec-gcp.git

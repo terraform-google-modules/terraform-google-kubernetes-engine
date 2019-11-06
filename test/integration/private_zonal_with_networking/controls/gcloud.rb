@@ -75,53 +75,19 @@ control "gcloud" do
           )
         )
       end
-    end
-
-    describe "node pool" do
-      let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" } }
-
-      it "has autoscaling enabled" do
-        expect(node_pools).to include(
-          including(
-            "autoscaling" => including(
-              "enabled" => true,
-            ),
-          )
-        )
-      end
-
-      it "has the expected minimum node count" do
-        expect(node_pools).to include(
-          including(
-            "autoscaling" => including(
-              "minNodeCount" => 1,
-            ),
-          )
-        )
-      end
-
-      it "has the expected maximum node count" do
-        expect(node_pools).to include(
-          including(
-            "autoscaling" => including(
-              "maxNodeCount" => 100,
-            ),
-          )
-        )
-      end
 
       it "is the expected machine type" do
-        expect(node_pools).to include(
+        expect(data['nodePools']).to include(
           including(
             "config" => including(
-              "machineType" => "n1-standard-2",
+              "machineType" => "n1-standard-1",
             ),
           )
         )
       end
 
       it "has the expected disk size" do
-        expect(node_pools).to include(
+        expect(data['nodePools']).to include(
           including(
             "config" => including(
               "diskSizeGb" => 100,
@@ -130,51 +96,6 @@ control "gcloud" do
         )
       end
 
-      it "has the expected labels" do
-        expect(node_pools).to include(
-          including(
-            "config" => including(
-              "labels" => including(
-                "cluster_name" => cluster_name,
-                "node_pool" => "default-node-pool",
-              ),
-            ),
-          )
-        )
-      end
-
-      it "has the expected network tags" do
-        expect(node_pools).to include(
-          including(
-            "config" => including(
-              "tags" => match_array([
-                "gke-#{cluster_name}",
-                "gke-#{cluster_name}-default-node-pool",
-              ]),
-            ),
-          )
-        )
-      end
-
-      it "has autorepair enabled" do
-        expect(node_pools).to include(
-          including(
-            "management" => including(
-              "autoRepair" => true,
-            ),
-          )
-        )
-      end
-
-      it "has autoupgrade enabled" do
-        expect(node_pools).to include(
-          including(
-            "management" => including(
-              "autoUpgrade" => true,
-            ),
-          )
-        )
-      end
     end
   end
 end
