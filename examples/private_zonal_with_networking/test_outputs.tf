@@ -21,10 +21,6 @@ output "project_id" {
   value = var.project_id
 }
 
-output "region" {
-  value = module.gke.region
-}
-
 output "network" {
   value = var.network
 }
@@ -35,6 +31,10 @@ output "subnetwork" {
 
 output "location" {
   value = module.gke.location
+}
+
+output "region" {
+  value = var.region
 }
 
 output "ip_range_pods_name" {

@@ -25,7 +25,11 @@ variable "cluster_name" {
 
 variable "region" {
   description = "The region to host the cluster in"
-  default     = "us-central1"
+}
+
+variable "zones" {
+  type        = list(string)
+  description = "The zone to host the cluster in (required if is a zonal cluster)"
 }
 
 variable "network" {
@@ -46,9 +50,5 @@ variable "ip_range_pods_name" {
 variable "ip_range_services_name" {
   description = "The secondary ip range to use for pods"
   default     = "ip-range-scv"
-}
-
-variable "zones" {
-  default = []
 }
 

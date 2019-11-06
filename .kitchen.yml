@@ -77,7 +77,7 @@ suites:
           backend: local
           controls:
             - gcloud
-        - name: subnet
+        - name: private_zonal_with_networking
           backend: local
           controls:
             - subnet
