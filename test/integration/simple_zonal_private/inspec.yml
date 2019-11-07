@@ -1,4 +1,4 @@
-name: simple_regional_private
+name: simple_zonal_private
 attributes:
   - name: project_id
     required: true
