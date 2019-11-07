@@ -52,7 +52,7 @@ resource "kubernetes_service_account" "preexisting" {
     name = "preexisting-sa"
     namespace = "prod"
     annotations = {
-      "iam.gke.io/gcp-service-account" = "preexisting-sa@${var.project}.iam.gserviceaccount.com"
+      "iam.gke.io/gcp-service-account" = "${kubernetes_service_account.preexisting.0.name}@${var.project}.iam.gserviceaccount.com"
     }
   }
 }
