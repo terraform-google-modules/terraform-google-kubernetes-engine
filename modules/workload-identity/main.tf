@@ -19,7 +19,7 @@ locals {
   gcp_sa_email            = "${var.name}@${var.project}.iam.gserviceaccount.com"
   create_k8s_sa           = var.use_existing_k8s_sa ? 0 : 1
 
-  # This will cause terraform to block returninig outputs until the service account is created
+  # This will cause terraform to block returning outputs until the service account is created
   output_k8s_name      = var.use_existing_k8s_sa ? var.name : kubernetes_service_account.main[0].metadata[0].name
   output_k8s_namespace = var.use_existing_k8s_sa ? var.namespace : kubernetes_service_account.main[0].metadata[0].namespace
 }

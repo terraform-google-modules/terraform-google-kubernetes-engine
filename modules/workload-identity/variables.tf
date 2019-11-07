@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-variable "workload_identity_enabled" {
-  description = "Flag for workload identity"
-  type        = bool
-  default     = false
-}
-
 variable "name" {
   description = "Name for both service accounts"
   type        = string

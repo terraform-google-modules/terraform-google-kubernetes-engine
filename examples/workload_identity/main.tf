@@ -38,8 +38,8 @@ module "gke" {
 }
 
 module "workload_identity" {
-	source              = "../../modules/workload-identity"
-	project_id          = var.project_id
+  source              = "../../modules/workload-identity"
+  project_id          = var.project_id
   name                = "cluster-sa-${module.gke.name}"
   namespace           = "default"
   use_existing_k8s_sa = false
