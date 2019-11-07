@@ -22,21 +22,12 @@ output "region" {
   value = module.example.region
 }
 
-output "cluster_name" {
-  description = "Cluster name"
-  value       = module.example.cluster_name
-}
-
 output "network" {
   value = google_compute_network.main.name
 }
 
 output "subnetwork" {
   value = google_compute_subnetwork.main.name
-}
-
-output "location" {
-  value = module.example.location
 }
 
 output "ip_range_pods" {
@@ -52,11 +43,6 @@ output "ip_range_services" {
 output "zones" {
   description = "List of zones in which the cluster resides"
   value       = module.example.zones
-}
-
-output "master_kubernetes_version" {
-  description = "The master Kubernetes version"
-  value       = module.example.master_kubernetes_version
 }
 
 output "kubernetes_endpoint" {

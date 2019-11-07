@@ -52,7 +52,7 @@ resource "kubernetes_service_account" "preexisting" {
     name = "preexisting-sa"
     namespace = "prod"
     annotations = {
-      "iam.gke.io/gcp-service-account" = "preexisting-sa@${var.project}.iam.gserviceaccount.com"
+      "iam.gke.io/gcp-service-account" = "preexisting-sa@${var.project_id}.iam.gserviceaccount.com"
     }
   }
 }
@@ -62,7 +62,7 @@ module "my-app-workload-identity" {
   use_existing_k8s_sa = true
   name                = "preexisting-sa"
   namespace           = "prod"
-  project             = var.project
+  project             = var.project_id
 }
 ```
 

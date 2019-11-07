@@ -15,8 +15,8 @@
  */
 
 locals {
-  k8s_sa_gcp_derived_name = "serviceAccount:${var.project}.svc.id.goog[${var.namespace}/${var.name}]"
-  gcp_sa_email            = "${var.name}@${var.project}.iam.gserviceaccount.com"
+  k8s_sa_gcp_derived_name = "serviceAccount:${var.project_id}.svc.id.goog[${var.namespace}/${var.name}]"
+  gcp_sa_email            = "${var.name}@${var.project_id}.iam.gserviceaccount.com"
   create_k8s_sa           = var.use_existing_k8s_sa ? 0 : 1
 
   # This will cause terraform to block returning outputs until the service account is created
@@ -38,7 +38,7 @@ resource "kubernetes_service_account" "main" {
 resource "google_service_account" "main" {
   account_id   = var.name
   display_name = substr("GCP SA bound to K8S SA ${local.k8s_sa_gcp_derived_name}", 0, 100)
-  project      = var.project
+  project      = var.project_id
 }
 
 resource "google_service_account_iam_binding" "main" {
