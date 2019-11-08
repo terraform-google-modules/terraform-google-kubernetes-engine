@@ -38,13 +38,6 @@ suites:
           backend: local
           controls:
             - gcloud
-  - name: "node_pool"
-    driver:
-      root_module_directory: test/fixtures/node_pool
-    verifier:
-      systems:
-        - name: node_pool
-          backend: local
   - name: "shared_vpc"
     driver:
       root_module_directory: test/fixtures/shared_vpc
