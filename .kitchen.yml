@@ -36,8 +36,8 @@ suites:
       systems:
         - name: disable_client_cert
           backend: local
-            controls:
-              - gcloud
+          controls:
+            - gcloud
   - name: "node_pool"
     driver:
       root_module_directory: test/fixtures/node_pool
