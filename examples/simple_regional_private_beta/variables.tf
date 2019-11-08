@@ -18,10 +18,6 @@ variable "project_id" {
   description = "The project ID to host the cluster in"
 }
 
-variable "credentials_path" {
-  description = "The path to the GCP credentials JSON file"
-}
-
 variable "cluster_name_suffix" {
   description = "A suffix to append to the default cluster name"
   default     = ""
