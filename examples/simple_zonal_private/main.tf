@@ -15,11 +15,11 @@
  */
 
 locals {
-  cluster_type = "simple-regional-private"
+  cluster_type = "simple-zonal-private"
 }
 
 provider "google" {
-  version = "~> 2.12.0"
+  version = "~> 2.18.0"
   region  = var.region
 }
 

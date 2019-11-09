@@ -24,7 +24,7 @@ control "gcp" do
     service_account_name = "projects/#{project_id}/serviceAccounts/#{service_account}"
   end
 
-  describe google_service_account name: service_account_name do
+  describe google_service_account(name: service_account_name) do
     its("display_name") { should eq "Terraform-managed service account for cluster #{attribute("cluster_name")}" }
     its("project_id") { should eq project_id }
   end
