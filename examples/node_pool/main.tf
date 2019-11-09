@@ -60,9 +60,9 @@ module "gke" {
       service_account   = var.compute_engine_service_account
     },
     {
-      name              = "pool-03"
-      autoscaling       = false
-      node_count        = 2
+      name            = "pool-03"
+      autoscaling     = false
+      node_count      = 2
       service_account = var.compute_engine_service_account
       auto_upgrade    = true
     },
