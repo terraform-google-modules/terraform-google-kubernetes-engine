@@ -35,10 +35,10 @@ output "service_account" {
 
 output "region" {
   description = "Cluster region"
-  value = module.gke.region
+  value       = module.gke.region
 }
 
 output "zones" {
   description = "List of zones in which the cluster resides"
-  value = module.gke.zones
+  value       = module.gke.zones
 }
