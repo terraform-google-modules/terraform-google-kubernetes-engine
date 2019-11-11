@@ -374,4 +374,29 @@ control "gcloud" do
       end
     end
   end
+
+  describe command("gcloud beta --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json") do
+    its(:exit_status) { should eq 0 }
+    its(:stderr) { should eq '' }
+
+    let!(:data) do
+      if subject.exit_status == 0
+        JSON.parse(subject.stdout)
+      else
+        {}
+      end
+    end
+
+    it "pool-03 has nodes in correct locations" do
+      expect(data['nodePools']).to include(
+        including(
+          "name" => "pool-03",
+          "locations" => match_array([
+            "us-east4-b",
+            "us-east4-c",
+          ]),
+        )
+      )
+    end
+  end
 end
