@@ -174,6 +174,18 @@ control "gcloud" do
           )
         )
       end
+
+      it "has shielded nodes" do
+        expect(node_pools).to include(
+          including(
+            "config" => including(
+              "shieldedInstanceConfig" => including(
+                "enableIntegrityMonitoring" => true,
+              )
+            ),
+          )
+        )
+      end
     end
   end
 end
