@@ -27,7 +27,6 @@ module "gke" {
   source                            = "../../modules/beta-public-cluster/"
   project_id                        = var.project_id
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                          = false
   region                            = var.region
   zones                             = var.zones
   network                           = var.network
@@ -61,10 +60,14 @@ module "gke" {
     },
     {
       name            = "pool-03"
+      node_locations  = "us-east4-b,us-east4-c"
       autoscaling     = false
       node_count      = 2
-      service_account = var.compute_engine_service_account
+      machine_type    = "n1-standard-2"
+      disk_type       = "pd-standard"
+      image_type      = "COS"
       auto_upgrade    = true
+      service_account = var.compute_engine_service_account
     },
   ]
 
