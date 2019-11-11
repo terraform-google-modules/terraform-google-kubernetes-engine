@@ -19,7 +19,7 @@ locals {
 }
 
 provider "google-beta" {
-  version = "~> 2.12.0"
+  version = "~> 2.18.0"
   region  = var.region
 }
 
@@ -30,17 +30,27 @@ data "google_compute_subnetwork" "subnetwork" {
 }
 
 module "gke" {
-  source                 = "../../modules/safer-cluster/"
-  project_id             = var.project_id
-  name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional               = true
-  region                 = var.region
-  network                = var.network
-  subnetwork             = var.subnetwork
-  ip_range_pods          = var.ip_range_pods
-  ip_range_services      = var.ip_range_services
-  master_ipv4_cidr_block = "172.16.0.0/28"
-
+  source                         = "../../modules/safer-cluster/"
+  project_id                     = var.project_id
+  name                           = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  regional                       = true
+  region                         = var.region
+  network                        = var.network
+  subnetwork                     = var.subnetwork
+  ip_range_pods                  = var.ip_range_pods
+  ip_range_services              = var.ip_range_services
+  compute_engine_service_account = var.compute_engine_service_account
+  master_ipv4_cidr_block         = var.master_ipv4_cidr_block
+  master_authorized_networks_config = [
+    {
+      cidr_blocks = [
+        {
+          cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
+          display_name = "VPC"
+        },
+      ]
+    },
+  ]
   istio    = var.istio
   cloudrun = var.cloudrun
 }
