@@ -53,3 +53,11 @@ variable "cloudrun" {
   default     = true
 }
 
+variable "master_ipv4_cidr_block" {
+  description = "The IP range in CIDR notation to use for the hosted master network"
+  default     = "172.16.0.0/28"
+}
+
+variable "compute_engine_service_account" {
+  description = "Service account to associate to the nodes in the cluster"
+}

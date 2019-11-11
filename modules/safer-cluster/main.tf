@@ -45,9 +45,6 @@ module "gke" {
   horizontal_pod_autoscaling = var.horizontal_pod_autoscaling
   http_load_balancing        = var.http_load_balancing
 
-  // Disable the dashboard. It creates risk by running as a very sensitive user.
-  kubernetes_dashboard = false
-
   // We suggest the use coarse network policies to enforce restrictions in the
   // communication between pods.
   //
@@ -55,8 +52,7 @@ module "gke" {
   // NetworkPolicies need to be configured in every namespace. The network
   // policies should be under the control of a cental cluster management team,
   // rather than individual teams.
-  network_policy          = true
-  network_policy_provider = "CALICO"
+  network_policy = true
 
   maintenance_start_time = var.maintenance_start_time
 
@@ -65,8 +61,6 @@ module "gke" {
   // We suggest removing the default node pull, as it cannot be modified without
   // destroying the cluster.
   remove_default_node_pool = true
-
-  disable_legacy_metadata_endpoints = true
 
   node_pools        = var.node_pools
   node_pools_labels = var.node_pools_labels
@@ -78,16 +72,13 @@ module "gke" {
   node_pools_tags     = var.node_pools_tags
 
   // TODO(mmontan): we generally considered applying
-  // just the cloud-platofrm scope and use Cloud IAM
+  // just the cloud-platoform scope and use Cloud IAM
   // If we have Workload Identity, are there advantages
   // in restricting scopes even more?
   node_pools_oauth_scopes = var.node_pools_oauth_scopes
 
   stub_domains         = var.stub_domains
   upstream_nameservers = var.upstream_nameservers
-
-  // We should use IP Alias.
-  configure_ip_masq = false
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
@@ -101,7 +92,7 @@ module "gke" {
   //   All applications shuold run with an identity defined via Workload Identity anyway.
   // - Use a service account passed as a parameter to the module, in case the user
   //   wants to maintain control of their service accounts.
-  create_service_account = length(var.compute_engine_service_account) > 0 ? false : true
+  create_service_account = var.compute_engine_service_account == "" ? false : true
   service_account        = var.compute_engine_service_account
 
   // TODO(mmontan): define a registry_project parameter in the private_beta_cluster,
@@ -148,7 +139,6 @@ module "gke" {
   }]
 
   resource_usage_export_dataset_id = var.resource_usage_export_dataset_id
-  node_metadata                    = "SECURE"
 
   // Sandbox is needed if the cluster is going to run any untrusted workload (e.g., user submitted code).
   // Sandbox can also provide increased protection in other cases, at some performance cost.
@@ -163,4 +153,6 @@ module "gke" {
   identity_namespace = "${var.project_id}.svc.id.goog"
 
   authenticator_security_group = var.authenticator_security_group
+
+  enable_shielded_nodes = var.enable_shielded_nodes
 }
