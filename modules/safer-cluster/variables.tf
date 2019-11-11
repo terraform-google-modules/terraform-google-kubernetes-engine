@@ -293,3 +293,10 @@ variable "compute_engine_service_account" {
   description = "Use the given service account for nodes rather than creating a new dedicated service account."
   default     = ""
 }
+
+variable "enable_shielded_nodes" {
+  type        = bool
+  description = "Enable Shielded Nodes features on all nodes in this cluster."
+  default     = true
+}
+
