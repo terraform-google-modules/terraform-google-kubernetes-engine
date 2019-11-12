@@ -60,7 +60,7 @@ module "gke" {
     },
     {
       name            = "pool-03"
-      node_locations  = "us-east4-b,us-east4-c"
+      node_locations  = "${var.region}-b,${var.region}-c"
       autoscaling     = false
       node_count      = 2
       machine_type    = "n1-standard-2"
