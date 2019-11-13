@@ -279,6 +279,7 @@ control "gcloud" do
           )
         end
       end
+
       describe "pool-03" do
         it "exists" do
           expect(data['nodePools']).to include(
@@ -287,6 +288,7 @@ control "gcloud" do
             )
           )
         end
+
         it "is the expected machine type" do
           expect(data['nodePools']).to include(
             including(
@@ -298,8 +300,8 @@ control "gcloud" do
           )
         end
 
-        it "has autoscaling enabled" do
-          expect(data['nodePools']).to include(
+        it "has autoscaling disabled" do
+          expect(data['nodePools']).not_to include(
             including(
               "name" => "pool-03",
               "autoscaling" => including(
@@ -309,13 +311,11 @@ control "gcloud" do
           )
         end
 
-        it "has the expected minimum node count" do
+        it "has the expected node count" do
           expect(data['nodePools']).to include(
             including(
               "name" => "pool-03",
-              "autoscaling" => including(
-                "minNodeCount" => 1,
-              ),
+              "initialNodeCount" => 2
             )
           )
         end
@@ -342,9 +342,39 @@ control "gcloud" do
           )
         end
 
+        it "has the expected labels" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "config" => including(
+                "labels" => {
+                  "all-pools-example" => "true",
+                  "cluster_name" => cluster_name,
+                  "node_pool" => "pool-03",
+                },
+              ),
+            )
+          )
+        end
+
+        it "has the expected network tags" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "config" => including(
+                "tags" => match_array([
+                  "all-node-example",
+                  "gke-#{cluster_name}",
+                  "gke-#{cluster_name}-pool-03",
+                ]),
+              ),
+            )
+          )
+        end
       end
     end
   end
+
   describe command("gcloud beta --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json") do
     its(:exit_status) { should eq 0 }
     its(:stderr) { should eq '' }
@@ -362,8 +392,8 @@ control "gcloud" do
         including(
           "name" => "pool-03",
           "locations" => match_array([
-            "us-east4-b",
-            "us-east4-c",
+            "us-central1-b",
+            "us-central1-c",
           ]),
         )
       )
