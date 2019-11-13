@@ -20,7 +20,6 @@ locals {
 
 provider "google-beta" {
   version = "~> 2.18.0"
-  region  = var.region
 }
 
 data "google_compute_subnetwork" "subnetwork" {
@@ -35,8 +34,8 @@ module "gke" {
   name                           = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   regional                       = true
   region                         = var.region
-  network                        = var.network
-  subnetwork                     = var.subnetwork
+  network                        = module.gcp-network.network_name
+  subnetwork                     = module.gcp-network.subnets_names[0]
   ip_range_pods                  = var.ip_range_pods
   ip_range_services              = var.ip_range_services
   compute_engine_service_account = var.compute_engine_service_account
@@ -45,7 +44,7 @@ module "gke" {
     {
       cidr_blocks = [
         {
-          cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
+          cidr_block   = var.master_auth_subnetwork_cidr
           display_name = "VPC"
         },
       ]

@@ -71,10 +71,6 @@ module "gke" {
   node_pools_taints   = var.node_pools_taints
   node_pools_tags     = var.node_pools_tags
 
-  // TODO(mmontan): we generally considered applying
-  // just the cloud-platoform scope and use Cloud IAM
-  // If we have Workload Identity, are there advantages
-  // in restricting scopes even more?
   node_pools_oauth_scopes = var.node_pools_oauth_scopes
 
   stub_domains         = var.stub_domains
@@ -92,13 +88,10 @@ module "gke" {
   //   All applications shuold run with an identity defined via Workload Identity anyway.
   // - Use a service account passed as a parameter to the module, in case the user
   //   wants to maintain control of their service accounts.
-  create_service_account = var.compute_engine_service_account == "" ? false : true
+  create_service_account = var.compute_engine_service_account == "" ? true : false
   service_account        = var.compute_engine_service_account
-
-  // TODO(mmontan): define a registry_project parameter in the private_beta_cluster,
-  // so that we can give GCS permissions to the service account on a project
-  // that hosts only container-images and not data.
-  grant_registry_access = true
+  registry_project_id    = var.registry_project_id
+  grant_registry_access  = true
 
   // Basic Auth disabled
   basic_auth_username = ""
@@ -133,7 +126,7 @@ module "gke" {
   enable_binary_authorization = true
 
   // Define PodSecurityPolicies for differnet applications.
-  // TODO(mmontan): link to a couple of policies.
+  // Example: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#example
   pod_security_policy_config = [{
     "enabled" = true
   }]
@@ -144,7 +137,7 @@ module "gke" {
   // Sandbox can also provide increased protection in other cases, at some performance cost.
   sandbox_enabled = var.sandbox_enabled
 
-  // TODO(mmontan): investigate whether this should be a recommended setting
+  // Intranode Visibility enables you to capture flow logs for traffic between pods and create FW rules that apply to traffic between pods.
   enable_intranode_visibility = var.enable_intranode_visibility
 
   enable_vertical_pod_autoscaling = var.enable_vertical_pod_autoscaling

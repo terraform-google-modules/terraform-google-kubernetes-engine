@@ -25,24 +25,39 @@ variable "cluster_name_suffix" {
 
 variable "region" {
   description = "The region to host the cluster in"
+  default     = "us-central1"
 }
 
 variable "network" {
   description = "The VPC network to host the cluster in"
+  default     = "gke-network"
 }
 
 variable "subnetwork" {
   description = "The subnetwork to host the cluster in"
+  default     = "gke-subnet"
 }
-
+variable "subnetwork_cidr" {
+  description = "The cidr block for the subnetwork to host the cluster in"
+  default     = "10.0.0.0/17"
+}
+variable "master_auth_subnetwork_cidr" {
+  description = "The cidr block for the subnetwork that has access to cluster master"
+  default     = "10.60.0.0/17"
+}
+variable "master_auth_subnetwork" {
+  description = "The subnetwork that has access to cluster master"
+  default     = "master-auth-subnet"
+}
 variable "ip_range_pods" {
   description = "The secondary ip range to use for pods"
+  default     = "ip-range-pods"
 }
 
 variable "ip_range_services" {
   description = "The secondary ip range to use for pods"
+  default     = "ip-range-scv"
 }
-
 variable "istio" {
   description = "Boolean to enable / disable Istio"
   default     = true

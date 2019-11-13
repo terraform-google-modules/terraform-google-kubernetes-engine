@@ -1,7 +1,5 @@
 # Safer Cluster: How to setup a GKE Kubernetes cluster with reduced exposure
 
-[TOC]
-
 This module defines an opinionated setup of GKE
 cluster. We outline project configurations, cluster settings, and basic K8s
 objects that permit a safer-than-default configuration.
@@ -37,7 +35,7 @@ are available for configuration, recommendations on their settings are documente
         control communication between applications.
 
 -   We suggest to store user or business data persistently in managed storage
-    services that are inventories and controlled by centralized teams.
+    services that are inventoried and controlled by centralized teams.
     (e.g., GCP storage services within a GCP organization).
 
     -   Storing user or business data securely requires satisfying a large set of
@@ -47,7 +45,7 @@ are available for configuration, recommendations on their settings are documente
 
 ### Project Setup
 
-We suggest a GKE setup composed of multiple projects to separate responsabilities
+We suggest a GKE setup composed of multiple projects to separate responsibilities
 between cluster operators, which need to administer the cluster; and product
 developers, which mostly just want to deploy and debug applications.
 
@@ -121,7 +119,7 @@ We suggest running different applications in different namespaces within the clu
 should be assigned to its own GCP service account to better define the Cloud IAM permissions required
 for the application.
 
-If you are using more than 2 projects in your setup, you can consider creting
+If you are using more than 2 projects in your setup, you can consider creating
 the service account in a different project to keep application and
 infrastructure separate. For example, service accounts could be created in each team's project,
 while the cluster runs in a centrally controlled project.
@@ -239,6 +237,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
 | region | The region to host the cluster in (required) | string | n/a | yes |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |
+| registry\_project\_id | Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project. | string | `""` | no |
 | resource\_usage\_export\_dataset\_id | The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | string | `""` | no |
 | sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` and `node_version` = `1.12.7-gke.17` or later to use it). | bool | `"false"` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created. | string | `""` | no |
