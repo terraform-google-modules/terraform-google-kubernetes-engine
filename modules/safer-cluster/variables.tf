@@ -208,8 +208,11 @@ variable "grant_registry_access" {
   default     = false
 }
 
-// TODO(mmontan): allow specifying which project to use
-// for reading images.
+variable "registry_project_id" {
+  type        = string
+  description = "Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project."
+  default     = ""
+}
 
 variable "service_account" {
   type        = string
