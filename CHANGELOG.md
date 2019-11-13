@@ -12,7 +12,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 * Support for Shielded Nodes beta feature via `enabled_shielded_nodes` variable. [#300]
 * Support for setting node_locations on node pools. [#303]
-* Fix for specifying  `node_count` on node pools when autoscaling is disabled. [#313]
+* Fix for specifying  `node_count` on node pools when autoscaling is disabled. [#311]
 
 ## [v5.1.1] - 2019-10-25
 
@@ -227,7 +227,9 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#311]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/311
 [#303]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/303
+[#300]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/300
 [#286]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/286
 [#285]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/285
 [#284]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/284
