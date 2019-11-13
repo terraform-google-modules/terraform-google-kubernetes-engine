@@ -36,8 +36,8 @@ control "gcloud" do
     describe "node pools" do
       let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" } }
 
-      it "has 2" do
-        expect(node_pools.count).to eq 2
+      it "has 3" do
+        expect(node_pools.count).to eq 3
       end
 
       describe "pool-01" do
@@ -279,6 +279,94 @@ control "gcloud" do
           )
         end
       end
+      describe "pool-03" do
+        it "exists" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+            )
+          )
+        end
+        it "is the expected machine type" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "config" => including(
+                "machineType" => "n1-standard-2",
+              ),
+            )
+          )
+        end
+
+        it "has autoscaling enabled" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "autoscaling" => including(
+                "enabled" => true,
+              ),
+            )
+          )
+        end
+
+        it "has the expected minimum node count" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "autoscaling" => including(
+                "minNodeCount" => 1,
+              ),
+            )
+          )
+        end
+
+        it "has autorepair enabled" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "management" => including(
+                "autoRepair" => true,
+              ),
+            )
+          )
+        end
+
+        it "has automatic upgrades enabled" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "management" => including(
+                "autoUpgrade" => true,
+              ),
+            )
+          )
+        end
+
+      end
+    end
+  end
+  describe command("gcloud beta --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json") do
+    its(:exit_status) { should eq 0 }
+    its(:stderr) { should eq '' }
+
+    let!(:data) do
+      if subject.exit_status == 0
+        JSON.parse(subject.stdout)
+      else
+        {}
+      end
+    end
+
+    it "pool-03 has nodes in correct locations" do
+      expect(data['nodePools']).to include(
+        including(
+          "name" => "pool-03",
+          "locations" => match_array([
+            "us-east4-b",
+            "us-east4-c",
+          ]),
+        )
+      )
     end
   end
 end
