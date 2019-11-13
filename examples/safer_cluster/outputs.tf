@@ -36,7 +36,6 @@ output "service_account" {
   value       = module.gke.service_account
 }
 
-<<<<<<< HEAD
 output "network_name" {
   description = "The name of the VPC being created"
   value       = module.gcp-network.network_name
@@ -46,6 +45,3 @@ output "subnet_names" {
   description = "The names of the subnet being created"
   value       = module.gcp-network.subnets_names
 }
-
-=======
->>>>>>> 6f7de1836f077258c609f0d7129a60bfadc4f8b1
