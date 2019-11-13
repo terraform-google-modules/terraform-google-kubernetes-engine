@@ -137,13 +137,15 @@ resource "google_container_node_pool" "pools" {
     "version",
     local.node_version,
   )
-  initial_node_count = lookup(
+
+  initial_node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? lookup(
     var.node_pools[count.index],
     "initial_node_count",
-    lookup(var.node_pools[count.index], "min_count", 1),
-  )
+    lookup(var.node_pools[count.index], "min_count", 1)
+  ) : null
 
-  node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "min_count", 1)
+
+  node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "node_count", 1)
 
   dynamic "autoscaling" {
     for_each = lookup(var.node_pools[count.index], "autoscaling", true) ? [var.node_pools[count.index]] : []
