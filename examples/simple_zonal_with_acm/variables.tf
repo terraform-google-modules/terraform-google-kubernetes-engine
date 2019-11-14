@@ -61,8 +61,7 @@ variable "acm_sync_branch" {
 }
 
 variable "acm_policy_dir" {
-  description = "Subfolder containing configs in Ahtons config management Git repo"
+  description = "Subfolder containing configs in ACM Git repo"
   type        = string
   default     = "foo-corp"
 }
-
