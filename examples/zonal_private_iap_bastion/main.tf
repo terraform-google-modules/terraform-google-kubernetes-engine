@@ -49,7 +49,7 @@ module "gke" {
     {
       cidr_blocks = [
         {
-          cidr_block   = module.gke-network.subnet_ips[0],
+          cidr_block   = module.gke-network.subnets_ips[0],
           display_name = "internal subnet"
         }
       ]
