@@ -40,7 +40,7 @@ resource "null_resource" "acm_operator_config" {
   }
 
   provisioner "local-exec" {
-    when    = "destroy"
+    when    = destroy
     command = "rm -f ${path.module}/config-management-operator.yaml"
   }
 }
@@ -51,7 +51,7 @@ resource "null_resource" "acm_operator" {
   }
 
   provisioner "local-exec" {
-    when    = "destroy"
+    when    = destroy
     command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f ${path.module}/config-management-operator.yaml"
   }
 
@@ -68,7 +68,7 @@ resource "null_resource" "git_creds_secret" {
   }
 
   provisioner "local-exec" {
-    when    = "destroy"
+    when    = destroy
     command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete secret git-creds -n=config-management-system"
   }
 
@@ -95,7 +95,7 @@ resource "null_resource" "acm_config" {
   }
 
   provisioner "local-exec" {
-    when    = "destroy"
+    when    = destroy
     command = "echo '${data.template_file.acm_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f -"
   }
 
