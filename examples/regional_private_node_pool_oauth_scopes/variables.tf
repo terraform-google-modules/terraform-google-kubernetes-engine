@@ -16,17 +16,15 @@ limitations under the License.
 
 variable "cluster_name" {
   description = "Name of the cluster"
-  default = "test-cluster"
+  default     = "test-cluster"
 }
 
 variable "project_id" {
   description = "The project ID to host the cluster in"
-  default = "alekhya-lakkadi"
 }
 
 variable "region" {
   description = "The region to host the cluster in"
-  default = "us-west1"
 }
 
 variable "ip_range_pods" {
@@ -41,10 +39,8 @@ variable "ip_range_services" {
 
 variable "network" {
   description = "The VPC network name to host the cluster in"
-  default = "my-network"
 }
 
 variable "subnet" {
   description = "The subnetwork name to host the cluster in"
-  default = "my-subnet"
 }
