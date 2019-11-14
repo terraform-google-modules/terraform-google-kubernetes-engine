@@ -1,13 +1,15 @@
 # Simple Zonal Cluster
 
-This example illustrates how to create a simple cluster.
+This example illustrates how to create a simple cluster and install [Anthos Config Management](https://cloud.google.com/anthos-config-management/docs/).
+
+It incorporates the standard cluster module and the [ACM install module](../../modules/acm).
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| acm\_policy\_dir | Subfolder containing configs in Ahtons config management Git repo | string | `"foo-corp"` | no |
+| acm\_policy\_dir | Subfolder containing configs in ACM Git repo | string | `"foo-corp"` | no |
 | acm\_sync\_branch | Anthos config management Git branch | string | `"1.0.0"` | no |
 | acm\_sync\_repo | Anthos config management Git repo | string | `"git@github.com:GoogleCloudPlatform/csp-config-management.git"` | no |
 | cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
