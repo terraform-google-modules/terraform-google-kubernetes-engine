@@ -37,5 +37,5 @@ module "gke-network" {
         range_name    = var.ip_range_services
         ip_cidr_range = "10.2.0.0/20"
       },
-    ]}
+  ] }
 }

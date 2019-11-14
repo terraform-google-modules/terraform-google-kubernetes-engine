@@ -39,7 +39,7 @@ module "gke" {
   remove_default_node_pool          = true
   disable_legacy_metadata_endpoints = true
 
-master_authorized_networks_config = [
+  master_authorized_networks_config = [
     {
       cidr_blocks = [
         {
@@ -68,12 +68,12 @@ master_authorized_networks_config = [
 
   node_pools_oauth_scopes = {
     all = [
-        "https://www.googleapis.com/auth/trace.append",
-        "https://www.googleapis.com/auth/service.management.readonly",
-        "https://www.googleapis.com/auth/monitoring",
-        "https://www.googleapis.com/auth/devstorage.read_only",
-        "https://www.googleapis.com/auth/servicecontrol",
-       ]
+      "https://www.googleapis.com/auth/trace.append",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/servicecontrol",
+    ]
 
     my-node-pool = [
       "https://www.googleapis.com/auth/trace.append",
