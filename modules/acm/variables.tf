@@ -50,3 +50,8 @@ variable "cluster_endpoint" {
   type        = string
 }
 
+variable "create_ssh_key" {
+  description = "Controls whether a key will be generated for Git authentication"
+  type        = bool
+  default     = true
+}

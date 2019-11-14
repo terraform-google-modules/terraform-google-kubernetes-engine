@@ -18,6 +18,7 @@ locals {
   cluster_endpoint       = "https://${var.cluster_endpoint}"
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate
+  private_key            = var.create_ssh_key ? tls_private_key.git_creds[0].private_key_pem : ""
 }
 
 data "google_container_cluster" "primary" {
@@ -30,6 +31,7 @@ data "google_client_config" "default" {
 }
 
 resource "tls_private_key" "git_creds" {
+  count     = var.create_ssh_key ? 1 : 0
   algorithm = "RSA"
   rsa_bits  = 4096
 }
@@ -63,8 +65,10 @@ resource "null_resource" "acm_operator" {
 }
 
 resource "null_resource" "git_creds_secret" {
+  count = var.create_ssh_key ? 1 : 0
+
   provisioner "local-exec" {
-    command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl create secret generic git-creds -n=config-management-system --from-literal=ssh='${tls_private_key.git_creds.private_key_pem}'"
+    command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl create secret generic git-creds -n=config-management-system --from-literal=ssh='${local.private_key}'"
   }
 
   provisioner "local-exec" {
@@ -85,11 +89,15 @@ data "template_file" "acm_config" {
     sync_repo    = var.sync_repo
     sync_branch  = var.sync_branch
     policy_dir   = var.policy_dir
-    secret_type  = "ssh"
+    secret_type  = var.create_ssh_key ? "ssh" : "none"
   }
 }
 
 resource "null_resource" "acm_config" {
+  triggers = {
+    config = data.template_file.acm_config.rendered
+  }
+
   provisioner "local-exec" {
     command = "echo '${data.template_file.acm_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f -"
   }
