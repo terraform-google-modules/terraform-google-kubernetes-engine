@@ -7,30 +7,38 @@ This example illustrates how to create a private cluster with node pool specific
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| project\_id | The project ID to host the cluster in | string | n/a | yes |
 | cluster\_name | Name of the cluster | string | n/a | yes |
 | ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
-| network | The VPC network to host the cluster in | string | n/a | yes |
+| network | The VPC network name to host the cluster in | string | n/a | yes |
+| project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
-| subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
+| subnet | The subnetwork name to host the cluster in | string | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| ca\_certificate | Cluster ca certificate (base64 encoded) |
 | cluster\_name | Cluster name |
-| cluster\_type | Cluster type - Regional or Zonal |
-| location | Cluster location |
-| region | Cluster region |
-| zones | List of zones in which the cluster resides |
-| min\_master\_version | Minimum master kubernetes version |
+| endpoint | Cluster endpoint |
+| horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
+| http\_load\_balancing\_enabled | Whether http load balancing enabled |
+| kubernetes\_dashboard\_enabled | Whether kubernetes dashboard enabled |
+| location | Cluster location (region if regional cluster, zone if zonal cluster) |
+| logging\_service | Logging service used |
 | master\_authorized\_networks\_config | Networks from which access to master is permitted |
 | master\_version | Current master kubernetes version |
+| min\_master\_version | Minimum master kubernetes version |
+| monitoring\_service | Monitoring service used |
+| network\_module | network module output |
+| network\_policy\_enabled | Whether network policy enabled |
 | node\_pools\_names | List of node pools names |
 | node\_pools\_versions | List of node pools versions |
-| service\_account | The default service account used for running nodes. |
-| network | Network module output |
+| region | Cluster region |
+| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
+| type | Cluster type (regional / zonal) |
+| zones | List of zones in which the cluster resides |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
