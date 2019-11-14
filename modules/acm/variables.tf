@@ -15,7 +15,7 @@
  */
 
 variable "cluster_name" {
-  description = "The name of the cluster."
+  description = "The unique name to identify the cluster in ACM."
   type        = string
 }
 
@@ -25,23 +25,23 @@ variable "project_id" {
 }
 
 variable "location" {
-  description = "The location (zone or region) this cluster has been created in. One of location, region, zone, or a provider-level zone must be specified."
+  description = "The location (zone or region) this cluster has been created in."
   type        = string
 }
 
 variable "sync_repo" {
-  description = "Anthos config management Git repo"
+  description = "ACM Git repo address"
   type        = string
 }
 
 variable "sync_branch" {
-  description = "Anthos config management Git branch"
+  description = "ACM repo Git branch"
   type        = string
   default     = "master"
 }
 
 variable "policy_dir" {
-  description = "Subfolder containing configs in Ahtons config management Git repo"
+  description = "Subfolder containing configs in ACM Git repo"
   type        = string
 }
 
