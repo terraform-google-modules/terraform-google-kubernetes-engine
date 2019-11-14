@@ -1,10 +1,34 @@
 # Terraform Kubernetes Engine ACM Submodule
 
-This module installs Anthos Config Management (ACM) in a Kubernetes cluster.
-To find out more about ACM check [documentation](https://cloud.google.com/anthos-config-management/).
+This module installs [Anthos Config Management](https://cloud.google.com/anthos-config-management/docs/) (ACM) in a Kubernetes cluster.
+
+Specifically, this module automates the following steps for [installing ACM](https://cloud.google.com/anthos-config-management/docs/how-to/installing):
+1. Installing the ACM Operator on your cluster.
+2. Generating an SSH key for accessing Git and providing it to the Operator
+3. Configuring the Operator to connect to your ACM repository
+
+## Usage
+
+There is a [full example](../../examples/simple_zonal) provided. Simple usage is as follows:
+
+```tf
+module "acm" {
+  source           = "../../modules/acm"
+  project_id       = var.project_id
+  location         = module.gke.location
+  cluster_name     = module.gke.name
+  sync_repo        = var.acm_sync_repo
+  sync_branch      = var.acm_sync_branch
+  policy_dir       = var.acm_policy_dir
+  cluster_endpoint = module.gke.endpoint
+}
+```
 
 
-## Configure a Service Account
+In addition to this [example](../../examples/simple_zonal) shows how to provision a cluster and install ACm. 
+
+
+In order to use this module, you must use a Service Account 
 
 In order to use this module you must have Service Account with roles listed [Terraform Kubernetes Engine Module](../../README.md)
 plus **roles/container.admin** role.
