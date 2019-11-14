@@ -48,12 +48,13 @@ To enable Git access to the configuration repository over SSH, complete step 2 i
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | cluster\_endpoint | Kubernetes cluster endpoint. | string | n/a | yes |
-| cluster\_name | The name of the cluster. | string | n/a | yes |
-| location | The location (zone or region) this cluster has been created in. One of location, region, zone, or a provider-level zone must be specified. | string | n/a | yes |
-| policy\_dir | Subfolder containing configs in Ahtons config management Git repo | string | n/a | yes |
+| cluster\_name | The unique name to identify the cluster by in ACM. | string | n/a | yes |
+| create\_ssh\_key | Controls whether a key will be generated for Git authentication | bool | `"true"` | no |
+| location | The location (zone or region) this cluster has been created in. | string | n/a | yes |
+| policy\_dir | Subfolder containing configs in ACM Git repo | string | n/a | yes |
 | project\_id | The project in which the resource belongs. | string | n/a | yes |
-| sync\_branch | Anthos config management Git branch | string | `"master"` | no |
-| sync\_repo | Anthos config management Git repo | string | n/a | yes |
+| sync\_branch | ACM repo Git branch | string | `"master"` | no |
+| sync\_repo | ACM Git repo address | string | n/a | yes |
 
 ## Outputs
 
