@@ -9,7 +9,7 @@ Specifically, this module automates the following steps for [installing ACM](htt
 
 ## Usage
 
-There is a [full example](../../examples/simple_zonal) provided. Simple usage is as follows:
+There is a [full example](../../examples/simple_zonal_with_acm) provided. Simple usage is as follows:
 
 ```tf
 module "acm" {
