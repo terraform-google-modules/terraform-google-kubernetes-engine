@@ -23,4 +23,5 @@ module "acm" {
   sync_branch      = var.acm_sync_branch
   policy_dir       = var.acm_policy_dir
   cluster_endpoint = module.gke.endpoint
+  operator_path    = var.operator_path
 }

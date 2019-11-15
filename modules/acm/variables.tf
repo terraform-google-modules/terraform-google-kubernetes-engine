@@ -29,6 +29,12 @@ variable "location" {
   type        = string
 }
 
+variable "operator_path" {
+  description = "Path to the operator yaml config. If unset, will download from GCS releases."
+  type        = string
+  default     = null
+}
+
 variable "sync_repo" {
   description = "ACM Git repo address"
   type        = string

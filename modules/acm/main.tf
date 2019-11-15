@@ -19,6 +19,8 @@ locals {
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate
   private_key            = var.create_ssh_key ? tls_private_key.git_creds[0].private_key_pem : ""
+  download_operator      = var.operator_path == null ? true : false
+  operator_path          = local.download_operator ? "${path.module}/config-management-operator.yaml" : var.operator_path
 }
 
 data "google_container_cluster" "primary" {
@@ -37,6 +39,8 @@ resource "tls_private_key" "git_creds" {
 }
 
 resource "null_resource" "acm_operator_config" {
+  count = local.download_operator ? 1 : 0
+
   provisioner "local-exec" {
     command = "gsutil cp gs://config-management-release/released/latest/config-management-operator.yaml ${path.module}/config-management-operator.yaml"
   }
@@ -49,12 +53,12 @@ resource "null_resource" "acm_operator_config" {
 
 resource "null_resource" "acm_operator" {
   provisioner "local-exec" {
-    command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f ${path.module}/config-management-operator.yaml"
+    command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f ${local.operator_path}"
   }
 
   provisioner "local-exec" {
     when    = destroy
-    command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f ${path.module}/config-management-operator.yaml"
+    command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f ${local.operator_path}"
   }
 
   depends_on = [
