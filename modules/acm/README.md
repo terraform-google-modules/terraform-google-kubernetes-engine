@@ -13,29 +13,31 @@ There is a [full example](../../examples/simple_zonal) provided. Simple usage is
 
 ```tf
 module "acm" {
-  source           = "../../modules/acm"
-  project_id       = var.project_id
+  source           = "terraform-google-modules/kubernetes-engine/google//modules/acm"
+
+  project_id       = "my-project-id"
+  cluster_name     = "my-cluster-name"
   location         = module.gke.location
-  cluster_name     = module.gke.name
-  sync_repo        = var.acm_sync_repo
-  sync_branch      = var.acm_sync_branch
-  policy_dir       = var.acm_policy_dir
   cluster_endpoint = module.gke.endpoint
+
+  sync_repo        = "git@github.com:GoogleCloudPlatform/csp-config-management.git"
+  sync_branch      = "1.0.0"
+  policy_dir       = "foo-corp"
 }
 ```
 
+To deploy this config:
+1. Run `terraform apply`
+2. Inspect the `git\_creds\_public` [output][#outputs] to retrieve the public key used for accessing Git. Whitelist this key for access to your Git repo. Instructions for some popular Git hosting providers are included for convenience:
 
-In addition to this [example](../../examples/simple_zonal) shows how to provision a cluster and install ACm. 
-
-
-In order to use this module, you must use a Service Account 
-
-In order to use this module you must have Service Account with roles listed [Terraform Kubernetes Engine Module](../../README.md)
-plus **roles/container.admin** role.
-
-## Usage example
-
-See [examples/simple_zonal](../../examples/simple_zonal) cluster example.
+   * [{{source_repos_name}}](/source-repositories/docs/authentication#ssh)
+   * [Bitbucket](https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html){:.external}
+   * [GitHub](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/){:.external}.
+   * [Gitlab](https://docs.gitlab.com/ee/ssh/){:.external}
+ 
+## Whitelisting
+Note that installing Anthos Config Management [requires](https://cloud.google.com/anthos-config-management/docs/how-to/installing#local_environment) an active Anthos license.
+By default, this module will attempt to download the ACM operator from Google directly—meaning your Terraform service account needs to be whitelisted for ACM access. If this is an issue, you can predownload the operator yourself then set the `operator_path` variable to point to the file location.
 
 ## Installation
 

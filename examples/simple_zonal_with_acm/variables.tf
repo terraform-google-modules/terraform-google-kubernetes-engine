@@ -65,3 +65,9 @@ variable "acm_policy_dir" {
   type        = string
   default     = "foo-corp"
 }
+
+variable "operator_path" {
+  description = "Path to the operator yaml config. If unset, will download from GCS releases."
+  type        = string
+  default     = null
+}
