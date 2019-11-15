@@ -32,14 +32,10 @@ module "gke" {
   ip_range_pods     = "${module.gke-network.network_name}-${var.cluster_name}-pod-range"
   ip_range_services = "${module.gke-network.network_name}-${var.cluster_name}-service-range"
 
-  /* dashboard is being deprecated, so do not install it */
-  kubernetes_dashboard        = "false"
   http_load_balancing         = "true"
   network_policy              = "true"
   horizontal_pod_autoscaling  = "false"
   enable_binary_authorization = "true"
-  istio                       = "false"
-  cloudrun                    = "false"
 
   service_account          = "create"
   remove_default_node_pool = "true"
