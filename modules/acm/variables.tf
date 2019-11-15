@@ -61,3 +61,15 @@ variable "create_ssh_key" {
   type        = bool
   default     = true
 }
+
+variable "enable_policy_controller" {
+  description = "Whether to enable the ACM Policy Controller on the cluster"
+  type        = bool
+  default     = true
+}
+
+variable "install_template_library" {
+  description = "Whether to install the default Policy Controller template library"
+  type        = bool
+  default     = true
+}

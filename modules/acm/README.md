@@ -30,11 +30,11 @@ To deploy this config:
 1. Run `terraform apply`
 2. Inspect the `git_creds_public` [output](#outputs) to retrieve the public key used for accessing Git. Whitelist this key for access to your Git repo. Instructions for some popular Git hosting providers are included for convenience:
 
-   * [Cloud Souce Repositories](https://cloud.google.com/source-repositories/docs/authentication#ssh)
-   * [Bitbucket](https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html)
-   * [GitHub](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/)
-   * [Gitlab](https://docs.gitlab.com/ee/ssh/)
- 
+  * [Cloud Souce Repositories](https://cloud.google.com/source-repositories/docs/authentication#ssh)
+  * [Bitbucket](https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html)
+  * [GitHub](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/)
+  * [Gitlab](https://docs.gitlab.com/ee/ssh/)
+
 ## Whitelisting
 Note that installing Anthos Config Management [requires](https://cloud.google.com/anthos-config-management/docs/how-to/installing#local_environment) an active Anthos license.
 By default, this module will attempt to download the ACM operator from Google directly—meaning your Terraform service account needs to be whitelisted for ACM access. If this is an issue, you can predownload the operator yourself then set the `operator_path` variable to point to the file location.
@@ -47,6 +47,8 @@ By default, this module will attempt to download the ACM operator from Google di
 | cluster\_endpoint | Kubernetes cluster endpoint. | string | n/a | yes |
 | cluster\_name | The unique name to identify the cluster in ACM. | string | n/a | yes |
 | create\_ssh\_key | Controls whether a key will be generated for Git authentication | bool | `"true"` | no |
+| enable\_policy\_controller | Whether to enable the ACM Policy Controller on the cluster | bool | `"true"` | no |
+| install\_template\_library | Whether to install the default Policy Controller template library | bool | `"true"` | no |
 | location | The location (zone or region) this cluster has been created in. | string | n/a | yes |
 | operator\_path | Path to the operator yaml config. If unset, will download from GCS releases. | string | `"null"` | no |
 | policy\_dir | Subfolder containing configs in ACM Git repo | string | n/a | yes |
@@ -61,4 +63,3 @@ By default, this module will attempt to download the ACM operator from Google di
 | git\_creds\_public | Public key of SSH keypair to allow the Anthos Operator to authenticate to your Git repository. |
 
  <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-
