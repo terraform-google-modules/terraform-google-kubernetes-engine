@@ -52,3 +52,14 @@ variable "compute_engine_service_account" {
   description = "Service account to associate to the nodes in the cluster"
 }
 
+variable "cluster_autoscaling" {
+  type = object({
+    enabled         = bool
+    resource_limits = map(number)
+  })
+  default = {
+    enabled         = false
+    resource_limits = {}
+  }
+  description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
+}

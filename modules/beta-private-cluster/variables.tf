@@ -179,6 +179,18 @@ variable "node_pools_metadata" {
   }
 }
 
+variable "cluster_autoscaling" {
+  type = object({
+    enabled         = bool
+    resource_limits = map(number)
+  })
+  default = {
+    enabled         = false
+    resource_limits = {}
+  }
+  description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
+}
+
 variable "node_pools_taints" {
   type        = map(list(object({ key = string, value = string, effect = string })))
   description = "Map of lists containing node taints by node-pool name"

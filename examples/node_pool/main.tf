@@ -36,6 +36,7 @@ module "gke" {
   create_service_account            = false
   remove_default_node_pool          = true
   disable_legacy_metadata_endpoints = false
+  cluster_autoscaling               = var.cluster_autoscaling
 
   node_pools = [
     {

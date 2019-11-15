@@ -178,7 +178,6 @@ variable "node_pools_metadata" {
     default-node-pool = {}
   }
 }
-
 variable "node_pools_tags" {
   type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
