@@ -45,6 +45,20 @@ locals {
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
   node_version            = var.regional ? local.node_version_regional : local.node_version_zonal
   release_channel         = var.release_channel != null ? [{ channel : var.release_channel }] : []
+  limits                  = var.cluster_autoscaling.resource_limits
+
+  autoscalling_resource_limits = concat(
+    var.cluster_autoscaling.enabled && lookup(local.limits, "max_cpu_cores", 0) > lookup(local.limits, "min_cpu_cores", 0) ? [{
+      resource_type = "cpu"
+      minimum       = local.limits["min_cpu_cores"]
+      maximum       = local.limits["max_cpu_cores"]
+    }] : [],
+    var.cluster_autoscaling.enabled && lookup(local.limits, "max_memory_gb", 0) > lookup(local.limits, "min_memory_gb", 0) ? [{
+      resource_type = "memory"
+      minimum       = local.limits["min_memory_gb"]
+      maximum       = local.limits["max_memory_gb"]
+    }] : []
+  )
 
 
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0

@@ -42,6 +42,7 @@ resource "google_container_cluster" "primary" {
   }
 
 
+
   subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
   min_master_version = local.master_version
 
