@@ -10,4 +10,6 @@ spec:
     syncBranch: ${sync_branch}
     secretType: ${secret_type}
     policyDir: ${policy_dir}
-
+  policyController:
+    enabled: ${enable_policy_controller}
+    templateLibraryInstalled: ${install_template_library}

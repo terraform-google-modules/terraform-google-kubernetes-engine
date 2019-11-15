@@ -89,11 +89,13 @@ data "template_file" "acm_config" {
   template = file("${path.module}/templates/acm-config.yml.tpl")
 
   vars = {
-    cluster_name = var.cluster_name
-    sync_repo    = var.sync_repo
-    sync_branch  = var.sync_branch
-    policy_dir   = var.policy_dir
-    secret_type  = var.create_ssh_key ? "ssh" : "none"
+    cluster_name             = var.cluster_name
+    sync_repo                = var.sync_repo
+    sync_branch              = var.sync_branch
+    policy_dir               = var.policy_dir
+    secret_type              = var.create_ssh_key ? "ssh" : "none"
+    enable_policy_controller = var.enable_policy_controller ? "true" : "false"
+    install_template_library = var.install_template_library ? "true" : "false"
   }
 }
 
