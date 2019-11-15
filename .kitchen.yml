@@ -92,6 +92,7 @@ suites:
           backend: local
           controls:
             - gcloud
+            - acm
         - name: gcp
           backend: gcp
           controls:
