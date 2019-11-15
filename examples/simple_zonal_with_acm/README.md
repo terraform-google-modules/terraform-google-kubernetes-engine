@@ -16,6 +16,7 @@ It incorporates the standard cluster module and the [ACM install module](../../m
 | ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
 | network | The VPC network to host the cluster in | string | n/a | yes |
+| operator\_path | Path to the operator yaml config. If unset, will download from GCS releases. | string | `"null"` | no |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
 | subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
