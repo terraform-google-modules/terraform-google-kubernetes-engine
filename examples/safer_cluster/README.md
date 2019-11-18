@@ -7,12 +7,12 @@ This example illustrates how to instantiate the opinionated Safer Cluster module
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cloudrun | Boolean to enable / disable CloudRun | string | `"true"` | no |
+| cloudrun | Boolean to enable / disable CloudRun | bool | `"true"` | no |
 | cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | string | n/a | yes |
 | ip\_range\_pods | The secondary ip range to use for pods | string | `"ip-range-pods"` | no |
 | ip\_range\_services | The secondary ip range to use for pods | string | `"ip-range-scv"` | no |
-| istio | Boolean to enable / disable Istio | string | `"true"` | no |
+| istio | Boolean to enable / disable Istio | bool | `"true"` | no |
 | master\_auth\_subnetwork | The subnetwork that has access to cluster master | string | `"master-auth-subnet"` | no |
 | master\_auth\_subnetwork\_cidr | The cidr block for the subnetwork that has access to cluster master | string | `"10.60.0.0/17"` | no |
 | master\_ipv4\_cidr\_block | The IP range in CIDR notation to use for the hosted master network | string | `"172.16.0.0/28"` | no |

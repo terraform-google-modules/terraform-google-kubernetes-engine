@@ -18,12 +18,12 @@
 
 variable "project_id" {
   type        = string
-  description = "The project ID to host the cluster in (required)"
+  description = "The project ID to host the cluster in"
 }
 
 variable "name" {
   type        = string
-  description = "The name of the cluster (required)"
+  description = "The name of the cluster"
 }
 
 variable "description" {
@@ -40,18 +40,18 @@ variable "regional" {
 
 variable "region" {
   type        = string
-  description = "The region to host the cluster in (required)"
+  description = "The region to host the cluster in"
 }
 
 variable "zones" {
   type        = list(string)
-  description = "The zones to host the cluster in (optional if regional cluster / required if zonal)"
+  description = "The zones to host the cluster in"
   default     = []
 }
 
 variable "network" {
   type        = string
-  description = "The VPC network to host the cluster in (required)"
+  description = "The VPC network to host the cluster in"
 }
 
 variable "network_project_id" {
@@ -62,7 +62,7 @@ variable "network_project_id" {
 
 variable "subnetwork" {
   type        = string
-  description = "The subnetwork to host the cluster in (required)"
+  description = "The subnetwork to host the cluster in"
 }
 
 variable "kubernetes_version" {

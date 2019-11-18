@@ -18,14 +18,12 @@ locals {
   cluster_type = "safer-cluster"
 }
 
-provider "google-beta" {
+provider "google" {
   version = "~> 2.18.0"
 }
 
-data "google_compute_subnetwork" "subnetwork" {
-  name    = var.subnetwork
-  project = var.project_id
-  region  = var.region
+provider "google-beta" {
+  version = "~> 2.18.0"
 }
 
 module "gke" {

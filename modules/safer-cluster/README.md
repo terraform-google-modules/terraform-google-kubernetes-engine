@@ -224,8 +224,8 @@ For simplicity, we suggest using `roles/container.admin` and
 | master\_authorized\_networks\_config | Additional CIDR of private networks that can access the master. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. By default, the private master endpoint is accessible by the nodes in the cluster's VPC and by Google's internal production jobs managing the cluster. | object | `<list>` | no |
 | master\_ipv4\_cidr\_block | (Beta) The IP range in CIDR notation to use for the hosted master network | string | `"10.0.0.0/28"` | no |
 | monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com"` | no |
-| name | The name of the cluster (required) | string | n/a | yes |
-| network | The VPC network to host the cluster in (required) | string | n/a | yes |
+| name | The name of the cluster | string | n/a | yes |
+| network | The VPC network to host the cluster in | string | n/a | yes |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
 | node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | map(map(string)) | `<map>` | no |
@@ -234,17 +234,17 @@ For simplicity, we suggest using `roles/container.admin` and
 | node\_pools\_tags | Map of lists containing node network tags by node-pool name | map(list(string)) | `<map>` | no |
 | node\_pools\_taints | Map of lists containing node taints by node-pool name | object | `<map>` | no |
 | node\_version | The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation. | string | `""` | no |
-| project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
-| region | The region to host the cluster in (required) | string | n/a | yes |
+| project\_id | The project ID to host the cluster in | string | n/a | yes |
+| region | The region to host the cluster in | string | n/a | yes |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |
 | registry\_project\_id | Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project. | string | `""` | no |
 | resource\_usage\_export\_dataset\_id | The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | string | `""` | no |
 | sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` and `node_version` = `1.12.7-gke.17` or later to use it). | bool | `"false"` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created. | string | `""` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map(list(string)) | `<map>` | no |
-| subnetwork | The subnetwork to host the cluster in (required) | string | n/a | yes |
+| subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | list | `<list>` | no |
-| zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list(string) | `<list>` | no |
+| zones | The zones to host the cluster in | list(string) | `<list>` | no |
 
 ## Outputs
 
