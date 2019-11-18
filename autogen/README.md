@@ -198,6 +198,7 @@ The node_pools variable takes the following parameters:
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
 | min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count | 1 | Optional |
 | name | The name of the node pool | " " | Optional |
+| node_count | The number of nodes in the nodepool when autoscaling is false | 2 | Required (when autoscaling is false) |
 | node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters | " " | Optional |
 | preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
 | service_account | The service account to be used by the Node VMs | " " | Optional |
