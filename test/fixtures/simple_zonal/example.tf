@@ -15,7 +15,7 @@
  */
 
 module "example" {
-  source = "../../../examples/simple_zonal"
+  source = "../../../examples/simple_zonal_with_acm"
 
   project_id          = var.project_id
   cluster_name_suffix = "-${random_string.suffix.result}"
@@ -25,5 +25,5 @@ module "example" {
   subnetwork          = google_compute_subnetwork.main.name
   ip_range_pods       = google_compute_subnetwork.main.secondary_ip_range[0].range_name
   ip_range_services   = google_compute_subnetwork.main.secondary_ip_range[1].range_name
+  operator_path       = "/workspace/acm.yaml"
 }
-

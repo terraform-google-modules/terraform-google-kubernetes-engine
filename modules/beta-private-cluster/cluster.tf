@@ -41,6 +41,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "release_channel" {
+    for_each = local.release_channel
+
+    content {
+      channel = release_channel.value.channel
+    }
+  }
+
   subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
   min_master_version = local.master_version
 
@@ -50,6 +58,7 @@ resource "google_container_cluster" "primary" {
   enable_binary_authorization = var.enable_binary_authorization
   enable_intranode_visibility = var.enable_intranode_visibility
   default_max_pods_per_node   = var.default_max_pods_per_node
+  enable_shielded_nodes       = var.enable_shielded_nodes
 
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
@@ -158,14 +167,6 @@ resource "google_container_cluster" "primary" {
           node_metadata = workload_metadata_config.value.node_metadata
         }
       }
-
-      dynamic "sandbox_config" {
-        for_each = local.cluster_sandbox_enabled
-
-        content {
-          sandbox_type = sandbox_config.value
-        }
-      }
     }
   }
 
@@ -211,20 +212,24 @@ resource "google_container_node_pool" "pools" {
   name     = var.node_pools[count.index]["name"]
   project  = var.project_id
   location = local.location
-  cluster  = google_container_cluster.primary.name
+  // use node_locations if provided, defaults to cluster level node_locations if not specified
+  node_locations = lookup(var.node_pools[count.index], "node_locations", "") != "" ? split(",", var.node_pools[count.index]["node_locations"]) : null
+  cluster        = google_container_cluster.primary.name
   version = lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(
     var.node_pools[count.index],
     "version",
     local.node_version,
   )
-  initial_node_count = lookup(
+
+  initial_node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? lookup(
     var.node_pools[count.index],
     "initial_node_count",
-    lookup(var.node_pools[count.index], "min_count", 1),
-  )
+    lookup(var.node_pools[count.index], "min_count", 1)
+  ) : null
+
   max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", null)
 
-  node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "min_count", 1)
+  node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "node_count", 1)
 
   dynamic "autoscaling" {
     for_each = lookup(var.node_pools[count.index], "autoscaling", true) ? [var.node_pools[count.index]] : []
@@ -243,22 +248,14 @@ resource "google_container_node_pool" "pools" {
     image_type   = lookup(var.node_pools[count.index], "image_type", "COS")
     machine_type = lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")
     labels = merge(
-      {
-        "cluster_name" = var.name
-      },
-      {
-        "node_pool" = var.node_pools[count.index]["name"]
-      },
+      lookup(lookup(var.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(var.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
       var.node_pools_labels["all"],
       var.node_pools_labels[var.node_pools[count.index]["name"]],
     )
     metadata = merge(
-      {
-        "cluster_name" = var.name
-      },
-      {
-        "node_pool" = var.node_pools[count.index]["name"]
-      },
+      lookup(lookup(var.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(var.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
       var.node_pools_metadata["all"],
       var.node_pools_metadata[var.node_pools[count.index]["name"]],
       {
@@ -277,8 +274,8 @@ resource "google_container_node_pool" "pools" {
       }
     }
     tags = concat(
-      ["gke-${var.name}"],
-      ["gke-${var.name}-${var.node_pools[count.index]["name"]}"],
+      lookup(var.node_pools_tags, "default_values", [true, true])[0] ? ["gke-${var.name}"] : [],
+      lookup(var.node_pools_tags, "default_values", [true, true])[1] ? ["gke-${var.name}-${var.node_pools[count.index]["name"]}"] : [],
       var.node_pools_tags["all"],
       var.node_pools_tags[var.node_pools[count.index]["name"]],
     )
@@ -314,6 +311,14 @@ resource "google_container_node_pool" "pools" {
         node_metadata = workload_metadata_config.value.node_metadata
       }
     }
+
+    dynamic "sandbox_config" {
+      for_each = local.cluster_sandbox_enabled
+
+      content {
+        sandbox_type = sandbox_config.value
+      }
+    }
   }
 
   lifecycle {
@@ -328,6 +333,7 @@ resource "google_container_node_pool" "pools" {
 }
 
 resource "null_resource" "wait_for_cluster" {
+  count = var.skip_provisioners ? 0 : 1
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"

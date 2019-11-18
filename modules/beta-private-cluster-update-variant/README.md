@@ -48,6 +48,7 @@ module "gke" {
     {
       name               = "default-node-pool"
       machine_type       = "n1-standard-2"
+      node_locations     = "us-central1-b,us-central1-c"
       min_count          = 1
       max_count          = 100
       disk_size_gb       = 100
@@ -153,6 +154,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | bool | `"false"` | no |
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | bool | `"false"` | no |
 | enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | bool | `"false"` | no |
+| enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster | bool | `"false"` | no |
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | bool | `"false"` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | bool | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | bool | `"true"` | no |
@@ -188,12 +190,15 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list(string) | `<list>` | no |
 | pod\_security\_policy\_config | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | list | `<list>` | no |
 | project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
-| region | The region to host the cluster in (required) | string | n/a | yes |
+| region | The region to host the cluster in (optional if zonal cluster / required if regional) | string | `"null"` | no |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |
+| registry\_project\_id | Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project. | string | `""` | no |
+| release\_channel | (Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`. | string | `"null"` | no |
 | remove\_default\_node\_pool | Remove default node pool while setting up the cluster | bool | `"false"` | no |
 | resource\_usage\_export\_dataset\_id | The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | string | `""` | no |
 | sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` and `node_version` = `1.12.7-gke.17` or later to use it). | bool | `"false"` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created. | string | `""` | no |
+| skip\_provisioners | Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality. | bool | `"false"` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map(list(string)) | `<map>` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | string | n/a | yes |
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | list | `<list>` | no |
@@ -208,6 +213,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
+| identity\_namespace | Workload Identity namespace |
 | intranode\_visibility\_enabled | Whether intra-node visibility is enabled |
 | istio\_enabled | Whether Istio is enabled |
 | kubernetes\_dashboard\_enabled | Whether kubernetes dashboard enabled |
@@ -223,6 +229,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | node\_pools\_versions | List of node pools versions |
 | pod\_security\_policy\_enabled | Whether pod security policy is enabled |
 | region | Cluster region |
+| release\_channel | The release channel of this cluster |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | type | Cluster type (regional / zonal) |
 | vertical\_pod\_autoscaling\_enabled | Whether veritical pod autoscaling is enabled |
@@ -257,6 +264,9 @@ following project roles:
 - roles/iam.serviceAccountAdmin
 - roles/iam.serviceAccountUser
 - roles/resourcemanager.projectIamAdmin (only required if `service_account` is set to `create`)
+
+Additionally, if `service_account` is set to `create` and `grant_registry_access` is requested, the service account requires the following role on the `registry_project_id` project:
+- roles/resourcemanager.projectIamAdmin
 
 ### Enable APIs
 In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:

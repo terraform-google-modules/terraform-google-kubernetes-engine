@@ -19,9 +19,8 @@ locals {
 }
 
 provider "google-beta" {
-  version     = "~> 2.12.0"
-  credentials = file(var.credentials_path)
-  region      = var.region
+  version = "~> 2.18.0"
+  region  = var.region
 }
 
 data "google_compute_subnetwork" "subnetwork" {
@@ -62,4 +61,3 @@ module "gke" {
 
 data "google_client_config" "default" {
 }
-

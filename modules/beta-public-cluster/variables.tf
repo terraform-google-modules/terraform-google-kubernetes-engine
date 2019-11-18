@@ -309,6 +309,11 @@ variable "cluster_resource_labels" {
   default     = {}
 }
 
+variable "skip_provisioners" {
+  type        = bool
+  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
+  default     = false
+}
 
 variable "istio" {
   description = "(Beta) Enable Istio addon"
@@ -388,3 +393,14 @@ variable "authenticator_security_group" {
   default     = null
 }
 
+variable "release_channel" {
+  type        = string
+  description = "(Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
+  default     = null
+}
+
+variable "enable_shielded_nodes" {
+  type        = bool
+  description = "Enable Shielded Nodes features on all nodes in this cluster"
+  default     = false
+}
