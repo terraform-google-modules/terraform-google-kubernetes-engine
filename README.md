@@ -109,14 +109,7 @@ Then perform the following commands on the root folder:
 - `terraform destroy` to destroy the built infrastructure
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Fixed Errors
-=======
->>>>>>> 2ae6c27... Fixed Errors
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -138,8 +131,6 @@ Then perform the following commands on the root folder:
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The _name_ of the secondary subnet range to use for services | string | n/a | yes |
 | issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | bool | `"false"` | no |
-<<<<<<< HEAD
-<<<<<<< HEAD
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com"` | no |
 | maintenance\_start\_time | Time window specified for daily maintenance operations in RFC3339 format | string | `"05:00"` | no |
@@ -148,22 +139,6 @@ Then perform the following commands on the root folder:
 | name | The name of the cluster (required) | string | n/a | yes |
 | network | The VPC network to host the cluster in (required) | string | n/a | yes |
 | network\_policy | Enable network policy addon | bool | `"true"` | no |
-=======
-=======
->>>>>>> 2ae6c27... Fixed Errors
-| kubernetes\_dashboard | Enable kubernetes dashboard addon | bool | `"false"` | no |
-| kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
-| logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com"` | no |
-| maintenance\_start\_time | Time window specified for daily maintenance operations in RFC3339 format | string | `"05:00"` | no |
-| master\_authorized\_networks\_config | The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists). | object | `<list>` | no |
-| monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com"` | no |
-| name | The name of the cluster (required) | string | n/a | yes |
-| network | The VPC network to host the cluster in (required) | string | n/a | yes |
-| network\_policy | Enable network policy addon | bool | `"false"` | no |
-<<<<<<< HEAD
->>>>>>> Fixed Errors
-=======
->>>>>>> 2ae6c27... Fixed Errors
 | network\_policy\_provider | The network policy provider. | string | `"CALICO"` | no |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
 | node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
@@ -182,15 +157,7 @@ Then perform the following commands on the root folder:
 | skip\_provisioners | Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality. | bool | `"false"` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map(list(string)) | `<map>` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | string | n/a | yes |
-<<<<<<< HEAD
-<<<<<<< HEAD
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | list(string) | `<list>` | no |
-=======
-| upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | list | `<list>` | no |
->>>>>>> Fixed Errors
-=======
-| upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | list | `<list>` | no |
->>>>>>> 2ae6c27... Fixed Errors
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list(string) | `<list>` | no |
 
 ## Outputs
@@ -201,14 +168,6 @@ Then perform the following commands on the root folder:
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-| kubernetes\_dashboard\_enabled | Whether kubernetes dashboard enabled |
->>>>>>> Fixed Errors
-=======
-| kubernetes\_dashboard\_enabled | Whether kubernetes dashboard enabled |
->>>>>>> 2ae6c27... Fixed Errors
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |
 | logging\_service | Logging service used |
 | master\_authorized\_networks\_config | Networks from which access to master is permitted |
@@ -224,16 +183,6 @@ Then perform the following commands on the root folder:
 | type | Cluster type (regional / zonal) |
 | zones | List of zones in which the cluster resides |
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Fixed Errors
-=======
->>>>>>> Fixed Errors
-=======
->>>>>>> b18a5df... Fixed Errors
-=======
->>>>>>> 2ae6c27... Fixed Errors
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Requirements
@@ -276,11 +225,7 @@ In order to operate with the Service Account you must activate the following API
 ## node_pools variable
 The node_pools variable takes the following parameters:
 
-<<<<<<< HEAD
 | Name | Description | Default | Requirement |
-=======
-| Name | Description | Default | Requirement | 
->>>>>>> b18a5df... Fixed Errors
 | --- | --- | --- | --- |
 | auto_repair | Whether the nodes will be automatically repaired | true | Optional |
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
