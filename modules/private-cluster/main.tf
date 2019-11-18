@@ -45,6 +45,7 @@ locals {
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
   node_version            = var.regional ? local.node_version_regional : local.node_version_zonal
 
+
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
   upstream_nameservers_config = length(var.upstream_nameservers) > 0
   network_project_id          = var.network_project_id != "" ? var.network_project_id : var.project_id
@@ -69,7 +70,7 @@ locals {
   cluster_output_zonal_zones    = local.zone_count > 1 ? slice(var.zones, 1, local.zone_count) : []
   cluster_output_zones          = local.cluster_output_regional_zones
 
-  cluster_output_endpoint = var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config.0.private_endpoint : google_container_cluster.primary.endpoint
+  cluster_output_endpoint = var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config.0.private_endpoint : google_container_cluster.primary.private_cluster_config.0.public_endpoint
 
   cluster_output_master_auth                        = concat(google_container_cluster.primary.*.master_auth, [])
   cluster_output_master_version                     = google_container_cluster.primary.master_version

@@ -82,6 +82,21 @@ control "kubectl" do
           )
         end
       end
+      describe "pool-03" do
+        let(:nodes) do
+          all_nodes.select { |n| n.metadata.labels.node_pool == "pool-03" }
+        end
+
+        it "has the expected taints" do
+          expect(taints).to include(
+            {
+              effect: "PreferNoSchedule",
+              key: "all-pools-example",
+              value: "true",
+            }
+          )
+        end
+      end
     end
   end
 end
