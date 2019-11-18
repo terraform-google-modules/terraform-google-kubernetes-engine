@@ -62,11 +62,8 @@ module "gke" {
   // destroying the cluster.
   remove_default_node_pool = true
 
-  node_pools        = var.node_pools
-  node_pools_labels = var.node_pools_labels
-
-  // TODO(mmontan): check whether we need to restrict these
-  // settings.
+  node_pools          = var.node_pools
+  node_pools_labels   = var.node_pools_labels
   node_pools_metadata = var.node_pools_metadata
   node_pools_taints   = var.node_pools_taints
   node_pools_tags     = var.node_pools_tags
