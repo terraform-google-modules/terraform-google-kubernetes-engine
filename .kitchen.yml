@@ -15,7 +15,7 @@
 ---
 driver:
   name: "terraform"
-  command_timeout: 1800
+  command_timeout: 3600
 
 provisioner:
   name: "terraform"
