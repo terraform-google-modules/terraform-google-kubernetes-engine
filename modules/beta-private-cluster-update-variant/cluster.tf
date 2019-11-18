@@ -285,7 +285,7 @@ resource "google_container_node_pool" "pools" {
   project  = var.project_id
   location = local.location
   // use node_locations if provided, defaults to cluster level node_locations if not specified
-  node_locations = lookup(var.node_pools[count.index], "node_locations", "") != "" ? split(",", var.node_pools[count.index]["node_locations"]) : google_container_cluster.primary.node_locations
+  node_locations = lookup(var.node_pools[count.index], "node_locations", "") != "" ? split(",", var.node_pools[count.index]["node_locations"]) : null
   cluster        = google_container_cluster.primary.name
   version = lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(
     var.node_pools[count.index],
