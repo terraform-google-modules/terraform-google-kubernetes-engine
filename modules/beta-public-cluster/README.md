@@ -251,7 +251,7 @@ In order to operate with the Service Account you must activate the following API
 ## node_pools variable
 The node_pools variable takes the following parameters:
 
-| Name | Description | Default | Requirement | 
+| Name | Description | Default | Requirement |
 | --- | --- | --- | --- |
 | auto_repair | Whether the nodes will be automatically repaired | true | Optional |
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
