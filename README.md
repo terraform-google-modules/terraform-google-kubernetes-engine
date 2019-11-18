@@ -111,6 +111,7 @@ Then perform the following commands on the root folder:
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> Fixed Errors
 ## Inputs
@@ -211,6 +212,8 @@ Then perform the following commands on the root folder:
 >>>>>>> Fixed Errors
 =======
 >>>>>>> Fixed Errors
+=======
+>>>>>>> b18a5df... Fixed Errors
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Requirements
@@ -253,7 +256,11 @@ In order to operate with the Service Account you must activate the following API
 ## node_pools variable
 The node_pools variable takes the following parameters:
 
+<<<<<<< HEAD
 | Name | Description | Default | Requirement |
+=======
+| Name | Description | Default | Requirement | 
+>>>>>>> b18a5df... Fixed Errors
 | --- | --- | --- | --- |
 | auto_repair | Whether the nodes will be automatically repaired | true | Optional |
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
