@@ -50,3 +50,8 @@ function check_generate() {
   rm -Rf "${tempdir}"
   return $((rval))
 }
+
+# Pre-download the Anthos Config Management operator
+function download_acm() {
+   gsutil cp gs://config-management-release/released/latest/config-management-operator.yaml /workspace/acm.yaml
+}
