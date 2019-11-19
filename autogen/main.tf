@@ -92,7 +92,7 @@ locals {
   cluster_output_zones          = local.cluster_output_regional_zones
 
 {% if private_cluster %}
-  cluster_output_endpoint = var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config.0.private_endpoint : google_container_cluster.primary.endpoint
+  cluster_output_endpoint = var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config.0.private_endpoint : google_container_cluster.primary.private_cluster_config.0.public_endpoint
 {% else %}
   cluster_output_endpoint = google_container_cluster.primary.endpoint
 {% endif %}
