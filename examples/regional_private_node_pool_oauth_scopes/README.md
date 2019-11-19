@@ -7,13 +7,7 @@ This example illustrates how to create a private cluster with node pool specific
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cluster\_name | Name of the cluster | string | n/a | yes |
-| ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
-| ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
-| network | The VPC network name to host the cluster in | string | n/a | yes |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
-| region | The region to host the cluster in | string | n/a | yes |
-| subnet | The subnetwork name to host the cluster in | string | n/a | yes |
 
 ## Outputs
 
@@ -37,6 +31,8 @@ This example illustrates how to create a private cluster with node pool specific
 | node\_pools\_versions | List of node pools versions |
 | region | Cluster region |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
+| subnets\_ips | The IP and cidrs of the subnets being created |
+| subnets\_secondary\_ranges | The secondary ranges associated with these subnets |
 | type | Cluster type (regional / zonal) |
 | zones | List of zones in which the cluster resides |
 

@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-data "google_compute_subnetwork" "subnetwork" {
-  name    = module.gke-network.subnets_names[0]
-  project = var.project_id
-  region  = var.region
-}
-
 module "gke" {
   source                            = "../../modules/private-cluster"
   project_id                        = var.project_id
-  name                              = var.cluster_name
-  region                            = var.region
+  name                              = "random-test-cluster"
+  region                            = "us-west1"
   regional                          = true
   network                           = module.gke-network.network_name
   subnetwork                        = module.gke-network.subnets_names[0]
-  ip_range_pods                     = var.ip_range_pods
-  ip_range_services                 = var.ip_range_services
+  ip_range_pods                     = module.gke-network.subnets_secondary_ranges[0].*.range_name[0]
+  ip_range_services                 = module.gke-network.subnets_secondary_ranges[0].*.range_name[1]
   enable_private_endpoint           = true
   enable_private_nodes              = true
   master_ipv4_cidr_block            = "172.16.0.16/28"
@@ -43,7 +37,7 @@ module "gke" {
     {
       cidr_blocks = [
         {
-          cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
+          cidr_block   = module.gke-network.subnets_ips[0]
           display_name = "VPC"
         },
       ]

@@ -14,30 +14,6 @@
  * limitations under the License.
  */
 
-variable "cluster_name" {
-  description = "Name of the cluster"
-}
-
 variable "project_id" {
   description = "The project ID to host the cluster in"
-}
-
-variable "region" {
-  description = "The region to host the cluster in"
-}
-
-variable "ip_range_pods" {
-  description = "The secondary ip range to use for pods"
-}
-
-variable "ip_range_services" {
-  description = "The secondary ip range to use for pods"
-}
-
-variable "network" {
-  description = "The VPC network name to host the cluster in"
-}
-
-variable "subnet" {
-  description = "The subnetwork name to host the cluster in"
 }
