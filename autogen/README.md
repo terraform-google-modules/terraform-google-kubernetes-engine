@@ -188,7 +188,7 @@ In order to operate with the Service Account you must activate the following API
 ## node_pools variable
 The node_pools variable takes the following parameters:
 
-| Name | Description | Default | Requirement | 
+| Name | Description | Default | Requirement |
 | --- | --- | --- | --- |
 | accelerator_count | The number of the guest accelerator cards exposed to this instance | 0 | Optional |
 | accelerator_type | The accelerator type resource to expose to the instance | " " | Optional |
