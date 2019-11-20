@@ -55,6 +55,9 @@ module "gke" {
     {
       name               = "default-node-pool"
       machine_type       = "n1-standard-2"
+      {% if beta_cluster %}
+      node_locations     = "us-central1-b,us-central1-c"
+      {% endif %}
       min_count          = 1
       max_count          = 100
       disk_size_gb       = 100

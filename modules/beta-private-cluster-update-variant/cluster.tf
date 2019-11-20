@@ -284,20 +284,24 @@ resource "google_container_node_pool" "pools" {
   name     = random_id.name.*.hex[count.index]
   project  = var.project_id
   location = local.location
-  cluster  = google_container_cluster.primary.name
+  // use node_locations if provided, defaults to cluster level node_locations if not specified
+  node_locations = lookup(var.node_pools[count.index], "node_locations", "") != "" ? split(",", var.node_pools[count.index]["node_locations"]) : null
+  cluster        = google_container_cluster.primary.name
   version = lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(
     var.node_pools[count.index],
     "version",
     local.node_version,
   )
-  initial_node_count = lookup(
+
+  initial_node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? lookup(
     var.node_pools[count.index],
     "initial_node_count",
-    lookup(var.node_pools[count.index], "min_count", 1),
-  )
+    lookup(var.node_pools[count.index], "min_count", 1)
+  ) : null
+
   max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", null)
 
-  node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "min_count", 1)
+  node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "node_count", 1)
 
   dynamic "autoscaling" {
     for_each = lookup(var.node_pools[count.index], "autoscaling", true) ? [var.node_pools[count.index]] : []

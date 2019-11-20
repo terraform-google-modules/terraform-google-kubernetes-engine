@@ -25,4 +25,6 @@ attributes:
   - name: service_account
     required: true
     type: string
-
+  - name: ca_certificate
+    required: true
+    type: string
