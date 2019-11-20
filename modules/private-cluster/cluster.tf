@@ -79,10 +79,6 @@ resource "google_container_cluster" "primary" {
       disabled = ! var.horizontal_pod_autoscaling
     }
 
-    kubernetes_dashboard {
-      disabled = ! var.kubernetes_dashboard
-    }
-
     network_policy_config {
       disabled = ! var.network_policy
     }
