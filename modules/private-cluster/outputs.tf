@@ -103,11 +103,6 @@ output "horizontal_pod_autoscaling_enabled" {
   value       = local.cluster_horizontal_pod_autoscaling_enabled
 }
 
-output "kubernetes_dashboard_enabled" {
-  description = "Whether kubernetes dashboard enabled"
-  value       = local.cluster_kubernetes_dashboard_enabled
-}
-
 output "node_pools_names" {
   description = "List of node pools names"
   value       = local.cluster_node_pools_names
