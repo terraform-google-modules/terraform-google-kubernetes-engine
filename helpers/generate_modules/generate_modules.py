@@ -86,7 +86,7 @@ def main(argv):
         for template_file in templates:
             template = env.get_template(template_file)
             if template_file.endswith(".tf.tmpl"):
-                template_file=template_file.replace(".tf.tmpl",".tf")
+                template_file = template_file.replace(".tf.tmpl", ".tf")
             rendered = template.render(
                 module.template_options(BASE_TEMPLATE_OPTIONS)
             )
