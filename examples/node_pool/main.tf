@@ -50,6 +50,7 @@ module "gke" {
       machine_type      = "n1-standard-2"
       min_count         = 1
       max_count         = 2
+      local_ssd_count   = 0
       disk_size_gb      = 30
       disk_type         = "pd-standard"
       accelerator_count = 1
