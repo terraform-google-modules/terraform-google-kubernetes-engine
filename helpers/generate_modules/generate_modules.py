@@ -82,9 +82,11 @@ def main(argv):
         lstrip_blocks=True,
     )
     templates = env.list_templates()
-    for template_file in templates:
-        for module in MODULES:
+    for module in MODULES:
+        for template_file in templates:
             template = env.get_template(template_file)
+            if template_file.endswith(".tf.tmpl"):
+                template_file = template_file.replace(".tf.tmpl", ".tf")
             rendered = template.render(
                 module.template_options(BASE_TEMPLATE_OPTIONS)
             )
