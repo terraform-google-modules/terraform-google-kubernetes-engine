@@ -41,7 +41,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-
   dynamic "release_channel" {
     for_each = local.release_channel
 
