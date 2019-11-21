@@ -163,6 +163,7 @@ variable "node_pools_labels" {
   type        = map(map(string))
   description = "Map of maps containing node labels by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = {}
     default-node-pool = {}
@@ -173,6 +174,7 @@ variable "node_pools_metadata" {
   type        = map(map(string))
   description = "Map of maps containing node metadata by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = {}
     default-node-pool = {}
@@ -183,6 +185,7 @@ variable "node_pools_taints" {
   type        = map(list(object({ key = string, value = string, effect = string })))
   description = "Map of lists containing node taints by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = []
     default-node-pool = []
@@ -193,6 +196,7 @@ variable "node_pools_tags" {
   type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = []
     default-node-pool = []
@@ -203,6 +207,7 @@ variable "node_pools_oauth_scopes" {
   type        = map(list(string))
   description = "Map of lists containing node oauth scopes by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = ["https://www.googleapis.com/auth/cloud-platform"]
     default-node-pool = []
@@ -352,6 +357,7 @@ variable "default_max_pods_per_node" {
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
   type        = list(object({ state = string, key_name = string }))
+
   default = [{
     state    = "DECRYPTED"
     key_name = ""
@@ -370,6 +376,7 @@ variable "enable_binary_authorization" {
 
 variable "pod_security_policy_config" {
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
+
   default = [{
     "enabled" = false
   }]
