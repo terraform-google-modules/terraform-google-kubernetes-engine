@@ -51,6 +51,7 @@ module "gke" {
       node_locations     = "us-central1-b,us-central1-c"
       min_count          = 1
       max_count          = 100
+      local_ssd_count    = 0
       disk_size_gb       = 100
       disk_type          = "pd-standard"
       image_type         = "COS"

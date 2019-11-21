@@ -14,6 +14,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Support for setting node_locations on node pools. [#303]
 * Fix for specifying  `node_count` on node pools when autoscaling is disabled. [#311]
 * Added submodule for installing Anthos Config Management. [#268]
+* Support for `local_ssd_count` in node pool configuration. [#244]
+* Wait for cluster to be ready before returning endpoint. [#340]
 
 ## [v5.1.1] - 2019-10-25
 
@@ -228,6 +230,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#340]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/340
 [#268]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/268
 [#311]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/311
 [#303]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/303
@@ -245,6 +248,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [#238]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/238
 [#241]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/241
 [#250]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/250
+[#244]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/244
 [#236]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/236
 [#217]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/217
 [#234]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/234
