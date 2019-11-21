@@ -50,6 +50,7 @@ module "gke" {
       machine_type      = "n1-standard-2"
       min_count         = 1
       max_count         = 2
+      local_ssd_count   = 0
       disk_size_gb      = 30
       disk_type         = "pd-standard"
       accelerator_count = 1
@@ -71,20 +72,10 @@ module "gke" {
     },
   ]
 
-  node_pools_oauth_scopes = {
-    all     = []
-    pool-01 = []
-    pool-02 = []
-    pool-03 = []
-  }
-
   node_pools_metadata = {
-    all = {}
     pool-01 = {
       shutdown-script = file("${path.module}/data/shutdown-script.sh")
     }
-    pool-02 = {}
-    pool-03 = {}
   }
 
   node_pools_labels = {
@@ -94,8 +85,6 @@ module "gke" {
     pool-01 = {
       pool-01-example = true
     }
-    pool-02 = {}
-    pool-03 = {}
   }
 
   node_pools_taints = {
@@ -113,8 +102,6 @@ module "gke" {
         effect = "PREFER_NO_SCHEDULE"
       },
     ]
-    pool-02 = []
-    pool-03 = []
   }
 
   node_pools_tags = {
@@ -124,8 +111,6 @@ module "gke" {
     pool-01 = [
       "pool-01-example",
     ]
-    pool-02 = []
-    pool-03 = []
   }
 }
 
