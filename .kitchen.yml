@@ -52,6 +52,23 @@ suites:
       systems:
         - name: simple_regional
           backend: local
+  - name: "private_zonal_with_networking"
+    driver:
+      root_module_directory: test/fixtures/private_zonal_with_networking
+    verifier:
+      systems:
+        - name: private_zonal_with_networking
+          backend: local
+          controls:
+            - gcloud
+        - name: private_zonal_with_networking
+          backend: local
+          controls:
+            - subnet
+        - name: network
+          backend: gcp
+          controls:
+            - network
   - name: "simple_regional_with_networking"
     driver:
       root_module_directory: test/fixtures/simple_regional_with_networking
