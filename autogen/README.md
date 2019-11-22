@@ -39,7 +39,6 @@ module "gke" {
   ip_range_services          = "us-central1-01-gke-01-services"
   http_load_balancing        = false
   horizontal_pod_autoscaling = true
-  kubernetes_dashboard       = true
   network_policy             = true
   {% if private_cluster %}
   enable_private_endpoint    = true
@@ -60,6 +59,7 @@ module "gke" {
       {% endif %}
       min_count          = 1
       max_count          = 100
+      local_ssd_count    = 0
       disk_size_gb       = 100
       disk_type          = "pd-standard"
       image_type         = "COS"

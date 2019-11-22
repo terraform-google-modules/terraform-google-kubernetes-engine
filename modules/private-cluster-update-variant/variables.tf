@@ -96,12 +96,6 @@ variable "http_load_balancing" {
   default     = true
 }
 
-variable "kubernetes_dashboard" {
-  type        = bool
-  description = "Enable kubernetes dashboard addon"
-  default     = false
-}
-
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
@@ -163,6 +157,7 @@ variable "node_pools_labels" {
   type        = map(map(string))
   description = "Map of maps containing node labels by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = {}
     default-node-pool = {}
@@ -173,6 +168,7 @@ variable "node_pools_metadata" {
   type        = map(map(string))
   description = "Map of maps containing node metadata by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = {}
     default-node-pool = {}
@@ -183,6 +179,7 @@ variable "node_pools_tags" {
   type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = []
     default-node-pool = []
@@ -193,6 +190,7 @@ variable "node_pools_oauth_scopes" {
   type        = map(list(string))
   description = "Map of lists containing node oauth scopes by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = ["https://www.googleapis.com/auth/cloud-platform"]
     default-node-pool = []
