@@ -21,8 +21,7 @@
  *****************************************/
 
 
-// TODO: add comments and deppends on if needed
-// depends on [service_account]
+// TODO: Add new code to template and re-generate modules
 
 locals {
   enable_svpc_helper = var.enable_shared_vpc_helper && var.network_project_id != "" ? true : false
@@ -37,7 +36,7 @@ module "svpc_helper" {
 
   region = var.region
   gke_subnetwork = var.subnetwork
-  gke_sa = local.service_account
+  gke_sa = "serviceAccount:${local.service_account}"
 
 }
 

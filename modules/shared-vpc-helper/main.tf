@@ -22,10 +22,10 @@
 
 locals  {
   projects = [var.gke_svpc_host_project, var.gke_svpc_service_project]
-  service_project_number = element(coalescelist(data.google_project.service_project[*].number, ["null"]), 0)
+  project_numbers = zipmap(local.projects, data.google_project.project[*].number)
 
-  gke_s_account = "serviceAccount:service-${local.service_project_number}@container-engine-robot.iam.gserviceaccount.com"
-  gke_default_s_account = "serviceAccount:${local.service_project_number}@cloudservices.gserviceaccount.com"
+  gke_s_account = "serviceAccount:service-${local.project_numbers[var.gke_svpc_service_project]}@container-engine-robot.iam.gserviceaccount.com"
+  gke_default_s_account = "serviceAccount:${local.project_numbers[var.gke_svpc_service_project]}@cloudservices.gserviceaccount.com"
   shared_vpc_users_length = 3
   shared_vpc_users = [local.gke_s_account, local.gke_default_s_account, var.gke_sa]
 }
@@ -43,9 +43,9 @@ resource "google_project_service" "gke_api" {
 	Enable Roles
  *****************************************/
 
-data "google_project" "service_project" {
-  count =  var.enable_shared_vpc_helper ? 1 : 0
-  project_id = var.gke_svpc_service_project
+data "google_project" "project" {
+  count =  var.enable_shared_vpc_helper? 2 : 0
+  project_id = element(local.projects, count.index)
 }
 
 //
