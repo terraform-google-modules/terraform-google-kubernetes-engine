@@ -254,7 +254,6 @@ For simplicity, we suggest using `roles/container.admin` and
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
-| kubernetes\_dashboard\_enabled | Whether kubernetes dashboard enabled |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |
 | logging\_service | Logging service used |
 | master\_authorized\_networks\_config | Networks from which access to master is permitted |

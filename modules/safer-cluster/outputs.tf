@@ -102,11 +102,6 @@ output "horizontal_pod_autoscaling_enabled" {
   value       = module.gke.horizontal_pod_autoscaling_enabled
 }
 
-output "kubernetes_dashboard_enabled" {
-  description = "Whether kubernetes dashboard enabled"
-  value       = module.gke.kubernetes_dashboard_enabled
-}
-
 output "node_pools_names" {
   description = "List of node pools names"
   value       = module.gke.node_pools_names
