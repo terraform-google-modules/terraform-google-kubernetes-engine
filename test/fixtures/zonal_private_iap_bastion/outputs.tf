@@ -16,137 +16,141 @@
 
 output "cluster_name" {
   description = "Cluster name"
-  value       = module.gke.name
+  value       = module.example.cluster_name
+}
+
+output "bastion_name" {
+  description = "Name of bastion host"
+  value       = module.example.bastion_name
+}
+
+output "bastion_zone" {
+  description = "Location of bastion host"
+  value       = module.example.bastion_zone
+}
+
+output "project_id" {
+  value = var.project_id
 }
 
 output "type" {
   description = "Cluster type (regional / zonal)"
-  value       = module.gke.type
+  value       = module.example.type
 }
 
 output "location" {
   description = "Cluster location (region if regional cluster, zone if zonal cluster)"
-  value       = module.gke.location
+  value       = module.example.location
 }
 
 output "region" {
   description = "Subnet/Router region"
-  value       = var.region
+  value       = module.example.region
 }
 
 output "zones" {
   description = "List of zones in which the cluster resides"
-  value       = module.gke.zones
+  value       = module.example.zones
 }
 
 output "endpoint" {
   sensitive   = true
   description = "Cluster endpoint"
-  value       = module.gke.endpoint
+  value       = module.example.endpoint
 }
 
 output "min_master_version" {
   description = "Minimum master kubernetes version"
-  value       = module.gke.min_master_version
+  value       = module.example.min_master_version
 }
 
 output "logging_service" {
   description = "Logging service used"
-  value       = module.gke.logging_service
+  value       = module.example.logging_service
 }
 
 output "monitoring_service" {
   description = "Monitoring service used"
-  value       = module.gke.monitoring_service
+  value       = module.example.monitoring_service
 }
 
 output "master_authorized_networks_config" {
   description = "Networks from which access to master is permitted"
-  value       = module.gke.master_authorized_networks_config
+  value       = module.example.master_authorized_networks_config
 }
 
 output "master_version" {
   description = "Current master kubernetes version"
-  value       = module.gke.master_version
+  value       = module.example.master_version
 }
 
 output "router_name" {
   description = "Name of the router that was created"
-  value       = module.cloud-nat.router_name
+  value       = module.example.router_name
 }
 
 output "ca_certificate" {
   sensitive   = true
   description = "Cluster ca certificate (base64 encoded)"
-  value       = module.gke.ca_certificate
+  value       = module.example.ca_certificate
 }
 
 output "network_policy_enabled" {
   description = "Whether network policy enabled"
-  value       = module.gke.network_policy_enabled
+  value       = module.example.network_policy_enabled
 }
 
 output "http_load_balancing_enabled" {
   description = "Whether http load balancing enabled"
-  value       = module.gke.http_load_balancing_enabled
+  value       = module.example.http_load_balancing_enabled
 }
 
 output "horizontal_pod_autoscaling_enabled" {
   description = "Whether horizontal pod autoscaling enabled"
-  value       = module.gke.horizontal_pod_autoscaling_enabled
+  value       = module.example.horizontal_pod_autoscaling_enabled
 }
 
 output "kubernetes_dashboard_enabled" {
   description = "Whether kubernetes dashboard enabled"
-  value       = module.gke.kubernetes_dashboard_enabled
+  value       = module.example.kubernetes_dashboard_enabled
 }
 
 output "node_pools_names" {
   description = "List of node pools names"
-  value       = module.gke.node_pools_names
+  value       = module.example.node_pools_names
 }
 
 output "node_pools_versions" {
   description = "List of node pools versions"
-  value       = module.gke.node_pools_versions
+  value       = module.example.node_pools_versions
 }
 
 output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
-  value       = module.gke.service_account
-}
-
-output "network_name" {
-  value       = module.gke-network.network_name
-  description = "The name of the VPC being created"
+  value       = module.example.service_account
 }
 
 output "subnet_name" {
-  value       = module.gke-network.subnets_names[0]
+  value       = module.example.subnet_name
   description = "The name of the VPC subnet being created"
+}
+
+output "network_name" {
+  value       = module.example.network_name
+  description = "The name of the VPC being created"
 }
 
 output "get_credentials" {
   description = "Gcloud get-credentials command"
-  value       = format("gcloud container clusters get-credentials --project %s --zone %s --internal-ip %s", var.project_id, module.gke.location, var.cluster_name)
-}
-
-output "bastion_name" {
-  description = "Name of the bastion host"
-  value       = module.bastion.hostname 
-}
-
-output "bastion_zone" {
-  description = "Location of bastion host"
-  value       = local.bastion_zone
+  value       = module.example.get_credentials
 }
 
 output "bastion_ssh" {
   description = "Gcloud compute ssh to the bastion host command"
-  value       = format("gcloud beta compute ssh %s --tunnel-through-iap --project %s --zone %s -- -L8888:127.0.0.1:8888", module.bastion.hostname, var.project_id, local.bastion_zone)
+  value       = module.example.bastion_ssh
 }
 
 output "bastion_kubectl" {
   description = "kubectl command using the local proxy once the bastion_ssh command is running"
-  value       = "HTTPS_PROXY=localhost:8888 kubectl get pods --all-namespaces"
+  value       = module.example.bastion_kubectl
 }

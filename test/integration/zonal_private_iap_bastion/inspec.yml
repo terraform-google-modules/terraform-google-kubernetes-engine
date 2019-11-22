@@ -1,0 +1,26 @@
+name: zonal_private_iap_bastion
+attributes:
+  - name: project_id
+    required: true
+    type: string
+  - name: location
+    required: true
+    type: string
+  - name: cluster_name
+    required: true
+    type: string
+  - name: service_account
+    required: true
+    type: string
+  - name: bastion_name
+    type: string
+  - name: bastion_zone
+    type: string
+  - name: network_name
+    type: string
+  - name: subnet_name
+    type: string
+  - name: region
+    type: string
+  - name: router_name
+    type: string

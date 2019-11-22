@@ -22,9 +22,11 @@ locals {
     "roles/container.developer",
     "roles/iam.serviceAccountAdmin",
     "roles/iam.serviceAccountUser",
-    "roles/compute.networkAdmin",
     "roles/compute.viewer",
-    "roles/resourcemanager.projectIamAdmin"
+    "roles/resourcemanager.projectIamAdmin",
+    "roles/compute.admin",
+    "roles/iap.admin",
+    "roles/iam.roleAdmin",
   ]
 }
 

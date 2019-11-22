@@ -164,3 +164,13 @@ suites:
       systems:
         - name: sandbox_enabled
           backend: local
+  - name: "zonal_private_iap_bastion"
+    driver:
+      root_module_directory: test/fixtures/zonal_private_iap_bastion
+    verifier:
+      systems:
+        - name: zonal_private_iap_bastion
+          backend: local
+          controls:
+            - gcloud
+            - kubectl

@@ -39,5 +39,6 @@ module "gke-project" {
     "pubsub.googleapis.com",
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
+    "iap.googleapis.com",
   ]
 }
