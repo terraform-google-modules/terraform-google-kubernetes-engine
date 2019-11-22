@@ -78,37 +78,38 @@ resource "google_service_account" "gke_service" {
 }
 
 
-module "svpc_helper" {
-  enable_shared_vpc_helper = true
-  source = "../../modules/shared-vpc-helper"
-
-  gke_shared_host_project = google_project.gke_shared_host_project.project_id
-  gke_service_project = google_project.gke_service_project.project_id
-
-  region = var.region
-  gke_subnetwork = google_compute_subnetwork.main.name
-  gke_sa = "serviceAccount:${google_service_account.gke_service.email}"
-
-}
-
-output "t1" {
-  value = module.svpc_helper.t1
-}
-
-output "t2" {
-  value = module.svpc_helper.t2
-}
-
-//module "gke" {
-//  source                 = "../../"
-//  project_id             = module.svpc_helper.gke_service_project_id
-//  name                   = "gke-cluster${random_string.suffix.result}"
-//  region                 = var.region
-//  network                = module.svpc_helper.gke_network
-//  network_project_id     = module.svpc_helper.gke_host_project_id
-//  subnetwork             = module.svpc_helper.gke_network
-//  ip_range_pods          = local.pods_gke_subnet
-//  ip_range_services      = local.services_gke_subnet
-//  create_service_account = false
-//  service_account        =
+//module "svpc_helper" {
+//  enable_shared_vpc_helper = true
+//  source = "../../modules/shared-vpc-helper"
+//
+//  gke_svpc_host_project = google_project.gke_shared_host_project.project_id
+//  gke_svpc_service_project = google_project.gke_service_project.project_id
+//
+//  region = var.region
+//  gke_subnetwork = google_compute_subnetwork.main.name
+//  gke_sa = "serviceAccount:${google_service_account.gke_service.email}"
+//
 //}
+//
+//
+//output "n1" {
+//  value = google_compute_subnetwork.main.secondary_ip_range
+//}
+//
+//output "n2" {
+//  value = google_compute_subnetwork.main.name
+//}
+
+module "gke" {
+  source                 = "../../"
+  enable_shared_vpc_helper = true
+  project_id             = google_project.gke_service_project.project_id
+  name                   = "gke-cluster${random_string.suffix.result}"
+  region                 = var.region
+  network                = google_compute_network.main.name
+  network_project_id     = google_project.gke_shared_host_project.project_id
+  subnetwork             = google_compute_subnetwork.main.name
+  ip_range_pods          = google_compute_subnetwork.main.secondary_ip_range[0]["range_name"]
+  ip_range_services      = google_compute_subnetwork.main.secondary_ip_range[1]["range_name"]
+  create_service_account = true
+}

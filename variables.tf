@@ -304,3 +304,8 @@ variable "skip_provisioners" {
   description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
   default     = false
 }
+
+variable "enable_shared_vpc_helper" {
+  description = "Invoke or not submodule to help correct setup shared VPC resourcess"
+  default = false
+}

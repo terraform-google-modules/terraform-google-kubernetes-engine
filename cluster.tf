@@ -19,7 +19,32 @@
 /******************************************
   Create Container Cluster
  *****************************************/
+
+
+// TODO: add comments and deppends on if needed
+// depends on [service_account]
+
+locals {
+  enable_svpc_helper = var.enable_shared_vpc_helper && var.network_project_id != "" ? true : false
+}
+
+module "svpc_helper" {
+  enable_shared_vpc_helper = local.enable_svpc_helper
+  source = "./modules/shared-vpc-helper"
+
+  gke_svpc_host_project = var.network_project_id
+  gke_svpc_service_project = var.project_id
+
+  region = var.region
+  gke_subnetwork = var.subnetwork
+  gke_sa = local.service_account
+
+}
+
+
+
 resource "google_container_cluster" "primary" {
+  depends_on = [ module.svpc_helper ]
   provider = google
 
   name            = var.name
@@ -121,6 +146,7 @@ resource "google_container_cluster" "primary" {
 
   remove_default_node_pool = var.remove_default_node_pool
 }
+
 
 /******************************************
   Create Container Cluster node pools

@@ -5,8 +5,8 @@ variable "region" {
 //
 //variable "org_id" {}
 
-variable "gke_shared_host_project" {}
-variable "gke_service_project" {}
+variable "gke_svpc_host_project" {}
+variable "gke_svpc_service_project" {}
 variable "enable_shared_vpc_helper" {
 }
 
