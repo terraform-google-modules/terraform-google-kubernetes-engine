@@ -133,7 +133,7 @@ output "get_credentials" {
 
 output "bastion_name" {
   description = "Name of the bastion host"
-  value       = module.bastion.hostname 
+  value       = module.bastion.hostname
 }
 
 output "bastion_zone" {
