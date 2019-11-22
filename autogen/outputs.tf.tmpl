@@ -54,6 +54,7 @@ output "endpoint" {
     */
     google_container_cluster.primary,
     google_container_node_pool.pools,
+    null_resource.wait_for_cluster.id,
   ]
 }
 
@@ -101,11 +102,6 @@ output "http_load_balancing_enabled" {
 output "horizontal_pod_autoscaling_enabled" {
   description = "Whether horizontal pod autoscaling enabled"
   value       = local.cluster_horizontal_pod_autoscaling_enabled
-}
-
-output "kubernetes_dashboard_enabled" {
-  description = "Whether kubernetes dashboard enabled"
-  value       = local.cluster_kubernetes_dashboard_enabled
 }
 
 output "node_pools_names" {

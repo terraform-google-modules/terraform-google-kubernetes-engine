@@ -12,16 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-steps:
-- id: 'lint-generation'
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && check_generate']
-- id: 'lint-tests'
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/usr/local/bin/test_lint.sh']
-tags:
-- 'ci'
-- 'lint'
-substitutions:
-  _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '0'
+project_id = attribute('project_id')
+network_name = attribute('network_name')
+subnet_name = attribute('subnet_name')
+control "network" do
+    title "gcp network configuration"
+    describe google_compute_network(
+      project: project_id,
+      name: network_name
+    ) do
+      it { should exist }
+      its ('subnetworks.count') { should eq 1 }
+      its ('subnetworks.first') { should match subnet_name }
+    end
+  end
