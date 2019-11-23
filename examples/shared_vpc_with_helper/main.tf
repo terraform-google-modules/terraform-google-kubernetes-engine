@@ -27,6 +27,8 @@ resource "random_string" "suffix" {
   upper   = false
 }
 
+// TODO: add local exec to de-attach while destroy
+
 resource "google_project" "gke_shared_host_project" {
   name       = var.gke_shared_host_project
   project_id = "${var.gke_shared_host_project}-${random_string.suffix.result}"

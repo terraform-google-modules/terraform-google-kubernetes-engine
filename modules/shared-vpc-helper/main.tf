@@ -48,16 +48,6 @@ data "google_project" "service_project" {
   project_id = var.gke_svpc_service_project
 }
 
-//
-//resource "google_project_iam_member" "host_service_agent" {
-//     count = 2
-//     project = element(local.projects, count.index)
-//     role    = "roles/container.hostServiceAgentUser"
-//     member  = "serviceAccount:service-${element(data.google_project.project[*].number, count.index)}@container-engine-robot.iam.gserviceaccount.com"
-//     depends_on = [
-//        google_project_service.gke_api
-//    ]
-//}
 
 /******************************************************************************************************************
   compute.networkUser role granted to all Service accounts on shared VPC
