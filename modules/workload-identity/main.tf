@@ -16,23 +16,10 @@
 
 locals {
   k8s_sa_gcp_derived_name = "serviceAccount:${var.project_id}.svc.id.goog[${var.namespace}/${var.name}]"
-  gcp_sa_email            = "${var.name}@${var.project_id}.iam.gserviceaccount.com"
-  create_k8s_sa           = var.use_existing_k8s_sa ? 0 : 1
 
   # This will cause terraform to block returning outputs until the service account is created
   output_k8s_name      = var.use_existing_k8s_sa ? var.name : kubernetes_service_account.main[0].metadata[0].name
   output_k8s_namespace = var.use_existing_k8s_sa ? var.namespace : kubernetes_service_account.main[0].metadata[0].namespace
-}
-
-resource "kubernetes_service_account" "main" {
-  count = local.create_k8s_sa
-  metadata {
-    name      = var.name
-    namespace = var.namespace
-    annotations = {
-      "iam.gke.io/gcp-service-account" = local.gcp_sa_email
-    }
-  }
 }
 
 resource "google_service_account" "main" {
@@ -41,9 +28,20 @@ resource "google_service_account" "main" {
   project      = var.project_id
 }
 
-resource "google_service_account_iam_binding" "main" {
+resource "kubernetes_service_account" "main" {
+  count = var.use_existing_k8s_sa ? 0 : 1
+
+  metadata {
+    name      = var.name
+    namespace = var.namespace
+    annotations = {
+      "iam.gke.io/gcp-service-account" = google_service_account.main.email
+    }
+  }
+}
+
+resource "google_service_account_iam_member" "main" {
   service_account_id = "${google_service_account.main.name}"
   role               = "roles/iam.workloadIdentityUser"
-
-  members = [local.k8s_sa_gcp_derived_name]
+  member             = local.k8s_sa_gcp_derived_name
 }
