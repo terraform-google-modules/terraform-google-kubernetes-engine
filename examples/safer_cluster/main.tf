@@ -14,8 +14,19 @@
  * limitations under the License.
  */
 
+resource "random_string" "suffix" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
 locals {
-  cluster_type = "safer-cluster"
+  cluster_type           = "safer-cluster"
+  network_name           = "safer-cluster-network-${random_string.suffix.result}"
+  subnet_name            = "safer-cluster-subnet-${random_string.suffix.result}"
+  master_auth_subnetwork = "safer-cluster-master-subnet-${random_string.suffix.result}"
+  pods_range_name        = "ip-range-pods-${random_string.suffix.result}"
+  svc_range_name         = "ip-range-svc-${random_string.suffix.result}"
 }
 
 provider "google" {
@@ -29,27 +40,27 @@ provider "google-beta" {
 module "gke" {
   source                         = "../../modules/safer-cluster/"
   project_id                     = var.project_id
-  name                           = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  name                           = "${local.cluster_type}-cluster-${random_string.suffix.result}"
   regional                       = true
   region                         = var.region
   network                        = module.gcp-network.network_name
   subnetwork                     = module.gcp-network.subnets_names[0]
-  ip_range_pods                  = var.ip_range_pods
-  ip_range_services              = var.ip_range_services
+  ip_range_pods                  = local.pods_range_name
+  ip_range_services              = local.svc_range_name
   compute_engine_service_account = var.compute_engine_service_account
-  master_ipv4_cidr_block         = var.master_ipv4_cidr_block
+  master_ipv4_cidr_block         = "172.16.0.0/28"
   master_authorized_networks_config = [
     {
       cidr_blocks = [
         {
-          cidr_block   = var.master_auth_subnetwork_cidr
+          cidr_block   = "10.60.0.0/17"
           display_name = "VPC"
         },
       ]
     },
   ]
-  istio    = var.istio
-  cloudrun = var.cloudrun
+  istio    = true
+  cloudrun = true
 }
 
 data "google_client_config" "default" {

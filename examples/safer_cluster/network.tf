@@ -18,29 +18,29 @@ module "gcp-network" {
   source       = "terraform-google-modules/network/google"
   version      = "~> 1.4.0"
   project_id   = var.project_id
-  network_name = var.network
+  network_name = local.network_name
 
   subnets = [
     {
-      subnet_name   = var.subnetwork
-      subnet_ip     = var.subnetwork_cidr
+      subnet_name   = local.subnet_name
+      subnet_ip     = "10.0.0.0/17"
       subnet_region = var.region
     },
     {
-      subnet_name   = var.master_auth_subnetwork
-      subnet_ip     = var.master_auth_subnetwork_cidr
+      subnet_name   = local.master_auth_subnetwork
+      subnet_ip     = "10.60.0.0/17"
       subnet_region = var.region
     },
   ]
 
   secondary_ranges = {
-    "${var.subnetwork}" = [
+    "${local.subnet_name}" = [
       {
-        range_name    = var.ip_range_pods
+        range_name    = local.pods_range_name
         ip_cidr_range = "192.168.0.0/18"
       },
       {
-        range_name    = var.ip_range_services
+        range_name    = local.svc_range_name
         ip_cidr_range = "192.168.64.0/18"
       },
     ]
