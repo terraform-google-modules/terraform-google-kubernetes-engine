@@ -20,6 +20,20 @@ output "kubernetes_endpoint" {
   value       = module.gke.endpoint
 }
 
+output "cluster_name" {
+  description = "Cluster name"
+  value       = module.gke.name
+}
+
+output "location" {
+  value = module.gke.location
+}
+
+output "master_kubernetes_version" {
+  description = "Kubernetes version of the master"
+  value       = module.gke.master_version
+}
+
 output "client_token" {
   description = "The bearer token for auth"
   sensitive   = true
@@ -44,4 +58,14 @@ output "network_name" {
 output "subnet_names" {
   description = "The names of the subnet being created"
   value       = module.gcp-network.subnets_names
+}
+
+output "region" {
+  description = "The region in which the cluster resides"
+  value       = module.gke.region
+}
+
+output "zones" {
+  description = "List of zones in which the cluster resides"
+  value       = module.gke.zones
 }
