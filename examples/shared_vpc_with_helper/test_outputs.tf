@@ -17,47 +17,60 @@
 // These outputs are used to test the module with kitchen-terraform
 // They do not need to be included in real-world uses of this module
 
-//output "project_id" {
-//  value = var.gke_service_project
-//}
-//
-//output "region" {
-//  value = module.gke.region
-//}
-//
-//output "cluster_name" {
-//  description = "Cluster name"
-//  value       = module.gke.name
-//}
-//
-//output "network" {
-//  value = google_compute_network.main.name
-//}
-//
-//output "subnetwork" {
-//  value = google_compute_subnetwork.main.name
-//}
-//
-//output "location" {
-//  value = module.gke.location
-//}
-//
-//output "ip_range_pods" {
-//  description = "The secondary IP range used for pods"
-//  value       = local.pods_gke_subnet
-//}
-//
-//output "ip_range_services" {
-//  description = "The secondary IP range used for services"
-//  value       = local.services_gke_subnet
-//}
-//
-//output "zones" {
-//  description = "List of zones in which the cluster resides"
-//  value       = module.gke.zones
-//}
-//
-//output "master_kubernetes_version" {
-//  description = "The master Kubernetes version"
-//  value       = module.gke.master_version
-//}
+output "project_id" {
+  value = google_project.gke_service_project.project_id
+}
+
+output "project_number" {
+  value = google_project.gke_service_project.number
+}
+
+output "host_project_id" {
+  value = google_project.gke_shared_host_project.project_id
+}
+
+output "host_project_number" {
+  value = google_project.gke_shared_host_project.number
+}
+
+
+output "region" {
+  value = module.gke.region
+}
+
+output "cluster_name" {
+  description = "Cluster name"
+  value       = module.gke.name
+}
+
+output "network" {
+  value = google_compute_network.main.name
+}
+
+output "subnetwork" {
+  value = google_compute_subnetwork.main.name
+}
+
+output "location" {
+  value = module.gke.location
+}
+
+output "ip_range_pods" {
+  description = "The secondary IP range used for pods"
+  value       = local.pods_gke_subnet
+}
+
+output "ip_range_services" {
+  description = "The secondary IP range used for services"
+  value       = local.services_gke_subnet
+}
+
+output "zones" {
+  description = "List of zones in which the cluster resides"
+  value       = module.gke.zones
+}
+
+output "master_kubernetes_version" {
+  description = "The master Kubernetes version"
+  value       = module.gke.master_version
+}

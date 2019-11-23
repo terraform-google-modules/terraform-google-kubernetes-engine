@@ -15,7 +15,19 @@
  */
 
 output "project_id" {
-  value = var.project_id
+  value = module.example.project_id
+}
+
+output "project_number" {
+  value = module.example.project_number
+}
+
+output "host_project_id" {
+  value = module.example.host_project_id
+}
+
+output "host_project_number" {
+  value = module.example.host_project_number
 }
 
 output "region" {

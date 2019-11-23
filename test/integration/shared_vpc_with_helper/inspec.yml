@@ -3,6 +3,15 @@ attributes:
   - name: project_id
     required: true
     type: string
+  - name: project_number
+    required: true
+    type: string
+  - name: host_project_id
+    required: true
+    type: string
+  - name: host_project_nubmer
+    required: true
+    type: string
   - name: location
     required: true
     type: string
