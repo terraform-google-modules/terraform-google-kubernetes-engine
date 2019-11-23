@@ -9,7 +9,7 @@ attributes:
   - name: host_project_id
     required: true
     type: string
-  - name: host_project_nubmer
+  - name: host_project_number
     required: true
     type: string
   - name: location
