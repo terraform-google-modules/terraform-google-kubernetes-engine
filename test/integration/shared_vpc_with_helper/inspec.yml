@@ -18,3 +18,13 @@ attributes:
   - name: cluster_name
     required: true
     type: string
+  - name: region
+    required: true
+    type: string
+  - name: subnetwork
+    required: true
+    type: string
+  - name: service_account
+    required: true
+    type: string
+
