@@ -44,8 +44,8 @@ resource "google_project_service" "gke_api" {
  *****************************************/
 
 data "google_project" "service_project" {
-  count =  var.enable_shared_vpc_helper ? 2 : 0
-  project_id = element(local.projects, count.index)
+  count =  var.enable_shared_vpc_helper ? 1 : 0
+  project_id = var.gke_svpc_service_project
 }
 
 //

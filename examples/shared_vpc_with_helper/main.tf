@@ -35,10 +35,6 @@ resource "google_project" "gke_shared_host_project" {
 }
 
 resource "google_project" "gke_service_project" {
-  depends_on = [
-    google_project.gke_shared_host_project,
-    google_compute_shared_vpc_host_project.shared_vpc_host
-  ]
   name       = var.gke_service_project
   project_id = "${var.gke_service_project}-${random_string.suffix.result}"
   org_id     = var.org_id
@@ -63,7 +59,7 @@ resource "google_project_service" "gke_projects" {
 // share vpc
 
 resource "google_compute_shared_vpc_host_project" "shared_vpc_host" {
-  depends_on = [google_project.gke_shared_host_project]
+  depends_on = [google_project.gke_shared_host_project, google_project_service.gke_projects]
   project = google_project.gke_shared_host_project.project_id
 }
 
@@ -120,11 +116,18 @@ locals {
 
 }
 
+resource "null_resource" "wait_before_api_enable" {
+  depends_on = [ google_project_service.gke_projects ]
+
+  triggers = {
+    project_id = google_project.gke_service_project.project_id
+  }
+}
 
 module "gke" {
   source                 = "../../"
   enable_shared_vpc_helper = true
-  project_id             = google_project.gke_service_project.project_id
+  project_id             = null_resource.wait_before_api_enable.triggers.project_id
   name                   = "gke-cluster${random_string.suffix.result}"
   region                 = var.region
   network                = google_compute_network.main.name
@@ -136,4 +139,5 @@ module "gke" {
 }
 
 data "google_client_config" "default" {
+  depends_on = [module.gke]
 }

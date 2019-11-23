@@ -23,12 +23,8 @@
 
 // TODO: Add new code to template and re-generate modules
 
-locals {
-  enable_svpc_helper = var.enable_shared_vpc_helper && var.network_project_id != "" ? true : false
-}
-
 module "svpc_helper" {
-  enable_shared_vpc_helper = local.enable_svpc_helper
+  enable_shared_vpc_helper = var.enable_shared_vpc_helper
   source = "./modules/shared-vpc-helper"
 
   gke_svpc_host_project = var.network_project_id

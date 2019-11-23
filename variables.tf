@@ -306,5 +306,5 @@ variable "skip_provisioners" {
 }
 
 variable "enable_shared_vpc_helper" {
-  description = "Invoke or not submodule to help correct setup shared VPC resourcess"   
+  description = "Invoke or not submodule to help correct setup shared VPC resourcess"
 }
