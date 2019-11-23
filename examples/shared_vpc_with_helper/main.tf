@@ -35,12 +35,16 @@ resource "google_project" "gke_shared_host_project" {
 }
 
 resource "google_project" "gke_service_project" {
-  depends_on = ["google_project.gke_shared_host_project"]
+  depends_on = [
+    google_project.gke_shared_host_project,
+    google_compute_shared_vpc_host_project.shared_vpc_host
+  ]
   name       = var.gke_service_project
   project_id = "${var.gke_service_project}-${random_string.suffix.result}"
   org_id     = var.org_id
   billing_account = var.billing_account
 }
+
 
 /******************************************
 	APIs enable
@@ -59,7 +63,7 @@ resource "google_project_service" "gke_projects" {
 // share vpc
 
 resource "google_compute_shared_vpc_host_project" "shared_vpc_host" {
-  depends_on = [google_project_service.gke_projects]
+  depends_on = [google_project.gke_shared_host_project]
   project = google_project.gke_shared_host_project.project_id
 }
 
@@ -78,27 +82,44 @@ resource "google_service_account" "gke_service" {
 }
 
 
-//module "svpc_helper" {
-//  enable_shared_vpc_helper = true
-//  source = "../../modules/shared-vpc-helper"
-//
-//  gke_svpc_host_project = google_project.gke_shared_host_project.project_id
-//  gke_svpc_service_project = google_project.gke_service_project.project_id
-//
-//  region = var.region
-//  gke_subnetwork = google_compute_subnetwork.main.name
-//  gke_sa = "serviceAccount:${google_service_account.gke_service.email}"
-//
-//}
-//
-//
-//output "n1" {
-//  value = google_compute_subnetwork.main.secondary_ip_range
-//}
-//
-//output "n2" {
-//  value = google_compute_subnetwork.main.name
-//}
+/******************************************
+	Networking
+ *****************************************/
+
+resource "google_compute_network" "main" {
+  depends_on = [
+    google_project_service.gke_projects,
+    google_project.gke_shared_host_project,
+  ]
+  name                    = "cft-gke-test-${random_string.suffix.result}"
+  auto_create_subnetworks = false
+  project = google_project.gke_shared_host_project.project_id
+}
+
+resource "google_compute_subnetwork" "main" {
+  depends_on = [google_compute_network.main]
+  name          = "cft-gke-test-${random_string.suffix.result}"
+  ip_cidr_range = "10.0.0.0/17"
+  network       = google_compute_network.main.self_link
+  project = google_project.gke_shared_host_project.project_id
+
+  secondary_ip_range {
+    range_name    = "cft-gke-test-pods-${random_string.suffix.result}"
+    ip_cidr_range = "192.168.0.0/18"
+  }
+
+  secondary_ip_range {
+    range_name    = "cft-gke-test-services-${random_string.suffix.result}"
+    ip_cidr_range = "192.168.64.0/18"
+  }
+}
+
+locals {
+  pods_gke_subnet = google_compute_subnetwork.main.secondary_ip_range[0]["range_name"]
+  services_gke_subnet = google_compute_subnetwork.main.secondary_ip_range[1]["range_name"]
+
+}
+
 
 module "gke" {
   source                 = "../../"
@@ -109,7 +130,10 @@ module "gke" {
   network                = google_compute_network.main.name
   network_project_id     = google_project.gke_shared_host_project.project_id
   subnetwork             = google_compute_subnetwork.main.name
-  ip_range_pods          = google_compute_subnetwork.main.secondary_ip_range[0]["range_name"]
-  ip_range_services      = google_compute_subnetwork.main.secondary_ip_range[1]["range_name"]
+  ip_range_pods          = local.pods_gke_subnet
+  ip_range_services      = local.services_gke_subnet
   create_service_account = true
+}
+
+data "google_client_config" "default" {
 }

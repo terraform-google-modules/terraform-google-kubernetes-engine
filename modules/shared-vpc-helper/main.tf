@@ -22,17 +22,17 @@
 
 locals  {
   projects = [var.gke_svpc_host_project, var.gke_svpc_service_project]
-  project_numbers = zipmap(local.projects, data.google_project.project[*].number)
+  service_project_number = element(coalescelist(data.google_project.service_project[*].number, ["null"]), 0)
 
-  gke_s_account = "serviceAccount:service-${local.project_numbers[var.gke_svpc_service_project]}@container-engine-robot.iam.gserviceaccount.com"
-  gke_default_s_account = "serviceAccount:${local.project_numbers[var.gke_svpc_service_project]}@cloudservices.gserviceaccount.com"
+  gke_s_account = "serviceAccount:service-${local.service_project_number}@container-engine-robot.iam.gserviceaccount.com"
+  gke_default_s_account = "serviceAccount:${local.service_project_number}@cloudservices.gserviceaccount.com"
   shared_vpc_users_length = 3
   shared_vpc_users = [local.gke_s_account, local.gke_default_s_account, var.gke_sa]
 }
 
 // enable api to created projects
 resource "google_project_service" "gke_api" {
-  count =  var.enable_shared_vpc_helper? 2 : 0
+  count =  var.enable_shared_vpc_helper ? 2 : 0
   project  = element(local.projects, count.index)
   service  = "container.googleapis.com"
   disable_on_destroy = false
@@ -43,8 +43,8 @@ resource "google_project_service" "gke_api" {
 	Enable Roles
  *****************************************/
 
-data "google_project" "project" {
-  count =  var.enable_shared_vpc_helper? 2 : 0
+data "google_project" "service_project" {
+  count =  var.enable_shared_vpc_helper ? 2 : 0
   project_id = element(local.projects, count.index)
 }
 
@@ -63,7 +63,7 @@ data "google_project" "project" {
   compute.networkUser role granted to all Service accounts on shared VPC
  *****************************************************************************************************************/
 resource "google_project_iam_member" "svpc_membership" {
-  count = var.enable_shared_vpc_helper? local.shared_vpc_users_length : 0
+  count = var.enable_shared_vpc_helper ? local.shared_vpc_users_length : 0
 
   project = var.gke_svpc_host_project
   role    = "roles/compute.networkUser"

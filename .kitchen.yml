@@ -53,6 +53,15 @@ suites:
       systems:
         - name: shared_vpc_with_service_project
           backend: local
+
+  - name: "shared_vpc_with_helper"
+    driver:
+      root_module_directory: test/fixtures/shared_vpc_with_helper
+    verifier:
+      systems:
+        - name: shared_vpc_with_service_project
+          backend: local
+
   - name: "simple_regional"
     driver:
       root_module_directory: test/fixtures/simple_regional
