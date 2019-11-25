@@ -405,3 +405,9 @@ variable "enable_shielded_nodes" {
   description = "Enable Shielded Nodes features on all nodes in this cluster"
   default     = false
 }
+
+variable "enable_shared_vpc_helper" {
+  description = "Invoke or not submodule to help correct setup shared VPC resourcess"
+  default     = false
+  type        = bool
+}

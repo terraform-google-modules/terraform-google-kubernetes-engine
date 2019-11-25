@@ -308,4 +308,3 @@ variable "enable_shared_vpc_helper" {
   default     = false
   type        = bool
 }
-

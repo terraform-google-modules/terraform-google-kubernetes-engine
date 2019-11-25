@@ -326,3 +326,9 @@ variable "master_ipv4_cidr_block" {
   description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
   default     = "10.0.0.0/28"
 }
+
+variable "enable_shared_vpc_helper" {
+  description = "Invoke or not submodule to help correct setup shared VPC resourcess"
+  default     = false
+  type        = bool
+}

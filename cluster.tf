@@ -17,12 +17,8 @@
 // This file was automatically generated from a template in ./autogen
 
 /******************************************
-  Create Container Cluster
+  Invoke Shared VPC helper submodule
  *****************************************/
-
-
-// TODO: Add new code to template and re-generate modules
-
 module "svpc_helper" {
   enable_shared_vpc_helper = var.enable_shared_vpc_helper
   source                   = "./modules/shared-vpc-helper"
@@ -34,11 +30,14 @@ module "svpc_helper" {
 
 }
 
-
-
+/******************************************
+  Create Container Cluster
+ *****************************************/
 resource "google_container_cluster" "primary" {
+
   depends_on = [module.svpc_helper]
-  provider   = google
+
+  provider = google
 
   name            = var.name
   description     = var.description
@@ -135,7 +134,6 @@ resource "google_container_cluster" "primary" {
 
   remove_default_node_pool = var.remove_default_node_pool
 }
-
 
 /******************************************
   Create Container Cluster node pools
