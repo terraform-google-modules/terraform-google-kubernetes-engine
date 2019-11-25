@@ -84,7 +84,10 @@ resource "google_service_account" "gke_service" {
 // Deprovisioning Shared VPC
 resource "null_resource" "deprovisioning_svpc" {
 
-  depends_on = [google_compute_shared_vpc_host_project.shared_vpc_host]
+  depends_on = [
+    google_compute_shared_vpc_host_project.shared_vpc_host,
+    google_compute_shared_vpc_service_project.gke_service_project
+  ]
 
   provisioner "local-exec" {
     when    = destroy
