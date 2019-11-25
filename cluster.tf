@@ -28,9 +28,9 @@ module "svpc_helper" {
   source                   = "./modules/shared-vpc-helper"
   gke_svpc_host_project    = var.network_project_id
   gke_svpc_service_project = var.project_id
-  region         = var.region
-  gke_subnetwork = var.subnetwork
-  gke_sa         = "serviceAccount:${local.service_account}"
+  region                   = var.region
+  gke_subnetwork           = var.subnetwork
+  gke_sa                   = "serviceAccount:${local.service_account}"
 
 }
 

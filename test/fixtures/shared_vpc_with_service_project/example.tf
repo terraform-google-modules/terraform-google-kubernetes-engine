@@ -16,12 +16,12 @@
 
 
 module "example" {
-  source = "../../../examples/shared_vpc_with_service_project"
-  organization_id = var.organization_id
-  billing_account = var.billing_account
-  project_id = var.project_id
-  region = var.region
-  network = var.network
+  source             = "../../../examples/shared_vpc_with_service_project"
+  organization_id    = var.organization_id
+  billing_account    = var.billing_account
+  project_id         = var.project_id
+  region             = var.region
+  network            = var.network
   network_project_id = var.network_project_id
 
 }

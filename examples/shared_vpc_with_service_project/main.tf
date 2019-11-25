@@ -48,9 +48,9 @@ module "shared_host_vpc" {
 
   subnets = [
     {
-      subnet_name   = local.main_gke_subnet
-      subnet_ip     = local.subnet_01_cidr
-      subnet_region = var.region
+      subnet_name           = local.main_gke_subnet
+      subnet_ip             = local.subnet_01_cidr
+      subnet_region         = var.region
       subnet_private_access = true
     },
   ]
@@ -72,8 +72,8 @@ module "shared_host_vpc" {
 
 
 module "gke_service_project" {
-  source  = "terraform-google-modules/project-factory/google"
-  version = "~> 4.0"
+  source            = "terraform-google-modules/project-factory/google"
+  version           = "~> 4.0"
   random_project_id = true
   name              = var.project_id
   org_id            = var.organization_id
