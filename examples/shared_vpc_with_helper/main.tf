@@ -63,8 +63,11 @@ resource "google_project_service" "gke_projects" {
  *****************************************/
 
 resource "google_compute_shared_vpc_host_project" "shared_vpc_host" {
-  depends_on = [google_project.gke_shared_host_project, google_project_service.gke_projects]
-  project    = google_project.gke_shared_host_project.project_id
+  depends_on = [
+    google_project.gke_shared_host_project,
+    google_project_service.gke_projects,
+  ]
+  project = google_project.gke_shared_host_project.project_id
 }
 
 resource "google_compute_shared_vpc_service_project" "gke_service_project" {
@@ -80,6 +83,17 @@ resource "google_service_account" "gke_service" {
   project      = google_project.gke_service_project.project_id
 }
 
+// Deprovisioning Shared VPC
+resource "null_resource" "deprovisioning_svpc" {
+
+  depends_on = [google_compute_shared_vpc_host_project.shared_vpc_host]
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = "gcloud compute shared-vpc associated-projects remove ${var.gke_service_project} --host-project ${var.gke_shared_host_project}"
+  }
+
+}
 
 /******************************************
 	Networking

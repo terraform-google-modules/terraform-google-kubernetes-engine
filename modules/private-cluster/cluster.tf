@@ -21,7 +21,7 @@
  *****************************************/
 module "svpc_helper" {
   enable_shared_vpc_helper = var.enable_shared_vpc_helper
-  source                   = "./modules/shared-vpc-helper"
+  source                   = "../shared-vpc-helper"
   gke_svpc_host_project    = var.network_project_id
   gke_svpc_service_project = var.project_id
   region                   = var.region
