@@ -97,10 +97,6 @@ resource "google_container_cluster" "primary" {
       disabled = ! var.horizontal_pod_autoscaling
     }
 
-    kubernetes_dashboard {
-      disabled = ! var.kubernetes_dashboard
-    }
-
     network_policy_config {
       disabled = ! var.network_policy
     }
@@ -150,7 +146,9 @@ resource "google_container_node_pool" "pools" {
   name     = var.node_pools[count.index]["name"]
   project  = var.project_id
   location = local.location
-  cluster  = google_container_cluster.primary.name
+
+  cluster = google_container_cluster.primary.name
+
   version = lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(
     var.node_pools[count.index],
     "version",
@@ -183,29 +181,31 @@ resource "google_container_node_pool" "pools" {
     image_type   = lookup(var.node_pools[count.index], "image_type", "COS")
     machine_type = lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")
     labels = merge(
-      lookup(lookup(var.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
-      lookup(lookup(var.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
-      var.node_pools_labels["all"],
-      var.node_pools_labels[var.node_pools[count.index]["name"]],
+      lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
+      local.node_pools_labels["all"],
+      local.node_pools_labels[var.node_pools[count.index]["name"]],
     )
     metadata = merge(
-      lookup(lookup(var.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
-      lookup(lookup(var.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
-      var.node_pools_metadata["all"],
-      var.node_pools_metadata[var.node_pools[count.index]["name"]],
+      lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
+      local.node_pools_metadata["all"],
+      local.node_pools_metadata[var.node_pools[count.index]["name"]],
       {
         "disable-legacy-endpoints" = var.disable_legacy_metadata_endpoints
       },
     )
     tags = concat(
-      lookup(var.node_pools_tags, "default_values", [true, true])[0] ? ["gke-${var.name}"] : [],
-      lookup(var.node_pools_tags, "default_values", [true, true])[1] ? ["gke-${var.name}-${var.node_pools[count.index]["name"]}"] : [],
-      var.node_pools_tags["all"],
-      var.node_pools_tags[var.node_pools[count.index]["name"]],
+      lookup(local.node_pools_tags, "default_values", [true, true])[0] ? ["gke-${var.name}"] : [],
+      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["gke-${var.name}-${var.node_pools[count.index]["name"]}"] : [],
+      local.node_pools_tags["all"],
+      local.node_pools_tags[var.node_pools[count.index]["name"]],
     )
 
-    disk_size_gb = lookup(var.node_pools[count.index], "disk_size_gb", 100)
-    disk_type    = lookup(var.node_pools[count.index], "disk_type", "pd-standard")
+    local_ssd_count = lookup(var.node_pools[count.index], "local_ssd_count", 0)
+    disk_size_gb    = lookup(var.node_pools[count.index], "disk_size_gb", 100)
+    disk_type       = lookup(var.node_pools[count.index], "disk_type", "pd-standard")
+
     service_account = lookup(
       var.node_pools[count.index],
       "service_account",
@@ -214,8 +214,8 @@ resource "google_container_node_pool" "pools" {
     preemptible = lookup(var.node_pools[count.index], "preemptible", false)
 
     oauth_scopes = concat(
-      var.node_pools_oauth_scopes["all"],
-      var.node_pools_oauth_scopes[var.node_pools[count.index]["name"]],
+      local.node_pools_oauth_scopes["all"],
+      local.node_pools_oauth_scopes[var.node_pools[count.index]["name"]],
     )
 
     guest_accelerator = [
@@ -231,6 +231,7 @@ resource "google_container_node_pool" "pools" {
 
   lifecycle {
     ignore_changes = [initial_node_count]
+
   }
 
   timeouts {
