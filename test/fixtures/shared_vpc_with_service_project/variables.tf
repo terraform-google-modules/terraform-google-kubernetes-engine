@@ -1,1 +1,0 @@
-../../../examples/shared_vpc_with_service_project/variables.tf
