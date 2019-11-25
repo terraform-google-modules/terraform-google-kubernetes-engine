@@ -26,7 +26,6 @@ variable "gke_service_project" {
   description = "The service project ID to host the cluster in"
 }
 
-
 variable "region" {
   description = "The region to host the cluster in"
 }
@@ -36,8 +35,6 @@ variable "gke_shared_host_project" {
   description = "The GCP project housing the VPC network to host the cluster in"
 }
 
-variable "cluster_name_suffix" {
-  default = ""
-}
+
 
 

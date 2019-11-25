@@ -1,17 +1,18 @@
 # Shared VPC Cluster
 
-This example illustrates how to create a simple cluster where the host network is not necessarily in the same project as the cluster.
+This example illustrates how to create a simple cluster using shared VPC helper submodule
+where the host network belong to shared vpc host project but the cluster to service project.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| billing\_account |  | string | n/a | yes |
-| gke\_service\_project |  | string | n/a | yes |
-| gke\_shared\_host\_project |  | string | n/a | yes |
-| org\_id |  | string | n/a | yes |
-| region |  | string | n/a | yes |
+| billing\_account | The billing account id associated with the project, e.g. XXXXXX-YYYYYY-ZZZZZZ | string | n/a | yes |
+| gke\_service\_project | The service project ID to host the cluster in | string | n/a | yes |
+| gke\_shared\_host\_project | The GCP project housing the VPC network to host the cluster in | string | n/a | yes |
+| org\_id | The numeric organization id | string | n/a | yes |
+| region | The region to host the cluster in | string | n/a | yes |
 
 ## Outputs
 

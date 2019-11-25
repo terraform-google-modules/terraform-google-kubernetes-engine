@@ -8,7 +8,7 @@ Specifically, this module automates the following steps for shared VPC set up:
 
 ## Usage
 This module is a part of main GKE module and should be not used independently.
-There is a [full example](../../examples/shared_vpc_with_helper) how it works with main GKE module. 
+There is a [full example](../../examples/shared_vpc_with_helper) how it works with main GKE module.
 
  <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

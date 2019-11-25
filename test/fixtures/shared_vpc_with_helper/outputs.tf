@@ -32,6 +32,7 @@ output "host_project_number" {
 
 output "region" {
   value = module.example.region
+  description = "The region to host the cluster in"
 }
 
 output "cluster_name" {
@@ -40,6 +41,7 @@ output "cluster_name" {
 }
 
 output "network" {
+  description = "The shared vpc host network name host the cluster in"
   value = module.example.network
 }
 
