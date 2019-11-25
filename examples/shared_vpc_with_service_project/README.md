@@ -7,15 +7,13 @@ This example illustrates how to create a simple cluster where the host network i
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
-| compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | string | n/a | yes |
-| ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
-| ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
+| billing\_account | The billing account ID to attach to created service account | string | n/a | yes |
+| cluster\_name\_suffix |  | string | `""` | no |
 | network | The VPC network to host the cluster in | string | n/a | yes |
 | network\_project\_id | The GCP project housing the VPC network to host the cluster in | string | n/a | yes |
-| project\_id | The project ID to host the cluster in | string | n/a | yes |
+| organization\_id | The organization ID | string | n/a | yes |
+| project\_id | The service project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
-| subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
 
 ## Outputs
 

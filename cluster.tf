@@ -25,22 +25,20 @@
 
 module "svpc_helper" {
   enable_shared_vpc_helper = var.enable_shared_vpc_helper
-  source = "./modules/shared-vpc-helper"
-
-  gke_svpc_host_project = var.network_project_id
+  source                   = "./modules/shared-vpc-helper"
+  gke_svpc_host_project    = var.network_project_id
   gke_svpc_service_project = var.project_id
-
-  region = var.region
+  region         = var.region
   gke_subnetwork = var.subnetwork
-  gke_sa = "serviceAccount:${local.service_account}"
+  gke_sa         = "serviceAccount:${local.service_account}"
 
 }
 
 
 
 resource "google_container_cluster" "primary" {
-  depends_on = [ module.svpc_helper ]
-  provider = google
+  depends_on = [module.svpc_helper]
+  provider   = google
 
   name            = var.name
   description     = var.description

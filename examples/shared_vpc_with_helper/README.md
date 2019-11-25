@@ -7,15 +7,11 @@ This example illustrates how to create a simple cluster where the host network i
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
-| compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | string | n/a | yes |
-| ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
-| ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
-| network | The VPC network to host the cluster in | string | n/a | yes |
-| network\_project\_id | The GCP project housing the VPC network to host the cluster in | string | n/a | yes |
-| project\_id | The project ID to host the cluster in | string | n/a | yes |
-| region | The region to host the cluster in | string | n/a | yes |
-| subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
+| billing\_account |  | string | n/a | yes |
+| gke\_service\_project |  | string | n/a | yes |
+| gke\_shared\_host\_project |  | string | n/a | yes |
+| org\_id |  | string | n/a | yes |
+| region |  | string | n/a | yes |
 
 ## Outputs
 
@@ -24,6 +20,8 @@ This example illustrates how to create a simple cluster where the host network i
 | ca\_certificate |  |
 | client\_token |  |
 | cluster\_name | Cluster name |
+| host\_project\_id |  |
+| host\_project\_number |  |
 | ip\_range\_pods | The secondary IP range used for pods |
 | ip\_range\_services | The secondary IP range used for services |
 | kubernetes\_endpoint |  |
@@ -31,6 +29,7 @@ This example illustrates how to create a simple cluster where the host network i
 | master\_kubernetes\_version | The master Kubernetes version |
 | network |  |
 | project\_id |  |
+| project\_number |  |
 | region |  |
 | service\_account | The default service account used for running nodes. |
 | subnetwork |  |

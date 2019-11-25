@@ -1,4 +1,4 @@
-  
+
 /**
  * Copyright 2019 Google LLC
  *
@@ -16,35 +16,31 @@
  */
 
 
+locals {
+  projects               = [var.gke_svpc_host_project, var.gke_svpc_service_project]
+  service_project_number = element(coalescelist(data.google_project.service_project[*].number, ["null"]), 0)
+
+  gke_s_account           = "serviceAccount:service-${local.service_project_number}@container-engine-robot.iam.gserviceaccount.com"
+  gke_default_s_account   = "serviceAccount:${local.service_project_number}@cloudservices.gserviceaccount.com"
+  shared_vpc_users_length = 3
+  shared_vpc_users        = [local.gke_s_account, local.gke_default_s_account, var.gke_sa]
+}
+
 /******************************************
 	Container API enable
  *****************************************/
 
-locals  {
-  projects = [var.gke_svpc_host_project, var.gke_svpc_service_project]
-  service_project_number = element(coalescelist(data.google_project.service_project[*].number, ["null"]), 0)
-
-  gke_s_account = "serviceAccount:service-${local.service_project_number}@container-engine-robot.iam.gserviceaccount.com"
-  gke_default_s_account = "serviceAccount:${local.service_project_number}@cloudservices.gserviceaccount.com"
-  shared_vpc_users_length = 3
-  shared_vpc_users = [local.gke_s_account, local.gke_default_s_account, var.gke_sa]
-}
-
-// enable api to created projects
 resource "google_project_service" "gke_api" {
-  count =  var.enable_shared_vpc_helper ? 2 : 0
-  project  = element(local.projects, count.index)
-  service  = "container.googleapis.com"
-  disable_on_destroy = false
+  count                      = var.enable_shared_vpc_helper ? 2 : 0
+  project                    = element(local.projects, count.index)
+  service                    = "container.googleapis.com"
+  disable_on_destroy         = false
   disable_dependent_services = false
 }
 
-/******************************************
-	Enable Roles
- *****************************************/
 
 data "google_project" "service_project" {
-  count =  var.enable_shared_vpc_helper ? 1 : 0
+  count      = var.enable_shared_vpc_helper ? 1 : 0
   project_id = var.gke_svpc_service_project
 }
 
@@ -52,6 +48,7 @@ data "google_project" "service_project" {
 /******************************************************************************************************************
   compute.networkUser role granted to all Service accounts on shared VPC
  *****************************************************************************************************************/
+
 resource "google_project_iam_member" "svpc_membership" {
   count = var.enable_shared_vpc_helper ? local.shared_vpc_users_length : 0
 
@@ -60,54 +57,38 @@ resource "google_project_iam_member" "svpc_membership" {
   member  = element(local.shared_vpc_users, count.index)
 
   depends_on = [
-        google_project_service.gke_api
+    google_project_service.gke_api
   ]
 
 }
 
-
-
 /******************************************
   compute.networkUser role granted to service accounts for GKE on shared VPC subnets
  *****************************************/
+
 resource "google_compute_subnetwork_iam_member" "gke_shared_vpc_subnets" {
-  count = var.enable_shared_vpc_helper ? local.shared_vpc_users_length : 0
+  count      = var.enable_shared_vpc_helper ? local.shared_vpc_users_length : 0
   subnetwork = var.gke_subnetwork
-  role = "roles/compute.networkUser"
-  region = var.region
-  project = var.gke_svpc_host_project
-  member  = element(local.shared_vpc_users, count.index)
+  role       = "roles/compute.networkUser"
+  region     = var.region
+  project    = var.gke_svpc_host_project
+  member     = element(local.shared_vpc_users, count.index)
 
   depends_on = [
-        google_project_service.gke_api
+    google_project_service.gke_api
   ]
 }
 
 /******************************************
   container.hostServiceAgentUser role granted to GKE service account for GKE on shared VPC
  *****************************************/
+
 resource "google_project_iam_member" "gke_host_agent" {
-  count = var.enable_shared_vpc_helper ? 1 : 0
+  count   = var.enable_shared_vpc_helper ? 1 : 0
   project = var.gke_svpc_host_project
   role    = "roles/container.hostServiceAgentUser"
   member  = local.gke_s_account
   depends_on = [
-        google_project_service.gke_api
+    google_project_service.gke_api
   ]
-
-}
-
-output "gke_service_project_id" {
-  value = var.gke_svpc_service_project
-}
-
-output "gke_host_project_id" {
-  value = var.gke_svpc_host_project
-}
-output "gke_subnetwork" {
-  value = var.gke_subnetwork
-}
-
-output "gke_sa" {
-  value = var.gke_sa
 }
