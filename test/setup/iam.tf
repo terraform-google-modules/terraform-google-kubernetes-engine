@@ -85,3 +85,9 @@ resource "google_billing_account_iam_member" "int_billing_user" {
   role               = "roles/billing.user"
   member             = "serviceAccount:${google_service_account.int_test.email}"
 }
+
+resource "google_organization_iam_member" "int_organization" {
+  org_id = var.org_id
+  role   = "roles/compute.organizations.disableXpnResource"
+  member = "serviceAccount:${google_service_account.int_test.email}"
+}
