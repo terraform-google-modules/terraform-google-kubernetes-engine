@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  value = module.gke-project.project_id
+output "project_ids" {
+  value = [module.gke-project-1.project_id, module.gke-project-2.project_id]
 }
 
 output "sa_key" {
@@ -23,6 +23,10 @@ output "sa_key" {
   sensitive = true
 }
 
-output "compute_engine_service_account" {
-  value = google_service_account.gke_sa.email
+output "compute_engine_service_accounts" {
+  value = [google_service_account.gke_sa_1.email, google_service_account.gke_sa_2.email]
+}
+
+output "registry_project_id" {
+  value = module.gke-project-1.project_id
 }
