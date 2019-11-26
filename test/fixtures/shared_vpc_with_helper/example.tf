@@ -17,12 +17,10 @@
 
 module "example" {
   source                  = "../../../examples/shared_vpc_with_helper"
+  folder_id               = var.folder_id
   region                  = var.region
   billing_account         = var.billing_account
   org_id                  = var.org_id
   gke_shared_host_project = var.gke_shared_host_project
   gke_service_project     = var.gke_service_project
-
-
 }
-
