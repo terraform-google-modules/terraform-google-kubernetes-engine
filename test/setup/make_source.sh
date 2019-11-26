@@ -32,8 +32,5 @@ echo "export SERVICE_ACCOUNT_JSON='$(echo $sa_json | base64 --decode)'" >> ../so
 compute_engine_service_account=$(terraform output compute_engine_service_account)
 echo "export TF_VAR_compute_engine_service_account='$compute_engine_service_account'" >> ../source.sh
 
-org_id=$(terraform output org_id)
-echo "export TF_VAR_org_id='$org_id'" >> ../source.sh
-
 billing_account=$(terraform output billing_account)
 echo "export TF_VAR_billing_account='$billing_account'" >> ../source.sh
