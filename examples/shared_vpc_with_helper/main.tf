@@ -116,6 +116,7 @@ resource "google_compute_subnetwork" "main" {
   ip_cidr_range = "10.0.0.0/17"
   network       = google_compute_network.main.self_link
   project       = google_project.gke_shared_host_project.project_id
+  region        = var.region
 
   secondary_ip_range {
     range_name    = "cft-gke-test-pods-${random_string.suffix.result}"
