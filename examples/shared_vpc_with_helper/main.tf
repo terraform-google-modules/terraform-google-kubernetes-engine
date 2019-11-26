@@ -71,7 +71,7 @@ resource "google_compute_shared_vpc_host_project" "shared_vpc_host" {
 resource "google_compute_shared_vpc_service_project" "gke_service_project" {
   depends_on      = [
     google_compute_shared_vpc_host_project.shared_vpc_host,
-    null_resource.deprovisioning_svpc
+    null_resource.gke_dependencies
   ]
   host_project    = google_project.gke_shared_host_project.project_id
   service_project = google_project.gke_service_project.project_id
