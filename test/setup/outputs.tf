@@ -26,3 +26,7 @@ output "sa_key" {
 output "compute_engine_service_accounts" {
   value = [google_service_account.gke_sa_1.email, google_service_account.gke_sa_2.email]
 }
+
+output "registry_project_id" {
+  value = module.gke-project-1.project_id
+}
