@@ -18,8 +18,6 @@ locals {
   int_required_project_roles = [
     "roles/owner",
     "roles/compute.admin",
-    "roles/compute.organizations.enableXpnHost",
-    "roles/compute.organizations.disableXpnResource",
     "roles/cloudkms.cryptoKeyEncrypterDecrypter",
     "roles/container.admin",
     "roles/container.clusterAdmin",
