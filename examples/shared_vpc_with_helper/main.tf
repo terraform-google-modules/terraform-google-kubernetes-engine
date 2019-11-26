@@ -84,20 +84,6 @@ resource "google_service_account" "gke_service" {
   project      = google_project.gke_service_project.project_id
 }
 
-// Deprovisioning Shared VPC
-resource "null_resource" "deprovisioning_svpc" {
-
-  depends_on = [
-    google_compute_shared_vpc_host_project.shared_vpc_host
-  ]
-
-  provisioner "local-exec" {
-    when    = destroy
-    command = "gcloud beta compute shared-vpc associated-projects remove ${google_project.gke_service_project.project_id} --host-project ${google_project.gke_shared_host_project.project_id}"
-  }
-
-}
-
 /******************************************
 	Networking
  *****************************************/
@@ -137,12 +123,32 @@ locals {
 
 }
 
+
+# // Deprovisioning Shared VPC
+# resource "null_resource" "deprovisioning_svpc" {
+
+#   depends_on = [
+#     google_compute_shared_vpc_host_project.shared_vpc_host
+#   ]
+
+
+# }
+
+
 // Work around instead of `depends_on` for module.gke
-resource "null_resource" "wait_before_api_enable" {
-  depends_on = [google_project_service.gke_projects]
+resource "null_resource" "deprovisioning_svpc" {
+  depends_on = [
+    google_project_service.gke_projects,
+    google_compute_shared_vpc_host_project.shared_vpc_host
+  ]
 
   triggers = {
     project_id = google_project.gke_service_project.project_id
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = "gcloud beta compute shared-vpc associated-projects remove ${google_project.gke_service_project.project_id} --host-project ${google_project.gke_shared_host_project.project_id}"
   }
 }
 
@@ -153,7 +159,7 @@ resource "null_resource" "wait_before_api_enable" {
 module "gke" {
   source                   = "../../"
   enable_shared_vpc_helper = true
-  project_id               = null_resource.wait_before_api_enable.triggers.project_id
+  project_id               = null_resource.deprovisioning_svpc.triggers.project_id
   name                     = "gke-cluster${random_string.suffix.result}"
   region                   = var.region
   network                  = google_compute_network.main.name
