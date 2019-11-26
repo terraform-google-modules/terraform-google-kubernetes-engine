@@ -69,7 +69,7 @@ resource "google_compute_shared_vpc_host_project" "shared_vpc_host" {
 }
 
 resource "google_compute_shared_vpc_service_project" "gke_service_project" {
-  depends_on      = [
+  depends_on = [
     google_compute_shared_vpc_host_project.shared_vpc_host,
     null_resource.gke_dependencies
   ]
