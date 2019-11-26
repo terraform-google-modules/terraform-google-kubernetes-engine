@@ -18,10 +18,6 @@ variable "folder_id" {
   description = "Folder to create shared vpc host and service projects in"
 }
 
-variable "org_id" {
-  description = "The organization ID"
-}
-
 variable "billing_account" {
   description = "The billing account ID to attach to created service account"
 }

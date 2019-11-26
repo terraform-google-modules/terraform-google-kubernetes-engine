@@ -31,10 +31,6 @@ output "compute_engine_service_account" {
   value = google_service_account.gke_sa.email
 }
 
-output "org_id" {
-  value = var.org_id
-}
-
 output "billing_account" {
   value = var.billing_account
 }
