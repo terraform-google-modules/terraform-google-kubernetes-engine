@@ -144,6 +144,7 @@ resource "null_resource" "deprovisioning_svpc" {
 
   triggers = {
     project_id = google_project.gke_service_project.project_id
+    gke_subnetwork = google_compute_subnetwork.main.name
   }
 
   provisioner "local-exec" {
@@ -164,7 +165,7 @@ module "gke" {
   region                   = var.region
   network                  = google_compute_network.main.name
   network_project_id       = google_project.gke_shared_host_project.project_id
-  subnetwork               = google_compute_subnetwork.main.name
+  subnetwork               = null_resource.deprovisioning_svpc.triggers.gke_subnetwork
   ip_range_pods            = local.pods_gke_subnet
   ip_range_services        = local.services_gke_subnet
   create_service_account   = true
