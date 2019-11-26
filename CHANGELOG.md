@@ -25,7 +25,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### Changed
 
-* The `node_pool_labels`, `node_pool_tags`, and `node_pool_taints` variables have defaults and can be overridden within the 
+* The `node_pool_labels`, `node_pool_tags`, and `node_pool_taints` variables have defaults and can be overridden within the
   `node_pools` object. [#3]
 * `upstream_nameservers` variable is typed as a list of strings. [#350]
 
