@@ -301,3 +301,9 @@ variable "skip_provisioners" {
   description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
   default     = false
 }
+
+variable "enable_shared_vpc_helper" {
+  description = "Invoke helper submodule to activate needed apis and grant permissions for GKE to work with Shared VPC resources"
+  default     = false
+  type        = bool
+}

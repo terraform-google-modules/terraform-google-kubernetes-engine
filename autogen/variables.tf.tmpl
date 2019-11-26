@@ -453,3 +453,9 @@ variable "enable_shielded_nodes" {
   default     = false
 }
 {% endif %}
+
+variable "enable_shared_vpc_helper" {
+  description = "Invoke helper submodule to activate needed apis and grant permissions for GKE to work with Shared VPC resources"
+  default     = false
+  type        = bool
+}

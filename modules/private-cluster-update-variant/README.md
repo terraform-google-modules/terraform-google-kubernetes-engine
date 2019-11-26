@@ -145,6 +145,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | bool | `"true"` | no |
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | bool | `"false"` | no |
 | enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | bool | `"false"` | no |
+| enable\_shared\_vpc\_helper | Invoke helper submodule to activate needed apis and grant permissions for GKE to work with Shared VPC resources | bool | `"false"` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | bool | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | bool | `"true"` | no |
 | http\_load\_balancing | Enable httpload balancer addon | bool | `"true"` | no |

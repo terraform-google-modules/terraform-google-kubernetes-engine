@@ -16,6 +16,9 @@
 
 echo "#!/usr/bin/env bash" > ../source.sh
 
+folder_id=$(terraform output folder_id)
+echo "export TF_VAR_folder_id='$folder_id'" >> ../source.sh
+
 project_ids=$(terraform output project_ids)
 echo "export TF_VAR_project_ids='$project_ids'" >> ../source.sh
 
@@ -28,3 +31,6 @@ echo "export SERVICE_ACCOUNT_JSON='$(echo $sa_json | base64 --decode)'" >> ../so
 
 compute_engine_service_accounts=$(terraform output compute_engine_service_accounts)
 echo "export TF_VAR_compute_engine_service_accounts='$compute_engine_service_accounts'" >> ../source.sh
+
+billing_account=$(terraform output billing_account)
+echo "export TF_VAR_billing_account='$billing_account'" >> ../source.sh

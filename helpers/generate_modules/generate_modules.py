@@ -44,6 +44,7 @@ class Module(object):
 MODULES = [
     Module("./", {
         'private_cluster': False,
+        'root_module': True,
     }),
     Module("./modules/private-cluster", {
         'module_path': '//modules/private-cluster',

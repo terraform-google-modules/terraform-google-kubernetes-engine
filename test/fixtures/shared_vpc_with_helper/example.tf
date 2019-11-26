@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2018 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,12 @@
  * limitations under the License.
  */
 
-output "folder_id" {
-  value = google_folder.ci_gke_folder.id
-}
 
-output "project_ids" {
-  value = [module.gke-project-1.project_id, module.gke-project-2.project_id]
-}
-
-output "sa_key" {
-  value     = google_service_account_key.int_test.private_key
-  sensitive = true
-}
-
-output "compute_engine_service_accounts" {
-  value = [google_service_account.gke_sa_1.email, google_service_account.gke_sa_2.email]
-}
-
-output "registry_project_id" {
-  value = module.gke-project-1.project_id
-}
-
-output "billing_account" {
-  value = var.billing_account
+module "example" {
+  source                  = "../../../examples/shared_vpc_with_helper"
+  folder_id               = var.folder_id
+  region                  = var.region
+  billing_account         = var.billing_account
+  gke_shared_host_project = var.gke_shared_host_project
+  gke_service_project     = var.gke_service_project
 }

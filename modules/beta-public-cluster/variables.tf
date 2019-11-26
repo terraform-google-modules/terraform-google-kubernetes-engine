@@ -423,3 +423,9 @@ variable "enable_shielded_nodes" {
   description = "Enable Shielded Nodes features on all nodes in this cluster"
   default     = false
 }
+
+variable "enable_shared_vpc_helper" {
+  description = "Invoke helper submodule to activate needed apis and grant permissions for GKE to work with Shared VPC resources"
+  default     = false
+  type        = bool
+}

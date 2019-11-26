@@ -325,3 +325,9 @@ variable "master_ipv4_cidr_block" {
   description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
   default     = "10.0.0.0/28"
 }
+
+variable "enable_shared_vpc_helper" {
+  description = "Invoke helper submodule to activate needed apis and grant permissions for GKE to work with Shared VPC resources"
+  default     = false
+  type        = bool
+}
