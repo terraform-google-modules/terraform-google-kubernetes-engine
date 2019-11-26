@@ -38,6 +38,26 @@ where the host network belong to shared vpc host project but the cluster to serv
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
+## IAM Requirements
+
+You must have the following roles assigned to the `folder_id`:
+
+```hcl
+[
+  "roles/compute.admin",
+  "roles/compute.networkAdmin",
+  "roles/owner",
+  "roles/resourcemanager.projectCreator",
+  "roles/resourcemanager.folderAdmin",
+  "roles/resourcemanager.folderIamAdmin",
+  "roles/billing.projectManager",
+  "roles/compute.xpnAdmin",
+  "roles/resourcemanager.projectIamAdmin"
+]
+```
+
+## Install
+
 To provision this example, run the following from within this directory:
 - `terraform init` to get the plugins
 - `terraform plan` to see the infrastructure plan
