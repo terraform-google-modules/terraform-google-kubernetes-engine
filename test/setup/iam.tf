@@ -34,6 +34,7 @@ locals {
     "roles/compute.admin",
     "roles/compute.networkAdmin",
     "roles/compute.organizations.enableXpnHost",
+    "roles/compute.organizations.disableXpnResource",
     "roles/owner",
     "roles/resourcemanager.projectCreator",
     "roles/resourcemanager.folderAdmin",
