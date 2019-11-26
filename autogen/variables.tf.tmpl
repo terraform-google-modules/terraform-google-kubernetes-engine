@@ -217,7 +217,7 @@ variable "stub_domains" {
 }
 
 variable "upstream_nameservers" {
-  type        = "list"
+  type        = list(string)
   description = "If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf"
   default     = []
 }
