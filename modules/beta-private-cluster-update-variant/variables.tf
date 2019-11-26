@@ -175,6 +175,24 @@ variable "node_pools_metadata" {
   }
 }
 
+variable "cluster_autoscaling" {
+  type = object({
+    enabled       = bool
+    min_cpu_cores = number
+    max_cpu_cores = number
+    min_memory_gb = number
+    max_memory_gb = number
+  })
+  default = {
+    enabled       = false
+    max_cpu_cores = 0
+    min_cpu_cores = 0
+    max_memory_gb = 0
+    min_memory_gb = 0
+  }
+  description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
+}
+
 variable "node_pools_taints" {
   type        = map(list(object({ key = string, value = string, effect = string })))
   description = "Map of lists containing node taints by node-pool name"

@@ -26,5 +26,13 @@ module "example" {
   ip_range_pods                  = google_compute_subnetwork.main.secondary_ip_range[0].range_name
   ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   compute_engine_service_account = var.compute_engine_service_accounts[0]
+
+  cluster_autoscaling = {
+    enabled       = true
+    max_cpu_cores = 20
+    min_cpu_cores = 5
+    max_memory_gb = 30
+    min_memory_gb = 10
+  }
 }
 
