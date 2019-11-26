@@ -16,15 +16,15 @@
 
 echo "#!/usr/bin/env bash" > ../source.sh
 
-project_id=$(terraform output project_id)
-echo "export TF_VAR_project_id='$project_id'" >> ../source.sh
+project_ids=$(terraform output project_ids)
+echo "export TF_VAR_project_ids='$project_ids'" >> ../source.sh
 
-# We use the same project for registry project in the tests.
-echo "export TF_VAR_registry_project_id='$project_id'" >> ../source.sh
+registry_project_id=$(terraform output registry_project_id)
+echo "export TF_VAR_registry_project_id='$registry_project_id'" >> ../source.sh
 
 sa_json=$(terraform output sa_key)
 # shellcheck disable=SC2086
 echo "export SERVICE_ACCOUNT_JSON='$(echo $sa_json | base64 --decode)'" >> ../source.sh
 
-compute_engine_service_account=$(terraform output compute_engine_service_account)
-echo "export TF_VAR_compute_engine_service_account='$compute_engine_service_account'" >> ../source.sh
+compute_engine_service_accounts=$(terraform output compute_engine_service_accounts)
+echo "export TF_VAR_compute_engine_service_accounts='$compute_engine_service_accounts'" >> ../source.sh

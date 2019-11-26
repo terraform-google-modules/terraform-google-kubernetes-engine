@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-variable "project_id" {
+variable "project_ids" {
+  type        = list(string)
   description = "The project ID to host the cluster in"
 }
 
