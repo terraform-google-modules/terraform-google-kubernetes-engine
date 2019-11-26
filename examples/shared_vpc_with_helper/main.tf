@@ -91,7 +91,7 @@ resource "null_resource" "deprovisioning_svpc" {
 
   provisioner "local-exec" {
     when    = destroy
-    command = "${path.module}/scripts/unprovision-shared-vpc.sh ${google_project.gke_service_project.project_id} ${google_project.gke_shared_host_project.project_id}"
+    command = "gcloud compute shared-vpc associated-projects remove ${google_project.gke_service_project.project_id} --host-project ${google_project.gke_shared_host_project.project_id}"
   }
 
 }
