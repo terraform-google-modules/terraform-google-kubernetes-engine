@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
+provider "google-beta" {
+  version = "~> 3.0.0-beta.1"
+  region  = var.region
+}
+
+
 module "gcp-network" {
-  source       = "terraform-google-modules/network/google"
-  version      = "~> 1.4.0"
+  source       = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=release/2.0"
   project_id   = var.project_id
   network_name = var.network
 

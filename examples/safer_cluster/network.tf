@@ -15,8 +15,7 @@
  */
 
 module "gcp-network" {
-  source       = "terraform-google-modules/network/google"
-  version      = "~> 1.4.0"
+  source       = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=release/2.0"
   project_id   = var.project_id
   network_name = local.network_name
 
