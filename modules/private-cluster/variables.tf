@@ -328,7 +328,7 @@ variable "master_ipv4_cidr_block" {
 }
 
 variable "enable_shared_vpc_helper" {
-  description = "Invoke or not submodule to help correct setup shared VPC resourcess"
+  description = "Invoke helper submodule to activate needed apis and grant permissions for GKE to work with Shared VPC resources"
   default     = false
   type        = bool
 }
