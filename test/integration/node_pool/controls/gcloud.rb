@@ -33,6 +33,30 @@ control "gcloud" do
       end
     end
 
+    describe "cluster-autoscaling" do
+      it "has the expected cluster autoscaling settings" do
+        expect(data['autoscaling']).to eq({
+            "autoprovisioningNodePoolDefaults" => {
+                "oauthScopes" => %w(https://www.googleapis.com/auth/logging.write https://www.googleapis.com/auth/monitoring),
+                "serviceAccount" => "default"
+            },
+            "enableNodeAutoprovisioning" => true,
+            "resourceLimits" => [
+                {
+                    "maximum" => "20",
+                    "minimum" => "5",
+                    "resourceType" => "cpu"
+                },
+                {
+                    "maximum" => "30",
+                    "minimum" => "10",
+                    "resourceType" => "memory"
+                }
+            ]
+        })
+      end
+    end
+
     describe "node pools" do
       let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" } }
 
