@@ -88,6 +88,6 @@ resource "google_billing_account_iam_member" "int_billing_user" {
 
 resource "google_organization_iam_member" "int_organization" {
   org_id = var.org_id
-  role   = "roles/compute.organizations.disableXpnResource"
+  role   = "roles/compute.networkAdmin"
   member = "serviceAccount:${google_service_account.int_test.email}"
 }
