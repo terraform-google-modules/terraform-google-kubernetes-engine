@@ -17,7 +17,7 @@
 module "example" {
   source = "../../../examples/safer_cluster"
 
-  project_id                     = var.project_id
+  project_id                     = var.project_ids[0]
   region                         = var.region
-  compute_engine_service_account = var.compute_engine_service_account
+  compute_engine_service_account = var.compute_engine_service_accounts[0]
 }

@@ -22,6 +22,7 @@ This example illustrates how to instantiate the opinionated Safer Cluster module
 | location |  |
 | master\_kubernetes\_version | Kubernetes version of the master |
 | network\_name | The name of the VPC being created |
+| project\_id | The project ID the cluster is in |
 | region | The region in which the cluster resides |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | subnet\_names | The names of the subnet being created |

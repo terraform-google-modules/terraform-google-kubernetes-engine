@@ -69,3 +69,8 @@ output "zones" {
   description = "List of zones in which the cluster resides"
   value       = module.gke.zones
 }
+
+output "project_id" {
+  description = "The project ID the cluster is in"
+  value       = var.project_id
+}
