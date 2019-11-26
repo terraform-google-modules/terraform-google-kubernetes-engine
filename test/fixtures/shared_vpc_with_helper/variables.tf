@@ -24,15 +24,17 @@ variable "billing_account" {
 
 variable "gke_service_project" {
   description = "The service project ID to host the cluster in"
+  default     = "ci-gke-svpc-service"
 }
 
 variable "region" {
   description = "The region to host the cluster in"
+  default     = "us-central1"
 }
-
 
 variable "gke_shared_host_project" {
   description = "The GCP project housing the VPC network to host the cluster in"
+  default     = "ci-gke-svpc-host"
 }
 
 
