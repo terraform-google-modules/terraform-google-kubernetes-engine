@@ -51,7 +51,7 @@ suites:
       root_module_directory: test/fixtures/shared_vpc_with_helper
     verifier:
       systems:
-        - name: shared_vpc_with_service_project
+        - name: shared_vpc_with_helper
           backend: local
 
   - name: "simple_regional"
