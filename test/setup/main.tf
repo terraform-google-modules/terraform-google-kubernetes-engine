@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+resource "random_id" "folder_rand" {
+  byte_length = 2
+}
+
+resource "google_folder" "ci_gke_folder" {
+  display_name = "ci-tests-gke-folder-${random_id.folder_rand.hex}"
+  parent       = "folders/${replace(var.folder_id, "folders/", "")}"
+}
+
 module "gke-project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 3.0"
@@ -21,12 +30,15 @@ module "gke-project" {
   name              = "ci-gke"
   random_project_id = true
   org_id            = var.org_id
-  folder_id         = var.folder_id
+  folder_id         = google_folder.ci_gke_folder.id
   billing_account   = var.billing_account
 
   auto_create_network = true
 
   activate_apis = [
+    "admin.googleapis.com",
+    "appengine.googleapis.com",
+    "cloudbilling.googleapis.com",
     "bigquery-json.googleapis.com",
     "cloudkms.googleapis.com",
     "cloudresourcemanager.googleapis.com",

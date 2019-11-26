@@ -15,7 +15,9 @@
  */
 
 locals {
-  int_required_roles = [
+  int_required_project_roles = [
+    "roles/owner",
+    "roles/compute.admin",
     "roles/cloudkms.cryptoKeyEncrypterDecrypter",
     "roles/compute.networkAdmin",
     "roles/container.admin",
@@ -27,6 +29,14 @@ locals {
     "roles/compute.viewer",
     "roles/resourcemanager.projectIamAdmin",
     "roles/composer.worker"
+  ]
+
+  int_required_folder_roles = [
+    "roles/owner",
+    "roles/resourcemanager.projectCreator",
+    "roles/resourcemanager.folderAdmin",
+    "roles/resourcemanager.folderIamAdmin",
+    "roles/billing.projectManager",
   ]
 }
 
@@ -48,13 +58,27 @@ resource "google_service_account" "gke_sa" {
 }
 
 resource "google_project_iam_member" "int_test" {
-  count = length(local.int_required_roles)
+  count = length(local.int_required_project_roles)
 
   project = module.gke-project.project_id
-  role    = local.int_required_roles[count.index]
+  role    = local.int_required_project_roles[count.index]
   member  = "serviceAccount:${google_service_account.int_test.email}"
+}
+
+resource "google_folder_iam_member" "int_test_folder" {
+  count = length(local.int_required_folder_roles)
+
+  folder = google_folder.ci_gke_folder.name
+  role   = local.int_required_folder_roles[count.index]
+  member = "serviceAccount:${google_service_account.int_test.email}"
 }
 
 resource "google_service_account_key" "int_test" {
   service_account_id = google_service_account.int_test.id
+}
+
+resource "google_billing_account_iam_member" "int_billing_user" {
+  billing_account_id = var.billing_account
+  role               = "roles/billing.user"
+  member             = "serviceAccount:${google_service_account.int_test.email}"
 }

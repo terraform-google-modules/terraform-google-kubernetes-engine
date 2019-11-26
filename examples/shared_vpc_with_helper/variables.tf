@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+variable "folder_id" {
+  description = "Folder to create shared vpc host and service projects in"
+}
+
 variable "org_id" {
   description = "The numeric organization id"
 }

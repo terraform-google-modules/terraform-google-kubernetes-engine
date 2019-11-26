@@ -16,6 +16,9 @@
 
 echo "#!/usr/bin/env bash" > ../source.sh
 
+folder_id=$(terraform output folder_id)
+echo "export TF_VAR_folder_id='$folder_id'" >> ../source.sh
+
 project_id=$(terraform output project_id)
 echo "export TF_VAR_project_id='$project_id'" >> ../source.sh
 

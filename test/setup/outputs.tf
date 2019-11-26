@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+output "folder_id" {
+  value = google_folder.ci_gke_folder.id
+}
+
 output "project_id" {
   value = module.gke-project.project_id
 }
