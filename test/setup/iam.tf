@@ -19,7 +19,6 @@ locals {
     "roles/owner",
     "roles/compute.admin",
     "roles/cloudkms.cryptoKeyEncrypterDecrypter",
-    "roles/compute.networkAdmin",
     "roles/container.admin",
     "roles/container.clusterAdmin",
     "roles/container.developer",
@@ -33,6 +32,7 @@ locals {
 
   int_required_folder_roles = [
     "roles/compute.admin",
+    "roles/compute.networkAdmin",
     "roles/compute.organizations.enableXpnHost",
     "roles/owner",
     "roles/resourcemanager.projectCreator",
