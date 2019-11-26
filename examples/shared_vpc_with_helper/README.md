@@ -12,7 +12,6 @@ where the host network belong to shared vpc host project but the cluster to serv
 | folder\_id | Folder to create shared vpc host and service projects in | string | n/a | yes |
 | gke\_service\_project | The service project ID to host the cluster in | string | n/a | yes |
 | gke\_shared\_host\_project | The GCP project housing the VPC network to host the cluster in | string | n/a | yes |
-| org\_id | The numeric organization id | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
 
 ## Outputs
