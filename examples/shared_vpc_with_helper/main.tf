@@ -16,7 +16,7 @@
 
 
 
-provider "google-beta" {
+provider "google" {
   version = "~> 2.18.0"
   region  = var.region
 }
@@ -69,7 +69,10 @@ resource "google_compute_shared_vpc_host_project" "shared_vpc_host" {
 }
 
 resource "google_compute_shared_vpc_service_project" "gke_service_project" {
-  depends_on      = [google_compute_shared_vpc_host_project.shared_vpc_host]
+  depends_on      = [
+    google_compute_shared_vpc_host_project.shared_vpc_host,
+    null_resource.deprovisioning_svpc
+  ]
   host_project    = google_project.gke_shared_host_project.project_id
   service_project = google_project.gke_service_project.project_id
 }
@@ -81,20 +84,19 @@ resource "google_service_account" "gke_service" {
   project      = google_project.gke_service_project.project_id
 }
 
-# // Deprovisioning Shared VPC
-# resource "null_resource" "deprovisioning_svpc" {
+// Deprovisioning Shared VPC
+resource "null_resource" "deprovisioning_svpc" {
 
-#   depends_on = [
-#     google_compute_shared_vpc_host_project.shared_vpc_host,
-#     google_compute_shared_vpc_service_project.gke_service_project
-#   ]
+  depends_on = [
+    google_compute_shared_vpc_host_project.shared_vpc_host
+  ]
 
-#   provisioner "local-exec" {
-#     when    = destroy
-#     command = "gcloud beta compute shared-vpc associated-projects remove ${google_project.gke_service_project.project_id} --host-project ${google_project.gke_shared_host_project.project_id}"
-#   }
+  provisioner "local-exec" {
+    when    = destroy
+    command = "gcloud beta compute shared-vpc associated-projects remove ${google_project.gke_service_project.project_id} --host-project ${google_project.gke_shared_host_project.project_id}"
+  }
 
-# }
+}
 
 /******************************************
 	Networking
