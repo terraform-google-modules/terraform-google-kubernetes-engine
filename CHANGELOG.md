@@ -20,8 +20,9 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * `simple_regional_with_networking` example. [#195]
 * `release_channel` variable for beta submodules. [#271]
 * The `node_locations` attribute to the `node_pools` object for beta submodules. [#290]
-* `private_zonal_with_nteworking` example. [#308]
+* `private_zonal_with_networking` example. [#308]
 * `regional_private_node_pool_oauth_scopes` example. [#321]
+* The `cluster_autoscaling` variable for beta submodules. [#93]
 
 ### Changed
 
@@ -314,6 +315,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [#108]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/108
 [#106]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/106
 [#94]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/94
+[#93]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/93
 [#89]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/89
 [#80]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/80
 [#77]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/77
