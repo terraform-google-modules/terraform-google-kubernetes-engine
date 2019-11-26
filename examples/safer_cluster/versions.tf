@@ -14,16 +14,6 @@
  * limitations under the License.
  */
 
-module "example" {
-  source = "../../../examples/simple_zonal_with_acm"
-
-  project_id          = var.project_ids[1]
-  cluster_name_suffix = "-${random_string.suffix.result}"
-  region              = var.region
-  zones               = slice(var.zones, 0, 1)
-  network             = google_compute_network.main.name
-  subnetwork          = google_compute_subnetwork.main.name
-  ip_range_pods       = google_compute_subnetwork.main.secondary_ip_range[0].range_name
-  ip_range_services   = google_compute_subnetwork.main.secondary_ip_range[1].range_name
-  operator_path       = "/workspace/acm.yaml"
+terraform {
+  required_version = ">= 0.12"
 }
