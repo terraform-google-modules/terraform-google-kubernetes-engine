@@ -31,7 +31,6 @@ resource "google_project" "gke_shared_host_project" {
   name            = var.gke_shared_host_project
   folder_id       = var.folder_id
   project_id      = "${var.gke_shared_host_project}-${random_string.suffix.result}"
-  org_id          = var.org_id
   billing_account = var.billing_account
 }
 
@@ -39,7 +38,6 @@ resource "google_project" "gke_service_project" {
   name            = var.gke_service_project
   folder_id       = var.folder_id
   project_id      = "${var.gke_service_project}-${random_string.suffix.result}"
-  org_id          = var.org_id
   billing_account = var.billing_account
 }
 
