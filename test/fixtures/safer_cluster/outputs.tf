@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2018 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-
 output "project_id" {
   value = module.example.project_id
 }
 
-output "location" {
-  value = module.example.location
+output "region" {
+  value = module.example.region
 }
 
 output "cluster_name" {
   description = "Cluster name"
   value       = module.example.cluster_name
+}
+output "location" {
+  value = module.example.location
+}
+
+output "master_kubernetes_version" {
+  description = "The master Kubernetes version"
+  value       = module.example.master_kubernetes_version
 }
 
 output "kubernetes_endpoint" {
@@ -39,35 +46,11 @@ output "client_token" {
 }
 
 output "ca_certificate" {
-  value = module.example.ca_certificate
+  description = "The cluster CA certificate"
+  value       = module.example.ca_certificate
 }
 
 output "service_account" {
-  description = "The default service account used for running nodes."
+  description = "The service account to default running nodes as if not overridden in `node_pools`."
   value       = module.example.service_account
-}
-
-output "network_name" {
-  description = "The name of the VPC being created"
-  value       = module.example.network
-}
-
-output "subnet_name" {
-  description = "The name of the subnet being created"
-  value       = module.example.subnetwork
-}
-
-output "region" {
-  description = "The region the cluster is hosted in"
-  value       = module.example.region
-}
-
-output "ip_range_pods_name" {
-  description = "The secondary range name for pods"
-  value       = module.example.ip_range_pods_name
-}
-
-output "ip_range_services_name" {
-  description = "The secondary range name for services"
-  value       = module.example.ip_range_services_name
 }

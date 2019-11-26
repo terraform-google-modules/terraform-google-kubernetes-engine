@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2018 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,10 @@
  * limitations under the License.
  */
 
-output "folder_id" {
-  value = google_folder.ci_gke_folder.id
-}
+module "example" {
+  source = "../../../examples/safer_cluster"
 
-output "project_ids" {
-  value = [module.gke-project-1.project_id, module.gke-project-2.project_id]
-}
-
-output "sa_key" {
-  value     = google_service_account_key.int_test.private_key
-  sensitive = true
-}
-
-output "compute_engine_service_accounts" {
-  value = [google_service_account.gke_sa_1.email, google_service_account.gke_sa_2.email]
-}
-
-output "registry_project_id" {
-  value = module.gke-project-1.project_id
-}
-
-output "billing_account" {
-  value = var.billing_account
+  project_id                     = var.project_ids[0]
+  region                         = var.region
+  compute_engine_service_account = var.compute_engine_service_accounts[0]
 }
