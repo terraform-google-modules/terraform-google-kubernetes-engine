@@ -36,6 +36,9 @@ module "gke-project-1" {
   auto_create_network = true
 
   activate_apis = [
+    "admin.googleapis.com",
+    "appengine.googleapis.com",
+    "cloudbilling.googleapis.com",
     "bigquery-json.googleapis.com",
     "cloudkms.googleapis.com",
     "cloudresourcemanager.googleapis.com",
@@ -64,6 +67,9 @@ module "gke-project-2" {
   auto_create_network = true
 
   activate_apis = [
+    "admin.googleapis.com",
+    "appengine.googleapis.com",
+    "cloudbilling.googleapis.com",
     "bigquery-json.googleapis.com",
     "cloudkms.googleapis.com",
     "cloudresourcemanager.googleapis.com",
