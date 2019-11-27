@@ -33,14 +33,10 @@ module "gke" {
   remove_default_node_pool          = true
   disable_legacy_metadata_endpoints = true
 
-  master_authorized_networks_config = [
+  master_authorized_networks = [
     {
-      cidr_blocks = [
-        {
-          cidr_block   = module.gke-network.subnets_ips[0]
-          display_name = "VPC"
-        },
-      ]
+      cidr_block   = module.gke-network.subnets_ips[0]
+      display_name = "VPC"
     },
   ]
 
