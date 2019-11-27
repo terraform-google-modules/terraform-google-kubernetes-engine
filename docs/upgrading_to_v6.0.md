@@ -3,6 +3,11 @@
 The v6.0 release of *kubernetes-engine* is a backwards incompatible
 release.
 
+## Dropped support
+Due to changes in GKE, the module has dropped support for setting the `kubernetes_dashboard` variable.
+
+Additionally, support for Google provider versions older than v2.18 has been removed.
+
 ## Migration Instructions
 
 ### Master Authorized Networks
