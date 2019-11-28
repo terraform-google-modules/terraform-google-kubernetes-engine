@@ -55,6 +55,18 @@ resource "google_container_cluster" "primary" {
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
+  cluster_autoscaling {
+    enabled = var.cluster_autoscaling.enabled
+    dynamic "resource_limits" {
+      for_each = local.autoscalling_resource_limits
+      content {
+        resource_type = lookup(resource_limits.value, "resource_type")
+        minimum       = lookup(resource_limits.value, "minimum")
+        maximum       = lookup(resource_limits.value, "maximum")
+      }
+    }
+  }
+
   enable_binary_authorization = var.enable_binary_authorization
   enable_intranode_visibility = var.enable_intranode_visibility
   default_max_pods_per_node   = var.default_max_pods_per_node
@@ -81,7 +93,7 @@ resource "google_container_cluster" "primary" {
     }
   }
   dynamic "master_authorized_networks_config" {
-    for_each = var.master_authorized_networks_config
+    for_each = local.master_authorized_networks_config
     content {
       dynamic "cidr_blocks" {
         for_each = master_authorized_networks_config.value.cidr_blocks

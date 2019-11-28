@@ -78,9 +78,9 @@ variable "node_version" {
   default     = ""
 }
 
-variable "master_authorized_networks_config" {
-  type        = list(object({ cidr_blocks = list(object({ cidr_block = string, display_name = string })) }))
-  description = "The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
+variable "master_authorized_networks" {
+  type        = list(object({ cidr_block = string, display_name = string }))
+  description = "List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
   default     = []
 }
 
@@ -174,8 +174,26 @@ variable "node_pools_metadata" {
     default-node-pool = {}
   }
 }
-
 {% if beta_cluster %}
+
+variable "cluster_autoscaling" {
+  type = object({
+    enabled       = bool
+    min_cpu_cores = number
+    max_cpu_cores = number
+    min_memory_gb = number
+    max_memory_gb = number
+  })
+  default = {
+    enabled       = false
+    max_cpu_cores = 0
+    min_cpu_cores = 0
+    max_memory_gb = 0
+    min_memory_gb = 0
+  }
+  description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
+}
+
 variable "node_pools_taints" {
   type        = map(list(object({ key = string, value = string, effect = string })))
   description = "Map of lists containing node taints by node-pool name"
