@@ -36,7 +36,7 @@ module "gke" {
   // https://cloud.google.com/kubernetes-engine/versioning-and-upgrades
   node_version = ""
 
-  master_authorized_networks_config = var.master_authorized_networks_config
+  master_authorized_networks = var.master_authorized_networks
 
   subnetwork        = var.subnetwork
   ip_range_pods     = var.ip_range_pods
