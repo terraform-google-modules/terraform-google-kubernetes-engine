@@ -8,6 +8,10 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+## [v6.0.0] - 2019-11-28
+
+v6.0.0 is a backwards-incompatible release. Please see the [upgrading guide](./docs/upgrading_to_v6.0.md).
+
 ### Added
 
 * Support for Shielded Nodes beta feature via `enabled_shielded_nodes` variable. [#300]
@@ -23,6 +27,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * `private_zonal_with_networking` example. [#308]
 * `regional_private_node_pool_oauth_scopes` example. [#321]
 * The `cluster_autoscaling` variable for beta submodules. [#93]
+* The `master_authorized_networks` variable. [#354]
 
 ### Changed
 
@@ -34,6 +39,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 * **Breaking**: Removed support for enabling the Kubernetes dashboard, as this is deprecated on GKE. [#337]
 * **Beaking**: Removed support for versions of the Google provider and the Google Beta provider older than 2.18. [#261]
+* **Breaking**: Removed the `master_authorized_networks_config` variable. [#354]
 
 ### Fixed
 
@@ -236,7 +242,8 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 
 * Initial release of module.
 
-[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.2.0...HEAD
+[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v6.0.0...HEAD
+[v6.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.2.0...v6.0.0
 [v5.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.1.1...v5.2.0
 [v5.1.1]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.1.0...v5.1.1
 [v5.1.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.0.0...v5.1.0
@@ -254,6 +261,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#354]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/354
 [#350]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/350
 [#340]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/340
 [#339]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/339
