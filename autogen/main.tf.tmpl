@@ -50,6 +50,17 @@ locals {
   node_version            = var.regional ? local.node_version_regional : local.node_version_zonal
 {% if beta_cluster %}
   release_channel         = var.release_channel != null ? [{ channel : var.release_channel }] : []
+
+  autoscalling_resource_limits = var.cluster_autoscaling.enabled ? [{
+      resource_type = "cpu"
+      minimum       = var.cluster_autoscaling.min_cpu_cores
+      maximum       = var.cluster_autoscaling.max_cpu_cores
+    }, {
+      resource_type = "memory"
+      minimum       = var.cluster_autoscaling.min_memory_gb
+      maximum       = var.cluster_autoscaling.max_memory_gb
+    }] : []
+
 {% endif %}
 
 
@@ -115,6 +126,10 @@ locals {
 
   # /BETA features
   {% endif %}
+
+  master_authorized_networks_config = length(var.master_authorized_networks) == 0 ? [] : [{
+    cidr_blocks : var.master_authorized_networks
+  }]
 
   cluster_output_node_pools_names    = concat(google_container_node_pool.pools.*.name, [""])
   cluster_output_node_pools_versions = concat(google_container_node_pool.pools.*.version, [""])

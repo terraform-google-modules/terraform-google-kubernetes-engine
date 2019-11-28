@@ -49,16 +49,14 @@ module "gke" {
   ip_range_services              = local.svc_range_name
   compute_engine_service_account = var.compute_engine_service_account
   master_ipv4_cidr_block         = "172.16.0.0/28"
-  master_authorized_networks_config = [
+
+  master_authorized_networks = [
     {
-      cidr_blocks = [
-        {
-          cidr_block   = "10.60.0.0/17"
-          display_name = "VPC"
-        },
-      ]
+      cidr_block   = "10.60.0.0/17"
+      display_name = "VPC"
     },
   ]
+
   istio    = true
   cloudrun = true
 }
