@@ -75,10 +75,10 @@ resource "google_service_account_key" "int_test" {
 }
 
 resource "google_project_iam_binding" "kubernetes_engine_kms_access" {
-  project = module.gke-project.project_id
+  project = module.gke-project-1.project_id
   role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
   members = [
-    "serviceAccount:service-${module.gke-project.project_number}@container-engine-robot.iam.gserviceaccount.com",
+    "serviceAccount:service-${module.gke-project-1.project_number}@container-engine-robot.iam.gserviceaccount.com",
   ]
 }
