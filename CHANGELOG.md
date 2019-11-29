@@ -34,6 +34,7 @@ v6.0.0 is a backwards-incompatible release. Please see the [upgrading guide](./d
 * The `node_pool_labels`, `node_pool_tags`, and `node_pool_taints` variables have defaults and can be overridden within the
   `node_pools` object. [#3]
 * `upstream_nameservers` variable is typed as a list of strings. [#350]
+* The `network_policy` variable defaults to `true`. [#138]
 
 ### Removed
 
@@ -315,6 +316,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [#151]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/151
 [#149]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/149
 [#148]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/148
+[#136]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/138
 [#136]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/136
 [#132]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/132
 [#124]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/124
