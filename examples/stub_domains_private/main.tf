@@ -49,7 +49,6 @@ module "gke" {
 
   master_ipv4_cidr_block = "172.16.0.0/28"
 
-  network_policy         = true
   create_service_account = false
   service_account        = var.compute_engine_service_account
 
