@@ -58,6 +58,12 @@ control "kubectl" do
 
         it "is reachable" do
           expect {
+            10.times do
+              unless host(service_load_balancer_ip, port: 8080, protocol: 'tcp').reachable?
+                puts "Nginx is not reachable, retrying.."
+                sleep 10
+              end
+            end
             RestClient.get(service_load_balancer_address)
           }.to_not raise_exception
         end

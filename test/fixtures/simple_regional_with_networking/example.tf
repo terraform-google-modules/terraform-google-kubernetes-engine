@@ -17,6 +17,6 @@
 module "example" {
   source = "../../../examples/simple_regional_with_networking"
 
-  project_id = var.project_id
+  project_id = var.project_ids[1]
   region     = var.region
 }

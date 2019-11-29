@@ -17,7 +17,7 @@
 module "example" {
   source = "../../../examples/simple_zonal_with_acm"
 
-  project_id          = var.project_id
+  project_id          = var.project_ids[1]
   cluster_name_suffix = "-${random_string.suffix.result}"
   region              = var.region
   zones               = slice(var.zones, 0, 1)

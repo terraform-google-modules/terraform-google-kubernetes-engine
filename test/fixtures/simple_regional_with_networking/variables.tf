@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The project ID to host the cluster in"
+variable "project_ids" {
+  type        = list(string)
+  description = "The GCP projects to use for integration tests"
 }
 
 variable "region" {
