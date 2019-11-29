@@ -14,26 +14,15 @@
  * limitations under the License.
  */
 
-
-provider "google" {
-  version = "~> 2.18.0"
-  project = var.project_id
-  region  = var.region
-}
-
-provider "google-beta" {
-  version = "~> 2.18.0"
-  project = var.project_id
-  region  = var.region
-}
-
 locals {
-  name = "beta-cluster-${random_string.suffix.result}"
+  name       = "beta-cluster-${random_string.suffix.result}"
+  project_id = var.project_ids[0]
 }
 
 resource "google_kms_key_ring" "db" {
   location = var.region
   name     = "${local.name}-db"
+  project  = local.project_id
 }
 
 resource "google_kms_crypto_key" "db" {
@@ -45,7 +34,7 @@ module "this" {
   source = "../../../examples/simple_regional_beta"
 
   cluster_name_suffix            = "-${random_string.suffix.result}"
-  project_id                     = var.project_id
+  project_id                     = local.project_id
   regional                       = false
   region                         = var.region
   zones                          = slice(var.zones, 0, 1)
