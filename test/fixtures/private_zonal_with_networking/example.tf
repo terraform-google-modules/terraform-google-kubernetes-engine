@@ -17,7 +17,7 @@
 module "example" {
   source = "../../../examples/private_zonal_with_networking"
 
-  project_id = var.project_id
+  project_id = var.project_ids[0]
   region     = var.region
   zones      = var.zones
 }

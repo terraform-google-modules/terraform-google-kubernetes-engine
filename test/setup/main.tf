@@ -14,7 +14,35 @@
  * limitations under the License.
  */
 
-module "gke-project" {
+module "gke-project-1" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 3.0"
+
+  name              = "ci-gke"
+  random_project_id = true
+  org_id            = var.org_id
+  folder_id         = var.folder_id
+  billing_account   = var.billing_account
+
+  auto_create_network = true
+
+  activate_apis = [
+    "bigquery-json.googleapis.com",
+    "cloudkms.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "compute.googleapis.com",
+    "container.googleapis.com",
+    "containerregistry.googleapis.com",
+    "iam.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "oslogin.googleapis.com",
+    "pubsub.googleapis.com",
+    "serviceusage.googleapis.com",
+    "storage-api.googleapis.com",
+  ]
+}
+
+module "gke-project-2" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 3.0"
 

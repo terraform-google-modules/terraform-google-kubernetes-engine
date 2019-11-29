@@ -45,6 +45,13 @@ suites:
       systems:
         - name: shared_vpc
           backend: local
+  - name: "safer_cluster"
+    driver:
+      root_module_directory: test/fixtures/safer_cluster
+    verifier:
+      systems:
+        - name: safer_cluster
+          backend: local
   - name: "simple_regional"
     driver:
       root_module_directory: test/fixtures/simple_regional
