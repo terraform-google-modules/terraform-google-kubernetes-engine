@@ -64,8 +64,6 @@ locals {
 
 
   cluster_output_name           = google_container_cluster.primary.name
-  cluster_output_location       = google_container_cluster.primary.location
-  cluster_output_region         = google_container_cluster.primary.region
   cluster_output_regional_zones = google_container_cluster.primary.node_locations
   cluster_output_zonal_zones    = local.zone_count > 1 ? slice(var.zones, 1, local.zone_count) : []
   cluster_output_zones          = local.cluster_output_regional_zones
@@ -92,11 +90,12 @@ locals {
   cluster_master_auth_list_layer1 = local.cluster_output_master_auth
   cluster_master_auth_list_layer2 = local.cluster_master_auth_list_layer1[0]
   cluster_master_auth_map         = local.cluster_master_auth_list_layer2[0]
-  # cluster locals
+
+  cluster_location = google_container_cluster.primary.location
+  cluster_region   = var.regional ? google_container_cluster.primary.region : join("-", slice(split("-", local.cluster_location), 0, 2))
+  cluster_zones    = sort(local.cluster_output_zones)
+
   cluster_name                               = local.cluster_output_name
-  cluster_location                           = local.cluster_output_location
-  cluster_region                             = local.cluster_output_region
-  cluster_zones                              = sort(local.cluster_output_zones)
   cluster_endpoint                           = local.cluster_output_endpoint
   cluster_ca_certificate                     = local.cluster_master_auth_map["cluster_ca_certificate"]
   cluster_master_version                     = local.cluster_output_master_version
