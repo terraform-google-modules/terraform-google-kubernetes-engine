@@ -48,7 +48,7 @@ v6.0.0 is a backwards-incompatible release. Please see the [upgrading guide](./d
 ### Removed
 
 * **Breaking**: Removed support for enabling the Kubernetes dashboard, as this is deprecated on GKE. [#337]
-* **Beaking**: Removed support for versions of the Google provider and the Google Beta provider older than 2.18. [#261]
+* **Breaking**: Removed support for versions of the Google provider and the Google Beta provider older than 2.18. [#261]
 * **Breaking**: Removed the `master_authorized_networks_config` variable. [#354]
 
 ### Fixed
