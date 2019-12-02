@@ -15,7 +15,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### Fixed
 
-- The required Google provider constraint has been relaxed to `~> 2.18`. [#359]
+- The required Google provider constraint has been relaxed to `~> 2.18` (>= 2.18, <3.0). [#359]
 
 ## [v6.0.0] - 2019-11-28
 
