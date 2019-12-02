@@ -8,6 +8,12 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+## [v6.0.1] - 2019-12-02
+
+### Fixed
+
+- The required Google provider constraint has been relaxed to `~> 2.18`. [#359]
+
 ## [v6.0.0] - 2019-11-28
 
 v6.0.0 is a backwards-incompatible release. Please see the [upgrading guide](./docs/upgrading_to_v6.0.md).
@@ -243,7 +249,8 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 
 * Initial release of module.
 
-[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v6.0.0...HEAD
+[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v6.0.1...HEAD
+[v6.0.1]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v6.0.0...v6.0.1
 [v6.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.2.0...v6.0.0
 [v5.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.1.1...v5.2.0
 [v5.1.1]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.1.0...v5.1.1
@@ -262,7 +269,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
-[#138]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/138
+[#359]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/359
 [#354]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/354
 [#350]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/350
 [#340]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/340
@@ -317,6 +324,7 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [#151]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/151
 [#149]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/149
 [#148]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/148
+[#138]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/138
 [#136]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/138
 [#136]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/136
 [#132]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/132
