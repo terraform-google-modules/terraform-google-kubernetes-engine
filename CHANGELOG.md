@@ -8,8 +8,13 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+## [v6.1.0] - 2019-12-03
+
 ### Added
 - Support for using a pre-existing Service Account with the ACM submodule. [#346](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/346)
+
+### Fixed
+- Compute region output for zonal clusters. [#362](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/362)
 
 ## [v6.0.1] - 2019-12-02
 
