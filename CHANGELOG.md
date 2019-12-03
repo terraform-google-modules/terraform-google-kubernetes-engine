@@ -8,11 +8,14 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+### Added
+- Support for using a pre-existing Service Account with the ACM submodule. [#346](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/346)
+
 ## [v6.0.1] - 2019-12-02
 
 ### Fixed
 
-- The required Google provider constraint has been relaxed to `~> 2.18`. [#359]
+- The required Google provider constraint has been relaxed to `~> 2.18` (>= 2.18, <3.0). [#359]
 
 ## [v6.0.0] - 2019-11-28
 
@@ -45,7 +48,7 @@ v6.0.0 is a backwards-incompatible release. Please see the [upgrading guide](./d
 ### Removed
 
 * **Breaking**: Removed support for enabling the Kubernetes dashboard, as this is deprecated on GKE. [#337]
-* **Beaking**: Removed support for versions of the Google provider and the Google Beta provider older than 2.18. [#261]
+* **Breaking**: Removed support for versions of the Google provider and the Google Beta provider older than 2.18. [#261]
 * **Breaking**: Removed the `master_authorized_networks_config` variable. [#354]
 
 ### Fixed

@@ -62,6 +62,12 @@ variable "create_ssh_key" {
   default     = true
 }
 
+variable "ssh_auth_key" {
+  description = "Key for Git authentication. Overrides 'create_ssh_key' variable. Can be set using 'file(path/to/file)'-function."
+  type        = string
+  default     = null
+}
+
 variable "enable_policy_controller" {
   description = "Whether to enable the ACM Policy Controller on the cluster"
   type        = bool
