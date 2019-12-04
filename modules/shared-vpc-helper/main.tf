@@ -29,12 +29,26 @@ locals {
 	Container API enable
  *****************************************/
 
-resource "google_project_service" "gke_api" {
-  count                      = var.enable_shared_vpc_helper ? 2 : 0
-  project                    = element(local.projects, count.index)
-  service                    = "container.googleapis.com"
-  disable_on_destroy         = false
-  disable_dependent_services = false
+module "gke_svpc_host_api" {
+  source      = "terraform-google-modules/project-factory/google//modules/project_services"
+  version     = "4.0.0"
+  enable_apis = var.enable_shared_vpc_helper
+  project_id  = var.gke_svpc_host_project
+
+  activate_apis = [
+    "container.googleapis.com"
+  ]
+}
+
+module "gke_svpc_service_api" {
+  source      = "terraform-google-modules/project-factory/google//modules/project_services"
+  version     = "4.0.0"
+  enable_apis = var.enable_shared_vpc_helper
+  project_id  = var.gke_svpc_service_project
+
+  activate_apis = [
+    "container.googleapis.com"
+  ]
 }
 
 
@@ -56,7 +70,8 @@ resource "google_project_iam_member" "svpc_membership" {
   member  = element(local.shared_vpc_users, count.index)
 
   depends_on = [
-    google_project_service.gke_api
+    module.gke_svpc_host_api,
+    module.gke_svpc_service_api
   ]
 
 }
@@ -74,7 +89,8 @@ resource "google_compute_subnetwork_iam_member" "gke_shared_vpc_subnets" {
   member     = element(local.shared_vpc_users, count.index)
 
   depends_on = [
-    google_project_service.gke_api
+    module.gke_svpc_host_api,
+    module.gke_svpc_service_api
   ]
 }
 
@@ -88,6 +104,7 @@ resource "google_project_iam_member" "gke_host_agent" {
   role    = "roles/container.hostServiceAgentUser"
   member  = local.gke_s_account
   depends_on = [
-    google_project_service.gke_api
+    module.gke_svpc_host_api,
+    module.gke_svpc_service_api
   ]
 }
