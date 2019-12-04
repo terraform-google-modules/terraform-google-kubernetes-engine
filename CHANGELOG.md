@@ -8,6 +8,24 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [Unreleased]
 
+## [v6.1.0] - 2019-12-03
+
+### Added
+- Support for using a pre-existing Service Account with the ACM submodule. [#346](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/346)
+
+### Fixed
+- Compute region output for zonal clusters. [#362](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/362)
+
+## [v6.0.1] - 2019-12-02
+
+### Fixed
+
+- The required Google provider constraint has been relaxed to `~> 2.18` (>= 2.18, <3.0). [#359]
+
+## [v6.0.0] - 2019-11-28
+
+v6.0.0 is a backwards-incompatible release. Please see the [upgrading guide](./docs/upgrading_to_v6.0.md).
+
 ### Added
 
 * Support for Shielded Nodes beta feature via `enabled_shielded_nodes` variable. [#300]
@@ -23,17 +41,20 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * `private_zonal_with_networking` example. [#308]
 * `regional_private_node_pool_oauth_scopes` example. [#321]
 * The `cluster_autoscaling` variable for beta submodules. [#93]
+* The `master_authorized_networks` variable. [#354]
 
 ### Changed
 
 * The `node_pool_labels`, `node_pool_tags`, and `node_pool_taints` variables have defaults and can be overridden within the
   `node_pools` object. [#3]
 * `upstream_nameservers` variable is typed as a list of strings. [#350]
+* The `network_policy` variable defaults to `true`. [#138]
 
 ### Removed
 
 * **Breaking**: Removed support for enabling the Kubernetes dashboard, as this is deprecated on GKE. [#337]
-* **Beaking**: Removed support for versions of the Google provider and the Google Beta provider older than 2.18. [#261]
+* **Breaking**: Removed support for versions of the Google provider and the Google Beta provider older than 2.18. [#261]
+* **Breaking**: Removed the `master_authorized_networks_config` variable. [#354]
 
 ### Fixed
 
@@ -236,7 +257,10 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 
 * Initial release of module.
 
-[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.2.0...HEAD
+[Unreleased]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v6.1.0...HEAD
+[v6.1.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v6.0.1...v6.1.0
+[v6.0.1]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v6.0.0...v6.0.1
+[v6.0.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.1.0...v6.0.0
 [v5.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.1.1...v5.2.0
 [v5.1.1]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.1.0...v5.1.1
 [v5.1.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v5.0.0...v5.1.0
@@ -254,6 +278,8 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [v0.3.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v0.1.0...v0.2.0
 
+[#359]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/359
+[#354]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/354
 [#350]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/350
 [#340]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/340
 [#339]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/339
@@ -307,6 +333,8 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 [#151]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/151
 [#149]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/149
 [#148]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/148
+[#138]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/138
+[#136]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/138
 [#136]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/136
 [#132]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/132
 [#124]: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/124

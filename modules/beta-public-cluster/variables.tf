@@ -78,9 +78,9 @@ variable "node_version" {
   default     = ""
 }
 
-variable "master_authorized_networks_config" {
-  type        = list(object({ cidr_blocks = list(object({ cidr_block = string, display_name = string })) }))
-  description = "The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
+variable "master_authorized_networks" {
+  type        = list(object({ cidr_block = string, display_name = string }))
+  description = "List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
   default     = []
 }
 
@@ -99,7 +99,7 @@ variable "http_load_balancing" {
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
-  default     = false
+  default     = true
 }
 
 variable "network_policy_provider" {

@@ -15,9 +15,11 @@
  */
 
 locals {
+
   int_required_project_roles = [
     "roles/owner",
     "roles/compute.admin",
+    "roles/cloudkms.admin",
     "roles/cloudkms.cryptoKeyEncrypterDecrypter",
     "roles/container.admin",
     "roles/container.clusterAdmin",
@@ -94,8 +96,20 @@ resource "google_service_account_key" "int_test" {
   service_account_id = google_service_account.int_test.id
 }
 
+
 resource "google_billing_account_iam_member" "int_billing_user" {
   billing_account_id = var.billing_account
   role               = "roles/billing.user"
   member             = "serviceAccount:${google_service_account.int_test.email}"
+
+}
+
+
+resource "google_project_iam_binding" "kubernetes_engine_kms_access" {
+  project = module.gke-project-1.project_id
+  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+  members = [
+    "serviceAccount:service-${module.gke-project-1.project_number}@container-engine-robot.iam.gserviceaccount.com",
+  ]
 }

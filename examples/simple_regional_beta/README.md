@@ -10,17 +10,22 @@ This example illustrates how to create a simple cluster with beta features.
 | cloudrun | Boolean to enable / disable CloudRun | string | `"true"` | no |
 | cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | string | n/a | yes |
+| database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key. | object | `<list>` | no |
+| enable\_binary\_authorization | Enable BinAuthZ Admission controller | string | `"false"` | no |
 | ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
 | istio | Boolean to enable / disable Istio | string | `"true"` | no |
 | network | The VPC network to host the cluster in | string | n/a | yes |
 | node\_metadata | Specifies how node metadata is exposed to the workload running on the node | string | `"SECURE"` | no |
 | node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
+| pod\_security\_policy\_config | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | list | `<list>` | no |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
+| regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |
 | remove\_default\_node\_pool | Remove default node pool while setting up the cluster | bool | `"false"` | no |
 | sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` and `node_version` = `1.12.7-gke.17` or later to use it). | bool | `"false"` | no |
 | subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
+| zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | list(string) | `<list>` | no |
 
 ## Outputs
 

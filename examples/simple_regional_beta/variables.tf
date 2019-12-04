@@ -85,3 +85,36 @@ variable "node_pools" {
     },
   ]
 }
+
+variable "database_encryption" {
+  description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
+  type        = list(object({ state = string, key_name = string }))
+  default = [{
+    state    = "DECRYPTED"
+    key_name = ""
+  }]
+}
+
+variable "enable_binary_authorization" {
+  description = "Enable BinAuthZ Admission controller"
+  default     = false
+}
+
+variable "pod_security_policy_config" {
+  description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
+  default = [{
+    "enabled" = false
+  }]
+}
+
+variable "zones" {
+  type        = list(string)
+  description = "The zones to host the cluster in (optional if regional cluster / required if zonal)"
+  default     = []
+}
+
+variable "regional" {
+  type        = bool
+  description = "Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!)"
+  default     = true
+}

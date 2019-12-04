@@ -48,14 +48,10 @@ module "gke" {
   master_ipv4_cidr_block  = "172.16.0.0/28"
   node_metadata           = "SECURE"
 
-  master_authorized_networks_config = [
+  master_authorized_networks = [
     {
-      cidr_blocks = [
-        {
-          cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
-          display_name = "VPC"
-        },
-      ]
+      cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
+      display_name = "VPC"
     },
   ]
 }

@@ -53,6 +53,7 @@ By default, this module will attempt to download the ACM operator from Google di
 | operator\_path | Path to the operator yaml config. If unset, will download from GCS releases. | string | `"null"` | no |
 | policy\_dir | Subfolder containing configs in ACM Git repo | string | n/a | yes |
 | project\_id | The project in which the resource belongs. | string | n/a | yes |
+| ssh\_auth\_key | Key for Git authentication. Overrides 'create_ssh_key' variable. Can be set using 'file(path/to/file)'-function. | string | `"null"` | no |
 | sync\_branch | ACM repo Git branch | string | `"master"` | no |
 | sync\_repo | ACM Git repo address | string | n/a | yes |
 

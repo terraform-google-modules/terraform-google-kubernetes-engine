@@ -64,8 +64,6 @@ module "gke-project-2" {
   folder_id         = google_folder.ci_gke_folder.id
   billing_account   = var.billing_account
 
-  auto_create_network = true
-
   activate_apis = [
     "admin.googleapis.com",
     "appengine.googleapis.com",

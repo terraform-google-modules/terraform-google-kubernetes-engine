@@ -108,22 +108,6 @@ Then perform the following commands on the root folder:
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
 
-## Upgrade to v3.0.0
-
-v3.0.0 is a breaking release. Refer to the
-[Upgrading to v3.0 guide][upgrading-to-v3.0] for details.
-
-## Upgrade to v2.0.0
-
-v2.0.0 is a breaking release. Refer to the
-[Upgrading to v2.0 guide][upgrading-to-v2.0] for details.
-
-## Upgrade to v1.0.0
-
-Version 1.0.0 of this module introduces a breaking change: adding the `disable-legacy-endpoints` metadata field to all node pools. This metadata is required by GKE and [determines whether the `/0.1/` and `/v1beta1/` paths are available in the nodes' metadata server](https://cloud.google.com/kubernetes-engine/docs/how-to/protecting-cluster-metadata#disable-legacy-apis). If your applications do not require access to the node's metadata server, you can leave the default value of `true` provided by the module. If your applications require access to the metadata server, be sure to read the linked documentation to see if you need to set the value for this field to `false` to allow your applications access to the above metadata server paths.
-
-In either case, upgrading to module version `v1.0.0` will trigger a recreation of all node pools in the cluster.
-
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
@@ -150,11 +134,11 @@ In either case, upgrading to module version `v1.0.0` will trigger a recreation o
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com"` | no |
 | maintenance\_start\_time | Time window specified for daily maintenance operations in RFC3339 format | string | `"05:00"` | no |
-| master\_authorized\_networks\_config | The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists). | object | `<list>` | no |
+| master\_authorized\_networks | List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically whitelists). | object | `<list>` | no |
 | monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com"` | no |
 | name | The name of the cluster (required) | string | n/a | yes |
 | network | The VPC network to host the cluster in (required) | string | n/a | yes |
-| network\_policy | Enable network policy addon | bool | `"false"` | no |
+| network\_policy | Enable network policy addon | bool | `"true"` | no |
 | network\_policy\_provider | The network policy provider. | string | `"CALICO"` | no |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
 | node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
@@ -252,9 +236,6 @@ The project has the following folders and files:
 - /README.MD: This file.
 - /modules: Private and beta sub modules.
 
-
-[upgrading-to-v2.0]: docs/upgrading_to_v2.0.md
-[upgrading-to-v3.0]: docs/upgrading_to_v3.0.md
 [terraform-provider-google]: https://github.com/terraform-providers/terraform-provider-google
 [3.0.0]: https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/3.0.0
 [terraform-0.12-upgrade]: https://www.terraform.io/upgrade-guides/0-12.html

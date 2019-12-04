@@ -110,7 +110,7 @@ resource "google_container_cluster" "primary" {
     }
   }
   dynamic "master_authorized_networks_config" {
-    for_each = var.master_authorized_networks_config
+    for_each = local.master_authorized_networks_config
     content {
       dynamic "cidr_blocks" {
         for_each = master_authorized_networks_config.value.cidr_blocks
