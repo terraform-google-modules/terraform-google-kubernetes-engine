@@ -248,27 +248,6 @@ In order to operate with the Service Account you must activate the following API
 - Compute Engine API - compute.googleapis.com
 - Kubernetes Engine API - container.googleapis.com
 
-## node_pools variable
-The node_pools variable takes the following parameters:
-
-| Name | Description | Default | Requirement |
-| --- | --- | --- | --- |
-| auto_repair | Whether the nodes will be automatically repaired | true | Optional |
-| autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
-| auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
-| disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100GB | Optional |
-| disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |
-| image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | COS | Optional |
-| initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource | 0 | Optional |
-| machine_type | The name of a Google Compute Engine machine type | n1-standard-2 | Optional |
-| max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
-| min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count | 1 | Optional |
-| name | The name of the node pool | " " | Optional |
-| node_count | The number of nodes in the nodepool when autoscaling is false | 2 | Required (when autoscaling is false) |
-| node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters | " " | Optional |
-| preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
-| service_account | The service account to be used by the Node VMs | " " | Optional |
-
 ## File structure
 The project has the following folders and files:
 
