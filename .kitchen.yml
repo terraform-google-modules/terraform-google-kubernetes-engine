@@ -45,13 +45,6 @@ suites:
       systems:
         - name: shared_vpc
           backend: local
-  - name: "shared_vpc_with_helper"
-    driver:
-      root_module_directory: test/fixtures/shared_vpc_with_helper
-    verifier:
-      systems:
-        - name: shared_vpc_with_helper
-          backend: local
   - name: "safer_cluster"
     driver:
       root_module_directory: test/fixtures/safer_cluster

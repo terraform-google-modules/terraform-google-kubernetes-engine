@@ -14,29 +14,83 @@
  * limitations under the License.
  */
 
-locals {
-  cluster_type = "shared-vpc"
-}
+
 
 provider "google" {
   version = "~> 2.18.0"
-  region  = var.region
 }
 
+resource "random_string" "suffix" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
+/************************************************
+	Networking in shared VPC to host cluster in
+ ***********************************************/
+
+locals {
+  gke_svpc_subnet     = "gke-svpc-main-${random_string.suffix.result}"
+  pods_gke_subnet     = "${local.gke_svpc_subnet}-pods"
+  services_gke_subnet = "${local.gke_svpc_subnet}-services"
+}
+
+// Inputs for Shared VPC aren't provided in reason it handled by VPC helper submodule
+module "gke_cluster_svpc_network" {
+  source       = "terraform-google-modules/network/google"
+  version      = "~> 1.5.0"
+  project_id   = var.svpc_host_project_id
+  network_name = "gke-svpc-network"
+
+  subnets = [
+    {
+      subnet_name   = local.gke_svpc_subnet
+      subnet_ip     = "10.0.0.0/17"
+      subnet_region = var.region
+    },
+  ]
+
+  secondary_ranges = {
+    "${local.gke_svpc_subnet}" = [
+      {
+        range_name    = local.pods_gke_subnet
+        ip_cidr_range = "192.168.0.0/18"
+      },
+      {
+        range_name    = local.services_gke_subnet
+        ip_cidr_range = "192.168.64.0/18"
+      },
+    ]
+  }
+}
+
+/******************************************
+	Main module with shared_vpc_helper
+ *****************************************/
+
 module "gke" {
-  source                 = "../../"
-  project_id             = var.project_id
-  name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  region                 = var.region
-  network                = var.network
-  network_project_id     = var.network_project_id
-  subnetwork             = var.subnetwork
-  ip_range_pods          = var.ip_range_pods
-  ip_range_services      = var.ip_range_services
-  create_service_account = false
-  service_account        = var.compute_engine_service_account
+  source                   = "../../"
+  enable_shared_vpc_helper = true
+  project_id               = var.svpc_service_project_id
+  name                     = "gke-svpc-cluster-${random_string.suffix.result}"
+  region                   = var.region
+  network                  = module.gke_cluster_svpc_network.network_name
+  network_project_id       = var.svpc_host_project_id
+  subnetwork               = module.gke_cluster_svpc_network.subnets_names[0]
+  ip_range_pods            = local.pods_gke_subnet
+  ip_range_services        = local.services_gke_subnet
+  create_service_account   = true
 }
 
 data "google_client_config" "default" {
+  depends_on = [module.gke]
 }
 
+data "google_project" "svpc_host_project" {
+  project_id = var.svpc_host_project_id
+}
+
+data "google_project" "svpc_service_project" {
+  project_id = var.svpc_service_project_id
+}

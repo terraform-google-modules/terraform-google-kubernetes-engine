@@ -22,6 +22,14 @@ output "project_ids" {
   value = [module.gke-project-1.project_id, module.gke-project-2.project_id]
 }
 
+output "svpc_host_project_id" {
+  value = module.gke_svpc_host_project.project_id
+}
+
+output "svpc_service_project_id" {
+  value = google_project.gke_service_project.project_id
+}
+
 output "sa_key" {
   value     = google_service_account_key.int_test.private_key
   sensitive = true

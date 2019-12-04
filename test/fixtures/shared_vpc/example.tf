@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
+
 module "example" {
   source = "../../../examples/shared_vpc"
 
-  project_id                     = var.project_ids[0]
-  cluster_name_suffix            = "-${random_string.suffix.result}"
-  region                         = var.region
-  network                        = google_compute_network.main.name
-  network_project_id             = var.project_ids[0]
-  subnetwork                     = google_compute_subnetwork.main.name
-  ip_range_pods                  = google_compute_subnetwork.main.secondary_ip_range[0].range_name
-  ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
-  compute_engine_service_account = var.compute_engine_service_accounts[0]
-}
+  svpc_host_project_id    = var.svpc_host_project_id
+  svpc_service_project_id = var.svpc_service_project_id
+  region                  = var.region
 
+}

@@ -324,26 +324,6 @@ steps:
     - verify sandbox-enabled-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy sandbox-enabled-local']
-- id: create shared-vpc-with-helper-local
-  waitFor:
-    - prepare
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do create shared-vpc-with-helper-local']
-- id: converge shared-vpc-with-helper-local
-  waitFor:
-    - create shared-vpc-with-helper-local
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge shared-vpc-with-helper-local']
-- id: verify shared-vpc-with-helper-local
-  waitFor:
-    - converge shared-vpc-with-helper-local
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify shared-vpc-with-helper-local']
-- id: destroy shared-vpc-with-helper-local
-  waitFor:
-    - verify shared-vpc-with-helper-local
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy shared-vpc-with-helper-local']
 tags:
 - 'ci'
 - 'integration'

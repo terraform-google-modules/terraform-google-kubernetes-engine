@@ -15,17 +15,20 @@
  */
 
 output "kubernetes_endpoint" {
-  sensitive = true
-  value     = module.gke.endpoint
+  sensitive   = true
+  value       = module.gke.endpoint
+  description = "Cluster endpoint"
 }
 
 output "client_token" {
-  sensitive = true
-  value     = base64encode(data.google_client_config.default.access_token)
+  sensitive   = true
+  description = "The OAuth2 access token (base64 encoded) used by the client to authenticate against the Google Cloud API."
+  value       = base64encode(data.google_client_config.default.access_token)
 }
 
 output "ca_certificate" {
-  value = module.gke.ca_certificate
+  value       = module.gke.ca_certificate
+  description = "Cluster ca certificate (base64 encoded)"
 }
 
 output "service_account" {
@@ -33,3 +36,7 @@ output "service_account" {
   value       = module.gke.service_account
 }
 
+output "cluster_name" {
+  description = "The Cluster name"
+  value       = module.gke.name
+}

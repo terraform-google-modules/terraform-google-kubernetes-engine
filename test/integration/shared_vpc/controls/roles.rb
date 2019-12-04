@@ -52,12 +52,7 @@ control "subnet-iam-policy" do
       it "it include GKE cluster service account" do
         expect(data['bindings'][0]['members']).to include "serviceAccount:#{cluster_service_account}"
       end
-
-
-
     end
-
-
   end
 end
 

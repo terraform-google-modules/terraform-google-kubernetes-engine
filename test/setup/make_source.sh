@@ -34,3 +34,9 @@ echo "export TF_VAR_compute_engine_service_accounts='$compute_engine_service_acc
 
 billing_account=$(terraform output billing_account)
 echo "export TF_VAR_billing_account='$billing_account'" >> ../source.sh
+
+svpc_service_project_id=$(terraform output svpc_service_project_id)
+echo "export TF_VAR_svpc_service_project_id='$svpc_service_project_id'" >> ../source.sh
+
+svpc_host_project_id=$(terraform output svpc_host_project_id)
+echo "export TF_VAR_svpc_host_project_id='$svpc_host_project_id'" >> ../source.sh

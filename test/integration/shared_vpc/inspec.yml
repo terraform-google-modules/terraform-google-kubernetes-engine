@@ -1,6 +1,15 @@
-name: shared_vpc
+name: shared_vpc_with_helper
 attributes:
   - name: project_id
+    required: true
+    type: string
+  - name: project_number
+    required: true
+    type: string
+  - name: host_project_id
+    required: true
+    type: string
+  - name: host_project_number
     required: true
     type: string
   - name: location
@@ -9,3 +18,13 @@ attributes:
   - name: cluster_name
     required: true
     type: string
+  - name: region
+    required: true
+    type: string
+  - name: subnetwork
+    required: true
+    type: string
+  - name: service_account
+    required: true
+    type: string
+
