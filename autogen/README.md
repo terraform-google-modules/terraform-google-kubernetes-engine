@@ -173,10 +173,10 @@ The node_pools variable takes the following parameters:
 {% endif %}
 | preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
 {% if beta_cluster %}
-| sandbox_type | Sandbox to use for pods in the node pool | | Required | 
+| sandbox_type | Sandbox to use for pods in the node pool | | Required |
 {% endif %}
 | service_account | The service account to be used by the Node VMs | " " | Optional |
-| tags | The list of instance tags applied to all nodes | | Required | 
+| tags | The list of instance tags applied to all nodes | | Required |
 {% if beta_cluster %}
 | value | The value for the taint | | Required |
 {% endif %}
