@@ -154,6 +154,6 @@ output "identity_namespace" {
   description = "Workload Identity namespace"
   value       = var.identity_namespace
   depends_on = [
-    "google_container_cluster.primary"
+    google_container_cluster.primary
   ]
 }
