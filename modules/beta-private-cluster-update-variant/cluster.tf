@@ -239,7 +239,7 @@ locals {
 # resources where "ForceNew" is "true". schemaNodeConfig can be found in node_config.go at
 # https://github.com/terraform-providers/terraform-provider-google/blob/master/google/node_config.go#L22
 resource "random_id" "name" {
-  for_each    = local.node_pools
+  for_each       = local.node_pools
   byte_length = 2
   prefix      = format("%s-", lookup(each.value, "name"))
   keepers = merge(
@@ -296,7 +296,7 @@ resource "random_id" "name" {
 
 resource "google_container_node_pool" "pools" {
   provider = google-beta
-  for_each = local.node_pools
+  for_each    = local.node_pools
   name     = random_id.name.*.hex[count.index]
   project  = var.project_id
   location = local.location
