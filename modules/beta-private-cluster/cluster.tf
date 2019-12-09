@@ -195,10 +195,18 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  private_cluster_config {
-    enable_private_endpoint = var.enable_private_endpoint
-    enable_private_nodes    = var.enable_private_nodes
-    master_ipv4_cidr_block  = var.master_ipv4_cidr_block
+  dynamic "private_cluster_config" {
+    for_each = var.enable_private_nodes ? [{
+      enable_private_nodes    = var.enable_private_nodes,
+      enable_private_endpoint = var.enable_private_endpoint
+      master_ipv4_cidr_block  = var.master_ipv4_cidr_block
+    }] : []
+
+    content {
+      enable_private_endpoint = private_cluster_config.value.enable_private_endpoint
+      enable_private_nodes    = private_cluster_config.value.enable_private_nodes
+      master_ipv4_cidr_block  = private_cluster_config.value.master_ipv4_cidr_block
+    }
   }
 
   remove_default_node_pool = var.remove_default_node_pool

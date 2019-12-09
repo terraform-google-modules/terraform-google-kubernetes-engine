@@ -111,7 +111,7 @@ resource "google_compute_shared_vpc_host_project" "gke_svpc_host_project" {
   project = module.gke_svpc_host_project.project_id
 }
 
-// Create service account. Plane ressourcess are used in reason ISUUE TODO: add link to issue
+// Create service account
 resource "google_project" "gke_service_project" {
   name            = "ci-gke-svpc-service"
   folder_id       = google_folder.ci_gke_folder.id

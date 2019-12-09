@@ -17,7 +17,6 @@
 locals {
 
   int_required_project_roles = [
-    "roles/owner",
     "roles/compute.admin",
     "roles/cloudkms.admin",
     "roles/cloudkms.cryptoKeyEncrypterDecrypter",
