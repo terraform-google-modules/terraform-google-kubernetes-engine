@@ -16,6 +16,7 @@
 
 locals {
 
+
   int_required_project_roles = [
     "roles/compute.admin",
     "roles/cloudkms.admin",
@@ -102,7 +103,6 @@ resource "google_billing_account_iam_member" "int_billing_user" {
   member             = "serviceAccount:${google_service_account.int_test.email}"
 
 }
-
 
 resource "google_project_iam_binding" "kubernetes_engine_kms_access" {
   project = module.gke-project-1.project_id
