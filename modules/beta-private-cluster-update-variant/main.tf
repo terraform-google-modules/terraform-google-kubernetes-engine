@@ -45,20 +45,21 @@ locals {
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
   node_version            = var.regional ? local.node_version_regional : local.node_version_zonal
 
+  // Build a map of maps of node pools from a list of objects
   node_pool_names = [for np in toset(var.node_pools) : np.name]
-  node_pools = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
+  node_pools      = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
 
-  release_channel         = var.release_channel != null ? [{ channel : var.release_channel }] : []
+  release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
 
   autoscalling_resource_limits = var.cluster_autoscaling.enabled ? [{
-      resource_type = "cpu"
-      minimum       = var.cluster_autoscaling.min_cpu_cores
-      maximum       = var.cluster_autoscaling.max_cpu_cores
+    resource_type = "cpu"
+    minimum       = var.cluster_autoscaling.min_cpu_cores
+    maximum       = var.cluster_autoscaling.max_cpu_cores
     }, {
-      resource_type = "memory"
-      minimum       = var.cluster_autoscaling.min_memory_gb
-      maximum       = var.cluster_autoscaling.max_memory_gb
-    }] : []
+    resource_type = "memory"
+    minimum       = var.cluster_autoscaling.min_memory_gb
+    maximum       = var.cluster_autoscaling.max_memory_gb
+  }] : []
 
 
 

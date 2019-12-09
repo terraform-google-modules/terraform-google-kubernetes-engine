@@ -123,7 +123,7 @@ resource "google_container_cluster" "primary" {
  *****************************************/
 resource "google_container_node_pool" "pools" {
   provider = google
-  for_each    = local.node_pools
+  for_each = local.node_pools
   name     = each.key
   project  = var.project_id
   location = local.location
