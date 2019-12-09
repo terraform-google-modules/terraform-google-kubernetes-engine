@@ -14,15 +14,7 @@
  * limitations under the License.
  */
 
-module "services" {
-  source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 6.0.0"
-
-  project_id = var.project_id
-
-  activate_apis = [
-    "compute.googleapis.com",
-    "iam.googleapis.com",
-    "container.googleapis.com"
-  ]
+output "project_id" {
+  description = "The GCP project you enabled APIs on"
+  value       = module.services.project_id
 }
