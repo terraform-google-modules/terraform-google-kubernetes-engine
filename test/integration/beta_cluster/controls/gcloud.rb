@@ -19,7 +19,7 @@ service_account = attribute('service_account')
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
-  describe command("gcloud --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json") do
+  describe command("gcloud beta --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json") do
     its(:exit_status) { should eq 0 }
     its(:stderr) { should eq '' }
 
@@ -56,6 +56,33 @@ control "gcloud" do
             "disabled" => true,
           },
           "networkPolicyConfig" => {},
+          "istioConfig" => {},
+          "cloudRunConfig" => {},
+        })
+      end
+
+      it "has the expected binaryAuthorization config" do
+        expect(data['binaryAuthorization']).to eq({
+          "enabled" => true,
+        })
+      end
+
+      it "has the expected nodeMetadata conseal config" do
+        expect(data['nodeConfig']['workloadMetadataConfig']).to eq({
+          "nodeMetadata" => 'EXPOSE',
+        })
+      end
+
+      it "has the expected podSecurityPolicyConfig config" do
+        expect(data['podSecurityPolicyConfig']).to eq({
+          "enabled" => true,
+        })
+      end
+
+      it "has the expected databaseEncryption config" do
+        expect(data['databaseEncryption']).to eq({
+          "state" => 'ENCRYPTED',
+          "keyName" => attribute('database_encryption_key_name'),
         })
       end
     end
