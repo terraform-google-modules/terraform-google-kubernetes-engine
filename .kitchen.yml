@@ -162,6 +162,19 @@ suites:
       systems:
         - name: workload_metadata_config
           backend: local
+  - name: "beta_cluster"
+    driver:
+      root_module_directory: test/fixtures/beta_cluster
+    verifier:
+      systems:
+        - name: gcloud
+          backend: local
+          controls:
+            - gcloud
+        - name: gcp
+          backend: gcp
+          controls:
+            - gcp
   - name: "deploy_service"
     driver:
       root_module_directory: test/fixtures/deploy_service

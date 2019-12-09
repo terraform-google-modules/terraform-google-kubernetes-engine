@@ -52,8 +52,6 @@ module "gke-project-2" {
   folder_id         = var.folder_id
   billing_account   = var.billing_account
 
-  auto_create_network = true
-
   activate_apis = [
     "bigquery-json.googleapis.com",
     "cloudkms.googleapis.com",
