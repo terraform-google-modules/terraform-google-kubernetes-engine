@@ -297,7 +297,7 @@ resource "random_id" "name" {
 resource "google_container_node_pool" "pools" {
   provider = google-beta
   for_each = local.node_pools
-  name     = random_id.name.*.hex[count.index]
+  name     = random_id.name.*.hex[each.key]
   project  = var.project_id
   location = local.location
   // use node_locations if provided, defaults to cluster level node_locations if not specified

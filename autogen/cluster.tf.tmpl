@@ -320,7 +320,7 @@ resource "google_container_node_pool" "pools" {
   {% endif %}
   for_each = local.node_pools
   {% if update_variant %}
-  name     = random_id.name.*.hex[count.index]
+  name     = random_id.name.*.hex[each.key]
   {% else %}
   name     = each.key
   {% endif %}
