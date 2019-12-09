@@ -224,33 +224,33 @@ resource "google_container_cluster" "primary" {
  *****************************************/
 resource "google_container_node_pool" "pools" {
   provider = google-beta
-  count    = length(var.node_pools)
-  name     = var.node_pools[count.index]["name"]
+  for_each = local.node_pools
+  name     = each.key
   project  = var.project_id
   location = local.location
   // use node_locations if provided, defaults to cluster level node_locations if not specified
-  node_locations = lookup(var.node_pools[count.index], "node_locations", "") != "" ? split(",", var.node_pools[count.index]["node_locations"]) : null
+  node_locations = lookup(each.value, "node_locations", "") != "" ? split(",", each.value["node_locations"]) : null
 
   cluster = google_container_cluster.primary.name
 
-  version = lookup(var.node_pools[count.index], "auto_upgrade", false) ? "" : lookup(
-    var.node_pools[count.index],
+  version = lookup(each.value, "auto_upgrade", false) ? "" : lookup(
+    each.value,
     "version",
     local.node_version,
   )
 
-  initial_node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? lookup(
-    var.node_pools[count.index],
+  initial_node_count = lookup(each.value, "autoscaling", true) ? lookup(
+    each.value,
     "initial_node_count",
-    lookup(var.node_pools[count.index], "min_count", 1)
+    lookup(each.value, "min_count", 1)
   ) : null
 
-  max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", null)
+  max_pods_per_node = lookup(each.value, "max_pods_per_node", null)
 
-  node_count = lookup(var.node_pools[count.index], "autoscaling", true) ? null : lookup(var.node_pools[count.index], "node_count", 1)
+  node_count = lookup(each.value, "autoscaling", true) ? null : lookup(each.value, "node_count", 1)
 
   dynamic "autoscaling" {
-    for_each = lookup(var.node_pools[count.index], "autoscaling", true) ? [var.node_pools[count.index]] : []
+    for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
       min_node_count = lookup(autoscaling.value, "min_count", 1)
       max_node_count = lookup(autoscaling.value, "max_count", 100)
@@ -258,24 +258,24 @@ resource "google_container_node_pool" "pools" {
   }
 
   management {
-    auto_repair  = lookup(var.node_pools[count.index], "auto_repair", true)
-    auto_upgrade = lookup(var.node_pools[count.index], "auto_upgrade", local.default_auto_upgrade)
+    auto_repair  = lookup(each.value, "auto_repair", true)
+    auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
   }
 
   node_config {
-    image_type   = lookup(var.node_pools[count.index], "image_type", "COS")
-    machine_type = lookup(var.node_pools[count.index], "machine_type", "n1-standard-2")
+    image_type   = lookup(each.value, "image_type", "COS")
+    machine_type = lookup(each.value, "machine_type", "n1-standard-2")
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
-      lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
+      lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
       local.node_pools_labels["all"],
-      local.node_pools_labels[var.node_pools[count.index]["name"]],
+      local.node_pools_labels[each.value["name"]],
     )
     metadata = merge(
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
-      lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = var.node_pools[count.index]["name"] } : {},
+      lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
       local.node_pools_metadata["all"],
-      local.node_pools_metadata[var.node_pools[count.index]["name"]],
+      local.node_pools_metadata[each.value["name"]],
       {
         "disable-legacy-endpoints" = var.disable_legacy_metadata_endpoints
       },
@@ -283,7 +283,7 @@ resource "google_container_node_pool" "pools" {
     dynamic "taint" {
       for_each = concat(
         local.node_pools_taints["all"],
-        local.node_pools_taints[var.node_pools[count.index]["name"]],
+        local.node_pools_taints[each.value["name"]],
       )
       content {
         effect = taint.value.effect
@@ -293,31 +293,31 @@ resource "google_container_node_pool" "pools" {
     }
     tags = concat(
       lookup(local.node_pools_tags, "default_values", [true, true])[0] ? ["gke-${var.name}"] : [],
-      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["gke-${var.name}-${var.node_pools[count.index]["name"]}"] : [],
+      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["gke-${var.name}-${each.value["name"]}"] : [],
       local.node_pools_tags["all"],
-      local.node_pools_tags[var.node_pools[count.index]["name"]],
+      local.node_pools_tags[each.value["name"]],
     )
 
-    local_ssd_count = lookup(var.node_pools[count.index], "local_ssd_count", 0)
-    disk_size_gb    = lookup(var.node_pools[count.index], "disk_size_gb", 100)
-    disk_type       = lookup(var.node_pools[count.index], "disk_type", "pd-standard")
+    local_ssd_count = lookup(each.value, "local_ssd_count", 0)
+    disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
+    disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
     service_account = lookup(
-      var.node_pools[count.index],
+      each.value,
       "service_account",
       local.service_account,
     )
-    preemptible = lookup(var.node_pools[count.index], "preemptible", false)
+    preemptible = lookup(each.value, "preemptible", false)
 
     oauth_scopes = concat(
       local.node_pools_oauth_scopes["all"],
-      local.node_pools_oauth_scopes[var.node_pools[count.index]["name"]],
+      local.node_pools_oauth_scopes[each.value["name"]],
     )
 
     guest_accelerator = [
-      for guest_accelerator in lookup(var.node_pools[count.index], "accelerator_count", 0) > 0 ? [{
-        type  = lookup(var.node_pools[count.index], "accelerator_type", "")
-        count = lookup(var.node_pools[count.index], "accelerator_count", 0)
+      for guest_accelerator in lookup(each.value, "accelerator_count", 0) > 0 ? [{
+        type  = lookup(each.value, "accelerator_type", "")
+        count = lookup(each.value, "accelerator_count", 0)
         }] : [] : {
         type  = guest_accelerator["type"]
         count = guest_accelerator["count"]
@@ -328,7 +328,8 @@ resource "google_container_node_pool" "pools" {
       for_each = local.cluster_node_metadata_config
 
       content {
-        node_metadata = workload_metadata_config.value.node_metadata
+        node_metadata = lookup(each.value, "node_metadata", workload_metadata_config.value.node_metadata)
+
       }
     }
 

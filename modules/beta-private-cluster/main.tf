@@ -44,7 +44,11 @@ locals {
   node_version_zonal      = var.node_version != "" && ! var.regional ? var.node_version : local.master_version_zonal
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
   node_version            = var.regional ? local.node_version_regional : local.node_version_zonal
-  release_channel         = var.release_channel != null ? [{ channel : var.release_channel }] : []
+
+  node_pool_names = [for np in toset(var.node_pools) : np.name]
+  node_pools      = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
+
+  release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
 
   autoscalling_resource_limits = var.cluster_autoscaling.enabled ? [{
     resource_type = "cpu"
