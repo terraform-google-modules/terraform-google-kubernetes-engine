@@ -16,8 +16,6 @@
 
 // This file was automatically generated from a template in ./autogen/safer-cluster
 
-// This file was automatically generated from a template in ./autogen
-
 variable "project_id" {
   type        = string
   description = "The project ID to host the cluster in"
