@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+ // This file was automatically generated from a template in ./autogen/safer-cluster
+
 // The safer-cluster module is based on a private cluster, with a several
 // settings set to recommended values by default.
 module "gke" {
