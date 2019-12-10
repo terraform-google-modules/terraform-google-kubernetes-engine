@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- // This file was automatically generated from a template in ./autogen/safer-cluster
+// This file was automatically generated from a template in ./autogen/safer-cluster
 
 output "name" {
   description = "Cluster name"
