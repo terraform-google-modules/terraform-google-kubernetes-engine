@@ -20,6 +20,8 @@ import sys
 
 from jinja2 import Environment, FileSystemLoader
 
+TEMPLATE_FOLDER = "./autogen/main"
+SAFER_TEMPLATE_FOLDER = "./autogen/safer-cluster"
 AUTOGEN_NOTE = '// This file was automatically generated from a template in '
 
 
@@ -115,8 +117,8 @@ def render_modules(template_folder, modules_list):
 
 
 def main(argv):
-    render_modules("./autogen/main", MODULES)
-    render_modules("./autogen/safer-cluster", SAFER_MODULES)
+    render_modules(TEMPLATE_FOLDER, MODULES)
+    render_modules(SAFER_TEMPLATE_FOLDER, SAFER_MODULES)
 
     DEVNULL_FILE.close()
 
