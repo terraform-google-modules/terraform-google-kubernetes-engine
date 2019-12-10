@@ -20,13 +20,8 @@ import sys
 
 from jinja2 import Environment, FileSystemLoader
 
-TEMPLATE_FOLDER = "./autogen"
-BASE_TEMPLATE_OPTIONS = {
-    'autogeneration_note': '// This file was automatically generated ' +
-                           'from a template in {folder}'.format(
-                               folder=TEMPLATE_FOLDER
-                               ),
-}
+TEMPLATE_FOLDERS = ["./autogen/main", "./autogen/safer-cluster"]
+AUTOGEN_NOTE = '// This file was automatically generated from a template in '
 
 
 class Module(object):
@@ -70,14 +65,18 @@ MODULES = [
         'private_cluster': False,
         'beta_cluster': True,
     }),
+    Module("./modules/safer-cluster", {
+        'module_path': '//modules/safer-cluster',
+        'safer_cluster': True,
+    }),
 ]
 DEVNULL_FILE = open(os.devnull, 'w')
 
 
-def main(argv):
+def render_modules(template_folder):
     env = Environment(
         keep_trailing_newline=True,
-        loader=FileSystemLoader(TEMPLATE_FOLDER),
+        loader=FileSystemLoader(template_folder),
         trim_blocks=True,
         lstrip_blocks=True,
     )
@@ -88,7 +87,9 @@ def main(argv):
             if template_file.endswith(".tf.tmpl"):
                 template_file = template_file.replace(".tf.tmpl", ".tf")
             rendered = template.render(
-                module.template_options(BASE_TEMPLATE_OPTIONS)
+                module.template_options(
+                    {'autogeneration_note': AUTOGEN_NOTE + template_folder}
+                )
             )
             with open(os.path.join(module.path, template_file), "w") as f:
                 f.write(rendered)
@@ -105,6 +106,11 @@ def main(argv):
                     )
                 if template_file.endswith(".sh"):
                     os.chmod(os.path.join(module.path, template_file), 0o755)
+
+
+def main(argv):
+    for template_folder in TEMPLATE_FOLDERS:
+        render_modules(template_folder)
     DEVNULL_FILE.close()
 
 
