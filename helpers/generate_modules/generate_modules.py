@@ -20,7 +20,6 @@ import sys
 
 from jinja2 import Environment, FileSystemLoader
 
-TEMPLATE_FOLDERS = ["./autogen/main", "./autogen/safer-cluster"]
 AUTOGEN_NOTE = '// This file was automatically generated from a template in '
 
 
@@ -65,15 +64,18 @@ MODULES = [
         'private_cluster': False,
         'beta_cluster': True,
     }),
+]
+
+SAFER_MODULES = [
     Module("./modules/safer-cluster", {
         'module_path': '//modules/safer-cluster',
-        'safer_cluster': True,
     }),
 ]
+
 DEVNULL_FILE = open(os.devnull, 'w')
 
 
-def render_modules(template_folder):
+def render_modules(template_folder, modules_list):
     env = Environment(
         keep_trailing_newline=True,
         loader=FileSystemLoader(template_folder),
@@ -81,7 +83,7 @@ def render_modules(template_folder):
         lstrip_blocks=True,
     )
     templates = env.list_templates()
-    for module in MODULES:
+    for module in modules_list:
         for template_file in templates:
             template = env.get_template(template_file)
             if template_file.endswith(".tf.tmpl"):
@@ -109,8 +111,9 @@ def render_modules(template_folder):
 
 
 def main(argv):
-    for template_folder in TEMPLATE_FOLDERS:
-        render_modules(template_folder)
+    render_modules("./autogen/main", MODULES)
+    render_modules("./autogen/safer-cluster", SAFER_MODULES)
+
     DEVNULL_FILE.close()
 
 
