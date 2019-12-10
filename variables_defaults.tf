@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+// This file was automatically generated from a template in ./autogen/main
 
 # Setup dynamic default values for variables which can't be setup using
 # the standard terraform "variable default" functionality
