@@ -70,6 +70,10 @@ SAFER_MODULES = [
     Module("./modules/safer-cluster", {
         'module_path': '//modules/safer-cluster',
     }),
+    Module("./modules/safer-cluster-update-variant", {
+        'module_path': '//modules/safer-cluster-update-variant',
+        'update_variant': True,
+    }),
 ]
 
 DEVNULL_FILE = open(os.devnull, 'w')
