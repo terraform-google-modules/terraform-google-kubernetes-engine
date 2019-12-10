@@ -205,6 +205,32 @@ Then perform the following commands on the root folder:
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
+## node_pools variable
+The node_pools variable takes the following parameters:
+
+| Name | Description | Default | Requirement |
+| --- | --- | --- | --- |
+| accelerator_count | The number of the guest accelerator cards exposed to this instance | 0 | Optional |
+| accelerator_type | The accelerator type resource to expose to the instance | " " | Optional |
+| auto_repair | Whether the nodes will be automatically repaired | true | Optional |
+| autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
+| auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
+| disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100GB | Optional |
+| disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |
+| image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | COS | Optional |
+| initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
+| local_ssd_count | The amount of local SSD disks that will be attached to each cluster node | 0 | Optional |
+| machine_type | The name of a Google Compute Engine machine type | n1-standard-2 | Optional |
+| max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
+| min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true | 1 | Optional |
+| name | The name of the node pool |  | Required |
+| node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusers |  | Required |
+| preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
+| service_account | The service account to be used by the Node VMs | " " | Optional |
+| tags | The list of instance tags applied to all nodes | | Required |
+| version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
+
+
 ## Requirements
 
 Before this module can be used on a project, you must ensure that the following pre-requisites are fulfilled:
