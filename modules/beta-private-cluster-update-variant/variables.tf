@@ -78,9 +78,9 @@ variable "node_version" {
   default     = ""
 }
 
-variable "master_authorized_networks_config" {
-  type        = list(object({ cidr_blocks = list(object({ cidr_block = string, display_name = string })) }))
-  description = "The desired configuration options for master authorized networks. The object format is {cidr_blocks = list(object({cidr_block = string, display_name = string}))}. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
+variable "master_authorized_networks" {
+  type        = list(object({ cidr_block = string, display_name = string }))
+  description = "List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
   default     = []
 }
 
@@ -96,16 +96,10 @@ variable "http_load_balancing" {
   default     = true
 }
 
-variable "kubernetes_dashboard" {
-  type        = bool
-  description = "Enable kubernetes dashboard addon"
-  default     = false
-}
-
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
-  default     = false
+  default     = true
 }
 
 variable "network_policy_provider" {
@@ -163,6 +157,7 @@ variable "node_pools_labels" {
   type        = map(map(string))
   description = "Map of maps containing node labels by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = {}
     default-node-pool = {}
@@ -173,16 +168,36 @@ variable "node_pools_metadata" {
   type        = map(map(string))
   description = "Map of maps containing node metadata by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = {}
     default-node-pool = {}
   }
 }
 
+variable "cluster_autoscaling" {
+  type = object({
+    enabled       = bool
+    min_cpu_cores = number
+    max_cpu_cores = number
+    min_memory_gb = number
+    max_memory_gb = number
+  })
+  default = {
+    enabled       = false
+    max_cpu_cores = 0
+    min_cpu_cores = 0
+    max_memory_gb = 0
+    min_memory_gb = 0
+  }
+  description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
+}
+
 variable "node_pools_taints" {
   type        = map(list(object({ key = string, value = string, effect = string })))
   description = "Map of lists containing node taints by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = []
     default-node-pool = []
@@ -193,6 +208,7 @@ variable "node_pools_tags" {
   type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = []
     default-node-pool = []
@@ -203,6 +219,7 @@ variable "node_pools_oauth_scopes" {
   type        = map(list(string))
   description = "Map of lists containing node oauth scopes by node-pool name"
 
+  # Default is being set in variables_defaults.tf
   default = {
     all               = ["https://www.googleapis.com/auth/cloud-platform"]
     default-node-pool = []
@@ -216,7 +233,7 @@ variable "stub_domains" {
 }
 
 variable "upstream_nameservers" {
-  type        = "list"
+  type        = list(string)
   description = "If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf"
   default     = []
 }
@@ -352,6 +369,7 @@ variable "default_max_pods_per_node" {
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
   type        = list(object({ state = string, key_name = string }))
+
   default = [{
     state    = "DECRYPTED"
     key_name = ""
@@ -370,6 +388,7 @@ variable "enable_binary_authorization" {
 
 variable "pod_security_policy_config" {
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
+
   default = [{
     "enabled" = false
   }]

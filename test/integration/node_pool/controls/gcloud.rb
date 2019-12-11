@@ -33,11 +33,35 @@ control "gcloud" do
       end
     end
 
+    describe "cluster-autoscaling" do
+      it "has the expected cluster autoscaling settings" do
+        expect(data['autoscaling']).to eq({
+            "autoprovisioningNodePoolDefaults" => {
+                "oauthScopes" => %w(https://www.googleapis.com/auth/logging.write https://www.googleapis.com/auth/monitoring),
+                "serviceAccount" => "default"
+            },
+            "enableNodeAutoprovisioning" => true,
+            "resourceLimits" => [
+                {
+                    "maximum" => "20",
+                    "minimum" => "5",
+                    "resourceType" => "cpu"
+                },
+                {
+                    "maximum" => "30",
+                    "minimum" => "10",
+                    "resourceType" => "memory"
+                }
+            ]
+        })
+      end
+    end
+
     describe "node pools" do
       let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" } }
 
-      it "has 2" do
-        expect(node_pools.count).to eq 2
+      it "has 3" do
+        expect(node_pools.count).to eq 3
       end
 
       describe "pool-01" do
@@ -279,6 +303,124 @@ control "gcloud" do
           )
         end
       end
+
+      describe "pool-03" do
+        it "exists" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+            )
+          )
+        end
+
+        it "is the expected machine type" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "config" => including(
+                "machineType" => "n1-standard-2",
+              ),
+            )
+          )
+        end
+
+        it "has autoscaling disabled" do
+          expect(data['nodePools']).not_to include(
+            including(
+              "name" => "pool-03",
+              "autoscaling" => including(
+                "enabled" => true,
+              ),
+            )
+          )
+        end
+
+        it "has the expected node count" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "initialNodeCount" => 2
+            )
+          )
+        end
+
+        it "has autorepair enabled" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "management" => including(
+                "autoRepair" => true,
+              ),
+            )
+          )
+        end
+
+        it "has automatic upgrades enabled" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "management" => including(
+                "autoUpgrade" => true,
+              ),
+            )
+          )
+        end
+
+        it "has the expected labels" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "config" => including(
+                "labels" => {
+                  "all-pools-example" => "true",
+                  "cluster_name" => cluster_name,
+                  "node_pool" => "pool-03",
+                },
+              ),
+            )
+          )
+        end
+
+        it "has the expected network tags" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "config" => including(
+                "tags" => match_array([
+                  "all-node-example",
+                  "gke-#{cluster_name}",
+                  "gke-#{cluster_name}-pool-03",
+                ]),
+              ),
+            )
+          )
+        end
+      end
+    end
+  end
+
+  describe command("gcloud beta --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json") do
+    its(:exit_status) { should eq 0 }
+    its(:stderr) { should eq '' }
+
+    let!(:data) do
+      if subject.exit_status == 0
+        JSON.parse(subject.stdout)
+      else
+        {}
+      end
+    end
+
+    it "pool-03 has nodes in correct locations" do
+      expect(data['nodePools']).to include(
+        including(
+          "name" => "pool-03",
+          "locations" => match_array([
+            "us-central1-b",
+            "us-central1-c",
+          ]),
+        )
+      )
     end
   end
 end

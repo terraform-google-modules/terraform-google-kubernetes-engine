@@ -12,9 +12,20 @@ The resources/services/activations/deletions that this module will create/trigge
 Sub modules are provided from creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
 
 {% if private_cluster %}
-**Note**: You must run Terraform from a VM on the same VPC as your cluster, otherwise there will be issues connecting to the GKE master.
+## Private Cluster Endpoints
+When creating a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters), nodes are provisioned with private IPs.
+The Kubernetes master endpoint is also [locked down](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#access_to_the_cluster_endpoints), which affects these module features:
+- `configure_ip_masq`
+- `stub_domains`
 
-  {% endif %}
+If you are *not* using these features, then the module will function normally for private clusters and no special configuration is needed.
+If you are using these features with a private cluster, you will need to either:
+1. Run Terraform from a VM on the same VPC as your cluster (allowing it to connect to the private endpoint) and set `deploy_using_private_endpoint` to `true`.
+2. Enable (beta) [route export functionality](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#master-on-prem-routing) to connect from an on-premise network over a VPN or Interconnect.
+3. Include the external IP of your Terraform deployer in the `master_authorized_networks` configuration. Note that only IP addresses reserved in Google Cloud (such as in other VPCs) can be whitelisted.
+4. Deploy a [bastion host](https://github.com/terraform-google-modules/terraform-google-bastion-host) or [proxy](https://cloud.google.com/solutions/creating-kubernetes-engine-private-clusters-with-net-proxies) in the same VPC as your GKE cluster.
+
+{% endif %}
 
 ## Compatibility
 
@@ -39,7 +50,6 @@ module "gke" {
   ip_range_services          = "us-central1-01-gke-01-services"
   http_load_balancing        = false
   horizontal_pod_autoscaling = true
-  kubernetes_dashboard       = true
   network_policy             = true
   {% if private_cluster %}
   enable_private_endpoint    = true
@@ -55,8 +65,12 @@ module "gke" {
     {
       name               = "default-node-pool"
       machine_type       = "n1-standard-2"
+      {% if beta_cluster %}
+      node_locations     = "us-central1-b,us-central1-c"
+      {% endif %}
       min_count          = 1
       max_count          = 100
+      local_ssd_count    = 0
       disk_size_gb       = 100
       disk_type          = "pd-standard"
       image_type         = "COS"
@@ -122,24 +136,53 @@ Then perform the following commands on the root folder:
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
 
-## Upgrade to v3.0.0
-
-v3.0.0 is a breaking release. Refer to the
-[Upgrading to v3.0 guide][upgrading-to-v3.0] for details.
-
-## Upgrade to v2.0.0
-
-v2.0.0 is a breaking release. Refer to the
-[Upgrading to v2.0 guide][upgrading-to-v2.0] for details.
-
-## Upgrade to v1.0.0
-
-Version 1.0.0 of this module introduces a breaking change: adding the `disable-legacy-endpoints` metadata field to all node pools. This metadata is required by GKE and [determines whether the `/0.1/` and `/v1beta1/` paths are available in the nodes' metadata server](https://cloud.google.com/kubernetes-engine/docs/how-to/protecting-cluster-metadata#disable-legacy-apis). If your applications do not require access to the node's metadata server, you can leave the default value of `true` provided by the module. If your applications require access to the metadata server, be sure to read the linked documentation to see if you need to set the value for this field to `false` to allow your applications access to the above metadata server paths.
-
-In either case, upgrading to module version `v1.0.0` will trigger a recreation of all node pools in the cluster.
-
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## node_pools variable
+The node_pools variable takes the following parameters:
+
+| Name | Description | Default | Requirement |
+| --- | --- | --- | --- |
+| accelerator_count | The number of the guest accelerator cards exposed to this instance | 0 | Optional |
+| accelerator_type | The accelerator type resource to expose to the instance | " " | Optional |
+| auto_repair | Whether the nodes will be automatically repaired | true | Optional |
+| autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
+| auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
+| disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100GB | Optional |
+| disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |
+{% if beta_cluster %}
+| effect | Effect for the taint | | Required |
+{% endif %}
+| image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | COS | Optional |
+| initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
+{% if beta_cluster %}
+| key | The key required for the taint | | Required |
+{% endif %}
+| local_ssd_count | The amount of local SSD disks that will be attached to each cluster node | 0 | Optional |
+| machine_type | The name of a Google Compute Engine machine type | n1-standard-2 | Optional |
+| max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
+{% if beta_cluster %}
+| max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |
+{% endif %}
+| min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true | 1 | Optional |
+| name | The name of the node pool |  | Required |
+| node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusers |  | Required |
+{% if beta_cluster %}
+| node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. Defaults to cluster level node locations if nothing is specified | " " | Optional |
+| node_metadata | Options to expose the node metadata to the workload running on the node | | Required |
+{% endif %}
+| preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
+{% if beta_cluster %}
+| sandbox_type | Sandbox to use for pods in the node pool | | Required |
+{% endif %}
+| service_account | The service account to be used by the Node VMs | " " | Optional |
+| tags | The list of instance tags applied to all nodes | | Required |
+{% if beta_cluster %}
+| value | The value for the taint | | Required |
+{% endif %}
+| version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
+
 
 ## Requirements
 
@@ -196,17 +239,6 @@ The project has the following folders and files:
 - /README.MD: This file.
 - /modules: Private and beta sub modules.
 
-
-{% if private_cluster %}
-[upgrading-to-v2.0]: ../../docs/upgrading_to_v2.0.md
-{% else %}
-[upgrading-to-v2.0]: docs/upgrading_to_v2.0.md
-{% endif %}
-{% if private_cluster or beta_cluster %}
-[upgrading-to-v3.0]: ../../docs/upgrading_to_v3.0.md
-{% else %}
-[upgrading-to-v3.0]: docs/upgrading_to_v3.0.md
-{% endif %}
 {% if beta_cluster %}
 [terraform-provider-google-beta]: https://github.com/terraform-providers/terraform-provider-google-beta
 {% else %}

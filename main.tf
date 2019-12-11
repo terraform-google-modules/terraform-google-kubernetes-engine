@@ -34,7 +34,7 @@ resource "random_shuffle" "available_zones" {
 locals {
   // location
   location = var.regional ? var.region : var.zones[0]
-  region   = var.region == null ? join("-", slice(split("-", var.zones[0]), 0, 2)) : var.region
+  region   = var.regional ? var.region : join("-", slice(split("-", var.zones[0]), 0, 2))
   // for regional cluster - use var.zones if provided, use available otherwise, for zonal cluster use var.zones with first element extracted
   node_locations = var.regional ? coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result)) : slice(var.zones, 1, length(var.zones))
   // kuberentes version
@@ -64,13 +64,11 @@ locals {
 
 
   cluster_output_name           = google_container_cluster.primary.name
-  cluster_output_location       = google_container_cluster.primary.location
-  cluster_output_region         = google_container_cluster.primary.region
   cluster_output_regional_zones = google_container_cluster.primary.node_locations
   cluster_output_zonal_zones    = local.zone_count > 1 ? slice(var.zones, 1, local.zone_count) : []
   cluster_output_zones          = local.cluster_output_regional_zones
 
-  cluster_output_endpoint = google_container_cluster.primary.endpoint
+  cluster_endpoint = google_container_cluster.primary.endpoint
 
   cluster_output_master_auth                        = concat(google_container_cluster.primary.*.master_auth, [])
   cluster_output_master_version                     = google_container_cluster.primary.master_version
@@ -80,8 +78,11 @@ locals {
   cluster_output_network_policy_enabled             = google_container_cluster.primary.addons_config.0.network_policy_config.0.disabled
   cluster_output_http_load_balancing_enabled        = google_container_cluster.primary.addons_config.0.http_load_balancing.0.disabled
   cluster_output_horizontal_pod_autoscaling_enabled = google_container_cluster.primary.addons_config.0.horizontal_pod_autoscaling.0.disabled
-  cluster_output_kubernetes_dashboard_enabled       = google_container_cluster.primary.addons_config.0.kubernetes_dashboard.0.disabled
 
+
+  master_authorized_networks_config = length(var.master_authorized_networks) == 0 ? [] : [{
+    cidr_blocks : var.master_authorized_networks
+  }]
 
   cluster_output_node_pools_names    = concat(google_container_node_pool.pools.*.name, [""])
   cluster_output_node_pools_versions = concat(google_container_node_pool.pools.*.version, [""])
@@ -89,12 +90,12 @@ locals {
   cluster_master_auth_list_layer1 = local.cluster_output_master_auth
   cluster_master_auth_list_layer2 = local.cluster_master_auth_list_layer1[0]
   cluster_master_auth_map         = local.cluster_master_auth_list_layer2[0]
-  # cluster locals
+
+  cluster_location = google_container_cluster.primary.location
+  cluster_region   = var.regional ? google_container_cluster.primary.region : join("-", slice(split("-", local.cluster_location), 0, 2))
+  cluster_zones    = sort(local.cluster_output_zones)
+
   cluster_name                               = local.cluster_output_name
-  cluster_location                           = local.cluster_output_location
-  cluster_region                             = local.cluster_output_region
-  cluster_zones                              = sort(local.cluster_output_zones)
-  cluster_endpoint                           = local.cluster_output_endpoint
   cluster_ca_certificate                     = local.cluster_master_auth_map["cluster_ca_certificate"]
   cluster_master_version                     = local.cluster_output_master_version
   cluster_min_master_version                 = local.cluster_output_min_master_version
@@ -105,7 +106,6 @@ locals {
   cluster_network_policy_enabled             = ! local.cluster_output_network_policy_enabled
   cluster_http_load_balancing_enabled        = ! local.cluster_output_http_load_balancing_enabled
   cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled
-  cluster_kubernetes_dashboard_enabled       = ! local.cluster_output_kubernetes_dashboard_enabled
 }
 
 /******************************************

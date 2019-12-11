@@ -16,15 +16,18 @@
 
 locals {
   int_required_roles = [
+    "roles/cloudkms.admin",
     "roles/cloudkms.cryptoKeyEncrypterDecrypter",
     "roles/compute.networkAdmin",
+    "roles/container.admin",
     "roles/container.clusterAdmin",
     "roles/container.developer",
     "roles/iam.serviceAccountAdmin",
     "roles/iam.serviceAccountUser",
     "roles/compute.networkAdmin",
     "roles/compute.viewer",
-    "roles/resourcemanager.projectIamAdmin"
+    "roles/resourcemanager.projectIamAdmin",
+    "roles/composer.worker"
   ]
 }
 
@@ -34,25 +37,48 @@ resource "random_id" "random_suffix" {
 }
 
 resource "google_service_account" "int_test" {
-  project      = module.gke-project.project_id
+  project      = module.gke-project-1.project_id
   account_id   = "gke-int-test-${random_id.random_suffix.hex}"
   display_name = "gke-int-test"
 }
 
-resource "google_service_account" "gke_sa" {
-  project      = module.gke-project.project_id
-  account_id   = "gke-sa-int-test-${random_id.random_suffix.hex}"
-  display_name = "gke-sa-int-test"
+resource "google_service_account" "gke_sa_1" {
+  project      = module.gke-project-1.project_id
+  account_id   = "gke-sa-int-test-p1-${random_id.random_suffix.hex}"
+  display_name = "gke-sa-int-test-p1"
 }
 
-resource "google_project_iam_member" "int_test" {
+resource "google_service_account" "gke_sa_2" {
+  project      = module.gke-project-2.project_id
+  account_id   = "gke-sa-int-test-p2-${random_id.random_suffix.hex}"
+  display_name = "gke-sa-int-test-p2"
+}
+
+resource "google_project_iam_member" "int_test_1" {
   count = length(local.int_required_roles)
 
-  project = module.gke-project.project_id
+  project = module.gke-project-1.project_id
+  role    = local.int_required_roles[count.index]
+  member  = "serviceAccount:${google_service_account.int_test.email}"
+}
+
+resource "google_project_iam_member" "int_test_2" {
+  count = length(local.int_required_roles)
+
+  project = module.gke-project-2.project_id
   role    = local.int_required_roles[count.index]
   member  = "serviceAccount:${google_service_account.int_test.email}"
 }
 
 resource "google_service_account_key" "int_test" {
   service_account_id = google_service_account.int_test.id
+}
+
+resource "google_project_iam_binding" "kubernetes_engine_kms_access" {
+  project = module.gke-project-1.project_id
+  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+  members = [
+    "serviceAccount:service-${module.gke-project-1.project_number}@container-engine-robot.iam.gserviceaccount.com",
+  ]
 }

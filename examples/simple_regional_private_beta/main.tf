@@ -19,9 +19,8 @@ locals {
 }
 
 provider "google-beta" {
-  version     = "~> 2.18.0"
-  credentials = file(var.credentials_path)
-  region      = var.region
+  version = "~> 2.18.0"
+  region  = var.region
 }
 
 data "google_compute_subnetwork" "subnetwork" {
@@ -45,14 +44,10 @@ module "gke" {
   enable_private_nodes    = true
   master_ipv4_cidr_block  = "172.16.0.0/28"
 
-  master_authorized_networks_config = [
+  master_authorized_networks = [
     {
-      cidr_blocks = [
-        {
-          cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
-          display_name = "VPC"
-        },
-      ]
+      cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
+      display_name = "VPC"
     },
   ]
 

@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The GCP project to use for integration tests"
+variable "project_ids" {
+  type        = list(string)
+  description = "The GCP projects to use for integration tests"
 }
 
 variable "region" {
   description = "The GCP region to create and test resources in"
-  default     = "us-east4"
+  default     = "us-central1"
 }
 
 variable "zones" {
   type        = list(string)
   description = "The GCP zones to create and test resources in, for applicable tests"
-  default     = ["us-east4-a", "us-east4-b", "us-east4-c"]
+  default     = ["us-central1-a", "us-central1-b", "us-central1-c"]
 }
 
-variable "compute_engine_service_account" {
-  description = "The email address of the service account to associate with the GKE cluster"
+variable "compute_engine_service_accounts" {
+  type        = list(string)
+  description = "The email addresses of the service account to associate with the GKE cluster"
 }
 
 variable "registry_project_id" {
   description = "Project to use for granting access to the GCR registry, if requested"
 }
-

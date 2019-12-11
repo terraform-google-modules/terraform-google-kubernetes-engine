@@ -21,7 +21,7 @@ resource "random_string" "suffix" {
 }
 
 provider "google" {
-  project = var.project_id
+  project = var.project_ids[1]
 }
 
 resource "google_compute_network" "main" {
@@ -45,4 +45,3 @@ resource "google_compute_subnetwork" "main" {
     ip_cidr_range = "192.168.64.0/18"
   }
 }
-
