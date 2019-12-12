@@ -126,9 +126,7 @@ module "gke" {
 
   // Define PodSecurityPolicies for differnet applications.
   // Example: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#example
-  pod_security_policy_config = [{
-    "enabled" = true
-  }]
+  pod_security_policy_config = var.pod_security_policy_config
 
   resource_usage_export_dataset_id = var.resource_usage_export_dataset_id
 
