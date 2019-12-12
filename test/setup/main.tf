@@ -82,3 +82,45 @@ module "gke-project-2" {
     "storage-api.googleapis.com",
   ]
 }
+
+/* Create Shared VPC host and service projects to test shared-vpc-helper submodule.
+Only compute.googleapis.com is enabled. All others needed resourcess will provided by the submodule.
+*/
+module "gke_svpc_host_project" {
+  source            = "terraform-google-modules/project-factory/google"
+  version           = "~> 3.0"
+  name              = "ci-gke-svpc-host"
+  random_project_id = true
+  org_id            = var.org_id
+  folder_id         = google_folder.ci_gke_folder.id
+  billing_account   = var.billing_account
+
+  auto_create_network = false
+
+  activate_apis = [
+    "compute.googleapis.com"
+  ]
+}
+
+// Enables the Shared VPC feature for a created project, assigning it as a Shared VPC host project.
+resource "google_compute_shared_vpc_host_project" "gke_svpc_host_project" {
+  depends_on = [
+    module.gke_svpc_host_project
+  ]
+  project = module.gke_svpc_host_project.project_id
+}
+
+module "service_project" {
+  source              = "terraform-google-modules/project-factory/google//modules/shared_vpc"
+  name                = "svpc-service"
+  random_project_id   = true
+  org_id              = var.org_id
+  folder_id           = google_folder.ci_gke_folder.id
+  billing_account     = var.billing_account
+  shared_vpc          = google_compute_shared_vpc_host_project.gke_svpc_host_project.project
+  auto_create_network = false
+
+  activate_apis = [
+    "compute.googleapis.com"
+  ]
+}
