@@ -20,111 +20,185 @@ driver:
 provisioner:
   name: "terraform"
 
+verifier:
+  name: terraform
+  color: false
+  fail_fast: false
+
 platforms:
   - name: local
 
 suites:
-  - name: "deploy_service"
+  - name: "disable_client_cert"
     driver:
-      name: "terraform"
-      command_timeout: 1800
-      root_module_directory: test/fixtures/deploy_service
+      root_module_directory: test/fixtures/disable_client_cert
     verifier:
-      name: terraform
-      color: false
       systems:
-        - name: deploy_service
+        - name: disable_client_cert
           backend: local
-    provisioner:
-      name: terraform
-  - name: "node_pool"
-    driver:
-      name: "terraform"
-      command_timeout: 1800
-      root_module_directory: test/fixtures/node_pool
-    verifier:
-      name: terraform
-      color: false
-      systems:
-        - name: node_pool
-          backend: local
-    provisioner:
-      name: terraform
+          controls:
+            - gcloud
   - name: "shared_vpc"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/shared_vpc
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: shared_vpc
           backend: local
-    provisioner:
-      name: terraform
+  - name: "safer_cluster"
+    driver:
+      root_module_directory: test/fixtures/safer_cluster
+    verifier:
+      systems:
+        - name: safer_cluster
+          backend: local
   - name: "simple_regional"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/simple_regional
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: simple_regional
           backend: local
-    provisioner:
-      name: terraform
+  - name: "private_zonal_with_networking"
+    driver:
+      root_module_directory: test/fixtures/private_zonal_with_networking
+    verifier:
+      systems:
+        - name: private_zonal_with_networking
+          backend: local
+          controls:
+            - gcloud
+        - name: private_zonal_with_networking
+          backend: local
+          controls:
+            - subnet
+        - name: network
+          backend: gcp
+          controls:
+            - network
+  - name: "simple_regional_with_networking"
+    driver:
+      root_module_directory: test/fixtures/simple_regional_with_networking
+    verifier:
+      systems:
+        - name: simple_regional_with_networking
+          backend: local
+          controls:
+            - gcloud
+        - name: subnet
+          backend: local
+          controls:
+            - subnet
+        - name: network
+          backend: gcp
+          controls:
+            - network
   - name: "simple_regional_private"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/simple_regional_private
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: simple_regional_private
           backend: local
-    provisioner:
-      name: terraform
   - name: "simple_zonal"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/simple_zonal
     verifier:
-      name: terraform
-      color: false
       systems:
-        - name: simple_zonal
+        - name: gcloud
           backend: local
-    provisioner:
-      name: terraform
+          controls:
+            - gcloud
+            - acm
+        - name: gcp
+          backend: gcp
+          controls:
+            - gcp
   - name: "simple_zonal_private"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/simple_zonal_private
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: simple_zonal_private
           backend: local
-    provisioner:
-      name: terraform
+          controls:
+            - gcloud
   - name: "stub_domains"
     driver:
-      name: "terraform"
-      command_timeout: 1800
       root_module_directory: test/fixtures/stub_domains
     verifier:
-      name: terraform
-      color: false
       systems:
         - name: stub_domains
           backend: local
-    provisioner:
-      name: terraform
+          controls:
+            - gcloud
+            - kubectl
+# Disabled due to issue #264
+# (https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/264)
+#  - name: stub_domains_private
+#    driver:
+#      root_module_directory: test/fixtures/stub_domains_private
+#      systems:
+#        - name: stub_domains_private
+#          backend: local
+  - name: "upstream_nameservers"
+    driver:
+      root_module_directory: test/fixtures/upstream_nameservers
+    verifier:
+        systems:
+          - name: upstream_nameservers
+            backend: local
+  - name: "stub_domains_upstream_nameservers"
+    driver:
+      root_module_directory: test/fixtures/stub_domains_upstream_nameservers
+    verifier:
+        systems:
+          - name: stub_domains_upstream_nameservers
+            backend: local
+  - name: "workload_metadata_config"
+    driver:
+      root_module_directory: test/fixtures/workload_metadata_config
+    verifier:
+      systems:
+        - name: workload_metadata_config
+          backend: local
+  - name: "beta_cluster"
+    driver:
+      root_module_directory: test/fixtures/beta_cluster
+    verifier:
+      systems:
+        - name: gcloud
+          backend: local
+          controls:
+            - gcloud
+        - name: gcp
+          backend: gcp
+          controls:
+            - gcp
+  - name: "deploy_service"
+    driver:
+      root_module_directory: test/fixtures/deploy_service
+    verifier:
+      systems:
+        - name: deploy_service
+          backend: local
+          controls:
+            - gcloud
+            - kubectl
+  - name: "node_pool"
+    driver:
+      root_module_directory: test/fixtures/node_pool
+    verifier:
+      systems:
+        - name: node_pool
+          backend: local
+          controls:
+            - gcloud
+            - kubectl
+  - name: "sandbox_enabled"
+    driver:
+      root_module_directory: test/fixtures/sandbox_enabled
+    verifier:
+      systems:
+        - name: sandbox_enabled
+          backend: local

@@ -17,13 +17,22 @@
 module "example" {
   source = "../../../examples/node_pool"
 
-  project_id                     = "${var.project_id}"
+  project_id                     = var.project_ids[0]
   cluster_name_suffix            = "-${random_string.suffix.result}"
-  region                         = "${var.region}"
-  zones                          = ["${slice(var.zones,0,1)}"]
-  network                        = "${google_compute_network.main.name}"
-  subnetwork                     = "${google_compute_subnetwork.main.name}"
-  ip_range_pods                  = "${google_compute_subnetwork.main.secondary_ip_range.0.range_name}"
-  ip_range_services              = "${google_compute_subnetwork.main.secondary_ip_range.1.range_name}"
-  compute_engine_service_account = "${var.compute_engine_service_account}"
+  region                         = var.region
+  zones                          = slice(var.zones, 0, 1)
+  network                        = google_compute_network.main.name
+  subnetwork                     = google_compute_subnetwork.main.name
+  ip_range_pods                  = google_compute_subnetwork.main.secondary_ip_range[0].range_name
+  ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
+  compute_engine_service_account = var.compute_engine_service_accounts[0]
+
+  cluster_autoscaling = {
+    enabled       = true
+    max_cpu_cores = 20
+    min_cpu_cores = 5
+    max_memory_gb = 30
+    min_memory_gb = 10
+  }
 }
+

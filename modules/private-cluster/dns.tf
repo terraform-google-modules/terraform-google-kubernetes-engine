@@ -20,35 +20,101 @@
   Delete default kube-dns configmap
  *****************************************/
 resource "null_resource" "delete_default_kube_dns_configmap" {
-  count = "${local.custom_kube_dns_config ? 1 : 0}"
+  count = (local.custom_kube_dns_config || local.upstream_nameservers_config) && ! var.skip_provisioners ? 1 : 0
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/kubectl_wrapper.sh https://${local.cluster_endpoint} ${data.google_client_config.default.access_token} ${local.cluster_ca_certificate} ${path.module}/scripts/delete-default-resource.sh kube-system configmap kube-dns"
   }
 
-  depends_on = ["data.google_client_config.default", "google_container_cluster.primary", "google_container_node_pool.pools", "google_container_cluster.zonal_primary", "google_container_node_pool.zonal_pools"]
+  depends_on = [
+    data.google_client_config.default,
+    google_container_cluster.primary,
+    google_container_node_pool.pools,
+  ]
 }
 
 /******************************************
   Create kube-dns confimap
  *****************************************/
 resource "kubernetes_config_map" "kube-dns" {
-  count = "${local.custom_kube_dns_config ? 1 : 0}"
+  count = local.custom_kube_dns_config && ! local.upstream_nameservers_config ? 1 : 0
 
   metadata {
     name      = "kube-dns"
     namespace = "kube-system"
 
-    labels {
+    labels = {
       maintained_by = "terraform"
     }
   }
 
-  data {
+  data = {
     stubDomains = <<EOF
 ${jsonencode(var.stub_domains)}
 EOF
   }
 
-  depends_on = ["null_resource.delete_default_kube_dns_configmap", "data.google_client_config.default", "google_container_cluster.primary", "google_container_node_pool.pools", "google_container_cluster.zonal_primary", "google_container_node_pool.zonal_pools"]
+  depends_on = [
+    null_resource.delete_default_kube_dns_configmap,
+    data.google_client_config.default,
+    google_container_cluster.primary,
+    google_container_node_pool.pools,
+  ]
+}
+
+resource "kubernetes_config_map" "kube-dns-upstream-namservers" {
+  count = ! local.custom_kube_dns_config && local.upstream_nameservers_config ? 1 : 0
+
+  metadata {
+    name = "kube-dns"
+
+    namespace = "kube-system"
+
+    labels = {
+      maintained_by = "terraform"
+    }
+  }
+
+  data = {
+    upstreamNameservers = <<EOF
+${jsonencode(var.upstream_nameservers)}
+EOF
+  }
+
+  depends_on = [
+    null_resource.delete_default_kube_dns_configmap,
+    data.google_client_config.default,
+    google_container_cluster.primary,
+    google_container_node_pool.pools,
+  ]
+}
+
+resource "kubernetes_config_map" "kube-dns-upstream-nameservers-and-stub-domains" {
+  count = local.custom_kube_dns_config && local.upstream_nameservers_config ? 1 : 0
+
+  metadata {
+    name      = "kube-dns"
+    namespace = "kube-system"
+
+    labels = {
+      maintained_by = "terraform"
+    }
+  }
+
+  data = {
+    upstreamNameservers = <<EOF
+${jsonencode(var.upstream_nameservers)}
+EOF
+
+    stubDomains = <<EOF
+${jsonencode(var.stub_domains)}
+EOF
+  }
+
+  depends_on = [
+    null_resource.delete_default_kube_dns_configmap,
+    data.google_client_config.default,
+    google_container_cluster.primary,
+    google_container_node_pool.pools,
+  ]
 }

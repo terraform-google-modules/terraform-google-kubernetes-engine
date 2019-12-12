@@ -1,4 +1,8 @@
 name: simple_zonal
+depends:
+  - name: inspec-gcp
+    git: https://github.com/inspec/inspec-gcp.git
+    tag: v0.16.0
 attributes:
   - name: project_id
     required: true
@@ -19,5 +23,8 @@ attributes:
     required: true
     type: string
   - name: service_account
+    required: true
+    type: string
+  - name: ca_certificate
     required: true
     type: string

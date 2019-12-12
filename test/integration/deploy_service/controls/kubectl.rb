@@ -1,10 +1,10 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,6 +58,12 @@ control "kubectl" do
 
         it "is reachable" do
           expect {
+            10.times do
+              unless host(service_load_balancer_ip, port: 8080, protocol: 'tcp').reachable?
+                puts "Nginx is not reachable, retrying.."
+                sleep 10
+              end
+            end
             RestClient.get(service_load_balancer_address)
           }.to_not raise_exception
         end

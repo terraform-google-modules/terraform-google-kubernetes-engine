@@ -28,7 +28,7 @@ variable "region" {
 }
 
 variable "zones" {
-  type        = "list"
+  type        = list(string)
   description = "The zone to host the cluster in (required if is a zonal cluster)"
 }
 
@@ -45,9 +45,27 @@ variable "ip_range_pods" {
 }
 
 variable "ip_range_services" {
-  description = "The secondary ip range to use for pods"
+  description = "The secondary ip range to use for services"
 }
 
 variable "compute_engine_service_account" {
   description = "Service account to associate to the nodes in the cluster"
+}
+
+variable "cluster_autoscaling" {
+  type = object({
+    enabled       = bool
+    min_cpu_cores = number
+    max_cpu_cores = number
+    min_memory_gb = number
+    max_memory_gb = number
+  })
+  default = {
+    enabled       = false
+    max_cpu_cores = 0
+    min_cpu_cores = 0
+    max_memory_gb = 0
+    min_memory_gb = 0
+  }
+  description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }

@@ -1,0 +1,3 @@
+# This fill will be always downloaded by terraform local-exec command from gc bucket
+config-management-operator.yaml
+/terraform.tfvars

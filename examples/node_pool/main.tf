@@ -18,104 +18,102 @@ locals {
   cluster_type = "node-pool"
 }
 
-provider "google" {
-  version = "~> 2.2"
-  region  = "${var.region}"
-}
-
 provider "google-beta" {
-  version = "~> 2.2"
-  region  = "${var.region}"
+  version = "~> 2.18.0"
+  region  = var.region
 }
 
 module "gke" {
-  source                            = "../../"
-  project_id                        = "${var.project_id}"
+  source                            = "../../modules/beta-public-cluster/"
+  project_id                        = var.project_id
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                          = "false"
-  region                            = "${var.region}"
-  zones                             = "${var.zones}"
-  network                           = "${var.network}"
-  subnetwork                        = "${var.subnetwork}"
-  ip_range_pods                     = "${var.ip_range_pods}"
-  ip_range_services                 = "${var.ip_range_services}"
-  remove_default_node_pool          = "true"
-  disable_legacy_metadata_endpoints = "false"
+  region                            = var.region
+  zones                             = var.zones
+  network                           = var.network
+  subnetwork                        = var.subnetwork
+  ip_range_pods                     = var.ip_range_pods
+  ip_range_services                 = var.ip_range_services
+  create_service_account            = false
+  remove_default_node_pool          = true
+  disable_legacy_metadata_endpoints = false
+  cluster_autoscaling               = var.cluster_autoscaling
 
   node_pools = [
     {
       name            = "pool-01"
       min_count       = 1
       max_count       = 2
-      service_account = "${var.compute_engine_service_account}"
+      service_account = var.compute_engine_service_account
       auto_upgrade    = true
     },
     {
-      name            = "pool-02"
+      name              = "pool-02"
+      machine_type      = "n1-standard-2"
+      min_count         = 1
+      max_count         = 2
+      local_ssd_count   = 0
+      disk_size_gb      = 30
+      disk_type         = "pd-standard"
+      accelerator_count = 1
+      accelerator_type  = "nvidia-tesla-p4"
+      image_type        = "COS"
+      auto_repair       = false
+      service_account   = var.compute_engine_service_account
+    },
+    {
+      name            = "pool-03"
+      node_locations  = "${var.region}-b,${var.region}-c"
+      autoscaling     = false
+      node_count      = 2
       machine_type    = "n1-standard-2"
-      min_count       = 1
-      max_count       = 2
-      disk_size_gb    = 30
       disk_type       = "pd-standard"
       image_type      = "COS"
-      auto_repair     = false
-      service_account = "${var.compute_engine_service_account}"
+      auto_upgrade    = true
+      service_account = var.compute_engine_service_account
     },
   ]
 
   node_pools_metadata = {
-    all = {}
-
     pool-01 = {
-      shutdown-script = "${file("${path.module}/data/shutdown-script.sh")}"
+      shutdown-script = file("${path.module}/data/shutdown-script.sh")
     }
-
-    pool-02 = {}
   }
 
   node_pools_labels = {
     all = {
-      all-pools-example = "true"
+      all-pools-example = true
     }
-
     pool-01 = {
-      pool-01-example = "true"
+      pool-01-example = true
     }
-
-    pool-02 = {}
   }
 
   node_pools_taints = {
     all = [
       {
         key    = "all-pools-example"
-        value  = "true"
+        value  = true
         effect = "PREFER_NO_SCHEDULE"
       },
     ]
-
     pool-01 = [
       {
         key    = "pool-01-example"
-        value  = "true"
+        value  = true
         effect = "PREFER_NO_SCHEDULE"
       },
     ]
-
-    pool-02 = []
   }
 
   node_pools_tags = {
     all = [
       "all-node-example",
     ]
-
     pool-01 = [
       "pool-01-example",
     ]
-
-    pool-02 = []
   }
 }
 
-data "google_client_config" "default" {}
+data "google_client_config" "default" {
+}
