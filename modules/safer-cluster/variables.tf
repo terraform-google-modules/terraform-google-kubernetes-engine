@@ -309,3 +309,9 @@ variable "enable_private_endpoint" {
   default     = false
 }
 
+variable "skip_provisioners" {
+  type        = bool
+  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
+  default     = false
+}
+
