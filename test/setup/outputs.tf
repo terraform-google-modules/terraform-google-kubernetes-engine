@@ -27,7 +27,7 @@ output "svpc_host_project_id" {
 }
 
 output "svpc_service_project_id" {
-  value = google_project.gke_service_project.project_id
+  value = module.gke_svpc_host_project.project_id
 }
 
 output "sa_key" {

@@ -19,9 +19,9 @@ terraform {
 
   required_providers {
 {% if beta_cluster %}
-    google-beta = "~> 2.18"
+    google-beta = "~> 2.10"
 {% else %}
-    google = "~> 2.18"
+    google = "~> 2.10"
 {% endif %}
   }
 }
