@@ -147,4 +147,6 @@ module "gke" {
   authenticator_security_group = var.authenticator_security_group
 
   enable_shielded_nodes = var.enable_shielded_nodes
+
+  skip_provisioners = var.skip_provisioners
 }
