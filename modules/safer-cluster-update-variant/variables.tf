@@ -303,3 +303,9 @@ variable "enable_shielded_nodes" {
   default     = true
 }
 
+variable "enable_private_endpoint" {
+  type        = bool
+  description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
+  default     = false
+}
+

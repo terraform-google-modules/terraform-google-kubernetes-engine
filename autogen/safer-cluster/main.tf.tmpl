@@ -107,7 +107,7 @@ module "gke" {
   cluster_resource_labels = var.cluster_resource_labels
 
   // We enable private endpoints to limit exposure.
-  enable_private_endpoint       = true
+  enable_private_endpoint       = var.enable_private_endpoint
   deploy_using_private_endpoint = true
 
   // Private nodes better control public exposure, and reduce
