@@ -14,7 +14,7 @@ It incorporates the standard cluster module and the [ACM install module](../../m
 | acm\_sync\_repo | Anthos config management Git repo | string | `"git@github.com:GoogleCloudPlatform/csp-config-management.git"` | no |
 | cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
 | ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
-| ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
+| ip\_range\_services | The secondary ip range to use for services | string | n/a | yes |
 | network | The VPC network to host the cluster in | string | n/a | yes |
 | operator\_path | Path to the operator yaml config. If unset, will download from GCS releases. | string | `"null"` | no |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
