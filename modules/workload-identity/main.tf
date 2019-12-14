@@ -22,7 +22,7 @@ locals {
   output_k8s_namespace = var.use_existing_k8s_sa ? var.namespace : kubernetes_service_account.main[0].metadata[0].namespace
 }
 
-resource "google_service_account" "main" {
+resource "google_service_account" "cluster_service_account" {
   account_id   = var.name
   display_name = substr("GCP SA bound to K8S SA ${local.k8s_sa_gcp_derived_name}", 0, 100)
   project      = var.project_id
@@ -35,13 +35,13 @@ resource "kubernetes_service_account" "main" {
     name      = var.name
     namespace = var.namespace
     annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.main.email
+      "iam.gke.io/gcp-service-account" = google_service_account.cluster_service_account.email
     }
   }
 }
 
 resource "google_service_account_iam_member" "main" {
-  service_account_id = "${google_service_account.main.name}"
+  service_account_id = "${google_service_account.cluster_service_account.name}"
   role               = "roles/iam.workloadIdentityUser"
   member             = local.k8s_sa_gcp_derived_name
 }

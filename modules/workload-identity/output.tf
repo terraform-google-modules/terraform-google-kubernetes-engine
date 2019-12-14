@@ -26,12 +26,12 @@ output "k8s_service_account_namespace" {
 
 output "gcp_service_account_email" {
   description = "Email address of GCP service account."
-  value       = google_service_account.main.email
+  value       = google_service_account.cluster_service_account.email
 }
 
 output "gcp_service_account_fqn" {
   description = "FQN of GCP service account."
-  value       = "serviceAccount:${google_service_account.main.email}"
+  value       = "serviceAccount:${google_service_account.cluster_service_account.email}"
 }
 
 output "gcp_service_account_name" {
