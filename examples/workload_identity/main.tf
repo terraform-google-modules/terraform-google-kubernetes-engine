@@ -23,6 +23,12 @@ provider "google" {
   region  = var.region
 }
 
+provider "kubernetes" {
+  version                = "~> 1.10"
+  host                   = module.gke.endpoint
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+}
+
 module "gke" {
   source            = "../../"
   project_id        = var.project_id
