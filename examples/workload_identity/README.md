@@ -25,6 +25,7 @@ Read more about [workload identity in the docs](https://cloud.google.com/kuberne
 | ca\_certificate |  |
 | client\_token |  |
 | kubernetes\_endpoint |  |
+| project\_id | Project id where GKE cluster is created. |
 | region | Cluster region |
 | service\_account | The default service account used for running nodes. |
 | zones | List of zones in which the cluster resides |
