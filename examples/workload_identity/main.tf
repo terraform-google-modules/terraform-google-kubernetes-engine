@@ -19,7 +19,7 @@ locals {
 }
 
 provider "google" {
-  version = "~> 2.18.0"
+  version = "~> 2.20.1"
   region  = var.region
 }
 
