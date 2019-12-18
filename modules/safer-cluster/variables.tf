@@ -199,7 +199,7 @@ variable "logging_service" {
 variable "monitoring_service" {
   type        = string
   description = "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none"
-  default     = "monitoring.googleapis.com"
+  default     = "monitoring.googleapis.com/kubernetes"
 }
 
 variable "grant_registry_access" {
