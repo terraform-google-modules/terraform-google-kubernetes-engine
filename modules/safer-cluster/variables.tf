@@ -193,7 +193,7 @@ variable "upstream_nameservers" {
 variable "logging_service" {
   type        = string
   description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
-  default     = "logging.googleapis.com"
+  default     = "logging.googleapis.com/kubernetes"
 }
 
 variable "monitoring_service" {
