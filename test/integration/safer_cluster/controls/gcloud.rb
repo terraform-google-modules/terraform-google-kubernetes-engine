@@ -49,7 +49,7 @@ control "gcloud" do
 
       it "has the expected addon settings" do
         expect(data['addonsConfig']).to eq({
-          "cloudRunConfig" {},
+          "cloudRunConfig" => {},
           "horizontalPodAutoscaling" => {},
           "httpLoadBalancing" => {},
           "kubernetesDashboard" => {
