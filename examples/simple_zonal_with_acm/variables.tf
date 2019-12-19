@@ -45,7 +45,7 @@ variable "ip_range_pods" {
 }
 
 variable "ip_range_services" {
-  description = "The secondary ip range to use for pods"
+  description = "The secondary ip range to use for services"
 }
 
 variable "acm_sync_repo" {
