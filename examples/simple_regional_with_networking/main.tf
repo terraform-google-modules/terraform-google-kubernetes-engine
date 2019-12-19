@@ -19,8 +19,8 @@ provider "google" {
 }
 
 module "gcp-network" {
-  source = "git::https://github.com/bharathkkb/terraform-google-network?ref=change-version-constraint"
-  # version      = "~> 2.0"
+  source       = "terraform-google-modules/network/google"
+  version      = "~> 2.0"
   project_id   = var.project_id
   network_name = var.network
 
