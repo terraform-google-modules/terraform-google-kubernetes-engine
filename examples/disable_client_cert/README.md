@@ -13,7 +13,7 @@ This example illustrates how to create a simple cluster and disable deprecated s
 | cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | string | n/a | yes |
 | ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
-| ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
+| ip\_range\_services | The secondary ip range to use for services | string | n/a | yes |
 | network | The VPC network to host the cluster in | string | n/a | yes |
 | network\_project\_id | The GCP project housing the VPC network to host the cluster in | string | n/a | yes |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
