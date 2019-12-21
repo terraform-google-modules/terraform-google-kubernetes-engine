@@ -15,7 +15,7 @@
  */
 
 locals {
-  cluster_type = "simple-zonal"
+  cluster_type = "zonal"
 }
 
 provider "google" {
@@ -46,7 +46,7 @@ module "gke" {
 module "workload_identity" {
   source              = "../../modules/workload-identity"
   project_id          = var.project_id
-  name                = "cluster-sa-${module.gke.name}"
+  name                = "iden-${module.gke.name}"
   namespace           = "default"
   use_existing_k8s_sa = false
 }
