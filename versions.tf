@@ -19,5 +19,6 @@ terraform {
 
   required_providers {
     google = "~> 2.18"
+    null   = "~> 2.1.0"
   }
 }
