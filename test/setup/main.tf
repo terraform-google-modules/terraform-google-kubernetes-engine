@@ -16,7 +16,7 @@
 
 module "gke-project-1" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 3.0"
+  version = "~> 6.0"
 
   name              = "ci-gke"
   random_project_id = true
