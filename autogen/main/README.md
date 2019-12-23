@@ -28,7 +28,30 @@ If you are using these features with a private cluster, you will need to either:
 If you are going to isolate your GKE private clusters from internet access you could check [guide](https://medium.com/google-cloud/completely-private-gke-clusters-with-no-internet-connectivity-945fffae1ccd) and [repo](https://github.com/andreyk-code/no-inet-gke-cluster)
 
 {% endif %}
+{% if update_variant %}
+## Node Pool Update Variant
 
+In [#256] update variants added support for node pools to be created before being destroyed.
+
+Before, if a node pool has to be recreated for any number of reasons,
+the node pool is deleted then, created. This can be a problem if it is the only node pool in the GKE
+cluster and the new node pool cannot be provisioned. In this scenario, pods could not be scheduled.
+[#256] allows a node pool to be created before it is deleted so that any issues with node pool creation
+and/or provisioning are discovered before the node pool is removed. This feature is controlled by the
+variable `node_pools_create_before_destroy`. In order to avoid node pool name collisions,
+a 4 character alphanumeric is added as a suffix to the name.
+
+The benefit is that you always have some node pools active.
+We don't actually cordon/drain the traffic beyond what the GKE API itself will do,
+but we do make sure the new node pool is created before the old one is destroyed.
+
+The implications of this are that:
+
+- We append a random ID on the node pool names (since you can't have two simultaneously active node pools)
+- For a brief period, you'll have 2x as many resources/node pools
+- You will indeed need sufficient IP space (and compute capacity) to create both node pools
+
+{% endif %}
 ## Compatibility
 
 This module is meant for use with Terraform 0.12. If you haven't

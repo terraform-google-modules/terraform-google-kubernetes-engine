@@ -25,7 +25,6 @@ If you are using these features with a private cluster, you will need to either:
 
 If you are going to isolate your GKE private clusters from internet access you could check [guide](https://medium.com/google-cloud/completely-private-gke-clusters-with-no-internet-connectivity-945fffae1ccd) and [repo](https://github.com/andreyk-code/no-inet-gke-cluster)
 
-
 ## Compatibility
 
 This module is meant for use with Terraform 0.12. If you haven't

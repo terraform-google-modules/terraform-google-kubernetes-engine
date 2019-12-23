@@ -10,7 +10,6 @@ The resources/services/activations/deletions that this module will create/trigge
 
 Sub modules are provided from creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
 
-
 ## Compatibility
 
 This module is meant for use with Terraform 0.12. If you haven't
