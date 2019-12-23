@@ -73,9 +73,6 @@ module "gke" {
   stub_domains         = var.stub_domains
   upstream_nameservers = var.upstream_nameservers
 
-  logging_service    = var.logging_service
-  monitoring_service = var.monitoring_service
-
   // We never use the default service account for the cluster. The default
   // project/editor permissions can create problems if nodes were to be ever
   // compromised.
