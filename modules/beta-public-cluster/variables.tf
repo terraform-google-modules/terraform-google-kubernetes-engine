@@ -315,6 +315,11 @@ variable "issue_client_certificate" {
   default     = false
 }
 
+variable "cluster_ipv4_cidr" {
+  default     = null
+  description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
+}
+
 variable "cluster_resource_labels" {
   type        = map(string)
   description = "The GCE resource labels (a map of key/value pairs) to be applied to the cluster"

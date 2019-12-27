@@ -26,9 +26,11 @@ resource "google_container_cluster" "primary" {
   description     = var.description
   project         = var.project_id
   resource_labels = var.cluster_resource_labels
-  location        = local.location
-  node_locations  = local.node_locations
-  network         = data.google_compute_network.gke_network.self_link
+
+  location          = local.location
+  node_locations    = local.node_locations
+  cluster_ipv4_cidr = var.cluster_ipv4_cidr
+  network           = data.google_compute_network.gke_network.self_link
 
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
