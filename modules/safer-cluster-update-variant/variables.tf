@@ -305,8 +305,8 @@ variable "enable_shielded_nodes" {
 
 variable "enable_private_endpoint" {
   type        = bool
-  description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
-  default     = false
+  description = "When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true"
+  default     = true
 }
 
 variable "skip_provisioners" {
