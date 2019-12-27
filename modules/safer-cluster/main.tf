@@ -93,8 +93,6 @@ module "gke" {
 
   issue_client_certificate = false
 
-  cluster_ipv4_cidr = var.cluster_ipv4_cidr
-
   cluster_resource_labels = var.cluster_resource_labels
 
   // We enable private endpoints to limit exposure.
