@@ -1,5 +1,6 @@
 [
   {
+    "template_folder": "./autogen",
     "path": "./",
     "options": {
       "private_cluster": false
@@ -7,6 +8,7 @@
   },
 
   {
+    "template_folder": "./autogen",
     "path": "./modules/private-cluster",
     "options": {
       "module_path": "//modules/private-cluster",
@@ -15,6 +17,7 @@
   },
 
   {
+    "template_folder": "./autogen",
     "path": "./modules/beta-private-cluster",
     "options": {
       "module_path": "//modules/beta-private-cluster",
@@ -24,6 +27,7 @@
   },
 
   {
+    "template_folder": "./autogen",
     "path": "./modules/private-cluster-update-variant",
     "options": {
       "module_path": "//modules/private-cluster-update-variant",
@@ -33,6 +37,7 @@
   },
 
   {
+    "template_folder": "./autogen",
     "path": "./modules/beta-private-cluster-update-variant",
     "options": {
       "module_path": "//modules/beta-private-cluster-update-variant",
@@ -43,11 +48,29 @@
   },
 
   {
+    "template_folder": "./autogen",
     "path": "./modules/beta-public-cluster",
     "options": {
       "module_path": "//modules/beta-public-cluster",
       "private_cluster": false,
       "beta_cluster": true
+    }
+  },
+
+  {
+    "template_folder": "./autogen/safer-cluster",
+    "path": "./modules/safer-cluster",
+    "options": {
+      "module_path": "//modules/safer-cluster"
+    }
+  },
+
+  {
+    "template_folder": "./autogen/safer-cluster",
+    "path": "./modules/safer-cluster-update-variant",
+    "options": {
+      "module_path": "//modules/safer-cluster-update-variant",
+      "update_variant": true
     }
   }
 ]
