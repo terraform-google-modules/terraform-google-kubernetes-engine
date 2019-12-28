@@ -316,7 +316,7 @@ variable "issue_client_certificate" {
 }
 
 variable "cluster_ipv4_cidr" {
-  default     = ""
+  default     = null
   description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
 }
 
