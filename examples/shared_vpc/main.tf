@@ -31,15 +31,15 @@ resource "random_string" "suffix" {
  ***********************************************/
 
 locals {
-  gke_svpc_network    = "gke-svpc-network-${random_string.suffix.result}"
-  gke_svpc_subnet     = "gke-svpc-main-${random_string.suffix.result}"
+  gke_svpc_network    = "gke-svpc-shared-network"
+  gke_svpc_subnet     = "gke-svpc-shared-gke"
   pods_gke_subnet     = "${local.gke_svpc_subnet}-pods"
   services_gke_subnet = "${local.gke_svpc_subnet}-services"
 }
 
 module "gke_cluster_svpc_network" {
   source       = "terraform-google-modules/network/google"
-  version      = "~> 1.5.0"
+  version      = "~> 2.0"
   project_id   = var.svpc_host_project_id
   network_name = local.gke_svpc_network
 
