@@ -17,7 +17,7 @@
 
 
 provider "google" {
-  version = "~> 2.18.0"
+  version = "~> 3.3.0"
 }
 
 resource "random_string" "suffix" {
