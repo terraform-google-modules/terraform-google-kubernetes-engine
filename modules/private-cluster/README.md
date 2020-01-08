@@ -23,6 +23,8 @@ If you are using these features with a private cluster, you will need to either:
 3. Include the external IP of your Terraform deployer in the `master_authorized_networks` configuration. Note that only IP addresses reserved in Google Cloud (such as in other VPCs) can be whitelisted.
 4. Deploy a [bastion host](https://github.com/terraform-google-modules/terraform-google-bastion-host) or [proxy](https://cloud.google.com/solutions/creating-kubernetes-engine-private-clusters-with-net-proxies) in the same VPC as your GKE cluster.
 
+If you are going to isolate your GKE private clusters from internet access you could check [guide](https://medium.com/google-cloud/completely-private-gke-clusters-with-no-internet-connectivity-945fffae1ccd) and [repo](https://github.com/andreyk-code/no-inet-gke-cluster)
+
 
 ## Compatibility
 
