@@ -220,11 +220,6 @@ variable "service_account" {
   default     = ""
 }
 
-variable "cluster_ipv4_cidr" {
-  default     = ""
-  description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
-}
-
 variable "cluster_resource_labels" {
   type        = map(string)
   description = "The GCE resource labels (a map of key/value pairs) to be applied to the cluster"
@@ -305,8 +300,8 @@ variable "enable_shielded_nodes" {
 
 variable "enable_private_endpoint" {
   type        = bool
-  description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
-  default     = false
+  description = "When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true"
+  default     = true
 }
 
 variable "skip_provisioners" {
