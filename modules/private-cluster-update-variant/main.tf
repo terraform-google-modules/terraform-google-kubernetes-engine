@@ -106,6 +106,7 @@ locals {
   cluster_network_policy_enabled             = ! local.cluster_output_network_policy_enabled
   cluster_http_load_balancing_enabled        = ! local.cluster_output_http_load_balancing_enabled
   cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled
+
 }
 
 /******************************************
