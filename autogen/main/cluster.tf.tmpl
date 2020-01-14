@@ -159,7 +159,7 @@ resource "google_container_cluster" "primary" {
   {% if beta_cluster %}
     dynamic "recurring_window"{
       for_each = local.cluster_maintenance_window_is_recurring
-      content{
+      content {
         start_time = var.maintenance_start_time
         end_time = var.maintenance_end_time
         recurrence = var.maintenance_recurrence
