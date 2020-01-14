@@ -168,7 +168,7 @@ resource "google_container_cluster" "primary" {
 
     dynamic "daily_maintenance_window"{
       for_each = local.cluster_maintenance_window_is_daily
-      content{
+      content {
         start_time = var.maintenance_start_time
       }
     }
