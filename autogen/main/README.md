@@ -172,7 +172,7 @@ The node_pools variable takes the following parameters:
 | node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusers |  | Required |
 {% if beta_cluster %}
 | node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. Defaults to cluster level node locations if nothing is specified | " " | Optional |
-| node_metadata | Options to expose the node metadata to the workload running on the node | | Required |
+| node_metadata | Options to expose the node metadata to the workload running on the node | | Optional |
 {% endif %}
 | preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
 {% if beta_cluster %}
