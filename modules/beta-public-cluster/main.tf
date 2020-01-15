@@ -148,6 +148,9 @@ locals {
     identity_namespace = var.identity_namespace
   }]
   # /BETA features
+
+  cluster_maintenance_window_is_recurring = var.maintenance_recurrence != "" && var.maintenance_end_time != "" ? [1] : []
+  cluster_maintenance_window_is_daily     = length(local.cluster_maintenance_window_is_recurring) > 0 ? [] : [1]
 }
 
 /******************************************
