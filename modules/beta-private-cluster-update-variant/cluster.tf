@@ -412,7 +412,7 @@ resource "google_container_node_pool" "pools" {
       for_each = local.cluster_node_metadata_config
 
       content {
-        node_metadata = workload_metadata_config.value.node_metadata
+        node_metadata = lookup(var.node_pools[count.index], "node_metadata", workload_metadata_config.value.node_metadata)
       }
     }
 
