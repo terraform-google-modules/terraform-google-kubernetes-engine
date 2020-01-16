@@ -146,7 +146,9 @@ Then perform the following commands on the root folder:
 | istio | (Beta) Enable Istio addon | string | `"false"` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com/kubernetes"` | no |
-| maintenance\_start\_time | Time window specified for daily maintenance operations in RFC3339 format | string | `"05:00"` | no |
+| maintenance\_end\_time | Time window specified for recurring maintenance operations in RFC3339 format | string | `""` | no |
+| maintenance\_recurrence | Frequency of the recurring maintenance window in RFC5545 format. | string | `""` | no |
+| maintenance\_start\_time | Time window specified for daily or recurring maintenance operations in RFC3339 format | string | `"05:00"` | no |
 | master\_authorized\_networks | List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically whitelists). | object | `<list>` | no |
 | monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com/kubernetes"` | no |
 | name | The name of the cluster (required) | string | n/a | yes |
@@ -235,7 +237,7 @@ The node_pools variable takes the following parameters:
 | name | The name of the node pool |  | Required |
 | node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusers |  | Required |
 | node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. Defaults to cluster level node locations if nothing is specified | " " | Optional |
-| node_metadata | Options to expose the node metadata to the workload running on the node | | Required |
+| node_metadata | Options to expose the node metadata to the workload running on the node | | Optional |
 | preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
 | sandbox_type | Sandbox to use for pods in the node pool | | Required |
 | service_account | The service account to be used by the Node VMs | " " | Optional |

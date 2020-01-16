@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+// This file was automatically generated from a template in ./autogen/main
 
 /******************************************
   Get available zones in region
@@ -153,6 +153,9 @@ locals {
     identity_namespace = var.identity_namespace
   }]
   # /BETA features
+
+  cluster_maintenance_window_is_recurring = var.maintenance_recurrence != "" && var.maintenance_end_time != "" ? [1] : []
+  cluster_maintenance_window_is_daily     = length(local.cluster_maintenance_window_is_recurring) > 0 ? [] : [1]
 }
 
 /******************************************

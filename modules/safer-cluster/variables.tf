@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+// This file was automatically generated from a template in ./autogen/safer-cluster
 
 variable "project_id" {
   type        = string
@@ -190,6 +190,18 @@ variable "upstream_nameservers" {
   default     = []
 }
 
+variable "logging_service" {
+  type        = string
+  description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
+  default     = "logging.googleapis.com/kubernetes"
+}
+
+variable "monitoring_service" {
+  type        = string
+  description = "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none"
+  default     = "monitoring.googleapis.com/kubernetes"
+}
+
 variable "grant_registry_access" {
   type        = bool
   description = "Grants created cluster-specific service account storage.objectViewer role."
@@ -206,11 +218,6 @@ variable "service_account" {
   type        = string
   description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
   default     = ""
-}
-
-variable "cluster_ipv4_cidr" {
-  default     = ""
-  description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
 }
 
 variable "cluster_resource_labels" {
@@ -291,3 +298,22 @@ variable "enable_shielded_nodes" {
   default     = true
 }
 
+variable "enable_private_endpoint" {
+  type        = bool
+  description = "When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true"
+  default     = true
+}
+
+variable "skip_provisioners" {
+  type        = bool
+  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
+  default     = false
+}
+
+variable "pod_security_policy_config" {
+  description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
+
+  default = [{
+    "enabled" = true
+  }]
+}

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+// This file was automatically generated from a template in ./autogen/main
 
 /******************************************
   Create Container Cluster
@@ -146,8 +146,20 @@ resource "google_container_cluster" "primary" {
   }
 
   maintenance_policy {
-    daily_maintenance_window {
-      start_time = var.maintenance_start_time
+    dynamic "recurring_window" {
+      for_each = local.cluster_maintenance_window_is_recurring
+      content {
+        start_time = var.maintenance_start_time
+        end_time   = var.maintenance_end_time
+        recurrence = var.maintenance_recurrence
+      }
+    }
+
+    dynamic "daily_maintenance_window" {
+      for_each = local.cluster_maintenance_window_is_daily
+      content {
+        start_time = var.maintenance_start_time
+      }
     }
   }
 
@@ -401,7 +413,6 @@ resource "google_container_node_pool" "pools" {
 
       content {
         node_metadata = lookup(each.value, "node_metadata", workload_metadata_config.value.node_metadata)
-
       }
     }
 
