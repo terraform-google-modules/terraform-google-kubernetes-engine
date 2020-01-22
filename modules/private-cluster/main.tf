@@ -45,6 +45,11 @@ locals {
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
   node_version            = var.regional ? local.node_version_regional : local.node_version_zonal
 
+  // Build a map of maps of node pools from a list of objects
+  node_pool_names = [for np in toset(var.node_pools) : np.name]
+  node_pools      = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
+
+
 
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
   upstream_nameservers_config = length(var.upstream_nameservers) > 0
@@ -84,8 +89,8 @@ locals {
     cidr_blocks : var.master_authorized_networks
   }]
 
-  cluster_output_node_pools_names    = concat(google_container_node_pool.pools.*.name, [""])
-  cluster_output_node_pools_versions = concat(google_container_node_pool.pools.*.version, [""])
+  cluster_output_node_pools_names    = concat([for np in google_container_node_pool.pools : np.name], [""])
+  cluster_output_node_pools_versions = concat([for np in google_container_node_pool.pools : np.version], [""])
 
   cluster_master_auth_list_layer1 = local.cluster_output_master_auth
   cluster_master_auth_list_layer2 = local.cluster_master_auth_list_layer1[0]
