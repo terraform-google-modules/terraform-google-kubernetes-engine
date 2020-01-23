@@ -171,6 +171,7 @@ resource "google_container_node_pool" "pools" {
     auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
   }
 
+
   node_config {
     image_type   = lookup(each.value, "image_type", "COS")
     machine_type = lookup(each.value, "machine_type", "n1-standard-2")
