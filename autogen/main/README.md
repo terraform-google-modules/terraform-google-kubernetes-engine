@@ -189,6 +189,8 @@ The node_pools variable takes the following parameters:
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
 {% if beta_cluster %}
 | max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |
+| max_surge | The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. | 1 | Optional |
+| max_unavailable | The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater. | 0 | Optional |
 {% endif %}
 | min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true | 1 | Optional |
 | name | The name of the node pool |  | Required |
