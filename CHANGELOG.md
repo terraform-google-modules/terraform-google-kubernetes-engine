@@ -6,12 +6,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
-## [Unreleased]
-
-### Added
-
-- Added an alternative [update variant](./modules/safer-cluster-update-variant) for the Safer Cluster module. [#378](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/pull/378)
-
 ## [v6.2.0] - 2019-12-27
 
 ### Fixed

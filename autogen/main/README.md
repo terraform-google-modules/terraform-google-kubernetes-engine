@@ -28,7 +28,30 @@ If you are using these features with a private cluster, you will need to either:
 If you are going to isolate your GKE private clusters from internet access you could check [guide](https://medium.com/google-cloud/completely-private-gke-clusters-with-no-internet-connectivity-945fffae1ccd) and [repo](https://github.com/andreyk-code/no-inet-gke-cluster)
 
 {% endif %}
+{% if update_variant %}
+## Node Pool Update Variant
 
+In [#256] update variants added support for node pools to be created before being destroyed.
+
+Before, if a node pool has to be recreated for any number of reasons,
+the node pool is deleted then, created. This can be a problem if it is the only node pool in the GKE
+cluster and the new node pool cannot be provisioned. In this scenario, pods could not be scheduled.
+[#256] allows a node pool to be created before it is deleted so that any issues with node pool creation
+and/or provisioning are discovered before the node pool is removed. This feature is controlled by the
+variable `node_pools_create_before_destroy`. In order to avoid node pool name collisions,
+a 4 character alphanumeric is added as a suffix to the name.
+
+The benefit is that you always have some node pools active.
+We don't actually cordon/drain the traffic beyond what the GKE API itself will do,
+but we do make sure the new node pool is created before the old one is destroyed.
+
+The implications of this are that:
+
+- We append a random ID on the node pool names (since you can't have two simultaneously active node pools)
+- For a brief period, you'll have 2x as many resources/node pools
+- You will indeed need sufficient IP space (and compute capacity) to create both node pools
+
+{% endif %}
 ## Compatibility
 
 This module is meant for use with Terraform 0.12. If you haven't
@@ -166,13 +189,15 @@ The node_pools variable takes the following parameters:
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
 {% if beta_cluster %}
 | max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |
+| max_surge | The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. | 1 | Optional |
+| max_unavailable | The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater. | 0 | Optional |
 {% endif %}
 | min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true | 1 | Optional |
 | name | The name of the node pool |  | Required |
 | node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusers |  | Required |
 {% if beta_cluster %}
 | node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. Defaults to cluster level node locations if nothing is specified | " " | Optional |
-| node_metadata | Options to expose the node metadata to the workload running on the node | | Required |
+| node_metadata | Options to expose the node metadata to the workload running on the node | | Optional |
 {% endif %}
 | preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
 {% if beta_cluster %}
