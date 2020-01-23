@@ -347,8 +347,8 @@ resource "google_container_node_pool" "pools" {
   }
 
   upgrade_settings {
-    max_surge       = lookup(var.node_pools[count.index], "max_surge", 1)
-    max_unavailable = lookup(var.node_pools[count.index], "max_unavailable", 0)
+    max_surge       = lookup(each.value, "max_surge", 1)
+    max_unavailable = lookup(each.value, "max_unavailable", 0)
   }
 
   node_config {
