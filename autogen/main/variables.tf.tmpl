@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen/main
+{{ autogeneration_note }}
 
 variable "project_id" {
   type        = string
@@ -114,6 +114,7 @@ variable "maintenance_start_time" {
   default     = "05:00"
 }
 
+{% if beta_cluster %}
 variable "maintenance_end_time" {
   type        = string
   description = "Time window specified for recurring maintenance operations in RFC3339 format"
@@ -125,6 +126,7 @@ variable "maintenance_recurrence" {
   description = "Frequency of the recurring maintenance window in RFC5545 format."
   default     = ""
 }
+{% endif %}
 
 variable "ip_range_pods" {
   type        = string
@@ -186,6 +188,7 @@ variable "node_pools_metadata" {
     default-node-pool = {}
   }
 }
+{% if beta_cluster %}
 
 variable "cluster_autoscaling" {
   type = object({
@@ -216,6 +219,7 @@ variable "node_pools_taints" {
   }
 }
 
+{% endif %}
 variable "node_pools_tags" {
   type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
@@ -343,6 +347,33 @@ variable "skip_provisioners" {
   description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
   default     = false
 }
+{% if private_cluster %}
+
+variable "deploy_using_private_endpoint" {
+  type        = bool
+  description = "(Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment."
+  default     = false
+}
+
+variable "enable_private_endpoint" {
+  type        = bool
+  description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
+  default     = false
+}
+
+variable "enable_private_nodes" {
+  type        = bool
+  description = "(Beta) Whether nodes have internal IP addresses only"
+  default     = false
+}
+
+variable "master_ipv4_cidr_block" {
+  type        = string
+  description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
+  default     = "10.0.0.0/28"
+}
+{% endif %}
+{% if beta_cluster %}
 
 variable "istio" {
   description = "(Beta) Enable Istio addon"
@@ -435,3 +466,4 @@ variable "enable_shielded_nodes" {
   description = "Enable Shielded Nodes features on all nodes in this cluster"
   default     = false
 }
+{% endif %}

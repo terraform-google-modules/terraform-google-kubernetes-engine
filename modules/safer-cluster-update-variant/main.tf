@@ -19,7 +19,7 @@
 // The safer-cluster module is based on a private cluster, with a several
 // settings set to recommended values by default.
 module "gke" {
-  source             = "../beta-private-cluster/"
+  source             = "../beta-private-cluster-update-variant/"
   project_id         = var.project_id
   name               = var.name
   regional           = var.regional

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+// This file was automatically generated from a template in ./autogen/main
 
 variable "project_id" {
   type        = string
@@ -110,9 +110,10 @@ variable "network_policy_provider" {
 
 variable "maintenance_start_time" {
   type        = string
-  description = "Time window specified for daily maintenance operations in RFC3339 format"
+  description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
   default     = "05:00"
 }
+
 
 variable "ip_range_pods" {
   type        = string

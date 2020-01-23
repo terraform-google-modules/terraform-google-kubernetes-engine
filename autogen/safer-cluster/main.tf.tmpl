@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen/safer-cluster
+{{ autogeneration_note }}
 
 // The safer-cluster module is based on a private cluster, with a several
 // settings set to recommended values by default.
 module "gke" {
+  {% if update_variant %}
+  source             = "../beta-private-cluster-update-variant/"
+  {% else %}
   source             = "../beta-private-cluster/"
+  {% endif %}
   project_id         = var.project_id
   name               = var.name
   regional           = var.regional
