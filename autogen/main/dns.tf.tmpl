@@ -21,7 +21,7 @@
  *****************************************/
 module "gcloud_delete_default_kube_dns_configmap" {
   source                = "terraform-google-modules/gcloud/google"
-  version               = "~> 0.3"
+  version               = "~> 0.4"
   enabled               = (local.custom_kube_dns_config || local.upstream_nameservers_config) && ! var.skip_provisioners
   additional_components = ["kubectl"]
 
@@ -51,7 +51,7 @@ EOF
   }
 
   depends_on = [
-    module.gcloud_delete_default_kube_dns_configmap.outputs.wait,
+    module.gcloud_delete_default_kube_dns_configmap.wait,
     data.google_client_config.default,
     google_container_cluster.primary,
     google_container_node_pool.pools,
@@ -78,7 +78,7 @@ EOF
   }
 
   depends_on = [
-    module.gcloud_delete_default_kube_dns_configmap.outputs.wait,
+    module.gcloud_delete_default_kube_dns_configmap.wait,
     data.google_client_config.default,
     google_container_cluster.primary,
     google_container_node_pool.pools,
@@ -108,7 +108,7 @@ EOF
   }
 
   depends_on = [
-    module.gcloud_delete_default_kube_dns_configmap.outputs.wait,
+    module.gcloud_delete_default_kube_dns_configmap.wait,
     data.google_client_config.default,
     google_container_cluster.primary,
     google_container_node_pool.pools,

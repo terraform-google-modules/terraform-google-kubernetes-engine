@@ -251,11 +251,16 @@ resource "google_container_node_pool" "pools" {
 
 module "gcloud_wait_for_cluster" {
   source  = "terraform-google-modules/gcloud/google"
-  version = "~> 0.3"
+  version = "~> 0.4"
   enabled = var.skip_provisioners
 
   create_cmd_entrypoint  = "${path.module}/scripts/wait-for-cluster.sh"
   create_cmd_body        = "${var.project_id} ${var.name}"
   destroy_cmd_entrypoint = "${path.module}/scripts/wait-for-cluster.sh"
   destroy_cmd_body       = "${var.project_id} ${var.name}"
+
+  module_depends_on = [
+    google_container_cluster.primary,
+    google_container_node_pool.pools,
+  ]
 }
