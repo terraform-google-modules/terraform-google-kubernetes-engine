@@ -273,7 +273,7 @@ module "gcloud_wait_for_cluster" {
   destroy_cmd_body       = "${var.project_id} ${var.name}"
 
   module_depends_on = [
-    google_container_cluster.primary,
-    google_container_node_pool.pools,
+    google_container_cluster.primary.master_version,
+    join("-", google_container_node_pool.pools[*].name),
   ]
 }
