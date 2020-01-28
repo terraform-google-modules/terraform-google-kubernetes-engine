@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+// This file was automatically generated from a template in ./autogen/main
 
 variable "project_id" {
   type        = string
@@ -110,8 +110,20 @@ variable "network_policy_provider" {
 
 variable "maintenance_start_time" {
   type        = string
-  description = "Time window specified for daily maintenance operations in RFC3339 format"
+  description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
   default     = "05:00"
+}
+
+variable "maintenance_end_time" {
+  type        = string
+  description = "Time window specified for recurring maintenance operations in RFC3339 format"
+  default     = ""
+}
+
+variable "maintenance_recurrence" {
+  type        = string
+  description = "Frequency of the recurring maintenance window in RFC5545 format."
+  default     = ""
 }
 
 variable "ip_range_pods" {
@@ -264,13 +276,13 @@ variable "configure_ip_masq" {
 variable "logging_service" {
   type        = string
   description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
-  default     = "logging.googleapis.com"
+  default     = "logging.googleapis.com/kubernetes"
 }
 
 variable "monitoring_service" {
   type        = string
   description = "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none"
-  default     = "monitoring.googleapis.com"
+  default     = "monitoring.googleapis.com/kubernetes"
 }
 
 variable "create_service_account" {
@@ -316,7 +328,7 @@ variable "issue_client_certificate" {
 }
 
 variable "cluster_ipv4_cidr" {
-  default     = ""
+  default     = null
   description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
 }
 
@@ -387,6 +399,7 @@ variable "enable_binary_authorization" {
 }
 
 variable "pod_security_policy_config" {
+  type        = list(object({ enabled = bool }))
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
 
   default = [{

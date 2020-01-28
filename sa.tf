@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+// This file was automatically generated from a template in ./autogen/main
 
 locals {
   service_account_list = compact(

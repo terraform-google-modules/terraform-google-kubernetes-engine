@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
+// This file was automatically generated from a template in ./autogen/safer-cluster
+
 terraform {
   required_version = ">= 0.12"
-
-  required_providers {
-{% if beta_cluster %}
-    google-beta = "~> 2.18"
-{% else %}
-    google = "~> 2.18"
-{% endif %}
-  }
 }
