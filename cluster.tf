@@ -43,7 +43,7 @@ resource "google_container_cluster" "primary" {
 
 
   subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
-  min_master_version = local.master_version
+  min_master_version = var.release_channel != null ? null : local.master_version
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
@@ -130,7 +130,7 @@ resource "google_container_node_pool" "pools" {
 
   cluster = google_container_cluster.primary.name
 
-  version = lookup(each.value, "auto_upgrade", false) ? "" : lookup(
+  version = lookup(each.value, "auto_upgrade", true) ? "" : lookup(
     each.value,
     "version",
     local.node_version,

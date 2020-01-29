@@ -36,10 +36,10 @@ control "gcloud" do
         expect(data['status']).to eq 'RUNNING'
       end
 
-      it "is zonal" do
-        expect(data['location']).to match(/^(.*)[1-9]-[a-z]$/)
+      it "is regional" do
+        expect(data['location']).to match(/^.*[1-9]$/)
       end
-
+      
       it "is single zoned" do
         expect(data['locations'].size).to eq 1
       end
