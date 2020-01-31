@@ -49,7 +49,8 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
+  subnetwork = data.google_compute_subnetwork.gke_subnetwork.self_link
+
   min_master_version = var.release_channel != null ? null : local.master_version
 
   logging_service    = var.logging_service
@@ -317,10 +318,10 @@ resource "google_container_node_pool" "pools" {
 
   cluster = google_container_cluster.primary.name
 
-  version = lookup(each.value, "auto_upgrade", true) ? "" : lookup(
+  version = lookup(each.value, "auto_upgrade", false) ? "" : lookup(
     each.value,
     "version",
-    local.node_version,
+    google_container_cluster.primary.min_master_version,
   )
 
   initial_node_count = lookup(each.value, "autoscaling", true) ? lookup(

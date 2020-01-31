@@ -39,7 +39,7 @@ control "gcloud" do
       it "is regional" do
         expect(data['location']).to match(/^.*[1-9]$/)
       end
-      
+
       it "is single zoned" do
         expect(data['locations'].size).to eq 1
       end

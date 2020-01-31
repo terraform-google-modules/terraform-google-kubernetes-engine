@@ -31,6 +31,7 @@ MIGRATIONS = [
     },
 ]
 
+
 class ModuleMigration:
     """
     Migrate the resources from a flat project factory to match the new
