@@ -35,7 +35,7 @@ module "this" {
 
   cluster_name_suffix            = "-${random_string.suffix.result}"
   project_id                     = local.project_id
-  regional                       = false
+  regional                       = true
   region                         = var.region
   zones                          = slice(var.zones, 0, 1)
   network                        = google_compute_network.main.name
