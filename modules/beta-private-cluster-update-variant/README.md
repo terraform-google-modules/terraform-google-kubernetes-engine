@@ -188,13 +188,9 @@ Then perform the following commands on the root folder:
 | istio | (Beta) Enable Istio addon | string | `"false"` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com/kubernetes"` | no |
-<<<<<<< HEAD
 | maintenance\_end\_time | Time window specified for recurring maintenance operations in RFC3339 format | string | `""` | no |
 | maintenance\_recurrence | Frequency of the recurring maintenance window in RFC5545 format. | string | `""` | no |
 | maintenance\_start\_time | Time window specified for daily or recurring maintenance operations in RFC3339 format | string | `"05:00"` | no |
-=======
-| maintenance\_start\_time | Time window specified for daily maintenance operations in RFC3339 format | string | `"05:00"` | no |
->>>>>>> initial workload identity addition
 | master\_authorized\_networks | List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically whitelists). | object | `<list>` | no |
 | master\_ipv4\_cidr\_block | (Beta) The IP range in CIDR notation to use for the hosted master network | string | `"10.0.0.0/28"` | no |
 | monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com/kubernetes"` | no |

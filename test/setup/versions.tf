@@ -19,17 +19,9 @@ terraform {
 }
 
 provider "google" {
-<<<<<<< HEAD
   version = "2.20.1"
 }
 
 provider "google-beta" {
   version = "2.20.1"
-=======
-  version = "~> 2.20.1"
-}
-
-provider "google-beta" {
-  version = "~> 2.20.1"
->>>>>>> initial workload identity addition
 }
