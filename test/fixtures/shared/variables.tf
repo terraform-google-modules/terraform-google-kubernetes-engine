@@ -37,5 +37,4 @@ variable "compute_engine_service_accounts" {
 
 variable "registry_project_id" {
   description = "Project to use for granting access to the GCR registry, if requested"
-  default = ""
 }
