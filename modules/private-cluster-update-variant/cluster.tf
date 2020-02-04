@@ -42,7 +42,8 @@ resource "google_container_cluster" "primary" {
   }
 
 
-  subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
+  subnetwork = data.google_compute_subnetwork.gke_subnetwork.self_link
+
   min_master_version = local.master_version
 
   logging_service    = var.logging_service
@@ -209,7 +210,7 @@ resource "random_id" "name" {
 resource "google_container_node_pool" "pools" {
   provider = google
   for_each = local.node_pools
-  name     = random_id.name.*.hex[each.key]
+  name     = { for k, v in random_id.name : k => v.hex }[each.key]
   project  = var.project_id
   location = local.location
 
@@ -218,7 +219,7 @@ resource "google_container_node_pool" "pools" {
   version = lookup(each.value, "auto_upgrade", false) ? "" : lookup(
     each.value,
     "version",
-    local.node_version,
+    google_container_cluster.primary.min_master_version,
   )
 
   initial_node_count = lookup(each.value, "autoscaling", true) ? lookup(
