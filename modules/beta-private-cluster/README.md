@@ -51,7 +51,7 @@ module "gke" {
   network_policy             = true
   enable_private_endpoint    = true
   enable_private_nodes       = true
-  master_ipv4_cidr_block     = "10.0.0.0/28"
+  master_ipv4_cidr_block     = "10.0.0.0/28" # will be ignored when `enable_private_endpoint = false`
   istio = true
   cloudrun = true
 
