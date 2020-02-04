@@ -167,50 +167,50 @@ suites:
           backend: gcp
           controls:
             - gcp
-#  - name: "workload_metadata_config"
-#    driver:
-#      root_module_directory: test/fixtures/workload_metadata_config
-#    verifier:
-#      systems:
-#        - name: workload_metadata_config
-#          backend: local
-#  - name: "beta_cluster"
-#    driver:
-#      root_module_directory: test/fixtures/beta_cluster
-#    verifier:
-#      systems:
-#        - name: gcloud
-#          backend: local
-#          controls:
-#            - gcloud
-#        - name: gcp
-#          backend: gcp
-#          controls:
-#            - gcp
-#  - name: "deploy_service"
-#    driver:
-#      root_module_directory: test/fixtures/deploy_service
-#    verifier:
-#      systems:
-#        - name: deploy_service
-#          backend: local
-#          controls:
-#            - gcloud
-#            - kubectl
-#  - name: "node_pool"
-#    driver:
-#      root_module_directory: test/fixtures/node_pool
-#    verifier:
-#      systems:
-#        - name: node_pool
-#          backend: local
-#          controls:
-#            - gcloud
-#            - kubectl
-#  - name: "sandbox_enabled"
-#    driver:
-#      root_module_directory: test/fixtures/sandbox_enabled
-#    verifier:
-#      systems:
-#        - name: sandbox_enabled
-#          backend: local
+  - name: "workload_metadata_config"
+    driver:
+      root_module_directory: test/fixtures/workload_metadata_config
+    verifier:
+      systems:
+        - name: workload_metadata_config
+          backend: local
+  - name: "beta_cluster"
+    driver:
+      root_module_directory: test/fixtures/beta_cluster
+    verifier:
+      systems:
+        - name: gcloud
+          backend: local
+          controls:
+            - gcloud
+        - name: gcp
+          backend: gcp
+          controls:
+            - gcp
+  - name: "deploy_service"
+    driver:
+      root_module_directory: test/fixtures/deploy_service
+    verifier:
+      systems:
+        - name: deploy_service
+          backend: local
+          controls:
+            - gcloud
+            - kubectl
+  - name: "node_pool"
+    driver:
+      root_module_directory: test/fixtures/node_pool
+    verifier:
+      systems:
+        - name: node_pool
+          backend: local
+          controls:
+            - gcloud
+            - kubectl
+  - name: "sandbox_enabled"
+    driver:
+      root_module_directory: test/fixtures/sandbox_enabled
+    verifier:
+      systems:
+        - name: sandbox_enabled
+          backend: local
