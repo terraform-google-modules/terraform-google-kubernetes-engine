@@ -12,8 +12,7 @@ Sub modules are provided from creating private clusters, beta private clusters, 
 
 ## Compatibility
 
-This module is meant for use with Terraform 0.12.
-If you haven't
+This module is meant for use with Terraform 0.12. If you haven't
 [upgraded][terraform-0.12-upgrade] and need a Terraform
 0.11.x-compatible version of this module, the last released version
 intended for Terraform 0.11.x is [3.0.0].

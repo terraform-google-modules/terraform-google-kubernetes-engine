@@ -9,9 +9,9 @@ attributes:
   - name: project_id
     required: true
     type: string
-  - name: service_account
+  - name: k8s_service_account_email
     required: true
     type: string
-  - name: registry_project_id
-    required: false
+  - name: k8s_service_account_name
+    required: true
     type: string

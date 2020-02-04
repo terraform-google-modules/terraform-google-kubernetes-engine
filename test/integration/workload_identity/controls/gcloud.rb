@@ -13,10 +13,10 @@
 # limitations under the License.
 
 project_id = attribute('project_id')
-registry_project_id = attribute('registry_project_id')
 location = attribute('location')
 cluster_name = attribute('cluster_name')
-service_account = attribute('service_account')
+k8s_service_account_email = attribute('k8s_service_account_email')
+k8s_service_account_name = attribute('k8s_service_account_name')
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
@@ -34,12 +34,12 @@ control "gcloud" do
 
     describe "workload metada config" do
       it "is secure" do
-        expect(data['nodePools'][0]["config"]["workloadMetadataConfig"]["nodeMetadata"]).to eq 'SECURE'
+        expect(data['nodePools'][0]["config"]["workloadMetadataConfig"]["nodeMetadata"]).to eq 'GKE_METADATA_SERVER'
       end
     end
   end
 
-  describe command("gcloud beta --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json --format=\"json(nodeConfig.workloadIdentity)\"") do
+  describe command("gcloud beta --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json --format=\"json(workloadIdentityConfig)\"") do
     its(:exit_status) { should eq 0 }
     its(:stderr) { should eq '' }
 
@@ -51,14 +51,14 @@ control "gcloud" do
       end
     end
 
-    describe "workload metada config" do
-      it "is secure" do
-        expect(data["nodeConfig"]["workloadIdentity"]).to_not eq nil
+    describe "workload identity config" do
+      it "is has correct namespace" do
+        expect(data["workloadIdentityConfig"]["identityNamespace"]).to eq "#{project_id}.svc.id.goog"
       end
     end
   end
 
-  describe command("gcloud projects get-iam-policy #{registry_project_id} --format=json") do
+  describe command("gcloud iam service-accounts get-iam-policy #{k8s_service_account_email} --format=json") do
     its(:exit_status) { should eq 0 }
     its(:stderr) { should eq '' }
 
@@ -69,8 +69,8 @@ control "gcloud" do
         {}
       end
     end
-    it "has expected registry roles" do
-      expect(iam['bindings']).to include("members" => ["serviceAccount:#{service_account}"], "role" => "roles/storage.objectViewer")
+    it "has expected workload identity user roles" do
+      expect(iam['bindings'][0]).to include("members" => [k8s_service_account_name], "role" => "roles/iam.workloadIdentityUser")
     end
   end
 end

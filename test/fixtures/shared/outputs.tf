@@ -40,9 +40,9 @@ output "ip_range_services" {
   value       = google_compute_subnetwork.main.secondary_ip_range[1].range_name
 }
 
-output "zones" {
-  description = "List of zones in which the cluster resides"
-  value       = module.example.zones
+output "location" {
+  description = "Cluster location (zones)"
+  value       = module.example.location
 }
 
 output "kubernetes_endpoint" {
@@ -67,4 +67,19 @@ output "service_account" {
 
 output "registry_project_id" {
   value = var.registry_project_id
+}
+
+output "cluster_name" {
+  description = "Cluster name"
+  value       = module.example.cluster_name
+}
+
+output "k8s_service_account_email" {
+  description = "K8S GCP service account."
+  value       = module.example.k8s_service_account_email
+}
+
+output "k8s_service_account_name" {
+  description = "K8S GCP service account name."
+  value       = module.example.k8s_service_account_name
 }

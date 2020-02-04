@@ -24,11 +24,14 @@ Read more about [workload identity in the docs](https://cloud.google.com/kuberne
 |------|-------------|
 | ca\_certificate |  |
 | client\_token |  |
+| cluster\_name | Cluster name |
+| k8s\_service\_account\_email | K8S GCP service account. |
+| k8s\_service\_account\_name | K8S GCP service name |
 | kubernetes\_endpoint |  |
+| location | Cluster location (zones) |
 | project\_id | Project id where GKE cluster is created. |
 | region | Cluster region |
 | service\_account | The default service account used for running nodes. |
-| zones | List of zones in which the cluster resides |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
