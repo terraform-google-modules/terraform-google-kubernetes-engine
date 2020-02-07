@@ -15,7 +15,7 @@
  */
 
 locals {
-  cluster_type = "zonal"
+  cluster_type = "regional"
 }
 
 provider "google" {
@@ -34,9 +34,7 @@ module "gke" {
   source                   = "../../modules/beta-public-cluster/"
   project_id               = var.project_id
   name                     = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                 = false
   region                   = var.region
-  zones                    = var.zones
   network                  = var.network
   subnetwork               = var.subnetwork
   ip_range_pods            = var.ip_range_pods

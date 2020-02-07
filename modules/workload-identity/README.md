@@ -16,7 +16,7 @@ The `terraform-google-workload-identity` can create a kubernetes service account
 
 ```hcl
 module "my-app-workload-identity" {
-  source    = "terraform-google-modules/terraform-google-kubernetes-engine/modules/workload-identity"
+  source    = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   name      = "my-application-name"
   namespace = "default"
   project   = "my-gcp-project-name"
@@ -68,19 +68,19 @@ module "my-app-workload-identity" {
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| name | Name for both service accounts | string | n/a | yes |
-| namespace | Namespace for k8s service account | string | `"default"` | no |
-| project | GCP project ID | string | n/a | yes |
-| use\_existing\_k8s\_sa | Use an existing kubernetes service account instead of creating one | bool | `false` | no |
+| Name                   | Description                                                        |  Type  |   Default   | Required |
+| ---------------------- | ------------------------------------------------------------------ | :----: | :---------: | :------: |
+| name                   | Name for both service accounts                                     | string |     n/a     |   yes    |
+| namespace              | Namespace for k8s service account                                  | string | `"default"` |    no    |
+| project                | GCP project ID                                                     | string |     n/a     |   yes    |
+| use\_existing\_k8s\_sa | Use an existing kubernetes service account instead of creating one |  bool  |   `false`   |    no    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| gcp\_service\_account\_email | GCP service account's email  |
-| gcp\_service\_account\_fqn | GCP service account's email prefixed with `serviceAccount:` |
-| gcp\_service\_account\_name | GCP service account's name |
-| k8s\_service\_account\_name | Kubernetes service account's name |
-| k8s\_service\_account\_namespace | Kubernetes service account's namespace |
+| Name                             | Description                                                 |
+| -------------------------------- | ----------------------------------------------------------- |
+| gcp\_service\_account\_email     | GCP service account's email                                 |
+| gcp\_service\_account\_fqn       | GCP service account's email prefixed with `serviceAccount:` |
+| gcp\_service\_account\_name      | GCP service account's name                                  |
+| k8s\_service\_account\_name      | Kubernetes service account's name                           |
+| k8s\_service\_account\_namespace | Kubernetes service account's namespace                      |

@@ -14,9 +14,8 @@ Read more about [workload identity in the docs](https://cloud.google.com/kuberne
 | ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
 | network | The VPC network to host the cluster in | string | n/a | yes |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
-| region | The region to host the cluster in | string | n/a | yes |
+| region | The region to host the cluster in | string | `"us-central1"` | no |
 | subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
-| zones | The zone to host the cluster in (required if is a zonal cluster) | list(string) | n/a | yes |
 
 ## Outputs
 

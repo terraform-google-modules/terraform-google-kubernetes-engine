@@ -25,11 +25,7 @@ variable "cluster_name_suffix" {
 
 variable "region" {
   description = "The region to host the cluster in"
-}
-
-variable "zones" {
-  type        = list(string)
-  description = "The zone to host the cluster in (required if is a zonal cluster)"
+  default     = "us-central1"
 }
 
 variable "network" {
