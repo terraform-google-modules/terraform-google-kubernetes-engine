@@ -361,13 +361,18 @@ resource "google_container_node_pool" "pools" {
 resource "null_resource" "wait_for_cluster" {
   count = var.skip_provisioners ? 0 : 1
 
+  triggers = {
+    project_id = var.project_id
+    name       = var.name
+  }
+
   provisioner "local-exec" {
-    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
+    command = "${path.module}/scripts/wait-for-cluster.sh ${self.triggers.project_id} ${self.triggers.name}"
   }
 
   provisioner "local-exec" {
     when    = destroy
-    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
+    command = "${path.module}/scripts/wait-for-cluster.sh ${self.triggers.project_id} ${self.triggers.name}"
   }
 
   depends_on = [
