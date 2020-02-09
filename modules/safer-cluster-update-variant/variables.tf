@@ -228,7 +228,7 @@ variable "cluster_resource_labels" {
 
 variable "master_ipv4_cidr_block" {
   type        = string
-  description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
+  description = "The IP range in CIDR notation to use for the hosted master network"
   default     = "10.0.0.0/28"
 }
 
