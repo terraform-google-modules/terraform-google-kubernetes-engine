@@ -119,7 +119,6 @@ output "service_account" {
   value       = local.service_account
 }
 
-
 output "istio_enabled" {
   description = "Whether Istio is enabled"
   value       = local.cluster_istio_enabled
