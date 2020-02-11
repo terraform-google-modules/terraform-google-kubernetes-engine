@@ -6,7 +6,6 @@
       "private_cluster": false
     }
   },
-
   {
     "template_folder": "./autogen/main",
     "path": "./modules/private-cluster",
@@ -15,7 +14,6 @@
       "private_cluster": true
     }
   },
-
   {
     "template_folder": "./autogen/main",
     "path": "./modules/beta-private-cluster",
@@ -25,7 +23,6 @@
       "beta_cluster": true
     }
   },
-
   {
     "template_folder": "./autogen/main",
     "path": "./modules/private-cluster-update-variant",
@@ -35,7 +32,6 @@
       "update_variant": true
     }
   },
-
   {
     "template_folder": "./autogen/main",
     "path": "./modules/beta-private-cluster-update-variant",
@@ -46,7 +42,6 @@
       "beta_cluster": true
     }
   },
-
   {
     "template_folder": "./autogen/main",
     "path": "./modules/beta-public-cluster",
@@ -56,7 +51,6 @@
       "beta_cluster": true
     }
   },
-
   {
     "template_folder": "./autogen/safer-cluster",
     "path": "./modules/safer-cluster",
@@ -64,7 +58,6 @@
       "module_path": "//modules/safer-cluster"
     }
   },
-
   {
     "template_folder": "./autogen/safer-cluster",
     "path": "./modules/safer-cluster-update-variant",
