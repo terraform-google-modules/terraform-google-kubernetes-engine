@@ -14,11 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-function generate() {
-  pip3 install --user -r /workspace/helpers/generate_modules/requirements.txt
-  /workspace/helpers/generate_modules/generate_modules.py
-}
-
 # Changed from using git-diff, to aviod errors on CI:
 # fatal: not a git repository (or any parent up to mount point /)
 function check_generate() {
