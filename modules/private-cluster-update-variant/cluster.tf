@@ -347,5 +347,6 @@ module "gcloud_wait_for_cluster" {
 
   module_depends_on = [
     google_container_cluster.primary.master_version,
+    google_container_node_pool.pools[*].name
   ]
 }
