@@ -410,7 +410,7 @@ resource "google_container_node_pool" "pools" {
 
 module "gcloud_wait_for_cluster" {
   source  = "terraform-google-modules/gcloud/google"
-  version = "~> 0.4"
+  version = "~> 0.5"
   enabled = var.skip_provisioners
 
   create_cmd_entrypoint  = "${path.module}/scripts/wait-for-cluster.sh"
