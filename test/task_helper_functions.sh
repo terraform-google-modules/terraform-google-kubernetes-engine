@@ -14,38 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Changed from using git-diff, to aviod errors on CI:
-# fatal: not a git repository (or any parent up to mount point /)
-function check_generate() {
-  local tempdir rval rc
-  setup_trap_handler
-  tempdir=$(mktemp -d)
-  rval=0
-  echo "Checking submodule's files generation"
-  rsync -axh \
-    --exclude '*/.terraform' \
-    --exclude '*/.kitchen' \
-    --exclude '*/.git' \
-    /workspace "${tempdir}" >/dev/null 2>/dev/null
-  cd "${tempdir}/workspace" || exit 1
-  generate >/dev/null 2>/dev/null
-  generate_docs >/dev/null 2>/dev/null
-  diff -r \
-    --exclude=".terraform" \
-    --exclude=".kitchen" \
-    --exclude=".git" \
-    /workspace "${tempdir}/workspace"
-  rc=$?
-  if [[ "${rc}" -ne 0 ]]; then
-    echo "Error: submodule's files generation has not been run, please run the"
-    echo "'source /workspace/helpers/generate.sh && generate' commands and commit the above changes."
-    ((rval++))
-  fi
-  cd /workspace || exit 1
-  rm -Rf "${tempdir}"
-  return $((rval))
-}
-
 # Pre-download the Anthos Config Management operator
 function download_acm() {
    gsutil cp gs://config-management-release/released/latest/config-management-operator.yaml /workspace/acm.yaml
