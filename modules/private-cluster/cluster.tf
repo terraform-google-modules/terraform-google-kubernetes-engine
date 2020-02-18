@@ -101,9 +101,9 @@ resource "google_container_cluster" "primary" {
   }
 
   timeouts {
-    create = "30m"
-    update = "30m"
-    delete = "30m"
+    create = "45m"
+    update = "45m"
+    delete = "45m"
   }
 
   node_pool {
@@ -231,9 +231,9 @@ resource "google_container_node_pool" "pools" {
   }
 
   timeouts {
-    create = "30m"
-    update = "30m"
-    delete = "30m"
+    create = "45m"
+    update = "45m"
+    delete = "45m"
   }
 }
 
