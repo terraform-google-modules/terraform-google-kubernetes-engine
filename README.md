@@ -136,13 +136,8 @@ Then perform the following commands on the root folder:
 | monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com/kubernetes"` | no |
 | name | The name of the cluster (required) | string | n/a | yes |
 | network | The VPC network to host the cluster in (required) | string | n/a | yes |
-<<<<<<< HEAD
-| network\_policy | Enable network policy addon (It also enables 'CALICO' network_policy provider). | string | `"false"` | no |
-| network\_policy\_provider | The name of the network policy provider. Default: 'CALICO' | string | `"CALICO"` | no |
-=======
 | network\_policy | Enable network policy addon | bool | `"true"` | no |
 | network\_policy\_provider | The network policy provider. | string | `"CALICO"` | no |
->>>>>>> upstream/master
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
 | node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | map(map(string)) | `<map>` | no |

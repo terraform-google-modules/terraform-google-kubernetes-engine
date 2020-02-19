@@ -97,10 +97,6 @@ variable "http_load_balancing" {
 }
 
 variable "network_policy" {
-<<<<<<< HEAD
-  description = "Enable network policy addon (It also enables 'CALICO' network_policy provider)."
-  default     = false
-=======
   type        = bool
   description = "Enable network policy addon"
   default     = true
@@ -110,7 +106,6 @@ variable "network_policy_provider" {
   type        = string
   description = "The network policy provider."
   default     = "CALICO"
->>>>>>> upstream/master
 }
 
 variable "network_policy_provider" {
