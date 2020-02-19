@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+// This file was automatically generated from a template in ./autogen/safer-cluster
 
-data "google_compute_network" "gke_network" {
-  provider = google-beta
-
-  name    = var.network
-  project = local.network_project_id
-}
-
-data "google_compute_subnetwork" "gke_subnetwork" {
-  provider = google-beta
-
-  name    = var.subnetwork
-  region  = local.region
-  project = local.network_project_id
+terraform {
+  required_version = ">= 0.12"
 }

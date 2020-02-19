@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+{{ autogeneration_note }}
 
-data "google_compute_network" "gke_network" {
-  provider = google
-
-  name    = var.network
-  project = local.network_project_id
-}
-
-data "google_compute_subnetwork" "gke_subnetwork" {
-  provider = google
-
-  name    = var.subnetwork
-  region  = local.region
-  project = local.network_project_id
+terraform {
+  required_version = ">= 0.12"
 }

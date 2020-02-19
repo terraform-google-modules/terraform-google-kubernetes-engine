@@ -22,17 +22,15 @@ fi
 
 PROJECT=$1
 CLUSTER_NAME=$2
-gcloud_command="gcloud container clusters list --project=$PROJECT --format=json"
-jq_query=".[] | select(.name==\"$CLUSTER_NAME\") | .status"
 
-echo "Waiting for cluster $2 in project $1 to reconcile..."
+echo "Waiting for cluster $CLUSTER_NAME in project $PROJECT to reconcile..."
 
-current_status=$($gcloud_command | jq -r "$jq_query")
+current_status=$(gcloud container clusters list --project="$PROJECT" --filter=name:"$CLUSTER_NAME" --format="value(status)")
 
-while [[ "${current_status}" == "RECONCILING" ]]; do
+while [[ "$current_status" == "RECONCILING" ]]; do
     printf "."
     sleep 5
-    current_status=$($gcloud_command | jq -r "$jq_query")
+    current_status=$(gcloud container clusters list --project="$PROJECT" --filter=name:"$CLUSTER_NAME" --format="value(status)")
 done
 
 echo "Cluster is ready!"

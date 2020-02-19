@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+// This file was automatically generated from a template in ./autogen/main
 
 output "name" {
   description = "Cluster name"
@@ -117,5 +117,10 @@ output "node_pools_versions" {
 output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
   value       = local.service_account
+}
+
+output "master_ipv4_cidr_block" {
+  description = "The IP range in CIDR notation used for the hosted master network"
+  value       = var.master_ipv4_cidr_block
 }
 

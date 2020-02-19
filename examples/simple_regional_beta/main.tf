@@ -19,7 +19,7 @@ locals {
 }
 
 provider "google-beta" {
-  version = "~> 2.18.0"
+  version = "~> 3.3.0"
   region  = var.region
 }
 
@@ -45,6 +45,7 @@ module "gke" {
   database_encryption         = var.database_encryption
   enable_binary_authorization = var.enable_binary_authorization
   pod_security_policy_config  = var.pod_security_policy_config
+  release_channel             = "REGULAR"
 }
 
 data "google_client_config" "default" {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+// This file was automatically generated from a template in ./autogen/main
 
 /******************************************
   Get available zones in region
@@ -45,6 +45,11 @@ locals {
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
   node_version            = var.regional ? local.node_version_regional : local.node_version_zonal
 
+  // Build a map of maps of node pools from a list of objects
+  node_pool_names = [for np in toset(var.node_pools) : np.name]
+  node_pools      = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
+
+
 
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
   upstream_nameservers_config = length(var.upstream_nameservers) > 0
@@ -68,7 +73,7 @@ locals {
   cluster_output_zonal_zones    = local.zone_count > 1 ? slice(var.zones, 1, local.zone_count) : []
   cluster_output_zones          = local.cluster_output_regional_zones
 
-  cluster_endpoint = var.enable_private_nodes ? (var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config.0.private_endpoint : google_container_cluster.primary.private_cluster_config.0.public_endpoint) : google_container_cluster.primary.endpoint
+  cluster_endpoint = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config.0.private_endpoint : google_container_cluster.primary.private_cluster_config.0.public_endpoint) : google_container_cluster.primary.endpoint
 
   cluster_output_master_auth                        = concat(google_container_cluster.primary.*.master_auth, [])
   cluster_output_master_version                     = google_container_cluster.primary.master_version
@@ -84,15 +89,15 @@ locals {
     cidr_blocks : var.master_authorized_networks
   }]
 
-  cluster_output_node_pools_names    = concat(google_container_node_pool.pools.*.name, [""])
-  cluster_output_node_pools_versions = concat(google_container_node_pool.pools.*.version, [""])
+  cluster_output_node_pools_names    = concat([for np in google_container_node_pool.pools : np.name], [""])
+  cluster_output_node_pools_versions = concat([for np in google_container_node_pool.pools : np.version], [""])
 
   cluster_master_auth_list_layer1 = local.cluster_output_master_auth
   cluster_master_auth_list_layer2 = local.cluster_master_auth_list_layer1[0]
   cluster_master_auth_map         = local.cluster_master_auth_list_layer2[0]
 
   cluster_location = google_container_cluster.primary.location
-  cluster_region   = var.regional ? google_container_cluster.primary.region : join("-", slice(split("-", local.cluster_location), 0, 2))
+  cluster_region   = var.regional ? var.region : join("-", slice(split("-", local.cluster_location), 0, 2))
   cluster_zones    = sort(local.cluster_output_zones)
 
   cluster_name                               = local.cluster_output_name
@@ -106,6 +111,7 @@ locals {
   cluster_network_policy_enabled             = ! local.cluster_output_network_policy_enabled
   cluster_http_load_balancing_enabled        = ! local.cluster_output_http_load_balancing_enabled
   cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled
+
 }
 
 /******************************************

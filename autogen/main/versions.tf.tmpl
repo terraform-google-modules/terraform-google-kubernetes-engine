@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+terraform {
+  required_version = "~> 0.12.6"
 
-data "google_compute_network" "gke_network" {
-  provider = google-beta
-
-  name    = var.network
-  project = local.network_project_id
-}
-
-data "google_compute_subnetwork" "gke_subnetwork" {
-  provider = google-beta
-
-  name    = var.subnetwork
-  region  = local.region
-  project = local.network_project_id
+  required_providers {
+{% if beta_cluster %}
+    google-beta = ">= 3.1, <4.0.0"
+{% else %}
+    google = ">= 2.18, <4.0.0"
+{% endif %}
+  }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+// This file was automatically generated from a template in ./autogen/main
 
 output "name" {
   description = "Cluster name"
@@ -118,7 +118,6 @@ output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
   value       = local.service_account
 }
-
 
 output "istio_enabled" {
   description = "Whether Istio is enabled"

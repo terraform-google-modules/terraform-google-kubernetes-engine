@@ -14,14 +14,7 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 0.12"
-
-  required_providers {
-{% if beta_cluster %}
-    google-beta = "~> 2.18"
-{% else %}
-    google = "~> 2.18"
-{% endif %}
-  }
+output "project_id" {
+  description = "The GCP project you enabled APIs on"
+  value       = module.services.project_id
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+// This file was automatically generated from a template in ./autogen/main
 
 /******************************************
   Retrieve authentication token
@@ -27,6 +27,7 @@ data "google_client_config" "default" {
   Configure provider
  *****************************************/
 provider "kubernetes" {
+  version                = "~> 1.10.0"
   load_config_file       = false
   host                   = "https://${local.cluster_endpoint}"
   token                  = data.google_client_config.default.access_token

@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen
+module "services" {
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
+  version = "~> 6.0.0"
 
-data "google_compute_network" "gke_network" {
-  provider = google
+  project_id                  = var.project_id
+  enable_apis                 = var.enable_apis
+  disable_services_on_destroy = var.disable_services_on_destroy
+  disable_dependent_services  = var.disable_dependent_services
 
-  name    = var.network
-  project = local.network_project_id
-}
-
-data "google_compute_subnetwork" "gke_subnetwork" {
-  provider = google
-
-  name    = var.subnetwork
-  region  = local.region
-  project = local.network_project_id
+  activate_apis = [
+    "compute.googleapis.com",
+    "iam.googleapis.com",
+    "container.googleapis.com"
+  ]
 }

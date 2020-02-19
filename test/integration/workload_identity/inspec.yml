@@ -1,0 +1,17 @@
+name: workload_metadata_config
+attributes:
+  - name: cluster_name
+    required: true
+    type: string
+  - name: location
+    required: true
+    type: string
+  - name: project_id
+    required: true
+    type: string
+  - name: k8s_service_account_email
+    required: true
+    type: string
+  - name: k8s_service_account_name
+    required: true
+    type: string

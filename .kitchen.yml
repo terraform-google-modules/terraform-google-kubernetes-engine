@@ -3,7 +3,6 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
@@ -15,7 +14,7 @@
 ---
 driver:
   name: "terraform"
-  command_timeout: 1800
+  command_timeout: 2700
 
 provisioner:
   name: "terraform"
@@ -133,28 +132,41 @@ suites:
           controls:
             - gcloud
             - kubectl
-# Disabled due to issue #264
-# (https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/264)
-#  - name: stub_domains_private
-#    driver:
-#      root_module_directory: test/fixtures/stub_domains_private
-#      systems:
-#        - name: stub_domains_private
-#          backend: local
+  # Disabled due to issue #264
+  # (https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/264)
+  #  - name: stub_domains_private
+  #    driver:
+  #      root_module_directory: test/fixtures/stub_domains_private
+  #      systems:
+  #        - name: stub_domains_private
+  #          backend: local
   - name: "upstream_nameservers"
     driver:
       root_module_directory: test/fixtures/upstream_nameservers
     verifier:
-        systems:
-          - name: upstream_nameservers
-            backend: local
+      systems:
+        - name: upstream_nameservers
+          backend: local
   - name: "stub_domains_upstream_nameservers"
     driver:
       root_module_directory: test/fixtures/stub_domains_upstream_nameservers
     verifier:
-        systems:
-          - name: stub_domains_upstream_nameservers
-            backend: local
+      systems:
+        - name: stub_domains_upstream_nameservers
+          backend: local
+  - name: "workload_identity"
+    driver:
+      root_module_directory: test/fixtures/workload_identity
+    verifier:
+      systems:
+        - name: gcloud
+          backend: local
+          controls:
+            - gcloud
+        - name: gcp
+          backend: gcp
+          controls:
+            - gcp
   - name: "workload_metadata_config"
     driver:
       root_module_directory: test/fixtures/workload_metadata_config
