@@ -47,6 +47,10 @@ control "gcloud" do
         expect(data['privateClusterConfig']['enablePrivateNodes']).to eq true
       end
 
+      it "has 20 max pods" do
+        expect(data['defaultMaxPodsConstraint']['maxPodsPerNode']).to eq "20"
+      end
+
       it "has the expected addon settings" do
         expect(data['addonsConfig']).to eq({
           "horizontalPodAutoscaling" => {},

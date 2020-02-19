@@ -82,3 +82,7 @@ output "service_account" {
 output "registry_project_id" {
   value = var.registry_project_id
 }
+
+output "default_max_pods" {
+  value = var.registry_project_id
+}
