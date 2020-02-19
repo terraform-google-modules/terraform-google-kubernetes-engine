@@ -30,7 +30,7 @@ resource "google_container_cluster" "primary" {
   location          = local.location
   node_locations    = local.node_locations
   cluster_ipv4_cidr = var.cluster_ipv4_cidr
-  network           = data.google_compute_network.gke_network.self_link
+  network           = "projects/${local.network_project_id}/global/networks/${var.network}"
 
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
@@ -42,7 +42,7 @@ resource "google_container_cluster" "primary" {
   }
 
 
-  subnetwork = data.google_compute_subnetwork.gke_subnetwork.self_link
+  subnetwork = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
 
   min_master_version = local.master_version
 
@@ -101,9 +101,9 @@ resource "google_container_cluster" "primary" {
   }
 
   timeouts {
-    create = "30m"
-    update = "30m"
-    delete = "30m"
+    create = "45m"
+    update = "45m"
+    delete = "45m"
   }
 
   node_pool {
@@ -231,9 +231,9 @@ resource "google_container_node_pool" "pools" {
   }
 
   timeouts {
-    create = "30m"
-    update = "30m"
-    delete = "30m"
+    create = "45m"
+    update = "45m"
+    delete = "45m"
   }
 }
 
