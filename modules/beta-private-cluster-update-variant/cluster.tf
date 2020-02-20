@@ -30,7 +30,7 @@ resource "google_container_cluster" "primary" {
   location          = local.location
   node_locations    = local.node_locations
   cluster_ipv4_cidr = var.cluster_ipv4_cidr
-  network           = data.google_compute_network.gke_network.self_link
+  network           = "projects/${local.network_project_id}/global/networks/${var.network}"
 
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
@@ -49,8 +49,9 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
-  min_master_version = local.master_version
+  subnetwork = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
+
+  min_master_version = var.release_channel != null ? null : local.master_version
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
@@ -71,6 +72,7 @@ resource "google_container_cluster" "primary" {
   enable_intranode_visibility = var.enable_intranode_visibility
   default_max_pods_per_node   = var.default_max_pods_per_node
   enable_shielded_nodes       = var.enable_shielded_nodes
+  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
 
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
@@ -168,9 +170,9 @@ resource "google_container_cluster" "primary" {
   }
 
   timeouts {
-    create = "30m"
-    update = "30m"
-    delete = "30m"
+    create = "45m"
+    update = "45m"
+    delete = "45m"
   }
 
   node_pool {
@@ -309,7 +311,7 @@ resource "random_id" "name" {
 resource "google_container_node_pool" "pools" {
   provider = google-beta
   for_each = local.node_pools
-  name     = random_id.name.*.hex[each.key]
+  name     = { for k, v in random_id.name : k => v.hex }[each.key]
   project  = var.project_id
   location = local.location
   // use node_locations if provided, defaults to cluster level node_locations if not specified
@@ -320,7 +322,7 @@ resource "google_container_node_pool" "pools" {
   version = lookup(each.value, "auto_upgrade", false) ? "" : lookup(
     each.value,
     "version",
-    local.node_version,
+    google_container_cluster.primary.min_master_version,
   )
 
   initial_node_count = lookup(each.value, "autoscaling", true) ? lookup(
@@ -437,22 +439,27 @@ resource "google_container_node_pool" "pools" {
   }
 
   timeouts {
-    create = "30m"
-    update = "30m"
-    delete = "30m"
+    create = "45m"
+    update = "45m"
+    delete = "45m"
   }
 }
 
 resource "null_resource" "wait_for_cluster" {
   count = var.skip_provisioners ? 0 : 1
 
+  triggers = {
+    project_id = var.project_id
+    name       = var.name
+  }
+
   provisioner "local-exec" {
-    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
+    command = "${path.module}/scripts/wait-for-cluster.sh ${self.triggers.project_id} ${self.triggers.name}"
   }
 
   provisioner "local-exec" {
     when    = destroy
-    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
+    command = "${path.module}/scripts/wait-for-cluster.sh ${self.triggers.project_id} ${self.triggers.name}"
   }
 
   depends_on = [

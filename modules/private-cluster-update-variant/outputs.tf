@@ -119,3 +119,8 @@ output "service_account" {
   value       = local.service_account
 }
 
+output "master_ipv4_cidr_block" {
+  description = "The IP range in CIDR notation used for the hosted master network"
+  value       = var.master_ipv4_cidr_block
+}
+

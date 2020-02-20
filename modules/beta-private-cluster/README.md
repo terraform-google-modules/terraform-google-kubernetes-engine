@@ -149,6 +149,7 @@ Then perform the following commands on the root folder:
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | bool | `"true"` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | string | `"false"` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | bool | `"false"` | no |
+| enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | bool | `"false"` | no |
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | bool | `"false"` | no |
 | enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | bool | `"false"` | no |
 | enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster | bool | `"false"` | no |
@@ -217,6 +218,7 @@ Then perform the following commands on the root folder:
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |
 | logging\_service | Logging service used |
 | master\_authorized\_networks\_config | Networks from which access to master is permitted |
+| master\_ipv4\_cidr\_block | The IP range in CIDR notation used for the hosted master network |
 | master\_version | Current master kubernetes version |
 | min\_master\_version | Minimum master kubernetes version |
 | monitoring\_service | Monitoring service used |
