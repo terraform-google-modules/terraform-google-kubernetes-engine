@@ -108,11 +108,6 @@ variable "network_policy_provider" {
   default     = "CALICO"
 }
 
-variable "network_policy_provider" {
-  description = "The name of the network policy provider. Default: 'CALICO'"
-  default     = "CALICO"
-}
-
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
