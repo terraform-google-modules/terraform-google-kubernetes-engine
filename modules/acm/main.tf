@@ -52,13 +52,21 @@ resource "null_resource" "acm_operator_config" {
 }
 
 resource "null_resource" "acm_operator" {
+
+  triggers = {
+    cluster_endpoint       = local.cluster_endpoint
+    token                  = local.token
+    cluster_ca_certificate = local.cluster_ca_certificate
+    operator_path          = local.operator_path
+  }
+
   provisioner "local-exec" {
     command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f ${local.operator_path}"
   }
 
   provisioner "local-exec" {
     when    = destroy
-    command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f ${local.operator_path}"
+    command = "${path.module}/scripts/kubectl_wrapper.sh ${self.triggers.cluster_endpoint} ${self.triggers.token} ${self.triggers.cluster_ca_certificate} kubectl delete -f ${self.triggers.operator_path}"
   }
 
   depends_on = [
@@ -71,13 +79,19 @@ resource "null_resource" "acm_operator" {
 resource "null_resource" "git_creds_secret" {
   count = var.create_ssh_key ? 1 : 0
 
+  triggers = {
+    cluster_endpoint       = local.cluster_endpoint
+    token                  = local.token
+    cluster_ca_certificate = local.cluster_ca_certificate
+  }
+
   provisioner "local-exec" {
     command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl create secret generic git-creds -n=config-management-system --from-literal=ssh='${local.private_key}'"
   }
 
   provisioner "local-exec" {
     when    = destroy
-    command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete secret git-creds -n=config-management-system"
+    command = "${path.module}/scripts/kubectl_wrapper.sh ${self.triggers.cluster_endpoint} ${self.triggers.token} ${self.triggers.cluster_ca_certificate} kubectl delete secret git-creds -n=config-management-system"
   }
 
   depends_on = [
@@ -101,7 +115,10 @@ data "template_file" "acm_config" {
 
 resource "null_resource" "acm_config" {
   triggers = {
-    config = data.template_file.acm_config.rendered
+    config                 = data.template_file.acm_config.rendered
+    cluster_endpoint       = local.cluster_endpoint
+    token                  = local.token
+    cluster_ca_certificate = local.cluster_ca_certificate
   }
 
   provisioner "local-exec" {
@@ -110,7 +127,7 @@ resource "null_resource" "acm_config" {
 
   provisioner "local-exec" {
     when    = destroy
-    command = "echo '${data.template_file.acm_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f -"
+    command = "echo '${self.triggers.config}' | ${path.module}/scripts/kubectl_wrapper.sh ${self.triggers.cluster_endpoint} ${self.triggers.token} ${self.triggers.cluster_ca_certificate} kubectl delete -f -"
   }
 
   depends_on = [
