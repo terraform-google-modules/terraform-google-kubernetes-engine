@@ -67,7 +67,7 @@ control "gcloud" do
       it "exists" do
         expect(data['nodePools']).to include(
           including(
-            "name" => "default-pool",
+            "name" => "pool-01",
           )
         )
       end
@@ -132,7 +132,7 @@ control "gcloud" do
             "config" => including(
               "labels" => including(
                 "cluster_name" => cluster_name,
-                "node_pool" => "default-node-pool",
+                "node_pool" => "pool-01",
               ),
             ),
           )
@@ -145,7 +145,7 @@ control "gcloud" do
             "config" => including(
               "tags" => match_array([
                 "gke-#{cluster_name}",
-                "gke-#{cluster_name}-default-node-pool",
+                "gke-#{cluster_name}-pool-01",
               ]),
             ),
           )
@@ -157,6 +157,16 @@ control "gcloud" do
           including(
             "management" => including(
               "autoRepair" => true,
+            ),
+          )
+        )
+      end
+
+      it "has 12 max pods" do
+        expect(node_pools).to include(
+          including(
+            "maxPodsConstraint" => including(
+              "maxPodsPerNode" => "12",
             ),
           )
         )
