@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [7.4.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v7.3.0...v7.4.0) (2020-02-23)
+
+
+### Features
+
+* Rollout default_max_pods_per_node setting to GA modules ([#439](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/439)) ([36ddbbb](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/36ddbbb82d6861689d734e76eeab7c0d162351ce))
+
 ## [7.3.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v7.2.0...v7.3.0) (2020-02-19)
 
 
