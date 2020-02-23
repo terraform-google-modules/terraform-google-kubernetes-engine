@@ -350,6 +350,11 @@ variable "skip_provisioners" {
   default     = false
 }
 
+variable "default_max_pods_per_node" {
+  description = "The maximum number of pods to schedule per node"
+  default     = 110
+}
+
 variable "deploy_using_private_endpoint" {
   type        = bool
   description = "(Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment."
@@ -377,11 +382,6 @@ variable "master_ipv4_cidr_block" {
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   default     = false
-}
-
-variable "default_max_pods_per_node" {
-  description = "The maximum number of pods to schedule per node"
-  default     = 110
 }
 
 variable "database_encryption" {
