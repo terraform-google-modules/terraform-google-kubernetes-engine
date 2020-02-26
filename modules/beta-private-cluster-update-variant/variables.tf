@@ -444,9 +444,9 @@ variable "enable_vertical_pod_autoscaling" {
 }
 
 variable "identity_namespace" {
-  description = "Workload Identity namespace"
+  description = "Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `project_id..svc.id.goog`)"
   type        = string
-  default     = ""
+  default     = "enabled"
 }
 
 variable "authenticator_security_group" {
@@ -464,5 +464,5 @@ variable "release_channel" {
 variable "enable_shielded_nodes" {
   type        = bool
   description = "Enable Shielded Nodes features on all nodes in this cluster"
-  default     = false
+  default     = true
 }
