@@ -19,6 +19,12 @@ variable "name" {
   type        = string
 }
 
+variable "k8s_sa_name" {
+  description = "Name for the existing Kubernetes service account"
+  type        = string
+  default     = null
+}
+
 variable "namespace" {
   description = "Namespace for k8s service account"
   default     = "default"

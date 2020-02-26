@@ -30,7 +30,7 @@ resource "google_container_cluster" "primary" {
   location          = local.location
   node_locations    = local.node_locations
   cluster_ipv4_cidr = var.cluster_ipv4_cidr
-  network           = data.google_compute_network.gke_network.self_link
+  network           = "projects/${local.network_project_id}/global/networks/${var.network}"
 
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
@@ -42,13 +42,15 @@ resource "google_container_cluster" "primary" {
   }
 
 
-  subnetwork = data.google_compute_subnetwork.gke_subnetwork.self_link
+  subnetwork = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
 
   min_master_version = local.master_version
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
+
+  default_max_pods_per_node = var.default_max_pods_per_node
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -101,9 +103,9 @@ resource "google_container_cluster" "primary" {
   }
 
   timeouts {
-    create = "30m"
-    update = "30m"
-    delete = "30m"
+    create = "45m"
+    update = "45m"
+    delete = "45m"
   }
 
   node_pool {
@@ -228,6 +230,7 @@ resource "google_container_node_pool" "pools" {
     lookup(each.value, "min_count", 1)
   ) : null
 
+  max_pods_per_node = lookup(each.value, "max_pods_per_node", null)
 
   node_count = lookup(each.value, "autoscaling", true) ? null : lookup(each.value, "node_count", 1)
 
@@ -304,9 +307,9 @@ resource "google_container_node_pool" "pools" {
   }
 
   timeouts {
-    create = "30m"
-    update = "30m"
-    delete = "30m"
+    create = "45m"
+    update = "45m"
+    delete = "45m"
   }
 }
 

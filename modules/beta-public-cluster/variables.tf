@@ -187,6 +187,12 @@ variable "node_pools_metadata" {
   }
 }
 
+variable "enable_kubernetes_alpha" {
+  type        = bool
+  description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
+  default     = false
+}
+
 variable "cluster_autoscaling" {
   type = object({
     enabled       = bool
@@ -344,14 +350,14 @@ variable "skip_provisioners" {
   default     = false
 }
 
-variable "istio" {
-  description = "(Beta) Enable Istio addon"
-  default     = false
-}
-
 variable "default_max_pods_per_node" {
   description = "The maximum number of pods to schedule per node"
   default     = 110
+}
+
+variable "istio" {
+  description = "(Beta) Enable Istio addon"
+  default     = false
 }
 
 variable "database_encryption" {
@@ -414,9 +420,9 @@ variable "enable_vertical_pod_autoscaling" {
 }
 
 variable "identity_namespace" {
-  description = "Workload Identity namespace"
+  description = "Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `project_id..svc.id.goog`)"
   type        = string
-  default     = ""
+  default     = "enabled"
 }
 
 variable "authenticator_security_group" {
@@ -434,5 +440,5 @@ variable "release_channel" {
 variable "enable_shielded_nodes" {
   type        = bool
   description = "Enable Shielded Nodes features on all nodes in this cluster"
-  default     = false
+  default     = true
 }
