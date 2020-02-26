@@ -444,7 +444,7 @@ variable "enable_vertical_pod_autoscaling" {
 }
 
 variable "identity_namespace" {
-  description = "Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `project_id..svc.id.goog`)"
+  description = "Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `[project_id].svc.id.goog`)"
   type        = string
   default     = "enabled"
 }
