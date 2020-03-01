@@ -214,12 +214,6 @@ variable "registry_project_id" {
   default     = ""
 }
 
-variable "service_account" {
-  type        = string
-  description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
-  default     = ""
-}
-
 variable "cluster_resource_labels" {
   type        = map(string)
   description = "The GCE resource labels (a map of key/value pairs) to be applied to the cluster"
