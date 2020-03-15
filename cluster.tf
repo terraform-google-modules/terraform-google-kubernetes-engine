@@ -49,6 +49,8 @@ resource "google_container_cluster" "primary" {
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
+
+  default_max_pods_per_node = var.default_max_pods_per_node
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -143,6 +145,7 @@ resource "google_container_node_pool" "pools" {
     lookup(each.value, "min_count", 1)
   ) : null
 
+  max_pods_per_node = lookup(each.value, "max_pods_per_node", null)
 
   node_count = lookup(each.value, "autoscaling", true) ? null : lookup(each.value, "node_count", 1)
 

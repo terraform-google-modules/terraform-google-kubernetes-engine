@@ -41,7 +41,7 @@ locals {
   region   = var.regional ? var.region : join("-", slice(split("-", var.zones[0]), 0, 2))
   // for regional cluster - use var.zones if provided, use available otherwise, for zonal cluster use var.zones with first element extracted
   node_locations = var.regional ? coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result)) : slice(var.zones, 1, length(var.zones))
-  // kuberentes version
+  // Kubernetes version
   master_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version
   master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
   node_version_regional   = var.node_version != "" && var.regional ? var.node_version : local.master_version_regional
@@ -164,8 +164,8 @@ locals {
   cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled
   cluster_vertical_pod_autoscaling_enabled = local.cluster_output_vertical_pod_autoscaling_enabled
 
-  cluster_workload_identity_config = var.identity_namespace == "" ? [] : [{
-    identity_namespace = var.identity_namespace
+  cluster_workload_identity_config = var.identity_namespace == null ? [] : var.identity_namespace == "enabled" ? [{
+  identity_namespace = "${var.project_id}.svc.id.goog"}] : [{identity_namespace = var.identity_namespace
   }]
   # /BETA features
 {% endif %}
