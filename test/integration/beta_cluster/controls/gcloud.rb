@@ -68,7 +68,7 @@ control "gcloud" do
       end
 
       it "has the expected nodeMetadata conseal config" do
-        expect(data['nodeConfig']['workloadMetadataConfig']).to eq({
+        expect(data['nodeConfig']['workloadMetadataConfig']).to include({
           "nodeMetadata" => 'EXPOSE',
         })
       end
