@@ -38,51 +38,39 @@ resource "tls_private_key" "git_creds" {
   rsa_bits  = 4096
 }
 
-resource "null_resource" "acm_operator_config" {
-  count = local.download_operator ? 1 : 0
+module "acm_operator_config" {
+  source  = "terraform-google-modules/gcloud/google"
+  version = "~> 0.5"
+  enabled = local.download_operator
 
-  provisioner "local-exec" {
-    command = "gsutil cp gs://config-management-release/released/latest/config-management-operator.yaml ${path.module}/config-management-operator.yaml"
-  }
-
-  provisioner "local-exec" {
-    when    = destroy
-    command = "rm -f ${path.module}/config-management-operator.yaml"
-  }
+  create_cmd_entrypoint  = "gsutil"
+  create_cmd_body        = "cp gs://config-management-release/released/latest/config-management-operator.yaml ${path.module}/config-management-operator.yaml"
+  destroy_cmd_entrypoint = "rm"
+  destroy_cmd_body       = "-f ${path.module}/config-management-operator.yaml"
 }
 
-resource "null_resource" "acm_operator" {
-  provisioner "local-exec" {
-    command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f ${local.operator_path}"
-  }
+module "acm_operator" {
+  source                = "terraform-google-modules/gcloud/google"
+  version               = "~> 0.5"
+  module_depends_on     = [module.acm_operator_config.wait, data.google_client_config.default.project, data.google_container_cluster.primary.name]
+  additional_components = ["kubectl"]
 
-  provisioner "local-exec" {
-    when    = destroy
-    command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f ${local.operator_path}"
-  }
-
-  depends_on = [
-    null_resource.acm_operator_config,
-    data.google_client_config.default,
-    data.google_container_cluster.primary,
-  ]
+  create_cmd_entrypoint  = "${path.module}/scripts/kubectl_wrapper.sh"
+  create_cmd_body        = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f ${local.operator_path}"
+  destroy_cmd_entrypoint = "${path.module}/scripts/kubectl_wrapper.sh"
+  destroy_cmd_body       = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f ${local.operator_path}"
 }
 
-resource "null_resource" "git_creds_secret" {
-  count = var.create_ssh_key ? 1 : 0
+module "git_creds_secret" {
+  source                = "terraform-google-modules/gcloud/google"
+  version               = "~> 0.5"
+  module_depends_on     = [module.acm_operator.wait]
+  additional_components = ["kubectl"]
 
-  provisioner "local-exec" {
-    command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl create secret generic git-creds -n=config-management-system --from-literal=ssh='${local.private_key}'"
-  }
-
-  provisioner "local-exec" {
-    when    = destroy
-    command = "${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete secret git-creds -n=config-management-system"
-  }
-
-  depends_on = [
-    null_resource.acm_operator
-  ]
+  create_cmd_entrypoint  = "${path.module}/scripts/kubectl_wrapper.sh"
+  create_cmd_body        = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl create secret generic git-creds -n=config-management-system --from-literal=ssh='${local.private_key}'"
+  destroy_cmd_entrypoint = "${path.module}/scripts/kubectl_wrapper.sh"
+  destroy_cmd_body       = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete secret git-creds -n=config-management-system"
 }
 
 data "template_file" "acm_config" {
@@ -99,23 +87,14 @@ data "template_file" "acm_config" {
   }
 }
 
-resource "null_resource" "acm_config" {
-  triggers = {
-    config = data.template_file.acm_config.rendered
-  }
+module "acm_config" {
+  source                = "terraform-google-modules/gcloud/google"
+  version               = "~> 0.5"
+  module_depends_on     = [module.acm_operator.wait, module.git_creds_secret.wait]
+  additional_components = ["kubectl"]
 
-  provisioner "local-exec" {
-    command = "echo '${data.template_file.acm_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f -"
-  }
-
-  provisioner "local-exec" {
-    when    = destroy
-    command = "echo '${data.template_file.acm_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f -"
-  }
-
-  depends_on = [
-    null_resource.acm_operator,
-    null_resource.git_creds_secret,
-  ]
+  create_cmd_entrypoint  = "echo"
+  create_cmd_body        = "'${data.template_file.acm_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f -"
+  destroy_cmd_entrypoint = "echo"
+  destroy_cmd_body       = "'${data.template_file.acm_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f -"
 }
-
