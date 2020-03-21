@@ -356,8 +356,15 @@ variable "default_max_pods_per_node" {
 }
 
 variable "istio" {
-  description = "(Beta) Enable Istio addon"
-  default     = false
+  description = "Istio configs"
+  type = object({
+    disabled = bool
+    auth     = string
+  })
+  default = {
+    disabled = true
+    auth     = null
+  }
 }
 
 variable "database_encryption" {

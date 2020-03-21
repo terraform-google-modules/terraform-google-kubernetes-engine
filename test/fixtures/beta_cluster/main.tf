@@ -45,7 +45,10 @@ module "this" {
   compute_engine_service_account = "create"
 
   // Beta features
-  istio = true
+  istio = {
+    disabled = false
+    auth     = "AUTH_MUTUAL_TLS"
+  }
 
   database_encryption = [{
     state    = "ENCRYPTED"

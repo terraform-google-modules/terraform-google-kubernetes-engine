@@ -380,8 +380,15 @@ variable "master_ipv4_cidr_block" {
 }
 
 variable "istio" {
-  description = "(Beta) Enable Istio addon"
-  default     = false
+  description = "Istio configs"
+  type = object({
+    disabled = bool
+    auth     = string
+  })
+  default = {
+    disabled = true
+    auth     = null
+  }
 }
 
 variable "database_encryption" {

@@ -130,7 +130,8 @@ resource "google_container_cluster" "primary" {
     }
 
     istio_config {
-      disabled = ! var.istio
+      disabled = var.istio.disabled
+      auth     = var.istio.auth != null ? var.istio.auth : "AUTH_MUTUAL_TLS"
     }
 
     dynamic "cloudrun_config" {

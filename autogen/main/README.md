@@ -82,7 +82,10 @@ module "gke" {
   master_ipv4_cidr_block     = "10.0.0.0/28"
   {% endif %}
   {% if beta_cluster %}
-  istio = true
+  istio = {
+    disabled = false
+    auth     = "AUTH_MUTUAL_TLS"
+  }
   cloudrun = true
   {% endif %}
 
