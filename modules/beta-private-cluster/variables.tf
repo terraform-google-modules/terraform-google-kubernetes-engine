@@ -387,7 +387,7 @@ variable "istio" {
   })
   default = {
     disabled = true
-    auth     = null
+    auth     = ""
   }
 }
 

@@ -57,7 +57,10 @@ module "gke" {
     },
   ]
 
-  istio    = true
+  istio = {
+    disabled = false
+    auth     = "AUTH_MUTUAL_TLS"
+  }
   cloudrun = true
 }
 
