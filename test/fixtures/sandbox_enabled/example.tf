@@ -27,6 +27,7 @@ module "example" {
   compute_engine_service_account = var.compute_engine_service_accounts[0]
   istio = {
     disabled = true
+    auth     = ""
   }
   cloudrun                 = false
   node_metadata            = "UNSPECIFIED"
