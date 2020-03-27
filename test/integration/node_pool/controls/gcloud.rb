@@ -21,7 +21,7 @@ expected_accelerators_type = "nvidia-tesla-p4"
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
-  describe command("gcloud --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json") do
+  describe command("gcloud beta --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json") do
     its(:exit_status) { should eq 0 }
     its(:stderr) { should eq '' }
 
@@ -40,6 +40,7 @@ control "gcloud" do
                 "oauthScopes" => %w(https://www.googleapis.com/auth/logging.write https://www.googleapis.com/auth/monitoring),
                 "serviceAccount" => "default"
             },
+            "autoscalingProfile" => "OPTIMIZE_UTILIZATION",
             "enableNodeAutoprovisioning" => true,
             "resourceLimits" => [
                 {
