@@ -130,6 +130,7 @@ module "gke" {
       node-pool-metadata-custom-value = "my-node-pool"
     }
   }
+  {% if beta_cluster %}
 
   node_pools_taints = {
     all = []
@@ -142,6 +143,7 @@ module "gke" {
       },
     ]
   }
+  {% endif %}
 
   node_pools_tags = {
     all = []
