@@ -57,12 +57,7 @@ module "gke" {
     },
   ]
 
-  istio = {
-    disabled = false
-    auth     = "AUTH_MUTUAL_TLS"
-  }
-  cloudrun = true
-}
+  istio = true
 
 data "google_client_config" "default" {
 }
