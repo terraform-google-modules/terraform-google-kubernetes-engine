@@ -57,7 +57,9 @@ module "gke" {
     },
   ]
 
-  istio = true
+  istio    = true
+  cloudrun = true
+}
 
 data "google_client_config" "default" {
 }
