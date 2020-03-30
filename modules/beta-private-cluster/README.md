@@ -52,10 +52,7 @@ module "gke" {
   enable_private_endpoint    = true
   enable_private_nodes       = true
   master_ipv4_cidr_block     = "10.0.0.0/28"
-  istio = {
-    disabled = false
-    auth     = "AUTH_MUTUAL_TLS"
-  }
+  istio = true
   cloudrun = true
 
   node_pools = [
@@ -167,7 +164,8 @@ Then perform the following commands on the root folder:
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The _name_ of the secondary subnet range to use for services | string | n/a | yes |
 | issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | bool | `"false"` | no |
-| istio | Istio configs | object | `<map>` | no |
+| istio | (Beta) Enable Istio addon | string | `"false"` | no |
+| istio\_auth | (Beta) The authentication type between services in Istio. | string | `"AUTH_MUTUAL_TLS"` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com/kubernetes"` | no |
 | maintenance\_end\_time | Time window specified for recurring maintenance operations in RFC3339 format | string | `""` | no |
@@ -242,15 +240,15 @@ Then perform the following commands on the root folder:
 ## node_pools variable
 The node_pools variable takes the following parameters:
 
-| Name | Description | Default | Requirement |
-| --- | --- | --- | --- |
-| accelerator_count | The number of the guest accelerator cards exposed to this instance | 0 | Optional |
-| accelerator_type | The accelerator type resource to expose to the instance | " " | Optional |
-| auto_repair | Whether the nodes will be automatically repaired | true | Optional |
-| autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
-| auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
-| disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100GB | Optional |
-| disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |
+| Name              | Description                                                                                                   | Default                       | Requirement |
+| ----------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------- | ----------- |
+| accelerator_count | The number of the guest accelerator cards exposed to this instance                                            | 0                             | Optional    |
+| accelerator_type  | The accelerator type resource to expose to the instance                                                       | " "                           | Optional    |
+| auto_repair       | Whether the nodes will be automatically repaired                                                              | true                          | Optional    |
+| autoscaling       | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true                          | Optional    |
+| auto_upgrade      | Whether the nodes will be automatically upgraded                                                              | true (if cluster is regional) | Optional    |
+| disk_size_gb      | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB               | 100GB                         | Optional    |
+| disk_type         | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd')                                       | pd-standard                   | Optional    |
 | effect | Effect for the taint | | Required |
 | image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | COS | Optional |
 | initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |

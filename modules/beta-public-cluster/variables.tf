@@ -356,15 +356,14 @@ variable "default_max_pods_per_node" {
 }
 
 variable "istio" {
-  description = "Istio configs"
-  type = object({
-    disabled = bool
-    auth     = string
-  })
-  default = {
-    disabled = true
-    auth     = ""
-  }
+  description = "(Beta) Enable Istio addon"
+  default     = false
+}
+
+variable "istio_auth" {
+  type        = string
+  description = "(Beta) The authentication type between services in Istio."
+  default     = "AUTH_MUTUAL_TLS"
 }
 
 variable "database_encryption" {

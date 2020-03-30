@@ -48,11 +48,8 @@ variable "compute_engine_service_account" {
 }
 
 variable "istio" {
-  description = "Istio Config"
-  default = {
-    disabled = false
-    auth     = "AUTH_MUTUAL_TLS"
-  }
+  description = "Boolean to enable / disable Istio"
+  default     = true
 }
 
 variable "cloudrun" {
