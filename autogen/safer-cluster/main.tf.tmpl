@@ -116,7 +116,9 @@ module "gke" {
   master_ipv4_cidr_block = var.master_ipv4_cidr_block
 
   // Istio is recommended for pod-to-pod communications.
-  istio    = var.istio
+  istio      = var.istio
+  istio_auth = var.istio_auth
+
   cloudrun = var.cloudrun
 
   default_max_pods_per_node = var.default_max_pods_per_node

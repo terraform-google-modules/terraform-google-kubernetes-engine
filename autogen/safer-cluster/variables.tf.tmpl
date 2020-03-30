@@ -231,6 +231,12 @@ variable "istio" {
   default     = false
 }
 
+variable "istio_auth" {
+  type        = string
+  description = "(Beta) The authentication type between services in Istio."
+  default     = "AUTH_MUTUAL_TLS"
+}
+
 variable "default_max_pods_per_node" {
   description = "The maximum number of pods to schedule per node"
   default     = 110

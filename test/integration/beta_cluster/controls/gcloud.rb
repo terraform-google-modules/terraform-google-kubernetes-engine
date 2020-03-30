@@ -56,7 +56,7 @@ control "gcloud" do
             "disabled" => true,
           },
           "networkPolicyConfig" => {},
-          "istioConfig" => {},
+          "istioConfig" => {"auth"=>"AUTH_MUTUAL_TLS"},
           "cloudRunConfig" => {},
         })
       end
