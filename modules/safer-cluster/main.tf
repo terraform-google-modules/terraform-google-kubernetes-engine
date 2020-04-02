@@ -26,6 +26,7 @@ module "gke" {
   region             = var.region
   network            = var.network
   network_project_id = var.network_project_id
+  zones              = var.zones
 
   // We need to enforce a minimum Kubernetes Version to ensure
   // that the necessary security features are enabled.
