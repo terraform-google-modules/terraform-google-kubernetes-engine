@@ -24,6 +24,7 @@ module "gke" {
   name               = var.name
   regional           = var.regional
   region             = var.region
+  zones              = var.zones
   network            = var.network
   network_project_id = var.network_project_id
 
