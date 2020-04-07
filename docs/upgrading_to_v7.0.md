@@ -61,3 +61,25 @@ Updating to this new format requires running a state migration. Note that this m
     ```
 
 4. Run `terraform plan` to confirm no changes are expected.
+
+## Null Resource Updates
+
+As part of the upgrade, Terraform might indicate that the `wait_for_cluster` null_resource must be recreated.
+This is a no-op which can be safely applied:
+
+```
+  # module.gke.null_resource.wait_for_cluster[0] must be replaced
+-/+ resource "null_resource" "wait_for_cluster" {
+      ~ id       = "8404887862418893500" -> (known after apply)
+      + triggers = {
+          + "name"       = "REDACTED"
+          + "project_id" = "REDACTED"
+        } # forces replacement
+    }
+```
+
+Alternatively, if you run into changes with this update, you can remove the original resource from the state entirely:
+
+```
+terraform state rm module.gke.null_resource.wait_for_cluster
+```
