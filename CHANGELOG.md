@@ -8,6 +8,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ## [8.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v7.3.0...v8.0.0) (2020-04-07)
 
+v8.0.0 is a backwards-incompatible release. Please see the [upgrading guide](./docs/upgrading_to_v8.0.md).
 
 ### ⚠ BREAKING CHANGES
 
