@@ -6,6 +6,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [8.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v7.3.0...v8.0.0) (2020-04-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* Beta clusters now have Workload Identity enabled by default. To disable Workload Identity, set `identity_namespace = null`
+* Beta clusters now have shielded nodes enabled by default. To disable, set `enable_shielded_nodes = false`.
+
+### Features
+
+* Add support for setting var.istio_auth ([#462](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/462)) ([fff4272](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/fff4272b31641814ede6d64d66673060f5daa027))
+* Added support for specifying autoscaling_profile in var.cluster_autoscaling ([#456](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/456)) ([1ac2c5c](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1ac2c5c1a090eeb8cd07f88902770637378d1ec8))
+* Enable WI and shielded nodes by default in beta clusters ([#441](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/441)) ([704962b](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/704962b1b5408bed8e4102df198eb843b7e8d1d1))
+* Rollout default_max_pods_per_node setting to GA modules ([#439](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/439)) ([36ddbbb](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/36ddbbb82d6861689d734e76eeab7c0d162351ce))
+
+
+### Bug Fixes
+
+* Correct bug in passing var.zones for safer cluster modules ([#474](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/474)) ([7660b51](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7660b5156a740d59958e472ee2faa1637215bf06))
+* Fix CI for Workload Identity ([#460](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/460)) ([025f8b7](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/025f8b7eae93651a2c23ef770654782222cd61b7))
+* Remove unused variable `service_account` in safer-cluster to avoid confusion ([#448](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/448)) ([a30e7cd](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a30e7cd339f71bbfee5885f12326cf77717daf74))
+* update and pin kubernetes provider to >= 1.11.1 ([#453](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/453)) ([418d9b3](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/418d9b30863ed67638bef87602de3910169e1195))
+* Use gcloud module for ACM submodule, will force reinstall of ACM ([#442](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/442)) ([9737190](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/97371905789f34ab8e7cda4cd32e17b36fb661c6)), closes [#454](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/454)
+
 ## [7.3.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v7.2.0...v7.3.0) (2020-02-19)
 
 
