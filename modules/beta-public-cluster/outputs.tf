@@ -129,6 +129,11 @@ output "cloudrun_enabled" {
   value       = local.cluster_cloudrun_enabled
 }
 
+output "dns_cache_enabled" {
+  description = "Whether DNS Cache enabled"
+  value       = local.cluster_dns_cache_enabled
+}
+
 output "pod_security_policy_enabled" {
   description = "Whether pod security policy is enabled"
   value       = local.cluster_pod_security_policy_enabled
