@@ -143,7 +143,9 @@ resource "google_container_cluster" "primary" {
       }
     }
 
-    dns_cache_config = var.dns_cache
+    dns_cache_config {
+      enabled = var.dns_cache
+    }
   }
 
   ip_allocation_policy {
