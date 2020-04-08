@@ -20,7 +20,7 @@
   Get available zones in region
  *****************************************/
 data "google_compute_zones" "available" {
-  provider = google-beta
+  provider = google
 
   project = var.project_id
   region  = local.region
