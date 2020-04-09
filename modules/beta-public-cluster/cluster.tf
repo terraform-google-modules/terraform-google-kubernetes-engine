@@ -142,6 +142,10 @@ resource "google_container_cluster" "primary" {
         disabled = cloudrun_config.value.disabled
       }
     }
+
+    dns_cache_config {
+      enabled = var.dns_cache
+    }
   }
 
   ip_allocation_policy {

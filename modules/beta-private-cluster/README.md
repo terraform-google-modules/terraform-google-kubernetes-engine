@@ -54,6 +54,7 @@ module "gke" {
   master_ipv4_cidr_block     = "10.0.0.0/28"
   istio = true
   cloudrun = true
+  dns_cache = false
 
   node_pools = [
     {
@@ -147,6 +148,7 @@ Then perform the following commands on the root folder:
 | deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | bool | `"false"` | no |
 | description | The description of the cluster | string | `""` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | bool | `"true"` | no |
+| dns\_cache | (Beta) The status of the NodeLocal DNSCache addon. | bool | `"false"` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | string | `"false"` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | bool | `"false"` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | bool | `"false"` | no |
@@ -210,6 +212,7 @@ Then perform the following commands on the root folder:
 |------|-------------|
 | ca\_certificate | Cluster ca certificate (base64 encoded) |
 | cloudrun\_enabled | Whether CloudRun enabled |
+| dns\_cache\_enabled | Whether DNS Cache enabled |
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |

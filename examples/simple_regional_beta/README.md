@@ -11,6 +11,7 @@ This example illustrates how to create a simple cluster with beta features.
 | cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | string | n/a | yes |
 | database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key. | object | `<list>` | no |
+| dns\_cache | (Beta) The status of the NodeLocal DNSCache addon. | bool | `"false"` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | string | `"false"` | no |
 | ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for services | string | n/a | yes |

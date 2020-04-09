@@ -54,6 +54,8 @@ module "this" {
 
   cloudrun = true
 
+  dns_cache = true
+
   enable_binary_authorization = true
 
   pod_security_policy_config = [{
