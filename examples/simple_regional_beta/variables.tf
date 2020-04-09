@@ -57,6 +57,12 @@ variable "cloudrun" {
   default     = true
 }
 
+variable "dns_cache" {
+  type        = bool
+  description = "(Beta) The status of the NodeLocal DNSCache addon."
+  default     = false
+}
+
 variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
   default     = "SECURE"

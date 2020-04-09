@@ -57,3 +57,7 @@ variable "cloudrun" {
   default     = true
 }
 
+variable "dns_cache" {
+  description = "Boolean to enable / disable NodeLocal DNSCache "
+  default     = false
+}

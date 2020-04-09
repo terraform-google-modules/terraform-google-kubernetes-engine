@@ -56,8 +56,9 @@ module "gke" {
     },
   ]
 
-  istio    = var.istio
-  cloudrun = var.cloudrun
+  istio     = var.istio
+  cloudrun  = var.cloudrun
+  dns_cache = var.dns_cache
 }
 
 data "google_client_config" "default" {

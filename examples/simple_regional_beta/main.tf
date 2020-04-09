@@ -38,6 +38,7 @@ module "gke" {
   service_account             = var.compute_engine_service_account
   istio                       = var.istio
   cloudrun                    = var.cloudrun
+  dns_cache                   = var.dns_cache
   node_metadata               = var.node_metadata
   sandbox_enabled             = var.sandbox_enabled
   remove_default_node_pool    = var.remove_default_node_pool
