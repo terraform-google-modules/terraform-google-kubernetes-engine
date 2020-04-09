@@ -237,6 +237,12 @@ variable "istio_auth" {
   default     = "AUTH_MUTUAL_TLS"
 }
 
+variable "dns_cache" {
+  type        = bool
+  description = "(Beta) The status of the NodeLocal DNSCache addon."
+  default     = false
+}
+
 variable "default_max_pods_per_node" {
   description = "The maximum number of pods to schedule per node"
   default     = 110

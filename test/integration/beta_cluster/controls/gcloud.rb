@@ -58,6 +58,9 @@ control "gcloud" do
           "networkPolicyConfig" => {},
           "istioConfig" => {"auth"=>"AUTH_MUTUAL_TLS"},
           "cloudRunConfig" => {},
+          "dnsCacheConfig" => {
+            "enabled" => true,
+          }
         })
       end
 
