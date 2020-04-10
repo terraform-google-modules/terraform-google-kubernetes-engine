@@ -480,3 +480,22 @@ variable "enable_shielded_nodes" {
   description = "Enable Shielded Nodes features on all nodes in this cluster"
   default     = true
 }
+
+
+variable "firewall_enabled" {
+  type        = bool
+  description = "Create additional firewall rules"
+  default     = true
+}
+
+variable "firewall_priority" {
+  type        = number
+  description = "Priority rule for firewall rules"
+  default     = 1000
+}
+
+variable "firewall_inbound_ports" {
+  type        = list(string)
+  description = "List of TCP ports for admission/webhook controllers"
+  default     = ["8443", "9443", "15017"]
+}

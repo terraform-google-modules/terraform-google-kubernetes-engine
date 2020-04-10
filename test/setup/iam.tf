@@ -19,12 +19,12 @@ locals {
     "roles/cloudkms.admin",
     "roles/cloudkms.cryptoKeyEncrypterDecrypter",
     "roles/compute.networkAdmin",
+    "roles/compute.securityAdmin",
     "roles/container.admin",
     "roles/container.clusterAdmin",
     "roles/container.developer",
     "roles/iam.serviceAccountAdmin",
     "roles/iam.serviceAccountUser",
-    "roles/compute.networkAdmin",
     "roles/compute.viewer",
     "roles/resourcemanager.projectIamAdmin",
     "roles/composer.worker"

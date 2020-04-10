@@ -58,12 +58,8 @@ module "gke" {
   region     = var.region
   zones      = slice(var.zones, 0, 1)
 
-  // This craziness gets a plain network name from the reference link which is the
-  // only way to force cluster creation to wait on network creation without a
-  // depends_on link.  Tests use terraform 0.12.6, which does not have regex or regexall
-  network = reverse(split("/", data.google_compute_subnetwork.subnetwork.network))[0]
-
-  subnetwork              = data.google_compute_subnetwork.subnetwork.name
+  network                 = module.gcp-network.network_named
+  subnetwork              = module.gcp-network.subnets_names[0]
   ip_range_pods           = var.ip_range_pods_name
   ip_range_services       = var.ip_range_services_name
   create_service_account  = true

@@ -426,7 +426,7 @@ variable "enable_binary_authorization" {
 }
 
 variable "pod_security_policy_config" {
-  type = list(object({ enabled = bool }))
+  type        = list(object({ enabled = bool }))
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
 
   default = [{
@@ -488,3 +488,22 @@ variable "enable_shielded_nodes" {
   default     = true
 }
 {% endif %}
+
+
+variable "firewall_enabled" {
+  type        = bool
+  description = "Create additional firewall rules"
+  default     = true
+}
+
+variable "firewall_priority" {
+  type        = number
+  description = "Priority rule for firewall rules"
+  default     = 1000
+}
+
+variable "firewall_inbound_ports" {
+  type        = list(string)
+  description = "List of TCP ports for admission/webhook controllers"
+  default     = ["8443", "9443", "15017"]
+}
