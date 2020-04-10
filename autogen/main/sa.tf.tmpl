@@ -62,6 +62,13 @@ resource "google_project_iam_member" "cluster_service_account-monitoring_viewer"
   member  = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
 }
 
+resource "google_project_iam_member" "cluster_service_account-resourceMetadata-writer" {
+  count   = var.create_service_account ? 1 : 0
+  project = google_project_iam_member.cluster_service_account-monitoring_viewer[0].project
+  role    = "roles/stackdriver.resourceMetadata.writer"
+  member  = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
+}
+
 resource "google_project_iam_member" "cluster_service_account-gcr" {
   count   = var.create_service_account && var.grant_registry_access ? 1 : 0
   project = var.registry_project_id == "" ? var.project_id : var.registry_project_id
