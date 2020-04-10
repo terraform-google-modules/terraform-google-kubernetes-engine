@@ -79,3 +79,8 @@ variable "install_template_library" {
   type        = bool
   default     = true
 }
+
+variable "operator_type" {
+  description = "name of the operator template to use, one of either: acm, config-sync"
+  type        = string
+}

@@ -15,13 +15,18 @@
  */
 
 locals {
-  cluster_endpoint       = "https://${var.cluster_endpoint}"
-  token                  = data.google_client_config.default.access_token
-  cluster_ca_certificate = data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate
-  private_key            = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.git_creds[0].private_key_pem : var.ssh_auth_key
-  download_operator      = var.operator_path == null ? true : false
-  operator_path          = local.download_operator ? "${path.module}/config-management-operator.yaml" : var.operator_path
+  cluster_endpoint        = "https://${var.cluster_endpoint}"
+  token                   = data.google_client_config.default.access_token
+  cluster_ca_certificate  = data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate
+  private_key             = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.git_creds[0].private_key_pem : var.ssh_auth_key
+  download_operator       = var.operator_path == null ? true : false
+
+  operator_path           = local.download_operator ? "${path.module}/config-management-operator.yaml" : var.operator_path
+  latest_operator_url     = "gs://config-management-release/released/latest/config-management-operator.yaml"
+
+  operator_template_file  = file("${path.module}/templates/${var.operator_type}-config.yml.tpl")
 }
+
 
 data "google_container_cluster" "primary" {
   name     = var.cluster_name
@@ -39,15 +44,16 @@ resource "tls_private_key" "git_creds" {
 }
 
 module "acm_operator_config" {
-  source  = "terraform-google-modules/gcloud/google"
-  version = "~> 0.5"
-  enabled = local.download_operator
+   source  = "terraform-google-modules/gcloud/google"
+   version = "~> 0.5"
+   enabled = local.download_operator
 
-  create_cmd_entrypoint  = "gsutil"
-  create_cmd_body        = "cp gs://config-management-release/released/latest/config-management-operator.yaml ${path.module}/config-management-operator.yaml"
-  destroy_cmd_entrypoint = "rm"
-  destroy_cmd_body       = "-f ${path.module}/config-management-operator.yaml"
+   create_cmd_entrypoint  = "gsutil"
+   create_cmd_body        = "cp ${local.latest_operator_url} ${local.operator_path}"
+   destroy_cmd_entrypoint = "rm"
+   destroy_cmd_body       = "-f ${local.operator_path}"
 }
+
 
 module "acm_operator" {
   source                = "terraform-google-modules/gcloud/google"
@@ -74,7 +80,8 @@ module "git_creds_secret" {
 }
 
 data "template_file" "acm_config" {
-  template = file("${path.module}/templates/acm-config.yml.tpl")
+
+  template = local.operator_template_file
 
   vars = {
     cluster_name             = var.cluster_name
@@ -88,13 +95,15 @@ data "template_file" "acm_config" {
 }
 
 module "acm_config" {
-  source                = "terraform-google-modules/gcloud/google"
-  version               = "~> 0.5"
-  module_depends_on     = [module.acm_operator.wait, module.git_creds_secret.wait]
-  additional_components = ["kubectl"]
+   source                = "terraform-google-modules/gcloud/google"
+   version               = "~> 0.5"
+   module_depends_on     = [module.acm_operator.wait, module.git_creds_secret.wait]
+   additional_components = ["kubectl"]
 
-  create_cmd_entrypoint  = "echo"
-  create_cmd_body        = "'${data.template_file.acm_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f -"
-  destroy_cmd_entrypoint = "echo"
-  destroy_cmd_body       = "'${data.template_file.acm_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f -"
+   create_cmd_entrypoint  = "echo"
+   create_cmd_body        = "'${data.template_file.acm_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f -"
+   destroy_cmd_entrypoint = "echo"
+   destroy_cmd_body       = "'${data.template_file.acm_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f -"
 }
+
+
