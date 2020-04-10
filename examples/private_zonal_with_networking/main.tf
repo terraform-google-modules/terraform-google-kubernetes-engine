@@ -58,7 +58,7 @@ module "gke" {
   region     = var.region
   zones      = slice(var.zones, 0, 1)
 
-  network                 = module.gcp-network.network_named
+  network                 = module.gcp-network.network_name
   subnetwork              = module.gcp-network.subnets_names[0]
   ip_range_pods           = var.ip_range_pods_name
   ip_range_services       = var.ip_range_services_name
