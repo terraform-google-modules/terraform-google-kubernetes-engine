@@ -16,6 +16,6 @@
 
 output "git_creds_public" {
   description = "Public key of SSH keypair to allow the Anthos Operator to authenticate to your Git repository."
-  value       = var.create_ssh_key ? tls_private_key.git_creds.*.public_key_openssh : null
+  value       = var.create_ssh_key ? tls_private_key.k8sop_creds.*.public_key_openssh : null
 }
 
