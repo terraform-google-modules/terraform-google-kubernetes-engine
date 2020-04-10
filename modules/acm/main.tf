@@ -16,20 +16,20 @@
 
 module "acm_operator" {
 
-  source                    = "../k8s-operator-crd-support"
-  operator_type             = "acm"
-  
-  cluster_name              = var.cluster_name
-  project_id                = var.project_id
-  location                  = var.location
-  operator_path             = var.operator_path
-  sync_repo                 = var.sync_repo
-  sync_branch               = var.sync_branch
-  policy_dir                = var.policy_dir
-  cluster_endpoint          = var.cluster_endpoint
-  create_ssh_key            = var.create_ssh_key
-  ssh_auth_key              = var.ssh_auth_key
-  enable_policy_controller  = var.enable_policy_controller
-  install_template_library  = var.install_template_library
-  
+  source                       = "../k8s-operator-crd-support"
+  operator_type                = "acm"
+   
+  cluster_name                 = var.cluster_name
+  project_id                   = var.project_id
+  location                     = var.location
+  operator_path                = var.operator_path
+  operator_latest_manifest_url = "gs://config-management-release/released/latest/config-management-operator.yaml"
+  sync_repo                    = var.sync_repo
+  sync_branch                  = var.sync_branch
+  policy_dir                   = var.policy_dir
+  cluster_endpoint             = var.cluster_endpoint
+  create_ssh_key               = var.create_ssh_key
+  ssh_auth_key                 = var.ssh_auth_key
+  enable_policy_controller     = var.enable_policy_controller
+  install_template_library     = var.install_template_library
 }

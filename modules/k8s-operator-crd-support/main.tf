@@ -17,16 +17,15 @@
 ## TODO(stevenlinde): make clients deal with the operator switching, externalize the latest_operator_url
 
 locals {
-  cluster_endpoint        = "https://${var.cluster_endpoint}"
-  token                   = data.google_client_config.default.access_token
-  cluster_ca_certificate  = data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate
-  private_key             = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : var.ssh_auth_key
-  download_operator       = var.operator_path == null ? true : false
+  cluster_endpoint           = "https://${var.cluster_endpoint}"
+  token                      = data.google_client_config.default.access_token
+  cluster_ca_certificate     = data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate
+  private_key                = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : var.ssh_auth_key
+ 
+  should_download_manifest   = var.operator_path == null ? true : false
+  manifest_path              = local.should_download_manifest ? "${path.module}/config-management-operator.yaml" : var.operator_path
 
-  operator_path           = local.download_operator ? "${path.module}/config-management-operator.yaml" : var.operator_path
-  latest_operator_url     = "gs://config-management-release/released/latest/config-management-operator.yaml"
-
-  operator_template_file  = file("${path.module}/templates/${var.operator_type}-config.yml.tpl")
+  operator_template_file     = file("${path.module}/templates/${var.operator_type}-config.yml.tpl")
 }
 
 
@@ -42,12 +41,12 @@ data "google_client_config" "default" {
 module "k8sop_manifest" {
   source  = "terraform-google-modules/gcloud/google"
   version = "~> 0.5"
-  enabled = local.download_operator
+  enabled = local.should_download_manifest
   
   create_cmd_entrypoint  = "gsutil"
-  create_cmd_body        = "cp ${local.latest_operator_url} ${local.operator_path}"
+  create_cmd_body        = "cp ${var.operator_latest_manifest_url} ${local.manifest_path}"
   destroy_cmd_entrypoint = "rm"
-  destroy_cmd_body       = "-f ${local.operator_path}"
+  destroy_cmd_body       = "-f ${local.manifest_path}"
 
   # TODO(stevenlinde) manage the downloaded operator path from within here rather than with a local
 }
@@ -60,9 +59,9 @@ module "k8s_operator" {
   additional_components = ["kubectl"]
 
   create_cmd_entrypoint  = "${path.module}/scripts/kubectl_wrapper.sh"
-  create_cmd_body        = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f ${local.operator_path}"
+  create_cmd_body        = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f ${local.manifest_path}"
   destroy_cmd_entrypoint = "${path.module}/scripts/kubectl_wrapper.sh"
-  destroy_cmd_body       = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f ${local.operator_path}"
+  destroy_cmd_body       = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f ${local.manifest_path}"
 }
 
 
