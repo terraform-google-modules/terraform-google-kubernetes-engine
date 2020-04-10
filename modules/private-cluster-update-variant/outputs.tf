@@ -124,3 +124,7 @@ output "master_ipv4_cidr_block" {
   value       = var.master_ipv4_cidr_block
 }
 
+output "peering_name" {
+  description = "The name of the peering between this cluster and the Google owned VPC."
+  value       = local.cluster_peering_name
+}

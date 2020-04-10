@@ -210,6 +210,7 @@ Then perform the following commands on the root folder:
 | network\_policy\_enabled | Whether network policy enabled |
 | node\_pools\_names | List of node pools names |
 | node\_pools\_versions | List of node pools versions |
+| peering\_name | The name of the peering between this cluster and the Google owned VPC. |
 | region | Cluster region |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | type | Cluster type (regional / zonal) |
