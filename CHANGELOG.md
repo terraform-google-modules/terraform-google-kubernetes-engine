@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [8.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v8.0.0...v8.1.0) (2020-04-10)
+
+
+### Features
+
+* Add peering_name output for private clusters and increase minimum provider version to 3.14 ([#484](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/484)) ([ff6b5cc](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ff6b5cc24f47b292a4a7a89eda75bb9ffe8ea411))
+* Add support for enabling Nodelocal dns cache (var.dns_cache) ([#477](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/477)) ([de8e1d5](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/de8e1d5bdedd22533abcfd11660eb64a5a55f804))
+
+
+### Bug Fixes
+
+* Add stackdriver.resourceMetadata.writer role for SA to prevent monitoring errors ([#485](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/485)) ([07de70b](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/07de70b0ee3641e6be5e6052a898a9d7eb49a815))
+
 ## [8.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v7.3.0...v8.0.0) (2020-04-07)
 
 v8.0.0 is a backwards-incompatible release. Please see the [upgrading guide](./docs/upgrading_to_v8.0.md).
