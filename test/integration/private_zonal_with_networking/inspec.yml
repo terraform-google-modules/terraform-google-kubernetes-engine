@@ -34,3 +34,6 @@ attributes:
   - name: ip_range_services_name
     required: true
     type: string
+  - name: peering_name
+    required: true
+    type: string

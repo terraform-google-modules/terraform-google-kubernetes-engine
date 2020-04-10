@@ -56,4 +56,7 @@ output "subnet_secondary_ranges" {
   value       = module.gcp-network.subnets_secondary_ranges
 }
 
-
+output "peering_name" {
+  description = "The name of the peering between this cluster and the Google owned VPC."
+  value       = module.gke.peering_name
+}
