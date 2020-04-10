@@ -29,10 +29,16 @@ variable "location" {
   type        = string
 }
 
+## TODO(stevenlinde) would prefer local_manifest_path, if changeable a this point 
 variable "operator_path" {
-  description = "Path to the operator yaml config. If unset, will download from GCS releases."
+  description = "Path to the operator yaml config. If unset, will download from `var.operator_latest_manifest_url`."
   type        = string
   default     = null
+}
+
+variable "operator_latest_manifest_url" {
+  description = "Url to the latest downloadable manifest for the operator. To be supplied by operator module providers, not end users."
+  type        = string
 }
 
 variable "sync_repo" {
