@@ -15,6 +15,7 @@
 project_id = attribute('project_id')
 location = attribute('location')
 cluster_name = attribute('cluster_name')
+peering_name = attribute('peering_name')
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
@@ -49,6 +50,10 @@ control "gcloud" do
 
       it "uses private nodes" do
         expect(data['privateClusterConfig']['enablePrivateNodes']).to eq true
+      end
+
+      it "has corresponding peering name" do
+        expect(data['privateClusterConfig']['peeringName']).to eq peering_name
       end
 
       it "has the expected addon settings" do

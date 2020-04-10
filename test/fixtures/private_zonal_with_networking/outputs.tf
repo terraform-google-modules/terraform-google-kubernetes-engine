@@ -71,3 +71,7 @@ output "ip_range_services_name" {
   description = "The secondary range name for services"
   value       = module.example.ip_range_services_name
 }
+output "peering_name" {
+  description = "The name of the peering between this cluster and the Google owned VPC."
+  value       = module.example.peering_name
+}
