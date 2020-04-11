@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-module "acm_operator" {
+module "configsync_operator" {
 
   source                       = "../k8s-operator-crd-support"
    
@@ -28,10 +28,7 @@ module "acm_operator" {
   cluster_endpoint             = var.cluster_endpoint
   create_ssh_key               = var.create_ssh_key
   ssh_auth_key                 = var.ssh_auth_key
-  enable_policy_controller     = var.enable_policy_controller
-  install_template_library     = var.install_template_library
-  
-  operator_latest_manifest_url = "gs://config-management-release/released/latest/config-management-operator.yaml"
-  operator_template_path       = "${path.module}/templates/acm-config.yml.tpl"
 
+  operator_latest_manifest_url = "gs://config-management-release/released/latest/config-sync-operator.yaml"
+  operator_template_path       = "${path.module}/templates/config-sync-config.yml.tpl"
 }

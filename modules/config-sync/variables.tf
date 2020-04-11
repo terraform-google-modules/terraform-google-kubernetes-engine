@@ -29,16 +29,10 @@ variable "location" {
   type        = string
 }
 
-## TODO(stevenlinde) would prefer local_manifest_path, if changeable a this point 
 variable "operator_path" {
-  description = "Path to the operator yaml config. If unset, will download from `var.operator_latest_manifest_url`."
+  description = "Path to the operator yaml config. If unset, will download from GCS releases."
   type        = string
   default     = null
-}
-
-variable "operator_latest_manifest_url" {
-  description = "Url to the latest downloadable manifest for the operator. To be supplied by operator module providers, not end users."
-  type        = string
 }
 
 variable "sync_repo" {
@@ -72,21 +66,4 @@ variable "ssh_auth_key" {
   description = "Key for Git authentication. Overrides 'create_ssh_key' variable. Can be set using 'file(path/to/file)'-function."
   type        = string
   default     = null
-}
-
-variable "enable_policy_controller" {
-  description = "Whether to enable the ACM Policy Controller on the cluster"
-  type        = bool
-  default     = false
-}
-
-variable "install_template_library" {
-  description = "Whether to install the default Policy Controller template library"
-  type        = bool
-  default     = false
-}
-
-variable "operator_template_path" {
-  description = "path to template file to use for the operator"
-  type        = string
 }
