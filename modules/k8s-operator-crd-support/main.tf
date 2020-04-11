@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-## TODO(stevenlinde): make clients deal with the operator switching, externalize the latest_operator_url
-
 locals {
   cluster_endpoint           = "https://${var.cluster_endpoint}"
   token                      = data.google_client_config.default.access_token
@@ -23,9 +21,9 @@ locals {
   private_key                = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : var.ssh_auth_key
  
   should_download_manifest   = var.operator_path == null ? true : false
+  ## TODO(stevenlinde) this saves the yaml into the shared lib directory, move somewhere tmp
   manifest_path              = local.should_download_manifest ? "${path.module}/config-management-operator.yaml" : var.operator_path
 
-  operator_template_file     = file("${path.module}/templates/${var.operator_type}-config.yml.tpl")
 }
 
 
@@ -47,8 +45,6 @@ module "k8sop_manifest" {
   create_cmd_body        = "cp ${var.operator_latest_manifest_url} ${local.manifest_path}"
   destroy_cmd_entrypoint = "rm"
   destroy_cmd_body       = "-f ${local.manifest_path}"
-
-  # TODO(stevenlinde) manage the downloaded operator path from within here rather than with a local
 }
 
 
@@ -87,7 +83,7 @@ module "k8sop_creds_secret" {
 
 data "template_file" "k8sop_config" {
 
-  template = local.operator_template_file
+  template = file(var.operator_template_path)
   vars = {
     cluster_name             = var.cluster_name
     sync_repo                = var.sync_repo
