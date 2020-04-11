@@ -1,4 +1,4 @@
-# Terraform Kubernetes Engine ACM Submodule
+# Terraform Kubernetes Engine Config Sync Submodule
 
 This module installs [Config Sync](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync) in a Kubernetes cluster.
 
