@@ -39,6 +39,8 @@ module "gke" {
   // https://cloud.google.com/kubernetes-engine/versioning-and-upgrades
   node_version = var.node_version
 
+  release_channel = var.release_channel
+
   master_authorized_networks = var.master_authorized_networks
 
   subnetwork        = var.subnetwork
