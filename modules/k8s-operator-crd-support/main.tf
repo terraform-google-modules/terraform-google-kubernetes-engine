@@ -21,9 +21,7 @@ locals {
   private_key                = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : var.ssh_auth_key
  
   should_download_manifest   = var.operator_path == null ? true : false
-  ## TODO(stevenlinde) this saves the yaml into the shared lib directory, move somewhere tmp
-  manifest_path              = local.should_download_manifest ? "${path.module}/config-management-operator.yaml" : var.operator_path
-
+  manifest_path              = local.should_download_manifest ? "${path.root}/.terraform/tmp/config-management-operator.yaml" : var.operator_path
 }
 
 
