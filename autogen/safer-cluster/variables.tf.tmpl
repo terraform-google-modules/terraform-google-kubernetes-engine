@@ -68,7 +68,7 @@ variable "subnetwork" {
 variable "kubernetes_version" {
   type        = string
   description = "The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. The module enforces certain minimum versions to ensure that specific features are available. "
-  default     = ""
+  default     = null
 }
 
 variable "node_version" {
