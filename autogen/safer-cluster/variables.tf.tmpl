@@ -68,13 +68,19 @@ variable "subnetwork" {
 variable "kubernetes_version" {
   type        = string
   description = "The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. The module enforces certain minimum versions to ensure that specific features are available. "
-  default     = "latest"
+  default     = ""
 }
 
 variable "node_version" {
   type        = string
   description = "The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation."
   default     = ""
+}
+
+variable "release_channel" {
+  type        = string
+  description = "(Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`."
+  default     = "REGULAR"
 }
 
 variable "master_authorized_networks" {
