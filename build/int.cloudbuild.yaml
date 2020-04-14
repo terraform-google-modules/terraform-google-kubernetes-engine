@@ -124,6 +124,26 @@ steps:
     - verify simple-regional-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-regional-private-local']
+- id: create simple-regional-with-kubeconfig-local
+  waitFor:
+    - prepare
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do create simple-regional-with-kubeconfig-local']
+- id: converge simple-regional-with-kubeconfig-local
+  waitFor:
+    - create simple-regional-with-kubeconfig-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge simple-regional-with-kubeconfig-local']
+- id: verify simple-regional-with-kubeconfig-local
+  waitFor:
+    - converge simple-regional-with-kubeconfig-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify simple-regional-with-kubeconfig-local']
+- id: destroy simple-regional-with-kubeconfig-local
+  waitFor:
+    - verify simple-regional-with-kubeconfig-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-regional-with-kubeconfig-local']
 - id: create simple-regional-with-networking-local
   waitFor:
     - prepare
