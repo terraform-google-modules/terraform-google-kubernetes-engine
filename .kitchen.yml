@@ -99,6 +99,13 @@ suites:
       systems:
         - name: simple_regional_private
           backend: local
+  - name: "simple_regional_with_kubeconfig"
+    driver:
+      root_module_directory: test/fixtures/simple_regional_with_kubeconfig
+    verifier:
+      systems:
+        - name: simple_regional_with_kubeconfig
+          backend: local
   - name: "simple_zonal"
     driver:
       root_module_directory: test/fixtures/simple_zonal
