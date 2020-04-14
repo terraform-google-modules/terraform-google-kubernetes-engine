@@ -214,6 +214,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | bool | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | bool | `"true"` | no |
 | http\_load\_balancing | Enable httpload balancer addon. The addon allows whoever can create Ingress objects to expose an application to a public IP. Network policies or Gatekeeper policies should be used to verify that only authorized applications are exposed. | bool | `"true"` | no |
+| impersonate\_service\_account | An optional service account to impersonate. This cannot be used with credentials_path. If this service account is not specified and credentials_path is absent, the module will use Application Default Credentials. | string | `""` | no |
 | initial\_node\_count | The number of nodes to create in this cluster's default node pool. | number | `"0"` | no |
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The _name_ of the secondary subnet range to use for services | string | n/a | yes |

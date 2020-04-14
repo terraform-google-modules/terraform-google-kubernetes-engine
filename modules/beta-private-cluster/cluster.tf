@@ -375,12 +375,12 @@ resource "null_resource" "wait_for_cluster" {
   count = var.skip_provisioners ? 0 : 1
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
+    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name} ${var.impersonate_service_account}"
   }
 
   provisioner "local-exec" {
     when    = destroy
-    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name}"
+    command = "${path.module}/scripts/wait-for-cluster.sh ${var.project_id} ${var.name} ${var.impersonate_service_account}"
   }
 
   depends_on = [

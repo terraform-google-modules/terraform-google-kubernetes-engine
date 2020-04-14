@@ -318,3 +318,8 @@ variable "pod_security_policy_config" {
     "enabled" = true
   }]
 }
+
+variable "impersonate_service_account" {
+  description = "An optional service account to impersonate. This cannot be used with credentials_path. If this service account is not specified and credentials_path is absent, the module will use Application Default Credentials."
+  default     = ""
+}

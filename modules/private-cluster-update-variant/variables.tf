@@ -114,6 +114,11 @@ variable "maintenance_start_time" {
   default     = "05:00"
 }
 
+variable "impersonate_service_account" {
+  description = "An optional service account to impersonate. This cannot be used with credentials_path. If this service account is not specified and credentials_path is absent, the module will use Application Default Credentials."
+  default     = ""
+}
+
 
 variable "ip_range_pods" {
   type        = string
@@ -326,3 +331,4 @@ variable "master_ipv4_cidr_block" {
   description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
   default     = "10.0.0.0/28"
 }
+
