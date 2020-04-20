@@ -134,6 +134,7 @@ Then perform the following commands on the root folder:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| add\_cluster\_firewall\_rules | Create additional firewall rules | bool | `"true"` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | string | `"null"` | no |
 | basic\_auth\_password | The password to be used with Basic Authentication. | string | `""` | no |
 | basic\_auth\_username | The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration. | string | `""` | no |
@@ -156,7 +157,6 @@ Then perform the following commands on the root folder:
 | enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | bool | `"false"` | no |
 | enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster | bool | `"true"` | no |
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | bool | `"false"` | no |
-| firewall\_enabled | Create additional firewall rules | bool | `"true"` | no |
 | firewall\_inbound\_ports | List of TCP ports for admission/webhook controllers | list(string) | `<list>` | no |
 | firewall\_priority | Priority rule for firewall rules | number | `"1000"` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | bool | `"false"` | no |
@@ -301,7 +301,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 In order to execute this module you must have a Service Account with the
 following project roles:
 - roles/compute.viewer
-- roles/compute.securityAdmin
+- roles/compute.securityAdmin (only required if `add_cluster_firewall_rules` is set to `true`)
 - roles/container.clusterAdmin
 - roles/container.developer
 - roles/iam.serviceAccountAdmin

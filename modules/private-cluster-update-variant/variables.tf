@@ -333,7 +333,7 @@ variable "master_ipv4_cidr_block" {
 }
 
 
-variable "firewall_enabled" {
+variable "add_cluster_firewall_rules" {
   type        = bool
   description = "Create additional firewall rules"
   default     = true

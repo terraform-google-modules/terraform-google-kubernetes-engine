@@ -25,7 +25,7 @@
   a default-deny egress rule
  *****************************************/
 resource "google_compute_firewall" "intra_egress" {
-  count       = var.firewall_enabled ? 1 : 0
+  count       = var.add_cluster_firewall_rules ? 1 : 0
   name        = "gke-${substr(var.name, 0, min(25, length(var.name)))}-intra-cluster-egress"
   description = "Managed by terraform gke module: Allow pods to communicate with each other and the master"
   project     = local.network_project_id
@@ -61,7 +61,7 @@ resource "google_compute_firewall" "intra_egress" {
   https://github.com/kubernetes/kubernetes/issues/79739
  *****************************************/
 resource "google_compute_firewall" "master_webhooks" {
-  count       = var.firewall_enabled ? 1 : 0
+  count       = var.add_cluster_firewall_rules ? 1 : 0
   name        = "gke-${substr(var.name, 0, min(25, length(var.name)))}-webhooks"
   description = "Managed by terraform gke module: Allow master to hit pods for admission controllers/webhooks"
   project     = local.network_project_id
