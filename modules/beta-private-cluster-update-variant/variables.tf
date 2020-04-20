@@ -181,6 +181,24 @@ variable "node_pools_metadata" {
   }
 }
 
+variable "resource_usage_export_dataset_id" {
+  type        = string
+  description = "The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export."
+  default     = ""
+}
+
+variable "enable_network_egress_export" {
+  type        = bool
+  description = "Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic."
+  default     = false
+}
+
+variable "enable_resource_consumption_export" {
+  type        = bool
+  description = "Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export."
+  default     = true
+}
+
 variable "enable_kubernetes_alpha" {
   type        = bool
   description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
@@ -419,12 +437,6 @@ variable "pod_security_policy_config" {
   default = [{
     "enabled" = false
   }]
-}
-
-variable "resource_usage_export_dataset_id" {
-  type        = string
-  description = "The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic."
-  default     = ""
 }
 
 variable "node_metadata" {

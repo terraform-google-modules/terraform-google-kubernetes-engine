@@ -85,16 +85,6 @@ resource "google_container_cluster" "primary" {
       enabled = pod_security_policy_config.value.enabled
     }
   }
-
-  dynamic "resource_usage_export_config" {
-    for_each = var.resource_usage_export_dataset_id != "" ? [var.resource_usage_export_dataset_id] : []
-    content {
-      enable_network_egress_metering = true
-      bigquery_destination {
-        dataset_id = resource_usage_export_config.value
-      }
-    }
-  }
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -194,6 +184,22 @@ resource "google_container_cluster" "primary" {
         content {
           node_metadata = workload_metadata_config.value.node_metadata
         }
+      }
+    }
+  }
+
+  dynamic "resource_usage_export_config" {
+    for_each = var.resource_usage_export_dataset_id != "" ? [{
+      enable_network_egress_metering       = var.enable_network_egress_export
+      enable_resource_consumption_metering = var.enable_resource_consumption_export
+      dataset_id                           = var.resource_usage_export_dataset_id
+    }] : []
+
+    content {
+      enable_network_egress_metering       = resource_usage_export_config.value.enable_network_egress_metering
+      enable_resource_consumption_metering = resource_usage_export_config.value.enable_resource_consumption_metering
+      bigquery_destination {
+        dataset_id = resource_usage_export_config.value.dataset_id
       }
     }
   }

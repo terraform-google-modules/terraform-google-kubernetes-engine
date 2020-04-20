@@ -128,8 +128,10 @@ Then perform the following commands on the root folder:
 | deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | bool | `"false"` | no |
 | description | The description of the cluster | string | `""` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | bool | `"true"` | no |
+| enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | bool | `"false"` | no |
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | bool | `"false"` | no |
 | enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | bool | `"false"` | no |
+| enable\_resource\_consumption\_export | Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. | bool | `"true"` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | bool | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | bool | `"true"` | no |
 | http\_load\_balancing | Enable httpload balancer addon | bool | `"true"` | no |
@@ -161,6 +163,7 @@ Then perform the following commands on the root folder:
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |
 | registry\_project\_id | Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project. | string | `""` | no |
 | remove\_default\_node\_pool | Remove default node pool while setting up the cluster | bool | `"false"` | no |
+| resource\_usage\_export\_dataset\_id | The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export. | string | `""` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created. | string | `""` | no |
 | skip\_provisioners | Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality. | bool | `"false"` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | map(list(string)) | `<map>` | no |

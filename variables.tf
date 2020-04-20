@@ -169,6 +169,24 @@ variable "node_pools_metadata" {
     default-node-pool = {}
   }
 }
+
+variable "resource_usage_export_dataset_id" {
+  type        = string
+  description = "The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export."
+  default     = ""
+}
+
+variable "enable_network_egress_export" {
+  type        = bool
+  description = "Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic."
+  default     = false
+}
+
+variable "enable_resource_consumption_export" {
+  type        = bool
+  description = "Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export."
+  default     = true
+}
 variable "node_pools_tags" {
   type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
