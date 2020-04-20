@@ -68,13 +68,7 @@ variable "subnetwork" {
 variable "kubernetes_version" {
   type        = string
   description = "The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. The module enforces certain minimum versions to ensure that specific features are available. "
-  default     = ""
-}
-
-variable "node_version" {
-  type        = string
-  description = "The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation."
-  default     = ""
+  default     = null
 }
 
 variable "release_channel" {
@@ -276,7 +270,7 @@ variable "resource_usage_export_dataset_id" {
 
 variable "sandbox_enabled" {
   type        = bool
-  description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` and `node_version` = `1.12.7-gke.17` or later to use it)."
+  description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
   default     = false
 }
 
