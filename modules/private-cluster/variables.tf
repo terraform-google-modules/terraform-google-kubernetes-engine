@@ -72,12 +72,6 @@ variable "kubernetes_version" {
   default     = "latest"
 }
 
-variable "node_version" {
-  type        = string
-  description = "The Kubernetes version of the node pools. Defaults kubernetes_version (master) variable and can be overridden for individual node pools by setting the `version` key on them. Must be empyty or set the same as master at cluster creation."
-  default     = ""
-}
-
 variable "master_authorized_networks" {
   type        = list(object({ cidr_block = string, display_name = string }))
   description = "List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically whitelists)."

@@ -30,14 +30,14 @@ module "gke" {
 
   // We need to enforce a minimum Kubernetes Version to ensure
   // that the necessary security features are enabled.
-  kubernetes_version = "latest"
+  kubernetes_version = var.kubernetes_version
 
   // Nodes are created with a default version. The nodepool enables
   // auto_upgrade so that the node versions can be kept up to date with
   // the master upgrades.
   //
   // https://cloud.google.com/kubernetes-engine/versioning-and-upgrades
-  node_version = ""
+  release_channel = var.release_channel
 
   master_authorized_networks = var.master_authorized_networks
 
