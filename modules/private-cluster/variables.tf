@@ -336,7 +336,7 @@ variable "master_ipv4_cidr_block" {
 variable "add_cluster_firewall_rules" {
   type        = bool
   description = "Create additional firewall rules"
-  default     = true
+  default     = false
 }
 
 variable "firewall_priority" {

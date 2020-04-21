@@ -312,7 +312,7 @@ variable "default_max_pods_per_node" {
 variable "add_cluster_firewall_rules" {
   type        = bool
   description = "Create additional firewall rules"
-  default     = true
+  default     = false
 }
 
 variable "firewall_priority" {
