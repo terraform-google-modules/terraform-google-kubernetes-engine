@@ -19,3 +19,5 @@ output "git_creds_public" {
   value       = var.create_ssh_key ? tls_private_key.k8sop_creds.*.public_key_openssh : null
 }
 
+
+

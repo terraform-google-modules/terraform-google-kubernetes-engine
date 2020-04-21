@@ -18,8 +18,8 @@ locals {
   cluster_endpoint           = "https://${var.cluster_endpoint}"
   token                      = data.google_client_config.default.access_token
   cluster_ca_certificate     = data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate
-  private_key                = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : var.ssh_auth_key
- 
+  private_key                = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : file(var.ssh_auth_key)
+  k8sop_creds_secret_key     = var.secret_type == "cookiefile" ? "cookie_file" : var.secret_type 
   should_download_manifest   = var.operator_path == null ? true : false
   manifest_path              = local.should_download_manifest ? "${path.root}/.terraform/tmp/config-management-operator.yaml" : var.operator_path
 }
@@ -73,21 +73,21 @@ module "k8sop_creds_secret" {
   additional_components = ["kubectl"]
 
   create_cmd_entrypoint  = "${path.module}/scripts/kubectl_wrapper.sh"
-  create_cmd_body        = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl create secret generic git-creds -n=config-management-system --from-literal=ssh='${local.private_key}'"
+  create_cmd_body        = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'"
   destroy_cmd_entrypoint = "${path.module}/scripts/kubectl_wrapper.sh"
-  destroy_cmd_body       = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete secret git-creds -n=config-management-system"
+  destroy_cmd_body       = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete secret ${var.operator_credential_name} -n=${var.operator_credential_namespace}"
 }
 
 
 data "template_file" "k8sop_config" {
 
-  template = file(var.operator_template_path)
+  template = file(var.operator_cr_template_path)
   vars = {
     cluster_name             = var.cluster_name
     sync_repo                = var.sync_repo
     sync_branch              = var.sync_branch
     policy_dir               = var.policy_dir
-    secret_type              = var.create_ssh_key ? "ssh" : "none"
+    secret_type              = var.create_ssh_key ? "ssh" : var.secret_type
     enable_policy_controller = var.enable_policy_controller ? "true" : "false"
     install_template_library = var.install_template_library ? "true" : "false"
   }
