@@ -46,6 +46,11 @@ variable "sync_repo" {
   type        = string
 }
 
+variable "secret_type" {
+  description = "git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true"
+  type        = string
+}
+
 variable "sync_branch" {
   description = "ACM repo Git branch"
   type        = string
@@ -59,6 +64,15 @@ variable "policy_dir" {
 
 variable "cluster_endpoint" {
   description = "Kubernetes cluster endpoint."
+  type        = string
+}
+
+variable "operator_credential_name" {
+  description = "Allows calling modules to specify the name of operator credentials to match what is expected."
+  type        = string
+}
+variable "operator_credential_namespace" {
+  description = "Allows calling modules to specify the namespace for the operator credential to match what is expected."
   type        = string
 }
 
@@ -86,7 +100,7 @@ variable "install_template_library" {
   default     = false
 }
 
-variable "operator_template_path" {
+variable "operator_cr_template_path" {
   description = "path to template file to use for the operator"
   type        = string
 }
