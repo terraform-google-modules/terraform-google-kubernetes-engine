@@ -59,8 +59,8 @@ locals {
   // auto upgrade by defaults only for regional cluster as long it has multiple masters versus zonal clusters have only have a single master so upgrades are more dangerous.
   default_auto_upgrade = var.regional ? true : false
 
-  cluster_subnet_cidr       = data.google_compute_subnetwork.gke_subnetwork.ip_cidr_range
-  cluster_alias_ranges_cidr = { for range in toset(data.google_compute_subnetwork.gke_subnetwork.secondary_ip_range) : range.range_name => range.ip_cidr_range }
+  cluster_subnet_cidr       = data.google_compute_subnetwork.gke_subnetwork.*.ip_cidr_range
+  cluster_alias_ranges_cidr = { for range in toset(data.google_compute_subnetwork.gke_subnetwork.*.secondary_ip_range) : range.range_name => range.ip_cidr_range }
 
   cluster_network_policy = var.network_policy ? [{
     enabled  = true
