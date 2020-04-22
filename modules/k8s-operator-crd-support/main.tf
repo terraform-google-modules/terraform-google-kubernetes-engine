@@ -65,7 +65,6 @@ resource "tls_private_key" "k8sop_creds" {
   rsa_bits  = 4096
 }
 
-## TODO(stevenlinde) externalize the name of the secret, ie git-creds
 module "k8sop_creds_secret" {
   source                = "terraform-google-modules/gcloud/google"
   version               = "~> 0.5"
