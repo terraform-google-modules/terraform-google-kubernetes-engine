@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file was automatically generated from a template in ./autogen/main
+{{ autogeneration_note }}
 
 data "google_compute_subnetwork" "gke_subnetwork" {
   provider = google

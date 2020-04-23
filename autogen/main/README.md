@@ -240,6 +240,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 In order to execute this module you must have a Service Account with the
 following project roles:
 - roles/compute.viewer
+- roles/compute.securityAdmin (only required if `add_cluster_firewall_rules` is set to `true`)
 - roles/container.clusterAdmin
 - roles/container.developer
 - roles/iam.serviceAccountAdmin
