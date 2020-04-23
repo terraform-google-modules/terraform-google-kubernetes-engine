@@ -82,6 +82,7 @@ resource "google_container_cluster" "primary" {
 {% endif %}
 
   default_max_pods_per_node = var.default_max_pods_per_node
+
 {% if beta_cluster %}
   enable_binary_authorization = var.enable_binary_authorization
   enable_intranode_visibility = var.enable_intranode_visibility
@@ -149,7 +150,7 @@ resource "google_container_cluster" "primary" {
     }
 
     dns_cache_config {
-      enabled   = var.dns_cache
+      enabled = var.dns_cache
     }
     {% endif %}
   }
@@ -161,16 +162,16 @@ resource "google_container_cluster" "primary" {
 
   maintenance_policy {
   {% if beta_cluster %}
-    dynamic "recurring_window"{
+    dynamic "recurring_window" {
       for_each = local.cluster_maintenance_window_is_recurring
       content {
         start_time = var.maintenance_start_time
-        end_time = var.maintenance_end_time
+        end_time   = var.maintenance_end_time
         recurrence = var.maintenance_recurrence
       }
     }
 
-    dynamic "daily_maintenance_window"{
+    dynamic "daily_maintenance_window" {
       for_each = local.cluster_maintenance_window_is_daily
       content {
         start_time = var.maintenance_start_time
@@ -358,7 +359,7 @@ resource "google_container_node_pool" "pools" {
   {% endif %}
   for_each = local.node_pools
   {% if update_variant %}
-  name     = {for k, v in random_id.name : k => v.hex}[each.key]
+  name     = { for k, v in random_id.name : k => v.hex }[each.key]
   {% else %}
   name     = each.key
   {% endif %}
@@ -402,7 +403,7 @@ resource "google_container_node_pool" "pools" {
 
   {% if beta_cluster %}
   upgrade_settings {
-    max_surge = lookup(each.value, "max_surge", 1)
+    max_surge       = lookup(each.value, "max_surge", 1)
     max_unavailable = lookup(each.value, "max_unavailable", 0)
   }
   {% endif %}
@@ -439,8 +440,8 @@ resource "google_container_node_pool" "pools" {
     }
     {% endif %}
     tags = concat(
-      lookup(local.node_pools_tags, "default_values", [true, true])[0] ? ["gke-${var.name}"] : [],
-      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["gke-${var.name}-${each.value["name"]}"] : [],
+      lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
+      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-${each.value["name"]}"] : [],
       local.node_pools_tags["all"],
       local.node_pools_tags[each.value["name"]],
     )
