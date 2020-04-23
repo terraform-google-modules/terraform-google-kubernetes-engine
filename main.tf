@@ -56,6 +56,9 @@ locals {
   // auto upgrade by defaults only for regional cluster as long it has multiple masters versus zonal clusters have only have a single master so upgrades are more dangerous.
   default_auto_upgrade = var.regional ? true : false
 
+  cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
+  cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
+
   cluster_network_policy = var.network_policy ? [{
     enabled  = true
     provider = var.network_policy_provider
@@ -70,7 +73,8 @@ locals {
   cluster_output_zonal_zones    = local.zone_count > 1 ? slice(var.zones, 1, local.zone_count) : []
   cluster_output_zones          = local.cluster_output_regional_zones
 
-  cluster_endpoint = google_container_cluster.primary.endpoint
+  cluster_endpoint           = google_container_cluster.primary.endpoint
+  cluster_endpoint_for_nodes = "${google_container_cluster.primary.endpoint}/32"
 
   cluster_output_master_auth                        = concat(google_container_cluster.primary.*.master_auth, [])
   cluster_output_master_version                     = google_container_cluster.primary.master_version
@@ -98,6 +102,7 @@ locals {
   cluster_zones    = sort(local.cluster_output_zones)
 
   cluster_name                               = local.cluster_output_name
+  cluster_network_tag                        = "gke-${var.name}"
   cluster_ca_certificate                     = local.cluster_master_auth_map["cluster_ca_certificate"]
   cluster_master_version                     = local.cluster_output_master_version
   cluster_min_master_version                 = local.cluster_output_min_master_version
