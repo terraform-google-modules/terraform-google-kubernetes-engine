@@ -65,6 +65,7 @@ variable "create_ssh_key" {
 variable "secret_type" {
   description = "git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true"
   type        = string
+  default     = "ssh"
 }
 
 variable "ssh_auth_key" {
