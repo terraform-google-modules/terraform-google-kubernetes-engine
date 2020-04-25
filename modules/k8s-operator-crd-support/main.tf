@@ -15,13 +15,13 @@
  */
 
 locals {
-  cluster_endpoint           = "https://${var.cluster_endpoint}"
-  token                      = data.google_client_config.default.access_token
-  cluster_ca_certificate     = data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate
-  private_key                = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : file(var.ssh_auth_key)
-  k8sop_creds_secret_key     = var.secret_type == "cookiefile" ? "cookie_file" : var.secret_type 
-  should_download_manifest   = var.operator_path == null ? true : false
-  manifest_path              = local.should_download_manifest ? "${path.root}/.terraform/tmp/config-management-operator.yaml" : var.operator_path
+  cluster_endpoint         = "https://${var.cluster_endpoint}"
+  token                    = data.google_client_config.default.access_token
+  cluster_ca_certificate   = data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate
+  private_key              = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : file(var.ssh_auth_key)
+  k8sop_creds_secret_key   = var.secret_type == "cookiefile" ? "cookie_file" : var.secret_type
+  should_download_manifest = var.operator_path == null ? true : false
+  manifest_path            = local.should_download_manifest ? "${path.root}/.terraform/tmp/config-management-operator.yaml" : var.operator_path
 }
 
 
@@ -38,7 +38,7 @@ module "k8sop_manifest" {
   source  = "terraform-google-modules/gcloud/google"
   version = "~> 0.5"
   enabled = local.should_download_manifest
-  
+
   create_cmd_entrypoint  = "gsutil"
   create_cmd_body        = "cp ${var.operator_latest_manifest_url} ${local.manifest_path}"
   destroy_cmd_entrypoint = "rm"
@@ -93,15 +93,15 @@ data "template_file" "k8sop_config" {
 }
 
 module "k8sop_config" {
-   source                = "terraform-google-modules/gcloud/google"
-   version               = "~> 0.5"
-   module_depends_on     = [module.k8s_operator.wait, module.k8sop_creds_secret.wait]
-   additional_components = ["kubectl"]
+  source                = "terraform-google-modules/gcloud/google"
+  version               = "~> 0.5"
+  module_depends_on     = [module.k8s_operator.wait, module.k8sop_creds_secret.wait]
+  additional_components = ["kubectl"]
 
-   create_cmd_entrypoint  = "echo"
-   create_cmd_body        = "'${data.template_file.k8sop_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f -"
-   destroy_cmd_entrypoint = "echo"
-   destroy_cmd_body       = "'${data.template_file.k8sop_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f -"
+  create_cmd_entrypoint  = "echo"
+  create_cmd_body        = "'${data.template_file.k8sop_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f -"
+  destroy_cmd_entrypoint = "echo"
+  destroy_cmd_body       = "'${data.template_file.k8sop_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f -"
 }
 
 
