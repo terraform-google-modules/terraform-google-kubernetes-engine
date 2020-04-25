@@ -29,7 +29,6 @@ variable "location" {
   type        = string
 }
 
-## TODO(stevenlinde) would prefer local_manifest_path, if changeable a this point 
 variable "operator_path" {
   description = "Path to the operator yaml config. If unset, will download from `var.operator_latest_manifest_url`."
   type        = string
