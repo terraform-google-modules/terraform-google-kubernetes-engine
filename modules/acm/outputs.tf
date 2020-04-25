@@ -16,6 +16,6 @@
 
 output "git_creds_public" {
   description = "Public key of SSH keypair to allow the Anthos Config Management Operator to authenticate to your Git repository."
-  value       = module.configsync_operator.git_creds_public
+  value       = module.acm_operator.git_creds_public
 }
 
