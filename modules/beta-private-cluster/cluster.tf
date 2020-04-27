@@ -142,7 +142,7 @@ resource "google_container_cluster" "primary" {
       for_each = local.cluster_gce_pd_csi_config
 
       content {
-        enabled = var.gce_persistent_disk_csi_driver_config.value.enabled
+        enabled = gce_persistent_disk_csi_driver_config.value.enabled
       }
     }
   }
