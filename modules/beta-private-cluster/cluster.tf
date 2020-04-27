@@ -138,8 +138,12 @@ resource "google_container_cluster" "primary" {
       enabled = var.dns_cache
     }
 
-    gce_persistent_disk_csi_driver_config {
-      enabled = var.gce_pd_csi_driver
+    dynamic "gce_persistent_disk_csi_driver_config" {
+      for_each = local.cluster_gce_pd_csi_config
+
+      content {
+        enabled = var.gce_persistent_disk_csi_driver_config.value.enabled
+      }
     }
   }
 

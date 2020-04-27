@@ -81,6 +81,8 @@ locals {
 
   cluster_cloudrun_config = var.cloudrun ? [{ disabled = false }] : []
 
+  cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : []
+
   cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
     node_metadata = var.node_metadata
   }]
@@ -148,7 +150,6 @@ locals {
   cluster_istio_enabled                    = ! local.cluster_output_istio_disabled
   cluster_cloudrun_enabled                 = var.cloudrun
   cluster_dns_cache_enabled                = var.dns_cache
-  cluster_gce_pd_csi_driver_enabled        = var.gce_pd_csi_driver
   cluster_pod_security_policy_enabled      = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled
   cluster_vertical_pod_autoscaling_enabled = local.cluster_output_vertical_pod_autoscaling_enabled
