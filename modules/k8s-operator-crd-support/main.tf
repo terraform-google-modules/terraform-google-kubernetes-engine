@@ -35,9 +35,10 @@ data "google_client_config" "default" {
 }
 
 module "k8sop_manifest" {
-  source  = "terraform-google-modules/gcloud/google"
-  version = "~> 0.5"
-  enabled = local.should_download_manifest
+  source        = "terraform-google-modules/gcloud/google"
+  version       = "~> 0.5"
+  enabled       = local.should_download_manifest
+  skip_download = var.skip_gcloud_download
 
   create_cmd_entrypoint  = "gsutil"
   create_cmd_body        = "cp ${var.operator_latest_manifest_url} ${local.manifest_path}"
@@ -51,6 +52,7 @@ module "k8s_operator" {
   version               = "~> 0.5"
   module_depends_on     = [module.k8sop_manifest.wait, data.google_client_config.default.project, data.google_container_cluster.primary.name]
   additional_components = ["kubectl"]
+  skip_download         = var.skip_gcloud_download
 
   create_cmd_entrypoint  = "${path.module}/scripts/kubectl_wrapper.sh"
   create_cmd_body        = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f ${local.manifest_path}"
@@ -70,6 +72,7 @@ module "k8sop_creds_secret" {
   version               = "~> 0.5"
   module_depends_on     = [module.k8s_operator.wait]
   additional_components = ["kubectl"]
+  skip_download         = var.skip_gcloud_download
 
   create_cmd_entrypoint  = "${path.module}/scripts/kubectl_wrapper.sh"
   create_cmd_body        = "${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'"
@@ -97,6 +100,7 @@ module "k8sop_config" {
   version               = "~> 0.5"
   module_depends_on     = [module.k8s_operator.wait, module.k8sop_creds_secret.wait]
   additional_components = ["kubectl"]
+  skip_download         = var.skip_gcloud_download
 
   create_cmd_entrypoint  = "echo"
   create_cmd_body        = "'${data.template_file.k8sop_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl apply -f -"

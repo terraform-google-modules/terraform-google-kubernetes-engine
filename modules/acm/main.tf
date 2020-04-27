@@ -31,6 +31,7 @@ module "acm_operator" {
   ssh_auth_key             = var.ssh_auth_key
   enable_policy_controller = var.enable_policy_controller
   install_template_library = var.install_template_library
+  skip_gcloud_download     = var.skip_gcloud_download
 
   operator_latest_manifest_url  = "gs://config-management-release/released/latest/config-management-operator.yaml"
   operator_cr_template_path     = "${path.module}/templates/acm-config.yml.tpl"

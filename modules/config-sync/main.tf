@@ -18,17 +18,18 @@ module "configsync_operator" {
 
   source = "../k8s-operator-crd-support"
 
-  cluster_name     = var.cluster_name
-  project_id       = var.project_id
-  location         = var.location
-  operator_path    = var.operator_path
-  sync_repo        = var.sync_repo
-  sync_branch      = var.sync_branch
-  policy_dir       = var.policy_dir
-  cluster_endpoint = var.cluster_endpoint
-  create_ssh_key   = var.create_ssh_key
-  secret_type      = var.secret_type
-  ssh_auth_key     = var.ssh_auth_key
+  cluster_name         = var.cluster_name
+  project_id           = var.project_id
+  location             = var.location
+  operator_path        = var.operator_path
+  sync_repo            = var.sync_repo
+  sync_branch          = var.sync_branch
+  policy_dir           = var.policy_dir
+  cluster_endpoint     = var.cluster_endpoint
+  create_ssh_key       = var.create_ssh_key
+  secret_type          = var.secret_type
+  ssh_auth_key         = var.ssh_auth_key
+  skip_gcloud_download = var.skip_gcloud_download
 
   operator_latest_manifest_url  = "gs://config-management-release/released/latest/config-sync-operator.yaml"
   operator_cr_template_path     = "${path.module}/templates/config-sync-config.yml.tpl"

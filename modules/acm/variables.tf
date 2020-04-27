@@ -85,3 +85,9 @@ variable "install_template_library" {
   type        = bool
   default     = true
 }
+
+variable "skip_gcloud_download" {
+  description = "Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module)"
+  type        = bool
+  default     = false
+}
