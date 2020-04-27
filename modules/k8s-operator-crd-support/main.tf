@@ -103,6 +103,3 @@ module "k8sop_config" {
   destroy_cmd_entrypoint = "echo"
   destroy_cmd_body       = "'${data.template_file.k8sop_config.rendered}' | ${path.module}/scripts/kubectl_wrapper.sh ${local.cluster_endpoint} ${local.token} ${local.cluster_ca_certificate} kubectl delete -f -"
 }
-
-
-
