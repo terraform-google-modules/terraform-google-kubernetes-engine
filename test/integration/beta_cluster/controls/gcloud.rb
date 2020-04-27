@@ -60,7 +60,7 @@ control "gcloud" do
           "cloudRunConfig" => {},
           "dnsCacheConfig" => {
             "enabled" => true,
-          }
+          },
           "gcePersistentDiskCsiDriverConfig" => {
             "enabled" => true,
           }
