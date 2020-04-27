@@ -54,6 +54,7 @@ By default, this module will attempt to download the ACM operator from Google di
 | policy\_dir | Subfolder containing configs in ACM Git repo | string | n/a | yes |
 | project\_id | The project in which the resource belongs. | string | n/a | yes |
 | secret\_type | git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true | string | `"ssh"` | no |
+| skip\_gcloud\_download | Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module) | bool | `"false"` | no |
 | ssh\_auth\_key | Key for Git authentication. Overrides 'create_ssh_key' variable. Can be set using 'file(path/to/file)'-function. | string | `"null"` | no |
 | sync\_branch | ACM repo Git branch | string | `"master"` | no |
 | sync\_repo | ACM Git repo address | string | n/a | yes |
