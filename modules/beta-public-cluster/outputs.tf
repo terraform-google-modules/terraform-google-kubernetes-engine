@@ -134,6 +134,11 @@ output "dns_cache_enabled" {
   value       = local.cluster_dns_cache_enabled
 }
 
+output "cluster_gce_pd_csi_driver_enabled" {
+  description = "Whether GCE Persistent Disk CSI Driver enabled"
+  value       = local.cluster_gce_pd_csi_driver_enabled
+}
+
 output "pod_security_policy_enabled" {
   description = "Whether pod security policy is enabled"
   value       = local.cluster_pod_security_policy_enabled

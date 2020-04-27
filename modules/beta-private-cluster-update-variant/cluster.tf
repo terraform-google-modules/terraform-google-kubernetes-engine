@@ -137,6 +137,10 @@ resource "google_container_cluster" "primary" {
     dns_cache_config {
       enabled = var.dns_cache
     }
+
+    gce_persistent_disk_csi_driver_config {
+      enabled = var.gce_pd_csi_driver
+    }
   }
 
   ip_allocation_policy {
