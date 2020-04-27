@@ -61,6 +61,9 @@ control "gcloud" do
           "dnsCacheConfig" => {
             "enabled" => true,
           }
+          "gcePersistentDiskCsiDriverConfig" => {
+            "enabled" => true,
+          }
         })
       end
 
