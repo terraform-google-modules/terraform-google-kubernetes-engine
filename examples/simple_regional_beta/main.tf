@@ -19,7 +19,7 @@ locals {
 }
 
 provider "google-beta" {
-  version = "~> 3.16.0"
+  version = "~> 3.19.0"
   region  = var.region
 }
 
@@ -39,6 +39,7 @@ module "gke" {
   istio                       = var.istio
   cloudrun                    = var.cloudrun
   dns_cache                   = var.dns_cache
+  gce_pd_csi_driver           = var.gce_pd_csi_driver
   node_metadata               = var.node_metadata
   sandbox_enabled             = var.sandbox_enabled
   remove_default_node_pool    = var.remove_default_node_pool

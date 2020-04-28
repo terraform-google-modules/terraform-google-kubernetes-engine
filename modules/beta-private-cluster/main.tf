@@ -81,6 +81,8 @@ locals {
 
   cluster_cloudrun_config = var.cloudrun ? [{ disabled = false }] : []
 
+  cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
+
   cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
     node_metadata = var.node_metadata
   }]

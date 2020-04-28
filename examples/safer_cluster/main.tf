@@ -34,7 +34,7 @@ provider "google" {
 }
 
 provider "google-beta" {
-  version = "~> 3.16.0"
+  version = "~> 3.19.0"
 }
 
 module "gke" {
