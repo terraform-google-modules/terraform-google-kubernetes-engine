@@ -161,6 +161,7 @@ Then perform the following commands on the root folder:
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | bool | `"false"` | no |
 | firewall\_inbound\_ports | List of TCP ports for admission/webhook controllers | list(string) | `<list>` | no |
 | firewall\_priority | Priority rule for firewall rules | number | `"1000"` | no |
+| gce\_pd\_csi\_driver | (Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. | bool | `"false"` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | bool | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | bool | `"true"` | no |
 | http\_load\_balancing | Enable httpload balancer addon | bool | `"true"` | no |

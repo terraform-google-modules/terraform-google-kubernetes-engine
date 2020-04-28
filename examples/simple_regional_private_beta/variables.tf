@@ -61,3 +61,9 @@ variable "dns_cache" {
   description = "Boolean to enable / disable NodeLocal DNSCache "
   default     = false
 }
+
+variable "gce_pd_csi_driver" {
+  type        = bool
+  description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
+  default     = false
+}
