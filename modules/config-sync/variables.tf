@@ -63,27 +63,14 @@ variable "create_ssh_key" {
 }
 
 variable "secret_type" {
-  description = "git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true"
+  description = "credential secret type, passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true"
   type        = string
-  default     = "ssh"
 }
 
 variable "ssh_auth_key" {
   description = "Key for Git authentication. Overrides 'create_ssh_key' variable. Can be set using 'file(path/to/file)'-function."
   type        = string
   default     = null
-}
-
-variable "enable_policy_controller" {
-  description = "Whether to enable the ACM Policy Controller on the cluster"
-  type        = bool
-  default     = true
-}
-
-variable "install_template_library" {
-  description = "Whether to install the default Policy Controller template library"
-  type        = bool
-  default     = true
 }
 
 variable "skip_gcloud_download" {

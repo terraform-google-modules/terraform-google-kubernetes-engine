@@ -30,13 +30,23 @@ variable "location" {
 }
 
 variable "operator_path" {
-  description = "Path to the operator yaml config. If unset, will download from GCS releases."
+  description = "Path to the operator yaml config. If unset, will download from `var.operator_latest_manifest_url`."
   type        = string
   default     = null
 }
 
+variable "operator_latest_manifest_url" {
+  description = "Url to the latest downloadable manifest for the operator. To be supplied by operator module providers, not end users."
+  type        = string
+}
+
 variable "sync_repo" {
   description = "ACM Git repo address"
+  type        = string
+}
+
+variable "secret_type" {
+  description = "git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true"
   type        = string
 }
 
@@ -56,16 +66,19 @@ variable "cluster_endpoint" {
   type        = string
 }
 
+variable "operator_credential_name" {
+  description = "Allows calling modules to specify the name of operator credentials to match what is expected."
+  type        = string
+}
+variable "operator_credential_namespace" {
+  description = "Allows calling modules to specify the namespace for the operator credential to match what is expected."
+  type        = string
+}
+
 variable "create_ssh_key" {
   description = "Controls whether a key will be generated for Git authentication"
   type        = bool
   default     = true
-}
-
-variable "secret_type" {
-  description = "git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true"
-  type        = string
-  default     = "ssh"
 }
 
 variable "ssh_auth_key" {
@@ -77,13 +90,18 @@ variable "ssh_auth_key" {
 variable "enable_policy_controller" {
   description = "Whether to enable the ACM Policy Controller on the cluster"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "install_template_library" {
   description = "Whether to install the default Policy Controller template library"
   type        = bool
-  default     = true
+  default     = false
+}
+
+variable "operator_cr_template_path" {
+  description = "path to template file to use for the operator"
+  type        = string
 }
 
 variable "skip_gcloud_download" {
@@ -91,3 +109,4 @@ variable "skip_gcloud_download" {
   type        = bool
   default     = false
 }
+
