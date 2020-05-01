@@ -48,9 +48,11 @@ resource "google_compute_firewall" "intra_egress" {
   allow { protocol = "esp" }
   allow { protocol = "ah" }
 
+  {% if not private_cluster %}
   depends_on = [
     google_container_cluster.primary,
   ]
+  {% endif %}
 }
 
 
@@ -77,8 +79,10 @@ resource "google_compute_firewall" "master_webhooks" {
     ports    = var.firewall_inbound_ports
   }
 
+  {% if not private_cluster %}
   depends_on = [
     google_container_cluster.primary,
   ]
+  {% endif %}
 
 }
