@@ -194,6 +194,10 @@ resource "google_container_cluster" "primary" {
           node_metadata = workload_metadata_config.value.node_metadata
         }
       }
+
+      dynamic "shielded_instance_config" {
+
+      }
     }
   }
 
@@ -450,6 +454,11 @@ resource "google_container_node_pool" "pools" {
       content {
         sandbox_type = sandbox_config.value
       }
+    }
+
+    shielded_instance_config {
+      enable_secure_boot =  lookup(each.value, "enable_secure_boot", false)
+      enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
     }
   }
 
