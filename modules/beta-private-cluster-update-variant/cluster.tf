@@ -194,10 +194,6 @@ resource "google_container_cluster" "primary" {
           node_metadata = workload_metadata_config.value.node_metadata
         }
       }
-
-      dynamic "shielded_instance_config" {
-
-      }
     }
   }
 
