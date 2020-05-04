@@ -166,7 +166,7 @@ output "release_channel" {
 
 output "identity_namespace" {
   description = "Workload Identity namespace"
-  value       = var.identity_namespace
+  value       = length(local.cluster_workload_identity_config) > 0 ? local.cluster_workload_identity_config[0].identity_namespace : null
   depends_on = [
     google_container_cluster.primary
   ]

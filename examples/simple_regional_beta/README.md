@@ -36,6 +36,7 @@ This example illustrates how to create a simple cluster with beta features.
 | ca\_certificate |  |
 | client\_token |  |
 | cluster\_name | Cluster name |
+| identity\_namespace |  |
 | ip\_range\_pods | The secondary IP range used for pods |
 | ip\_range\_services | The secondary IP range used for services |
 | kubernetes\_endpoint |  |
