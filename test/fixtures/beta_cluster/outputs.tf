@@ -82,3 +82,7 @@ output "service_account" {
 output "database_encryption_key_name" {
   value = google_kms_crypto_key.db.self_link
 }
+
+output "identity_namespace" {
+  value = module.this.identity_namespace
+}

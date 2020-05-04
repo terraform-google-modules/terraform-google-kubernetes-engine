@@ -91,6 +91,13 @@ control "gcloud" do
           "keyName" => attribute('database_encryption_key_name'),
         })
       end
+
+      it "has the expected workload identity config" do
+        expect(data['workloadIdentityConfig']).to eq({
+          "identityNamespace" => attribute('identity_namespace'),
+          "workloadPool" => attribute('identity_namespace'),
+        })
+      end
     end
 
     describe "default node pool" do
