@@ -205,7 +205,7 @@ variable "monitoring_service" {
 variable "grant_registry_access" {
   type        = bool
   description = "Grants created cluster-specific service account storage.objectViewer role."
-  default     = false
+  default     = true
 }
 
 variable "registry_project_id" {
