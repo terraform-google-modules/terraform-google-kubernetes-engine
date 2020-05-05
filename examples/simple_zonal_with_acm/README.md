@@ -29,8 +29,18 @@ It incorporates the standard cluster module and the [ACM install module](../../m
 | acm\_git\_creds\_public | Public key of SSH keypair to allow the Anthos Operator to authenticate to your Git repository. |
 | ca\_certificate |  |
 | client\_token |  |
+| cluster\_name | Cluster name |
+| ip\_range\_pods | The secondary IP range used for pods |
+| ip\_range\_services | The secondary IP range used for services |
 | kubernetes\_endpoint |  |
+| location |  |
+| master\_kubernetes\_version | The master Kubernetes version |
+| network |  |
+| project\_id |  |
+| region |  |
 | service\_account | The default service account used for running nodes. |
+| subnetwork |  |
+| zones | List of zones in which the cluster resides |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
