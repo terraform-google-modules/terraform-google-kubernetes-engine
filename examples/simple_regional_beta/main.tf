@@ -40,7 +40,6 @@ module "gke" {
   cloudrun                    = var.cloudrun
   dns_cache                   = var.dns_cache
   gce_pd_csi_driver           = var.gce_pd_csi_driver
-  node_metadata               = var.node_metadata
   sandbox_enabled             = var.sandbox_enabled
   remove_default_node_pool    = var.remove_default_node_pool
   node_pools                  = var.node_pools
