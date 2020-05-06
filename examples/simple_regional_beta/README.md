@@ -18,7 +18,6 @@ This example illustrates how to create a simple cluster with beta features.
 | ip\_range\_services | The secondary ip range to use for services | string | n/a | yes |
 | istio | Boolean to enable / disable Istio | string | `"true"` | no |
 | network | The VPC network to host the cluster in | string | n/a | yes |
-| node\_metadata | Specifies how node metadata is exposed to the workload running on the node | string | `"SECURE"` | no |
 | node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
 | pod\_security\_policy\_config | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | list | `<list>` | no |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |

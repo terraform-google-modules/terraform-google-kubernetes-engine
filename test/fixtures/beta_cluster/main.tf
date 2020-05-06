@@ -63,8 +63,6 @@ module "this" {
   pod_security_policy_config = [{
     enabled = true
   }]
-
-  node_metadata = "EXPOSE"
 }
 
 data "google_client_config" "default" {
