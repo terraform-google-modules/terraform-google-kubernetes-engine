@@ -74,8 +74,9 @@ control "gcloud" do
       end
 
       it "has the expected nodeMetadata conseal config" do
-        expect(data['nodeConfig']['workloadMetadataConfig']).to include({
-          "nodeMetadata" => 'EXPOSE',
+        expect(data['nodeConfig']['workloadMetadataConfig']).to eq({
+          "mode" => "GKE_METADATA",
+          "nodeMetadata" => 'GKE_METADATA_SERVER',
         })
       end
 
@@ -206,6 +207,19 @@ control "gcloud" do
           including(
             "management" => including(
               "autoRepair" => true,
+            ),
+          )
+        )
+      end
+
+      it "has the expected node metadata for workload identity" do
+        expect(node_pools).to include(
+          including(
+            "config" => including(
+              "workloadMetadataConfig" => eq(
+                "mode" => "GKE_METADATA",
+                "nodeMetadata" => 'GKE_METADATA_SERVER',
+              ),
             ),
           )
         )

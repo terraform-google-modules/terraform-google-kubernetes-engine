@@ -27,7 +27,6 @@ module "example" {
   compute_engine_service_account = var.compute_engine_service_accounts[0]
   istio                          = false
   cloudrun                       = false
-  node_metadata                  = "UNSPECIFIED"
   sandbox_enabled                = true
   remove_default_node_pool       = true
 
