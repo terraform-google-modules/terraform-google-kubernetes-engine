@@ -5,8 +5,7 @@ release.
 
 ## Provider Version
 
-- Support for Google provider versions older than v3.16 has been removed due to the introduction of GKE metering block.
-- Support for Google-Beta provider versions older than v3.19 has been removed due to the introduction of GCE PD CSI Driver features.
+- Support for Google provider versions older than v3.19 has been removed due to the introduction of GKE metering block support and CE PD CSI Driver features.
 
 ## Beta Clusters
 
