@@ -11,10 +11,11 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### ⚠ BREAKING CHANGES
 
+See the [upgrade guide](./docs/upgrading_to_v9.0.md) for details.
+
 * Beta clusters have changed the default to use the GKE_METADATA_SERVER, to use the old option set `node_metadata = "SECURE"`.
 * Minimum provider change increased to 3.19.
 * The ACM module has been refactored and resources will be recreated. This will show up in Terraform plans but is a safe no-op for Kubernetes.
-* Minimum Google provider version increased to 3.16.
 * For the safer cluster module, you must now specify `release_channel` instead of `kubernetes_version`.
 
 ### Features
