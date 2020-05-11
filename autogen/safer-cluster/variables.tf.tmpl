@@ -336,3 +336,9 @@ variable "pod_security_policy_config" {
     "enabled" = true
   }]
 }
+
+variable "gce_pd_csi_driver" {
+  type        = bool
+  description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
+  default     = true
+}
