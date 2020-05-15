@@ -27,12 +27,12 @@ output "kubeconfig_raw" {
 output "cluster_ca_certificate" {
   sensitive   = true
   description = "The cluster_ca_certificate value for use with the kubernetes provider."
-  value       = base64decode(data.google_container_cluster.gke_cluster.master_auth[0].cluster_ca_certificate)
+  value       = base64decode(local.cluster_ca_certificate)
 }
 
 output "host" {
   description = "The host value for use with the kubernetes provider."
-  value       = "https://${data.google_container_cluster.gke_cluster.endpoint}"
+  value       = local.host
 }
 
 output "token" {
