@@ -67,3 +67,30 @@ module "gke-project-2" {
     "storage-api.googleapis.com",
   ]
 }
+
+# apis as documented https://cloud.google.com/service-mesh/docs/gke-install-new-cluster#setting_up_your_project
+module "gke-project-asm" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 3.0"
+
+  name              = "ci-gke-asm"
+  random_project_id = true
+  org_id            = var.org_id
+  folder_id         = var.folder_id
+  billing_account   = var.billing_account
+
+  activate_apis = [
+    "container.googleapis.com",
+    "compute.googleapis.com",
+    "monitoring.googleapis.com",
+    "logging.googleapis.com",
+    "meshca.googleapis.com",
+    "meshtelemetry.googleapis.com",
+    "meshconfig.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "anthos.googleapis.com",
+    "gkeconnect.googleapis.com",
+    "gkehub.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+  ]
+}
