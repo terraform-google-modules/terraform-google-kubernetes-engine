@@ -69,7 +69,8 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  default_max_pods_per_node   = var.default_max_pods_per_node
+  default_max_pods_per_node = var.default_max_pods_per_node
+
   enable_binary_authorization = var.enable_binary_authorization
   enable_intranode_visibility = var.enable_intranode_visibility
   enable_shielded_nodes       = var.enable_shielded_nodes
@@ -83,16 +84,6 @@ resource "google_container_cluster" "primary" {
     for_each = var.pod_security_policy_config
     content {
       enabled = pod_security_policy_config.value.enabled
-    }
-  }
-
-  dynamic "resource_usage_export_config" {
-    for_each = var.resource_usage_export_dataset_id != "" ? [var.resource_usage_export_dataset_id] : []
-    content {
-      enable_network_egress_metering = true
-      bigquery_destination {
-        dataset_id = resource_usage_export_config.value
-      }
     }
   }
   dynamic "master_authorized_networks_config" {
@@ -146,6 +137,14 @@ resource "google_container_cluster" "primary" {
     dns_cache_config {
       enabled = var.dns_cache
     }
+
+    dynamic "gce_persistent_disk_csi_driver_config" {
+      for_each = local.cluster_gce_pd_csi_config
+
+      content {
+        enabled = gce_persistent_disk_csi_driver_config.value.enabled
+      }
+    }
   }
 
   ip_allocation_policy {
@@ -194,6 +193,22 @@ resource "google_container_cluster" "primary" {
         content {
           node_metadata = workload_metadata_config.value.node_metadata
         }
+      }
+    }
+  }
+
+  dynamic "resource_usage_export_config" {
+    for_each = var.resource_usage_export_dataset_id != "" ? [{
+      enable_network_egress_metering       = var.enable_network_egress_export
+      enable_resource_consumption_metering = var.enable_resource_consumption_export
+      dataset_id                           = var.resource_usage_export_dataset_id
+    }] : []
+
+    content {
+      enable_network_egress_metering       = resource_usage_export_config.value.enable_network_egress_metering
+      enable_resource_consumption_metering = resource_usage_export_config.value.enable_resource_consumption_metering
+      bigquery_destination {
+        dataset_id = resource_usage_export_config.value.dataset_id
       }
     }
   }
@@ -304,8 +319,8 @@ resource "google_container_node_pool" "pools" {
       }
     }
     tags = concat(
-      lookup(local.node_pools_tags, "default_values", [true, true])[0] ? ["gke-${var.name}"] : [],
-      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["gke-${var.name}-${each.value["name"]}"] : [],
+      lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
+      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-${each.value["name"]}"] : [],
       local.node_pools_tags["all"],
       local.node_pools_tags[each.value["name"]],
     )
@@ -350,6 +365,13 @@ resource "google_container_node_pool" "pools" {
       content {
         sandbox_type = sandbox_config.value
       }
+    }
+
+    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
+
+    shielded_instance_config {
+      enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
+      enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
     }
   }
 

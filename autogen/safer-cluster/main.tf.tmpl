@@ -95,7 +95,7 @@ module "gke" {
   create_service_account = var.compute_engine_service_account == "" ? true : false
   service_account        = var.compute_engine_service_account
   registry_project_id    = var.registry_project_id
-  grant_registry_access  = true
+  grant_registry_access  = var.grant_registry_access
 
   // Basic Auth disabled
   basic_auth_username = ""
@@ -154,4 +154,6 @@ module "gke" {
   enable_shielded_nodes = var.enable_shielded_nodes
 
   skip_provisioners = var.skip_provisioners
+
+  gce_pd_csi_driver = var.gce_pd_csi_driver
 }

@@ -51,6 +51,7 @@ resource "google_container_cluster" "primary" {
 
 
   default_max_pods_per_node = var.default_max_pods_per_node
+
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -114,6 +115,22 @@ resource "google_container_cluster" "primary" {
 
     node_config {
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
+    }
+  }
+
+  dynamic "resource_usage_export_config" {
+    for_each = var.resource_usage_export_dataset_id != "" ? [{
+      enable_network_egress_metering       = var.enable_network_egress_export
+      enable_resource_consumption_metering = var.enable_resource_consumption_export
+      dataset_id                           = var.resource_usage_export_dataset_id
+    }] : []
+
+    content {
+      enable_network_egress_metering       = resource_usage_export_config.value.enable_network_egress_metering
+      enable_resource_consumption_metering = resource_usage_export_config.value.enable_resource_consumption_metering
+      bigquery_destination {
+        dataset_id = resource_usage_export_config.value.dataset_id
+      }
     }
   }
 
@@ -195,8 +212,8 @@ resource "google_container_node_pool" "pools" {
       },
     )
     tags = concat(
-      lookup(local.node_pools_tags, "default_values", [true, true])[0] ? ["gke-${var.name}"] : [],
-      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["gke-${var.name}-${each.value["name"]}"] : [],
+      lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
+      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-${each.value["name"]}"] : [],
       local.node_pools_tags["all"],
       local.node_pools_tags[each.value["name"]],
     )
@@ -226,6 +243,11 @@ resource "google_container_node_pool" "pools" {
         count = guest_accelerator["count"]
       }
     ]
+
+    shielded_instance_config {
+      enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
+      enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
+    }
   }
 
   lifecycle {

@@ -205,7 +205,7 @@ variable "monitoring_service" {
 variable "grant_registry_access" {
   type        = bool
   description = "Grants created cluster-specific service account storage.objectViewer role."
-  default     = false
+  default     = true
 }
 
 variable "registry_project_id" {
@@ -268,6 +268,18 @@ variable "resource_usage_export_dataset_id" {
   default     = ""
 }
 
+variable "enable_network_egress_export" {
+  type        = bool
+  description = "Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic."
+  default     = false
+}
+
+variable "enable_resource_consumption_export" {
+  type        = bool
+  description = "Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export."
+  default     = true
+}
+
 variable "sandbox_enabled" {
   type        = bool
   description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
@@ -323,4 +335,10 @@ variable "pod_security_policy_config" {
   default = [{
     "enabled" = true
   }]
+}
+
+variable "gce_pd_csi_driver" {
+  type        = bool
+  description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
+  default     = true
 }

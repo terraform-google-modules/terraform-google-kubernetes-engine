@@ -62,6 +62,12 @@ variable "create_ssh_key" {
   default     = true
 }
 
+variable "secret_type" {
+  description = "git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true"
+  type        = string
+  default     = "ssh"
+}
+
 variable "ssh_auth_key" {
   description = "Key for Git authentication. Overrides 'create_ssh_key' variable. Can be set using 'file(path/to/file)'-function."
   type        = string
@@ -78,4 +84,10 @@ variable "install_template_library" {
   description = "Whether to install the default Policy Controller template library"
   type        = bool
   default     = true
+}
+
+variable "skip_gcloud_download" {
+  description = "Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module)"
+  type        = bool
+  default     = false
 }

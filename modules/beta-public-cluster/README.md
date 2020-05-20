@@ -116,6 +116,7 @@ Then perform the following commands on the root folder:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| add\_cluster\_firewall\_rules | Create additional firewall rules | bool | `"false"` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | string | `"null"` | no |
 | basic\_auth\_password | The password to be used with Basic Authentication. | string | `""` | no |
 | basic\_auth\_username | The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration. | string | `""` | no |
@@ -133,8 +134,13 @@ Then perform the following commands on the root folder:
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | string | `"false"` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | bool | `"false"` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | bool | `"false"` | no |
+| enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | bool | `"false"` | no |
+| enable\_resource\_consumption\_export | Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. | bool | `"true"` | no |
 | enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster | bool | `"true"` | no |
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | bool | `"false"` | no |
+| firewall\_inbound\_ports | List of TCP ports for admission/webhook controllers | list(string) | `<list>` | no |
+| firewall\_priority | Priority rule for firewall rules | number | `"1000"` | no |
+| gce\_pd\_csi\_driver | (Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. | bool | `"false"` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | bool | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | bool | `"true"` | no |
 | http\_load\_balancing | Enable httpload balancer addon | bool | `"true"` | no |
@@ -159,7 +165,7 @@ Then perform the following commands on the root folder:
 | network\_policy | Enable network policy addon | bool | `"true"` | no |
 | network\_policy\_provider | The network policy provider. | string | `"CALICO"` | no |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
-| node\_metadata | Specifies how node metadata is exposed to the workload running on the node | string | `"SECURE"` | no |
+| node\_metadata | Specifies how node metadata is exposed to the workload running on the node | string | `"GKE_METADATA_SERVER"` | no |
 | node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | map(map(string)) | `<map>` | no |
 | node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map(map(string)) | `<map>` | no |
@@ -174,7 +180,7 @@ Then perform the following commands on the root folder:
 | registry\_project\_id | Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project. | string | `""` | no |
 | release\_channel | (Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`. | string | `"null"` | no |
 | remove\_default\_node\_pool | Remove default node pool while setting up the cluster | bool | `"false"` | no |
-| resource\_usage\_export\_dataset\_id | The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | string | `""` | no |
+| resource\_usage\_export\_dataset\_id | The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export. | string | `""` | no |
 | sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it). | bool | `"false"` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created. | string | `""` | no |
 | skip\_provisioners | Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality. | bool | `"false"` | no |
@@ -223,6 +229,8 @@ The node_pools variable takes the following parameters:
 | --- | --- | --- | --- |
 | accelerator_count | The number of the guest accelerator cards exposed to this instance | 0 | Optional |
 | accelerator_type | The accelerator type resource to expose to the instance | " " | Optional |
+| enable_secure_boot | Secure Boot helps ensure that the system only runs authentic software by verifying the digital signature of all boot components, and halting the boot process if signature verification fails. | false | Optional |
+| enable_integrity_monitoring | Enables monitoring and attestation of the boot integrity of the instance. The attestation is performed against the integrity policy baseline. This baseline is initially derived from the implicitly trusted boot image when the instance is created. | true | Optional |
 | auto_repair | Whether the nodes will be automatically repaired | true | Optional |
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
 | auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
@@ -273,6 +281,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 In order to execute this module you must have a Service Account with the
 following project roles:
 - roles/compute.viewer
+- roles/compute.securityAdmin (only required if `add_cluster_firewall_rules` is set to `true`)
 - roles/container.clusterAdmin
 - roles/container.developer
 - roles/iam.serviceAccountAdmin

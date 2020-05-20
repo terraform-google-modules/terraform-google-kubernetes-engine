@@ -6,6 +6,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [9.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v9.0.0...v9.1.0) (2020-05-15)
+
+
+### Features
+
+* Add boot disk kms key variable ([#516](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/516)) ([9195f0f](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9195f0fee88a1a58880a5cb768c76acc15c3ee33))
+* Expose gce_pd_csi_driver for Safer Cluster modules [#503](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/503) ([#514](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/514)) ([d4e7dc6](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d4e7dc6a585770474ea4cdee3452cf98b404c6e2))
+
+
+### Bug Fixes
+
+* Update auth module to handle empty clusters ([#521](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/521)) ([dd2afca](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/dd2afca273e32b37b5bcbd98ad42e4f0b633c43a))
+
+## [9.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v8.1.0...v9.0.0) (2020-05-07)
+
+
+### ⚠ BREAKING CHANGES
+
+See the [upgrade guide](./docs/upgrading_to_v9.0.md) for details.
+
+* Beta clusters have changed the default to use the GKE_METADATA_SERVER, to use the old option set `node_metadata = "SECURE"`.
+* Minimum provider change increased to 3.19.
+* The ACM module has been refactored and resources will be recreated. This will show up in Terraform plans but is a safe no-op for Kubernetes.
+* For the safer cluster module, you must now specify `release_channel` instead of `kubernetes_version`.
+
+### Features
+
+* [safer-cluster] Replace "kubernetes_version" with "release_channel" ([#487](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/487)) ([5791ac1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5791ac1f64cbd9355a9e2ee96f29d1c5b8686d60))
+* Add an `auth` submodule outputting a `kubeconfig` ([#469](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/469)) ([a5ace36](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a5ace360e42ff393a4d49c5018c7ea947b322404))
+* Add config sync module ([#493](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/493)) ([c090d5b](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c090d5bd97e954562f5a1f94227e7b9e21724d4b))
+* Add fully configurable resource usage export block in GA and upgrade GCP provider ([#491](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/491)) ([54eca6b](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/54eca6b6469517495711c54dab3413003a58a410))
+* Add GCE PD CSI Driver beta support ([#497](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/497)) ([d96afa7](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d96afa79fa97f88e8866b54c46c253efd9481ec5))
+* Add support for setting firewall rules ([#470](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/470)) ([16bdd6e](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/16bdd6e6310ae248991462494f50876b99a36bbe))
+* Enable GKE_METADATA_SERVER as default node_metadata for beta-clusters ([#490](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/490)) ([#512](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/512)) ([8e14762](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8e147627ad53f6a169b38dbd2797bd55a4792c5d))
+* Expose the grant_registry_access variable in safer-cluster ([#509](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/509)) ([0961613](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0961613d7e8be391422e5a411801e2737280c2c3))
+
+
+### Bug Fixes
+
+* Correct identity namespace output for beta clusters ([#500](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/500)) ([c783659](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c783659bb9922d7f8231ac8ba584a4dc805a8288)), closes [#489](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/489)
+
 ## [8.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v8.0.0...v8.1.0) (2020-04-10)
 
 

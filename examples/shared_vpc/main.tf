@@ -19,22 +19,24 @@ locals {
 }
 
 provider "google" {
-  version = "~> 3.14.0"
+  version = "~> 3.16.0"
   region  = var.region
 }
 
 module "gke" {
-  source                 = "../../"
-  project_id             = var.project_id
-  name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  region                 = var.region
-  network                = var.network
-  network_project_id     = var.network_project_id
-  subnetwork             = var.subnetwork
-  ip_range_pods          = var.ip_range_pods
-  ip_range_services      = var.ip_range_services
-  create_service_account = false
-  service_account        = var.compute_engine_service_account
+  source                     = "../../"
+  project_id                 = var.project_id
+  name                       = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  region                     = var.region
+  network                    = var.network
+  network_project_id         = var.network_project_id
+  subnetwork                 = var.subnetwork
+  ip_range_pods              = var.ip_range_pods
+  ip_range_services          = var.ip_range_services
+  create_service_account     = false
+  service_account            = var.compute_engine_service_account
+  add_cluster_firewall_rules = true
+  firewall_inbound_ports     = ["9443", "15017"]
 }
 
 data "google_client_config" "default" {

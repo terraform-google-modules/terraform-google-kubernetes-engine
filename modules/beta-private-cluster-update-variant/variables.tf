@@ -181,6 +181,24 @@ variable "node_pools_metadata" {
   }
 }
 
+variable "resource_usage_export_dataset_id" {
+  type        = string
+  description = "The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export."
+  default     = ""
+}
+
+variable "enable_network_egress_export" {
+  type        = bool
+  description = "Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic."
+  default     = false
+}
+
+variable "enable_resource_consumption_export" {
+  type        = bool
+  description = "Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export."
+  default     = true
+}
+
 variable "enable_kubernetes_alpha" {
   type        = bool
   description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
@@ -392,6 +410,12 @@ variable "dns_cache" {
   default     = false
 }
 
+variable "gce_pd_csi_driver" {
+  type        = bool
+  description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
+  default     = false
+}
+
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
   type        = list(object({ state = string, key_name = string }))
@@ -421,15 +445,9 @@ variable "pod_security_policy_config" {
   }]
 }
 
-variable "resource_usage_export_dataset_id" {
-  type        = string
-  description = "The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic."
-  default     = ""
-}
-
 variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
-  default     = "SECURE"
+  default     = "GKE_METADATA_SERVER"
   type        = string
 }
 
@@ -473,4 +491,23 @@ variable "enable_shielded_nodes" {
   type        = bool
   description = "Enable Shielded Nodes features on all nodes in this cluster"
   default     = true
+}
+
+
+variable "add_cluster_firewall_rules" {
+  type        = bool
+  description = "Create additional firewall rules"
+  default     = false
+}
+
+variable "firewall_priority" {
+  type        = number
+  description = "Priority rule for firewall rules"
+  default     = 1000
+}
+
+variable "firewall_inbound_ports" {
+  type        = list(string)
+  description = "List of TCP ports for admission/webhook controllers"
+  default     = ["8443", "9443", "15017"]
 }

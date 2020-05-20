@@ -169,6 +169,24 @@ variable "node_pools_metadata" {
     default-node-pool = {}
   }
 }
+
+variable "resource_usage_export_dataset_id" {
+  type        = string
+  description = "The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export."
+  default     = ""
+}
+
+variable "enable_network_egress_export" {
+  type        = bool
+  description = "Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic."
+  default     = false
+}
+
+variable "enable_resource_consumption_export" {
+  type        = bool
+  description = "Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export."
+  default     = true
+}
 variable "node_pools_tags" {
   type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
@@ -300,4 +318,23 @@ variable "skip_provisioners" {
 variable "default_max_pods_per_node" {
   description = "The maximum number of pods to schedule per node"
   default     = 110
+}
+
+
+variable "add_cluster_firewall_rules" {
+  type        = bool
+  description = "Create additional firewall rules"
+  default     = false
+}
+
+variable "firewall_priority" {
+  type        = number
+  description = "Priority rule for firewall rules"
+  default     = 1000
+}
+
+variable "firewall_inbound_ports" {
+  type        = list(string)
+  description = "List of TCP ports for admission/webhook controllers"
+  default     = ["8443", "9443", "15017"]
 }

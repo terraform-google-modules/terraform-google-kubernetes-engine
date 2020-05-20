@@ -51,17 +51,17 @@ locals {
   node_pools      = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
 
 {% if beta_cluster %}
-  release_channel         = var.release_channel != null ? [{ channel : var.release_channel }] : []
+  release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
 
   autoscalling_resource_limits = var.cluster_autoscaling.enabled ? [{
-      resource_type = "cpu"
-      minimum       = var.cluster_autoscaling.min_cpu_cores
-      maximum       = var.cluster_autoscaling.max_cpu_cores
+    resource_type = "cpu"
+    minimum       = var.cluster_autoscaling.min_cpu_cores
+    maximum       = var.cluster_autoscaling.max_cpu_cores
     }, {
-      resource_type = "memory"
-      minimum       = var.cluster_autoscaling.min_memory_gb
-      maximum       = var.cluster_autoscaling.max_memory_gb
-    }] : []
+    resource_type = "memory"
+    minimum       = var.cluster_autoscaling.min_memory_gb
+    maximum       = var.cluster_autoscaling.max_memory_gb
+  }] : []
 
 {% endif %}
 
@@ -74,6 +74,9 @@ locals {
   // auto upgrade by defaults only for regional cluster as long it has multiple masters versus zonal clusters have only have a single master so upgrades are more dangerous.
   default_auto_upgrade = var.regional ? true : false
 
+  cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
+  cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
+
   cluster_network_policy = var.network_policy ? [{
     enabled  = true
     provider = var.network_policy_provider
@@ -84,6 +87,8 @@ locals {
 
 {% if beta_cluster %}
   cluster_cloudrun_config = var.cloudrun ? [{ disabled = false }] : []
+
+  cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
 
   cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
     node_metadata = var.node_metadata
@@ -103,10 +108,12 @@ locals {
   cluster_output_zones          = local.cluster_output_regional_zones
 
 {% if private_cluster %}
-  cluster_endpoint     = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config.0.private_endpoint : google_container_cluster.primary.private_cluster_config.0.public_endpoint) : google_container_cluster.primary.endpoint
-  cluster_peering_name = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? google_container_cluster.primary.private_cluster_config.0.peering_name : null
+  cluster_endpoint           = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config.0.private_endpoint : google_container_cluster.primary.private_cluster_config.0.public_endpoint) : google_container_cluster.primary.endpoint
+  cluster_peering_name       = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? google_container_cluster.primary.private_cluster_config.0.peering_name : null
+  cluster_endpoint_for_nodes = var.master_ipv4_cidr_block
 {% else %}
-  cluster_endpoint = google_container_cluster.primary.endpoint
+  cluster_endpoint           = google_container_cluster.primary.endpoint
+  cluster_endpoint_for_nodes = "${google_container_cluster.primary.endpoint}/32"
 {% endif %}
 
   cluster_output_master_auth                        = concat(google_container_cluster.primary.*.master_auth, [])
@@ -144,6 +151,7 @@ locals {
   cluster_zones    = sort(local.cluster_output_zones)
 
   cluster_name                               = local.cluster_output_name
+  cluster_network_tag                        = "gke-${var.name}"
   cluster_ca_certificate                     = local.cluster_master_auth_map["cluster_ca_certificate"]
   cluster_master_version                     = local.cluster_output_master_version
   cluster_min_master_version                 = local.cluster_output_min_master_version
@@ -164,14 +172,14 @@ locals {
   cluster_vertical_pod_autoscaling_enabled = local.cluster_output_vertical_pod_autoscaling_enabled
 
   cluster_workload_identity_config = var.identity_namespace == null ? [] : var.identity_namespace == "enabled" ? [{
-  identity_namespace = "${var.project_id}.svc.id.goog"}] : [{identity_namespace = var.identity_namespace
+    identity_namespace = "${var.project_id}.svc.id.goog" }] : [{ identity_namespace = var.identity_namespace
   }]
   # /BETA features
 {% endif %}
 
 {% if beta_cluster %}
   cluster_maintenance_window_is_recurring = var.maintenance_recurrence != "" && var.maintenance_end_time != "" ? [1] : []
-  cluster_maintenance_window_is_daily = length(local.cluster_maintenance_window_is_recurring) > 0 ? [] : [1]
+  cluster_maintenance_window_is_daily     = length(local.cluster_maintenance_window_is_recurring) > 0 ? [] : [1]
 {% endif %}
 }
 

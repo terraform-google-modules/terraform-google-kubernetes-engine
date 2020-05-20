@@ -19,12 +19,12 @@ locals {
 }
 
 provider "google" {
-  version = "~> 3.14.0"
+  version = "~> 3.16.0"
   region  = var.region
 }
 
 provider "google-beta" {
-  version = "~> 3.14.0"
+  version = "~> 3.19.0"
   region  = var.region
 }
 
@@ -56,9 +56,10 @@ module "gke" {
     },
   ]
 
-  istio     = var.istio
-  cloudrun  = var.cloudrun
-  dns_cache = var.dns_cache
+  istio             = var.istio
+  cloudrun          = var.cloudrun
+  dns_cache         = var.dns_cache
+  gce_pd_csi_driver = var.gce_pd_csi_driver
 }
 
 data "google_client_config" "default" {

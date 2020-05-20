@@ -1,6 +1,6 @@
-# Simple Regional Cluster
+# Simple Zonal Cluster
 
-This example illustrates how to create a simple private cluster.
+This example illustrates how to create a simple private cluster in a single zone.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

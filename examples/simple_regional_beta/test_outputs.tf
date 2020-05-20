@@ -61,3 +61,7 @@ output "master_kubernetes_version" {
   description = "The master Kubernetes version"
   value       = module.gke.master_version
 }
+
+output "identity_namespace" {
+  value = module.gke.identity_namespace
+}

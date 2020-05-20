@@ -56,13 +56,13 @@ module "this" {
 
   dns_cache = true
 
+  gce_pd_csi_driver = true
+
   enable_binary_authorization = true
 
   pod_security_policy_config = [{
     enabled = true
   }]
-
-  node_metadata = "EXPOSE"
 }
 
 data "google_client_config" "default" {
