@@ -15,17 +15,17 @@
  */
 
 variable "cluster_name" {
-  description = "The unique name to identify the cluster in ACM."
+  description = "Name used to reach cluster by way of a google_container_cluster terraform resource. This value becomes the cluster name in the Config Sync kubernetes custom resource." 
   type        = string
 }
 
 variable "project_id" {
-  description = "The project in which the resource belongs."
+  description = "project_id used to reach cluster by way of a google_container_cluster terraform resource." 
   type        = string
 }
 
 variable "location" {
-  description = "The location (zone or region) this cluster has been created in."
+  description = "location used to reach cluster by way of a google_container_cluster terraform resource." 
   type        = string
 }
 
