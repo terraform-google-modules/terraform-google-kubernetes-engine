@@ -145,6 +145,10 @@ resource "google_container_cluster" "primary" {
         enabled = gce_persistent_disk_csi_driver_config.value.enabled
       }
     }
+
+    kalm_config {
+      enabled = var.kalm_config
+    }
   }
 
   ip_allocation_policy {
