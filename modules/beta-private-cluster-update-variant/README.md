@@ -196,6 +196,7 @@ Then perform the following commands on the root folder:
 | issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | bool | `"false"` | no |
 | istio | (Beta) Enable Istio addon | string | `"false"` | no |
 | istio\_auth | (Beta) The authentication type between services in Istio. | string | `"AUTH_MUTUAL_TLS"` | no |
+| kalm\_config | (Beta) Configuration for the KALM addon, which manages the lifecycle of k8s. | bool | `"false"` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | string | `"latest"` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | string | `"logging.googleapis.com/kubernetes"` | no |
 | maintenance\_end\_time | Time window specified for recurring maintenance operations in RFC3339 format | string | `""` | no |
