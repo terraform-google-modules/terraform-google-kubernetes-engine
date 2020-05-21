@@ -48,12 +48,12 @@ To deploy this config:
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | cluster\_endpoint | Kubernetes cluster endpoint. | string | n/a | yes |
-| cluster\_name | The unique name to identify the cluster in ACM. | string | n/a | yes |
+| cluster\_name | Name used to reach cluster by way of a google_container_cluster terraform resource. This value becomes the cluster name in the Config Sync kubernetes custom resource. | string | n/a | yes |
 | create\_ssh\_key | Controls whether a key will be generated for Git authentication | bool | `"true"` | no |
-| location | The location (zone or region) this cluster has been created in. | string | n/a | yes |
+| location | location used to reach cluster by way of a google_container_cluster terraform resource. | string | n/a | yes |
 | operator\_path | Path to the operator yaml config. If unset, will download from GCS releases. | string | `"null"` | no |
 | policy\_dir | Subfolder containing configs in ACM Git repo | string | n/a | yes |
-| project\_id | The project in which the resource belongs. | string | n/a | yes |
+| project\_id | project_id used to reach cluster by way of a google_container_cluster terraform resource. | string | n/a | yes |
 | secret\_type | credential secret type, passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true | string | n/a | yes |
 | skip\_gcloud\_download | Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module) | bool | `"false"` | no |
 | ssh\_auth\_key | Key for Git authentication. Overrides 'create_ssh_key' variable. Can be set using 'file(path/to/file)'-function. | string | `"null"` | no |
