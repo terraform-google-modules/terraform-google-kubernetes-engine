@@ -49,6 +49,7 @@ variable "sync_branch" {
 variable "policy_dir" {
   description = "Subfolder containing configs in ACM Git repo"
   type        = string
+  default     = ""
 }
 
 variable "cluster_endpoint" {

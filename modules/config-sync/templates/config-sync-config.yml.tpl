@@ -9,4 +9,4 @@ spec:
     syncRepo: ${sync_repo}
     syncBranch: ${sync_branch}
     secretType: ${secret_type}
-    policyDir: ${policy_dir}
+    ${policy_dir_node}

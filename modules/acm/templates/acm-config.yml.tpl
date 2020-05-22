@@ -5,11 +5,11 @@ metadata:
 spec:
   # clusterName is required and must be unique among all managed clusters
   clusterName: ${cluster_name}
+  policyController:
+    enabled: ${enable_policy_controller}
+    templateLibraryInstalled: ${install_template_library}
   git:
     syncRepo: ${sync_repo}
     syncBranch: ${sync_branch}
     secretType: ${secret_type}
-    policyDir: ${policy_dir}
-  policyController:
-    enabled: ${enable_policy_controller}
-    templateLibraryInstalled: ${install_template_library}
+    ${policy_dir_node}
