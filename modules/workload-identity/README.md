@@ -66,21 +66,25 @@ module "my-app-workload-identity" {
 }
 ```
 
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
-| Name                   | Description                                                        |  Type  |   Default   | Required |
-| ---------------------- | ------------------------------------------------------------------ | :----: | :---------: | :------: |
-| name                   | Name for both service accounts                                     | string |     n/a     |   yes    |
-| namespace              | Namespace for k8s service account                                  | string | `"default"` |    no    |
-| project                | GCP project ID                                                     | string |     n/a     |   yes    |
-| use\_existing\_k8s\_sa | Use an existing kubernetes service account instead of creating one |  bool  |   `false`   |    no    |
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| k8s\_sa\_name | Name for the existing Kubernetes service account | string | `"null"` | no |
+| name | Name for both service accounts | string | n/a | yes |
+| namespace | Namespace for k8s service account | string | `"default"` | no |
+| project\_id | GCP project ID | string | n/a | yes |
+| use\_existing\_k8s\_sa | Use an existing kubernetes service account instead of creating one | bool | `"false"` | no |
 
 ## Outputs
 
-| Name                             | Description                                                 |
-| -------------------------------- | ----------------------------------------------------------- |
-| gcp\_service\_account\_email     | GCP service account's email                                 |
-| gcp\_service\_account\_fqn       | GCP service account's email prefixed with `serviceAccount:` |
-| gcp\_service\_account\_name      | GCP service account's name                                  |
-| k8s\_service\_account\_name      | Kubernetes service account's name                           |
-| k8s\_service\_account\_namespace | Kubernetes service account's namespace                      |
+| Name | Description |
+|------|-------------|
+| gcp\_service\_account\_email | Email address of GCP service account. |
+| gcp\_service\_account\_fqn | FQN of GCP service account. |
+| gcp\_service\_account\_name | Name of GCP service account. |
+| k8s\_service\_account\_name | Name of k8s service account. |
+| k8s\_service\_account\_namespace | Namespace of k8s service account. |
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
