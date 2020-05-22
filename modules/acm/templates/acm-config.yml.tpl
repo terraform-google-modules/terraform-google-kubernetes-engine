@@ -10,6 +10,6 @@ spec:
     templateLibraryInstalled: ${install_template_library}
   git:
     syncRepo: ${sync_repo}
-    syncBranch: ${sync_branch}
     secretType: ${secret_type}
     ${policy_dir_node}
+    ${sync_branch_node}

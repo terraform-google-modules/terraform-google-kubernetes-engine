@@ -22,7 +22,8 @@ locals {
   k8sop_creds_secret_key   = var.secret_type == "cookiefile" ? "cookie_file" : var.secret_type
   should_download_manifest = var.operator_path == null ? true : false
   manifest_path            = local.should_download_manifest ? "${path.root}/.terraform/tmp/config-management-operator.yaml" : var.operator_path
-  policy_dir_node          = var.policy_dir != "" ? format("policyDir: '%s'", var.policy_dir) : ""
+  sync_branch_node         = var.sync_branch != "" ? format("syncBranch: %s", var.sync_branch) : ""
+  policy_dir_node          = var.policy_dir != "" ? format("policyDir: %s", var.policy_dir) : ""
 }
 
 
@@ -88,7 +89,7 @@ data "template_file" "k8sop_config" {
   vars = {
     cluster_name             = var.cluster_name
     sync_repo                = var.sync_repo
-    sync_branch              = var.sync_branch
+    sync_branch_node         = local.sync_branch_node
     policy_dir_node          = local.policy_dir_node
     secret_type              = var.create_ssh_key ? "ssh" : var.secret_type
     enable_policy_controller = var.enable_policy_controller ? "true" : "false"

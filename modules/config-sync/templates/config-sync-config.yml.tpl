@@ -7,6 +7,6 @@ spec:
   clusterName: ${cluster_name}
   git:
     syncRepo: ${sync_repo}
-    syncBranch: ${sync_branch}
     secretType: ${secret_type}
+    ${sync_branch_node}
     ${policy_dir_node}

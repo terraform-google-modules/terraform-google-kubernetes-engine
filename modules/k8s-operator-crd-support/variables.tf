@@ -51,13 +51,13 @@ variable "secret_type" {
 }
 
 variable "sync_branch" {
-  description = "ACM repo Git branch"
+  description = "ACM repo Git branch. If un-set, uses Config Management default."
   type        = string
-  default     = "master"
+  default     = ""
 }
 
 variable "policy_dir" {
-  description = "Subfolder containing configs in ACM Git repo"
+  description = "Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default."
   type        = string
   default     = ""
 }
