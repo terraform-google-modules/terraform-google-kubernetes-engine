@@ -51,12 +51,12 @@ By default, this module will attempt to download the ACM operator from Google di
 | install\_template\_library | Whether to install the default Policy Controller template library | bool | `"true"` | no |
 | location | location used to reach cluster by way of a google_container_cluster terraform resource. | string | n/a | yes |
 | operator\_path | Path to the operator yaml config. If unset, will download from GCS releases. | string | `"null"` | no |
-| policy\_dir | Subfolder containing configs in ACM Git repo | string | n/a | yes |
+| policy\_dir | Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default. | string | `""` | no |
 | project\_id | project_id used to reach cluster by way of a google_container_cluster terraform resource. | string | n/a | yes |
 | secret\_type | git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true | string | `"ssh"` | no |
 | skip\_gcloud\_download | Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module) | bool | `"false"` | no |
 | ssh\_auth\_key | Key for Git authentication. Overrides 'create_ssh_key' variable. Can be set using 'file(path/to/file)'-function. | string | `"null"` | no |
-| sync\_branch | ACM repo Git branch | string | `"master"` | no |
+| sync\_branch | ACM repo Git branch. If un-set, uses Config Management default. | string | `""` | no |
 | sync\_repo | ACM Git repo address | string | n/a | yes |
 
 ## Outputs
