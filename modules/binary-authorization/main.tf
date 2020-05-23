@@ -15,7 +15,7 @@
  */
 
 locals {
-   required_enabled_apis = [
+  required_enabled_apis = [
     "containeranalysis.googleapis.com",
     "binaryauthorization.googleapis.com",
     "container.googleapis.com",

@@ -10,7 +10,7 @@ This module creates the infrastructure and Attestors necessary to generate attes
 
 ## Usage
 
-```terraform
+```tf
 # Create a Key Ring
 resource "google_kms_key_ring" "keyring" {
   name     = "my-example-attestor-key-ring"
@@ -29,6 +29,9 @@ module "quality-attestor" {
 }
 
 ```
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Next Steps
 
@@ -36,7 +39,7 @@ After building the Attestors, Attestations can be associated with image digests.
 
 This module does not include a Binary Authorization policy for a cluster.  A sample policy implemented as Dry-Run/Log-Only using our "quality-assurance" Attestor could look like this:
 
-```terraform
+```tf
 resource "google_binary_authorization_policy" "policy" {
 
   admission_whitelist_patterns {

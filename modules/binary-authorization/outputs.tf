@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 output key {
   value       = google_kms_crypto_key.crypto-key.name
   description = "Name of the Key created for the attestor"
