@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-variable attestor-name {
+variable "attestor-name" {
   type        = string
   description = "Name of the attestor"
 }
