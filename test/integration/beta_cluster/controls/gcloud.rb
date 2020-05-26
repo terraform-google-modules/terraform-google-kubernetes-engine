@@ -55,6 +55,7 @@ control "gcloud" do
           "kubernetesDashboard" => {
             "disabled" => true,
           },
+          "kalmConfig" => {},
           "networkPolicyConfig" => {},
           "istioConfig" => {"auth"=>"AUTH_MUTUAL_TLS"},
           "cloudRunConfig" => {},
