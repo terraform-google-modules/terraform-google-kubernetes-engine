@@ -35,6 +35,7 @@ module "quality-attestor" {
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | attestor-name | Name of the attestor | string | n/a | yes |
+| project\_id | Project ID to apply services into | string | n/a | yes |
 
 ## Outputs
 
