@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+variable "project_id" {
+  type        = string
+  description = "Project ID to apply services into"
+}
+
 variable "attestor-name" {
   type        = string
   description = "Name of the attestor"

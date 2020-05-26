@@ -27,11 +27,14 @@ module "project-services" {
   source  = "terraform-google-modules/project-factory/google//modules/project_services"
   version = "~> 8.0"
 
+  project_id = var.project_id
+
   activate_apis = local.required_enabled_apis
 }
 
 resource "google_binary_authorization_attestor" "attestor" {
-  name = "${var.attestor-name}-attestor"
+  project = var.project_id
+  name    = "${var.attestor-name}-attestor"
   attestation_authority_note {
     note_reference = google_container_analysis_note.build-note.name
     public_keys {
@@ -45,7 +48,8 @@ resource "google_binary_authorization_attestor" "attestor" {
 }
 
 resource "google_container_analysis_note" "build-note" {
-  name = "${var.attestor-name}-attestor-note"
+  project = var.project_id
+  name    = "${var.attestor-name}-attestor-note"
   attestation_authority {
     hint {
       human_readable_name = "${var.attestor-name} Attestor"
