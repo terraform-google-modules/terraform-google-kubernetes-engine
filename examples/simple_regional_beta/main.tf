@@ -47,6 +47,10 @@ module "gke" {
   enable_binary_authorization = var.enable_binary_authorization
   pod_security_policy_config  = var.pod_security_policy_config
   release_channel             = "REGULAR"
+
+  # Disable workload identity
+  identity_namespace = null
+  node_metadata      = "UNSPECIFIED"
 }
 
 data "google_client_config" "default" {
