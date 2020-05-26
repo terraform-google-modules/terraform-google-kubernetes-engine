@@ -30,6 +30,18 @@ module "quality-attestor" {
 
 ```
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| attestor-name | Name of the attestor | string | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| attestor | Name of the built attestor |
+| key | Name of the Key created for the attestor |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
