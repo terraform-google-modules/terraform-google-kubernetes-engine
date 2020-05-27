@@ -74,13 +74,6 @@ control "gcloud" do
         })
       end
 
-      it "has the expected nodeMetadata conseal config" do
-        expect(data['nodeConfig']['workloadMetadataConfig']).to eq({
-          "mode" => "GKE_METADATA",
-          "nodeMetadata" => 'GKE_METADATA_SERVER',
-        })
-      end
-
       it "has the expected podSecurityPolicyConfig config" do
         expect(data['podSecurityPolicyConfig']).to eq({
           "enabled" => true,
@@ -91,13 +84,6 @@ control "gcloud" do
         expect(data['databaseEncryption']).to eq({
           "state" => 'ENCRYPTED',
           "keyName" => attribute('database_encryption_key_name'),
-        })
-      end
-
-      it "has the expected workload identity config" do
-        expect(data['workloadIdentityConfig']).to eq({
-          "identityNamespace" => attribute('identity_namespace'),
-          "workloadPool" => attribute('identity_namespace'),
         })
       end
     end
@@ -208,19 +194,6 @@ control "gcloud" do
           including(
             "management" => including(
               "autoRepair" => true,
-            ),
-          )
-        )
-      end
-
-      it "has the expected node metadata for workload identity" do
-        expect(node_pools).to include(
-          including(
-            "config" => including(
-              "workloadMetadataConfig" => eq(
-                "mode" => "GKE_METADATA",
-                "nodeMetadata" => 'GKE_METADATA_SERVER',
-              ),
             ),
           )
         )
