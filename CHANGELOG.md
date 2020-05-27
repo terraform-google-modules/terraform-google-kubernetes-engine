@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [9.2.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v9.1.0...v9.2.0) (2020-05-27)
+
+
+### Features
+
+* Add submodule for creating a binary authentication attestor ([#530](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/530)) ([cc30fbb](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/cc30fbbbbcf232c6535156f1e596995e1bd2dcaf))
+* Add support for KALM config ([#528](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/528)) ([6bf1178](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6bf1178e3b367a6cc5b9d22adadeb18d1569aff7))
+
+
+### Bug Fixes
+
+* Add additional guardrails for disabled workload identity. ([#542](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/542)) ([43c4349](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/43c4349788d46a1e973254f4efb87366eb873765))
+
 ## [9.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v9.0.0...v9.1.0) (2020-05-15)
 
 
