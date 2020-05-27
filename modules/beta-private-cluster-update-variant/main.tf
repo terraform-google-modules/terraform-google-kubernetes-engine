@@ -155,7 +155,8 @@ locals {
   cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled
   cluster_vertical_pod_autoscaling_enabled = local.cluster_output_vertical_pod_autoscaling_enabled
 
-  cluster_workload_identity_config = var.identity_namespace == null ? [] : var.identity_namespace == "enabled" ? [{
+  workload_identity_enabled = ! (var.identity_namespace == null || var.identity_namespace == "null")
+  cluster_workload_identity_config = ! local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
     identity_namespace = "${var.project_id}.svc.id.goog" }] : [{ identity_namespace = var.identity_namespace
   }]
   # /BETA features
