@@ -149,6 +149,10 @@ resource "google_container_cluster" "primary" {
     kalm_config {
       enabled = var.kalm_config
     }
+
+    config_connector_config {
+      enabled = var.config_connector
+    }
   }
 
   ip_allocation_policy {

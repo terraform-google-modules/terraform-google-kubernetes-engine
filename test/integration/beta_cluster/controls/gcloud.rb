@@ -56,6 +56,7 @@ control "gcloud" do
             "disabled" => true,
           },
           "kalmConfig" => {},
+          "configConnectorConfig" => {},
           "networkPolicyConfig" => {},
           "istioConfig" => {"auth"=>"AUTH_MUTUAL_TLS"},
           "cloudRunConfig" => {},
