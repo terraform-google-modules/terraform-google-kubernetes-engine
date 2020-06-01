@@ -15,17 +15,17 @@
  */
 
 variable "cluster_name" {
-  description = "Name used to reach cluster by way of a google_container_cluster terraform resource. This value becomes the cluster name in the Config Sync kubernetes custom resource."
+  description = "GCP cluster name used to reach cluster and which becomes the cluster name in the Config Sync kubernetes custom resource."
   type        = string
 }
 
 variable "project_id" {
-  description = "project_id used to reach cluster by way of a google_container_cluster terraform resource."
+  description = "GCP project_id used to reach cluster."
   type        = string
 }
 
 variable "location" {
-  description = "location used to reach cluster by way of a google_container_cluster terraform resource."
+  description = "GCP location used to reach cluster."
   type        = string
 }
 
