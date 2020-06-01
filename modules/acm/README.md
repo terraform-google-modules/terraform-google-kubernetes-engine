@@ -45,14 +45,14 @@ By default, this module will attempt to download the ACM operator from Google di
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | cluster\_endpoint | Kubernetes cluster endpoint. | string | n/a | yes |
-| cluster\_name | Name used to reach cluster by way of a google_container_cluster terraform resource. This value becomes the cluster name in the Config Sync kubernetes custom resource. | string | n/a | yes |
+| cluster\_name | GCP cluster Name used to reach cluster and which becomes the cluster name in the Config Sync kubernetes custom resource. | string | n/a | yes |
 | create\_ssh\_key | Controls whether a key will be generated for Git authentication | bool | `"true"` | no |
 | enable\_policy\_controller | Whether to enable the ACM Policy Controller on the cluster | bool | `"true"` | no |
 | install\_template\_library | Whether to install the default Policy Controller template library | bool | `"true"` | no |
-| location | location used to reach cluster by way of a google_container_cluster terraform resource. | string | n/a | yes |
+| location | GCP location used to reach cluster. | string | n/a | yes |
 | operator\_path | Path to the operator yaml config. If unset, will download from GCS releases. | string | `"null"` | no |
 | policy\_dir | Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default. | string | `""` | no |
-| project\_id | project_id used to reach cluster by way of a google_container_cluster terraform resource. | string | n/a | yes |
+| project\_id | GCP project_id used to reach cluster. | string | n/a | yes |
 | secret\_type | git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true | string | `"ssh"` | no |
 | skip\_gcloud\_download | Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module) | bool | `"false"` | no |
 | ssh\_auth\_key | Key for Git authentication. Overrides 'create_ssh_key' variable. Can be set using 'file(path/to/file)'-function. | string | `"null"` | no |
