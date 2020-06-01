@@ -52,6 +52,16 @@
     }
   },
   {
+    "template_folder": "./autogen/main",
+    "path": "./modules/beta-public-cluster-update-variant",
+    "options": {
+      "module_path": "//modules/beta-public-cluster-update-variant",
+      "private_cluster": false,
+      "beta_cluster": true,
+      "update_variant": true
+    }
+  },
+  {
     "template_folder": "./autogen/safer-cluster",
     "path": "./modules/safer-cluster",
     "options": {
