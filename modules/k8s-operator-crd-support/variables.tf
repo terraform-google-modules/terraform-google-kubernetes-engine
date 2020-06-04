@@ -15,17 +15,17 @@
  */
 
 variable "cluster_name" {
-  description = "The unique name to identify the cluster in ACM."
+  description = "GCP cluster name used to reach cluster and which becomes the cluster name in the Config Sync kubernetes custom resource."
   type        = string
 }
 
 variable "project_id" {
-  description = "The project in which the resource belongs."
+  description = "GCP project_id used to reach cluster."
   type        = string
 }
 
 variable "location" {
-  description = "The location (zone or region) this cluster has been created in."
+  description = "GCP location used to reach cluster."
   type        = string
 }
 
@@ -51,14 +51,15 @@ variable "secret_type" {
 }
 
 variable "sync_branch" {
-  description = "ACM repo Git branch"
+  description = "ACM repo Git branch. If un-set, uses Config Management default."
   type        = string
-  default     = "master"
+  default     = ""
 }
 
 variable "policy_dir" {
-  description = "Subfolder containing configs in ACM Git repo"
+  description = "Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default."
   type        = string
+  default     = ""
 }
 
 variable "cluster_endpoint" {
