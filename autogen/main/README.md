@@ -258,20 +258,6 @@ In order to operate with the Service Account you must activate the following API
 - Compute Engine API - compute.googleapis.com
 - Kubernetes Engine API - container.googleapis.com
 
-## File structure
-The project has the following folders and files:
-
-- /: root folder
-- /examples: Examples for using this module and sub module.
-- /helpers: Helper scripts.
-- /scripts: Scripts for specific tasks on module (see Infrastructure section on this file).
-- /test: Folders with files for testing the module (see Testing section on this file).
-- /main.tf: `main` file for the public module, contains all the resources to create.
-- /variables.tf: Variables for the public cluster module.
-- /output.tf: The outputs for the public cluster module.
-- /README.MD: This file.
-- /modules: Private and beta sub modules.
-
 {% if beta_cluster %}
 [terraform-provider-google-beta]: https://github.com/terraform-providers/terraform-provider-google-beta
 {% else %}
