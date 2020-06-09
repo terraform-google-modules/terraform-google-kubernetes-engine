@@ -10,20 +10,8 @@ The resources/services/activations/deletions that this module will create/trigge
 
 Sub modules are provided from creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
 
-## Private Cluster Endpoints
-When creating a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters), nodes are provisioned with private IPs.
-The Kubernetes master endpoint is also [locked down](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#access_to_the_cluster_endpoints), which affects these module features:
-- `configure_ip_masq`
-- `stub_domains`
-
-If you are *not* using these features, then the module will function normally for private clusters and no special configuration is needed.
-If you are using these features with a private cluster, you will need to either:
-1. Run Terraform from a VM on the same VPC as your cluster (allowing it to connect to the private endpoint) and set `deploy_using_private_endpoint` to `true`.
-2. Enable (beta) [route export functionality](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#master-on-prem-routing) to connect from an on-premise network over a VPN or Interconnect.
-3. Include the external IP of your Terraform deployer in the `master_authorized_networks` configuration.
-4. Deploy a [bastion host](https://github.com/terraform-google-modules/terraform-google-bastion-host) or [proxy](https://cloud.google.com/solutions/creating-kubernetes-engine-private-clusters-with-net-proxies) in the same VPC as your GKE cluster.
-
-If you are going to isolate your GKE private clusters from internet access you could check [guide](https://medium.com/google-cloud/completely-private-gke-clusters-with-no-internet-connectivity-945fffae1ccd) and [repo](https://github.com/andreyk-code/no-inet-gke-cluster)
+## Private Cluster Details
+For details on configuring private clusters with this module, check the [troubleshooting guide](../../docs/private_clusters.md).
 
 ## Node Pool Update Variant
 
