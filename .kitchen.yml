@@ -221,3 +221,10 @@ suites:
       systems:
         - name: sandbox_enabled
           backend: local
+  - name: "safer_cluster_iap_bastion"
+    driver:
+      root_module_directory: test/fixtures/safer_cluster_iap_bastion
+    verifier:
+      systems:
+        - name: safer_cluster_iap_bastion
+          backend: local
