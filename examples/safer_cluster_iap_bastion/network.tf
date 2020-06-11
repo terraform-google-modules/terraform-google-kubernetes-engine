@@ -27,7 +27,7 @@ module "vpc" {
     {
       subnet_name           = var.subnet_name
       subnet_ip             = var.subnet_ip
-      subnet_region         = var.subnet_region
+      subnet_region         = var.region
       subnet_private_access = true
       description           = "This subnet is managed by Terraform"
     }
@@ -51,7 +51,7 @@ module "cloud-nat" {
   source        = "terraform-google-modules/cloud-nat/google"
   version       = "~> 1.2"
   project_id    = module.enabled_google_apis.project_id
-  region        = var.subnet_region
+  region        = var.region
   router        = "safer-router"
   network       = module.vpc.network_self_link
   create_router = true

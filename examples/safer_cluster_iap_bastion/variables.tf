@@ -44,12 +44,6 @@ variable "subnet_name" {
   default     = "safer-cluster-subnet"
 }
 
-variable "subnet_region" {
-  type        = string
-  description = "The region where the subnet being created"
-  default     = "us-central1"
-}
-
 variable "subnet_ip" {
   type        = string
   description = "The cidr range of the subnet"

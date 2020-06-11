@@ -47,7 +47,6 @@ To deploy this example:
 | region | The region to host the cluster in | string | `"us-central1"` | no |
 | subnet\_ip | The cidr range of the subnet | string | `"10.10.10.0/24"` | no |
 | subnet\_name | The name of the subnet being created to host the cluster in | string | `"safer-cluster-subnet"` | no |
-| subnet\_region | The region where the subnet being created | string | `"us-central1"` | no |
 
 ## Outputs
 
