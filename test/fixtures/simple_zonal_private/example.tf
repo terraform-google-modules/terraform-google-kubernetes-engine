@@ -19,7 +19,6 @@ module "example" {
 
   project_id                     = var.project_ids[1]
   cluster_name_suffix            = "-${random_string.suffix.result}"
-  region                         = var.region
   zones                          = slice(var.zones, 0, 1)
   network                        = google_compute_network.main.name
   subnetwork                     = google_compute_subnetwork.main.name

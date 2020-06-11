@@ -42,7 +42,7 @@ resource "google_container_cluster" "primary" {
   }
 
 
-  subnetwork = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
+  subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
   min_master_version = local.master_version
 
