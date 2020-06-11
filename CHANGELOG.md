@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [9.3.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v9.2.0...v9.3.0) (2020-06-11)
+
+
+### Features
+
+* Add Beta Public Module Update Variant ([#546](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/546)) ([d9f1ea8](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d9f1ea8b50caef249a25a73cd59b9a22183c2922))
+* Add ConfigConnector configuration option (beta) ([#547](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/547)) ([672adf9](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/672adf9a94089d2c9dcdd5d2666fcd5a8b4875c3))
+
+
+### Bug Fixes
+
+* Correct ACM param defaults ([#536](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/536)) ([0b92d27](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0b92d273cc14eb7c7dfe13dbb76e04a33065de04))
+
 ## [9.2.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v9.1.0...v9.2.0) (2020-05-27)
 
 
