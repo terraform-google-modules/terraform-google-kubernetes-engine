@@ -28,7 +28,7 @@ module "gke" {
   master_authorized_networks = [{
     cidr_block   = "${module.bastion.ip_address}/32"
     display_name = "Bastion Host"
-  }, ]
+  }]
   grant_registry_access = true
   node_pools = [
     {

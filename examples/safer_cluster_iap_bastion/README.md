@@ -1,6 +1,6 @@
 # Safer Cluster Access with IAP Bastion Host
 
-This end to end example aims to showcase access patterns to a [Safer Cluster](../../modules/safer-cluster/README.md), which is a hardened GKE Private Cluster, through a bastion host utilizing [Identity Awareness Proxy](https://cloud.google.com/iap/) without an external ip address. Access to this cluster's control plane is restricted to the bastion host;s internal IP using [authorized networks](https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks#overview).
+This end to end example aims to showcase access patterns to a [Safer Cluster](../../modules/safer-cluster/README.md), which is a hardened GKE Private Cluster, through a bastion host utilizing [Identity Awareness Proxy](https://cloud.google.com/iap/) without an external ip address. Access to this cluster's control plane is restricted to the bastion host's internal IP using [authorized networks](https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks#overview).
 
 Additionally we deploy a [tinyproxy](https://tinyproxy.github.io/) daemon which allows `kubectl` commands to be piped through the bastion host allowing ease of development from a local machine with the security of GKE Private Clusters.
 
@@ -20,7 +20,7 @@ To deploy this example:
    gcloud container clusters get-credentials --project $PROJECT_ID --zone $ZONE --internal-ip $CLUSTER_NAME
    ```
 
-5. SSH to the Bastion Host while port forwarding to the bastion host through an IAP tunnel. _The command with the right parameters will displayed as the Terraform output `bastion_ssh_command`._
+5. SSH to the Bastion Host while port forwarding to the bastion host through an IAP tunnel. _The command with the right parameters will displayed by running `terraform output bastion_ssh_command`._
 
    ```sh
    gcloud beta compute ssh $BASTION_VM_NAME --tunnel-through-iap --project $PROJECT_ID --zone $ZONE -- -L8888:127.0.0.1:8888
