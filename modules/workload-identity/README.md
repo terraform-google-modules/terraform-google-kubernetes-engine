@@ -51,9 +51,6 @@ resource "kubernetes_service_account" "preexisting" {
   metadata {
     name = "preexisting-sa"
     namespace = "prod"
-    annotations = {
-      "iam.gke.io/gcp-service-account" = "preexisting-sa@${var.project_id}.iam.gserviceaccount.com"
-    }
   }
 }
 
@@ -71,7 +68,9 @@ module "my-app-workload-identity" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| cluster\_name | Cluster name. Required if using existing KSA. | string | `""` | no |
 | k8s\_sa\_name | Name for the existing Kubernetes service account | string | `"null"` | no |
+| location | Cluster location (region if regional cluster, zone if zonal cluster). Required if using existing KSA. | string | `""` | no |
 | name | Name for both service accounts | string | n/a | yes |
 | namespace | Namespace for k8s service account | string | `"default"` | no |
 | project\_id | GCP project ID | string | n/a | yes |
