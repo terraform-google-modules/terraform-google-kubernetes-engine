@@ -14,6 +14,8 @@
 
 test_command = attribute('test_command')
 cluster_version = attribute('cluster_version')
+# pre run ssh command so that ssh-keygen can run
+%x( #{test_command} )
 control "e2e" do
     title "SSH into VM and verify connectivity to GKE"
     describe command(test_command) do
