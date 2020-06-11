@@ -27,7 +27,12 @@ locals {
     "roles/iam.serviceAccountUser",
     "roles/compute.viewer",
     "roles/resourcemanager.projectIamAdmin",
-    "roles/composer.worker"
+    "roles/composer.worker",
+    "roles/serviceusage.serviceUsageAdmin",
+    "roles/compute.osLogin",
+    "roles/compute.instanceAdmin",
+    "roles/iam.roleAdmin",
+    "roles/iap.admin",
   ]
 }
 

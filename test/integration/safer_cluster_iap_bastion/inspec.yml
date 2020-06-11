@@ -1,0 +1,8 @@
+name: safer_cluster
+attributes:
+  - name: test_command
+    required: true
+    type: string
+  - name: cluster_version
+    required: true
+    type: string
