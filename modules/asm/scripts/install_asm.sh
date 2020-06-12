@@ -47,7 +47,7 @@ else
     echo "Downloading ASM patch"
     kpt pkg get https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages.git/asm-patch@release-1.5-asm .
 fi
-anthoscli export -c "${CLUSTER_NAME}" -o ${BASE_DIR} -p "${PROJECT_ID}" -l "${CLUSTER_LOCATION}"
+gcloud beta anthos export "${CLUSTER_NAME}" --output-directory ${BASE_DIR} --project "${PROJECT_ID}" --location "${CLUSTER_LOCATION}"
 kpt cfg set asm-patch/ base-dir ../${BASE_DIR}
 kpt cfg set asm-patch/ gcloud.core.project "${PROJECT_ID}"
 kpt cfg set asm-patch/ gcloud.container.cluster "${CLUSTER_NAME}"
