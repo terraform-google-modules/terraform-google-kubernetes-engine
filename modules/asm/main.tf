@@ -78,5 +78,5 @@ module "gke_hub_registration" {
   create_cmd_entrypoint  = "${path.module}/scripts/gke_hub_registration.sh"
   create_cmd_body        = "${var.gke_hub_membership_name} ${var.location} ${var.cluster_name} ${local.gke_hub_sa_key}"
   destroy_cmd_entrypoint = "gcloud"
-  destroy_cmd_body       = "container hub memberships unregister ${var.gke_hub_membership_name} --gke-cluster=${var.location}/${var.cluster_name}"
+  destroy_cmd_body       = "container hub memberships unregister ${var.gke_hub_membership_name} --gke-cluster=${var.location}/${var.cluster_name} --project ${var.project_id}"
 }
