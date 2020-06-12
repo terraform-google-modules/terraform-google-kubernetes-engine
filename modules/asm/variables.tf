@@ -49,7 +49,7 @@ variable "use_tf_google_credentials_env_var" {
 variable "gcloud_sdk_version" {
   description = "The gcloud sdk version to use. Minimum required version is 293.0.0"
   type        = string
-  default     = "294.0.0"
+  default     = "296.0.1"
 }
 
 variable "enable_gke_hub_registration" {
