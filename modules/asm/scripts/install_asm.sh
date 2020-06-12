@@ -62,5 +62,5 @@ pushd asm-patch && kustomize build -o ../${BASE_DIR}/all.yaml && popd
 #  echo "Running ASM validation..."
 #  kpt fn source ${BASE_DIR} | kpt fn run --image gcr.io/kustomize-functions/validate-asm:v0.1.0
 # fi
-anthoscli apply -f ${BASE_DIR}
+gcloud beta anthos apply ${BASE_DIR}
 kubectl wait --for=condition=available --timeout=600s deployment --all -n istio-system
