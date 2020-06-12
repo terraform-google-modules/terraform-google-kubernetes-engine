@@ -44,20 +44,21 @@ module "gke" {
     {
       name        = "asm-node-pool"
       autoscaling = false
-      # ASM requires minimum 4 nodes and n1-standard-4
+      # ASM requires minimum 4 nodes and e2-standard-4
       # As this is a regional cluster we have node_count * 3 = 6 nodes
       node_count   = 2
-      machine_type = "n1-standard-4"
+      machine_type = "e2-standard-4"
     },
   ]
 }
 
 module "asm" {
-  source           = "../../modules/asm"
-  cluster_name     = module.gke.name
-  cluster_endpoint = module.gke.endpoint
-  project_id       = var.project_id
-  location         = module.gke.location
+  source                            = "../../modules/asm"
+  cluster_name                      = module.gke.name
+  cluster_endpoint                  = module.gke.endpoint
+  project_id                        = var.project_id
+  location                          = module.gke.location
+  use_tf_google_credentials_env_var = true
 }
 
 data "google_client_config" "default" {
