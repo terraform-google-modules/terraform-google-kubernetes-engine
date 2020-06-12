@@ -48,6 +48,7 @@ module "asm_install" {
 resource "google_service_account" "gke_hub_sa" {
   count        = var.enable_gke_hub_registration ? 1 : 0
   account_id   = var.gke_hub_sa_name
+  project      = var.project_id
   display_name = "Service Account for GKE Hub Registration"
 }
 

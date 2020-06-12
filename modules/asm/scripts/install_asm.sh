@@ -31,13 +31,13 @@ if [[ -z $(command -v kustomize) ]]; then
   echo "kustomize is unavailable. Skipping ASM installation. Please install kustomize, add to PATH and rerun terraform apply."
   exit 1
 fi
-# check docker which is optionally used for validating asm yaml using gcr.io/kustomize-functions/validate-asm:v0.1.0
-if [[ $(command -v docker) ]]; then
-  echo "Docker is available. ASM yaml validation will be performed."
-else
-  echo "ASM yaml validation will be skipped as Docker is unavailable"
-  SKIP_ASM_VALIDATION=true
-fi
+# # check docker which is optionally used for validating asm yaml using gcr.io/kustomize-functions/validate-asm:v0.1.0
+# if [[ $(command -v docker) ]]; then
+#   echo "Docker is available. ASM yaml validation will be performed."
+# else
+#   echo "ASM yaml validation will be skipped as Docker is unavailable"
+#   SKIP_ASM_VALIDATION=true
+# fi
 mkdir -p $ASM_RESOURCES
 pushd $ASM_RESOURCES
 gcloud config set project "${PROJECT_ID}"
@@ -55,12 +55,12 @@ kpt cfg set asm-patch/ gcloud.compute.location "${CLUSTER_LOCATION}"
 kpt cfg list-setters asm-patch/
 pushd ${BASE_DIR} && kustomize create --autodetect --namespace "${PROJECT_ID}" && popd
 pushd asm-patch && kustomize build -o ../${BASE_DIR}/all.yaml && popd
-# skip validate as we should investigate if we can check this without having to resort to dind
-if [[ ${SKIP_ASM_VALIDATION} ]]; then
- echo "Skipping ASM validation..."
-else
- echo "Running ASM validation..."
- kpt fn source ${BASE_DIR} | kpt fn run --image gcr.io/kustomize-functions/validate-asm:v0.1.0
-fi
+# # skip validate as we should investigate if we can check this without having to resort to dind
+# if [[ ${SKIP_ASM_VALIDATION} ]]; then
+#  echo "Skipping ASM validation..."
+# else
+#  echo "Running ASM validation..."
+#  kpt fn source ${BASE_DIR} | kpt fn run --image gcr.io/kustomize-functions/validate-asm:v0.1.0
+# fi
 anthoscli apply -f ${BASE_DIR}
 kubectl wait --for=condition=available --timeout=600s deployment --all -n istio-system
