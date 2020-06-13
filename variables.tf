@@ -338,3 +338,21 @@ variable "firewall_inbound_ports" {
   description = "List of TCP ports for admission/webhook controllers"
   default     = ["8443", "9443", "15017"]
 }
+
+variable "gcloud_upgrade" {
+  type        = bool
+  description = "Whether to upgrade gcloud at runtime"
+  default     = false
+}
+
+variable "gcloud_sdk_version" {
+  type        = string
+  description = "The gcloud sdk version to download"
+  default     = "296.0.0"
+}
+
+variable "gcloud_skip_download" {
+  type        = bool
+  description = "Whether to skip downloading gcloud (assumes gcloud is already available outside the module)"
+  default     = true
+}
