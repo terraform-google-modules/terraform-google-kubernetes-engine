@@ -400,9 +400,8 @@ module "gcloud_wait_for_cluster" {
   version = "~> 1.0.1"
   enabled = var.skip_provisioners
 
-  upgrade            = var.gcloud_upgrade
-  gcloud_sdk_version = var.gcloud_sdk_version
-  skip_download      = var.gcloud_skip_download
+  upgrade       = var.gcloud_upgrade
+  skip_download = var.gcloud_skip_download
 
   create_cmd_entrypoint  = "${path.module}/scripts/wait-for-cluster.sh"
   create_cmd_body        = "${var.project_id} ${var.name}"

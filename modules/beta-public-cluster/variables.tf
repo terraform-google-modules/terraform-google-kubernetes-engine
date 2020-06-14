@@ -506,12 +506,6 @@ variable "gcloud_upgrade" {
   default     = false
 }
 
-variable "gcloud_sdk_version" {
-  type        = string
-  description = "The gcloud sdk version to download"
-  default     = "296.0.0"
-}
-
 variable "gcloud_skip_download" {
   type        = bool
   description = "Whether to skip downloading gcloud (assumes gcloud is already available outside the module)"

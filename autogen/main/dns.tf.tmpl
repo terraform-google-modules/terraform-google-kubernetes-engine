@@ -25,9 +25,8 @@ module "gcloud_delete_default_kube_dns_configmap" {
   enabled               = (local.custom_kube_dns_config || local.upstream_nameservers_config) && ! var.skip_provisioners
   additional_components = ["kubectl"]
 
-  upgrade            = var.gcloud_upgrade
-  gcloud_sdk_version = var.gcloud_sdk_version
-  skip_download      = var.gcloud_skip_download
+  upgrade       = var.gcloud_upgrade
+  skip_download = var.gcloud_skip_download
 
   create_cmd_entrypoint = "${path.module}/scripts/kubectl_wrapper.sh"
   create_cmd_body       = "https://${local.cluster_endpoint} ${data.google_client_config.default.access_token} ${local.cluster_ca_certificate} ${path.module}/scripts/delete-default-resource.sh kube-system configmap kube-dns"
