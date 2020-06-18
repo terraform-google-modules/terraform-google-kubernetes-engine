@@ -16,10 +16,10 @@ The `terraform-google-workload-identity` can create a kubernetes service account
 
 ```hcl
 module "my-app-workload-identity" {
-  source    = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  name      = "my-application-name"
-  namespace = "default"
-  project   = "my-gcp-project-name"
+  source     = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
+  name       = "my-application-name"
+  namespace  = "default"
+  project_id = "my-gcp-project-name"
 }
 ```
 
@@ -62,7 +62,7 @@ module "my-app-workload-identity" {
   use_existing_k8s_sa = true
   name                = "preexisting-sa"
   namespace           = "prod"
-  project             = var.project_id
+  project_id          = var.project_id
 }
 ```
 
