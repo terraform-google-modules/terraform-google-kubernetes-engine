@@ -18,8 +18,8 @@ cluster_name = attribute('cluster_name')
 control "network" do
   title "gcp network configuration"
   describe google_compute_firewalls(project: project_id) do
-    its('firewall_names') { should include "gke-#{cluster_name[0..25]}-intra-cluster-egress" }
-    its('firewall_names') { should include "gke-#{cluster_name[0..25]}-webhooks" }
+    its('firewall_names') { should include "gke-#{cluster_name[0,25]}-intra-cluster-egress" }
+    its('firewall_names') { should include "gke-#{cluster_name[0,25]}-webhooks" }
   end
 
 end
