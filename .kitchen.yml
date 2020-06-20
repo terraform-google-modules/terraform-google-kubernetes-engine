@@ -51,6 +51,8 @@ suites:
       systems:
         - name: safer_cluster
           backend: local
+          controls:
+            - gcloud
         - name: inspec-gcp
           backend: gcp
           controls:
