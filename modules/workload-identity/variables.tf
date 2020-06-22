@@ -41,3 +41,9 @@ variable "use_existing_k8s_sa" {
   default     = false
   type        = bool
 }
+
+variable "automount_service_account_token" {
+  description = "Enable automatic mounting of the service account token"
+  default     = false
+  type        = bool
+}

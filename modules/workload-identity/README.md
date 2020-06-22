@@ -71,6 +71,7 @@ module "my-app-workload-identity" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| automount\_service\_account\_token | Enable automatic mounting of the service account token | bool | `"false"` | no |
 | k8s\_sa\_name | Name for the existing Kubernetes service account | string | `"null"` | no |
 | name | Name for both service accounts | string | n/a | yes |
 | namespace | Namespace for k8s service account | string | `"default"` | no |
