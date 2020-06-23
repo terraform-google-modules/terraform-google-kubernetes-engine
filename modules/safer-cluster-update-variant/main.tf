@@ -45,6 +45,10 @@ module "gke" {
   ip_range_pods     = var.ip_range_pods
   ip_range_services = var.ip_range_services
 
+  add_cluster_firewall_rules = var.add_cluster_firewall_rules
+  firewall_priority          = var.firewall_priority
+  firewall_inbound_ports     = var.firewall_inbound_ports
+
   horizontal_pod_autoscaling = var.horizontal_pod_autoscaling
   http_load_balancing        = var.http_load_balancing
 
