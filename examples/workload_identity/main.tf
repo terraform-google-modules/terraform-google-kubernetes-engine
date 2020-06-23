@@ -53,12 +53,35 @@ module "gke" {
   ]
 }
 
+# example without existing KSA
 module "workload_identity" {
   source              = "../../modules/workload-identity"
   project_id          = var.project_id
   name                = "iden-${module.gke.name}"
   namespace           = "default"
   use_existing_k8s_sa = false
+}
+
+
+# example with existing KSA
+resource "kubernetes_service_account" "test" {
+  metadata {
+    name = "foo-ksa"
+  }
+  secret {
+    name = "bar"
+  }
+}
+
+module "workload_identity_existing_ksa" {
+  source              = "../../modules/workload-identity"
+  project_id          = var.project_id
+  name                = "existing-${module.gke.name}"
+  cluster_name        = module.gke.name
+  location            = module.gke.location
+  namespace           = "default"
+  use_existing_k8s_sa = true
+  k8s_sa_name         = kubernetes_service_account.test.metadata.0.name
 }
 
 data "google_client_config" "default" {
