@@ -234,12 +234,12 @@ suites:
       systems:
         - name: safer_cluster_iap_bastion
           backend: local
-  - name: "simple_regional_with_asm"
+  - name: "simple_zonal_with_asm"
     driver:
-      root_module_directory: test/fixtures/simple_regional_with_asm
+      root_module_directory: test/fixtures/simple_zonal_with_asm
     verifier:
       systems:
-        - name: simple_regional_with_asm
+        - name: simple_zonal_with_asm
           backend: local
           controls:
             - gcloud
