@@ -18,7 +18,7 @@ locals {
   cluster_endpoint         = "https://${var.cluster_endpoint}"
   token                    = data.google_client_config.default.access_token
   cluster_ca_certificate   = data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate
-  private_key              = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : file(var.ssh_auth_key)
+  private_key              = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : var.ssh_auth_key
   k8sop_creds_secret_key   = var.secret_type == "cookiefile" ? "cookie_file" : var.secret_type
   should_download_manifest = var.operator_path == null ? true : false
   manifest_path            = local.should_download_manifest ? "${path.root}/.terraform/tmp/config-management-operator.yaml" : var.operator_path
