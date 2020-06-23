@@ -51,6 +51,12 @@ suites:
       systems:
         - name: safer_cluster
           backend: local
+          controls:
+            - gcloud
+        - name: inspec-gcp
+          backend: gcp
+          controls:
+            - network
   - name: "simple_regional"
     driver:
       root_module_directory: test/fixtures/simple_regional
