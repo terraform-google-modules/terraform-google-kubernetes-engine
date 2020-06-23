@@ -19,6 +19,18 @@ variable "name" {
   type        = string
 }
 
+variable "cluster_name" {
+  description = "Cluster name. Required if using existing KSA."
+  type        = string
+  default     = ""
+}
+
+variable "location" {
+  description = "Cluster location (region if regional cluster, zone if zonal cluster). Required if using existing KSA."
+  type        = string
+  default     = ""
+}
+
 variable "k8s_sa_name" {
   description = "Name for the existing Kubernetes service account"
   type        = string
