@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-timeout: 900s
-steps:
-- id: 'lint-tests'
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/usr/local/bin/test_lint.sh']
-tags:
-- 'ci'
-- 'lint'
-substitutions:
-  _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '0'
+project_id   = attribute('project_id')
+cluster_name = attribute('cluster_name')
+
+control "network" do
+  title "gcp network configuration"
+  describe google_compute_firewalls(project: project_id) do
+    its('firewall_names') { should include "gke-#{cluster_name[0,25]}-intra-cluster-egress" }
+    its('firewall_names') { should include "gke-#{cluster_name[0,25]}-webhooks" }
+  end
+
+end
