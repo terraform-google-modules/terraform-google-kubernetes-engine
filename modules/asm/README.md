@@ -9,7 +9,7 @@ Specifically, this module automates the following steps for [installing ASM](htt
 
 ## Usage
 
-There is a [full example](../../examples/simple_regional_with_asm) provided. Simple usage is as follows:
+There is a [full example](../../examples/simple_zonal_with_asm) provided. Simple usage is as follows:
 
 ```tf
 module "asm" {

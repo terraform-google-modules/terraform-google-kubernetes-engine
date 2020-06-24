@@ -15,7 +15,7 @@
  */
 
 locals {
-  cluster_type = "simple-regional-asm2"
+  cluster_type = "simple-zonal-asm"
 }
 
 provider "google-beta" {
@@ -31,9 +31,10 @@ module "gke" {
   source                  = "../../modules/beta-public-cluster/"
   project_id              = var.project_id
   name                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                = true
-  release_channel         = "REGULAR"
+  regional                = false
   region                  = var.region
+  zones                   = var.zones
+  release_channel         = "REGULAR"
   network                 = var.network
   subnetwork              = var.subnetwork
   ip_range_pods           = var.ip_range_pods
@@ -42,11 +43,11 @@ module "gke" {
   cluster_resource_labels = { "mesh_id" : "proj-${data.google_project.project.number}" }
   node_pools = [
     {
-      name        = "asm-node-pool"
-      autoscaling = false
+      name         = "asm-node-pool"
+      autoscaling  = false
+      auto_upgrade = true
       # ASM requires minimum 4 nodes and e2-standard-4
-      # As this is a regional cluster we have node_count * 3 = 6 nodes
-      node_count   = 2
+      node_count   = 4
       machine_type = "e2-standard-4"
     },
   ]

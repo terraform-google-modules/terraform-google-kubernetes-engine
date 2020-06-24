@@ -1,6 +1,6 @@
-# Simple Regional Cluster with ASM
+# Simple Zonal Cluster with ASM
 
-This example illustrates how to create a simple regional cluster with ASM.
+This example illustrates how to create a simple zonal cluster with ASM.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -14,6 +14,7 @@ This example illustrates how to create a simple regional cluster with ASM.
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
 | subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
+| zones | The zone to host the cluster in (required if is a zonal cluster) | list(string) | n/a | yes |
 
 ## Outputs
 

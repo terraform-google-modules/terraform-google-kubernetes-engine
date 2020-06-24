@@ -1,4 +1,4 @@
-name: simple_regional_with_asm
+name: simple_zonal_with_asm
 attributes:
   - name: cluster_name
     required: true
