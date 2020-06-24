@@ -56,7 +56,6 @@ control "gcloud" do
             "disabled" => true,
           },
           "networkPolicyConfig" => {},
-          "dnsCacheConfig" => {},
         })
       end
     end
