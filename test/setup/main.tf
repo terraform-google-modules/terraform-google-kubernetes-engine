@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
+resource "random_id" "random_project_id_suffix" {
+  byte_length = 4
+}
+
 module "gke-project-1" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 8.0"
 
-  name                 = "ci-gke"
+  name                 = "ci-gke-${random_id.random_project_id_suffix.hex}"
   random_project_id    = true
   org_id               = var.org_id
   folder_id            = var.folder_id
@@ -47,7 +51,7 @@ module "gke-project-2" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 8.0"
 
-  name                 = "ci-gke"
+  name                 = "ci-gke-${random_id.random_project_id_suffix.hex}"
   random_project_id    = true
   org_id               = var.org_id
   folder_id            = var.folder_id
@@ -73,13 +77,14 @@ module "gke-project-2" {
 # apis as documented https://cloud.google.com/service-mesh/docs/gke-install-new-cluster#setting_up_your_project
 module "gke-project-asm" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 3.0"
+  version = "~> 8.0"
 
-  name              = "ci-gke-asm"
-  random_project_id = true
-  org_id            = var.org_id
-  folder_id         = var.folder_id
-  billing_account   = var.billing_account
+  name                 = "ci-gke-asm-${random_id.random_project_id_suffix.hex}"
+  random_project_id    = true
+  org_id               = var.org_id
+  folder_id            = var.folder_id
+  billing_account      = var.billing_account
+  skip_gcloud_download = true
 
   activate_apis = [
     "container.googleapis.com",
