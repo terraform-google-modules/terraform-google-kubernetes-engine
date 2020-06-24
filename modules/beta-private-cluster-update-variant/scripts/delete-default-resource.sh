@@ -29,7 +29,7 @@ RESOURCE_LIST=$(kubectl -n "${RESOURCE_NAMESPACE}" get "${RESOURCE_TYPE}" || exi
 
 # Delete requested resource
 if [[ $RESOURCE_LIST = *"${RESOURCE_NAME}"* ]]; then
-    RESOURCE_MAINTAINED_LABEL=$(kubectl -n "${RESOURCE_NAMESPACE}" get "${RESOURCE_TYPE}" -o json "${RESOURCE_NAME}" | jq -r '.metadata.labels."maintained_by"')
+    RESOURCE_MAINTAINED_LABEL=$(kubectl -n "${RESOURCE_NAMESPACE}" get "${RESOURCE_TYPE}" "${RESOURCE_NAME}" -o=jsonpath='{.metadata.labels.maintained_by}')
     if [[ $RESOURCE_MAINTAINED_LABEL = "terraform" ]]; then
         echo "Terraform maintained ${RESOURCE_NAME} ${RESOURCE_TYPE} appears to have already been created in ${RESOURCE_NAMESPACE} namespace"
     else

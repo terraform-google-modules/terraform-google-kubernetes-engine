@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
+resource "random_id" "random_project_id_suffix" {
+  byte_length = 4
+}
+
 module "gke-project-1" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 3.0"
+  version = "~> 8.0"
 
-  name              = "ci-gke"
-  random_project_id = true
-  org_id            = var.org_id
-  folder_id         = var.folder_id
-  billing_account   = var.billing_account
+  name                 = "ci-gke-${random_id.random_project_id_suffix.hex}"
+  random_project_id    = true
+  org_id               = var.org_id
+  folder_id            = var.folder_id
+  billing_account      = var.billing_account
+  skip_gcloud_download = true
 
   auto_create_network = true
 
   activate_apis = [
-    "bigquery-json.googleapis.com",
+    "bigquery.googleapis.com",
     "cloudkms.googleapis.com",
     "cloudresourcemanager.googleapis.com",
     "compute.googleapis.com",
@@ -44,16 +49,17 @@ module "gke-project-1" {
 
 module "gke-project-2" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 3.0"
+  version = "~> 8.0"
 
-  name              = "ci-gke"
-  random_project_id = true
-  org_id            = var.org_id
-  folder_id         = var.folder_id
-  billing_account   = var.billing_account
+  name                 = "ci-gke-${random_id.random_project_id_suffix.hex}"
+  random_project_id    = true
+  org_id               = var.org_id
+  folder_id            = var.folder_id
+  billing_account      = var.billing_account
+  skip_gcloud_download = true
 
   activate_apis = [
-    "bigquery-json.googleapis.com",
+    "bigquery.googleapis.com",
     "cloudkms.googleapis.com",
     "cloudresourcemanager.googleapis.com",
     "compute.googleapis.com",
@@ -65,5 +71,33 @@ module "gke-project-2" {
     "pubsub.googleapis.com",
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
+  ]
+}
+
+# apis as documented https://cloud.google.com/service-mesh/docs/gke-install-new-cluster#setting_up_your_project
+module "gke-project-asm" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 8.0"
+
+  name                 = "ci-gke-asm-${random_id.random_project_id_suffix.hex}"
+  random_project_id    = true
+  org_id               = var.org_id
+  folder_id            = var.folder_id
+  billing_account      = var.billing_account
+  skip_gcloud_download = true
+
+  activate_apis = [
+    "container.googleapis.com",
+    "compute.googleapis.com",
+    "monitoring.googleapis.com",
+    "logging.googleapis.com",
+    "meshca.googleapis.com",
+    "meshtelemetry.googleapis.com",
+    "meshconfig.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "anthos.googleapis.com",
+    "gkeconnect.googleapis.com",
+    "gkehub.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
   ]
 }

@@ -34,8 +34,16 @@ locals {
     "roles/iam.roleAdmin",
     "roles/iap.admin",
   ]
+  # roles as documented https://cloud.google.com/service-mesh/docs/gke-install-new-cluster#setting_up_your_project
+  int_asm_required_roles = [
+    "roles/editor",
+    "roles/container.admin",
+    "roles/resourcemanager.projectIamAdmin",
+    "roles/iam.serviceAccountAdmin",
+    "roles/iam.serviceAccountKeyAdmin",
+    "roles/gkehub.admin",
+  ]
 }
-
 
 resource "random_id" "random_suffix" {
   byte_length = 2
@@ -59,6 +67,12 @@ resource "google_service_account" "gke_sa_2" {
   display_name = "gke-sa-int-test-p2"
 }
 
+resource "google_service_account" "gke_sa_asm" {
+  project      = module.gke-project-asm.project_id
+  account_id   = "gke-sa-int-test-asm-${random_id.random_suffix.hex}"
+  display_name = "gke-sa-int-test-asm"
+}
+
 resource "google_project_iam_member" "int_test_1" {
   count = length(local.int_required_roles)
 
@@ -72,6 +86,14 @@ resource "google_project_iam_member" "int_test_2" {
 
   project = module.gke-project-2.project_id
   role    = local.int_required_roles[count.index]
+  member  = "serviceAccount:${google_service_account.int_test.email}"
+}
+
+resource "google_project_iam_member" "int_test_asm" {
+  for_each = toset(concat(local.int_required_roles, local.int_asm_required_roles))
+
+  project = module.gke-project-asm.project_id
+  role    = each.value
   member  = "serviceAccount:${google_service_account.int_test.email}"
 }
 

@@ -51,6 +51,12 @@ suites:
       systems:
         - name: safer_cluster
           backend: local
+          controls:
+            - gcloud
+        - name: inspec-gcp
+          backend: gcp
+          controls:
+            - network
   - name: "simple_regional"
     driver:
       root_module_directory: test/fixtures/simple_regional
@@ -228,3 +234,13 @@ suites:
       systems:
         - name: safer_cluster_iap_bastion
           backend: local
+  - name: "simple_zonal_with_asm"
+    driver:
+      root_module_directory: test/fixtures/simple_zonal_with_asm
+    verifier:
+      systems:
+        - name: simple_zonal_with_asm
+          backend: local
+          controls:
+            - gcloud
+            - kubectl

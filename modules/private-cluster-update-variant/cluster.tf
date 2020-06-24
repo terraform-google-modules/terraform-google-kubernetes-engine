@@ -335,25 +335,21 @@ resource "google_container_node_pool" "pools" {
   }
 }
 
-resource "null_resource" "wait_for_cluster" {
-  count = var.skip_provisioners ? 0 : 1
+module "gcloud_wait_for_cluster" {
+  source  = "terraform-google-modules/gcloud/google"
+  version = "~> 1.0.1"
+  enabled = var.skip_provisioners
 
-  triggers = {
-    project_id = var.project_id
-    name       = var.name
-  }
+  upgrade       = var.gcloud_upgrade
+  skip_download = var.gcloud_skip_download
 
-  provisioner "local-exec" {
-    command = "${path.module}/scripts/wait-for-cluster.sh ${self.triggers.project_id} ${self.triggers.name}"
-  }
+  create_cmd_entrypoint  = "${path.module}/scripts/wait-for-cluster.sh"
+  create_cmd_body        = "${var.project_id} ${var.name}"
+  destroy_cmd_entrypoint = "${path.module}/scripts/wait-for-cluster.sh"
+  destroy_cmd_body       = "${var.project_id} ${var.name}"
 
-  provisioner "local-exec" {
-    when    = destroy
-    command = "${path.module}/scripts/wait-for-cluster.sh ${self.triggers.project_id} ${self.triggers.name}"
-  }
-
-  depends_on = [
-    google_container_cluster.primary,
-    google_container_node_pool.pools,
-  ]
+  module_depends_on = concat(
+    [google_container_cluster.primary.master_version],
+    [for pool in google_container_node_pool.pools : pool.name]
+  )
 }
