@@ -360,3 +360,9 @@ variable "firewall_inbound_ports" {
   description = "List of TCP ports for admission/webhook controllers"
   default     = ["8443", "9443", "15017"]
 }
+
+variable "config_connector" {
+  type        = bool
+  description = "(Beta) Whether ConfigConnector is enabled for this cluster."
+  default     = false
+}
