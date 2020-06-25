@@ -47,6 +47,7 @@ resource "google_service_account" "cluster_service_account" {
 resource "kubernetes_service_account" "main" {
   count = var.use_existing_k8s_sa ? 0 : 1
 
+  automount_service_account_token = var.automount_service_account_token
   metadata {
     name      = var.name
     namespace = var.namespace

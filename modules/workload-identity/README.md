@@ -68,6 +68,7 @@ module "my-app-workload-identity" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| automount\_service\_account\_token | Enable automatic mounting of the service account token | bool | `"false"` | no |
 | cluster\_name | Cluster name. Required if using existing KSA. | string | `""` | no |
 | k8s\_sa\_name | Name for the existing Kubernetes service account | string | `"null"` | no |
 | location | Cluster location (region if regional cluster, zone if zonal cluster). Required if using existing KSA. | string | `""` | no |
