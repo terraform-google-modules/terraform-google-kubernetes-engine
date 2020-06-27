@@ -27,10 +27,12 @@ module "project-services" {
   source  = "terraform-google-modules/project-factory/google//modules/project_services"
   version = "~> 8.0"
 
-  project_id = var.project_id
-
+  project_id    = var.project_id
   activate_apis = local.required_enabled_apis
-}
+
+  disable_services_on_destroy = var.disable_services_on_destroy
+  disable_dependent_services  = var.disable_dependent_services
+} 
 
 resource "google_binary_authorization_attestor" "attestor" {
   project = var.project_id

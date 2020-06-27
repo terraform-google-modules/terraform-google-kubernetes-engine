@@ -36,6 +36,9 @@ module "quality-attestor" {
 |------|-------------|:----:|:-----:|:-----:|
 | attestor-name | Name of the attestor | string | n/a | yes |
 | project\_id | Project ID to apply services into | string | n/a | yes |
+| crypto-algorithm | Algorithm used for the async signing keys | string | n/a | yes |
+| disable_services_on_destroy | Whether project services will be disabled when the resources are destroyed | string | n/a | yes |
+| disable_dependent_services | Whether services that are enabled and which depend on this service should also be disabled when this service is destroyed | string | n/a | yes |
 
 ## Outputs
 
