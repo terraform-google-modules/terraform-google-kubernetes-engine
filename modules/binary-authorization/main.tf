@@ -32,7 +32,7 @@ module "project-services" {
 
   disable_services_on_destroy = var.disable_services_on_destroy
   disable_dependent_services  = var.disable_dependent_services
-} 
+}
 
 resource "google_binary_authorization_attestor" "attestor" {
   project = var.project_id
