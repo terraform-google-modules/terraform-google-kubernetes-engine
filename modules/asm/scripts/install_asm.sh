@@ -45,7 +45,7 @@ if [[ -d ./asm-patch ]]; then
     echo "ASM patch directory exists. Skipping download..."
 else
     echo "Downloading ASM patch"
-    kpt pkg get https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages.git/asm-patch@release-1.5-asm .
+    kpt pkg get https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages.git/asm-patch@release-1.6-asm .
 fi
 gcloud beta anthos export "${CLUSTER_NAME}" --output-directory ${BASE_DIR} --project "${PROJECT_ID}" --location "${CLUSTER_LOCATION}"
 kpt cfg set asm-patch/ base-dir ../${BASE_DIR}
