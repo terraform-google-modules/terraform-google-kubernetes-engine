@@ -7,7 +7,7 @@ objects that permit a safer-than-default configuration.
 ## Module Usage
 
 The module fixes a set of parameters to values suggested in the
-[GKE harderning guide](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster),
+[GKE hardening guide](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster),
 the CIS framework, and other best practices.
 
 The motivation for each setting, and its relation to harderning guides or other recommendations
