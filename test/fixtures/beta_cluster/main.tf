@@ -60,9 +60,7 @@ module "this" {
 
   enable_binary_authorization = true
 
-  pod_security_policy_config = [{
-    enabled = true
-  }]
+  enable_pod_security_policy = true
 }
 
 data "google_client_config" "default" {
