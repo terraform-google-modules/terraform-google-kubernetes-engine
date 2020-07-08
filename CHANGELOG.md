@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [9.5.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v9.4.0...v9.5.0) (2020-07-08)
+
+
+### Features
+
+* add configconnector to safer variant ([#581](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/581)) ([4b3f609](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4b3f60985ac90265c79a4c5378f8a688f642de96))
+* Added variable for service dependency in binary_authorization sub module ([#584](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/584)) ([1226744](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/122674473b5f9e1d496e9d43337dccbe23e27147))
+
+
+### Bug Fixes
+
+* test new asm release with 299.0.0 ([#589](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/589)) ([fb42551](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/fb425511c96fe481d6cd357534a94d3cdc8f9761))
+
 ## [9.4.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v9.3.0...v9.4.0) (2020-06-25)
 
 
