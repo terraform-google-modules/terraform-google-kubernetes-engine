@@ -110,7 +110,7 @@ control "gcloud" do
         expect(node_pools).to include(
           including(
             "config" => including(
-              "machineType" => "n1-standard-2",
+              "machineType" => "e2-medium",
             ),
           )
         )
