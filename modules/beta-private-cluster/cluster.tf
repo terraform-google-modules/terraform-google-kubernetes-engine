@@ -81,9 +81,9 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "pod_security_policy_config" {
-    for_each = var.pod_security_policy_config
+    for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
     content {
-      enabled = pod_security_policy_config.value.enabled
+      enabled = pod_security_policy_config.value
     }
   }
   dynamic "master_authorized_networks_config" {

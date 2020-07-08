@@ -106,11 +106,10 @@ variable "enable_binary_authorization" {
   default     = false
 }
 
-variable "pod_security_policy_config" {
+variable "enable_pod_security_policy" {
+  type        = bool
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
-  default = [{
-    "enabled" = false
-  }]
+  default     = false
 }
 
 variable "zones" {
