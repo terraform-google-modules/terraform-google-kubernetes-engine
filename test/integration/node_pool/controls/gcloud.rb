@@ -190,7 +190,7 @@ control "gcloud" do
             including(
               "name" => "pool-02",
               "config" => including(
-                "machineType" => "e2-medium",
+                "machineType" => "n1-standard-2",
               ),
             )
           )

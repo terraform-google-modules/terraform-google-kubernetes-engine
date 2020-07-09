@@ -48,6 +48,7 @@ module "gke" {
     },
     {
       name              = "pool-02"
+      machine_type      = "n1-standard-2"
       min_count         = 1
       max_count         = 2
       local_ssd_count   = 0
