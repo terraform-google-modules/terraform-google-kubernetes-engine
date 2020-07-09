@@ -47,7 +47,7 @@ module "gke" {
   node_pools = [
     {
       name               = "default-node-pool"
-      machine_type       = "n1-standard-2"
+      machine_type       = "e2-medium"
       node_locations     = "us-central1-b,us-central1-c"
       min_count          = 1
       max_count          = 100
@@ -257,7 +257,7 @@ The node_pools variable takes the following parameters:
 | initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
 | key | The key required for the taint | | Required |
 | local_ssd_count | The amount of local SSD disks that will be attached to each cluster node | 0 | Optional |
-| machine_type | The name of a Google Compute Engine machine type | n1-standard-2 | Optional |
+| machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
 | max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |
 | max_surge | The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. | 1 | Optional |

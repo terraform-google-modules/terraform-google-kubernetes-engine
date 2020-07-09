@@ -78,7 +78,7 @@ module "gke" {
   node_pools = [
     {
       name               = "default-node-pool"
-      machine_type       = "n1-standard-2"
+      machine_type       = "e2-medium"
       {% if beta_cluster %}
       node_locations     = "us-central1-b,us-central1-c"
       {% endif %}
@@ -178,7 +178,7 @@ The node_pools variable takes the following parameters:
 | key | The key required for the taint | | Required |
 {% endif %}
 | local_ssd_count | The amount of local SSD disks that will be attached to each cluster node | 0 | Optional |
-| machine_type | The name of a Google Compute Engine machine type | n1-standard-2 | Optional |
+| machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
 {% if beta_cluster %}
 | max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |

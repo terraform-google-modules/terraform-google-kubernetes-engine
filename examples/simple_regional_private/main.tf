@@ -50,7 +50,6 @@ module "gke" {
   node_pools = [
     {
       name              = "pool-01"
-      machine_type      = "n1-standard-2"
       min_count         = 1
       max_count         = 100
       local_ssd_count   = 0

@@ -48,7 +48,6 @@ module "gke" {
     },
     {
       name              = "pool-02"
-      machine_type      = "n1-standard-2"
       min_count         = 1
       max_count         = 2
       local_ssd_count   = 0
@@ -65,7 +64,6 @@ module "gke" {
       node_locations  = "${var.region}-b,${var.region}-c"
       autoscaling     = false
       node_count      = 2
-      machine_type    = "n1-standard-2"
       disk_type       = "pd-standard"
       image_type      = "COS"
       auto_upgrade    = true
