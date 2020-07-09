@@ -35,7 +35,6 @@ module "gke" {
       name          = "safer-pool"
       min_count     = 1
       max_count     = 4
-      machine_type  = "n1-standard-2"
       auto_upgrade  = true
       node_metadata = "GKE_METADATA_SERVER"
     }
