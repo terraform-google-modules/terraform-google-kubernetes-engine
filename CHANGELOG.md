@@ -11,6 +11,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### ⚠ BREAKING CHANGES
 
+See the [upgrade guide](./docs/upgrading_to_v10.0.md) for details.
+
 * The default machine type has been changed to `e2-medium`. If you want the old default, you should specify it explicitly: `machine_type = "n1-standard-2"`.
 * Pod security policy enablement has been changed to use a simple boolean flag (`var. enable_pod_security_policy`)
 
