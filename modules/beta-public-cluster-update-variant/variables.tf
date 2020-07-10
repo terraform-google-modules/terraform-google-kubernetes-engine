@@ -369,6 +369,7 @@ variable "default_max_pods_per_node" {
   default     = 110
 }
 
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   default     = false
