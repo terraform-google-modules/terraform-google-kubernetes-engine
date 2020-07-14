@@ -30,7 +30,7 @@ locals {
 }
 
 provider "google" {
-  version = "~> 3.29.0"
+  version = "~> 3.16.0"
 }
 
 provider "google-beta" {
