@@ -69,3 +69,9 @@ variable "gke_hub_membership_name" {
   type        = string
   default     = "gke-asm-membership"
 }
+
+variable "internal_ip" {
+  description = "Use internal ip for the cluster endpoint."
+  type        = bool
+  default     = false
+}

@@ -46,6 +46,7 @@ To deploy this config:
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | string | `"296.0.1"` | no |
 | gke\_hub\_membership\_name | Memebership name that uniquely represents the cluster being registered on the Hub | string | `"gke-asm-membership"` | no |
 | gke\_hub\_sa\_name | Name for the GKE Hub SA stored as a secret `creds-gcp` in the `gke-connect` namespace. | string | `"gke-hub-sa"` | no |
+| internal\_ip | Use internal ip for the cluster endpoint. | bool | `"false"` | no |
 | location | The location (zone or region) this cluster has been created in. | string | n/a | yes |
 | project\_id | The project in which the resource belongs. | string | n/a | yes |
 | skip\_gcloud\_download | Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module) | bool | `"true"` | no |

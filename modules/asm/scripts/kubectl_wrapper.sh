@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,33 +21,47 @@ if [ "$#" -lt 3 ]; then
     exit 1
 fi
 
-HOST=$1
-TOKEN=$2
-CA_CERTIFICATE=$3
+CLUSTER_NAME=$1
+LOCATION=$2
+PROJECT_ID=$3
+INTERNAL=$4
+USE_EXISTING_CONTEXT=$5
 
-shift 3
+shift 5
 
-RANDOM_ID="${RANDOM}_${RANDOM}"
-export TMPDIR="/tmp/kubectl_wrapper_${RANDOM_ID}"
+if $USE_EXISTING_CONTEXT ;then
 
-function cleanup {
-    rm -rf "${TMPDIR}"
-}
-trap cleanup EXIT
+    "$@"
 
-mkdir "${TMPDIR}"
+else
 
-export KUBECONFIG="${TMPDIR}/config"
+    RANDOM_ID="${RANDOM}_${RANDOM}"
+    export TMPDIR="/tmp/kubectl_wrapper_${RANDOM_ID}"
 
-# shellcheck disable=SC1117
-base64 --help | grep "\--decode" && B64_ARG="--decode" || B64_ARG="-d"
-echo "${CA_CERTIFICATE}" | base64 ${B64_ARG} > "${TMPDIR}/ca_certificate"
+    function cleanup {
+        rm -rf "${TMPDIR}"
+    }
+    trap cleanup EXIT
 
-kubectl config set-cluster kubectl-wrapper --server="${HOST}" --certificate-authority="${TMPDIR}/ca_certificate" --embed-certs=true 1>/dev/null
-rm -f "${TMPDIR}/ca_certificate"
-kubectl config set-context kubectl-wrapper --cluster=kubectl-wrapper --user=kubectl-wrapper --namespace=default 1>/dev/null
-kubectl config set-credentials kubectl-wrapper --token="${TOKEN}" 1>/dev/null
-kubectl config use-context kubectl-wrapper 1>/dev/null
-kubectl version 1>/dev/null
+    mkdir "${TMPDIR}"
 
-"$@"
+    export KUBECONFIG="${TMPDIR}/config"
+
+    LOCATION_TYPE=$(grep -o "-" <<< "${LOCATION}" | wc -l)
+
+    CMD="gcloud container clusters get-credentials ${CLUSTER_NAME} --project ${PROJECT_ID}"
+
+    if [[ $LOCATION_TYPE -eq 2 ]] ;then
+        CMD+=" --zone ${LOCATION}"
+    else
+        CMD+=" --region ${LOCATION}"
+    fi
+
+    if $INTERNAL ;then
+        CMD+=" --internal-ip"
+    fi
+
+    $CMD
+
+    "$@"
+fi

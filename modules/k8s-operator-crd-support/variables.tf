@@ -108,6 +108,6 @@ variable "operator_cr_template_path" {
 variable "skip_gcloud_download" {
   description = "Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module)"
   type        = bool
-  default     = false
+  default     = true
 }
 
