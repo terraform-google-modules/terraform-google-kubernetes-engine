@@ -114,7 +114,7 @@ module "gke" {
   // additional configurations.
   enable_private_nodes = true
 
-  master_global_access_enabled = var.master_global_access_enabled
+  master_global_access_enabled = true
 
   master_ipv4_cidr_block = var.master_ipv4_cidr_block
 
