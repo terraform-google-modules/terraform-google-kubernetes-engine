@@ -393,6 +393,14 @@ variable "master_ipv4_cidr_block" {
   default     = "10.0.0.0/28"
 }
 
+variable "master_global_access_enabled" {
+  type        = bool
+  description = "(Beta) Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
+
+  default = true
+}
+
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   default     = false
