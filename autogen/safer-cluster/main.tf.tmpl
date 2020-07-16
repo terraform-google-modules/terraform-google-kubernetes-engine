@@ -118,6 +118,8 @@ module "gke" {
   // additional configurations.
   enable_private_nodes = true
 
+  master_global_access_enabled = true
+
   master_ipv4_cidr_block = var.master_ipv4_cidr_block
 
   // Istio is recommended for pod-to-pod communications.
