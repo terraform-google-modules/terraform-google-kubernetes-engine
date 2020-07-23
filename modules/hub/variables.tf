@@ -67,5 +67,5 @@ variable "gke_hub_sa_name" {
 variable "gke_hub_membership_name" {
   description = "Memebership name that uniquely represents the cluster being registered on the Hub"
   type        = string
-  default     = "gke-asm-membership"
+  default     = "gke-hub-membership"
 }
