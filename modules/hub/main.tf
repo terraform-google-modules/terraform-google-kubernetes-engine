@@ -57,7 +57,7 @@ module "gke_hub_registration" {
   upgrade                           = true
   enabled                           = var.enable_gke_hub_registration
   use_tf_google_credentials_env_var = var.use_tf_google_credentials_env_var
-  module_depends_on                 = [module.asm_install.wait]
+
 
   create_cmd_entrypoint  = "${path.module}/scripts/gke_hub_registration.sh"
   create_cmd_body        = "${var.gke_hub_membership_name} ${var.location} ${var.cluster_name} ${local.gke_hub_sa_key}"
