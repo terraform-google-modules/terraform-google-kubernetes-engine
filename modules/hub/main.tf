@@ -29,21 +29,21 @@ data "google_client_config" "default" {
 
 
 resource "google_service_account" "gke_hub_sa" {
-  count        = var.enable_gke_hub_registration ? 1 : 0
+  count        = 1
   account_id   = var.gke_hub_sa_name
   project      = var.project_id
   display_name = "Service Account for GKE Hub Registration"
 }
 
 resource "google_project_iam_member" "gke_hub_member" {
-  count   = var.enable_gke_hub_registration ? 1 : 0
+  count   = 1
   project = var.project_id
   role    = "roles/gkehub.connect"
   member  = "serviceAccount:${google_service_account.gke_hub_sa[0].email}"
 }
 
 resource "google_service_account_key" "gke_hub_key" {
-  count              = var.enable_gke_hub_registration ? 1 : 0
+  count              = 1 
   service_account_id = google_service_account.gke_hub_sa[0].name
 }
 
@@ -55,7 +55,6 @@ module "gke_hub_registration" {
   gcloud_sdk_version                = var.gcloud_sdk_version
   skip_download                     = var.skip_gcloud_download
   upgrade                           = true
-  enabled                           = var.enable_gke_hub_registration
   use_tf_google_credentials_env_var = var.use_tf_google_credentials_env_var
 
 
