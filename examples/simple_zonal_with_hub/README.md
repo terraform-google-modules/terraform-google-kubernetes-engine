@@ -52,7 +52,6 @@ terraform init
 
 terraform apply \
     -var project_id=${PROJECT} \
-    -var region="us-central1" \ 
+    -var region="us-central1" \
     -var zones='["us-central1-c"]'
 ```
-
