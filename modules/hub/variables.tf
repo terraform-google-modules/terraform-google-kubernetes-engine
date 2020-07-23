@@ -52,6 +52,11 @@ variable "gcloud_sdk_version" {
   default     = "296.0.1"
 }
 
+variable "enable_gke_hub_registration" {
+  description = "Enables GKE Hub Registration when set to true"
+  type        = bool
+  default     = true
+}
 
 variable "gke_hub_sa_name" {
   description = "Name for the GKE Hub SA stored as a secret `creds-gcp` in the `gke-connect` namespace."

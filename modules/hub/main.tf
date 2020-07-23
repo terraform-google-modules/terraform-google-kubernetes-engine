@@ -15,7 +15,7 @@
  */
 
 locals {
-  gke_hub_sa_key = google_service_account_key.gke_hub_key[0].private_key
+  gke_hub_sa_key = var.enable_gke_hub_registration ? google_service_account_key.gke_hub_key[0].private_key : ""
 }
 
 data "google_container_cluster" "primary" {
@@ -29,21 +29,21 @@ data "google_client_config" "default" {
 
 
 resource "google_service_account" "gke_hub_sa" {
-  count        = 1
+  count        = var.enable_gke_hub_registration ? 1 : 0
   account_id   = var.gke_hub_sa_name
   project      = var.project_id
   display_name = "Service Account for GKE Hub Registration"
 }
 
 resource "google_project_iam_member" "gke_hub_member" {
-  count   = 1
+  count   = var.enable_gke_hub_registration ? 1 : 0
   project = var.project_id
   role    = "roles/gkehub.connect"
   member  = "serviceAccount:${google_service_account.gke_hub_sa[0].email}"
 }
 
 resource "google_service_account_key" "gke_hub_key" {
-  count              = 1 
+  count              = var.enable_gke_hub_registration ? 1 : 0
   service_account_id = google_service_account.gke_hub_sa[0].name
 }
 
