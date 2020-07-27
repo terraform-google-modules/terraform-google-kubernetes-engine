@@ -21,7 +21,7 @@
  *****************************************/
 module "gcloud_delete_default_kube_dns_configmap" {
   source                = "terraform-google-modules/gcloud/google"
-  version               = "~> 1.0.1"
+  version               = "~> 1.3.0"
   enabled               = (local.custom_kube_dns_config || local.upstream_nameservers_config) && ! var.skip_provisioners
   additional_components = ["kubectl"]
 
