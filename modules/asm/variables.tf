@@ -40,12 +40,6 @@ variable "skip_gcloud_download" {
   default     = true
 }
 
-variable "use_tf_google_credentials_env_var" {
-  description = "Optional GOOGLE_CREDENTIALS environment variable to be activated."
-  type        = bool
-  default     = false
-}
-
 variable "gcloud_sdk_version" {
   description = "The gcloud sdk version to use. Minimum required version is 293.0.0"
   type        = string
