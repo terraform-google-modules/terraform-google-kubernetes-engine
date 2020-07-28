@@ -50,6 +50,5 @@ To deploy this config:
 | location | The location (zone or region) this cluster has been created in. | string | n/a | yes |
 | project\_id | The project in which the resource belongs. | string | n/a | yes |
 | skip\_gcloud\_download | Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module) | bool | `"true"` | no |
-| use\_tf\_google\_credentials\_env\_var | Optional GOOGLE_CREDENTIALS environment variable to be activated. | bool | `"false"` | no |
 
  <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
