@@ -18,31 +18,22 @@ locals {
   gke_hub_sa_key = var.enable_gke_hub_registration ? google_service_account_key.gke_hub_key[0].private_key : ""
 }
 
-data "google_container_cluster" "primary" {
-  name     = var.cluster_name
-  project  = var.project_id
-  location = var.location
-}
-
-data "google_client_config" "default" {
-}
-
 module "asm_install" {
-  source            = "terraform-google-modules/gcloud/google"
-  version           = "~> 1.0"
+  source            = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version           = "~> 1.4"
   module_depends_on = [var.cluster_endpoint]
 
-  platform                          = "linux"
-  gcloud_sdk_version                = var.gcloud_sdk_version
-  skip_download                     = var.skip_gcloud_download
-  upgrade                           = true
-  use_tf_google_credentials_env_var = var.use_tf_google_credentials_env_var
-  additional_components             = ["kubectl", "kpt"]
+  gcloud_sdk_version    = var.gcloud_sdk_version
+  skip_download         = var.skip_gcloud_download
+  upgrade               = true
+  additional_components = ["kubectl", "kpt", "beta", "kustomize"]
+  cluster_name          = var.cluster_name
+  cluster_location      = var.location
+  project_id            = var.project_id
 
-  create_cmd_entrypoint  = "${path.module}/scripts/install_asm.sh"
-  create_cmd_body        = "${var.project_id} ${var.cluster_name} ${var.location}"
-  destroy_cmd_entrypoint = "${path.module}/scripts/kubectl_wrapper.sh"
-  destroy_cmd_body       = "https://${var.cluster_endpoint} ${data.google_client_config.default.access_token} ${data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate} kubectl delete ns istio-system"
+
+  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location}"
+  kubectl_destroy_command = "kubectl delete ns istio-system"
 }
 
 resource "google_service_account" "gke_hub_sa" {
@@ -66,15 +57,14 @@ resource "google_service_account_key" "gke_hub_key" {
 
 module "gke_hub_registration" {
   source  = "terraform-google-modules/gcloud/google"
-  version = "~> 1.0"
+  version = "~> 1.2"
 
-  platform                          = "linux"
-  gcloud_sdk_version                = var.gcloud_sdk_version
-  skip_download                     = var.skip_gcloud_download
-  upgrade                           = true
-  enabled                           = var.enable_gke_hub_registration
-  use_tf_google_credentials_env_var = var.use_tf_google_credentials_env_var
-  module_depends_on                 = [module.asm_install.wait]
+  platform           = "linux"
+  gcloud_sdk_version = var.gcloud_sdk_version
+  skip_download      = var.skip_gcloud_download
+  upgrade            = true
+  enabled            = var.enable_gke_hub_registration
+  module_depends_on  = [module.asm_install.wait]
 
   create_cmd_entrypoint  = "${path.module}/scripts/gke_hub_registration.sh"
   create_cmd_body        = "${var.gke_hub_membership_name} ${var.location} ${var.cluster_name} ${local.gke_hub_sa_key}"
