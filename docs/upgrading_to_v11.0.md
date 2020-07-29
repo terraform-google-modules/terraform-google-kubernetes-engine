@@ -40,3 +40,8 @@ module "asm" {
 -  use_tf_google_credentials_env_var = true
 }
 ```
+
+### Workload Identity
+
+- Use of Workload Identity module without `use_existing_k8s_sa` enabled is no-op as it does not trigger the annotation of existing KSA.
+- Use of Workload Identity module with `use_existing_k8s_sa` enabled is no-op due to usage of `--overwrite` flag while annotating KSA.
