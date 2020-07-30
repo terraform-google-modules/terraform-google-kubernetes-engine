@@ -126,3 +126,8 @@ output "peering_name" {
   description = "The name of the peering between this cluster and the Google owned VPC."
   value       = module.gke.peering_name
 }
+
+output "instance_group_urls" {
+  description = "List of GKE generated instance groups"
+  value = google_container_cluster.primary.instance_group_urls
+}

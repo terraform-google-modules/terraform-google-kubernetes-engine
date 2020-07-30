@@ -118,3 +118,8 @@ output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
   value       = local.service_account
 }
+
+output "instance_group_urls" {
+  description = "List of GKE generated instance groups"
+  value = google_container_cluster.primary.instance_group_urls
+}
