@@ -22,7 +22,7 @@
 data "google_compute_zones" "available" {
   provider = google
 
-  project = var.project_i
+  project = var.project_if
   region  = local.region
 }
 
