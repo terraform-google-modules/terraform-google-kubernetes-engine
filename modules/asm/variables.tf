@@ -69,3 +69,15 @@ variable "internal_ip" {
   type        = bool
   default     = false
 }
+
+variable "asm_dir" {
+  description = "Name of directory to keep ASM resource config files."
+  type        = string
+  default     = "asm-dir"
+}
+
+variable "asm_version" {
+  description = "ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  type        = string
+  default     = "release-1.6-asm"
+}
