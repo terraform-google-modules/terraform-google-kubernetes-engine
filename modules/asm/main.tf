@@ -32,7 +32,7 @@ module "asm_install" {
   project_id            = var.project_id
 
 
-  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location}"
+  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_dir} ${var.asm_version}"
   kubectl_destroy_command = "kubectl delete ns istio-system"
 }
 
