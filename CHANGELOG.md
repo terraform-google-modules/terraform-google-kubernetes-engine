@@ -11,7 +11,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### ⚠ BREAKING CHANGES
 
-* In-cluster resources have been updated to use the [kubectl wrapper](https://github.com/terraform-google-modules/terraform-google-gcloud/tree/master/modules/kubectl-wrapper) module. See the upgrade guide for details.
+* In-cluster resources have been updated to use the [kubectl wrapper](https://github.com/terraform-google-modules/terraform-google-gcloud/tree/master/modules/kubectl-wrapper) module. See the [upgrade guide](./docs/upgrading_to_v11.0.md) for details.
 
 ### Features
 
