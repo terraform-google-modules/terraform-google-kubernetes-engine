@@ -17,5 +17,5 @@
 // This file was automatically generated from a template in ./autogen/safer-cluster
 
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">=0.12, <0.14"
 }
