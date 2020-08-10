@@ -6,6 +6,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [11.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v10.0.0...v11.0.0) (2020-08-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* In-cluster resources have been updated to use the [kubectl wrapper](https://github.com/terraform-google-modules/terraform-google-gcloud/tree/master/modules/kubectl-wrapper) module. See the upgrade guide for details.
+
+### Features
+
+* Add support for enabling master_global_access, which is turned on by default. ([#601](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/601)) ([8a9f904](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8a9f9041c8f18ff7a873873e9b19e03dcdfe7d2a))
+* Allow user to customize ASM install with different directories and versions ([#620](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/620)) ([d542c5c](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d542c5cc99bf8b47d82c320ad6c9853cfbb1e11c))
+* Update modules to use new kubectl module ([#602](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/602)) ([794da61](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/794da61825739bab80cbed486b5e919f79478667))
+
+
+### Bug Fixes
+
+* Bumped gcloud module to 1.3.0 ([#612](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/612)) ([4d33759](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4d33759bb6e913586f9d0e2705d6eb2fb6c43a23))
+* relax version to allow 0.13 ([#621](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/621)) ([dd96aa5](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/dd96aa595090bbd02f6b38fc682ea3de74aca531))
+
 ## [10.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v9.4.0...v10.0.0) (2020-07-10)
 
 
