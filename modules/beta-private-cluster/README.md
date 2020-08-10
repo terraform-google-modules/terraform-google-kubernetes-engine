@@ -47,7 +47,7 @@ module "gke" {
   node_pools = [
     {
       name               = "default-node-pool"
-      machine_type       = "n1-standard-2"
+      machine_type       = "e2-medium"
       node_locations     = "us-central1-b,us-central1-c"
       min_count          = 1
       max_count          = 100
@@ -143,6 +143,7 @@ Then perform the following commands on the root folder:
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | bool | `"false"` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | bool | `"false"` | no |
 | enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | bool | `"false"` | no |
+| enable\_pod\_security\_policy | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | bool | `"false"` | no |
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | bool | `"false"` | no |
 | enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | bool | `"false"` | no |
 | enable\_resource\_consumption\_export | Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. | bool | `"true"` | no |
@@ -172,6 +173,7 @@ Then perform the following commands on the root folder:
 | maintenance\_recurrence | Frequency of the recurring maintenance window in RFC5545 format. | string | `""` | no |
 | maintenance\_start\_time | Time window specified for daily or recurring maintenance operations in RFC3339 format | string | `"05:00"` | no |
 | master\_authorized\_networks | List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically whitelists). | object | `<list>` | no |
+| master\_global\_access\_enabled | (Beta) Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint. | bool | `"true"` | no |
 | master\_ipv4\_cidr\_block | (Beta) The IP range in CIDR notation to use for the hosted master network | string | `"10.0.0.0/28"` | no |
 | monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | string | `"monitoring.googleapis.com/kubernetes"` | no |
 | name | The name of the cluster (required) | string | n/a | yes |
@@ -187,7 +189,6 @@ Then perform the following commands on the root folder:
 | node\_pools\_tags | Map of lists containing node network tags by node-pool name | map(list(string)) | `<map>` | no |
 | node\_pools\_taints | Map of lists containing node taints by node-pool name | object | `<map>` | no |
 | non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list(string) | `<list>` | no |
-| pod\_security\_policy\_config | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | object | `<list>` | no |
 | project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
 | region | The region to host the cluster in (optional if zonal cluster / required if regional) | string | `"null"` | no |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |
@@ -257,7 +258,7 @@ The node_pools variable takes the following parameters:
 | initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
 | key | The key required for the taint | | Required |
 | local_ssd_count | The amount of local SSD disks that will be attached to each cluster node | 0 | Optional |
-| machine_type | The name of a Google Compute Engine machine type | n1-standard-2 | Optional |
+| machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
 | max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |
 | max_surge | The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. | 1 | Optional |

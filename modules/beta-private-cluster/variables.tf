@@ -393,6 +393,14 @@ variable "master_ipv4_cidr_block" {
   default     = "10.0.0.0/28"
 }
 
+variable "master_global_access_enabled" {
+  type        = bool
+  description = "(Beta) Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
+
+  default = true
+}
+
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   default     = false
@@ -448,13 +456,10 @@ variable "enable_binary_authorization" {
   default     = false
 }
 
-variable "pod_security_policy_config" {
-  type        = list(object({ enabled = bool }))
+variable "enable_pod_security_policy" {
+  type        = bool
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
-
-  default = [{
-    "enabled" = false
-  }]
+  default     = false
 }
 
 variable "node_metadata" {

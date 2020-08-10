@@ -79,7 +79,7 @@ control "gcloud" do
             including(
               "name" => "pool-01",
               "config" => including(
-                "machineType" => "n1-standard-2",
+                "machineType" => "e2-medium",
               ),
             )
           )
@@ -319,7 +319,7 @@ control "gcloud" do
             including(
               "name" => "pool-03",
               "config" => including(
-                "machineType" => "n1-standard-2",
+                "machineType" => "e2-medium",
               ),
             )
           )

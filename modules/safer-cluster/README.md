@@ -7,7 +7,7 @@ objects that permit a safer-than-default configuration.
 ## Module Usage
 
 The module fixes a set of parameters to values suggested in the
-[GKE harderning guide](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster),
+[GKE hardening guide](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster),
 the CIS framework, and other best practices.
 
 The motivation for each setting, and its relation to harderning guides or other recommendations
@@ -205,12 +205,14 @@ For simplicity, we suggest using `roles/container.admin` and
 | cloudrun | (Beta) Enable CloudRun addon | string | `"false"` | no |
 | cluster\_resource\_labels | The GCE resource labels (a map of key/value pairs) to be applied to the cluster | map(string) | `<map>` | no |
 | compute\_engine\_service\_account | Use the given service account for nodes rather than creating a new dedicated service account. | string | `""` | no |
+| config\_connector | (Beta) Whether ConfigConnector is enabled for this cluster. | bool | `"false"` | no |
 | database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key. | object | `<list>` | no |
 | default\_max\_pods\_per\_node | The maximum number of pods to schedule per node | string | `"110"` | no |
 | description | The description of the cluster | string | `""` | no |
 | dns\_cache | (Beta) The status of the NodeLocal DNSCache addon. | bool | `"false"` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | bool | `"false"` | no |
 | enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | bool | `"false"` | no |
+| enable\_pod\_security\_policy | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | bool | `"false"` | no |
 | enable\_private\_endpoint | When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true | bool | `"true"` | no |
 | enable\_resource\_consumption\_export | Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. | bool | `"true"` | no |
 | enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster. | bool | `"true"` | no |
@@ -241,7 +243,6 @@ For simplicity, we suggest using `roles/container.admin` and
 | node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | map(list(string)) | `<map>` | no |
 | node\_pools\_tags | Map of lists containing node network tags by node-pool name | map(list(string)) | `<map>` | no |
 | node\_pools\_taints | Map of lists containing node taints by node-pool name | object | `<map>` | no |
-| pod\_security\_policy\_config | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | object | `<list>` | no |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |

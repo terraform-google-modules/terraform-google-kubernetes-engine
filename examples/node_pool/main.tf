@@ -19,7 +19,7 @@ locals {
 }
 
 provider "google-beta" {
-  version = "~> 3.23.0"
+  version = "~> 3.29.0"
   region  = var.region
 }
 
@@ -65,7 +65,6 @@ module "gke" {
       node_locations  = "${var.region}-b,${var.region}-c"
       autoscaling     = false
       node_count      = 2
-      machine_type    = "n1-standard-2"
       disk_type       = "pd-standard"
       image_type      = "COS"
       auto_upgrade    = true

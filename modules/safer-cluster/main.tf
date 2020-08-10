@@ -114,6 +114,8 @@ module "gke" {
   // additional configurations.
   enable_private_nodes = true
 
+  master_global_access_enabled = true
+
   master_ipv4_cidr_block = var.master_ipv4_cidr_block
 
   // Istio is recommended for pod-to-pod communications.
@@ -124,6 +126,8 @@ module "gke" {
 
   dns_cache = var.dns_cache
 
+  config_connector = var.config_connector
+
   default_max_pods_per_node = var.default_max_pods_per_node
 
   database_encryption = var.database_encryption
@@ -131,9 +135,9 @@ module "gke" {
   // We suggest to define policies about  which images can run on a cluster.
   enable_binary_authorization = true
 
-  // Define PodSecurityPolicies for differnet applications.
-  // Example: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#example
-  pod_security_policy_config = var.pod_security_policy_config
+  // Use of PodSecurityPolicy admission controller
+  // https://cloud.google.com/kubernetes-engine/docs/how-to/pod-security-policies
+  enable_pod_security_policy = var.enable_pod_security_policy
 
   resource_usage_export_dataset_id = var.resource_usage_export_dataset_id
 

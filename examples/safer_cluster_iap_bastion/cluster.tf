@@ -15,8 +15,8 @@
  */
 
 module "gke" {
-  source                  = "terraform-google-modules/kubernetes-engine/google//modules/safer-cluster"
-  version                 = "~> 9.0"
+  source = "../../modules/safer-cluster"
+
   project_id              = module.enabled_google_apis.project_id
   name                    = var.cluster_name
   region                  = var.region
@@ -35,7 +35,6 @@ module "gke" {
       name          = "safer-pool"
       min_count     = 1
       max_count     = 4
-      machine_type  = "n1-standard-2"
       auto_upgrade  = true
       node_metadata = "GKE_METADATA_SERVER"
     }

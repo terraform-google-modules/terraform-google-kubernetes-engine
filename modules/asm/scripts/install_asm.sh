@@ -15,7 +15,7 @@
 
 set -e
 
-if [ "$#" -lt 3 ]; then
+if [ "$#" -lt 5 ]; then
     >&2 echo "Not all expected arguments set."
     exit 1
 fi
@@ -23,7 +23,8 @@ fi
 PROJECT_ID=$1
 CLUSTER_NAME=$2
 CLUSTER_LOCATION=$3
-ASM_RESOURCES="asm-dir"
+ASM_RESOURCES=$4
+ASM_VERSION=$5
 BASE_DIR="asm-base-dir"
 # check for needed binaries
 # kustomize is a requirement for installing ASM and is not available via gcloud. Safely exit if not available.
@@ -38,14 +39,14 @@ fi
 #   echo "ASM yaml validation will be skipped as Docker is unavailable"
 #   SKIP_ASM_VALIDATION=true
 # fi
-mkdir -p $ASM_RESOURCES
-pushd $ASM_RESOURCES
+mkdir -p "${ASM_RESOURCES}"
+pushd "${ASM_RESOURCES}"
 gcloud config set project "${PROJECT_ID}"
 if [[ -d ./asm-patch ]]; then
     echo "ASM patch directory exists. Skipping download..."
 else
     echo "Downloading ASM patch"
-    kpt pkg get https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages.git/asm-patch@release-1.5-asm .
+    kpt pkg get https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages.git/asm-patch@"${ASM_VERSION}" .
 fi
 gcloud beta anthos export "${CLUSTER_NAME}" --output-directory ${BASE_DIR} --project "${PROJECT_ID}" --location "${CLUSTER_LOCATION}"
 kpt cfg set asm-patch/ base-dir ../${BASE_DIR}

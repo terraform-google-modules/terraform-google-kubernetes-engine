@@ -81,9 +81,9 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "pod_security_policy_config" {
-    for_each = var.pod_security_policy_config
+    for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
     content {
-      enabled = pod_security_policy_config.value.enabled
+      enabled = pod_security_policy_config.value
     }
   }
   dynamic "master_authorized_networks_config" {
@@ -155,6 +155,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  networking_mode = "VPC_NATIVE"
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services
@@ -232,6 +233,12 @@ resource "google_container_cluster" "primary" {
       enable_private_endpoint = private_cluster_config.value.enable_private_endpoint
       enable_private_nodes    = private_cluster_config.value.enable_private_nodes
       master_ipv4_cidr_block  = private_cluster_config.value.master_ipv4_cidr_block
+      dynamic "master_global_access_config" {
+        for_each = var.master_global_access_enabled ? [var.master_global_access_enabled] : []
+        content {
+          enabled = master_global_access_config.value
+        }
+      }
     }
   }
 
@@ -384,7 +391,7 @@ resource "google_container_node_pool" "pools" {
 
   node_config {
     image_type   = lookup(each.value, "image_type", "COS")
-    machine_type = lookup(each.value, "machine_type", "n1-standard-2")
+    machine_type = lookup(each.value, "machine_type", "e2-medium")
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
       lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
@@ -483,7 +490,7 @@ resource "google_container_node_pool" "pools" {
 
 module "gcloud_wait_for_cluster" {
   source  = "terraform-google-modules/gcloud/google"
-  version = "~> 1.0.1"
+  version = "~> 1.3.0"
   enabled = var.skip_provisioners
 
   upgrade       = var.gcloud_upgrade

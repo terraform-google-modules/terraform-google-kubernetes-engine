@@ -6,6 +6,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [10.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v9.4.0...v10.0.0) (2020-07-10)
+
+
+### ⚠ BREAKING CHANGES
+
+See the [upgrade guide](./docs/upgrading_to_v10.0.md) for details.
+
+* The default machine type has been changed to `e2-medium`. If you want the old default, you should specify it explicitly: `machine_type = "n1-standard-2"`.
+* Pod security policy enablement has been changed to use a simple boolean flag (`var. enable_pod_security_policy`)
+
+### Features
+
+* add configconnector to safer variant ([#581](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/581)) ([4b3f609](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4b3f60985ac90265c79a4c5378f8a688f642de96))
+* Added variable for service dependency in binary_authorization sub module ([#584](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/584)) ([e3e5458](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e3e5458106bce5e3cc9995c2bc630f476439f71a))
+* Changed default node pool machine type to e2-medium ([#597](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/597)) ([1de41ef](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1de41efafaee7abafbb6b83dc0cb687306bb4d87))
+
+
+### Bug Fixes
+
+* Compatibility for new asm release with 299.0.0 ([#589](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/589)) ([a5213c4](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a5213c4693dc0494bf70d72d72f875cc318f5fb7))
+* Explicitly specify VPC-native clusters for beta modules. ([#598](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/598)) ([d9f7782](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d9f7782235ad43081e745d9d33e7de07b38259d5))
+* Simplified pod security policy interface. ([6069ece](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6069ece9cd12acbbba8ff16ab0cbc9b17bc47985))
+* Typo in autogen/safer-cluster/README.md ([#596](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/596)) ([ebdf57d](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ebdf57dc178e43799f673e1aaa1dba33aa96bcf5))
+
+## [9.4.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v9.3.0...v9.4.0) (2020-06-25)
+
+
+### Features
+
+* Add ASM install submodule ([#538](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/538)) ([6ff27f9](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6ff27f9da146f8d0d37c8d536b863369bc82d4ab))
+* Add bool option for automount_service_account_token ([#571](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/571)) ([002cfb1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/002cfb1a6f2214092adf066611b9be481d066b17))
+* Add firewall support safer-cluster modules ([#570](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/570)) ([7ce3c49](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7ce3c497e4c6ddaf2da393d03d82b7f43ab329ee))
+
+
+### Bug Fixes
+
+* Enhance WI module usability with existing KSA ([#557](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/557)) ([cf3273d](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/cf3273df8428bfed36db76d54ec90aec022c55d5))
+* Restore gcloud wait_for_cluster ([#568](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/568)) ([0bcf3ca](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0bcf3ca0dfebcdd99084d43eb6833bb7e55ae434))
+* Use gcloud module for scripts, closes [#401](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/401) ([#404](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/404)) ([65172de](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/65172dea06923cb8f2771d06cba5e9ef2547d9da))
+
 ## [9.3.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v9.2.0...v9.3.0) (2020-06-11)
 
 
