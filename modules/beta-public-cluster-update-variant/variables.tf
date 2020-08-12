@@ -509,3 +509,9 @@ variable "gcloud_skip_download" {
   description = "Whether to skip downloading gcloud (assumes gcloud is already available outside the module)"
   default     = true
 }
+
+variable "disable_default_snat" {
+  type        = bool
+  description = "Whether to disable the default SNAT to support the private use of public IP addresses"
+  default     = false
+}
