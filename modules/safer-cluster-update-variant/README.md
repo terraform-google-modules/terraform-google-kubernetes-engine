@@ -209,6 +209,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key. | object | `<list>` | no |
 | default\_max\_pods\_per\_node | The maximum number of pods to schedule per node | string | `"110"` | no |
 | description | The description of the cluster | string | `""` | no |
+| disable\_default\_snat | Whether to disable the default SNAT to support the private use of public IP addresses | bool | `"false"` | no |
 | dns\_cache | (Beta) The status of the NodeLocal DNSCache addon. | bool | `"false"` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | bool | `"false"` | no |
 | enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | bool | `"false"` | no |
