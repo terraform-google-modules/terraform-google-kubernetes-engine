@@ -111,3 +111,26 @@ variable "skip_gcloud_download" {
   default     = true
 }
 
+variable "source_format" {
+  description = <<EOF
+    Configures a non-hierarchical repo if set to 'unstructured'. Uses [Config Sync defaults](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing#configuring-config-management-operator)
+    when unset.
+  EOF
+  type        = string
+  default     = ""
+}
+
+variable "hierarchy_controller" {
+  description = <<EOF
+    Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing-hierarchy-controller)
+    for more details
+  EOF
+  type        = map
+  default     = {}
+}
+
+variable "enable_log_denies" {
+  description = "Whether to enable logging of all denies and dryrun failures for ACM Policy Controller."
+  type        = bool
+  default     = false
+}
