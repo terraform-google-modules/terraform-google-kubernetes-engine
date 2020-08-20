@@ -49,7 +49,7 @@ By default, this module will attempt to download the ACM operator from Google di
 | create\_ssh\_key | Controls whether a key will be generated for Git authentication | bool | `"true"` | no |
 | enable\_log\_denies | Whether to enable logging of all denies and dryrun failures for ACM Policy Controller. | bool | `"false"` | no |
 | enable\_policy\_controller | Whether to enable the ACM Policy Controller on the cluster | bool | `"true"` | no |
-| hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/anthos-config-management/docs/how-to/installing-hierarchy-controller) for more details | map | `<map>` | no |
+| hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/anthos-config-management/docs/how-to/installing-hierarchy-controller) for more details | map | `"null"` | no |
 | install\_template\_library | Whether to install the default Policy Controller template library | bool | `"true"` | no |
 | location | GCP location used to reach cluster. | string | n/a | yes |
 | operator\_path | Path to the operator yaml config. If unset, will download from GCS releases. | string | `"null"` | no |

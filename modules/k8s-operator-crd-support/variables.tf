@@ -126,7 +126,7 @@ variable "hierarchy_controller" {
     for more details
   EOF
   type        = map
-  default     = {}
+  default     = null
 }
 
 variable "enable_log_denies" {

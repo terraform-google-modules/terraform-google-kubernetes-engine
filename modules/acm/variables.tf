@@ -102,7 +102,7 @@ variable "source_format" {
 variable "hierarchy_controller" {
   description = "Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/anthos-config-management/docs/how-to/installing-hierarchy-controller) for more details"
   type        = map
-  default     = {}
+  default     = null
 }
 
 variable "enable_log_denies" {

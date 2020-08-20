@@ -89,5 +89,5 @@ variable "source_format" {
 variable "hierarchy_controller" {
   description = "Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing-hierarchy-controller) for more details."
   type        = map
-  default     = {}
+  default     = null
 }

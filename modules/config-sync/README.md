@@ -50,7 +50,7 @@ To deploy this config:
 | cluster\_endpoint | Kubernetes cluster endpoint. | string | n/a | yes |
 | cluster\_name | GCP cluster name used to reach cluster and which becomes the cluster name in the Config Sync kubernetes custom resource. | string | n/a | yes |
 | create\_ssh\_key | Controls whether a key will be generated for Git authentication | bool | `"true"` | no |
-| hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing-hierarchy-controller) for more details. | map | `<map>` | no |
+| hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing-hierarchy-controller) for more details. | map | `"null"` | no |
 | location | GCP location used to reach cluster. | string | n/a | yes |
 | operator\_path | Path to the operator yaml config. If unset, will download from GCS releases. | string | `"null"` | no |
 | policy\_dir | Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default. | string | `""` | no |

@@ -22,7 +22,7 @@ locals {
   manifest_path                 = local.should_download_manifest ? "${path.root}/.terraform/tmp/config-management-operator.yaml" : var.operator_path
   sync_branch_node              = var.sync_branch != "" ? format("syncBranch: %s", var.sync_branch) : ""
   policy_dir_node               = var.policy_dir != "" ? format("policyDir: %s", var.policy_dir) : ""
-  hierarchy_controller_map_node = var.hierarchy_controller == {} ? "" : format("hierarchy_controller:\n    %s", yamlencode(var.hierarchy_controller))
+  hierarchy_controller_map_node = var.hierarchy_controller == null ? "" : format("hierarchy_controller:\n    %s", yamlencode(var.hierarchy_controller))
   source_format_node            = var.source_format != "" ? format("sourceFormat: %s", var.source_format) : ""
 }
 
