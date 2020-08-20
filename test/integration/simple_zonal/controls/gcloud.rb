@@ -85,41 +85,19 @@ control "gcloud" do
         )
       end
 
-      it "has autoscaling enabled" do
+      it "has the expected initial node count" do
         expect(node_pools).to include(
           including(
-            "autoscaling" => including(
-              "enabled" => true,
-            ),
+              "initialNodeCount" => 4,
+            )
           )
-        )
-      end
-
-      it "has the expected minimum node count" do
-        expect(node_pools).to include(
-          including(
-            "autoscaling" => including(
-              "minNodeCount" => 1,
-            ),
-          )
-        )
-      end
-
-      it "has the expected maximum node count" do
-        expect(node_pools).to include(
-          including(
-            "autoscaling" => including(
-              "maxNodeCount" => 100,
-            ),
-          )
-        )
       end
 
       it "is the expected machine type" do
         expect(node_pools).to include(
           including(
             "config" => including(
-              "machineType" => "e2-medium",
+              "machineType" => "e2-standard-4",
             ),
           )
         )
@@ -141,7 +119,7 @@ control "gcloud" do
             "config" => including(
               "labels" => including(
                 "cluster_name" => cluster_name,
-                "node_pool" => "default-node-pool",
+                "node_pool" => "acm-node-pool",
               ),
             ),
           )
@@ -154,7 +132,7 @@ control "gcloud" do
             "config" => including(
               "tags" => match_array([
                 "gke-#{cluster_name}",
-                "gke-#{cluster_name}-default-node-pool",
+                "gke-#{cluster_name}-acm-node-pool",
               ]),
             ),
           )
