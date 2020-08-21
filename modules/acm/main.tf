@@ -32,6 +32,9 @@ module "acm_operator" {
   enable_policy_controller = var.enable_policy_controller
   install_template_library = var.install_template_library
   skip_gcloud_download     = var.skip_gcloud_download
+  source_format            = var.source_format
+  hierarchy_controller     = var.hierarchy_controller
+  enable_log_denies        = var.enable_log_denies
 
   operator_latest_manifest_url  = "gs://config-management-release/released/latest/config-management-operator.yaml"
   operator_cr_template_path     = "${path.module}/templates/acm-config.yml.tpl"

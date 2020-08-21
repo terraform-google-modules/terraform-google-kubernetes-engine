@@ -35,6 +35,16 @@ module "gke" {
   ip_range_pods     = var.ip_range_pods
   ip_range_services = var.ip_range_services
   service_account   = "create"
+  node_pools = [
+    {
+      name         = "acm-node-pool"
+      autoscaling  = false
+      auto_upgrade = true
+      # Trying larger node pool for ACM to prevent against test flakiness
+      node_count   = 4
+      machine_type = "e2-standard-4"
+    },
+  ]
 }
 
 data "google_client_config" "default" {
