@@ -77,8 +77,11 @@ resource "google_container_cluster" "primary" {
 {% endif %}
 
   cluster_autoscaling {
-    enabled             = var.cluster_autoscaling.enabled
+    enabled = var.cluster_autoscaling.enabled
 {% if beta_cluster %}
+    auto_provisioning_defaults {
+      service_account = local.service_account
+    }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
 {% endif %}
     dynamic "resource_limits" {
