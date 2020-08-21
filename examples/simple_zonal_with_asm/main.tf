@@ -19,7 +19,7 @@ locals {
 }
 
 provider "google-beta" {
-  version = "~> 3.29.0"
+  version = "~> 3.32.0"
   region  = var.region
 }
 
@@ -54,12 +54,11 @@ module "gke" {
 }
 
 module "asm" {
-  source                            = "../../modules/asm"
-  cluster_name                      = module.gke.name
-  cluster_endpoint                  = module.gke.endpoint
-  project_id                        = var.project_id
-  location                          = module.gke.location
-  use_tf_google_credentials_env_var = true
+  source           = "../../modules/asm"
+  cluster_name     = module.gke.name
+  cluster_endpoint = module.gke.endpoint
+  project_id       = var.project_id
+  location         = module.gke.location
 }
 
 data "google_client_config" "default" {

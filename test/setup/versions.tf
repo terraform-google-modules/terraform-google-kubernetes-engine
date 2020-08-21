@@ -15,7 +15,7 @@
  */
 
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">=0.12, <0.14"
 }
 
 provider "google" {
@@ -23,5 +23,5 @@ provider "google" {
 }
 
 provider "google-beta" {
-  version = "3.25.0"
+  version = "3.32.0"
 }

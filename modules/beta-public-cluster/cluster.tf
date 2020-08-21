@@ -51,6 +51,9 @@ resource "google_container_cluster" "primary" {
 
   subnetwork = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
 
+  default_snat_status {
+    disabled = var.disable_default_snat
+  }
   min_master_version = var.release_channel != null ? null : local.master_version
 
   logging_service    = var.logging_service
@@ -398,7 +401,7 @@ resource "google_container_node_pool" "pools" {
 
 module "gcloud_wait_for_cluster" {
   source  = "terraform-google-modules/gcloud/google"
-  version = "~> 1.0.1"
+  version = "~> 1.3.0"
   enabled = var.skip_provisioners
 
   upgrade       = var.gcloud_upgrade

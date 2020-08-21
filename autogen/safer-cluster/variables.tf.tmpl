@@ -363,3 +363,9 @@ variable "config_connector" {
   description = "(Beta) Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
+
+variable "disable_default_snat" {
+  type        = bool
+  description = "Whether to disable the default SNAT to support the private use of public IP addresses"
+  default     = false
+}
