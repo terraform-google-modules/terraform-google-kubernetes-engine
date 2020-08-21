@@ -10,12 +10,12 @@ It incorporates the standard cluster module and the [Hub registration module](..
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
-| ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
-| ip\_range\_services | The secondary ip range to use for services | string | n/a | yes |
-| network | The VPC network to host the cluster in | string | n/a | yes |
+| ip\_range\_pods | The secondary ip range to use for pods | string | `""` | no |
+| ip\_range\_services | The secondary ip range to use for services | string | `""` | no |
+| network | The VPC network to host the cluster in | string | `"default"` | no |
 | project\_id | The project ID to host the cluster in | string | n/a | yes |
 | region | The region to host the cluster in | string | n/a | yes |
-| subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
+| subnetwork | The subnetwork to host the cluster in | string | `"default"` | no |
 | zones | The zone to host the cluster in (required if is a zonal cluster) | list(string) | n/a | yes |
 
 ## Outputs
