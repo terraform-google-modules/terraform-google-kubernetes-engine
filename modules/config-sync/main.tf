@@ -30,6 +30,8 @@ module "configsync_operator" {
   secret_type          = var.secret_type
   ssh_auth_key         = var.ssh_auth_key
   skip_gcloud_download = var.skip_gcloud_download
+  source_format        = var.source_format
+  hierarchy_controller = var.hierarchy_controller
 
   operator_latest_manifest_url  = "gs://config-management-release/released/latest/config-sync-operator.yaml"
   operator_cr_template_path     = "${path.module}/templates/config-sync-config.yml.tpl"
