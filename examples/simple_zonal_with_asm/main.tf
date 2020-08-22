@@ -19,7 +19,7 @@ locals {
 }
 
 provider "google-beta" {
-  version = "~> 3.32.0"
+  version = "~> 3.35.0"
   region  = var.region
 }
 
@@ -59,6 +59,7 @@ module "asm" {
   cluster_endpoint = module.gke.endpoint
   project_id       = var.project_id
   location         = module.gke.location
+  asm_version      = "6941cf9f714485518f3f87eb0eda0cd47ffb96e4"
 }
 
 data "google_client_config" "default" {
