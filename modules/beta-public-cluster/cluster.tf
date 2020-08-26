@@ -60,7 +60,7 @@ resource "google_container_cluster" "primary" {
   monitoring_service = var.monitoring_service
 
   vertical_pod_autoscaling {
-    enabled = var.vertical_pod_autoscaling
+    enabled = var.enable_vertical_pod_autoscaling
   }
 
   cluster_autoscaling {
@@ -82,10 +82,6 @@ resource "google_container_cluster" "primary" {
   enable_intranode_visibility = var.enable_intranode_visibility
   enable_shielded_nodes       = var.enable_shielded_nodes
   enable_kubernetes_alpha     = var.enable_kubernetes_alpha
-
-  vertical_pod_autoscaling {
-    enabled = var.enable_vertical_pod_autoscaling
-  }
 
   dynamic "pod_security_policy_config" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
