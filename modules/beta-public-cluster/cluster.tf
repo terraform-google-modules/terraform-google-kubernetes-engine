@@ -59,6 +59,10 @@ resource "google_container_cluster" "primary" {
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
+  vertical_pod_autoscaling {
+    enabled = var.vertical_pod_autoscaling
+  }
+
   cluster_autoscaling {
     enabled             = var.cluster_autoscaling.enabled
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"

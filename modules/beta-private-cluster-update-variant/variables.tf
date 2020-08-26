@@ -546,3 +546,9 @@ variable "disable_default_snat" {
   description = "Whether to disable the default SNAT to support the private use of public IP addresses"
   default     = false
 }
+
+variable "vertical_pod_autoscaling" {
+  type        = bool
+  description = "Enable vertical pod autoscaling"
+  default     = false
+}

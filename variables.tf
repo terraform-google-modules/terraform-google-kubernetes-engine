@@ -84,12 +84,6 @@ variable "horizontal_pod_autoscaling" {
   default     = true
 }
 
-variable "vertical_pod_autoscaling" {
-  type        = bool
-  description = "Enable vertical pod autoscaling"
-  default     = false
-}
-
 variable "http_load_balancing" {
   type        = bool
   description = "Enable httpload balancer addon"
@@ -356,4 +350,5 @@ variable "gcloud_skip_download" {
   description = "Whether to skip downloading gcloud (assumes gcloud is already available outside the module)"
   default     = true
 }
+
 

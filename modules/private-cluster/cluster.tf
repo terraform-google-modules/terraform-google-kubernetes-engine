@@ -50,6 +50,7 @@ resource "google_container_cluster" "primary" {
   monitoring_service = var.monitoring_service
 
 
+
   default_max_pods_per_node = var.default_max_pods_per_node
 
   dynamic "master_authorized_networks_config" {
