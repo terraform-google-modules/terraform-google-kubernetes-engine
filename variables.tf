@@ -83,7 +83,13 @@ variable "horizontal_pod_autoscaling" {
   description = "Enable horizontal pod autoscaling addon"
   default     = true
 }
-
+   
+variable "vertical_pod_autoscaling" {
+  type        = bool
+  description = "Enable vertical pod autoscaling"
+  default     = false
+ }
+  
 variable "http_load_balancing" {
   type        = bool
   description = "Enable httpload balancer addon"
