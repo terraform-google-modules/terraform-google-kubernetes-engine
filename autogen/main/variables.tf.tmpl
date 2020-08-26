@@ -558,11 +558,3 @@ variable "disable_default_snat" {
   default     = false
 }
 {% endif %}
-
-{% if beta_cluster %}
-variable "vertical_pod_autoscaling" {
-  type        = bool
-  description = "Enable vertical pod autoscaling"
-  default     = false
-}
-{% endif %}
