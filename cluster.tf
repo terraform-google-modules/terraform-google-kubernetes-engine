@@ -49,6 +49,9 @@ resource "google_container_cluster" "primary" {
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
+  vertical_pod_autoscaling {
+    enabled = var.vertical_pod_autoscaling
+  }
 
   default_max_pods_per_node = var.default_max_pods_per_node
 
