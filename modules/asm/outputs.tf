@@ -13,3 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+output "asm_wait" {
+  description = "An output to use when you want to depend on ASM finishing"
+  value       = module.asm_install.wait
+}
+
+output "hub_wait" {
+  description = "An output to use when you want to depend on GKE hub finishing"
+  value       = module.gke_hub_registration.wait
+}

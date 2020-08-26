@@ -24,6 +24,7 @@ MEMBERSHIP_NAME=$1
 CLUSTER_LOCATION=$2
 CLUSTER_NAME=$3
 SERVICE_ACCOUNT_KEY=$4
+PROJECT_ID=$5
 
 #write temp key, cleanup at exit
 tmp_file=$(mktemp)
@@ -31,4 +32,4 @@ tmp_file=$(mktemp)
 trap "rm -rf $tmp_file" EXIT
 echo "${SERVICE_ACCOUNT_KEY}" | base64 --decode > "$tmp_file"
 
-gcloud container hub memberships register "${MEMBERSHIP_NAME}" --gke-cluster="${CLUSTER_LOCATION}"/"${CLUSTER_NAME}" --service-account-key-file="${tmp_file}" --quiet
+gcloud container hub memberships register "${MEMBERSHIP_NAME}" --gke-cluster="${CLUSTER_LOCATION}"/"${CLUSTER_NAME}" --service-account-key-file="${tmp_file}" --project="${PROJECT_ID}" --quiet
