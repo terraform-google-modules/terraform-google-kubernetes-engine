@@ -19,7 +19,7 @@ locals {
   private_key                   = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : var.ssh_auth_key
   k8sop_creds_secret_key        = var.secret_type == "cookiefile" ? "cookie_file" : var.secret_type
   should_download_manifest      = var.operator_path == null ? true : false
-  manifest_path                 = local.should_download_manifest ? "${path.root}/.terraform/tmp/config-management-operator.yaml" : var.operator_path
+  manifest_path                 = local.should_download_manifest ? "${path.root}/.terraform/tmp/${var.project_id}-${var.cluster_name}/config-management-operator.yaml" : var.operator_path
   sync_branch_node              = var.sync_branch != "" ? format("syncBranch: %s", var.sync_branch) : ""
   policy_dir_node               = var.policy_dir != "" ? format("policyDir: %s", var.policy_dir) : ""
   hierarchy_controller_map_node = var.hierarchy_controller == null ? "" : format("hierarchy_controller:\n    %s", yamlencode(var.hierarchy_controller))
@@ -92,7 +92,7 @@ data "template_file" "k8sop_config" {
 
 resource "local_file" "operator_cr" {
   content  = data.template_file.k8sop_config.rendered
-  filename = "${path.module}/operator_cr.yaml"
+  filename = "${path.module}/${var.project_id}-${var.cluster_name}/operator_cr.yaml"
 }
 
 module "k8sop_config" {
