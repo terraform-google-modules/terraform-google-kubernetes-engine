@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-locals {
-  gke_hub_sa_key = var.enable_gke_hub_registration ? google_service_account_key.gke_hub_key[0].private_key : ""
-}
-
 module "asm_install" {
   source            = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version           = "~> 1.4"
@@ -36,38 +32,17 @@ module "asm_install" {
   kubectl_destroy_command = "kubectl delete ns istio-system"
 }
 
-resource "google_service_account" "gke_hub_sa" {
-  count        = var.enable_gke_hub_registration ? 1 : 0
-  account_id   = var.gke_hub_sa_name
-  project      = var.project_id
-  display_name = "Service Account for GKE Hub Registration"
-}
-
-resource "google_project_iam_member" "gke_hub_member" {
-  count   = var.enable_gke_hub_registration ? 1 : 0
-  project = var.project_id
-  role    = "roles/gkehub.connect"
-  member  = "serviceAccount:${google_service_account.gke_hub_sa[0].email}"
-}
-
-resource "google_service_account_key" "gke_hub_key" {
-  count              = var.enable_gke_hub_registration ? 1 : 0
-  service_account_id = google_service_account.gke_hub_sa[0].name
-}
-
 module "gke_hub_registration" {
-  source  = "terraform-google-modules/gcloud/google"
-  version = "~> 1.2"
+  source = "../hub"
 
-  platform           = "linux"
-  gcloud_sdk_version = var.gcloud_sdk_version
-  skip_download      = var.skip_gcloud_download
-  upgrade            = true
-  enabled            = var.enable_gke_hub_registration
-  module_depends_on  = [module.asm_install.wait]
+  project_id                  = var.project_id
+  cluster_name                = var.cluster_name
+  cluster_endpoint            = var.cluster_endpoint
+  location                    = var.location
+  skip_gcloud_download        = var.skip_gcloud_download
+  gcloud_sdk_version          = var.gcloud_sdk_version
+  enable_gke_hub_registration = var.enable_gke_hub_registration
+  gke_hub_sa_name             = var.gke_hub_sa_name
+  gke_hub_membership_name     = var.gke_hub_membership_name
 
-  create_cmd_entrypoint  = "${path.module}/scripts/gke_hub_registration.sh"
-  create_cmd_body        = "${var.gke_hub_membership_name} ${var.location} ${var.cluster_name} ${local.gke_hub_sa_key}"
-  destroy_cmd_entrypoint = "gcloud"
-  destroy_cmd_body       = "container hub memberships unregister ${var.gke_hub_membership_name} --gke-cluster=${var.location}/${var.cluster_name} --project ${var.project_id}"
 }

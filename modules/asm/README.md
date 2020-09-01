@@ -53,4 +53,11 @@ To deploy this config:
 | project\_id | The project in which the resource belongs. | string | n/a | yes |
 | skip\_gcloud\_download | Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module) | bool | `"true"` | no |
 
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| asm\_wait | An output to use when you want to depend on ASM finishing |
+| hub\_wait | An output to use when you want to depend on GKE hub finishing |
+
  <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
