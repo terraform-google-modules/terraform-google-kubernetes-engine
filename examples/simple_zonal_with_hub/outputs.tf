@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-output "asm_wait" {
-  description = "An output to use when you want to depend on ASM finishing"
-  value       = module.asm_install.wait
+output "kubernetes_endpoint" {
+  sensitive = true
+  value     = module.gke.endpoint
 }
 
-output "hub_wait" {
-  description = "An output to use when you want to depend on GKE hub finishing"
-  value       = module.gke_hub_registration.wait
+output "client_token" {
+  sensitive = true
+  value     = base64encode(data.google_client_config.default.access_token)
+}
+
+output "ca_certificate" {
+  value = module.gke.ca_certificate
+}
+
+output "service_account" {
+  description = "The default service account used for running nodes."
+  value       = module.gke.service_account
 }

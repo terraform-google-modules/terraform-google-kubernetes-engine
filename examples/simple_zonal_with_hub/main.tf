@@ -14,12 +14,28 @@
  * limitations under the License.
  */
 
-output "asm_wait" {
-  description = "An output to use when you want to depend on ASM finishing"
-  value       = module.asm_install.wait
+locals {
+  cluster_type = "simple-zonal"
 }
 
-output "hub_wait" {
-  description = "An output to use when you want to depend on GKE hub finishing"
-  value       = module.gke_hub_registration.wait
+provider "google" {
+  version = "~> 3.16.0"
+  region  = var.region
+}
+
+module "gke" {
+  source            = "../../"
+  project_id        = var.project_id
+  name              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  regional          = false
+  region            = var.region
+  zones             = var.zones
+  network           = var.network
+  subnetwork        = var.subnetwork
+  ip_range_pods     = var.ip_range_pods
+  ip_range_services = var.ip_range_services
+  service_account   = "create"
+}
+
+data "google_client_config" "default" {
 }
