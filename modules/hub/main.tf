@@ -39,7 +39,7 @@ resource "google_service_account_key" "gke_hub_key" {
 
 module "gke_hub_registration" {
   source  = "terraform-google-modules/gcloud/google"
-  version = "~> 1.0"
+  version = "~> 2.0.2"
 
   platform                          = "linux"
   gcloud_sdk_version                = var.gcloud_sdk_version

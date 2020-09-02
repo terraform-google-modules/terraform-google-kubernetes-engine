@@ -16,7 +16,7 @@
 
 module "asm_install" {
   source            = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version           = "~> 1.4"
+  version           = "~> 2.0.2"
   module_depends_on = [var.cluster_endpoint]
 
   gcloud_sdk_version    = var.gcloud_sdk_version
