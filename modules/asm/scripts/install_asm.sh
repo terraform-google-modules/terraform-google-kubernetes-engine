@@ -54,8 +54,12 @@ kpt cfg set asm-patch/ gcloud.core.project "${PROJECT_ID}"
 kpt cfg set asm-patch/ gcloud.container.cluster "${CLUSTER_NAME}"
 kpt cfg set asm-patch/ gcloud.compute.location "${CLUSTER_LOCATION}"
 kpt cfg list-setters asm-patch/
-pushd ${BASE_DIR} && kustomize create --autodetect --namespace "${PROJECT_ID}" && popd
-pushd asm-patch && kustomize build -o ../${BASE_DIR}/all.yaml && popd
+pushd ${BASE_DIR}
+kustomize create --autodetect --namespace "${PROJECT_ID}"
+popd
+pushd asm-patch
+kustomize build -o ../${BASE_DIR}/all.yaml
+popd
 # # skip validate as we should investigate if we can check this without having to resort to dind
 # if [[ ${SKIP_ASM_VALIDATION} ]]; then
 #  echo "Skipping ASM validation..."
