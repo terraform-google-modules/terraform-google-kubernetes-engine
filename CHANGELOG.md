@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [11.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v11.0.0...v11.1.0) (2020-09-04)
+
+
+### Features
+
+* Add variable disable_default_snat ([#625](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/625)) ([19a9e9c](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/19a9e9c57b94d1332867a6c29b052e99785e2820))
+* Update fields for ACM and Config Sync to bring them to feature parity ([#635](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/635)) ([7fc3b48](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7fc3b488ed6db60fdc081258146270da4dda7ab9))
+
 ## [11.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v10.0.0...v11.0.0) (2020-08-10)
 
 
