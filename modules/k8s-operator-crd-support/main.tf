@@ -96,13 +96,14 @@ resource "local_file" "operator_cr" {
 }
 
 module "k8sop_config" {
-  source            = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version           = "~> 1.4"
-  module_depends_on = [module.k8s_operator.wait, module.k8sop_creds_secret.wait]
-  skip_download     = var.skip_gcloud_download
-  cluster_name      = var.cluster_name
-  cluster_location  = var.location
-  project_id        = var.project_id
+  source              = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version             = "~> 1.4"
+  module_depends_on   = [module.k8s_operator.wait, module.k8sop_creds_secret.wait]
+  skip_download       = var.skip_gcloud_download
+  cluster_name        = var.cluster_name
+  cluster_location    = var.location
+  project_id          = var.project_id
+  create_cmd_triggers = { configmanagement = local_file.operator_cr.content }
 
   kubectl_create_command  = "kubectl apply -f ${local_file.operator_cr.filename}"
   kubectl_destroy_command = "kubectl delete -f ${local_file.operator_cr.filename}"
