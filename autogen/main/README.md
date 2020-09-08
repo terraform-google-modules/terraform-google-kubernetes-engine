@@ -9,7 +9,7 @@ The resources/services/activations/deletions that this module will create/trigge
 - Activate network policy if `network_policy` is true
 - Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `configure_ip_masq` is true
 
-Sub modules are provided from creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
+Sub modules are provided for creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
 
 {% if private_cluster %}
 ## Private Cluster Details
