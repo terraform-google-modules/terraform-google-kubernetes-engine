@@ -13,7 +13,7 @@ Sub modules are provided from creating private clusters, beta private clusters, 
 
 {% if private_cluster %}
 ## Private Cluster Details
-For details on configuring private clusters with this module, check the [troubleshooting guide](../../docs/private_clusters.md).
+For details on configuring private clusters with this module, check the [troubleshooting guide](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/blob/master/docs/private_clusters.md).
 
 {% endif %}
 {% if update_variant %}
@@ -48,7 +48,7 @@ This module is meant for use with Terraform 0.12. If you haven't
 intended for Terraform 0.11.x is [3.0.0].
 
 ## Usage
-There are multiple examples included in the [examples](./examples/) folder but simple usage is as follows:
+There are multiple examples included in the [examples](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/examples/) folder but simple usage is as follows:
 
 ```hcl
 module "gke" {
