@@ -19,13 +19,14 @@ module "asm_install" {
   version           = "~> 1.4"
   module_depends_on = [var.cluster_endpoint]
 
-  gcloud_sdk_version    = var.gcloud_sdk_version
-  skip_download         = var.skip_gcloud_download
-  upgrade               = true
-  additional_components = ["kubectl", "kpt", "beta", "kustomize"]
-  cluster_name          = var.cluster_name
-  cluster_location      = var.location
-  project_id            = var.project_id
+  gcloud_sdk_version       = var.gcloud_sdk_version
+  skip_download            = var.skip_gcloud_download
+  upgrade                  = true
+  additional_components    = ["kubectl", "kpt", "beta", "kustomize"]
+  cluster_name             = var.cluster_name
+  cluster_location         = var.location
+  project_id               = var.project_id
+  service_account_key_file = var.service_account_key_file
 
 
   kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_dir} ${var.asm_version}"
