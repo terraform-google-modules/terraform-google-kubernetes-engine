@@ -432,3 +432,6 @@ substitutions:
   _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '0'
 options:
   machineType: 'N1_HIGHCPU_8'
+  env:
+  - TF_LOG=DEBUG
+  
