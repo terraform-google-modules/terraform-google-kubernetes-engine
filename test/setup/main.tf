@@ -32,15 +32,9 @@ module "gke-project-1" {
   auto_create_network = true
 
   activate_apis = [
-    "bigquery.googleapis.com",
     "cloudkms.googleapis.com",
     "cloudresourcemanager.googleapis.com",
-    "compute.googleapis.com",
     "container.googleapis.com",
-    "containerregistry.googleapis.com",
-    "iam.googleapis.com",
-    "iamcredentials.googleapis.com",
-    "oslogin.googleapis.com",
     "pubsub.googleapis.com",
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
@@ -59,15 +53,9 @@ module "gke-project-2" {
   skip_gcloud_download = true
 
   activate_apis = [
-    "bigquery.googleapis.com",
     "cloudkms.googleapis.com",
     "cloudresourcemanager.googleapis.com",
-    "compute.googleapis.com",
     "container.googleapis.com",
-    "containerregistry.googleapis.com",
-    "iam.googleapis.com",
-    "iamcredentials.googleapis.com",
-    "oslogin.googleapis.com",
     "pubsub.googleapis.com",
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
@@ -87,17 +75,11 @@ module "gke-project-asm" {
   skip_gcloud_download = true
 
   activate_apis = [
-    "container.googleapis.com",
-    "compute.googleapis.com",
-    "monitoring.googleapis.com",
     "logging.googleapis.com",
     "meshca.googleapis.com",
     "meshtelemetry.googleapis.com",
     "meshconfig.googleapis.com",
-    "iamcredentials.googleapis.com",
     "anthos.googleapis.com",
-    "gkeconnect.googleapis.com",
-    "gkehub.googleapis.com",
     "cloudresourcemanager.googleapis.com",
   ]
 }
