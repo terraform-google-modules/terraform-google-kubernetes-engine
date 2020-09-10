@@ -81,3 +81,9 @@ variable "asm_version" {
   type        = string
   default     = "release-1.6-asm"
 }
+
+variable "service_account_key_file" {
+  description = "Path to service account key file to auth as for running `gcloud container clusters get-credentials`."
+  default     = ""
+}
+
