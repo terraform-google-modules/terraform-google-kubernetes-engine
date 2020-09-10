@@ -420,7 +420,7 @@ resource "google_container_node_pool" "pools" {
 
 module "gcloud_wait_for_cluster" {
   source  = "terraform-google-modules/gcloud/google"
-  version = "~> 1.3.0"
+  version = "~> 2.0.2"
   enabled = var.skip_provisioners
 
   upgrade       = var.gcloud_upgrade
