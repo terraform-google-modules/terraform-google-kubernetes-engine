@@ -44,11 +44,7 @@ To deploy this config:
 | asm\_version | ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | string | `"release-1.6-asm"` | no |
 | cluster\_endpoint | The GKE cluster endpoint. | string | n/a | yes |
 | cluster\_name | The unique name to identify the cluster in ASM. | string | n/a | yes |
-| enable\_gke\_hub\_registration | Enables GKE Hub Registration when set to true | bool | `"true"` | no |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | string | `"296.0.1"` | no |
-| gke\_hub\_membership\_name | Memebership name that uniquely represents the cluster being registered on the Hub | string | `"gke-asm-membership"` | no |
-| gke\_hub\_sa\_name | Name for the GKE Hub SA stored as a secret `creds-gcp` in the `gke-connect` namespace. | string | `"gke-hub-sa"` | no |
-| internal\_ip | Use internal ip for the cluster endpoint. | bool | `"false"` | no |
 | location | The location (zone or region) this cluster has been created in. | string | n/a | yes |
 | project\_id | The project in which the resource belongs. | string | n/a | yes |
 | service\_account\_key\_file | Path to service account key file to auth as for running `gcloud container clusters get-credentials`. | string | `""` | no |
@@ -59,6 +55,5 @@ To deploy this config:
 | Name | Description |
 |------|-------------|
 | asm\_wait | An output to use when you want to depend on ASM finishing |
-| hub\_wait | An output to use when you want to depend on GKE hub finishing |
 
  <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
