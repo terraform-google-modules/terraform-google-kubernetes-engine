@@ -2,10 +2,7 @@
 
 This module installs [Anthos Service Mesh](https://cloud.google.com/service-mesh/docs) (ASM) in a Kubernetes cluster.
 
-Specifically, this module automates the following steps for [installing ASM](https://cloud.google.com/service-mesh/docs/install):
-
-1. Installing the ASM Istio Operator on your cluster.
-2. Optionally registering your cluster with GKE Hub.
+Specifically, this module automates installing the ASM Istio Operator on your cluster ([installing ASM](https://cloud.google.com/service-mesh/docs/install))
 
 ## Usage
 
