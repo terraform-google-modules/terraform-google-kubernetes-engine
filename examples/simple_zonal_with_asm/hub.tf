@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-output "asm_wait" {
-  description = "An output to use when you want to depend on ASM finishing"
-  value       = module.asm_install.wait
+module "hub" {
+  source                  = "../../modules/hub"
+  project_id              = var.project_id
+  location                = module.gke.location
+  cluster_name            = module.gke.name
+  cluster_endpoint        = module.gke.endpoint
+  gke_hub_membership_name = "gke-asm-membership"
 }
