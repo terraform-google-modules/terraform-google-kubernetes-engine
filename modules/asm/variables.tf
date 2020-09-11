@@ -46,30 +46,6 @@ variable "gcloud_sdk_version" {
   default     = "296.0.1"
 }
 
-variable "enable_gke_hub_registration" {
-  description = "Enables GKE Hub Registration when set to true"
-  type        = bool
-  default     = true
-}
-
-variable "gke_hub_sa_name" {
-  description = "Name for the GKE Hub SA stored as a secret `creds-gcp` in the `gke-connect` namespace."
-  type        = string
-  default     = "gke-hub-sa"
-}
-
-variable "gke_hub_membership_name" {
-  description = "Memebership name that uniquely represents the cluster being registered on the Hub"
-  type        = string
-  default     = "gke-asm-membership"
-}
-
-variable "internal_ip" {
-  description = "Use internal ip for the cluster endpoint."
-  type        = bool
-  default     = false
-}
-
 variable "asm_dir" {
   description = "Name of directory to keep ASM resource config files."
   type        = string

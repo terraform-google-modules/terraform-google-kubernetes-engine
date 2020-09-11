@@ -32,18 +32,3 @@ module "asm_install" {
   kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_dir} ${var.asm_version}"
   kubectl_destroy_command = "kubectl delete ns istio-system"
 }
-
-module "gke_hub_registration" {
-  source = "../hub"
-
-  project_id                  = var.project_id
-  cluster_name                = var.cluster_name
-  cluster_endpoint            = var.cluster_endpoint
-  location                    = var.location
-  skip_gcloud_download        = var.skip_gcloud_download
-  gcloud_sdk_version          = var.gcloud_sdk_version
-  enable_gke_hub_registration = var.enable_gke_hub_registration
-  gke_hub_sa_name             = var.gke_hub_sa_name
-  gke_hub_membership_name     = var.gke_hub_membership_name
-
-}
