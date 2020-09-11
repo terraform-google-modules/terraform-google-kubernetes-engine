@@ -40,13 +40,14 @@ module "k8sop_manifest" {
 
 
 module "k8s_operator" {
-  source            = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version           = "~> 2.0.2"
-  module_depends_on = [module.k8sop_manifest.wait, var.cluster_endpoint]
-  skip_download     = var.skip_gcloud_download
-  cluster_name      = var.cluster_name
-  cluster_location  = var.location
-  project_id        = var.project_id
+  source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version                  = "~> 2.0.2"
+  module_depends_on        = [module.k8sop_manifest.wait, var.cluster_endpoint]
+  skip_download            = var.skip_gcloud_download
+  cluster_name             = var.cluster_name
+  cluster_location         = var.location
+  project_id               = var.project_id
+  service_account_key_file = var.service_account_key_file
 
   kubectl_create_command  = "kubectl apply -f ${local.manifest_path}"
   kubectl_destroy_command = "kubectl delete -f ${local.manifest_path}"
@@ -60,13 +61,14 @@ resource "tls_private_key" "k8sop_creds" {
 }
 
 module "k8sop_creds_secret" {
-  source            = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version           = "~> 2.0.2"
-  module_depends_on = [module.k8s_operator.wait]
-  skip_download     = var.skip_gcloud_download
-  cluster_name      = var.cluster_name
-  cluster_location  = var.location
-  project_id        = var.project_id
+  source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version                  = "~> 2.0.2"
+  module_depends_on        = [module.k8s_operator.wait]
+  skip_download            = var.skip_gcloud_download
+  cluster_name             = var.cluster_name
+  cluster_location         = var.location
+  project_id               = var.project_id
+  service_account_key_file = var.service_account_key_file
 
   kubectl_create_command  = "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'"
   kubectl_destroy_command = "kubectl delete secret ${var.operator_credential_name} -n=${var.operator_credential_namespace}"
@@ -96,14 +98,15 @@ resource "local_file" "operator_cr" {
 }
 
 module "k8sop_config" {
-  source              = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version             = "~> 2.0.2"
-  module_depends_on   = [module.k8s_operator.wait, module.k8sop_creds_secret.wait]
-  skip_download       = var.skip_gcloud_download
-  cluster_name        = var.cluster_name
-  cluster_location    = var.location
-  project_id          = var.project_id
-  create_cmd_triggers = { configmanagement = local_file.operator_cr.content }
+  source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version                  = "~> 2.0.2"
+  module_depends_on        = [module.k8s_operator.wait, module.k8sop_creds_secret.wait]
+  skip_download            = var.skip_gcloud_download
+  cluster_name             = var.cluster_name
+  cluster_location         = var.location
+  project_id               = var.project_id
+  create_cmd_triggers      = { configmanagement = local_file.operator_cr.content }
+  service_account_key_file = var.service_account_key_file
 
   kubectl_create_command  = "kubectl apply -f ${local_file.operator_cr.filename}"
   kubectl_destroy_command = "kubectl delete -f ${local_file.operator_cr.filename}"
