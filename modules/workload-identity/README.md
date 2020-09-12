@@ -72,7 +72,7 @@ module "my-app-workload-identity" {
 | cluster\_name | Cluster name. Required if using existing KSA. | string | `""` | no |
 | k8s\_sa\_name | Name for the existing Kubernetes service account | string | `"null"` | no |
 | location | Cluster location (region if regional cluster, zone if zonal cluster). Required if using existing KSA. | string | `""` | no |
-| name | Name for both service accounts | string | n/a | yes |
+| name | Name for both service accounts. The GCP SA will be truncated to the first 30 chars if necessary. | string | n/a | yes |
 | namespace | Namespace for k8s service account | string | `"default"` | no |
 | project\_id | GCP project ID | string | n/a | yes |
 | use\_existing\_k8s\_sa | Use an existing kubernetes service account instead of creating one | bool | `"false"` | no |
