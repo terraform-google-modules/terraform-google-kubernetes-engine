@@ -15,7 +15,7 @@
  */
 
 variable "name" {
-  description = "Name for both service accounts"
+  description = "Name for both service accounts. The GCP SA will be truncated to the first 30 chars if necessary."
   type        = string
 }
 
