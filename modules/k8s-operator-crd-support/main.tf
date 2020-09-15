@@ -64,7 +64,7 @@ module "k8sop_creds_secret" {
   source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version                  = "~> 2.0.2"
   
-  enabled                  = var.secret_type == ssh ? 1 : 0
+  enabled                  = var.secret_type == ssh ? "true" : "false"
   module_depends_on        = [module.k8s_operator.wait]
   skip_download            = var.skip_gcloud_download
   cluster_name             = var.cluster_name
