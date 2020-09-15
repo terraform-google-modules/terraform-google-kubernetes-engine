@@ -49,7 +49,7 @@ control "gcloud" do
       end
 
       it "has the expected addon settings" do
-        expect(data['addonsConfig']).to eq({
+        expect(data['addonsConfig']).to include(
           "horizontalPodAutoscaling" => {},
           "httpLoadBalancing" => {},
           "kubernetesDashboard" => {
@@ -59,14 +59,16 @@ control "gcloud" do
           "configConnectorConfig" => {},
           "networkPolicyConfig" => {},
           "istioConfig" => {"auth"=>"AUTH_MUTUAL_TLS"},
-          "cloudRunConfig" => {},
+          "cloudRunConfig" => including(
+              "loadBalancerType" => "LOAD_BALANCER_TYPE_EXTERNAL",
+            ),
           "dnsCacheConfig" => {
             "enabled" => true,
           },
           "gcePersistentDiskCsiDriverConfig" => {
             "enabled" => true,
           }
-        })
+        )
       end
 
       it "has the expected binaryAuthorization config" do
