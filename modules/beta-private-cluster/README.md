@@ -8,10 +8,10 @@ The resources/services/activations/deletions that this module will create/trigge
 - Activate network policy if `network_policy` is true
 - Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `configure_ip_masq` is true
 
-Sub modules are provided from creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
+Sub modules are provided for creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
 
 ## Private Cluster Details
-For details on configuring private clusters with this module, check the [troubleshooting guide](../../docs/private_clusters.md).
+For details on configuring private clusters with this module, check the [troubleshooting guide](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/blob/master/docs/private_clusters.md).
 
 ## Compatibility
 
@@ -21,7 +21,7 @@ This module is meant for use with Terraform 0.12. If you haven't
 intended for Terraform 0.11.x is [3.0.0].
 
 ## Usage
-There are multiple examples included in the [examples](./examples/) folder but simple usage is as follows:
+There are multiple examples included in the [examples](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/examples/) folder but simple usage is as follows:
 
 ```hcl
 module "gke" {

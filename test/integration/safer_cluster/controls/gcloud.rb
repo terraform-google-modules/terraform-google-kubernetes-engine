@@ -49,7 +49,9 @@ control "gcloud" do
 
       it "has the expected addon settings" do
         expect(data['addonsConfig']).to include(
-            "cloudRunConfig" => {},
+            "cloudRunConfig" => including(
+              "loadBalancerType" => "LOAD_BALANCER_TYPE_EXTERNAL",
+            ),
             "horizontalPodAutoscaling" => {},
             "httpLoadBalancing" => {},
             "kubernetesDashboard" => including(
