@@ -15,7 +15,7 @@
  */
 
 locals {
-  gke_hub_sa_key = var.use_existing_sa ? var.sa_private_key : google_service_account_key.gke_hub_key.private_key
+  gke_hub_sa_key = var.use_existing_sa ? var.sa_private_key : google_service_account_key.gke_hub_key[0].private_key
 }
 
 data "google_client_config" "default" {
@@ -32,12 +32,12 @@ resource "google_project_iam_member" "gke_hub_member" {
   count   = var.use_existing_sa ? 0 : 1
   project = var.project_id
   role    = "roles/gkehub.connect"
-  member  = "serviceAccount:${google_service_account.gke_hub_sa.email}"
+  member  = "serviceAccount:${google_service_account.gke_hub_sa[0].email}"
 }
 
 resource "google_service_account_key" "gke_hub_key" {
   count              = var.use_existing_sa ? 0 : 1
-  service_account_id = google_service_account.gke_hub_sa.name
+  service_account_id = google_service_account.gke_hub_sa[0].name
 }
 
 module "gke_hub_registration" {
