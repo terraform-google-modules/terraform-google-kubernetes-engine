@@ -77,7 +77,7 @@ variable "use_existing_sa" {
 }
 
 variable "sa_private_key" {
-  description = "Private key for service account. Required only if `use_existing_sa` is set to `true`."
+  description = "Private key for service account base64 encoded. Required only if `use_existing_sa` is set to `true`."
   type        = string
   default     = null
 }
