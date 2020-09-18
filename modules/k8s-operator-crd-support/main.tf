@@ -117,7 +117,7 @@ module "k8sop_config" {
 module "wait_for_gatekeeper" {
   source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version                  = "~> 2.0.2"
-  enabled                  = enable_policy_controller ? true : false
+  enabled                  = var.enable_policy_controller ? true : false
   module_depends_on        = [module.k8sop_config.wait]
   skip_download            = var.skip_gcloud_download
   cluster_name             = var.cluster_name
