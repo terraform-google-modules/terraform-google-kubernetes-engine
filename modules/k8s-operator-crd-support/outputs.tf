@@ -19,5 +19,10 @@ output "git_creds_public" {
   value       = var.create_ssh_key ? tls_private_key.k8sop_creds.*.public_key_openssh : null
 }
 
+output "wait" {
+  description = "An output to use when you want to depend on cmd finishing"
+  value = var.enable_policy_controller? module.wait_for_gatekeeper.wait : module.k8sop_config.wait
+}
+
 
 
