@@ -38,5 +38,14 @@ is_deployment_ready() {
     return ${availableReplicas}
 }
 
+if [ "$#" -lt 5 ]; then
+    >&2 echo "Not all expected arguments set."
+    exit 1
+fi
+
+PROJECT_ID=$1
+CLUSTER_NAME=$2
+CLUSTER_LOCATION=$3
+
 # Gatekeeper causes issues if not ready
-is_deployment_ready ${GKE_CTX} gatekeeper-system gatekeeper-controller-manager
+is_deployment_ready gke_"${PROJECT_ID}"_"${CLUSTER_LOCATION}"_"${CLUSTER_NAME}" gatekeeper-system gatekeeper-controller-manager

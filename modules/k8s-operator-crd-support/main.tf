@@ -126,6 +126,6 @@ module "wait_for_gatekeeper" {
   create_cmd_triggers      = { script_sha1 = sha1(file("${path.module}/scripts/wait_for_gatekeeper.sh")) }
   service_account_key_file = var.service_account_key_file
 
-  kubectl_create_command  = "${path.module}/scripts/wait_for_gatekeeper.sh"
+  kubectl_create_command  = "${path.module}/scripts/wait_for_gatekeeper.sh ${var.project_id} ${var.cluster_name} ${var.location}"
   kubectl_destroy_command = ""
 }
