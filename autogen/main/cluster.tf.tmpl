@@ -81,6 +81,7 @@ resource "google_container_cluster" "primary" {
 {% if beta_cluster %}
     auto_provisioning_defaults {
       service_account = local.service_account
+      oauth_scopes = var.cluster_autoscaling.oauth_scopes
     }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
 {% endif %}
