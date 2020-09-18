@@ -16,7 +16,7 @@
 
 locals {
   cluster_endpoint              = "https://${var.cluster_endpoint}"
-  private_key                   = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : var.ssh_auth_key
+  private_key                   = var.ssh_auth_key == null ? tls_private_key.k8sop_creds.private_key_pem : var.ssh_auth_key
   k8sop_creds_secret_key        = var.secret_type == "cookiefile" ? "cookie_file" : var.secret_type
   should_download_manifest      = var.operator_path == null ? true : false
   manifest_path                 = local.should_download_manifest ? "${path.root}/.terraform/tmp/${var.project_id}-${var.cluster_name}/config-management-operator.yaml" : var.operator_path
@@ -55,7 +55,6 @@ module "k8s_operator" {
 
 
 resource "tls_private_key" "k8sop_creds" {
-  count     = var.create_ssh_key ? 1 : 0
   algorithm = "RSA"
   rsa_bits  = 4096
 }
