@@ -21,14 +21,6 @@ locals {
 data "google_client_config" "default" {
 }
 
-resource "null_resource" "module_depends_on" {
-  count = length(var.module_depends_on) > 0 ? 1 : 0
-
-  triggers = {
-    value = length(var.module_depends_on)
-  }
-}
-
 resource "google_service_account" "gke_hub_sa" {
   count        = var.use_existing_sa ? 0 : 1
   account_id   = var.gke_hub_sa_name
@@ -57,7 +49,7 @@ module "gke_hub_registration" {
   skip_download                     = var.skip_gcloud_download
   upgrade                           = true
   use_tf_google_credentials_env_var = var.use_tf_google_credentials_env_var
-  module_depends_on                 = [var.cluster_endpoint]
+  module_depends_on                 = concat([var.cluster_endpoint], [var.module_depends_on])
 
   create_cmd_entrypoint  = "${path.module}/scripts/gke_hub_registration.sh"
   create_cmd_body        = "${var.gke_hub_membership_name} ${var.location} ${var.cluster_name} ${local.gke_hub_sa_key} ${var.project_id}"
