@@ -113,3 +113,18 @@ module "k8sop_config" {
   kubectl_create_command  = "kubectl apply -f ${local_file.operator_cr.filename}"
   kubectl_destroy_command = "kubectl delete -f ${local_file.operator_cr.filename}"
 }
+
+module "wait_for_gatekeeper" {
+  source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version                  = "~> 2.0.2"
+  enabled                  = enable_policy_controller ? true : false
+  module_depends_on        = [module.k8sop_config.wait]
+  skip_download            = var.skip_gcloud_download
+  cluster_name             = var.cluster_name
+  cluster_location         = var.location
+  project_id               = var.project_id
+  create_cmd_triggers      = { script_sha1 = sha1(file("${path.module}/scripts/wait_for_gatekeeper.sh")) }
+  service_account_key_file = var.service_account_key_file
+
+  kubectl_create_command  = "${path.module}/scripts/wait_for_gatekeeper.sh"
+}
