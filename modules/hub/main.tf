@@ -21,6 +21,14 @@ locals {
 data "google_client_config" "default" {
 }
 
+resource "null_resource" "module_depends_on" {
+  count = length(var.module_depends_on) > 0 ? 1 : 0
+
+  triggers = {
+    value = length(var.module_depends_on)
+  }
+}
+
 resource "google_service_account" "gke_hub_sa" {
   count        = var.use_existing_sa ? 0 : 1
   account_id   = var.gke_hub_sa_name
