@@ -127,4 +127,5 @@ module "wait_for_gatekeeper" {
   service_account_key_file = var.service_account_key_file
 
   kubectl_create_command  = "${path.module}/scripts/wait_for_gatekeeper.sh"
+  kubectl_destroy_command = ""
 }
