@@ -27,7 +27,7 @@ echo "Waiting for cluster $CLUSTER_NAME in project $PROJECT to reconcile..."
 
 while
   current_status=$(gcloud container clusters list --project="$PROJECT" --filter=name:"$CLUSTER_NAME" --format="value(status)")
-  [[ "${current_status}" == "RECONCILING" ]]
+  [[ "${current_status}" != "RUNNING" ]]
 do printf ".";sleep 5; done
 
 echo "Cluster is ready!"
