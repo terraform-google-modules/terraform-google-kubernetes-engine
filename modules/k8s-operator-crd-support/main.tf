@@ -24,8 +24,6 @@ locals {
   policy_dir_node               = var.policy_dir != "" ? format("policyDir: %s", var.policy_dir) : ""
   hierarchy_controller_map_node = var.hierarchy_controller == null ? "" : format("hierarchy_controller:\n    %s", yamlencode(var.hierarchy_controller))
   source_format_node            = var.source_format != "" ? format("sourceFormat: %s", var.source_format) : ""
-  secret_kubectl_command        = local.private_key != null ? "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'" : ""
-
 }
 
 module "k8sop_manifest" {
@@ -74,7 +72,7 @@ module "k8sop_creds_secret" {
   project_id               = var.project_id
   service_account_key_file = var.service_account_key_file
 
-kubectl_create_command  = local.secret_kubectl_command
+kubectl_create_command  = local.private_key != null ? "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'" : ""
 kubectl_destroy_command = "kubectl delete secret ${var.operator_credential_name} -n=${var.operator_credential_namespace}"
 }
 
