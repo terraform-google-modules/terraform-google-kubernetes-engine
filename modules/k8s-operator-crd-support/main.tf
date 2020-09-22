@@ -16,7 +16,7 @@
 
 locals {
   cluster_endpoint              = "https://${var.cluster_endpoint}"
-  private_key                   = var.ssh_auth_key == null ? tls_private_key.k8sop_creds.private_key_pem : var.ssh_auth_key
+  private_key                   = var.create_ssh_key && var.ssh_auth_key == null ? tls_private_key.k8sop_creds[0].private_key_pem : var.ssh_auth_key
   k8sop_creds_secret_key        = var.secret_type == "cookiefile" ? "cookie_file" : var.secret_type
   should_download_manifest      = var.operator_path == null ? true : false
   manifest_path                 = local.should_download_manifest ? "${path.root}/.terraform/tmp/${var.project_id}-${var.cluster_name}/config-management-operator.yaml" : var.operator_path
@@ -24,6 +24,8 @@ locals {
   policy_dir_node               = var.policy_dir != "" ? format("policyDir: %s", var.policy_dir) : ""
   hierarchy_controller_map_node = var.hierarchy_controller == null ? "" : format("hierarchy_controller:\n    %s", yamlencode(var.hierarchy_controller))
   source_format_node            = var.source_format != "" ? format("sourceFormat: %s", var.source_format) : ""
+  secret_kubectl_command        = local.private_key != null ? "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'" : ""
+
 }
 
 module "k8sop_manifest" {
@@ -55,6 +57,7 @@ module "k8s_operator" {
 
 
 resource "tls_private_key" "k8sop_creds" {
+  count = var.create_ssh_key ? 1 : 0
   algorithm = "RSA"
   rsa_bits  = 4096
 }
@@ -63,7 +66,7 @@ module "k8sop_creds_secret" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version = "~> 2.0.2"
 
-  enabled                  = var.secret_type == "ssh" ? "true" : "false"
+  enabled                  = var.create_ssh_key == true || var.ssh_auth_key != null ? "true" : "false"
   module_depends_on        = [module.k8s_operator.wait]
   skip_download            = var.skip_gcloud_download
   cluster_name             = var.cluster_name
@@ -71,8 +74,8 @@ module "k8sop_creds_secret" {
   project_id               = var.project_id
   service_account_key_file = var.service_account_key_file
 
-  kubectl_create_command  = "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'"
-  kubectl_destroy_command = "kubectl delete secret ${var.operator_credential_name} -n=${var.operator_credential_namespace}"
+kubectl_create_command  = local.secret_kubectl_command
+kubectl_destroy_command = "kubectl delete secret ${var.operator_credential_name} -n=${var.operator_credential_namespace}"
 }
 
 
