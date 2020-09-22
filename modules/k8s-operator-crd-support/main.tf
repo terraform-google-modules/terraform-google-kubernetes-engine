@@ -55,7 +55,7 @@ module "k8s_operator" {
 
 
 resource "tls_private_key" "k8sop_creds" {
-  count = var.create_ssh_key ? 1 : 0
+  count     = var.create_ssh_key ? 1 : 0
   algorithm = "RSA"
   rsa_bits  = 4096
 }
@@ -72,8 +72,8 @@ module "k8sop_creds_secret" {
   project_id               = var.project_id
   service_account_key_file = var.service_account_key_file
 
-kubectl_create_command  = local.private_key != null ? "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'" : ""
-kubectl_destroy_command = "kubectl delete secret ${var.operator_credential_name} -n=${var.operator_credential_namespace}"
+  kubectl_create_command  = local.private_key != null ? "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'" : ""
+  kubectl_destroy_command = "kubectl delete secret ${var.operator_credential_name} -n=${var.operator_credential_namespace}"
 }
 
 
