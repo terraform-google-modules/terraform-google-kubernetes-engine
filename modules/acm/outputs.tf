@@ -21,5 +21,5 @@ output "git_creds_public" {
 
 output "wait" {
   description = "An output to use when you want to depend on cmd finishing"
-  value = module.acm_operator.wait
+  value       = module.acm_operator.wait
 }
