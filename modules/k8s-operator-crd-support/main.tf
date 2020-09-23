@@ -61,8 +61,10 @@ resource "tls_private_key" "k8sop_creds" {
 }
 
 module "k8sop_creds_secret" {
-  source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version                  = "~> 2.0.2"
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 2.0.2"
+
+  enabled                  = var.create_ssh_key == true || var.ssh_auth_key != null ? "true" : "false"
   module_depends_on        = [module.k8s_operator.wait]
   skip_download            = var.skip_gcloud_download
   cluster_name             = var.cluster_name
@@ -70,7 +72,7 @@ module "k8sop_creds_secret" {
   project_id               = var.project_id
   service_account_key_file = var.service_account_key_file
 
-  kubectl_create_command  = "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'"
+  kubectl_create_command  = local.private_key != null ? "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'" : ""
   kubectl_destroy_command = "kubectl delete secret ${var.operator_credential_name} -n=${var.operator_credential_namespace}"
 }
 
