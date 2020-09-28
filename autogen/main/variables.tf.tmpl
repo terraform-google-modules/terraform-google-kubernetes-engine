@@ -489,12 +489,6 @@ variable "enable_intranode_visibility" {
   default     = false
 }
 
-variable "enable_vertical_pod_autoscaling" {
-  type        = bool
-  description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
-  default     = false
-}
-
 variable "identity_namespace" {
   description = "Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `[project_id].svc.id.goog`)"
   type        = string
@@ -520,6 +514,11 @@ variable "enable_shielded_nodes" {
 }
 {% endif %}
 
+variable "enable_vertical_pod_autoscaling" {
+  type        = bool
+  description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
+  default     = false
+}
 
 variable "add_cluster_firewall_rules" {
   type        = bool
