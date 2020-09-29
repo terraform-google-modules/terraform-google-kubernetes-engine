@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+data "google_project" "asm_project" {
+  project_id = var.project_id
+}
+
+
 module "asm_install" {
   source            = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version           = "~> 2.0.2"
@@ -29,6 +34,6 @@ module "asm_install" {
   service_account_key_file = var.service_account_key_file
 
 
-  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_dir} ${var.asm_version}"
+  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_dir} ${var.asm_version} ${data.google_project.asm_project.number}"
   kubectl_destroy_command = "kubectl delete ns istio-system"
 }
