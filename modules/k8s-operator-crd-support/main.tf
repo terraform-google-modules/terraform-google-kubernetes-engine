@@ -107,6 +107,7 @@ module "k8sop_config" {
 
   kubectl_create_command  = "kubectl apply -f - <<EOF\n${data.template_file.k8sop_config.rendered}EOF"
   kubectl_destroy_command = "kubectl delete -f - <<EOF\n${data.template_file.k8sop_config.rendered}EOF"
+}
 
 module "wait_for_gatekeeper" {
   source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
