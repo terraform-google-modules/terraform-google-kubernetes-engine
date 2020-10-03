@@ -1,5 +1,4 @@
-## 
-# Windows nodepool with private cluster
+## Windows nodepool with private cluster
 
 This example illustrates how to create a private GKE cluster with windows nodepool
 
@@ -13,13 +12,13 @@ This example illustrates how to create a private GKE cluster with windows nodepo
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | project| The project ID to host the cluster in | string | n/a | yes |
-| region | The region to host the cluster in | string | n/a | yes | 
-| zones | The zone to host the cluster in | string | n/a | yes | 
-| network | The VPC network to host the cluster in | string | n/a | yes |
-| subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
+| region|The region to host the cluster in|string|n/a|yes| 
+| zones| The zone to host the cluster in|string|n/a|yes| 
+| network| The VPC network to host the cluster in|string|n/a|yes|
+| subnetwork | The subnetwork to host the cluster in| string| n/a | yes |
 | gke_cluster_master_version | GKE Cluster master kubernetes version | string | n/a | yes |
 | gke_cluster_min_master_version | GKE Cluster master kubernetes version | string | n/a | yes |
-| name | A suffix to append to the default cluster name | string | `""` | no |
+| name | A suffix to append to the default cluster name | string | n/a | no |
 | service\_account | Service account to associate to the nodes in the cluster | string | n/a | yes |
 | ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for services | string | n/a | yes |
