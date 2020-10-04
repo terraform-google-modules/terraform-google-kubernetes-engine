@@ -40,8 +40,11 @@ To deploy this config:
 | gke\_hub\_membership\_name | Memebership name that uniquely represents the cluster being registered on the Hub | string | `"gke-hub-membership"` | no |
 | gke\_hub\_sa\_name | Name for the GKE Hub SA stored as a secret `creds-gcp` in the `gke-connect` namespace. | string | `"gke-hub-sa"` | no |
 | location | The location (zone or region) this cluster has been created in. | string | n/a | yes |
+| module\_depends\_on | List of modules or resources this module depends on. | list | `<list>` | no |
 | project\_id | The project in which the resource belongs. | string | n/a | yes |
+| sa\_private\_key | Private key for service account base64 encoded. Required only if `use_existing_sa` is set to `true`. | string | `"null"` | no |
 | skip\_gcloud\_download | Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module) | bool | `"true"` | no |
+| use\_existing\_sa | Uses an existing service account to register membership. Requires sa_private_key | bool | `"false"` | no |
 | use\_tf\_google\_credentials\_env\_var | Optional GOOGLE_CREDENTIALS environment variable to be activated. | bool | `"false"` | no |
 
 ## Outputs
