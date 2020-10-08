@@ -41,6 +41,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "release_channel" {
+    for_each = local.release_channel
+
+    content {
+      channel = release_channel.value.channel
+    }
+  }
 
   subnetwork = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
 
@@ -52,6 +59,7 @@ resource "google_container_cluster" "primary" {
 
   default_max_pods_per_node = var.default_max_pods_per_node
 
+  enable_shielded_nodes = var.enable_shielded_nodes
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -149,6 +157,24 @@ resource "google_container_cluster" "primary" {
   }
 
   remove_default_node_pool = var.remove_default_node_pool
+
+  dynamic "database_encryption" {
+    for_each = var.database_encryption
+
+    content {
+      key_name = database_encryption.value.key_name
+      state    = database_encryption.value.state
+    }
+  }
+
+  dynamic "workload_identity_config" {
+    for_each = local.cluster_workload_identity_config
+
+    content {
+      identity_namespace = workload_identity_config.value.identity_namespace
+    }
+  }
+
 }
 
 /******************************************

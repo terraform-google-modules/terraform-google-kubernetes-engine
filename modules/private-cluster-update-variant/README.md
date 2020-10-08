@@ -135,6 +135,7 @@ Then perform the following commands on the root folder:
 | cluster\_resource\_labels | The GCE resource labels (a map of key/value pairs) to be applied to the cluster | map(string) | `<map>` | no |
 | configure\_ip\_masq | Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server. | string | `"false"` | no |
 | create\_service\_account | Defines if service account specified to run nodes should be created. | bool | `"true"` | no |
+| database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key. | object | `<list>` | no |
 | default\_max\_pods\_per\_node | The maximum number of pods to schedule per node | string | `"110"` | no |
 | deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | bool | `"false"` | no |
 | description | The description of the cluster | string | `""` | no |
@@ -143,6 +144,7 @@ Then perform the following commands on the root folder:
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | bool | `"false"` | no |
 | enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | bool | `"false"` | no |
 | enable\_resource\_consumption\_export | Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. | bool | `"true"` | no |
+| enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster | bool | `"true"` | no |
 | firewall\_inbound\_ports | List of TCP ports for admission/webhook controllers | list(string) | `<list>` | no |
 | firewall\_priority | Priority rule for firewall rules | number | `"1000"` | no |
 | gcloud\_skip\_download | Whether to skip downloading gcloud (assumes gcloud is already available outside the module) | bool | `"true"` | no |
@@ -150,6 +152,7 @@ Then perform the following commands on the root folder:
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | bool | `"false"` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | bool | `"true"` | no |
 | http\_load\_balancing | Enable httpload balancer addon | bool | `"true"` | no |
+| identity\_namespace | Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `[project_id].svc.id.goog`) | string | `"enabled"` | no |
 | initial\_node\_count | The number of nodes to create in this cluster's default node pool. | number | `"0"` | no |
 | ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | bool | `"false"` | no |
 | ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | string | `"60s"` | no |
@@ -178,6 +181,7 @@ Then perform the following commands on the root folder:
 | region | The region to host the cluster in (optional if zonal cluster / required if regional) | string | `"null"` | no |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | bool | `"true"` | no |
 | registry\_project\_id | Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project. | string | `""` | no |
+| release\_channel | The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`. | string | `"null"` | no |
 | remove\_default\_node\_pool | Remove default node pool while setting up the cluster | bool | `"false"` | no |
 | resource\_usage\_export\_dataset\_id | The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export. | string | `""` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created. | string | `""` | no |

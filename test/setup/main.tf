@@ -35,7 +35,6 @@ module "gke-project-1" {
     "cloudkms.googleapis.com",
     "cloudresourcemanager.googleapis.com",
     "container.googleapis.com",
-    "compute.googleapis.com",
     "pubsub.googleapis.com",
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
@@ -43,7 +42,7 @@ module "gke-project-1" {
   activate_api_identities = [
     {
       api   = "container.googleapis.com"
-      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter"]
+      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent"]
     },
   ]
 }
@@ -63,7 +62,6 @@ module "gke-project-2" {
     "cloudkms.googleapis.com",
     "cloudresourcemanager.googleapis.com",
     "container.googleapis.com",
-    "compute.googleapis.com",
     "pubsub.googleapis.com",
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
@@ -71,7 +69,7 @@ module "gke-project-2" {
   activate_api_identities = [
     {
       api   = "container.googleapis.com"
-      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter"]
+      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent"]
     },
   ]
 }
