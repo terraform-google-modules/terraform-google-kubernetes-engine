@@ -55,7 +55,7 @@ resource "kubernetes_service_account" "preexisting" {
 }
 
 module "my-app-workload-identity" {
-  source    = "terraform-google-modules/terraform-google-kubernetes-engine/modules/workload-identity"
+  source    = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   use_existing_k8s_sa = true
   name                = "preexisting-sa"
   namespace           = "prod"
