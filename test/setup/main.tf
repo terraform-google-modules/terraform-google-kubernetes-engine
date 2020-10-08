@@ -20,7 +20,7 @@ resource "random_id" "random_project_id_suffix" {
 
 module "gke-project-1" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 8.0"
+  version = "~> 9.1.0"
 
   name                 = "ci-gke-${random_id.random_project_id_suffix.hex}"
   random_project_id    = true
@@ -39,11 +39,17 @@ module "gke-project-1" {
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
   ]
+  activate_api_identities = [
+    {
+      api   = "container.googleapis.com"
+      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent"]
+    },
+  ]
 }
 
 module "gke-project-2" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 8.0"
+  version = "~> 9.1.0"
 
   name                 = "ci-gke-${random_id.random_project_id_suffix.hex}"
   random_project_id    = true
@@ -60,12 +66,18 @@ module "gke-project-2" {
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
   ]
+  activate_api_identities = [
+    {
+      api   = "container.googleapis.com"
+      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent"]
+    },
+  ]
 }
 
 # apis as documented https://cloud.google.com/service-mesh/docs/gke-install-new-cluster#setting_up_your_project
 module "gke-project-asm" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 8.0"
+  version = "~> 9.1.0"
 
   name                 = "ci-gke-asm-${random_id.random_project_id_suffix.hex}"
   random_project_id    = true

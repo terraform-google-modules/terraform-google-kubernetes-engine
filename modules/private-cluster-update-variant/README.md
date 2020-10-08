@@ -172,6 +172,7 @@ Then perform the following commands on the root folder:
 | node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map(map(string)) | `<map>` | no |
 | node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | map(list(string)) | `<map>` | no |
 | node\_pools\_tags | Map of lists containing node network tags by node-pool name | map(list(string)) | `<map>` | no |
+| node\_pools\_taints | Map of lists containing node taints by node-pool name | object | `<map>` | no |
 | non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | list(string) | `<list>` | no |
 | project\_id | The project ID to host the cluster in (required) | string | n/a | yes |
 | region | The region to host the cluster in (optional if zonal cluster / required if regional) | string | `"null"` | no |

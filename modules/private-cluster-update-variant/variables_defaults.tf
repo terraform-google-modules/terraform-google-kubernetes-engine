@@ -40,6 +40,16 @@ locals {
     var.node_pools_metadata
   )
 
+  node_pools_taints = merge(
+    { all = [] },
+    { default-node-pool = [] },
+    zipmap(
+      [for node_pool in var.node_pools : node_pool["name"]],
+      [for node_pool in var.node_pools : []]
+    ),
+    var.node_pools_taints
+  )
+
   node_pools_tags = merge(
     { all = [] },
     { default-node-pool = [] },
