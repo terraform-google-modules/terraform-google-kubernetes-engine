@@ -20,6 +20,7 @@ module "my-app-workload-identity" {
   name       = "my-application-name"
   namespace  = "default"
   project_id = "my-gcp-project-name"
+  roles = ["roles/storage.Admin", "roles/compute.Admin"]
 }
 ```
 
