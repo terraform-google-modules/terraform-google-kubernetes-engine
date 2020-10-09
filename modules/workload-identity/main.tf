@@ -67,9 +67,9 @@ resource "google_service_account_iam_member" "main" {
 
 
 resource "google_project_iam_member" "workload_identity_sa_bindings" {
-  count = length(var.roles)
+  for_each = toset(var.roles)
 
   project = var.project_id
-  role    = var.roles[count.index]
+  role    = each.value
   member  = "serviceAccount:${google_service_account.cluster_service_account.email}"
 }
