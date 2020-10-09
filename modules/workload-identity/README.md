@@ -76,6 +76,7 @@ module "my-app-workload-identity" {
 | name | Name for both service accounts. The GCP SA will be truncated to the first 30 chars if necessary. | string | n/a | yes |
 | namespace | Namespace for k8s service account | string | `"default"` | no |
 | project\_id | GCP project ID | string | n/a | yes |
+| roles | (optional) A list of roles to be added to the created Service account | list(string) | `<list>` | no |
 | use\_existing\_k8s\_sa | Use an existing kubernetes service account instead of creating one | bool | `"false"` | no |
 
 ## Outputs
