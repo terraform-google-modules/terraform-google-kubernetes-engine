@@ -187,6 +187,18 @@ variable "enable_resource_consumption_export" {
   description = "Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export."
   default     = true
 }
+
+variable "node_pools_taints" {
+  type        = map(list(object({ key = string, value = string, effect = string })))
+  description = "Map of lists containing node taints by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = []
+    default-node-pool = []
+  }
+}
+
 variable "node_pools_tags" {
   type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
