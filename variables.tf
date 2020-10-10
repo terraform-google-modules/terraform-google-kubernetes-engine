@@ -332,6 +332,11 @@ variable "default_max_pods_per_node" {
   default     = 110
 }
 
+variable "node_metadata" {
+  description = "Specifies how node metadata is exposed to the workload running on the node"
+  default     = "GKE_METADATA_SERVER"
+  type        = string
+}
 
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."

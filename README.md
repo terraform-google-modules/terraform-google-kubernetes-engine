@@ -138,6 +138,7 @@ Then perform the following commands on the root folder:
 | network\_policy | Enable network policy addon | bool | `"true"` | no |
 | network\_policy\_provider | The network policy provider. | string | `"CALICO"` | no |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | string | `""` | no |
+| node\_metadata | Specifies how node metadata is exposed to the workload running on the node | string | `"GKE_METADATA_SERVER"` | no |
 | node\_pools | List of maps containing node pools | list(map(string)) | `<list>` | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | map(map(string)) | `<map>` | no |
 | node\_pools\_metadata | Map of maps containing node metadata by node-pool name | map(map(string)) | `<map>` | no |
@@ -167,6 +168,7 @@ Then perform the following commands on the root folder:
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
+| identity\_namespace | Workload Identity namespace |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |
 | logging\_service | Logging service used |
 | master\_authorized\_networks\_config | Networks from which access to master is permitted |
@@ -178,6 +180,7 @@ Then perform the following commands on the root folder:
 | node\_pools\_names | List of node pools names |
 | node\_pools\_versions | List of node pools versions |
 | region | Cluster region |
+| release\_channel | The release channel of this cluster |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | type | Cluster type (regional / zonal) |
 | zones | List of zones in which the cluster resides |

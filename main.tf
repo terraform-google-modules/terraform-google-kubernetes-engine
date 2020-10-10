@@ -68,6 +68,9 @@ locals {
     provider = null
   }]
 
+  cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
+    node_metadata = var.node_metadata
+  }]
 
   cluster_output_name           = google_container_cluster.primary.name
   cluster_output_regional_zones = google_container_cluster.primary.node_locations

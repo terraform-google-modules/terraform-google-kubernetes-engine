@@ -452,12 +452,6 @@ variable "enable_pod_security_policy" {
   default     = false
 }
 
-variable "node_metadata" {
-  description = "Specifies how node metadata is exposed to the workload running on the node"
-  default     = "GKE_METADATA_SERVER"
-  type        = string
-}
-
 variable "sandbox_enabled" {
   type        = bool
   description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
@@ -482,6 +476,11 @@ variable "authenticator_security_group" {
   default     = null
 }
 
+variable "node_metadata" {
+  description = "Specifies how node metadata is exposed to the workload running on the node"
+  default     = "GKE_METADATA_SERVER"
+  type        = string
+}
 
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
