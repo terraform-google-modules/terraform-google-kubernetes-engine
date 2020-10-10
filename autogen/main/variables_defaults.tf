@@ -40,7 +40,6 @@ locals {
     var.node_pools_metadata
   )
 
-{% if beta_cluster %}
   node_pools_taints = merge(
     { all = [] },
     { default-node-pool = [] },
@@ -51,7 +50,6 @@ locals {
     var.node_pools_taints
   )
 
-{% endif %}
   node_pools_tags = merge(
     { all = [] },
     { default-node-pool = [] },

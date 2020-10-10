@@ -30,11 +30,11 @@ locals {
 }
 
 provider "google" {
-  version = "~> 3.35.0"
+  version = "~> 3.42.0"
 }
 
 provider "google-beta" {
-  version = "~> 3.35.0"
+  version = "~> 3.42.0"
 }
 
 module "gke" {

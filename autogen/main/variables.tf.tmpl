@@ -227,6 +227,7 @@ variable "cluster_autoscaling" {
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
+{% endif %}
 
 variable "node_pools_taints" {
   type        = map(list(object({ key = string, value = string, effect = string })))
@@ -239,7 +240,6 @@ variable "node_pools_taints" {
   }
 }
 
-{% endif %}
 variable "node_pools_tags" {
   type        = map(list(string))
   description = "Map of lists containing node network tags by node-pool name"
