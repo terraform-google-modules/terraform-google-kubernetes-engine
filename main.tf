@@ -46,6 +46,7 @@ locals {
   node_pool_names = [for np in toset(var.node_pools) : np.name]
   node_pools      = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
 
+  release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
 
 
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
@@ -67,6 +68,9 @@ locals {
     provider = null
   }]
 
+  cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
+    node_metadata = var.node_metadata
+  }]
 
   cluster_output_name           = google_container_cluster.primary.name
   cluster_output_regional_zones = google_container_cluster.primary.node_locations
@@ -113,6 +117,10 @@ locals {
   cluster_network_policy_enabled             = ! local.cluster_output_network_policy_enabled
   cluster_http_load_balancing_enabled        = ! local.cluster_output_http_load_balancing_enabled
   cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled
+  workload_identity_enabled                  = ! (var.identity_namespace == null || var.identity_namespace == "null")
+  cluster_workload_identity_config = ! local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
+    identity_namespace = "${var.project_id}.svc.id.goog" }] : [{ identity_namespace = var.identity_namespace
+  }]
 
 }
 

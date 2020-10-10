@@ -332,6 +332,39 @@ variable "default_max_pods_per_node" {
   default     = 110
 }
 
+variable "node_metadata" {
+  description = "Specifies how node metadata is exposed to the workload running on the node"
+  default     = "GKE_METADATA_SERVER"
+  type        = string
+}
+
+variable "database_encryption" {
+  description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
+  type        = list(object({ state = string, key_name = string }))
+
+  default = [{
+    state    = "DECRYPTED"
+    key_name = ""
+  }]
+}
+
+variable "identity_namespace" {
+  description = "Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `[project_id].svc.id.goog`)"
+  type        = string
+  default     = "enabled"
+}
+
+variable "release_channel" {
+  type        = string
+  description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
+  default     = null
+}
+
+variable "enable_shielded_nodes" {
+  type        = bool
+  description = "Enable Shielded Nodes features on all nodes in this cluster"
+  default     = true
+}
 
 variable "add_cluster_firewall_rules" {
   type        = bool
