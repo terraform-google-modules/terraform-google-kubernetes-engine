@@ -51,7 +51,6 @@ locals {
   node_pools      = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
 
   release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
-{% if beta_cluster %}
 
   autoscalling_resource_limits = var.cluster_autoscaling.enabled ? [{
     resource_type = "cpu"
@@ -62,8 +61,6 @@ locals {
     minimum       = var.cluster_autoscaling.min_memory_gb
     maximum       = var.cluster_autoscaling.max_memory_gb
   }] : []
-
-{% endif %}
 
 
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0

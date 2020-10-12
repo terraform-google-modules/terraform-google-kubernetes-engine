@@ -293,7 +293,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.12
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v2.9
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v3.41
 
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the

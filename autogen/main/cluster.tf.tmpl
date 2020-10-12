@@ -65,10 +65,11 @@ resource "google_container_cluster" "primary" {
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
-{% if beta_cluster %}
   cluster_autoscaling {
     enabled             = var.cluster_autoscaling.enabled
+{% if beta_cluster %}
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
+{% endif %}
     dynamic "resource_limits" {
       for_each = local.autoscalling_resource_limits
       content {
@@ -78,7 +79,6 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-{% endif %}
 
   default_max_pods_per_node = var.default_max_pods_per_node
 
@@ -389,10 +389,8 @@ resource "google_container_node_pool" "pools" {
   {% endif %}
   project  = var.project_id
   location = local.location
-  {% if beta_cluster %}
   // use node_locations if provided, defaults to cluster level node_locations if not specified
   node_locations = lookup(each.value, "node_locations", "") != "" ? split(",", each.value["node_locations"]) : null
-  {% endif %}
 
   cluster = google_container_cluster.primary.name
 
