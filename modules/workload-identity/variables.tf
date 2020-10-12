@@ -59,3 +59,9 @@ variable "automount_service_account_token" {
   default     = false
   type        = bool
 }
+
+variable "roles" {
+  type        = list(string)
+  default     = []
+  description = "(optional) A list of roles to be added to the created Service account"
+}
