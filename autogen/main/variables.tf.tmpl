@@ -454,11 +454,6 @@ variable "cloudrun" {
   default     = false
 }
 
-variable "enable_binary_authorization" {
-  description = "Enable BinAuthZ Admission controller"
-  default     = false
-}
-
 variable "enable_pod_security_policy" {
   type        = bool
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
@@ -522,6 +517,11 @@ variable "enable_shielded_nodes" {
   type        = bool
   description = "Enable Shielded Nodes features on all nodes in this cluster"
   default     = true
+}
+
+variable "enable_binary_authorization" {
+  description = "Enable BinAuthZ Admission controller"
+  default     = false
 }
 
 variable "add_cluster_firewall_rules" {

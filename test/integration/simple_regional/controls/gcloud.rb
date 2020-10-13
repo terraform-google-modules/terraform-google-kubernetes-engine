@@ -65,6 +65,12 @@ control "gcloud" do
           "enabled" => true,
         })
       end
+
+      it "has the expected binaryAuthorization config" do
+        expect(data['binaryAuthorization']).to eq({
+          "enabled" => true,
+        })
+      end
     end
 
     describe "default node pool" do
