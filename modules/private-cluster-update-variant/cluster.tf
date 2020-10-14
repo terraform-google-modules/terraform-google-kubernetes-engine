@@ -41,17 +41,37 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "release_channel" {
+    for_each = local.release_channel
+
+    content {
+      channel = release_channel.value.channel
+    }
+  }
 
   subnetwork = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
 
-  min_master_version = local.master_version
+  min_master_version = var.release_channel != null ? null : local.master_version
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
+  cluster_autoscaling {
+    enabled = var.cluster_autoscaling.enabled
+    dynamic "resource_limits" {
+      for_each = local.autoscalling_resource_limits
+      content {
+        resource_type = lookup(resource_limits.value, "resource_type")
+        minimum       = lookup(resource_limits.value, "minimum")
+        maximum       = lookup(resource_limits.value, "maximum")
+      }
+    }
+  }
 
   default_max_pods_per_node = var.default_max_pods_per_node
 
+  enable_shielded_nodes       = var.enable_shielded_nodes
+  enable_binary_authorization = var.enable_binary_authorization
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -115,6 +135,14 @@ resource "google_container_cluster" "primary" {
 
     node_config {
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
+
+      dynamic "workload_metadata_config" {
+        for_each = local.cluster_node_metadata_config
+
+        content {
+          node_metadata = workload_metadata_config.value.node_metadata
+        }
+      }
     }
   }
 
@@ -149,6 +177,24 @@ resource "google_container_cluster" "primary" {
   }
 
   remove_default_node_pool = var.remove_default_node_pool
+
+  dynamic "database_encryption" {
+    for_each = var.database_encryption
+
+    content {
+      key_name = database_encryption.value.key_name
+      state    = database_encryption.value.state
+    }
+  }
+
+  dynamic "workload_identity_config" {
+    for_each = local.cluster_workload_identity_config
+
+    content {
+      identity_namespace = workload_identity_config.value.identity_namespace
+    }
+  }
+
 }
 
 /******************************************
@@ -232,6 +278,8 @@ resource "google_container_node_pool" "pools" {
   name     = { for k, v in random_id.name : k => v.hex }[each.key]
   project  = var.project_id
   location = local.location
+  // use node_locations if provided, defaults to cluster level node_locations if not specified
+  node_locations = lookup(each.value, "node_locations", "") != "" ? split(",", each.value["node_locations"]) : null
 
   cluster = google_container_cluster.primary.name
 
@@ -326,6 +374,14 @@ resource "google_container_node_pool" "pools" {
         count = guest_accelerator["count"]
       }
     ]
+
+    dynamic "workload_metadata_config" {
+      for_each = local.cluster_node_metadata_config
+
+      content {
+        node_metadata = lookup(each.value, "node_metadata", workload_metadata_config.value.node_metadata)
+      }
+    }
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
