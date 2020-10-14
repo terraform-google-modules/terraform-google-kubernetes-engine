@@ -119,6 +119,19 @@ output "service_account" {
   value       = local.service_account
 }
 
+output "release_channel" {
+  description = "The release channel of this cluster"
+  value       = var.release_channel
+}
+
+output "identity_namespace" {
+  description = "Workload Identity namespace"
+  value       = length(local.cluster_workload_identity_config) > 0 ? local.cluster_workload_identity_config[0].identity_namespace : null
+  depends_on = [
+    google_container_cluster.primary
+  ]
+}
+
 output "master_ipv4_cidr_block" {
   description = "The IP range in CIDR notation used for the hosted master network"
   value       = var.master_ipv4_cidr_block
@@ -157,17 +170,4 @@ output "intranode_visibility_enabled" {
 output "vertical_pod_autoscaling_enabled" {
   description = "Whether veritical pod autoscaling is enabled"
   value       = local.cluster_vertical_pod_autoscaling_enabled
-}
-
-output "release_channel" {
-  description = "The release channel of this cluster"
-  value       = var.release_channel
-}
-
-output "identity_namespace" {
-  description = "Workload Identity namespace"
-  value       = length(local.cluster_workload_identity_config) > 0 ? local.cluster_workload_identity_config[0].identity_namespace : null
-  depends_on = [
-    google_container_cluster.primary
-  ]
 }

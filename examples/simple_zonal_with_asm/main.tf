@@ -23,12 +23,17 @@ provider "google-beta" {
   region  = var.region
 }
 
+provider "google" {
+  version = "~> 3.42.0"
+  region  = var.region
+}
+
 data "google_project" "project" {
   project_id = var.project_id
 }
 
 module "gke" {
-  source                  = "../../modules/beta-public-cluster/"
+  source                  = "../../"
   project_id              = var.project_id
   name                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   regional                = false
