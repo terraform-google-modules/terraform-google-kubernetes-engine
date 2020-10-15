@@ -213,6 +213,9 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 {% else %}
 - [Terraform Provider for GCP][terraform-provider-google] v3.41
 {% endif %}
+#### gcloud
+Some submodules use the [terraform-google-gcloud](https://github.com/terraform-google-modules/terraform-google-gcloud) module. By default, this module assumes you already have gcloud installed in your $PATH.
+See the [module](https://github.com/terraform-google-modules/terraform-google-gcloud#downloading) documentation for more information.
 
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the

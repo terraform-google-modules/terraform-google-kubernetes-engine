@@ -413,9 +413,3 @@ variable "gcloud_upgrade" {
   default     = false
 }
 
-variable "gcloud_skip_download" {
-  type        = bool
-  description = "Whether to skip downloading gcloud (assumes gcloud is already available outside the module)"
-  default     = true
-}
-

@@ -46,7 +46,6 @@ module "gke_hub_registration" {
 
   platform                          = "linux"
   gcloud_sdk_version                = var.gcloud_sdk_version
-  skip_download                     = var.skip_gcloud_download
   upgrade                           = true
   use_tf_google_credentials_env_var = var.use_tf_google_credentials_env_var
   module_depends_on                 = concat([var.cluster_endpoint], var.module_depends_on)
