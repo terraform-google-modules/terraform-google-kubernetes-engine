@@ -43,7 +43,6 @@ To deploy this config:
 | module\_depends\_on | List of modules or resources this module depends on. | list | `<list>` | no |
 | project\_id | The project in which the resource belongs. | string | n/a | yes |
 | sa\_private\_key | Private key for service account base64 encoded. Required only if `use_existing_sa` is set to `true`. | string | `"null"` | no |
-| skip\_gcloud\_download | Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module) | bool | `"true"` | no |
 | use\_existing\_sa | Uses an existing service account to register membership. Requires sa_private_key | bool | `"false"` | no |
 | use\_tf\_google\_credentials\_env\_var | Optional GOOGLE_CREDENTIALS environment variable to be activated. | bool | `"false"` | no |
 

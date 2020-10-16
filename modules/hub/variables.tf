@@ -34,12 +34,6 @@ variable "location" {
   type        = string
 }
 
-variable "skip_gcloud_download" {
-  description = "Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module)"
-  type        = bool
-  default     = true
-}
-
 variable "use_tf_google_credentials_env_var" {
   description = "Optional GOOGLE_CREDENTIALS environment variable to be activated."
   type        = bool

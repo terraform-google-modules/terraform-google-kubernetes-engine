@@ -25,7 +25,6 @@ module "asm_install" {
   module_depends_on = [var.cluster_endpoint]
 
   gcloud_sdk_version       = var.gcloud_sdk_version
-  skip_download            = var.skip_gcloud_download
   upgrade                  = true
   additional_components    = ["kubectl", "kpt", "beta", "kustomize"]
   cluster_name             = var.cluster_name
