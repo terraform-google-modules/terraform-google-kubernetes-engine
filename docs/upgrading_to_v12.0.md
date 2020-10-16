@@ -5,7 +5,7 @@ release.
 
 ### ASM module
 
-- GKE Hub functionality has been removed from ASM module and is now available as a seperate [Hub submodule](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/modules/hub).
+- GKE Hub functionality has been removed from ASM module and is now available as a separate [Hub submodule](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/modules/hub).
 - This is destructive and will result in the destruction and reapplication of cluster registration and optional SA.
 
 ```diff
