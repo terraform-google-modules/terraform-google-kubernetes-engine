@@ -5,11 +5,11 @@ release.
 
 ### ASM module
 
-- GKE Hub functionality has been removed from ASM module.
-- This is destructive and will result in the destruction and reapplication of the hub agent.
+- GKE Hub functionality has been removed from ASM module and is now available as a seperate [Hub submodule](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/modules/hub).
+- This is destructive and will result in the destruction and reapplication of cluster registration and optional SA.
 
 ```diff
- module "acm" {
+ module "asm" {
    source               = "terraform-google-modules/kubernetes-engine/google//modules/asm"
 -  version              = "~> 11.0"
 +  version              = "~> 12.0"
@@ -20,10 +20,11 @@ release.
 }
 ```
 
-### Dropped support for `gcloud_skip_download` variable across all modules/submodules
+### Dropped support for `gcloud_skip_download` variable
 
-- The `gcloud_skip_download` has been removed in favor of a simplified environment variable flag.
+- The `gcloud_skip_download` has been removed across all modules/submodules in favor of a simplified environment variable flag.
 - Setting environment variable `GCLOUD_TF_DOWNLOAD` to `always` will download and install gcloud and is equivalent to `gcloud_skip_download = false`.
+- Additional documentation is available [here](https://github.com/terraform-google-modules/terraform-google-gcloud#downloading).
 
 ### GA cluster defaults for new features
 
