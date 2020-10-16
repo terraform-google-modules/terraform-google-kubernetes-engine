@@ -87,12 +87,6 @@ variable "install_template_library" {
   default     = true
 }
 
-variable "skip_gcloud_download" {
-  description = "Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module)"
-  type        = bool
-  default     = true
-}
-
 variable "source_format" {
   description = "Configures a non-hierarchical repo if set to 'unstructured'. Uses [ACM defaults](https://cloud.google.com/anthos-config-management/docs/how-to/installing#configuring-config-management-operator) when unset."
   type        = string

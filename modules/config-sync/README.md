@@ -56,7 +56,6 @@ To deploy this config:
 | policy\_dir | Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default. | string | `""` | no |
 | project\_id | GCP project_id used to reach cluster. | string | n/a | yes |
 | secret\_type | credential secret type, passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true | string | n/a | yes |
-| skip\_gcloud\_download | Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module) | bool | `"true"` | no |
 | source\_format | Configures a non-hierarchical repo if set to 'unstructured'. Uses [Config Sync defaults](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing#configuring-config-management-operator) when unset. | string | `""` | no |
 | ssh\_auth\_key | Key for Git authentication. Overrides 'create_ssh_key' variable. Can be set using 'file(path/to/file)'-function. | string | `"null"` | no |
 | sync\_branch | ACM repo Git branch. If un-set, uses Config Management default. | string | `""` | no |

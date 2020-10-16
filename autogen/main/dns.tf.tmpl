@@ -27,7 +27,6 @@ module "gcloud_delete_default_kube_dns_configmap" {
   cluster_location = google_container_cluster.primary.location
   project_id       = var.project_id
   upgrade          = var.gcloud_upgrade
-  skip_download    = var.gcloud_skip_download
 
 
   kubectl_create_command  = "${path.module}/scripts/delete-default-resource.sh kube-system configmap kube-dns"
