@@ -36,23 +36,23 @@ To deploy this example:
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| bastion\_members | List of users, groups, SAs who need access to the bastion host | list(string) | `<list>` | no |
-| cluster\_name | The name of the cluster | string | `"safer-cluster-iap-bastion"` | no |
-| ip\_range\_pods\_name | The secondary ip range to use for pods | string | `"ip-range-pods"` | no |
-| ip\_range\_services\_name | The secondary ip range to use for pods | string | `"ip-range-svc"` | no |
-| ip\_source\_ranges\_ssh | Additional source ranges to allow for ssh to bastion host. 35.235.240.0/20 allowed by default for IAP tunnel. | list(string) | `<list>` | no |
-| network\_name | The name of the network being created to host the cluster in | string | `"safer-cluster-network"` | no |
-| project\_id | The project ID to host the cluster in | string | n/a | yes |
-| region | The region to host the cluster in | string | `"us-central1"` | no |
-| subnet\_ip | The cidr range of the subnet | string | `"10.10.10.0/24"` | no |
-| subnet\_name | The name of the subnet being created to host the cluster in | string | `"safer-cluster-subnet"` | no |
+|------|-------------|------|---------|:--------:|
+| bastion\_members | List of users, groups, SAs who need access to the bastion host | `list(string)` | `[]` | no |
+| cluster\_name | The name of the cluster | `string` | `"safer-cluster-iap-bastion"` | no |
+| ip\_range\_pods\_name | The secondary ip range to use for pods | `string` | `"ip-range-pods"` | no |
+| ip\_range\_services\_name | The secondary ip range to use for pods | `string` | `"ip-range-svc"` | no |
+| ip\_source\_ranges\_ssh | Additional source ranges to allow for ssh to bastion host. 35.235.240.0/20 allowed by default for IAP tunnel. | `list(string)` | `[]` | no |
+| network\_name | The name of the network being created to host the cluster in | `string` | `"safer-cluster-network"` | no |
+| project\_id | The project ID to host the cluster in | `string` | n/a | yes |
+| region | The region to host the cluster in | `string` | `"us-central1"` | no |
+| subnet\_ip | The cidr range of the subnet | `string` | `"10.10.10.0/24"` | no |
+| subnet\_name | The name of the subnet being created to host the cluster in | `string` | `"safer-cluster-subnet"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| bastion\_kubectl\_command | kubectl command using the local proxy once the bastion_ssh command is running |
+| bastion\_kubectl\_command | kubectl command using the local proxy once the bastion\_ssh command is running |
 | bastion\_name | Name of the bastion host |
 | bastion\_ssh\_command | gcloud command to ssh and port forward to the bastion host command |
 | bastion\_zone | Location of bastion host |
