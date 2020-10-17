@@ -334,7 +334,11 @@ resource "random_id" "name" {
             keys(local.node_pools_labels["all"]),
             values(local.node_pools_labels["all"]),
             keys(local.node_pools_labels[each.value["name"]]),
-            values(local.node_pools_labels[each.value["name"]])
+            values(local.node_pools_labels[each.value["name"]]),
+            keys(local.node_pools_taints["all"]),
+            values(local.node_pools_taints["all"]),
+            keys(local.node_pools_taints[each.value["name"]]),
+            values(local.node_pools_taints[each.value["name"]])
           )
         )
       )
