@@ -105,12 +105,6 @@ variable "operator_cr_template_path" {
   type        = string
 }
 
-variable "skip_gcloud_download" {
-  description = "Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module)"
-  type        = bool
-  default     = true
-}
-
 variable "source_format" {
   description = <<EOF
     Configures a non-hierarchical repo if set to 'unstructured'. Uses [Config Sync defaults](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing#configuring-config-management-operator)

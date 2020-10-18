@@ -27,10 +27,9 @@ locals {
 }
 
 module "k8sop_manifest" {
-  source        = "terraform-google-modules/gcloud/google"
-  version       = "~> 2.0.2"
-  enabled       = local.should_download_manifest
-  skip_download = var.skip_gcloud_download
+  source  = "terraform-google-modules/gcloud/google"
+  version = "~> 2.0.2"
+  enabled = local.should_download_manifest
 
   create_cmd_entrypoint  = "gsutil"
   create_cmd_body        = "cp ${var.operator_latest_manifest_url} ${local.manifest_path}"
@@ -43,7 +42,6 @@ module "k8s_operator" {
   source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version                  = "~> 2.0.2"
   module_depends_on        = [module.k8sop_manifest.wait, var.cluster_endpoint]
-  skip_download            = var.skip_gcloud_download
   cluster_name             = var.cluster_name
   cluster_location         = var.location
   project_id               = var.project_id
@@ -66,7 +64,6 @@ module "k8sop_creds_secret" {
 
   enabled                  = var.create_ssh_key == true || var.ssh_auth_key != null ? "true" : "false"
   module_depends_on        = [module.k8s_operator.wait]
-  skip_download            = var.skip_gcloud_download
   cluster_name             = var.cluster_name
   cluster_location         = var.location
   project_id               = var.project_id
@@ -103,7 +100,6 @@ module "k8sop_config" {
   source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version                  = "~> 2.0.2"
   module_depends_on        = [module.k8s_operator.wait, module.k8sop_creds_secret.wait]
-  skip_download            = var.skip_gcloud_download
   cluster_name             = var.cluster_name
   cluster_location         = var.location
   project_id               = var.project_id
@@ -119,7 +115,6 @@ module "wait_for_gatekeeper" {
   version                  = "~> 2.0.2"
   enabled                  = var.enable_policy_controller ? true : false
   module_depends_on        = [module.k8sop_config.wait]
-  skip_download            = var.skip_gcloud_download
   cluster_name             = var.cluster_name
   cluster_location         = var.location
   project_id               = var.project_id

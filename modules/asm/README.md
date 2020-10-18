@@ -45,7 +45,6 @@ To deploy this config:
 | location | The location (zone or region) this cluster has been created in. | string | n/a | yes |
 | project\_id | The project in which the resource belongs. | string | n/a | yes |
 | service\_account\_key\_file | Path to service account key file to auth as for running `gcloud container clusters get-credentials`. | string | `""` | no |
-| skip\_gcloud\_download | Whether to skip downloading gcloud (assumes gcloud and kubectl already available outside the module) | bool | `"true"` | no |
 
 ## Outputs
 

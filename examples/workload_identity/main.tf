@@ -19,7 +19,7 @@ locals {
 }
 
 provider "google" {
-  version = "~> 3.35.0"
+  version = "~> 3.42.0"
   region  = var.region
 }
 
@@ -32,7 +32,7 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                   = "../../modules/beta-public-cluster/"
+  source                   = "../../"
   project_id               = var.project_id
   name                     = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   region                   = var.region

@@ -19,7 +19,7 @@ locals {
 }
 
 provider "google-beta" {
-  version = "~> 3.35.0"
+  version = "~> 3.42.0"
   region  = var.region
 }
 
@@ -30,7 +30,7 @@ data "google_compute_subnetwork" "subnetwork" {
 }
 
 module "gke" {
-  source                  = "../../modules/beta-private-cluster/"
+  source                  = "../../modules/private-cluster/"
   project_id              = var.project_id
   name                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   regional                = false

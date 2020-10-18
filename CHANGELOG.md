@@ -6,6 +6,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [12.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v11.1.0...v12.0.0) (2020-10-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* This is a backwards-incompatible release. See the [upgrade guide](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/blob/master/docs/upgrading_to_v12.0.md) for details.
+* GKE Hub functionality has been removed from ASM module(#665). Users can leverage Hub module for this functionality.
+* Removed the gcloud_skip_download variable and defaulted to never downloading gcloud. ([#712](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/712)) ([f84e838](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f84e838bf8c8d01f8f60176a2b3140800cf3ec3b))
+
+
+### Features
+
+* ACM - Wait for gatekeeper & Hub: expose module_depends_on ([#689](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/689)) ([26ea28d](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/26ea28db52ce5797da043a1c56dfb4575f49dac8))
+* add node_pool_taints to all the modules ([#705](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/705)) ([68e8eec](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/68e8eecaec2d31d19924dec6b4dabc56e2010f0e))
+* allow passing roles to created Workload Identity service account ([#708](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/708)) ([e761dce](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e761dcebbe43673842e7f955efcf2cc49e4572fd))
+* Expose service account variable on ASM submodule ([#658](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/658)) ([182dded](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/182dded476ddd8eb6f95a800f7a5bb6541c9fcbe))
+* hub make decode work with -d or --decode ([#671](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/671)) ([0b5bd3d](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0b5bd3d7a1f079ab98bc294f64a4f6b27ee34fc7))
+* Hub submodule - add option to use existing service account to register clusters. ([#678](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/678)) ([9f84cec](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9f84cec2b7c28863b79d9eb2586be5bad83252b4))
+* Promote previously beta features to GA modules ([#709](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/709)) ([2cb4fae](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2cb4fae57cb580daba6dc64c7564dcaa7df4efd6)), closes [#708](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/708)
+* **ACM:** fix bug when not using `ssh` secret type for ACM submodule ([#679](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/679)) ([716867c](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/716867cecbc080674410f9170a0268d193a1da83))
+* make wait-for-cluster more robust ([#676](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/676)) ([dffb047](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/dffb04774f81cd0a9e2459c411eb75cde8b705d2))
+
+
+### Bug Fixes
+
+* Correct WI module source in docs ([#701](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/701)) ([f31b1f4](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f31b1f4b8cd78968c9fbafc48835b14985ecbb26))
+* Enable auto-upgrade in beta clusters with a release channel ([#682](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/682)) ([21f95db](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/21f95db0a7737c922224bedf9af255934da5bd6c))
+* Fix broken link in README.md ([#691](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/691)) ([6f0e749](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6f0e7494f80af70850e50e35e004516a9e92b85f))
+* Fix skip_provisioners enabled flag for wait_for_cluster ([#669](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/669)) ([e293a43](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e293a43d7327d9055fa73aacdf0b977ba0481c48))
+* remove hub from asm module ([#670](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/670)) ([6f419c3](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6f419c3f048b4cdaa4d954bf9df1fbd87a0749ae))
+* set project number for ASM install ([#692](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/692)) ([c5d1e4d](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c5d1e4db2034b4395055322c28abd30248609cba))
+* Shorten GSA account_id if necessary ([#666](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/666)) ([0225458](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/02254587d9cf01f138a4096673967402a9ab00fc))
+
 ## [11.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v11.0.0...v11.1.0) (2020-09-04)
 
 
