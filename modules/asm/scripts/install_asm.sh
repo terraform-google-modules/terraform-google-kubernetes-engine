@@ -15,7 +15,7 @@
 
 set -e
 
-if [ "$#" -lt 5 ]; then
+if [ "$#" -lt 6 ]; then
     >&2 echo "Not all expected arguments set."
     exit 1
 fi
@@ -25,6 +25,7 @@ CLUSTER_NAME=$2
 CLUSTER_LOCATION=$3
 ASM_RESOURCES=$4
 ASM_VERSION=$5
+PROJECT_NUM=$6
 BASE_DIR="asm-base-dir"
 # check for needed binaries
 # kustomize is a requirement for installing ASM and is not available via gcloud. Safely exit if not available.
@@ -53,6 +54,7 @@ kpt cfg set asm-patch/ base-dir ../${BASE_DIR}
 kpt cfg set asm-patch/ gcloud.core.project "${PROJECT_ID}"
 kpt cfg set asm-patch/ gcloud.container.cluster "${CLUSTER_NAME}"
 kpt cfg set asm-patch/ gcloud.compute.location "${CLUSTER_LOCATION}"
+kpt cfg set asm-patch/ gcloud.project.environProjectNumber "${PROJECT_NUM}"
 kpt cfg list-setters asm-patch/
 pushd ${BASE_DIR}
 kustomize create --autodetect --namespace "${PROJECT_ID}"

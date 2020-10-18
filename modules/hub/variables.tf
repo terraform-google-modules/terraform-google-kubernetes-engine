@@ -69,3 +69,21 @@ variable "gke_hub_membership_name" {
   type        = string
   default     = "gke-hub-membership"
 }
+
+variable "use_existing_sa" {
+  description = "Uses an existing service account to register membership. Requires sa_private_key"
+  type        = bool
+  default     = false
+}
+
+variable "sa_private_key" {
+  description = "Private key for service account base64 encoded. Required only if `use_existing_sa` is set to `true`."
+  type        = string
+  default     = null
+}
+
+variable "module_depends_on" {
+  description = "List of modules or resources this module depends on."
+  type        = list
+  default     = []
+}
