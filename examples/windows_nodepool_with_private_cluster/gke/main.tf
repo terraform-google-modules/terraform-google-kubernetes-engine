@@ -15,10 +15,14 @@
  * limitations under the License.
  */
 
+locals {
+  cluster_type = "private-regional"
+}
+
 module "gke_private_cluster" {
   source                     = "../modules/google_kubernetes_engine/gke_private_cluster/"
   project_id                 = var.project
-  name                       = "test-gke-cluster"
+  name                       = "${local.cluster_type}-cluster-windows"
   region                     = var.region
   network                    = var.network
   subnetwork                 = var.subnetwork
