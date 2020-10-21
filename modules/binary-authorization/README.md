@@ -33,11 +33,13 @@ module "quality-attestor" {
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| attestor-name | Name of the attestor | string | n/a | yes |
-| disable\_dependent\_services | Whether services that are enabled and which depend on this service should also be disabled when this service is destroyed. https://www.terraform.io/docs/providers/google/r/google_project_service.html#disable_dependent_services | bool | `"false"` | no |
-| disable\_services\_on\_destroy | Whether project services will be disabled when the resources are destroyed. https://www.terraform.io/docs/providers/google/r/google_project_service.html#disable_on_destroy | bool | `"false"` | no |
-| project\_id | Project ID to apply services into | string | n/a | yes |
+|------|-------------|------|---------|:--------:|
+| attestor-name | Name of the attestor | `string` | n/a | yes |
+| crypto-algorithm | Algorithm used for the async signing keys | `string` | `"RSA_SIGN_PKCS1_4096_SHA512"` | no |
+| disable\_dependent\_services | Whether services that are enabled and which depend on this service should also be disabled when this service is destroyed. https://www.terraform.io/docs/providers/google/r/google_project_service.html#disable_dependent_services | `bool` | `false` | no |
+| disable\_services\_on\_destroy | Whether project services will be disabled when the resources are destroyed. https://www.terraform.io/docs/providers/google/r/google_project_service.html#disable_on_destroy | `bool` | `false` | no |
+| keyring-id | Keyring ID to attach attestor keys | `string` | n/a | yes |
+| project\_id | Project ID to apply services into | `string` | n/a | yes |
 
 ## Outputs
 
