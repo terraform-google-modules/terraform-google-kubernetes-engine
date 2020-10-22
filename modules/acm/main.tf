@@ -14,6 +14,19 @@
  * limitations under the License.
  */
 
+module "enable_acm" {
+  source  = "terraform-google-modules/gcloud/google"
+  version = "~> 2.0"
+
+  platform = "linux"
+  upgrade  = true
+
+  create_cmd_entrypoint  = "gcloud"
+  create_cmd_body        = "alpha container hub config-management enable --project ${var.project_id}"
+  destroy_cmd_entrypoint = "gcloud"
+  destroy_cmd_body       = "alpha container hub config-management disable --force --project ${var.project_id}"
+}
+
 module "acm_operator" {
 
   source = "../k8s-operator-crd-support"
