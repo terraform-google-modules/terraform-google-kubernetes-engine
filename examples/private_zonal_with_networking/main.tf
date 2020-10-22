@@ -16,7 +16,7 @@
 
 module "gcp-network" {
   source       = "terraform-google-modules/network/google"
-  version      = "~> 2.0"
+  version      = "~> 2.5"
   project_id   = var.project_id
   network_name = var.network
 
@@ -51,7 +51,7 @@ data "google_compute_subnetwork" "subnetwork" {
 }
 
 module "gke" {
-  source     = "../../modules/beta-private-cluster/"
+  source     = "../../modules/private-cluster/"
   project_id = var.project_id
   name       = var.cluster_name
   regional   = false

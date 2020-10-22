@@ -436,23 +436,8 @@ variable "config_connector" {
   default     = false
 }
 
-variable "database_encryption" {
-  description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
-  type        = list(object({ state = string, key_name = string }))
-
-  default = [{
-    state    = "DECRYPTED"
-    key_name = ""
-  }]
-}
-
 variable "cloudrun" {
   description = "(Beta) Enable CloudRun addon"
-  default     = false
-}
-
-variable "enable_binary_authorization" {
-  description = "Enable BinAuthZ Admission controller"
   default     = false
 }
 
@@ -460,12 +445,6 @@ variable "enable_pod_security_policy" {
   type        = bool
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
   default     = false
-}
-
-variable "node_metadata" {
-  description = "Specifies how node metadata is exposed to the workload running on the node"
-  default     = "GKE_METADATA_SERVER"
-  type        = string
 }
 
 variable "sandbox_enabled" {
@@ -486,21 +465,37 @@ variable "enable_vertical_pod_autoscaling" {
   default     = false
 }
 
-variable "identity_namespace" {
-  description = "Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `[project_id].svc.id.goog`)"
-  type        = string
-  default     = "enabled"
-}
-
 variable "authenticator_security_group" {
   type        = string
   description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
   default     = null
 }
 
+variable "node_metadata" {
+  description = "Specifies how node metadata is exposed to the workload running on the node"
+  default     = "GKE_METADATA_SERVER"
+  type        = string
+}
+
+variable "database_encryption" {
+  description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
+  type        = list(object({ state = string, key_name = string }))
+
+  default = [{
+    state    = "DECRYPTED"
+    key_name = ""
+  }]
+}
+
+variable "identity_namespace" {
+  description = "Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `[project_id].svc.id.goog`)"
+  type        = string
+  default     = "enabled"
+}
+
 variable "release_channel" {
   type        = string
-  description = "(Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
+  description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
   default     = null
 }
 
@@ -510,6 +505,10 @@ variable "enable_shielded_nodes" {
   default     = true
 }
 
+variable "enable_binary_authorization" {
+  description = "Enable BinAuthZ Admission controller"
+  default     = false
+}
 
 variable "add_cluster_firewall_rules" {
   type        = bool
@@ -533,12 +532,6 @@ variable "gcloud_upgrade" {
   type        = bool
   description = "Whether to upgrade gcloud at runtime"
   default     = false
-}
-
-variable "gcloud_skip_download" {
-  type        = bool
-  description = "Whether to skip downloading gcloud (assumes gcloud is already available outside the module)"
-  default     = true
 }
 
 variable "disable_default_snat" {

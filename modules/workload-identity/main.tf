@@ -64,3 +64,12 @@ resource "google_service_account_iam_member" "main" {
   role               = "roles/iam.workloadIdentityUser"
   member             = local.k8s_sa_gcp_derived_name
 }
+
+
+resource "google_project_iam_member" "workload_identity_sa_bindings" {
+  for_each = toset(var.roles)
+
+  project = var.project_id
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.cluster_service_account.email}"
+}

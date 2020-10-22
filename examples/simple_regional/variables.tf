@@ -52,3 +52,8 @@ variable "skip_provisioners" {
   description = "Flag to skip local-exec provisioners"
   default     = false
 }
+
+variable "enable_binary_authorization" {
+  description = "Enable BinAuthZ Admission controller"
+  default     = false
+}

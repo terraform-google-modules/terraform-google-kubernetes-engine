@@ -79,9 +79,7 @@ module "gke" {
     {
       name               = "default-node-pool"
       machine_type       = "e2-medium"
-      {% if beta_cluster %}
       node_locations     = "us-central1-b,us-central1-c"
-      {% endif %}
       min_count          = 1
       max_count          = 100
       local_ssd_count    = 0
@@ -119,7 +117,6 @@ module "gke" {
       node-pool-metadata-custom-value = "my-node-pool"
     }
   }
-  {% if beta_cluster %}
 
   node_pools_taints = {
     all = []
@@ -132,7 +129,6 @@ module "gke" {
       },
     ]
   }
-  {% endif %}
 
   node_pools_tags = {
     all = []
@@ -169,14 +165,10 @@ The node_pools variable takes the following parameters:
 | auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
 | disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100 | Optional |
 | disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |
-{% if beta_cluster %}
 | effect | Effect for the taint | | Required |
-{% endif %}
 | image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | COS | Optional |
 | initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
-{% if beta_cluster %}
 | key | The key required for the taint | | Required |
-{% endif %}
 | local_ssd_count | The amount of local SSD disks that will be attached to each cluster node | 0 | Optional |
 | machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
@@ -188,19 +180,15 @@ The node_pools variable takes the following parameters:
 | min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true | 1 | Optional |
 | name | The name of the node pool |  | Required |
 | node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusers |  | Required |
-{% if beta_cluster %}
 | node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. Defaults to cluster level node locations if nothing is specified | " " | Optional |
 | node_metadata | Options to expose the node metadata to the workload running on the node | | Optional |
-{% endif %}
 | preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
 {% if beta_cluster %}
 | sandbox_type | Sandbox to use for pods in the node pool | | Required |
 {% endif %}
 | service_account | The service account to be used by the Node VMs | " " | Optional |
 | tags | The list of instance tags applied to all nodes | | Required |
-{% if beta_cluster %}
 | value | The value for the taint | | Required |
-{% endif %}
 | version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
 
 
@@ -221,10 +209,13 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.12
 {% if beta_cluster %}
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v2.9
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v3.41
 {% else %}
-- [Terraform Provider for GCP][terraform-provider-google] v2.9
+- [Terraform Provider for GCP][terraform-provider-google] v3.41
 {% endif %}
+#### gcloud
+Some submodules use the [terraform-google-gcloud](https://github.com/terraform-google-modules/terraform-google-gcloud) module. By default, this module assumes you already have gcloud installed in your $PATH.
+See the [module](https://github.com/terraform-google-modules/terraform-google-gcloud#downloading) documentation for more information.
 
 ### Configure a Service Account
 In order to execute this module you must have a Service Account with the

@@ -6,8 +6,8 @@ This example illustrates how to create a private cluster with node pool specific
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| project\_id | The project ID to host the cluster in | string | n/a | yes |
+|------|-------------|------|---------|:--------:|
+| project\_id | The project ID to host the cluster in | `any` | n/a | yes |
 
 ## Outputs
 

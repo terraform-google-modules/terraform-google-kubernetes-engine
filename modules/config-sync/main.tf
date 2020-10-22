@@ -29,7 +29,6 @@ module "configsync_operator" {
   create_ssh_key       = var.create_ssh_key
   secret_type          = var.secret_type
   ssh_auth_key         = var.ssh_auth_key
-  skip_gcloud_download = var.skip_gcloud_download
   source_format        = var.source_format
   hierarchy_controller = var.hierarchy_controller
 

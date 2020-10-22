@@ -20,6 +20,7 @@ module "my-app-workload-identity" {
   name       = "my-application-name"
   namespace  = "default"
   project_id = "my-gcp-project-name"
+  roles = ["roles/storage.Admin", "roles/compute.Admin"]
 }
 ```
 
@@ -55,7 +56,7 @@ resource "kubernetes_service_account" "preexisting" {
 }
 
 module "my-app-workload-identity" {
-  source    = "terraform-google-modules/terraform-google-kubernetes-engine/modules/workload-identity"
+  source    = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   use_existing_k8s_sa = true
   name                = "preexisting-sa"
   namespace           = "prod"
@@ -67,15 +68,16 @@ module "my-app-workload-identity" {
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| automount\_service\_account\_token | Enable automatic mounting of the service account token | bool | `"false"` | no |
-| cluster\_name | Cluster name. Required if using existing KSA. | string | `""` | no |
-| k8s\_sa\_name | Name for the existing Kubernetes service account | string | `"null"` | no |
-| location | Cluster location (region if regional cluster, zone if zonal cluster). Required if using existing KSA. | string | `""` | no |
-| name | Name for both service accounts. The GCP SA will be truncated to the first 30 chars if necessary. | string | n/a | yes |
-| namespace | Namespace for k8s service account | string | `"default"` | no |
-| project\_id | GCP project ID | string | n/a | yes |
-| use\_existing\_k8s\_sa | Use an existing kubernetes service account instead of creating one | bool | `"false"` | no |
+|------|-------------|------|---------|:--------:|
+| automount\_service\_account\_token | Enable automatic mounting of the service account token | `bool` | `false` | no |
+| cluster\_name | Cluster name. Required if using existing KSA. | `string` | `""` | no |
+| k8s\_sa\_name | Name for the existing Kubernetes service account | `string` | `null` | no |
+| location | Cluster location (region if regional cluster, zone if zonal cluster). Required if using existing KSA. | `string` | `""` | no |
+| name | Name for both service accounts. The GCP SA will be truncated to the first 30 chars if necessary. | `string` | n/a | yes |
+| namespace | Namespace for k8s service account | `string` | `"default"` | no |
+| project\_id | GCP project ID | `string` | n/a | yes |
+| roles | (optional) A list of roles to be added to the created Service account | `list(string)` | `[]` | no |
+| use\_existing\_k8s\_sa | Use an existing kubernetes service account instead of creating one | `bool` | `false` | no |
 
 ## Outputs
 
