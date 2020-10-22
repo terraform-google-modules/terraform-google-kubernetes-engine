@@ -70,7 +70,7 @@ docker_test_lint:
 	docker run --rm -it \
 		-e ENABLE_PARALLEL=1 \
 		-v "$(CURDIR)":/workspace \
-		cft/developer-tools:0.14.0 \
+		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
 		/usr/local/bin/test_lint.sh
 
 # Generate documentation
