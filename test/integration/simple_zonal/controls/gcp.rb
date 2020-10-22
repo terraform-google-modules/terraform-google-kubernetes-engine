@@ -18,13 +18,7 @@ control "gcp" do
   service_account = attribute("service_account")
   project_id = attribute("project_id")
 
-  if service_account.start_with? "projects/"
-    service_account_name = service_account
-  else
-    service_account_name = "projects/#{project_id}/serviceAccounts/#{service_account}"
-  end
-
-  describe google_service_account(name: service_account_name) do
+  describe google_service_account(project: project_id, name: service_account) do
     its("display_name") { should eq "Terraform-managed service account for cluster #{attribute("cluster_name")}" }
     its("project_id") { should eq project_id }
   end
