@@ -298,6 +298,7 @@ variable "cluster_telemetry_type" {
   description = "Available options include ENABLE, DISABLE, and SYSTEM_ONLY"
   default     = "ENABLE"
 }
+
 variable "logging_service" {
   type        = string
   description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
