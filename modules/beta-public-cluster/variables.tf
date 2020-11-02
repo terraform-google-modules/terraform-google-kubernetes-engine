@@ -508,3 +508,8 @@ variable "disable_default_snat" {
   description = "Whether to disable the default SNAT to support the private use of public IP addresses"
   default     = false
 }
+
+variable "impersonate_service_account" {
+  description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
+  default     = ""
+}
