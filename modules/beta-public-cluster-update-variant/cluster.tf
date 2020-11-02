@@ -56,6 +56,9 @@ resource "google_container_cluster" "primary" {
   }
   min_master_version = var.release_channel != null ? null : local.master_version
 
+  cluster_telemetry {
+    type = var.cluster_telemetry_type
+  }
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
