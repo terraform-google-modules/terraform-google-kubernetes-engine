@@ -22,11 +22,12 @@ fi
 
 PROJECT=$1
 CLUSTER_NAME=$2
+IMPERSONATE_SERVICE_ACCOUNT=$3
 
 echo "Waiting for cluster $CLUSTER_NAME in project $PROJECT to reconcile..."
 
 while
-  current_status=$(gcloud container clusters list --project="$PROJECT" --filter=name:"$CLUSTER_NAME" --format="value(status)")
+  current_status=$(gcloud container clusters list --project="$PROJECT" --filter=name:"$CLUSTER_NAME" --format="value(status)" --impersonate-service-account="$IMPERSONATE_SERVICE_ACCOUNT")
   [[ "${current_status}" != "RUNNING" ]]
 do printf ".";sleep 5; done
 
