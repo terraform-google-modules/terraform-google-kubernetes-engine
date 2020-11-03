@@ -59,8 +59,6 @@ resource "google_container_cluster" "primary" {
   cluster_telemetry {
     type = var.cluster_telemetry_type
   }
-  logging_service    = var.logging_service
-  monitoring_service = var.monitoring_service
 
   cluster_autoscaling {
     enabled             = var.cluster_autoscaling.enabled
