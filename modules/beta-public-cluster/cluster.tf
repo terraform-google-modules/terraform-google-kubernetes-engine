@@ -405,9 +405,9 @@ module "gcloud_wait_for_cluster" {
   upgrade = var.gcloud_upgrade
 
   create_cmd_entrypoint  = "${path.module}/scripts/wait-for-cluster.sh"
-  create_cmd_body        = "${var.project_id} ${var.name} ${var.impersonate_service_account}"
+  create_cmd_body        = "${var.project_id} ${var.name} ${local.location} ${var.impersonate_service_account}"
   destroy_cmd_entrypoint = "${path.module}/scripts/wait-for-cluster.sh"
-  destroy_cmd_body       = "${var.project_id} ${var.name} ${var.impersonate_service_account}"
+  destroy_cmd_body       = "${var.project_id} ${var.name} ${local.location} ${var.impersonate_service_account}"
 
   module_depends_on = concat(
     [google_container_cluster.primary.master_version],
