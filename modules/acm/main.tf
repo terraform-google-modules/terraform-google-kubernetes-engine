@@ -21,10 +21,11 @@ module "enable_acm" {
   platform = "linux"
   upgrade  = true
 
-  create_cmd_entrypoint  = "gcloud"
-  create_cmd_body        = "alpha container hub config-management enable --project ${var.project_id}"
-  destroy_cmd_entrypoint = "gcloud"
-  destroy_cmd_body       = "alpha container hub config-management disable --force --project ${var.project_id}"
+  service_account_key_file = var.service_account_key_file
+  create_cmd_entrypoint    = "gcloud"
+  create_cmd_body          = "alpha container hub config-management enable --project ${var.project_id}"
+  destroy_cmd_entrypoint   = "gcloud"
+  destroy_cmd_body         = "alpha container hub config-management disable --force --project ${var.project_id}"
 }
 
 module "acm_operator" {
