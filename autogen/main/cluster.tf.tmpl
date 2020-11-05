@@ -64,7 +64,7 @@ resource "google_container_cluster" "primary" {
 
 {% if beta_cluster %}
   dynamic "cluster_telemetry" {
-    for_each = local.cluster_telemetry_type_is_set ? [1] : [0]
+    for_each = local.cluster_telemetry_type_is_set ? [1] : []
     content {
       type = var.cluster_telemetry_type
     }

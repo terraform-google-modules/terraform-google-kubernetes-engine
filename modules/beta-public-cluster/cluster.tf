@@ -57,7 +57,7 @@ resource "google_container_cluster" "primary" {
   min_master_version = var.release_channel != null ? null : local.master_version
 
   dynamic "cluster_telemetry" {
-    for_each = local.cluster_telemetry_type_is_set ? [1] : [0]
+    for_each = local.cluster_telemetry_type_is_set ? [1] : []
     content {
       type = var.cluster_telemetry_type
     }
