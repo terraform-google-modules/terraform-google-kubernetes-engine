@@ -28,7 +28,12 @@ IMPERSONATE_SERVICE_ACCOUNT=$4
 echo "Waiting for cluster $PROJECT/$CLUSTER_LOCATION/$CLUSTER_NAME to reconcile..."
 
 while
-  current_status=$(gcloud container clusters list --project="$PROJECT" --filter="name=$CLUSTER_NAME AND location=$CLUSTER_LOCATION" --format="value(status)" --impersonate-service-account="$IMPERSONATE_SERVICE_ACCOUNT")
+    # if cluster location is set, use it in filter
+  if [ -z "${CLUSTER_LOCATION}" ]; then
+    current_status=$(gcloud container clusters list --project="$PROJECT" --filter="name=$CLUSTER_NAME" --format="value(status)" --impersonate-service-account="$IMPERSONATE_SERVICE_ACCOUNT")
+  else
+    current_status=$(gcloud container clusters list --project="$PROJECT" --filter="name=$CLUSTER_NAME AND location=$CLUSTER_LOCATION" --format="value(status)" --impersonate-service-account="$IMPERSONATE_SERVICE_ACCOUNT")
+  fi
   if [ -z "${current_status}" ]; then
     echo "Unable to get status for $PROJECT/$CLUSTER_LOCATION/$CLUSTER_NAME"
     exit 1
