@@ -56,8 +56,14 @@ resource "google_container_cluster" "primary" {
   }
   min_master_version = var.release_channel != null ? null : local.master_version
 
-  logging_service    = var.logging_service
-  monitoring_service = var.monitoring_service
+  dynamic "cluster_telemetry" {
+    for_each = local.cluster_telemetry_type_is_set ? [1] : []
+    content {
+      type = var.cluster_telemetry_type
+    }
+  }
+  logging_service    = local.cluster_telemetry_type_is_set ? null : var.logging_service
+  monitoring_service = local.cluster_telemetry_type_is_set ? null : var.monitoring_service
 
   cluster_autoscaling {
     enabled             = var.cluster_autoscaling.enabled
