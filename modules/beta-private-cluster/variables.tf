@@ -296,7 +296,7 @@ variable "configure_ip_masq" {
 variable "cluster_telemetry_type" {
   type        = string
   description = "Available options include ENABLED, DISABLED, and SYSTEM_ONLY"
-  default     = "ENABLED"
+  default     = null
 }
 
 variable "logging_service" {
