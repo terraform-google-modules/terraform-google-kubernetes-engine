@@ -8,33 +8,33 @@ It incorporates the standard cluster module and the [Hub registration module](..
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
-| ip\_range\_pods | The secondary ip range to use for pods | string | `""` | no |
-| ip\_range\_services | The secondary ip range to use for services | string | `""` | no |
-| network | The VPC network to host the cluster in | string | `"default"` | no |
-| project\_id | The project ID to host the cluster in | string | n/a | yes |
-| region | The region to host the cluster in | string | n/a | yes |
-| subnetwork | The subnetwork to host the cluster in | string | `"default"` | no |
-| zones | The zone to host the cluster in (required if is a zonal cluster) | list(string) | n/a | yes |
+|------|-------------|------|---------|:--------:|
+| cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
+| ip\_range\_pods | The secondary ip range to use for pods | `string` | `""` | no |
+| ip\_range\_services | The secondary ip range to use for services | `string` | `""` | no |
+| network | The VPC network to host the cluster in | `string` | `"default"` | no |
+| project\_id | The project ID to host the cluster in | `any` | n/a | yes |
+| region | The region to host the cluster in | `any` | n/a | yes |
+| subnetwork | The subnetwork to host the cluster in | `string` | `"default"` | no |
+| zones | The zone to host the cluster in (required if is a zonal cluster) | `list(string)` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| ca\_certificate |  |
-| client\_token |  |
+| ca\_certificate | n/a |
+| client\_token | n/a |
 | cluster\_name | Cluster name |
 | ip\_range\_pods | The secondary IP range used for pods |
 | ip\_range\_services | The secondary IP range used for services |
-| kubernetes\_endpoint |  |
-| location |  |
+| kubernetes\_endpoint | n/a |
+| location | n/a |
 | master\_kubernetes\_version | The master Kubernetes version |
-| network |  |
-| project\_id |  |
-| region |  |
+| network | n/a |
+| project\_id | n/a |
+| region | n/a |
 | service\_account | The default service account used for running nodes. |
-| subnetwork |  |
+| subnetwork | n/a |
 | zones | List of zones in which the cluster resides |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

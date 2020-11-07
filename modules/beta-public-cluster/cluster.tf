@@ -56,8 +56,14 @@ resource "google_container_cluster" "primary" {
   }
   min_master_version = var.release_channel != null ? null : local.master_version
 
-  logging_service    = var.logging_service
-  monitoring_service = var.monitoring_service
+  dynamic "cluster_telemetry" {
+    for_each = local.cluster_telemetry_type_is_set ? [1] : []
+    content {
+      type = var.cluster_telemetry_type
+    }
+  }
+  logging_service    = local.cluster_telemetry_type_is_set ? null : var.logging_service
+  monitoring_service = local.cluster_telemetry_type_is_set ? null : var.monitoring_service
 
   cluster_autoscaling {
     enabled             = var.cluster_autoscaling.enabled
@@ -402,13 +408,12 @@ module "gcloud_wait_for_cluster" {
   source  = "terraform-google-modules/gcloud/google"
   version = "~> 2.0.2"
   enabled = ! var.skip_provisioners
-
   upgrade = var.gcloud_upgrade
 
   create_cmd_entrypoint  = "${path.module}/scripts/wait-for-cluster.sh"
-  create_cmd_body        = "${var.project_id} ${var.name}"
+  create_cmd_body        = "${var.project_id} ${var.name} ${local.location} ${var.impersonate_service_account}"
   destroy_cmd_entrypoint = "${path.module}/scripts/wait-for-cluster.sh"
-  destroy_cmd_body       = "${var.project_id} ${var.name}"
+  destroy_cmd_body       = "${var.project_id} ${var.name} ${local.location} ${var.impersonate_service_account}"
 
   module_depends_on = concat(
     [google_container_cluster.primary.master_version],

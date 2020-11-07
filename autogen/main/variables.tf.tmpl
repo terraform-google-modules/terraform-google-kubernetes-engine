@@ -301,6 +301,14 @@ variable "configure_ip_masq" {
   default     = false
 }
 
+{% if beta_cluster %}
+variable "cluster_telemetry_type" {
+  type        = string
+  description = "Available options include ENABLED, DISABLED, and SYSTEM_ONLY"
+  default     = null
+}
+
+{% endif %}
 variable "logging_service" {
   type        = string
   description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
@@ -555,3 +563,9 @@ variable "disable_default_snat" {
   default     = false
 }
 {% endif %}
+
+variable "impersonate_service_account" {
+  type        = string
+  description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
+  default     = ""
+}
