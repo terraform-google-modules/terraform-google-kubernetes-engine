@@ -462,6 +462,11 @@ variable "cloudrun" {
   default     = false
 }
 
+variable "cloudrun_load_balancer_type" {
+  description = "(Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
+  default = ""
+}
+
 variable "enable_pod_security_policy" {
   type        = bool
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."

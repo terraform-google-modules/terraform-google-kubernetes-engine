@@ -88,7 +88,17 @@ locals {
   }]
 
 {% if beta_cluster %}
-  cluster_cloudrun_config = var.cloudrun ? [{ disabled = false }] : []
+  cluster_cloudrun_config_load_balancer_config = (var.cloudrun && var.cloudrun_load_balancer_type != "") ? {
+    load_balancer_type = var.cloudrun_load_balancer_type
+  } : {}
+  cluster_cloudrun_config = var.cloudrun ? [
+    merge(
+      {
+        disabled = false
+      },
+      local.cluster_cloudrun_config_load_balancer_config
+    )
+  ] : []
 
   cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
 
