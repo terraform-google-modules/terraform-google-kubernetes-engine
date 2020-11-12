@@ -83,7 +83,7 @@ resource "google_compute_firewall" "master_webhooks" {
   traffic flow between the managed firewall rules
  *****************************************/
 resource "google_compute_firewall" "shadow_allow_pods" {
-  count       = var.add_shadow_firewall_rules ? 1 : 0
+  count = var.add_shadow_firewall_rules ? 1 : 0
 
   name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-all"
   description = "Managed by terraform gke module: A shadow firewall rule to match the fireall allow pod communication."
@@ -95,43 +95,43 @@ resource "google_compute_firewall" "shadow_allow_pods" {
   source_ranges = [local.cluster_alias_ranges_cidr[var.ip_range_pods]]
   target_tags   = [local.cluster_network_tag]
 
- # Allow all possible protocols
+  # Allow all possible protocols
   allow { protocol = "tcp" }
   allow { protocol = "udp" }
   allow { protocol = "icmp" }
   allow { protocol = "sctp" }
   allow { protocol = "esp" }
   allow { protocol = "ah" }
-  
+
   log_config {
-   metadata = "INCLUDE_ALL_METADATA"
+    metadata = "INCLUDE_ALL_METADATA"
   }
 }
 
 resource "google_compute_firewall" "shadow_allow_master" {
-  count        = var.add_shadow_firewall_rules ? 1 : 0
-  
-  name         = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-master"
-  description  = "Managed by terraform gke module: A shadow firewall rule to match the fireall allow master and woker nodes communication."
-  project      = local.network_project_id
-  network      = var.network
-  priority     = var.shadow_firewall_rules_priority
-  direction    = "INGRESS"
+  count = var.add_shadow_firewall_rules ? 1 : 0
+
+  name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-master"
+  description = "Managed by terraform gke module: A shadow firewall rule to match the fireall allow master and woker nodes communication."
+  project     = local.network_project_id
+  network     = var.network
+  priority    = var.shadow_firewall_rules_priority
+  direction   = "INGRESS"
 
   source_ranges = [local.cluster_endpoint_for_nodes]
   target_tags   = [local.cluster_network_tag]
 
   allow {
-    protocol    = "tcp"
-    ports       = ["10250", "443"]
+    protocol = "tcp"
+    ports    = ["10250", "443"]
   }
   log_config {
-   metadata     = "INCLUDE_ALL_METADATA"
+    metadata = "INCLUDE_ALL_METADATA"
   }
 }
 
 resource "google_compute_firewall" "shadow_allow_nodes" {
-  count       = var.add_shadow_firewall_rules ? 1 : 0
+  count = var.add_shadow_firewall_rules ? 1 : 0
 
   name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-vms"
   description = "Managed by terraform gke module: A shadow firewall rule to match the fireall allow woker nodes communication."
