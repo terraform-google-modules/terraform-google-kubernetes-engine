@@ -109,24 +109,24 @@ resource "google_compute_firewall" "shadow_allow_pods" {
 }
 
 resource "google_compute_firewall" "shadow_allow_master" {
-  count       = var.add_shadow_firewall_rules ? 1 : 0
+  count        = var.add_shadow_firewall_rules ? 1 : 0
   
-  name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-master"
-  description = "Managed by terraform gke module: A shadow firewall rule to match the fireall allow master and woker nodes communication."
-  project     = local.network_project_id
-  network     = var.network
-  priority    = var.shadow_firewall_rules_priority
-  direction   = "INGRESS"
+  name         = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-master"
+  description  = "Managed by terraform gke module: A shadow firewall rule to match the fireall allow master and woker nodes communication."
+  project      = local.network_project_id
+  network      = var.network
+  priority     = var.shadow_firewall_rules_priority
+  direction    = "INGRESS"
 
   source_ranges = [local.cluster_endpoint_for_nodes]
   target_tags   = [local.cluster_network_tag]
 
-  allow { 
-    protocol = "tcp"
-    ports = ["10250", "443"] 
+  allow {
+    protocol    = "tcp"
+    ports       = ["10250", "443"]
   }
   log_config {
-   metadata = "INCLUDE_ALL_METADATA"
+   metadata     = "INCLUDE_ALL_METADATA"
   }
 }
 
@@ -143,18 +143,18 @@ resource "google_compute_firewall" "shadow_allow_nodes" {
   source_ranges = [local.cluster_subnet_cidr]
   target_tags   = [local.cluster_network_tag]
 
-  allow { 
+  allow {
     protocol = "icmp"
   }
 
-  allow { 
+  allow {
     protocol = "udp"
-    ports = ["1-65535"]
+    ports    = ["1-65535"]
   }
 
-  allow { 
+  allow {
     protocol = "tcp"
-    ports = ["1-65535"]
+    ports    = ["1-65535"]
   }
 
   log_config {
