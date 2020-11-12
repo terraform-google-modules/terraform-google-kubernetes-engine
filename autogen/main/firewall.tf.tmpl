@@ -89,7 +89,7 @@ resource "google_compute_firewall" "master_webhooks" {
 
 
 /******************************************
-  Create shadow firewall rules to capture the 
+  Create shadow firewall rules to capture the
   traffic flow between the managed firewall rules
  *****************************************/
 resource "google_compute_firewall" "shadow_allow_pods" {
