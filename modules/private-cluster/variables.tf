@@ -415,7 +415,7 @@ variable "enable_binary_authorization" {
 
 variable "add_cluster_firewall_rules" {
   type        = bool
-  description = "Create additional firewall rules"
+  description = "Create egress firewall rules to match the GKE managed ingress firewall rules."
   default     = false
 }
 
@@ -435,6 +435,18 @@ variable "gcloud_upgrade" {
   type        = bool
   description = "Whether to upgrade gcloud at runtime"
   default     = false
+}
+
+variable "add_shadow_firewall_rules" {
+  type        = bool
+  description = "Create shadow firewall rules to match the GKE managed ingress firewall rules."
+  default     = false
+}
+
+variable "shadow_firewall_rules_priority" {
+  type        = number
+  description = "Priority for the shadow ingress firewall rules."
+  default     = 999
 }
 
 
