@@ -102,7 +102,7 @@ resource "google_compute_firewall" "shadow_allow_pods" {
   allow { protocol = "sctp" }
   allow { protocol = "esp" }
   allow { protocol = "ah" }
-  
+
   log_config {
    metadata = "INCLUDE_ALL_METADATA"
   }
@@ -110,7 +110,7 @@ resource "google_compute_firewall" "shadow_allow_pods" {
 
 resource "google_compute_firewall" "shadow_allow_master" {
   count        = var.add_shadow_firewall_rules ? 1 : 0
-  
+
   name         = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-master"
   description  = "Managed by terraform gke module: A shadow firewall rule to match the fireall allow master and woker nodes communication."
   project      = local.network_project_id
@@ -125,6 +125,7 @@ resource "google_compute_firewall" "shadow_allow_master" {
     protocol    = "tcp"
     ports       = ["10250", "443"]
   }
+
   log_config {
    metadata     = "INCLUDE_ALL_METADATA"
   }
