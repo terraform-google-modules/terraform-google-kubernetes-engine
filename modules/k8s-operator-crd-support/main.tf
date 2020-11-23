@@ -25,7 +25,6 @@ locals {
   hierarchy_controller_map_node                  = var.hierarchy_controller == null ? "" : format("hierarchy_controller:\n    %s", yamlencode(var.hierarchy_controller))
   source_format_node                             = var.source_format != "" ? format("sourceFormat: %s", var.source_format) : ""
   append_arg_use_existing_context_for_gatekeeper = var.use_existing_context ? "USE_EXISTING_CONTEXT_ARG" : ""
-
 }
 
 module "k8sop_manifest" {
