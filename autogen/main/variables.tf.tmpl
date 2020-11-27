@@ -333,9 +333,15 @@ variable "grant_registry_access" {
   default     = false
 }
 
+variable "grant_artifact_registry_access" {
+  type        = bool
+  description = "Grants created cluster-specific service account artifactregistry.reader role."
+  default     = false
+}
+
 variable "registry_project_id" {
   type        = string
-  description = "Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project."
+  description = "Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project. If grant_artifact_registry_access is true, artifactregistry.reader role is assigned on this project."
   default     = ""
 }
 

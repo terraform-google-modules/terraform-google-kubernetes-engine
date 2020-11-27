@@ -334,6 +334,7 @@ variable "registry_project_id" {
   description = "Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project. If grant_artifact_registry_access is true, artifactregistry.reader role is assigned on this project."
   default     = ""
 }
+
 variable "service_account" {
   type        = string
   description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
