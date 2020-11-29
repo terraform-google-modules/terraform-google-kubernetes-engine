@@ -232,6 +232,7 @@ The node_pools variable takes the following parameters:
 | image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | COS | Optional |
 | initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
 | key | The key required for the taint | | Required |
+| cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". | "none" | Optional |
 | local_ssd_count | The amount of local SSD disks that will be attached to each cluster node | 0 | Optional |
 | machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |

@@ -143,6 +143,10 @@ resource "google_container_cluster" "primary" {
           node_metadata = workload_metadata_config.value.node_metadata
         }
       }
+
+      kubelet_config {
+        cpu_manager_policy = lookup(each.value, "cpu_manager_policy", "none")
+      }
     }
   }
 
