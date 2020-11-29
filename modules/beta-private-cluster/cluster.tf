@@ -212,10 +212,6 @@ resource "google_container_cluster" "primary" {
           node_metadata = workload_metadata_config.value.node_metadata
         }
       }
-
-      kubelet_config {
-        cpu_manager_policy = lookup(each.value, "cpu_manager_policy", "none")
-      }
     }
   }
 
@@ -415,6 +411,10 @@ resource "google_container_node_pool" "pools" {
     }
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
+
+    kubelet_config {
+      cpu_manager_policy = lookup(each.value, "cpu_manager_policy", "none")
+    }
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
