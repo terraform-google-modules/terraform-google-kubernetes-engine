@@ -15,17 +15,15 @@
 
 set -e
 
-if [ "$#" -lt 4 ]; then
+if [ "$#" -lt 2 ]; then
     >&2 echo "Not all expected arguments set."
     exit 1
 fi
 
 MEMBERSHIP_NAME=$1
-CLUSTER_LOCATION=$2
-CLUSTER_NAME=$3
-SERVICE_ACCOUNT_KEY=$4
-PROJECT_ID=$5
-LABELS=$6
+SERVICE_ACCOUNT_KEY=$2
+PROJECT_ID=$3
+LABELS=$4
 
 #write temp key, cleanup at exit
 tmp_file=$(mktemp)
@@ -34,7 +32,10 @@ trap "rm -rf $tmp_file" EXIT
 base64 --help | grep "\--decode" && B64_ARG="--decode" || B64_ARG="-d"
 echo "${SERVICE_ACCOUNT_KEY}" | base64 ${B64_ARG} > "$tmp_file"
 
-gcloud container hub memberships register "${MEMBERSHIP_NAME}" --gke-cluster="${CLUSTER_LOCATION}"/"${CLUSTER_NAME}" --service-account-key-file="${tmp_file}" --project="${PROJECT_ID}" --quiet
+#Get the kubeconfig
+CONTEXT=$(kubectl config current-context)
+
+gcloud container hub memberships register "${MEMBERSHIP_NAME}" --context="${CONTEXT}" --service-account-key-file="${tmp_file}" --project="${PROJECT_ID}" --quiet
 # Add labels to the registered cluster
 if [ -z ${LABELS+x} ]; then 
     echo "No labels to apply."

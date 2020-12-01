@@ -81,3 +81,14 @@ variable "module_depends_on" {
   type        = list
   default     = []
 }
+
+variable "use_kubeconfig" {
+  description = "Use existing kubeconfig to register membership. Set this to true for non GKE clusters. Assumes kubectl context is set to cluster to register."
+  default = false
+}
+
+variable "labels" {
+  description = "Comma separated labels in the format name=value to apply to cluster in the GCP Console."
+  type = string
+  default = ""
+}
