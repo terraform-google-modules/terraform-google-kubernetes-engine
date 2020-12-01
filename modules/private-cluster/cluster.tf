@@ -195,6 +195,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+
+  notification_config {
+    pubsub {
+      enabled = var.enable_notification_config
+      topic   = var.notification_config_topic
+    }
+  }
 }
 
 /******************************************

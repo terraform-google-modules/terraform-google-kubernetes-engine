@@ -369,3 +369,15 @@ variable "disable_default_snat" {
   description = "Whether to disable the default SNAT to support the private use of public IP addresses"
   default     = false
 }
+
+variable "enable_notification_config" {
+  type        = bool
+  description = "Enable notifications for Pub/Sub."
+  default     = false
+}
+
+variable "notification_config_topic" {
+  type        = string
+  description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
+  default     = ""
+}
