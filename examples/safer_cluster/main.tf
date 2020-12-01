@@ -62,7 +62,7 @@ module "gke" {
   istio    = true
   cloudrun = true
 
-  notification_config_topic = google_pubsub_topic.updates.id
+  notification_config_topic  = google_pubsub_topic.updates.id
   enable_notification_config = true
 }
 
