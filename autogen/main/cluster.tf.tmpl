@@ -306,7 +306,6 @@ resource "google_container_cluster" "primary" {
       security_group = authenticator_groups_config.value.security_group
     }
   }
-{% endif %}
 
   notification_config {
     pubsub {
@@ -314,6 +313,7 @@ resource "google_container_cluster" "primary" {
       topic = var.notification_config_topic
     }
   }
+{% endif %}
 }
 
 /******************************************
