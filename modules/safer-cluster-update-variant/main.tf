@@ -163,6 +163,5 @@ module "gke" {
 
   gce_pd_csi_driver = var.gce_pd_csi_driver
 
-  enable_notification_config = var.enable_notification_config
-  notification_config_topic  = var.notification_config_topic
+  notification_config_topic = var.notification_config_topic
 }

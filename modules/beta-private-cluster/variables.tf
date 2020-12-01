@@ -557,12 +557,6 @@ variable "impersonate_service_account" {
   default     = ""
 }
 
-variable "enable_notification_config" {
-  type        = bool
-  description = "Enable notifications for Pub/Sub."
-  default     = false
-}
-
 variable "notification_config_topic" {
   type        = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."

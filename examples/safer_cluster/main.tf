@@ -63,7 +63,6 @@ module "gke" {
   cloudrun = true
 
   notification_config_topic  = google_pubsub_topic.updates.id
-  enable_notification_config = true
 }
 
 data "google_client_config" "default" {
