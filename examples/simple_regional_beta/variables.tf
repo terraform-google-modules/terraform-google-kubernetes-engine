@@ -123,3 +123,15 @@ variable "regional" {
   description = "Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!)"
   default     = true
 }
+
+variable "network_policy" {
+  type        = bool
+  description = "Enable network policy addon"
+  default     = true
+}
+
+variable "datapath_provider" {
+  type        = string
+  description = "The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation."
+  default     = "DATAPATH_PROVIDER_UNSPECIFIED"
+}

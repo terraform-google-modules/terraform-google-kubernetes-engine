@@ -51,6 +51,10 @@ module "gke" {
   # Disable workload identity
   identity_namespace = null
   node_metadata      = "UNSPECIFIED"
+
+  # Support Dataplane Setup
+  network_policy    = var.network_policy
+  datapath_provider = var.datapath_provider
 }
 
 data "google_client_config" "default" {
