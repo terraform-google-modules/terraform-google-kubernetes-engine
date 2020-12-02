@@ -57,7 +57,7 @@ control "gcloud" do
           },
           "kalmConfig" => {},
           "configConnectorConfig" => {},
-          "networkPolicyConfig" => {},
+          "networkPolicyConfig" => {"disabled"=>true},
           "istioConfig" => {"auth"=>"AUTH_MUTUAL_TLS"},
           "cloudRunConfig" => including(
               "loadBalancerType" => "LOAD_BALANCER_TYPE_EXTERNAL",
@@ -68,6 +68,12 @@ control "gcloud" do
           "gcePersistentDiskCsiDriverConfig" => {
             "enabled" => true,
           }
+        )
+      end
+
+      it "has the expected datapathProvider config" do
+        expect(data['networkConfig']).to include(
+          "datapathProvider" => "ADVANCED_DATAPATH"
         )
       end
 
