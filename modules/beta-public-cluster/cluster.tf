@@ -257,6 +257,13 @@ resource "google_container_cluster" "primary" {
       security_group = authenticator_groups_config.value.security_group
     }
   }
+
+  notification_config {
+    pubsub {
+      enabled = var.notification_config_topic != "" ? true : false
+      topic   = var.notification_config_topic
+    }
+  }
 }
 
 /******************************************
