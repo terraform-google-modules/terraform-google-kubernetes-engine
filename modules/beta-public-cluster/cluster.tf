@@ -163,6 +163,7 @@ resource "google_container_cluster" "primary" {
       enabled = var.config_connector
     }
   }
+  datapath_provider = var.datapath_provider
 
   networking_mode = "VPC_NATIVE"
   ip_allocation_policy {
