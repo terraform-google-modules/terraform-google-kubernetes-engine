@@ -413,10 +413,10 @@ resource "google_container_node_pool" "pools" {
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
     dynamic "kubelet_config" {
-      for_each = lookup(each.value, "cpu_manager_policy", null)[*]
+      for_each = contains(keys(each.value), "cpu_manager_policy") ? [1] : []
 
       content {
-        cpu_manager_policy = each.value.cpu_manager_policy
+        cpu_manager_policy = lookup(each.value, "cpu_manager_policy")
       }
     }
 
