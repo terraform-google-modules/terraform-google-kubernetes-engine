@@ -393,6 +393,14 @@ resource "google_container_node_pool" "pools" {
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
+    dynamic "kubelet_config" {
+      for_each = contains(keys(each.value), "cpu_manager_policy") ? [1] : []
+
+      content {
+        cpu_manager_policy = lookup(each.value, "cpu_manager_policy")
+      }
+    }
+
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
