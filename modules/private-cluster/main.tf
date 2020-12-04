@@ -19,6 +19,12 @@
 /******************************************
   Get available zones in region
  *****************************************/
+resource "google_project_service" "compute_api" {
+  project = var.project_id
+  service = "compute.googleapis.com"
+  disable_dependent_services = true
+}     
+
 data "google_compute_zones" "available" {
   provider = google
 
