@@ -18,8 +18,9 @@ module "enable_acm" {
   source  = "terraform-google-modules/gcloud/google"
   version = "~> 2.0"
 
-  platform = "linux"
-  upgrade  = true
+  platform              = "linux"
+  upgrade               = true
+  additional_components = ["alpha"]
 
   service_account_key_file = var.service_account_key_file
   create_cmd_entrypoint    = "gcloud"
