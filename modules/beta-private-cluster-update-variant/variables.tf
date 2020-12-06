@@ -78,6 +78,12 @@ variable "master_authorized_networks" {
   default     = []
 }
 
+variable "enable_vertical_pod_autoscaling" {
+  type        = bool
+  description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
+  default     = false
+}
+
 variable "horizontal_pod_autoscaling" {
   type        = bool
   description = "Enable horizontal pod autoscaling addon"
@@ -467,12 +473,6 @@ variable "sandbox_enabled" {
 variable "enable_intranode_visibility" {
   type        = bool
   description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
-  default     = false
-}
-
-variable "enable_vertical_pod_autoscaling" {
-  type        = bool
-  description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
   default     = false
 }
 
