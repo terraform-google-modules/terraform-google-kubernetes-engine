@@ -195,6 +195,7 @@ Then perform the following commands on the root folder:
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
 | identity\_namespace | Workload Identity namespace |
+| instance\_group\_urls | List of GKE generated instance groups |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |
 | logging\_service | Logging service used |
 | master\_authorized\_networks\_config | Networks from which access to master is permitted |
