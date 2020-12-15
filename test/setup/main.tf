@@ -65,6 +65,7 @@ module "gke-project-2" {
     "pubsub.googleapis.com",
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
+    "gkehub.googleapis.com",
   ]
   activate_api_identities = [
     {

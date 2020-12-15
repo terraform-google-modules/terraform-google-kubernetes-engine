@@ -33,6 +33,7 @@ locals {
     "roles/compute.instanceAdmin",
     "roles/iam.roleAdmin",
     "roles/iap.admin",
+    "roles/gkehub.admin",
   ]
   # roles as documented https://cloud.google.com/service-mesh/docs/gke-install-new-cluster#setting_up_your_project
   int_asm_required_roles = [

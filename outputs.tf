@@ -131,3 +131,8 @@ output "identity_namespace" {
     google_container_cluster.primary
   ]
 }
+
+output "instance_group_urls" {
+  description = "List of GKE generated instance groups"
+  value       = google_container_cluster.primary.instance_group_urls
+}
