@@ -77,8 +77,16 @@ resource "google_container_cluster" "primary" {
 {% endif %}
 
   cluster_autoscaling {
-    enabled             = var.cluster_autoscaling.enabled
+    enabled = var.cluster_autoscaling.enabled
 {% if beta_cluster %}
+    dynamic "auto_provisioning_defaults" {
+      for_each = var.cluster_autoscaling.enabled ? [1] : []
+
+      content {
+        service_account = local.service_account
+        oauth_scopes = local.node_pools_oauth_scopes["all"]
+      }
+    }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
 {% endif %}
     dynamic "resource_limits" {
