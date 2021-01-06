@@ -61,8 +61,14 @@ module "gke" {
 
   istio    = true
   cloudrun = true
+
+  notification_config_topic = google_pubsub_topic.updates.id
 }
 
 data "google_client_config" "default" {
 }
 
+resource "google_pubsub_topic" "updates" {
+  name    = "cluster-updates-${random_string.suffix.result}"
+  project = var.project_id
+}
