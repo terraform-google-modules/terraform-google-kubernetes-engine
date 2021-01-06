@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [12.4.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v12.3.0...v12.4.0) (2021-01-06)
+
+
+### Features
+
+* Set auto-provisioned node pools to use configured service account ([#639](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/639)) ([4a61f76](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4a61f7627946489b9ff7e6c0ae978c38c95c5adf))
+
+
+### Bug Fixes
+
+* Move provider version constraint to required_providers block ([#774](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/774)) ([825f287](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/825f287351b1b7a8c832150072371452ff498bd2))
+
 ## [12.3.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v12.2.0...v12.3.0) (2020-12-09)
 
 
