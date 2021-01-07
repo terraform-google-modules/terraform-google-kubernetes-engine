@@ -23,6 +23,15 @@ provider "google" {
   region  = var.region
 }
 
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+}
+
 module "gke" {
   source            = "../../"
   project_id        = var.project_id
@@ -35,7 +44,4 @@ module "gke" {
   ip_range_pods     = var.ip_range_pods
   ip_range_services = var.ip_range_services
   service_account   = "create"
-}
-
-data "google_client_config" "default" {
 }
