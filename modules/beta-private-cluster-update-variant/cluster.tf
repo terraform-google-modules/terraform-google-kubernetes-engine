@@ -306,6 +306,7 @@ locals {
     "machine_type",
     "preemptible",
     "service_account",
+    "enable_secure_boot",
   ]
 }
 
