@@ -23,11 +23,13 @@ provider "google" {
   region  = var.region
 }
 
+data "google_client_config" "default" {}
+
 provider "kubernetes" {
-  host                   = module.gke.endpoint
+  load_config_file       = false
+  host                   = "https://${module.gke.endpoint}"
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.gke.ca_certificate)
-  load_config_file       = false
 }
 
 module "gke" {
@@ -81,7 +83,4 @@ module "workload_identity_existing_ksa" {
   namespace           = "default"
   use_existing_k8s_sa = true
   k8s_sa_name         = kubernetes_service_account.test.metadata.0.name
-}
-
-data "google_client_config" "default" {
 }
