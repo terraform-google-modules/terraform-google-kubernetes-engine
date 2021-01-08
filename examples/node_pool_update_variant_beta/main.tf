@@ -30,6 +30,15 @@ data "google_compute_subnetwork" "subnetwork" {
   region  = var.region
 }
 
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+}
+
 module "gke" {
   source                  = "../../modules/beta-private-cluster-update-variant"
   project_id              = var.project_id
@@ -128,7 +137,4 @@ module "gke" {
     ]
     pool-02 = []
   }
-}
-
-data "google_client_config" "default" {
 }

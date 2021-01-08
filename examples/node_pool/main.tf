@@ -23,6 +23,15 @@ provider "google-beta" {
   region  = var.region
 }
 
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+}
+
 module "gke" {
   source                            = "../../modules/beta-public-cluster/"
   project_id                        = var.project_id
@@ -112,7 +121,4 @@ module "gke" {
       "pool-01-example",
     ]
   }
-}
-
-data "google_client_config" "default" {
 }
