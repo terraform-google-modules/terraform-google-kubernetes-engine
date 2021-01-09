@@ -545,10 +545,10 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "linux_node_config" {
-      for_each = contains(keys(each.value), "linux_node_config_sysctls") ? [1] : []
+      for_each = lookup(local.node_pools_linux_node_configs[each.value["name"]], "sysctls") ? [1] : []
 
       content {
-        sysctls = lookup(each.value, "linux_node_config_sysctls")
+        sysctls = local.node_pools_linux_node_configs[each.value["name"]]["sysctls"]
       }
     }
     {% endif %}
