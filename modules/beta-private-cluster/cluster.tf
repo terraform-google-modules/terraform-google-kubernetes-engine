@@ -429,10 +429,15 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "linux_node_config" {
-      for_each = lookup(local.node_pools_linux_node_configs[each.value["name"]], "sysctls") ? [1] : []
+      for_each = contains(
+        keys(
+          merge(
+            local.node_pools_linux_node_configs["all"],
+        local.node_pools_linux_node_configs[each.value["name"]])),
+      "sysctls") ? [1] : []
 
       content {
-        sysctls = local.node_pools_linux_node_configs[each.value["name"]]["sysctls"]
+        sysctls = merge(local.node_pools_linux_node_configs["all"], local.node_pools_linux_node_configs[each.value["name"]])["sysctls"]
       }
     }
 
