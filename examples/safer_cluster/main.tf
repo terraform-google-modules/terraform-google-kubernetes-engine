@@ -37,6 +37,15 @@ provider "google-beta" {
   version = "~> 3.42.0"
 }
 
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+}
+
 module "gke" {
   source                         = "../../modules/safer-cluster/"
   project_id                     = var.project_id
@@ -61,8 +70,11 @@ module "gke" {
 
   istio    = true
   cloudrun = true
+
+  notification_config_topic = google_pubsub_topic.updates.id
 }
 
-data "google_client_config" "default" {
+resource "google_pubsub_topic" "updates" {
+  name    = "cluster-updates-${random_string.suffix.result}"
+  project = var.project_id
 }
-

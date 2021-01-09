@@ -78,6 +78,12 @@ variable "master_authorized_networks" {
   default     = []
 }
 
+variable "enable_vertical_pod_autoscaling" {
+  type        = bool
+  description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
+  default     = false
+}
+
 variable "horizontal_pod_autoscaling" {
   type        = bool
   description = "Enable horizontal pod autoscaling addon"
@@ -411,5 +417,12 @@ variable "gcloud_upgrade" {
   type        = bool
   description = "Whether to upgrade gcloud at runtime"
   default     = false
+}
+
+
+variable "impersonate_service_account" {
+  type        = string
+  description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
+  default     = ""
 }
 

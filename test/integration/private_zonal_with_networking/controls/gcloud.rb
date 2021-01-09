@@ -83,7 +83,7 @@ control "gcloud" do
         expect(data['nodePools']).to include(
           including(
             "config" => including(
-              "machineType" => "n1-standard-1",
+              "machineType" => "e2-medium",
             ),
           )
         )

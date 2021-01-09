@@ -56,11 +56,25 @@ resource "google_container_cluster" "primary" {
   }
   min_master_version = var.release_channel != null ? null : local.master_version
 
-  logging_service    = var.logging_service
-  monitoring_service = var.monitoring_service
+  dynamic "cluster_telemetry" {
+    for_each = local.cluster_telemetry_type_is_set ? [1] : []
+    content {
+      type = var.cluster_telemetry_type
+    }
+  }
+  logging_service    = local.cluster_telemetry_type_is_set ? null : var.logging_service
+  monitoring_service = local.cluster_telemetry_type_is_set ? null : var.monitoring_service
 
   cluster_autoscaling {
-    enabled             = var.cluster_autoscaling.enabled
+    enabled = var.cluster_autoscaling.enabled
+    dynamic "auto_provisioning_defaults" {
+      for_each = var.cluster_autoscaling.enabled ? [1] : []
+
+      content {
+        service_account = local.service_account
+        oauth_scopes    = local.node_pools_oauth_scopes["all"]
+      }
+    }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
     dynamic "resource_limits" {
       for_each = local.autoscalling_resource_limits
@@ -72,16 +86,16 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  vertical_pod_autoscaling {
+    enabled = var.enable_vertical_pod_autoscaling
+  }
+
   default_max_pods_per_node = var.default_max_pods_per_node
 
   enable_shielded_nodes       = var.enable_shielded_nodes
   enable_binary_authorization = var.enable_binary_authorization
   enable_intranode_visibility = var.enable_intranode_visibility
   enable_kubernetes_alpha     = var.enable_kubernetes_alpha
-
-  vertical_pod_autoscaling {
-    enabled = var.enable_vertical_pod_autoscaling
-  }
 
   dynamic "pod_security_policy_config" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
@@ -249,6 +263,13 @@ resource "google_container_cluster" "primary" {
     for_each = local.cluster_authenticator_security_group
     content {
       security_group = authenticator_groups_config.value.security_group
+    }
+  }
+
+  notification_config {
+    pubsub {
+      enabled = var.notification_config_topic != "" ? true : false
+      topic   = var.notification_config_topic
     }
   }
 }
@@ -452,6 +473,14 @@ resource "google_container_node_pool" "pools" {
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
+    dynamic "kubelet_config" {
+      for_each = contains(keys(each.value), "cpu_manager_policy") ? [1] : []
+
+      content {
+        cpu_manager_policy = lookup(each.value, "cpu_manager_policy")
+      }
+    }
+
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
@@ -475,13 +504,12 @@ module "gcloud_wait_for_cluster" {
   source  = "terraform-google-modules/gcloud/google"
   version = "~> 2.0.2"
   enabled = ! var.skip_provisioners
-
   upgrade = var.gcloud_upgrade
 
   create_cmd_entrypoint  = "${path.module}/scripts/wait-for-cluster.sh"
-  create_cmd_body        = "${var.project_id} ${var.name}"
+  create_cmd_body        = "${var.project_id} ${var.name} ${local.location} ${var.impersonate_service_account}"
   destroy_cmd_entrypoint = "${path.module}/scripts/wait-for-cluster.sh"
-  destroy_cmd_body       = "${var.project_id} ${var.name}"
+  destroy_cmd_body       = "${var.project_id} ${var.name} ${local.location} ${var.impersonate_service_account}"
 
   module_depends_on = concat(
     [google_container_cluster.primary.master_version],

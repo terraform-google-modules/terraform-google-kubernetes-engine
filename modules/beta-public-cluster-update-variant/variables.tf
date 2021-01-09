@@ -78,6 +78,12 @@ variable "master_authorized_networks" {
   default     = []
 }
 
+variable "enable_vertical_pod_autoscaling" {
+  type        = bool
+  description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
+  default     = false
+}
+
 variable "horizontal_pod_autoscaling" {
   type        = bool
   description = "Enable horizontal pod autoscaling addon"
@@ -293,6 +299,12 @@ variable "configure_ip_masq" {
   default     = false
 }
 
+variable "cluster_telemetry_type" {
+  type        = string
+  description = "Available options include ENABLED, DISABLED, and SYSTEM_ONLY"
+  default     = null
+}
+
 variable "logging_service" {
   type        = string
   description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
@@ -410,6 +422,11 @@ variable "cloudrun" {
   default     = false
 }
 
+variable "cloudrun_load_balancer_type" {
+  description = "(Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
+  default     = ""
+}
+
 variable "enable_pod_security_policy" {
   type        = bool
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
@@ -425,12 +442,6 @@ variable "sandbox_enabled" {
 variable "enable_intranode_visibility" {
   type        = bool
   description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
-  default     = false
-}
-
-variable "enable_vertical_pod_autoscaling" {
-  type        = bool
-  description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
   default     = false
 }
 
@@ -507,4 +518,16 @@ variable "disable_default_snat" {
   type        = bool
   description = "Whether to disable the default SNAT to support the private use of public IP addresses"
   default     = false
+}
+
+variable "impersonate_service_account" {
+  type        = string
+  description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
+  default     = ""
+}
+
+variable "notification_config_topic" {
+  type        = string
+  description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
+  default     = ""
 }

@@ -6,14 +6,14 @@ This example illustrates how to create a VPC and a simple cluster.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| cluster\_name | The name for the GKE cluster | string | `"gke-on-vpc-cluster"` | no |
-| ip\_range\_pods\_name | The secondary ip range to use for pods | string | `"ip-range-pods"` | no |
-| ip\_range\_services\_name | The secondary ip range to use for services | string | `"ip-range-scv"` | no |
-| network | The VPC network created to host the cluster in | string | `"gke-network"` | no |
-| project\_id | The project ID to host the cluster in | string | n/a | yes |
-| region | The region to host the cluster in | string | `"us-central1"` | no |
-| subnetwork | The subnetwork created to host the cluster in | string | `"gke-subnet"` | no |
+|------|-------------|------|---------|:--------:|
+| cluster\_name | The name for the GKE cluster | `string` | `"gke-on-vpc-cluster"` | no |
+| ip\_range\_pods\_name | The secondary ip range to use for pods | `string` | `"ip-range-pods"` | no |
+| ip\_range\_services\_name | The secondary ip range to use for services | `string` | `"ip-range-scv"` | no |
+| network | The VPC network created to host the cluster in | `string` | `"gke-network"` | no |
+| project\_id | The project ID to host the cluster in | `any` | n/a | yes |
+| region | The region to host the cluster in | `string` | `"us-central1"` | no |
+| subnetwork | The subnetwork created to host the cluster in | `string` | `"gke-subnet"` | no |
 
 ## Outputs
 
@@ -25,16 +25,16 @@ This example illustrates how to create a VPC and a simple cluster.
 | ip\_range\_pods\_name | The secondary IP range used for pods |
 | ip\_range\_services\_name | The secondary IP range used for services |
 | kubernetes\_endpoint | The cluster endpoint |
-| location |  |
+| location | n/a |
 | master\_kubernetes\_version | The master Kubernetes version |
-| network |  |
+| network | n/a |
 | network\_name | The name of the VPC being created |
-| project\_id |  |
-| region |  |
+| project\_id | n/a |
+| region | n/a |
 | service\_account | The default service account used for running nodes. |
 | subnet\_name | The name of the subnet being created |
 | subnet\_secondary\_ranges | The secondary ranges associated with the subnet |
-| subnetwork |  |
+| subnetwork | n/a |
 | zones | List of zones in which the cluster resides |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

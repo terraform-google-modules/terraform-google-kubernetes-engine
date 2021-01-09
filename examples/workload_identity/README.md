@@ -8,25 +8,25 @@ Read more about [workload identity in the docs](https://cloud.google.com/kuberne
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| cluster\_name\_suffix | A suffix to append to the default cluster name | string | `""` | no |
-| ip\_range\_pods | The secondary ip range to use for pods | string | n/a | yes |
-| ip\_range\_services | The secondary ip range to use for pods | string | n/a | yes |
-| network | The VPC network to host the cluster in | string | n/a | yes |
-| project\_id | The project ID to host the cluster in | string | n/a | yes |
-| region | The region to host the cluster in | string | `"us-central1"` | no |
-| subnetwork | The subnetwork to host the cluster in | string | n/a | yes |
+|------|-------------|------|---------|:--------:|
+| cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
+| ip\_range\_pods | The secondary ip range to use for pods | `any` | n/a | yes |
+| ip\_range\_services | The secondary ip range to use for pods | `any` | n/a | yes |
+| network | The VPC network to host the cluster in | `any` | n/a | yes |
+| project\_id | The project ID to host the cluster in | `any` | n/a | yes |
+| region | The region to host the cluster in | `string` | `"us-central1"` | no |
+| subnetwork | The subnetwork to host the cluster in | `any` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| ca\_certificate |  |
-| client\_token |  |
+| ca\_certificate | n/a |
+| client\_token | n/a |
 | cluster\_name | Cluster name |
 | k8s\_service\_account\_email | K8S GCP service account. |
 | k8s\_service\_account\_name | K8S GCP service name |
-| kubernetes\_endpoint |  |
+| kubernetes\_endpoint | n/a |
 | location | Cluster location (zones) |
 | project\_id | Project id where GKE cluster is created. |
 | region | Cluster region |
