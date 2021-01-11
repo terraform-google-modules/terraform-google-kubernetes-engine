@@ -132,6 +132,11 @@ output "identity_namespace" {
   ]
 }
 
+output "instance_group_urls" {
+  description = "List of GKE generated instance groups"
+  value       = google_container_cluster.primary.instance_group_urls
+}
+
 output "istio_enabled" {
   description = "Whether Istio is enabled"
   value       = local.cluster_istio_enabled
