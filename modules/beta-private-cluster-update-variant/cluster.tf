@@ -194,6 +194,16 @@ resource "google_container_cluster" "primary" {
         start_time = var.maintenance_start_time
       }
     }
+
+    dynamic "maintenance_exclusion" {
+      for_each = var.maintenance_exclusions
+      content {
+        exclusion_name = maintenance_exclusion.value.name
+        start_time     = maintenance_exclusion.value.start_time
+        end_time       = maintenance_exclusion.value.end_time
+      }
+    }
+
   }
 
   lifecycle {
