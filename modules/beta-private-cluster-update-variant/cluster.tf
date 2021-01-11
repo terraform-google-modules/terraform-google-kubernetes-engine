@@ -509,7 +509,10 @@ resource "google_container_node_pool" "pools" {
       "sysctls") ? [1] : []
 
       content {
-        sysctls = merge(local.node_pools_linux_node_configs["all"], local.node_pools_linux_node_configs[each.value["name"]])["sysctls"]
+        sysctls = merge(
+          lookup(local.node_pools_linux_node_configs["all"], "sysctls", {}),
+          lookup(local.node_pools_linux_node_configs[each.value["name"]], "sysctls", {})
+        )
       }
     }
 
