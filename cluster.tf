@@ -68,6 +68,10 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  vertical_pod_autoscaling {
+    enabled = var.enable_vertical_pod_autoscaling
+  }
+
   default_max_pods_per_node = var.default_max_pods_per_node
 
   enable_shielded_nodes       = var.enable_shielded_nodes
@@ -320,13 +324,12 @@ module "gcloud_wait_for_cluster" {
   source  = "terraform-google-modules/gcloud/google"
   version = "~> 2.0.2"
   enabled = ! var.skip_provisioners
-
   upgrade = var.gcloud_upgrade
 
   create_cmd_entrypoint  = "${path.module}/scripts/wait-for-cluster.sh"
-  create_cmd_body        = "${var.project_id} ${var.name}"
+  create_cmd_body        = "${var.project_id} ${var.name} ${local.location} ${var.impersonate_service_account}"
   destroy_cmd_entrypoint = "${path.module}/scripts/wait-for-cluster.sh"
-  destroy_cmd_body       = "${var.project_id} ${var.name}"
+  destroy_cmd_body       = "${var.project_id} ${var.name} ${local.location} ${var.impersonate_service_account}"
 
   module_depends_on = concat(
     [google_container_cluster.primary.master_version],

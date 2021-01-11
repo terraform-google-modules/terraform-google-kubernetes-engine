@@ -3,9 +3,10 @@
 This module installs [Anthos Config Management](https://cloud.google.com/anthos-config-management/docs/) (ACM) in a Kubernetes cluster.
 
 Specifically, this module automates the following steps for [installing ACM](https://cloud.google.com/anthos-config-management/docs/how-to/installing):
-1. Installing the ACM Operator on your cluster.
-2. Generating an SSH key for accessing Git and providing it to the Operator
-3. Configuring the Operator to connect to your ACM repository
+1. Enabling the ACM feature on hub.
+2. Installing the ACM Operator on your cluster.
+3. Optionally, generating an SSH key for accessing Git and providing it to the Operator
+4. Configuring the Operator to connect to your ACM repository
 
 ## Usage
 
