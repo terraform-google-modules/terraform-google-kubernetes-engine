@@ -138,7 +138,7 @@ Then perform the following commands on the root folder:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| add\_cluster\_firewall\_rules | Create egress firewall rules to match the GKE managed ingress firewall rules. | `bool` | `false` | no |
+| add\_cluster\_firewall\_rules | Create GKE shadow firewall rules by creating the same firewall rules as Google-managed ones with higher priority and firewall logs enabled. | `bool` | `false` | no |
 | add\_shadow\_firewall\_rules | Create shadow firewall rules to match the GKE managed ingress firewall rules. | `bool` | `false` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
 | basic\_auth\_password | The password to be used with Basic Authentication. | `string` | `""` | no |
@@ -167,7 +167,7 @@ Then perform the following commands on the root folder:
 | enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster | `bool` | `true` | no |
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | `bool` | `false` | no |
 | firewall\_inbound\_ports | List of TCP ports for admission/webhook controllers | `list(string)` | <pre>[<br>  "8443",<br>  "9443",<br>  "15017"<br>]</pre> | no |
-| firewall\_priority | Priority rule for firewall rules | `number` | `1000` | no |
+| firewall\_priority | The firewall priority of GKE shadow firewall rules. The priority should be less than 1000, which is the priority of Google-managed GKE firewall. | `number` | `1000` | no |
 | gce\_pd\_csi\_driver | (Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. | `bool` | `false` | no |
 | gcloud\_upgrade | Whether to upgrade gcloud at runtime | `bool` | `false` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | `bool` | `false` | no |
