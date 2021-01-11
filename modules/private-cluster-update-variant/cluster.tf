@@ -68,6 +68,10 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  vertical_pod_autoscaling {
+    enabled = var.enable_vertical_pod_autoscaling
+  }
+
   default_max_pods_per_node = var.default_max_pods_per_node
 
   enable_shielded_nodes       = var.enable_shielded_nodes
