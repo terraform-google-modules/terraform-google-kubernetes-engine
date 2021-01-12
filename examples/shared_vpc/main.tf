@@ -23,6 +23,15 @@ provider "google" {
   region  = var.region
 }
 
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+}
+
 module "gke" {
   source                     = "../../"
   project_id                 = var.project_id
@@ -37,7 +46,4 @@ module "gke" {
   service_account            = var.compute_engine_service_account
   add_cluster_firewall_rules = true
   firewall_inbound_ports     = ["9443", "15017"]
-}
-
-data "google_client_config" "default" {
 }

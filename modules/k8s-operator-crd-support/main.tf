@@ -91,11 +91,6 @@ data "template_file" "k8sop_config" {
   }
 }
 
-resource "local_file" "operator_cr" {
-  content  = data.template_file.k8sop_config.rendered
-  filename = "${path.module}/${var.project_id}-${var.cluster_name}/operator_cr.yaml"
-}
-
 module "k8sop_config" {
   source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version                  = "~> 2.0.2"
@@ -103,11 +98,11 @@ module "k8sop_config" {
   cluster_name             = var.cluster_name
   cluster_location         = var.location
   project_id               = var.project_id
-  create_cmd_triggers      = { configmanagement = local_file.operator_cr.content }
+  create_cmd_triggers      = { configmanagement = data.template_file.k8sop_config.rendered }
   service_account_key_file = var.service_account_key_file
 
-  kubectl_create_command  = "kubectl apply -f ${local_file.operator_cr.filename}"
-  kubectl_destroy_command = "kubectl delete -f ${local_file.operator_cr.filename}"
+  kubectl_create_command  = "kubectl apply -f - <<EOF\n${data.template_file.k8sop_config.rendered}EOF"
+  kubectl_destroy_command = "kubectl delete -f - <<EOF\n${data.template_file.k8sop_config.rendered}EOF"
 }
 
 module "wait_for_gatekeeper" {
