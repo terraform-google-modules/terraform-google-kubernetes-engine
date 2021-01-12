@@ -194,6 +194,16 @@ resource "google_container_cluster" "primary" {
         start_time = var.maintenance_start_time
       }
     }
+
+    dynamic "maintenance_exclusion" {
+      for_each = var.maintenance_exclusions
+      content {
+        exclusion_name = maintenance_exclusion.value.name
+        start_time     = maintenance_exclusion.value.start_time
+        end_time       = maintenance_exclusion.value.end_time
+      }
+    }
+
   }
 
   lifecycle {
@@ -310,6 +320,18 @@ resource "random_id" "name" {
             values(local.node_pools_labels["all"]),
             keys(local.node_pools_labels[each.value["name"]]),
             values(local.node_pools_labels[each.value["name"]])
+          )
+        )
+      )
+    },
+    {
+      taints = join(",",
+        sort(
+          flatten(
+            concat(
+              [for all_taints in local.node_pools_taints["all"] : "all/${all_taints.key}/${all_taints.value}/${all_taints.effect}"],
+              [for each_pool_taint in local.node_pools_taints[each.value["name"]] : "${each.value["name"]}/${each_pool_taint.key}/${each_pool_taint.value}/${each_pool_taint.effect}"],
+            )
           )
         )
       )
