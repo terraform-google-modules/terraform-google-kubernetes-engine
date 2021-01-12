@@ -182,7 +182,7 @@ control "gcloud" do
               "config" => including(
                 "linuxNodeConfig" => including(
                   "sysctls" => including(
-                    "net.core.netdev_max_backlog" => "10000"
+                    "net.core.netdev_max_backlog" => "10000",
                     "net.core.rmem_max" => "10000"
                   )
                 )
