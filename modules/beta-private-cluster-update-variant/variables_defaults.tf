@@ -70,13 +70,13 @@ locals {
     var.node_pools_oauth_scopes
   )
 
-  node_pools_linux_node_configs = merge(
+  node_pools_linux_node_configs_sysctls = merge(
     { all = {} },
     { default-node-pool = {} },
     zipmap(
       [for node_pool in var.node_pools : node_pool["name"]],
       [for node_pool in var.node_pools : {}]
     ),
-    var.node_pools_linux_node_configs
+    var.node_pools_linux_node_configs_sysctls
   )
 }

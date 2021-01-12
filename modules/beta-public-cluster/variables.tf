@@ -187,9 +187,9 @@ variable "node_pools_metadata" {
   }
 }
 
-variable "node_pools_linux_node_configs" {
-  type        = map(map(map(string)))
-  description = "Map of maps containing linux node config by node-pool name"
+variable "node_pools_linux_node_configs_sysctls" {
+  type        = map(map(string))
+  description = "Map of maps containing linux node config sysctls by node-pool name"
 
   # Default is being set in variables_defaults.tf
   default = {
