@@ -6,7 +6,7 @@ Specifically, this module automates the following steps for [registering a clust
 
 ## Usage
 
-There is a [full example](../../examples/simple_zonal_with_asm) provided. Simple usage is as follows:
+There is [GKE full example](../../examples/simple_zonal_with_asm) and a [Generic K8s example](../../examples/simple_zonal_with_hub_kubectl) provided. There is also an example to use Simple usage is as follows:
 
 ```tf
 module "hub" {
@@ -39,11 +39,13 @@ To deploy this config:
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |
 | gke\_hub\_membership\_name | Memebership name that uniquely represents the cluster being registered on the Hub | `string` | `"gke-hub-membership"` | no |
 | gke\_hub\_sa\_name | Name for the GKE Hub SA stored as a secret `creds-gcp` in the `gke-connect` namespace. | `string` | `"gke-hub-sa"` | no |
+| labels | Comma separated labels in the format name=value to apply to cluster in the GCP Console. | `string` | `""` | no |
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
 | module\_depends\_on | List of modules or resources this module depends on. | `list` | `[]` | no |
 | project\_id | The project in which the resource belongs. | `string` | n/a | yes |
 | sa\_private\_key | Private key for service account base64 encoded. Required only if `use_existing_sa` is set to `true`. | `string` | `null` | no |
 | use\_existing\_sa | Uses an existing service account to register membership. Requires sa\_private\_key | `bool` | `false` | no |
+| use\_kubeconfig | Use existing kubeconfig to register membership. Set this to true for non GKE clusters. Assumes kubectl context is set to cluster to register. | `bool` | `false` | no |
 | use\_tf\_google\_credentials\_env\_var | Optional GOOGLE\_CREDENTIALS environment variable to be activated. | `bool` | `false` | no |
 
 ## Outputs
