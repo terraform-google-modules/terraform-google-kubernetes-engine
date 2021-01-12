@@ -1,8 +1,8 @@
-# Simple Zonal Cluster
+# Simple Kubernetes  Cluster
 
 This example illustrates how to register any Kubernetes Cluster with [Anthos](https://cloud.google.com/anthos/multicluster-management/environs) 
 
-This example creates a [kind]() cluster and the [Hub registration module](../../modules/hub).
+It incorporates the standard cluster GKE module, uses kubecontext to register the cluster using the [Hub registration module](../../modules/hub).
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

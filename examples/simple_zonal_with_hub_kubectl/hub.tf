@@ -20,4 +20,6 @@ module "hub" {
   location         = module.gke.location
   cluster_name     = module.gke.name
   cluster_endpoint = module.gke.endpoint
+  use_kubeconfig   = true
+  labels           = "testlabel=usekubecontext"
 }
