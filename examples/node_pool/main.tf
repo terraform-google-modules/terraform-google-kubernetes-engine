@@ -123,7 +123,7 @@ module "gke" {
   }
 
   node_pools_linux_node_configs_sysctls = {
-    all = {      
+    all = {
       "net.core.netdev_max_backlog" = "10000"
     }
     pool-01 = {

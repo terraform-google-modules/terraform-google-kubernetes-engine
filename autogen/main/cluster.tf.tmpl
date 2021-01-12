@@ -98,7 +98,7 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-  
+
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
