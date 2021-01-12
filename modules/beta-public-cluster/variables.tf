@@ -78,6 +78,12 @@ variable "master_authorized_networks" {
   default     = []
 }
 
+variable "enable_vertical_pod_autoscaling" {
+  type        = bool
+  description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
+  default     = false
+}
+
 variable "horizontal_pod_autoscaling" {
   type        = bool
   description = "Enable horizontal pod autoscaling addon"
@@ -106,6 +112,12 @@ variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
   default     = "05:00"
+}
+
+variable "maintenance_exclusions" {
+  type        = list(object({ name = string, start_time = string, end_time = string }))
+  description = "List of maintenance exclusions. A cluster can have up to three"
+  default     = []
 }
 
 variable "maintenance_end_time" {
@@ -439,12 +451,6 @@ variable "enable_intranode_visibility" {
   default     = false
 }
 
-variable "enable_vertical_pod_autoscaling" {
-  type        = bool
-  description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
-  default     = false
-}
-
 variable "authenticator_security_group" {
   type        = string
   description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
@@ -523,5 +529,11 @@ variable "disable_default_snat" {
 variable "impersonate_service_account" {
   type        = string
   description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
+  default     = ""
+}
+
+variable "notification_config_topic" {
+  type        = string
+  description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
   default     = ""
 }

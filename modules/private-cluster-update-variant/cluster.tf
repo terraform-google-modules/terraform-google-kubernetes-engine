@@ -68,6 +68,10 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  vertical_pod_autoscaling {
+    enabled = var.enable_vertical_pod_autoscaling
+  }
+
   default_max_pods_per_node = var.default_max_pods_per_node
 
   enable_shielded_nodes       = var.enable_shielded_nodes
@@ -233,6 +237,18 @@ resource "random_id" "name" {
             values(local.node_pools_labels["all"]),
             keys(local.node_pools_labels[each.value["name"]]),
             values(local.node_pools_labels[each.value["name"]])
+          )
+        )
+      )
+    },
+    {
+      taints = join(",",
+        sort(
+          flatten(
+            concat(
+              [for all_taints in local.node_pools_taints["all"] : "all/${all_taints.key}/${all_taints.value}/${all_taints.effect}"],
+              [for each_pool_taint in local.node_pools_taints[each.value["name"]] : "${each.value["name"]}/${each_pool_taint.key}/${each_pool_taint.value}/${each_pool_taint.effect}"],
+            )
           )
         )
       )

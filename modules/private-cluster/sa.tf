@@ -23,7 +23,7 @@ locals {
       ["dummy"],
     ),
   )
-  // if user set var.service_accont it will be used even if var.create_service_account==true, so service account will be created but not used
+  // if user set var.service_account it will be used even if var.create_service_account==true, so service account will be created but not used
   service_account = (var.service_account == "" || var.service_account == "create") && var.create_service_account ? local.service_account_list[0] : var.service_account
 }
 
@@ -76,3 +76,9 @@ resource "google_project_iam_member" "cluster_service_account-gcr" {
   member  = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
 }
 
+resource "google_project_iam_member" "cluster_service_account-artifact-registry" {
+  count   = var.create_service_account && var.grant_registry_access ? 1 : 0
+  project = var.registry_project_id == "" ? var.project_id : var.registry_project_id
+  role    = "roles/artifactregistry.reader"
+  member  = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
+}

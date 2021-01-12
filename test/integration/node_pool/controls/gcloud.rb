@@ -37,7 +37,7 @@ control "gcloud" do
       it "has the expected cluster autoscaling settings" do
         expect(data['autoscaling']).to eq({
             "autoprovisioningNodePoolDefaults" => {
-                "oauthScopes" => %w(https://www.googleapis.com/auth/logging.write https://www.googleapis.com/auth/monitoring),
+                "oauthScopes" => %w(https://www.googleapis.com/auth/cloud-platform),
                 "serviceAccount" => "default"
             },
             "autoscalingProfile" => "OPTIMIZE_UTILIZATION",
