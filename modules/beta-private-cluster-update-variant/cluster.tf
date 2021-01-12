@@ -508,8 +508,8 @@ resource "google_container_node_pool" "pools" {
 
       content {
         sysctls = merge(
-          local.node_pools_linux_node_configs["all"],
-          local.node_pools_linux_node_configs[each.value["name"]]
+          local.node_pools_linux_node_configs_sysctls["all"],
+          local.node_pools_linux_node_configs_sysctls[each.value["name"]]
         )
       }
     }
