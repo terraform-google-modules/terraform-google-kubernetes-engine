@@ -31,7 +31,7 @@ module. This release adapts to this requirement.
 
 ### ACM submodule `local_file` removed
 
-[ACM submodule](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/modules/acm) no longer creates a local file called `operator_cr.yaml`. 
-The yaml contents are rendered dynamically and passed via STDIN which fixes errors due to `operator_cr.yaml` file not being present between ephemeral pipeline runs. 
+[ACM submodule](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/modules/acm) no longer creates a local file called `operator_cr.yaml`.
+The yaml contents are rendered dynamically and passed via STDIN which fixes errors due to `operator_cr.yaml` file not being present between ephemeral pipeline runs.
 
 This is destructive and will result in deletion and recreation of the ACM operator.
