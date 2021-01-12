@@ -344,6 +344,18 @@ resource "random_id" "name" {
       )
     },
     {
+      taints = join(",",
+        sort(
+          flatten(
+            concat(
+              [for all_taints in local.node_pools_taints["all"] : "all/${all_taints.key}/${all_taints.value}/${all_taints.effect}"],
+              [for each_pool_taint in local.node_pools_taints[each.value["name"]] : "${each.value["name"]}/${each_pool_taint.key}/${each_pool_taint.value}/${each_pool_taint.effect}"],
+            )
+          )
+        )
+      )
+    },
+    {
       metadata = join(",",
         sort(
           concat(
