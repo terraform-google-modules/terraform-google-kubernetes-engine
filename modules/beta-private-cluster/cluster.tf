@@ -51,7 +51,7 @@ resource "google_container_cluster" "primary" {
 
   subnetwork = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
 
-  default_snat_status{
+  default_snat_status {
     disabled = var.disable_default_snat
   }
   min_master_version = var.release_channel != null ? null : local.master_version
@@ -72,7 +72,7 @@ resource "google_container_cluster" "primary" {
 
       content {
         service_account = local.service_account
-        oauth_scopes = local.node_pools_oauth_scopes["all"]
+        oauth_scopes    = local.node_pools_oauth_scopes["all"]
       }
     }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
@@ -288,7 +288,7 @@ resource "google_container_cluster" "primary" {
   notification_config {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
-      topic = var.notification_config_topic
+      topic   = var.notification_config_topic
     }
   }
 }
@@ -437,7 +437,7 @@ resource "google_container_node_pool" "pools" {
       content {
         sysctls = merge(
           local.node_pools_linux_node_configs["all"],
-          local.node_pools_linux_node_configs[each.value["name"]])
+          local.node_pools_linux_node_configs[each.value["name"]]
         )
       }
     }
