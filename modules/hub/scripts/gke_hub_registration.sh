@@ -36,8 +36,8 @@ echo "${SERVICE_ACCOUNT_KEY}" | base64 ${B64_ARG} > "$tmp_file"
 
 gcloud container hub memberships register "${MEMBERSHIP_NAME}" --gke-cluster="${CLUSTER_LOCATION}"/"${CLUSTER_NAME}" --service-account-key-file="${tmp_file}" --project="${PROJECT_ID}" --quiet
 # Add labels to the registered cluster
-if [ -z ${LABELS+x} ]; then 
+if [ -z ${LABELS+x} ]; then
     echo "No labels to apply."
-else 
+else
     gcloud container hub memberships update "${MEMBERSHIP_NAME}" --update-labels "$LABELS"
 fi

@@ -59,7 +59,7 @@ variable "gke_hub_sa_name" {
 }
 
 variable "gke_hub_membership_name" {
-  description = "Memebership name that uniquely represents the cluster being registered on the Hub"
+  description = "Membership name that uniquely represents the cluster being registered on the Hub"
   type        = string
   default     = "gke-hub-membership"
 }
@@ -84,11 +84,11 @@ variable "module_depends_on" {
 
 variable "use_kubeconfig" {
   description = "Use existing kubeconfig to register membership. Set this to true for non GKE clusters. Assumes kubectl context is set to cluster to register."
-  default = false
+  default     = false
 }
 
 variable "labels" {
   description = "Comma separated labels in the format name=value to apply to cluster in the GCP Console."
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }

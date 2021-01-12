@@ -37,8 +37,8 @@ CONTEXT=$(kubectl config current-context)
 
 gcloud container hub memberships register "${MEMBERSHIP_NAME}" --context="${CONTEXT}" --service-account-key-file="${tmp_file}" --project="${PROJECT_ID}" --quiet
 # Add labels to the registered cluster
-if [ -z ${LABELS+x} ]; then 
+if [ -z ${LABELS+x} ]; then
     echo "No labels to apply."
-else 
+else
     gcloud container hub memberships update "${MEMBERSHIP_NAME}" --update-labels "$LABELS"
 fi
