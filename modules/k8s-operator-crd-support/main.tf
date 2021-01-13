@@ -121,6 +121,6 @@ module "wait_for_gatekeeper" {
   service_account_key_file = var.service_account_key_file
   use_existing_context     = var.use_existing_context
 
-  kubectl_create_command  = format("%s %s", "${path.module}/scripts/wait_for_gatekeeper.sh ${var.project_id} ${var.cluster_name} ${var.location}", local.append_arg_use_existing_context_for_gatekeeper)
+  kubectl_create_command  = "${path.module}/scripts/wait_for_gatekeeper.sh ${var.project_id} ${var.cluster_name} ${var.location} ${local.append_arg_use_existing_context_for_gatekeeper}"
   kubectl_destroy_command = ""
 }
