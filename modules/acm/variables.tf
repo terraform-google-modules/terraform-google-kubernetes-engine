@@ -109,3 +109,9 @@ variable "service_account_key_file" {
   description = "Path to service account key file to auth as for running `gcloud container clusters get-credentials`."
   default     = ""
 }
+
+variable "use_existing_context" {
+  description = "Use existing kubecontext to auth kube-api."
+  type        = bool
+  default     = false
+}
