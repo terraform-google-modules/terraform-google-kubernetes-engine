@@ -62,6 +62,7 @@ By default, this module will attempt to download the ACM operator from Google di
 | ssh\_auth\_key | Key for Git authentication. Overrides 'create\_ssh\_key' variable. Can be set using 'file(path/to/file)'-function. | `string` | `null` | no |
 | sync\_branch | ACM repo Git branch. If un-set, uses Config Management default. | `string` | `""` | no |
 | sync\_repo | ACM Git repo address | `string` | n/a | yes |
+| use\_existing\_context | Use existing kubecontext to auth kube-api. | `bool` | `false` | no |
 
 ## Outputs
 
