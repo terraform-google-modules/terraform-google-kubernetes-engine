@@ -17,17 +17,11 @@
 locals {
   gke_hub_sa_key = var.use_existing_sa ? var.sa_private_key : google_service_account_key.gke_hub_key[0].private_key
 
-  create_cmd_kubeconfig_entrypoint = "${path.module}/scripts/k8s_hub_registration.sh"
-  create_cmd_kubeconfig_body       = "${var.gke_hub_membership_name} ${local.gke_hub_sa_key} ${var.project_id} ${var.labels}"
-  destroy_kubeconfig_entrypoint    = "${path.module}/scripts/k8s_hub_unregister.sh"
-  destroy_kubeconfig_body          = "${var.gke_hub_membership_name} ${var.project_id}"
-
+  is_gke_flag               = var.use_kubeconfig ? 0 : 1
   create_cmd_gke_entrypoint = "${path.module}/scripts/gke_hub_registration.sh"
-  create_cmd_gke_body       = "${var.gke_hub_membership_name} ${var.location} ${var.cluster_name} ${local.gke_hub_sa_key} ${var.project_id} ${var.labels}"
-  destroy_gke_entrypoint    = "gcloud"
-  destroy_gke_body          = "container hub memberships unregister ${var.gke_hub_membership_name} --gke-cluster=${var.location}/${var.cluster_name} --project ${var.project_id}"
-
-
+  create_cmd_gke_body       = "${local.is_gke_flag} ${var.gke_hub_membership_name} ${var.location} ${var.cluster_name} ${local.gke_hub_sa_key} ${var.project_id} ${var.labels}"
+  destroy_gke_entrypoint    = "${path.module}/scripts/gke_hub_unregister.sh"
+  destroy_gke_body          = "${local.is_gke_flag} ${var.gke_hub_membership_name} ${var.location} ${var.cluster_name} ${var.project_id}"
 }
 
 data "google_client_config" "default" {
@@ -62,8 +56,8 @@ module "gke_hub_registration" {
   use_tf_google_credentials_env_var = var.use_tf_google_credentials_env_var
   module_depends_on                 = concat([var.cluster_endpoint], var.module_depends_on)
 
-  create_cmd_entrypoint  = var.use_kubeconfig ? local.create_cmd_kubeconfig_entrypoint : local.create_cmd_gke_entrypoint
-  create_cmd_body        = var.use_kubeconfig ? local.create_cmd_kubeconfig_body : local.create_cmd_gke_body
-  destroy_cmd_entrypoint = var.use_kubeconfig ? local.destroy_kubeconfig_entrypoint : local.destroy_gke_entrypoint
-  destroy_cmd_body       = var.use_kubeconfig ? local.destroy_kubeconfig_body : local.destroy_gke_body
+  create_cmd_entrypoint  = local.create_cmd_gke_entrypoint
+  create_cmd_body        = local.create_cmd_gke_body
+  destroy_cmd_entrypoint = local.destroy_gke_entrypoint
+  destroy_cmd_body       = local.destroy_gke_body
 }
