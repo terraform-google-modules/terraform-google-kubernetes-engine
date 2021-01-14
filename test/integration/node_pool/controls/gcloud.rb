@@ -174,6 +174,22 @@ control "gcloud" do
             )
           )
         end
+
+        it "has the expected linux node config sysctls" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-01",
+              "config" => including(
+                "linuxNodeConfig" => including(
+                  "sysctls" => including(
+                    "net.core.netdev_max_backlog" => "10000",
+                    "net.core.rmem_max" => "10000"
+                  )
+                )
+              )
+            )
+          )
+        end
       end
 
       describe "pool-02" do
@@ -303,6 +319,21 @@ control "gcloud" do
             )
           )
         end
+
+        it "has the expected linux node config sysctls" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-02",
+              "config" => including(
+                "linuxNodeConfig" => including(
+                  "sysctls" => including(
+                    "net.core.netdev_max_backlog" => "10000"
+                  )
+                )
+              )
+            )
+          )
+        end
       end
 
       describe "pool-03" do
@@ -393,6 +424,21 @@ control "gcloud" do
                   "gke-#{cluster_name}-pool-03",
                 ]),
               ),
+            )
+          )
+        end
+
+        it "has the expected linux node config sysctls" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "config" => including(
+                "linuxNodeConfig" => including(
+                  "sysctls" => including(
+                    "net.core.netdev_max_backlog" => "20000"
+                  )
+                )
+              )
             )
           )
         end
