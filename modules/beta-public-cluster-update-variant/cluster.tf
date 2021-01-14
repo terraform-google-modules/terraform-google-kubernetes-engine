@@ -503,6 +503,20 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    dynamic "linux_node_config" {
+      for_each = merge(
+        local.node_pools_linux_node_configs_sysctls["all"],
+        local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+      ) != {} ? [1] : []
+
+      content {
+        sysctls = merge(
+          local.node_pools_linux_node_configs_sysctls["all"],
+          local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+        )
+      }
+    }
+
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
