@@ -121,4 +121,16 @@ module "gke" {
       "pool-01-example",
     ]
   }
+
+  node_pools_linux_node_configs_sysctls = {
+    all = {
+      "net.core.netdev_max_backlog" = "10000"
+    }
+    pool-01 = {
+      "net.core.rmem_max" = "10000"
+    }
+    pool-03 = {
+      "net.core.netdev_max_backlog" = "20000"
+    }
+  }
 }
