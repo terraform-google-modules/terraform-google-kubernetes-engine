@@ -50,5 +50,5 @@ fi
 if [ -z ${LABELS+x} ]; then
     echo "No hub labels to apply."
 else
-    gcloud container hub memberships update "${MEMBERSHIP_NAME}" --update-labels "$LABELS"
+    gcloud container hub memberships update "${MEMBERSHIP_NAME}" --update-labels "$LABELS" --project="${PROJECT_ID}"
 fi
