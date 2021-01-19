@@ -344,6 +344,18 @@ resource "random_id" "name" {
       )
     },
     {
+      taints = join(",",
+        sort(
+          flatten(
+            concat(
+              [for all_taints in local.node_pools_taints["all"] : "all/${all_taints.key}/${all_taints.value}/${all_taints.effect}"],
+              [for each_pool_taint in local.node_pools_taints[each.value["name"]] : "${each.value["name"]}/${each_pool_taint.key}/${each_pool_taint.value}/${each_pool_taint.effect}"],
+            )
+          )
+        )
+      )
+    },
+    {
       metadata = join(",",
         sort(
           concat(
@@ -507,6 +519,20 @@ resource "google_container_node_pool" "pools" {
 
       content {
         cpu_manager_policy = lookup(each.value, "cpu_manager_policy")
+      }
+    }
+
+    dynamic "linux_node_config" {
+      for_each = merge(
+        local.node_pools_linux_node_configs_sysctls["all"],
+        local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+      ) != {} ? [1] : []
+
+      content {
+        sysctls = merge(
+          local.node_pools_linux_node_configs_sysctls["all"],
+          local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+        )
       }
     }
 

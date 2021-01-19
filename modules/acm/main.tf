@@ -50,6 +50,7 @@ module "acm_operator" {
   hierarchy_controller     = var.hierarchy_controller
   enable_log_denies        = var.enable_log_denies
   service_account_key_file = var.service_account_key_file
+  use_existing_context     = var.use_existing_context
 
   operator_latest_manifest_url  = "gs://config-management-release/released/latest/config-management-operator.yaml"
   operator_cr_template_path     = "${path.module}/templates/acm-config.yml.tpl"
