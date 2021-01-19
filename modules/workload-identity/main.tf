@@ -49,7 +49,7 @@ module "annotate-sa" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version = "~> 2.0.2"
 
-  enabled          = var.use_existing_k8s_sa
+  enabled          = var.use_existing_k8s_sa && var.annotate_k8s_sa
   skip_download    = true
   cluster_name     = var.cluster_name
   cluster_location = var.location
