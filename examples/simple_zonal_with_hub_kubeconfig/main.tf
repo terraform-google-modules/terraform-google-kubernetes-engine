@@ -14,28 +14,32 @@
  * limitations under the License.
  */
 
-locals {
-  cluster_type = "simple-zonal"
+terraform {
+  required_providers {
+    kind = {
+      source  = "kyma-incubator/kind"
+      version = "0.0.6"
+    }
+  }
 }
+provider "kind" {}
 
-provider "google" {
-  version = "~> 3.42.0"
-  region  = var.region
-}
-
-module "gke" {
-  source            = "../../"
-  project_id        = var.project_id
-  name              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional          = false
-  region            = var.region
-  zones             = var.zones
-  network           = var.network
-  subnetwork        = var.subnetwork
-  ip_range_pods     = var.ip_range_pods
-  ip_range_services = var.ip_range_services
-  service_account   = "create"
-}
-
-data "google_client_config" "default" {
+# creating a cluster with kind of the name "test-cluster" with kubernetes version v1.18.4 and two nodes
+resource "kind_cluster" "test-cluster" {
+  name           = "test-cluster"
+  node_image     = "kindest/node:v1.18.4"
+  wait_for_ready = true
+  kind_config {
+    kind        = "Cluster"
+    api_version = "kind.x-k8s.io/v1alpha4"
+    node {
+      role = "control-plane"
+    }
+    node {
+      role = "worker"
+    }
+  }
+  provisioner "local-exec" {
+    command = "kubectl config set-context kind-test-cluster"
+  }
 }

@@ -1,41 +1,21 @@
-# Simple Zonal Cluster Registered using kubeconfig
+# Kind Cluster Registered using kubeconfig
 
-This example illustrates how to register any Kubernetes Cluster with [Anthos](https://cloud.google.com/anthos/multicluster-management/environs)
+This example illustrates how to register a non-GKE Kubernetes Cluster with [Anthos](https://cloud.google.com/anthos/multicluster-management/environs) a.k.a Attached cluster.
 
-It incorporates the standard cluster GKE module, uses kubecontext to register the cluster using the [Hub registration module](../../modules/hub).
+It creates a [kind](https://kind.sigs.k8s.io/) cluster, sets current kubecontext to the cluster and registers the cluster using the [Hub registration module](../../modules/hub).
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
-| ip\_range\_pods | The secondary ip range to use for pods | `string` | `""` | no |
-| ip\_range\_services | The secondary ip range to use for services | `string` | `""` | no |
-| network | The VPC network to host the cluster in | `string` | `"default"` | no |
-| project\_id | The project ID to host the cluster in | `any` | n/a | yes |
-| region | The region to host the cluster in | `any` | n/a | yes |
-| subnetwork | The subnetwork to host the cluster in | `string` | `"default"` | no |
-| zones | The zone to host the cluster in (required if is a zonal cluster) | `list(string)` | n/a | yes |
+| project\_id | The project ID (environ) to register the cluster in | `any` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| ca\_certificate | n/a |
-| client\_token | n/a |
-| cluster\_name | Cluster name |
-| ip\_range\_pods | The secondary IP range used for pods |
-| ip\_range\_services | The secondary IP range used for services |
-| kubernetes\_endpoint | n/a |
-| location | n/a |
-| master\_kubernetes\_version | The master Kubernetes version |
-| network | n/a |
-| project\_id | n/a |
-| region | n/a |
-| service\_account | The default service account used for running nodes. |
-| subnetwork | n/a |
-| zones | List of zones in which the cluster resides |
+| kubernetes\_endpoint | Kube API endpoint for the kind cluster |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
@@ -52,6 +32,4 @@ terraform init
 
 terraform apply \
     -var project_id=${PROJECT} \
-    -var region="us-central1" \
-    -var zones='["us-central1-c"]'
 ```
