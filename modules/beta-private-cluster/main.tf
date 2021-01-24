@@ -69,7 +69,7 @@ locals {
   default_auto_upgrade = var.regional || var.release_channel != null ? true : false
 
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
-  cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
+  cluster_alias_ranges_cidr = (var.add_cluster_firewall_rules && data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range != null) ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
 
   cluster_network_policy = var.network_policy ? [{
     enabled  = true
