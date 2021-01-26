@@ -16,7 +16,7 @@
 set -e
 
 if [ -n "${GOOGLE_CREDENTIALS}" ] && [ -z "${GOOGLE_APPLICATION_CREDENTIALS}" ]; then
-    echo ${GOOGLE_CREDENTIALS}>google_credentials.json
+    echo "${GOOGLE_CREDENTIALS}">google_credentials.json
     export GOOGLE_APPLICATION_CREDENTIALS=google_credentials.json
 fi
 
