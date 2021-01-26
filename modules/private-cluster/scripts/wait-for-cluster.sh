@@ -15,6 +15,11 @@
 
 set -e
 
+if [ -n "${GOOGLE_CREDENTIALS}" ] && [ -z "${GOOGLE_APPLICATION_CREDENTIALS}" ]; then
+    echo ${GOOGLE_CREDENTIALS}>google_credentials.json
+    export GOOGLE_APPLICATION_CREDENTIALS=google_credentials.json
+fi
+
 # shellcheck disable=SC2034
 if [ -n "${GOOGLE_APPLICATION_CREDENTIALS}" ]; then
     export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="${GOOGLE_APPLICATION_CREDENTIALS}"
