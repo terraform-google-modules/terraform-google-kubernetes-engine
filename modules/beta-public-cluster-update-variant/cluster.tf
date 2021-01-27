@@ -504,10 +504,10 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "linux_node_config" {
-      for_each = merge(
+      for_each = length(merge(
         local.node_pools_linux_node_configs_sysctls["all"],
         local.node_pools_linux_node_configs_sysctls[each.value["name"]]
-      ) != {} ? [1] : []
+      )) != 0 ? [1] : []
 
       content {
         sysctls = merge(
