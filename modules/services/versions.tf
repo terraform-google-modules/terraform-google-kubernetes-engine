@@ -1,5 +1,6 @@
+
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +15,10 @@
  * limitations under the License.
  */
 
-
 terraform {
-  required_version = ">=0.13"
+  required_version = ">= 0.13.0"
 
-  required_providers {
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 3.49.0, <4.0.0"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 1.10, != 1.11.0"
-    }
-  }
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-public-cluster-update-variant/v13.0.0"
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:services/v13.0.0"
   }
 }
