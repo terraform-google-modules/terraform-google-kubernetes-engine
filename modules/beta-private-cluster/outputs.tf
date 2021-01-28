@@ -54,7 +54,6 @@ output "endpoint" {
     */
     google_container_cluster.primary,
     google_container_node_pool.pools,
-    module.gcloud_wait_for_cluster.wait,
   ]
 }
 
