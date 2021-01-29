@@ -35,3 +35,41 @@ module. This release adapts to this requirement.
 The yaml contents are rendered dynamically and passed via STDIN which fixes errors due to `operator_cr.yaml` file not being present between ephemeral pipeline runs.
 
 This is destructive and will result in deletion and recreation of the ACM operator.
+
+### Wait for cluster script removed
+
+[wait-for-cluster.sh](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/blob/2c4a2b11b9be01c392c9d3a0c5c720973dbffebf/cluster.tf#L323) used to ensure that the cluster is in a ready state has been removed due to [improvements](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/800) in the provider. As part of the upgrade, Terraform might indicate that the `wait_for_cluster` null_resource must be destroyed. This is no-op and can be safely applied:
+
+```
+  # module.example.module.gke.module.gcloud_wait_for_cluster.null_resource.module_depends_on[0] will be destroyed
+  - resource "null_resource" "module_depends_on" {
+      - id       = "8092231570921454387" -> null
+      - triggers = {
+          - "value" = "2"
+        } -> null
+    }
+
+  # module.example.module.gke.module.gcloud_wait_for_cluster.null_resource.run_command[0] will be destroyed
+  - resource "null_resource" "run_command" {
+      - id       = "5198854261759708357" -> null
+      - triggers = {
+          - "arguments"             = "de7f9e59f7436cdec4c8fc34fb8e9833"
+          - "create_cmd_body"       = "PROJECT_ID CLUSTER_NAME CLUSTER_LOCATION "
+          - "create_cmd_entrypoint" = "../../../scripts/wait-for-cluster.sh"
+          - "gcloud_bin_abs_path"   = "/google-cloud-sdk/bin"
+          - "md5"                   = "4149df8255e42ea6781ec241e82e9e69"
+        } -> null
+    }
+
+  # module.example.module.gke.module.gcloud_wait_for_cluster.null_resource.run_destroy_command[0] will be destroyed
+  - resource "null_resource" "run_destroy_command" {
+      - id       = "6787683359757867074" -> null
+      - triggers = {
+          - "destroy_cmd_body"       = "PROJECT_ID CLUSTER_NAME CLUSTER_LOCATION "
+          - "destroy_cmd_entrypoint" = "../../../scripts/wait-for-cluster.sh"
+          - "gcloud_bin_abs_path"    = "/google-cloud-sdk/bin"
+        } -> null
+    }
+
+Plan: 0 to add, 0 to change, 3 to destroy.
+```
