@@ -48,4 +48,28 @@ This is destructive and will result in deletion and recreation of the ACM operat
           - "value" = "2"
         } -> null
     }
+
+  # module.example.module.gke.module.gcloud_wait_for_cluster.null_resource.run_command[0] will be destroyed
+  - resource "null_resource" "run_command" {
+      - id       = "5198854261759708357" -> null
+      - triggers = {
+          - "arguments"             = "de7f9e59f7436cdec4c8fc34fb8e9833"
+          - "create_cmd_body"       = "PROJECT_ID CLUSTER_NAME CLUSTER_LOCATION "
+          - "create_cmd_entrypoint" = "../../../scripts/wait-for-cluster.sh"
+          - "gcloud_bin_abs_path"   = "/google-cloud-sdk/bin"
+          - "md5"                   = "4149df8255e42ea6781ec241e82e9e69"
+        } -> null
+    }
+
+  # module.example.module.gke.module.gcloud_wait_for_cluster.null_resource.run_destroy_command[0] will be destroyed
+  - resource "null_resource" "run_destroy_command" {
+      - id       = "6787683359757867074" -> null
+      - triggers = {
+          - "destroy_cmd_body"       = "PROJECT_ID CLUSTER_NAME CLUSTER_LOCATION "
+          - "destroy_cmd_entrypoint" = "../../../scripts/wait-for-cluster.sh"
+          - "gcloud_bin_abs_path"    = "/google-cloud-sdk/bin"
+        } -> null
+    }
+
+Plan: 0 to add, 0 to change, 3 to destroy.
 ```
