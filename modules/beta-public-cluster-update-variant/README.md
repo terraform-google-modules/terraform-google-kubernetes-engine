@@ -65,7 +65,7 @@ module "gke" {
   ip_range_services          = "us-central1-01-gke-01-services"
   http_load_balancing        = false
   horizontal_pod_autoscaling = true
-  network_policy             = true
+  network_policy             = false
   istio = true
   cloudrun = true
   dns_cache = false

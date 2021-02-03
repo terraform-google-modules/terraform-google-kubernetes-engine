@@ -46,7 +46,7 @@ module "gke" {
   ip_range_services          = "us-central1-01-gke-01-services"
   http_load_balancing        = false
   horizontal_pod_autoscaling = true
-  network_policy             = true
+  network_policy             = false
   enable_private_endpoint    = true
   enable_private_nodes       = true
   master_ipv4_cidr_block     = "10.0.0.0/28"
