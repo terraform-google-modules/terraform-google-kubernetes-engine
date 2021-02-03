@@ -2,13 +2,13 @@
 
 ### Summary
 
-PostgreSQL uses application-level protocol negotation for SSL connection. Istio Proxy currently uses TCP-level protocol negotation, so Istio Proxy sidecar errors out during SSL handshake when it tries to auto encryt connection with PostgreSQL. In this article, we document how to reproduce this issue. 
+PostgreSQL uses application-level protocol negotation for SSL connection. Istio Proxy currently uses TCP-level protocol negotation, so Istio Proxy sidecar errors out during SSL handshake when it tries to auto encryt connection with PostgreSQL. In this article, we document how to reproduce this issue.
 
 ### Prerequites
 
 * Enforce SSL connection on Cloud SQL PostgreSQL instance.
-* Create client certificate and download client certificate, client key and server certificate. We will use them in the client container for testing without sidecar auto-encryption, and mount them into Istio Proxy sidecar for sidecar auto-encryption. 
-* Add K8s node IPs to the Authorized Networks of PostgreSQL instance. Or, we can add "0.0.0.0/0" to allow client connection from any IP address for testing purpose. 
+* Create client certificate and download client certificate, client key and server certificate. We will use them in the client container for testing without sidecar auto-encryption, and mount them into Istio Proxy sidecar for sidecar auto-encryption.
+* Add K8s node IPs to the Authorized Networks of PostgreSQL instance. Or, we can add "0.0.0.0/0" to allow client connection from any IP address for testing purpose.
 
 ### Build Container
 
@@ -16,7 +16,7 @@ Use the Dockerfile to build a testing PostgreSQL client container image. We pack
 
 ### Test Direct SSL Connection
 
-Deploy a PostgreSQL client without any sidecar. Please note that we turn off the sidecar inject in the YAML file even though we have label our namespace to have Istio sidecar auto inject. 
+Deploy a PostgreSQL client without any sidecar. Please note that we turn off the sidecar inject in the YAML file even though we have label our namespace to have Istio sidecar auto inject.
 
 ```
 kubectl apply -f postgres-plain.yaml -n <YOUR_NAMESPACE>
@@ -74,14 +74,14 @@ We mount our PostgreSQL certificates into Istio Proxy sidecar via the following 
 adonly":true}]'
 ```
 
-#### Configure Sidecar certificates 
+#### Configure Sidecar certificates
 
 We use [Service Entry](https://istio.io/latest/docs/reference/config/networking/service-entry/) and [Destination
  Rule](https://istio.io/latest/docs/reference/config/networking/destination-rule/) to instruct Istio Proxy sidec
 ar to auto encrypt network traffic with specified Redis host and port with **SIMPLE** TLS. The detailed comments
- can be found in `destination-rule.yaml` and `service-entry.yaml` source code. 
+ can be found in `destination-rule.yaml` and `service-entry.yaml` source code.
 
-Also, here is how we instruct Istio Proxy sidecar to use our certificates for encryption. 
+Also, here is how we instruct Istio Proxy sidecar to use our certificates for encryption.
 
 ```
       clientCertificate: /etc/certs/postgres-cert/client-cert.pem
@@ -89,7 +89,7 @@ Also, here is how we instruct Istio Proxy sidecar to use our certificates for en
       caCertificates: /etc/certs/postgres-cert/server-ca.pem
 ```
 
-Deploy both YAML files to your namespace. 
+Deploy both YAML files to your namespace.
 ```
 kubectl apply -f destination-rule.yaml -n <YOUR_NAMESPACE>
 
@@ -108,9 +108,9 @@ kubectl apply -f postgres-istio.yaml -n <YOUR_NAMESPACE>
 psql "hostaddr=YOUR_POSTGRESQL_IP port=5432 user=YOUR_USERNAME dbname=YOUR_DB_NAME"
 ```
 
-You should be prompted for password. 
+You should be prompted for password.
 
-You will see errors.  
+You will see errors.
 
 #### Look into the Istio Proxy log
 

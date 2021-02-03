@@ -15,25 +15,25 @@ Here are several reference documents if you encounter an issue when following th
 
 ## Description
 
-In [Adding clusters to an Athos Service Mesh](https://cloud.google.com/service-mesh/docs/gke-install-multi-cluster), it shows how to federate service meshes of two Anthos **public** clusters. However, it misses a key instruction to open the firewall for the service port to the remote cluster. So, your final test of HelloWorld might not work. 
+In [Adding clusters to an Athos Service Mesh](https://cloud.google.com/service-mesh/docs/gke-install-multi-cluster), it shows how to federate service meshes of two Anthos **public** clusters. However, it misses a key instruction to open the firewall for the service port to the remote cluster. So, your final test of HelloWorld might not work.
 
-This sample builds on the topic of Google's Anthos Service Mesh official installation documents, and adds instructions on how to federate two private clusters, which is more likely in real world environments. 
+This sample builds on the topic of Google's Anthos Service Mesh official installation documents, and adds instructions on how to federate two private clusters, which is more likely in real world environments.
 
-As illustrated in the diagram below, we will create a VPC with three subnets. Two subnets are for private clusters, and one for GCE servers. So, we illustrate using a bastion server to access private clusters as in a real environment. 
+As illustrated in the diagram below, we will create a VPC with three subnets. Two subnets are for private clusters, and one for GCE servers. So, we illustrate using a bastion server to access private clusters as in a real environment.
 
 ![NetworkImage](./asm-private-multiclusters-intranet.png)
 
 The clusters are not accessible from an external network. Users can only log into the bastion server via an IAP tunnel to gain access to this VPC. A firewall rule is built to allow IAP tunneling into the GCE subnet (Subnet C) only. For the bastion server in Subnet C to access Kubernetes APIs of both private clusters, Subnet C's CIDR range is added to the "_GKE Control Plane Authorized Network_" of both clusters. This is illustrated as blue lines and yellow underscore lines in the diagram above.
 
 Also, in order for both clusters to access the service mesh (Istiod) and service deployed on the other cluster, we need to do the following:
-- The pod CIDR range of one cluster must be added to the "_GKE Control Plane Authorized Network_" of the other cluster. This enables one cluster to ping _istiod_ on the other cluster. 
-- The firewall needs to be open for one cluster's pod CIDR to access the service port on the other cluster. In this sample, it is port 5000 used by the HelloWord testing application. Because the invocation of service is bidirectional in HelloWorld testing application, we will add firewall rules for each direction. 
+- The pod CIDR range of one cluster must be added to the "_GKE Control Plane Authorized Network_" of the other cluster. This enables one cluster to ping _istiod_ on the other cluster.
+- The firewall needs to be open for one cluster's pod CIDR to access the service port on the other cluster. In this sample, it is port 5000 used by the HelloWord testing application. Because the invocation of service is bidirectional in HelloWorld testing application, we will add firewall rules for each direction.
 
-The infrastruction used in this sample is coded in Terraform scripts. The ASM installation steps are coded in a Shell script.     
+The infrastruction used in this sample is coded in Terraform scripts. The ASM installation steps are coded in a Shell script.
 
 ## Prerequisites
 
-As mentioned in [Add GKE clusters to Anthos Service Mesh](https://cloud.google.com/service-mesh/docs/gke-install-multi-cluster), there are several prerequisites. 
+As mentioned in [Add GKE clusters to Anthos Service Mesh](https://cloud.google.com/service-mesh/docs/gke-install-multi-cluster), there are several prerequisites.
 
 This guide assumes that you have:
 
@@ -48,7 +48,7 @@ Also, the multi-cluster configuration has these requirements for the clusters in
 
 - If you join clusters that are not in the same project, they must be installed using the `asm-gcp-multiproject` profile and the clusters must be in a shared VPC configuration together on the same network. In addition, we recommend that you have one project to host the shared VPC, and two service projects for creating clusters. For more information, see [Setting up clusters with Shared VPC](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-shared-vpc).
 
-In this sample, we create two private clusters in different subnets of the same VPC in the same project, and enable clusters to communicate to each other's API server.   
+In this sample, we create two private clusters in different subnets of the same VPC in the same project, and enable clusters to communicate to each other's API server.
 
 ## How to set up and run this sample
 
@@ -56,7 +56,7 @@ In this sample, we create two private clusters in different subnets of the same 
 
 1. Create a GCP project.
 2. Create a VPC in GCP project.
-3. Create a subnet in the VPC. 
+3. Create a subnet in the VPC.
 4. Create a VM in the subnet. This will be the bastion server to simulate an intranet access to GKE clusters.
    - This step is now done by Terraform, in file [infrastructure/bastion.tf](./infrastructure/bastion.tf)
    - The Bastion host is used for interraction with the GKE clusters
@@ -65,16 +65,16 @@ In this sample, we create two private clusters in different subnets of the same 
 
 5. Set up Git on your local machine, then clone this Github sample. Also clone this Github sample onto the bastion server
 
-6. Set up [Terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) on your local machine, so you will be able to build infrastructure. 
+6. Set up [Terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) on your local machine, so you will be able to build infrastructure.
 
-7. On your local machine, update the corresponding parameters for your project. 
+7. On your local machine, update the corresponding parameters for your project.
    - In ``vars.sh``, check to see whether you need to update `CLUSTER1_LOCATION`,`CLUSTER1_CLUSTER_NAME`, `CLUSTER1_CLUSTER_CTX`, `CLUSTER2_LOCATION`, `CLUSTER2_CLUSTER_NAME`, `CLUSTER2_CLUSTER_CTX`.
    - In [infrastructure/terraform.example.tfvars](./infrastructure/terraform.example.tfvars), rename this file to terraform.tfvars and update "project_id" and "billing_account".
-   - In [infrastructure/shared.tf](./infrastructure/shared.tf), check whether you need to update "project_prefix" and "region". 
-   - **[OPTIONAL]** In the locals section of _infrastructure/shared.tf_, update CIDR ranges for bastion_cidr and existing_vpc if you need to. 
+   - In [infrastructure/shared.tf](./infrastructure/shared.tf), check whether you need to update "project_prefix" and "region".
+   - **[OPTIONAL]** In the locals section of _infrastructure/shared.tf_, update CIDR ranges for bastion_cidr and existing_vpc if you need to.
    - Source _vars.sh_ to set up basic environment variables.
-     
-     ``` 
+
+     ```
      source vars.sh
      ```
 
@@ -82,25 +82,25 @@ In this sample, we create two private clusters in different subnets of the same 
 
 9. Under "_infrastructure_" directory, run
    - terraform init
-      
+
      ```
      terraform init
      ```
-      
+
    - terraform plan
-       
+
      ```
      terraform plan -out output.tftxt
      ```
-       
+
      **NOTE:** You may get an error that the Compute Engine API has not been used before in the project. In this case please [manually enable the Compute Engine API](https://console.cloud.google.com/apis/library/compute.googleapis.com)
 
      ```
      Error: Error when reading or editing GCE default service account: googleapi: Error 403: Compute Engine API has not been used in project XXXXXXXXXXX before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry., accessNotConfigured
      ```
-       
+
    - terraform apply
-       
+
      ```
      terraform apply output.tftxt
      ```
@@ -119,7 +119,7 @@ In this sample, we create two private clusters in different subnets of the same 
 ### Install ASM
 
 1. On bastion server, go to this source code directory, then source _vars.sh_
-   
+
    **NOTE:** Make sure you manually [create a Google Cloud firewall rule](https://cloud.google.com/vpc/docs/using-firewalls) to allow SSH connections to your bastion server over port 22
 
    ```
@@ -184,7 +184,7 @@ Follow the instruction in "**Verify cross-cluster load balancing**" section of [
 
 Anthos ASM deploys ingress gateway using exernal load balancer by default. If we need to change the ingress gateway to be internal load balancer, we can use `--optio`n or `--custom-overlay` parameter along with out load balancer yaml (./istio-profiles/internal-load-balancer.yaml).
 
-Please note that we need to specify out "targetPort" for https and http2 ports for current ASM version. 
+Please note that we need to specify out "targetPort" for https and http2 ports for current ASM version.
 
 # Twistlock PoC
 - Pod traffic security scanning, using ASM, Docker and Google Artifact Registry (GAR)

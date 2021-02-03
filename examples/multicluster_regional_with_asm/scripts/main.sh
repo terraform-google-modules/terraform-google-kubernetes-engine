@@ -47,7 +47,7 @@ function set_up_credential {
 function download_asm_installer {
   ASM_MAJOR_VERSION=$1
   ASM_MINOR_VERION=$2
-  
+
   ASM_INSTALLER="install_asm_${ASM_MAJOR_VERSION}.${ASM_MINOR_VERION}"
   AMS_INSTALLER_SIG="install_asm_${ASM_MAJOR_VERSION}.${ASM_MINOR_VERION}.sha256"
 
@@ -66,7 +66,7 @@ function download_asm_installer {
 
   # Download the signature file and use openssl to verify the signature
   curl "https://storage.googleapis.com/csm-artifacts/asm/install_asm_${ASM_MAJOR_VERSION}.${ASM_MINOR_VERION}.sha256" > install_asm.sha256
- 
+
   # Check whether signature matach
   sha256sum -c --ignore-missing install_asm.sha256
 
@@ -78,7 +78,7 @@ function install_asm {
   CLUSTER_NAME=$1
   CLUSTER_LOCATION=$2
   PROJECT_ID=$3
-   
+
   ./install_asm --project_id "${PROJECT_ID}" --cluster_name "${CLUSTER_NAME}" \
   --cluster_location "${CLUSTER_LOCATION}" \
   --mode install \
@@ -86,7 +86,7 @@ function install_asm {
 }
 
 function download_istio {
-    
+
     if [ -f "${ASM_VERSION}/bin/istioctl" ]; then
         echo "Istioctl has been downloaded"
     else
@@ -152,7 +152,7 @@ function install_helloworld {
     do
       kubectl create --context="${CTX}" namespace sample
       kubectl label --context="${CTX}" namespace sample \
-            istio-injection- istio.io/rev="${ASM_REVISION}" --overwrite   
+            istio-injection- istio.io/rev="${ASM_REVISION}" --overwrite
       kubectl create --context="${CTX}" \
   -f "./${ASM_VERSION}/samples/helloworld/helloworld.yaml" \
         -l app=helloworld -n sample
@@ -176,12 +176,12 @@ function install_helloworld {
 function install_asm_mesh {
     cd "${WORK_DIR}" || exit
     set_up_credential "${CLUSTER1_CLUSTER_NAME} ${CLUSTER1_LOCATION} ${CLUSTER1_CLUSTER_CTX} ${TF_VAR_project_id}"
-    set_up_credential "${CLUSTER2_CLUSTER_NAME} ${CLUSTER2_LOCATION} ${CLUSTER2_CLUSTER_CTX} ${TF_VAR_project_id}"  
+    set_up_credential "${CLUSTER2_CLUSTER_NAME} ${CLUSTER2_LOCATION} ${CLUSTER2_CLUSTER_CTX} ${TF_VAR_project_id}"
 
     # Download ASM Installer
     download_asm_installer "${ASM_MAJOR_VER} ${ASM_MINOR_VER}"
 
-    #Install ASM 
+    #Install ASM
     install_asm "${CLUSTER1_CLUSTER_NAME} ${CLUSTER1_LOCATION} ${TF_VAR_project_id}"
     install_asm "${CLUSTER2_CLUSTER_NAME} ${CLUSTER2_LOCATION} ${TF_VAR_project_id}"
 

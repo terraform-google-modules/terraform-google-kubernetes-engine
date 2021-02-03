@@ -1,16 +1,16 @@
 # PostgreSQL Auto SSL Connection Using Cloud SQL Proxy
 
-## Summary 
+## Summary
 
-PostgreSQL uses application-level protocol negotation for SSL connection. Istio Proxy currently uses TCP-level protocol negotation, so Istio Proxy sidecar errors out during SSL handshake when it tries to auto encryt connection with PostgreSQL. Please follow the steps in [PostgreSQL Auto SSL Connection Problem Using Istio Sidecar](./Istio-Sidecar.md) to see the details of this issue. 
+PostgreSQL uses application-level protocol negotation for SSL connection. Istio Proxy currently uses TCP-level protocol negotation, so Istio Proxy sidecar errors out during SSL handshake when it tries to auto encryt connection with PostgreSQL. Please follow the steps in [PostgreSQL Auto SSL Connection Problem Using Istio Sidecar](./Istio-Sidecar.md) to see the details of this issue.
 
-Because ASM Istio Proxy sidecar doesn't work with PostgreSQL SSL auto encryption, we demostrate how to use Cloud SQL Proxy to auto encrypt SSL connection with Cloud SQL PostgreSQL database in this article. 
+Because ASM Istio Proxy sidecar doesn't work with PostgreSQL SSL auto encryption, we demostrate how to use Cloud SQL Proxy to auto encrypt SSL connection with Cloud SQL PostgreSQL database in this article.
 
 ## Prerequites
 
 * Enforce SSL connection on Cloud SQL PostgreSQL instance.
 * **We don't need certificates for Cloud SQL Proxy connection.** However, we will create client certificate and download client certificate, client key and server certificate for the purpose of initial SSL connection without sidecar auto-encryption. Instructions for downloading Cloud SQL for PostreSQL certificates is on this page: [Configuring SSL/TLS certificates](https://cloud.google.com/sql/docs/postgres/configure-ssl-instance)
-* Add K8s node IPs to the Authorized Networks of PostgreSQL instance. Or, we can add "0.0.0.0/0" to allow client connection from any IP address for testing purpose. 
+* Add K8s node IPs to the Authorized Networks of PostgreSQL instance. Or, we can add "0.0.0.0/0" to allow client connection from any IP address for testing purpose.
 
 ## Build Container
 
@@ -79,9 +79,9 @@ Because ASM Istio Proxy sidecar doesn't work with PostgreSQL SSL auto encryption
       kubectl apply -f service-account.yaml -n sample
       ```
 
-2. Set up a Google Cloud Service Account 
+2. Set up a Google Cloud Service Account
 
-    - Set up a Google Cloud Service Account (or use an existing GSA). 
+    - Set up a Google Cloud Service Account (or use an existing GSA).
     - Make sure that [Cloud SQL Client predefined role](https://cloud.google.com/sql/docs/mysql/project-access-control#roles) (roles/cloudsql.client) is granted to this GSA.
     - In the next step, we will create a new GSA `sql-client@${PROJECT_ID}.iam.gserviceaccount.com`.
 
@@ -114,7 +114,7 @@ Because ASM Istio Proxy sidecar doesn't work with PostgreSQL SSL auto encryption
       - This pod will use this KSA to authenticate itself through Google Cloud IAM.
       - Remember that we don't need the certificate files.
 
-      ii. The container entry for Cloud SQL Proxy. 
+      ii. The container entry for Cloud SQL Proxy.
 
     ```
     kubectl apply -f postgres-cloudproxy.yaml -n sample
@@ -129,7 +129,7 @@ Because ASM Istio Proxy sidecar doesn't work with PostgreSQL SSL auto encryption
       ```
 
     - Run `psql` command in Non-SSL mode
-    
+
       ```
       psql "hostaddr=YOUR_POSTGRESQL_IP port=5432 user=YOUR_USERNAME dbname=YOUR_DB_NAME"
       ```

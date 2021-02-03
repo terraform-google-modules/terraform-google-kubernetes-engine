@@ -15,6 +15,6 @@
 FROM alpine:3.12
 RUN apk --no-cache add postgresql-client
 RUN apk add --no-cache bash
-COPY certs/client-cert.pem /client-cert.pem 
-COPY certs/client-key.pem /client-key.pem 
+COPY certs/client-cert.pem /client-cert.pem
+COPY certs/client-key.pem /client-key.pem
 COPY certs/server-ca.pem /server-ca.pem

@@ -22,8 +22,8 @@ spec:
   hosts:
   - <YOUR_INSTANCE_HOSTNAME>
   addresses:
-  # Use the IP of your PostgreSQL instance here 
-  - 34.94.102.8/32    
+  # Use the IP of your PostgreSQL instance here
+  - 34.94.102.8/32
   location: MESH_EXTERNAL
   resolution: DNS
   ports:
