@@ -97,12 +97,12 @@ resource "google_compute_subnetwork" "cluster4" {
 # setting IAM policy
 data "google_iam_policy" "cluster-policy" {
   binding {
-    role = "roles/compute.networkUser"
-    members = ["serviceAccount:${data.google_project.project.number}@cloudservices.gserviceaccount.com",]
+    role    = "roles/compute.networkUser"
+    members = ["serviceAccount:${data.google_project.project.number}@cloudservices.gserviceaccount.com", ]
   }
   binding {
-    role = "roles/compute.networkUser"
-    members = ["serviceAccount:service-${data.google_project.project.number}@container-engine-robot.iam.gserviceaccount.com",]
+    role    = "roles/compute.networkUser"
+    members = ["serviceAccount:service-${data.google_project.project.number}@container-engine-robot.iam.gserviceaccount.com", ]
   }
 }
 

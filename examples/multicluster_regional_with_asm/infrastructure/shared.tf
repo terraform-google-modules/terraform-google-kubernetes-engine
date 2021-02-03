@@ -23,8 +23,8 @@ variable "region" {
   default = "us-west2"
 }
 
-variable "prefix"{
-  default = "asm"
+variable "prefix" {
+  default     = "asm"
   description = "This is the prefix to differentiate the names of your artifacts"
 }
 

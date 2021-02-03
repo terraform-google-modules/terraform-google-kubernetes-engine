@@ -15,5 +15,5 @@
  */
 
 # Rename this file to terraform.tfvars and update the below variables
-project_id="your-project-id" # Replace with your project ID
-billing_account="your-billing-account" # Replace with your billing account
+project_id      = "your-project-id"      # Replace with your project ID
+billing_account = "your-billing-account" # Replace with your billing account

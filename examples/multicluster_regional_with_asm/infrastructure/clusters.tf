@@ -17,46 +17,46 @@
 # create the clusters
 # https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/latest/submodules/private-cluster
 module "gke-cluster3" {
-  source                      = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
-  version                     = "12.3.0"
-  project_id                  = var.project_id
-  name                        = "cluster3"
-  region                      = var.region
-  regional                    = true
-  release_channel             = "REGULAR"
-  network                     = google_compute_network.asm-vpc-3.name
-  subnetwork                  = google_compute_subnetwork.cluster3.name
-  remove_default_node_pool    = true
-  identity_namespace          = "${var.project_id}.svc.id.goog"
-  ip_range_pods               = google_compute_subnetwork.cluster3.secondary_ip_range.0.range_name
-  ip_range_services           = google_compute_subnetwork.cluster3.secondary_ip_range.1.range_name
-  http_load_balancing         = false
-  network_policy              = false
-  enable_private_endpoint     = true
-  enable_private_nodes        = true
-  master_ipv4_cidr_block      = "192.168.2.0/28"
-  master_authorized_networks  = [
-      {
-        cidr_block   = local.bastion_cidr
-        display_name = "bastion-admin"
-      },
-      {
-        cidr_block   = "10.185.192.0/18"
-        display_name = "Cluster4 pods"
-      },
-    ]
+  source                   = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
+  version                  = "12.3.0"
+  project_id               = var.project_id
+  name                     = "cluster3"
+  region                   = var.region
+  regional                 = true
+  release_channel          = "REGULAR"
+  network                  = google_compute_network.asm-vpc-3.name
+  subnetwork               = google_compute_subnetwork.cluster3.name
+  remove_default_node_pool = true
+  identity_namespace       = "${var.project_id}.svc.id.goog"
+  ip_range_pods            = google_compute_subnetwork.cluster3.secondary_ip_range.0.range_name
+  ip_range_services        = google_compute_subnetwork.cluster3.secondary_ip_range.1.range_name
+  http_load_balancing      = false
+  network_policy           = false
+  enable_private_endpoint  = true
+  enable_private_nodes     = true
+  master_ipv4_cidr_block   = "192.168.2.0/28"
+  master_authorized_networks = [
+    {
+      cidr_block   = local.bastion_cidr
+      display_name = "bastion-admin"
+    },
+    {
+      cidr_block   = "10.185.192.0/18"
+      display_name = "Cluster4 pods"
+    },
+  ]
   cluster_resource_labels = { "mesh_id" : local.mesh_id }
-  node_metadata = "GKE_METADATA_SERVER"
+  node_metadata           = "GKE_METADATA_SERVER"
   node_pools = [
     {
-      name          = "cluster3-node-pool"
-      autoscaling   = true
-      min_count     = 1
-      max_count     = 5
-      auto_repair   = true
-      auto_upgrade  = true
-      machine_type  = "e2-standard-4"
-      preemptible   = false
+      name         = "cluster3-node-pool"
+      autoscaling  = true
+      min_count    = 1
+      max_count    = 5
+      auto_repair  = true
+      auto_upgrade = true
+      machine_type = "e2-standard-4"
+      preemptible  = false
     },
   ]
   node_pools_oauth_scopes = {
@@ -80,25 +80,25 @@ module "gke-cluster3" {
 }
 
 module "gke-cluster4" {
-  source                      = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
-  version                     = "12.3.0"
-  project_id                  = var.project_id
-  name                        = "cluster4"
-  region                      = var.region
-  regional                    = true
-  release_channel             = "REGULAR"
-  network                     = google_compute_network.asm-vpc-3.name
-  subnetwork                  = google_compute_subnetwork.cluster4.name
-  remove_default_node_pool    = true
-  identity_namespace          = "${var.project_id}.svc.id.goog"
-  ip_range_pods               = google_compute_subnetwork.cluster4.secondary_ip_range.0.range_name
-  ip_range_services           = google_compute_subnetwork.cluster4.secondary_ip_range.1.range_name
-  http_load_balancing         = false
-  network_policy              = false
-  enable_private_endpoint     = true
-  enable_private_nodes        = true
-  master_ipv4_cidr_block      = "192.168.3.0/28"
-  master_authorized_networks  = [
+  source                   = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
+  version                  = "12.3.0"
+  project_id               = var.project_id
+  name                     = "cluster4"
+  region                   = var.region
+  regional                 = true
+  release_channel          = "REGULAR"
+  network                  = google_compute_network.asm-vpc-3.name
+  subnetwork               = google_compute_subnetwork.cluster4.name
+  remove_default_node_pool = true
+  identity_namespace       = "${var.project_id}.svc.id.goog"
+  ip_range_pods            = google_compute_subnetwork.cluster4.secondary_ip_range.0.range_name
+  ip_range_services        = google_compute_subnetwork.cluster4.secondary_ip_range.1.range_name
+  http_load_balancing      = false
+  network_policy           = false
+  enable_private_endpoint  = true
+  enable_private_nodes     = true
+  master_ipv4_cidr_block   = "192.168.3.0/28"
+  master_authorized_networks = [
     {
       cidr_block   = local.bastion_cidr
       display_name = "bastion-admin"
@@ -109,17 +109,17 @@ module "gke-cluster4" {
     },
   ]
   cluster_resource_labels = { "mesh_id" : local.mesh_id }
-  node_metadata = "GKE_METADATA_SERVER"
+  node_metadata           = "GKE_METADATA_SERVER"
   node_pools = [
     {
-      name          = "cluster4-node-pool"
-      autoscaling   = true
-      min_count     = 1
-      max_count     = 5
-      auto_repair   = true
-      auto_upgrade  = true
-      machine_type  = "e2-standard-4"
-      preemptible   = false
+      name         = "cluster4-node-pool"
+      autoscaling  = true
+      min_count    = 1
+      max_count    = 5
+      auto_repair  = true
+      auto_upgrade = true
+      machine_type = "e2-standard-4"
+      preemptible  = false
     },
   ]
   node_pools_oauth_scopes = {
@@ -136,6 +136,6 @@ module "gke-cluster4" {
     ]
   }
   node_pools_tags = {
-    all = ["cluster4",]
+    all = ["cluster4", ]
   }
 }

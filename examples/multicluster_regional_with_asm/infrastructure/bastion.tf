@@ -15,10 +15,10 @@
  */
 
 resource "google_compute_instance" "bastion-instance" {
-  project       = var.project_id
-  name          = "bastion-instance"
-  machine_type  = "n1-standard-2"
-  zone          = "us-west2-a"
+  project      = var.project_id
+  name         = "bastion-instance"
+  machine_type = "n1-standard-2"
+  zone         = "us-west2-a"
 
   tags = ["bastion"]
 
@@ -41,6 +41,6 @@ resource "google_compute_instance" "bastion-instance" {
   service_account {
     # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
     email  = data.google_compute_default_service_account.default.email
-    scopes  = ["cloud-platform"]
+    scopes = ["cloud-platform"]
   }
 }
