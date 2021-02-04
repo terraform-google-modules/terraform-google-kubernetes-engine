@@ -523,13 +523,13 @@ variable "enable_binary_authorization" {
 
 variable "add_cluster_firewall_rules" {
   type        = bool
-  description = "Create GKE shadow firewall rules by creating the same firewall rules as Google-managed ones with higher priority and firewall logs enabled."
+  description = "Create additional firewall rules"
   default     = false
 }
 
 variable "firewall_priority" {
   type        = number
-  description = "The firewall priority of GKE shadow firewall rules. The priority should be less than 1000, which is the priority of Google-managed GKE firewall."
+  description = "Priority rule for firewall rules"
   default     = 1000
 }
 
@@ -547,13 +547,13 @@ variable "gcloud_upgrade" {
 
 variable "add_shadow_firewall_rules" {
   type        = bool
-  description = "Create shadow firewall rules to match the GKE managed ingress firewall rules."
+  description = "Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled)."
   default     = false
 }
 
 variable "shadow_firewall_rules_priority" {
   type        = number
-  description = "Priority for the shadow ingress firewall rules."
+  description = "The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000."
   default     = 999
 }
 

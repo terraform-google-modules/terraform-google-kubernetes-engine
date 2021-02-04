@@ -92,7 +92,7 @@ resource "google_compute_firewall" "shadow_allow_pods" {
   count = var.add_shadow_firewall_rules ? 1 : 0
 
   name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-all"
-  description = "Managed by terraform gke module: A shadow firewall rule to match the fireall allow pod communication."
+  description = "Managed by terraform gke module: A shadow firewall rule to match the default rule allowing pod communication."
   project     = local.network_project_id
   network     = var.network
   priority    = var.shadow_firewall_rules_priority
@@ -118,7 +118,7 @@ resource "google_compute_firewall" "shadow_allow_master" {
   count = var.add_shadow_firewall_rules ? 1 : 0
 
   name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-master"
-  description = "Managed by terraform gke module: A shadow firewall rule to match the fireall allow master and woker nodes communication."
+  description = "Managed by terraform gke module: A shadow firewall rule to match the default rule allowing woker nodes communication."
   project     = local.network_project_id
   network     = var.network
   priority    = var.shadow_firewall_rules_priority
@@ -141,7 +141,7 @@ resource "google_compute_firewall" "shadow_allow_nodes" {
   count = var.add_shadow_firewall_rules ? 1 : 0
 
   name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-vms"
-  description = "Managed by terraform gke module: A shadow firewall rule to match the fireall allow woker nodes communication."
+  description = "Managed by terraform gke module: A shadow firewall rule to match the default rule allowing woker nodes communication."
   project     = local.network_project_id
   network     = var.network
   priority    = var.shadow_firewall_rules_priority
