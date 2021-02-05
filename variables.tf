@@ -304,6 +304,12 @@ variable "create_service_account" {
   default     = true
 }
 
+variable "grant_logging_access" {
+  type        = bool
+  description = "Grants created cluster-specific service account logging.logWriter, monitoring.metricWriter, monitoring.viewer, and stackdriver.resourceMetadata.writer roles."
+  default     = true
+}
+
 variable "grant_registry_access" {
   type        = bool
   description = "Grants created cluster-specific service account storage.objectViewer role."
