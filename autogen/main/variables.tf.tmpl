@@ -358,10 +358,10 @@ variable "grant_registry_access" {
   default     = false
 }
 
-variable "registry_project_id" {
-  type        = string
-  description = "Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project."
-  default     = ""
+variable "registry_project_ids" {
+  type        = list(string)
+  description = "Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` role is assigned on these projects."
+  default     = []
 }
 
 variable "service_account" {
