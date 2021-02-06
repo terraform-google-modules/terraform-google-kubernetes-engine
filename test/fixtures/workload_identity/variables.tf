@@ -35,7 +35,7 @@ variable "compute_engine_service_accounts" {
   description = "The email addresses of the service account to associate with the GKE cluster"
 }
 
-variable "registry_project_id" {
-  description = "Project to use for granting access to the GCR registry, if requested"
-  default     = ""
+variable "registry_project_ids" {
+  type        = list(string)
+  description = "Projects to use for granting access to GCR registries, if requested"
 }
