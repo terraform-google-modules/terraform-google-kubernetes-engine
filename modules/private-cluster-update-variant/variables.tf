@@ -312,7 +312,7 @@ variable "grant_registry_access" {
 
 variable "registry_project_id" {
   type        = string
-  description = "Deprecated. Replaced by `registry_project_ids`. Still works for the purpose of backwards compatibility, but will be removed in a future version."
+  description = "Deprecated. Replaced by `registry_project_ids`. Still works for the purposes of backwards compatibility, but will be removed in a future version."
   default     = ""
 }
 
