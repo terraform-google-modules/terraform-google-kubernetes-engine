@@ -28,8 +28,8 @@ locals {
 
   registry_projects_list = compact(
     length(var.registry_project_ids) == 0 && var.registry_project_id == ""
-      ? [var.project_id]
-      : concat([var.registry_project_id], var.registry_project_ids)
+    ? [var.project_id]
+    : concat([var.registry_project_id], var.registry_project_ids)
   )
 }
 
