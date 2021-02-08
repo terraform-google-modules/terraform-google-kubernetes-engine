@@ -27,7 +27,7 @@ data "google_client_config" "default" {}
 
 provider "kubernetes" {
   load_config_file       = false
-  host                   = module.gke.endpoint
+  host                   = "https://${module.gke.endpoint}"
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.gke.ca_certificate)
 }
@@ -53,14 +53,14 @@ module "gke" {
   grant_registry_access   = true
   registry_project_ids    = var.registry_project_ids
   enable_private_endpoint = true
-  enable_private_nodes    = false
-  master_ipv4_cidr_block  = "172.19.0.0/28"
+  enable_private_nodes    = true
+  master_ipv4_cidr_block  = "172.16.0.0/28"
   node_metadata           = "SECURE"
 
-  #  master_authorized_networks = [
-  #    {
-  #      cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
-  #      display_name = "VPC"
-  #    },
-  #  ]
+  master_authorized_networks = [
+    {
+      cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
+      display_name = "VPC"
+    },
+  ]
 }
