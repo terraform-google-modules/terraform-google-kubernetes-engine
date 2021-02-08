@@ -53,7 +53,8 @@ developers, which mostly just want to deploy and debug applications.
     own projects, so that they can be administered independently (e.g., dev cluster;
     production clusters; staging clusters should go in different projects.)
 
--   *A shared GCR project (`registry_project_ids`):* all clusters can share the same GCR project.
+-   *Shared GCR projects (`registry_project_ids`):* all clusters can share the same
+    GCR projects.
 
     -   Easier to share images between environments. The same image could be
         progressively rolled-out in dev, staging, and then production.

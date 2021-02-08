@@ -26,7 +26,11 @@ locals {
   // if user set var.service_account it will be used even if var.create_service_account==true, so service account will be created but not used
   service_account = (var.service_account == "" || var.service_account == "create") && var.create_service_account ? local.service_account_list[0] : var.service_account
 
-  registry_projects_list = length(var.registry_project_ids) == 0 ? [var.project_id] : var.registry_project_ids
+  registry_projects_list = compact(
+    length(var.registry_project_ids) == 0 && var.registry_project_id == ""
+      ? [var.project_id]
+      : concat([var.registry_project_id], var.registry_project_ids)
+  )
 }
 
 resource "random_string" "cluster_service_account_suffix" {
