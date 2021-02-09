@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-
-terraform {
-  required_version = ">=0.13"
-
-  required_providers {
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 3.49.0, <4.0.0"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 1.10, != 1.11.0"
-    }
-  }
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-public-cluster-update-variant/v13.0.0"
-  }
+module "hub" {
+  source                  = "../../modules/hub"
+  project_id              = var.project_id
+  location                = "remote"
+  cluster_name            = kind_cluster.test-cluster.name
+  cluster_endpoint        = kind_cluster.test-cluster.endpoint
+  gke_hub_membership_name = kind_cluster.test-cluster.name
+  gke_hub_sa_name         = "sa-for-kind-cluster-membership"
+  use_kubeconfig          = true
+  labels                  = "testlabel=usekubecontext"
 }

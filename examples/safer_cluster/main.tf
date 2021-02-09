@@ -27,6 +27,7 @@ locals {
   master_auth_subnetwork = "safer-cluster-master-subnet"
   pods_range_name        = "ip-range-pods-${random_string.suffix.result}"
   svc_range_name         = "ip-range-svc-${random_string.suffix.result}"
+  subnet_names           = [for subnet_self_link in module.gcp-network.subnets_self_links : split("/", subnet_self_link)[length(split("/", subnet_self_link)) - 1]]
 }
 
 provider "google" {
@@ -53,7 +54,7 @@ module "gke" {
   regional                       = true
   region                         = var.region
   network                        = module.gcp-network.network_name
-  subnetwork                     = module.gcp-network.subnets_names[index(module.gcp-network.subnets_names, local.subnet_name)]
+  subnetwork                     = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
   ip_range_pods                  = local.pods_range_name
   ip_range_services              = local.svc_range_name
   compute_engine_service_account = var.compute_engine_service_account

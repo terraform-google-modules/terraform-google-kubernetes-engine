@@ -14,21 +14,32 @@
  * limitations under the License.
  */
 
-
 terraform {
-  required_version = ">=0.13"
-
   required_providers {
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 3.49.0, <4.0.0"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 1.10, != 1.11.0"
+    kind = {
+      source  = "kyma-incubator/kind"
+      version = "0.0.6"
     }
   }
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-public-cluster-update-variant/v13.0.0"
+}
+provider "kind" {}
+
+# creating a cluster with kind of the name "test-cluster" with kubernetes version v1.18.4 and two nodes
+resource "kind_cluster" "test-cluster" {
+  name           = "test-cluster"
+  node_image     = "kindest/node:v1.18.4"
+  wait_for_ready = true
+  kind_config {
+    kind        = "Cluster"
+    api_version = "kind.x-k8s.io/v1alpha4"
+    node {
+      role = "control-plane"
+    }
+    node {
+      role = "worker"
+    }
+  }
+  provisioner "local-exec" {
+    command = "kubectl config set-context kind-test-cluster"
   }
 }

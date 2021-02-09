@@ -69,6 +69,7 @@ module "my-app-workload-identity" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| annotate\_k8s\_sa | Annotate the kubernetes service account with 'iam.gke.io/gcp-service-account' annotation. Valid in cases when an existing SA is used. | `bool` | `true` | no |
 | automount\_service\_account\_token | Enable automatic mounting of the service account token | `bool` | `false` | no |
 | cluster\_name | Cluster name. Required if using existing KSA. | `string` | `""` | no |
 | k8s\_sa\_name | Name for the existing Kubernetes service account | `string` | `null` | no |

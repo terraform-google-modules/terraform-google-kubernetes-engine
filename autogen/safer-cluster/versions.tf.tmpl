@@ -16,6 +16,13 @@
 
 {{ autogeneration_note }}
 
+{% set module_path_str =  module_path|string %}
+{% set module_registry_name = module_path_str.split('/')[-1] %}
+
 terraform {
-  required_version = ">=0.12"
+  required_version = ">=0.13"
+
+  provider_meta "google-beta" {
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v13.0.0"
+  }
 }

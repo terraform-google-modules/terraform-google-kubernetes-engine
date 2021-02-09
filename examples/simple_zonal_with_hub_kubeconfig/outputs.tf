@@ -14,21 +14,7 @@
  * limitations under the License.
  */
 
-
-terraform {
-  required_version = ">=0.13"
-
-  required_providers {
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 3.49.0, <4.0.0"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 1.10, != 1.11.0"
-    }
-  }
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-public-cluster-update-variant/v13.0.0"
-  }
+output "kubernetes_endpoint" {
+  value       = kind_cluster.test-cluster.endpoint
+  description = "Kube API endpoint for the kind cluster"
 }
