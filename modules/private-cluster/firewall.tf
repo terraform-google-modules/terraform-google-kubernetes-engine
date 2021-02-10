@@ -112,7 +112,7 @@ resource "google_compute_firewall" "shadow_allow_master" {
   count = var.add_shadow_firewall_rules ? 1 : 0
 
   name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-master"
-  description = "Managed by terraform gke module: A shadow firewall rule to match the default rule allowing woker nodes communication."
+  description = "Managed by terraform GKE module: A shadow firewall rule to match the default rule allowing worker nodes communication."
   project     = local.network_project_id
   network     = var.network
   priority    = var.shadow_firewall_rules_priority
@@ -135,7 +135,7 @@ resource "google_compute_firewall" "shadow_allow_nodes" {
   count = var.add_shadow_firewall_rules ? 1 : 0
 
   name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-vms"
-  description = "Managed by terraform gke module: A shadow firewall rule to match the default rule allowing woker nodes communication."
+  description = "Managed by Terraform GKE module: A shadow firewall rule to match the default rule allowing worker nodes communication."
   project     = local.network_project_id
   network     = var.network
   priority    = var.shadow_firewall_rules_priority
