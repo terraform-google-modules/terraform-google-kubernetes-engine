@@ -74,7 +74,19 @@ fi
 PROJECT_ID=$1
 CLUSTER_NAME=$2
 CLUSTER_LOCATION=$3
+USE_EXISTING_CONTEXT=$4
 
 # Gatekeeper causes issues if not ready
-is_deployment_ready gke_"${PROJECT_ID}"_"${CLUSTER_LOCATION}"_"${CLUSTER_NAME}" gatekeeper-system gatekeeper-controller-manager
-is_service_ready gke_"${PROJECT_ID}"_"${CLUSTER_LOCATION}"_"${CLUSTER_NAME}" gatekeeper-system gatekeeper-webhook-service
+
+# Check if we need to use the current context
+if [ -z ${USE_EXISTING_CONTEXT+x} ]; then
+    # GKE Cluster. Use the GKE cluster context
+    is_deployment_ready gke_"${PROJECT_ID}"_"${CLUSTER_LOCATION}"_"${CLUSTER_NAME}" gatekeeper-system gatekeeper-controller-manager
+    is_service_ready gke_"${PROJECT_ID}"_"${CLUSTER_LOCATION}"_"${CLUSTER_NAME}" gatekeeper-system gatekeeper-webhook-service
+else
+    echo "USE_EXISTING_CONTEXT variable is set. Using current context to wait for deployment to be ready."
+    # Get the current context. This can be used for non GKE Clusters
+    CURRENT_CONTEXT=$(kubectl config current-context)
+    is_deployment_ready "${CURRENT_CONTEXT}" gatekeeper-system gatekeeper-controller-manager
+    is_service_ready "${CURRENT_CONTEXT}" gatekeeper-system gatekeeper-webhook-service
+fi

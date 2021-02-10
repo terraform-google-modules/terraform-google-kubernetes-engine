@@ -242,6 +242,18 @@ resource "random_id" "name" {
       )
     },
     {
+      taints = join(",",
+        sort(
+          flatten(
+            concat(
+              [for all_taints in local.node_pools_taints["all"] : "all/${all_taints.key}/${all_taints.value}/${all_taints.effect}"],
+              [for each_pool_taint in local.node_pools_taints[each.value["name"]] : "${each.value["name"]}/${each_pool_taint.key}/${each_pool_taint.value}/${each_pool_taint.effect}"],
+            )
+          )
+        )
+      )
+    },
+    {
       metadata = join(",",
         sort(
           concat(
@@ -406,19 +418,3 @@ resource "google_container_node_pool" "pools" {
   }
 }
 
-module "gcloud_wait_for_cluster" {
-  source  = "terraform-google-modules/gcloud/google"
-  version = "~> 2.0.2"
-  enabled = ! var.skip_provisioners
-  upgrade = var.gcloud_upgrade
-
-  create_cmd_entrypoint  = "${path.module}/scripts/wait-for-cluster.sh"
-  create_cmd_body        = "${var.project_id} ${var.name} ${local.location} ${var.impersonate_service_account}"
-  destroy_cmd_entrypoint = "${path.module}/scripts/wait-for-cluster.sh"
-  destroy_cmd_body       = "${var.project_id} ${var.name} ${local.location} ${var.impersonate_service_account}"
-
-  module_depends_on = concat(
-    [google_container_cluster.primary.master_version],
-    [for pool in google_container_node_pool.pools : pool.name]
-  )
-}

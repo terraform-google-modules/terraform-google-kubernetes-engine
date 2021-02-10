@@ -23,7 +23,7 @@ locals {
       ["dummy"],
     ),
   )
-  // if user set var.service_accont it will be used even if var.create_service_account==true, so service account will be created but not used
+  // if user set var.service_account it will be used even if var.create_service_account==true, so service account will be created but not used
   service_account = (var.service_account == "" || var.service_account == "create") && var.create_service_account ? local.service_account_list[0] : var.service_account
 }
 

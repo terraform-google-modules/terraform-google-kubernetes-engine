@@ -14,14 +14,39 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">=0.12.6"
+{% set module_path_str =  module_path|string %}
+{% set module_registry_name = module_path_str.split('/')[-1] %}
 
-  required_providers {
+terraform {
+  required_version = ">=0.13"
+
 {% if beta_cluster %}
-    google-beta = ">= 3.42.0, <4.0.0"
-{% else %}
-    google = ">= 3.39.0, <4.0.0"
-{% endif %}
+  required_providers {
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = ">= 3.49.0, <4.0.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 1.10, != 1.11.0"
+    }
   }
+  provider_meta "google-beta" {
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v13.0.0"
+  }
+{% else %}
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.39.0, <4.0.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 1.10, != 1.11.0"
+    }
+  }
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v13.0.0"
+  }
+{% endif %}
 }

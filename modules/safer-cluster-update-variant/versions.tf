@@ -16,6 +16,11 @@
 
 // This file was automatically generated from a template in ./autogen/safer-cluster
 
+
 terraform {
-  required_version = ">=0.12"
+  required_version = ">=0.13"
+
+  provider_meta "google-beta" {
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:safer-cluster-update-variant/v13.0.0"
+  }
 }
