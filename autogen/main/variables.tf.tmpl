@@ -541,7 +541,7 @@ variable "identity_namespace" {
 
 variable "release_channel" {
   type        = string
-  description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
+  description = "The release channel of this cluster. Accepted values are null, `\"RAPID\"`, `\"REGULAR\"` and `\"STABLE\"`. Defaults to `null`."
   default     = null
 }
 
