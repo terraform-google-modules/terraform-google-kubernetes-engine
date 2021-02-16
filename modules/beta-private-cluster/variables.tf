@@ -562,6 +562,18 @@ variable "gcloud_upgrade" {
   default     = false
 }
 
+variable "add_shadow_firewall_rules" {
+  type        = bool
+  description = "Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled)."
+  default     = false
+}
+
+variable "shadow_firewall_rules_priority" {
+  type        = number
+  description = "The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000."
+  default     = 999
+}
+
 variable "disable_default_snat" {
   type        = bool
   description = "Whether to disable the default SNAT to support the private use of public IP addresses"
