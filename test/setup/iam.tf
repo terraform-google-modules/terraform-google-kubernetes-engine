@@ -35,6 +35,7 @@ locals {
     "roles/iap.admin",
     "roles/gkehub.admin",
   ]
+
   # roles as documented https://cloud.google.com/service-mesh/docs/installation-permissions
   int_asm_required_roles = [
     "roles/editor",
@@ -45,8 +46,8 @@ locals {
     "roles/serviceusage.serviceUsageAdmin",
     "roles/iam.serviceAccountAdmin",
     "roles/iam.serviceAccountKeyAdmin",
-    "roles/gkehub.admin",
     "roles/meshconfig.admin",
+    "roles/gkehub.admin",
     "roles/privateca.admin",
   ]
 }

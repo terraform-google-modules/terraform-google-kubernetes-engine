@@ -25,19 +25,10 @@ CLUSTER_NAME=$2
 CLUSTER_LOCATION=$3
 ASM_VERSION=$4
 MODE="install"
-BASE_DIR="asm-base-dir"
-
-if [[ -d "${BASE_DIR}" ]]; then
-    echo "working directory exists. Skipping creating it"
-else
-    echo "creating working directory ${BASE_DIR}"
-  # make working directory
-  mkdir -p "${BASE_DIR}"
-fi
 
 #download the correct version of the install_asm script
 curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_VERSION}" > install_asm
 chmod u+x install_asm
 
 #run the script with appropriate flags
-./install_asm --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} --output_dir ${BASE_DIR} --enable_cluster_labels --enable_cluster_roles
+./install_asm --verbose --project_id "${PROJECT_ID}" --cluster_name "${CLUSTER_NAME}" --cluster_location "${CLUSTER_LOCATION}" --mode "${MODE}" --enable_cluster_labels --enable_cluster_roles

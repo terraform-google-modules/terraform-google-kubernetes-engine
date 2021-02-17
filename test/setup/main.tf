@@ -100,7 +100,7 @@ module "gke-project-asm" {
     "meshca.googleapis.com",
     "iamcredentials.googleapis.com",
     "gkeconnect.googleapis.com",
-    "gkehub.googleapis.com",
     "privateca.googleapis.com",
+    "gkehub.googleapis.com",
   ]
 }
