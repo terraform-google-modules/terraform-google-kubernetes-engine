@@ -2,7 +2,8 @@
 
 This module installs [Anthos Service Mesh](https://cloud.google.com/service-mesh/docs) (ASM) in a Kubernetes cluster.
 
-Specifically, this module automates installing the ASM Istio Operator on your cluster ([installing ASM](https://cloud.google.com/service-mesh/docs/install))
+Specifically, this module automates installing the ASM Istio Operator on your cluster ([installing ASM](https://cloud.google.com/service-mesh/docs/install)). Calls the asm_install script from https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages/tree/master/scripts/asm-installer
+
 
 ## Usage
 
@@ -38,7 +39,8 @@ To deploy this config:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | asm\_dir | Name of directory to keep ASM resource config files. | `string` | `"asm-dir"` | no |
-| asm\_version | ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"release-1.6-asm"` | no |
+| asm\_install\_mode | Installation mode. Allowed values for are {install\|migrate}. Upgrade is not supported yet. | `string` | `"install"` | no |
+| asm\_version | ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages. Only Major.minor versions are supported i.e. 1.7, 1.8 etc. | `string` | `"1.8"` | no |
 | cluster\_endpoint | The GKE cluster endpoint. | `string` | n/a | yes |
 | cluster\_name | The unique name to identify the cluster in ASM. | `string` | n/a | yes |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |

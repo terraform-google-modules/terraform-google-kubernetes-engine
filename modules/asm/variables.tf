@@ -47,13 +47,18 @@ variable "asm_dir" {
 }
 
 variable "asm_version" {
-  description = "ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  description = "ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages. Only Major.minor versions are supported i.e. 1.7, 1.8 etc."
   type        = string
-  default     = "release-1.6-asm"
+  default     = "1.8"
+}
+
+variable "asm_install_mode" {
+  description = "Installation mode. Allowed values for are {install|migrate}. Upgrade is not supported yet."
+  type        = string
+  default     = "install"
 }
 
 variable "service_account_key_file" {
   description = "Path to service account key file to auth as for running `gcloud container clusters get-credentials`."
   default     = ""
 }
-
