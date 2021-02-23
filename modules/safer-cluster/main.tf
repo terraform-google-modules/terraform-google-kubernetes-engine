@@ -97,6 +97,7 @@ module "gke" {
   create_service_account = var.compute_engine_service_account == "" ? true : false
   service_account        = var.compute_engine_service_account
   registry_project_id    = var.registry_project_id
+  registry_project_ids   = var.registry_project_ids
   grant_registry_access  = var.grant_registry_access
 
   // Basic Auth disabled
