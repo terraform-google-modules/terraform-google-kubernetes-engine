@@ -33,6 +33,6 @@ module "asm_install" {
   service_account_key_file = var.service_account_key_file
 
 
-  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_dir} ${var.asm_version} ${data.google_project.asm_project.number}"
+  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version}"
   kubectl_destroy_command = "kubectl delete ns istio-system"
 }
