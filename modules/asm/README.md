@@ -38,7 +38,7 @@ To deploy this config:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | asm\_dir | Name of directory to keep ASM resource config files. | `string` | `"asm-dir"` | no |
-| asm\_version | ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"release-1.6-asm"` | no |
+| asm\_version | ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"1.8"` | no |
 | cluster\_endpoint | The GKE cluster endpoint. | `string` | n/a | yes |
 | cluster\_name | The unique name to identify the cluster in ASM. | `string` | n/a | yes |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |

@@ -12,6 +12,6 @@ attributes:
   - name: service_account
     required: true
     type: string
-  - name: registry_project_id
+  - name: registry_project_ids
     required: false
-    type: string
+    type: array
