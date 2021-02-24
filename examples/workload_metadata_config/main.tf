@@ -51,7 +51,7 @@ module "gke" {
   ip_range_services       = var.ip_range_services
   create_service_account  = true
   grant_registry_access   = true
-  registry_project_id     = var.registry_project_id
+  registry_project_ids    = var.registry_project_ids
   enable_private_endpoint = true
   enable_private_nodes    = true
   master_ipv4_cidr_block  = "172.16.0.0/28"
