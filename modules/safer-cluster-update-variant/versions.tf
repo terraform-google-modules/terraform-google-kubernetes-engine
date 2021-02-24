@@ -17,10 +17,14 @@
 // This file was automatically generated from a template in ./autogen/safer-cluster
 
 
+locals {
+  blueprint_name = join("/", compact([var._parent_module, "terraform-google-kubernetes-engine:safer-cluster-update-variant/v13.0.0"]))
+}
+
 terraform {
   required_version = ">=0.13"
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:safer-cluster-update-variant/v13.0.0"
+    module_name = "blueprints/terraform/${local.blueprint_name}"
   }
 }

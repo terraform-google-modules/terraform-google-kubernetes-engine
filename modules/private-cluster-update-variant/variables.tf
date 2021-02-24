@@ -474,3 +474,9 @@ variable "impersonate_service_account" {
   default     = ""
 }
 
+
+variable "_parent_module" {
+  type        = string
+  description = "(Internal) Parent module which should be referenced in API calls."
+  default     = ""
+}

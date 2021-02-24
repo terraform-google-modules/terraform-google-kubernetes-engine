@@ -48,19 +48,18 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                         = "../../modules/safer-cluster/"
-  project_id                     = var.project_id
-  name                           = "${local.cluster_type}-cluster-${random_string.suffix.result}"
-  regional                       = true
-  region                         = var.region
-  network                        = module.gcp-network.network_name
-  subnetwork                     = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
-  ip_range_pods                  = local.pods_range_name
-  ip_range_services              = local.svc_range_name
-  compute_engine_service_account = var.compute_engine_service_account
-  master_ipv4_cidr_block         = "172.16.0.0/28"
-  add_cluster_firewall_rules     = true
-  firewall_inbound_ports         = ["9443", "15017"]
+  source                     = "../../modules/safer-cluster/"
+  project_id                 = var.project_id
+  name                       = "${local.cluster_type}-cluster-${random_string.suffix.result}"
+  regional                   = true
+  region                     = var.region
+  network                    = module.gcp-network.network_name
+  subnetwork                 = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
+  ip_range_pods              = local.pods_range_name
+  ip_range_services          = local.svc_range_name
+  master_ipv4_cidr_block     = "172.16.0.0/28"
+  add_cluster_firewall_rules = true
+  firewall_inbound_ports     = ["9443", "15017"]
 
   master_authorized_networks = [
     {
