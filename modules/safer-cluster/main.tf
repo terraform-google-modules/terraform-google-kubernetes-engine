@@ -96,7 +96,6 @@ module "gke" {
   //   wants to maintain control of their service accounts.
   create_service_account = var.compute_engine_service_account == "" ? true : false
   service_account        = var.compute_engine_service_account
-  registry_project_id    = var.registry_project_id
   registry_project_ids   = var.registry_project_ids
   grant_registry_access  = var.grant_registry_access
 
@@ -165,4 +164,6 @@ module "gke" {
   gce_pd_csi_driver = var.gce_pd_csi_driver
 
   notification_config_topic = var.notification_config_topic
+
+  _parent_module = local.blueprint_name
 }

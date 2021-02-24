@@ -346,12 +346,6 @@ variable "grant_registry_access" {
   default     = false
 }
 
-variable "registry_project_id" {
-  type        = string
-  description = "Deprecated. Replaced by `registry_project_ids`. Still works for the purposes of backwards compatibility, but will be removed in a future version."
-  default     = ""
-}
-
 variable "registry_project_ids" {
   type        = list(string)
   description = "Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` role is assigned on these projects."
@@ -602,4 +596,10 @@ variable "enable_tpu" {
   type        = bool
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
   default     = false
+}
+
+variable "_parent_module" {
+  type        = string
+  description = "(Internal) Parent module which should be referenced in API calls."
+  default     = ""
 }
