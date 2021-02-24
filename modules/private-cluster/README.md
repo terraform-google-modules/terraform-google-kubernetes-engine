@@ -129,6 +129,7 @@ Then perform the following commands on the root folder:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| \_parent\_module | (Internal) Parent module which should be referenced in API calls. | `string` | `""` | no |
 | add\_cluster\_firewall\_rules | Create additional firewall rules | `bool` | `false` | no |
 | add\_shadow\_firewall\_rules | Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled). | `bool` | `false` | no |
 | basic\_auth\_password | The password to be used with Basic Authentication. | `string` | `""` | no |

@@ -603,3 +603,9 @@ variable "enable_tpu" {
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
   default     = false
 }
+
+variable "_parent_module" {
+  type        = string
+  description = "(Internal) Parent module which should be referenced in API calls."
+  default     = ""
+}
