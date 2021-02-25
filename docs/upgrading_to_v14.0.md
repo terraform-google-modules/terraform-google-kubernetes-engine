@@ -21,9 +21,13 @@ The `registry_project_id` variable has been replaced with a `registry_project_id
 The `network_policy` variable is now `false` by default (instead of `true`). 
 If you want to keep using the network policy addon for your cluster, make 
 sure that the `network_policy` variable is set to `true`:
-```
+```diff
 module "gke" {
-   network_policy = true
+   source                  = "terraform-google-modules/kubernetes-engine/google"
+-  version                 = "~> 13.0"
++  version                 = "~> 14.0"
+
++  network_policy = true
 }
 ```
 
