@@ -1,7 +1,21 @@
 # Upgrading to v14.0
 
 The v14.0 release of *kubernetes-engine* is a backwards incompatible
-release for some versions of Anthos Service Mesh (ASM).
+release for some versions of Anthos Service Mesh (ASM) and includes some variable changes.
+
+### registry_project_id removed
+The `registry_project_id` variable has been replaced with a `registry_project_ids` list.
+
+```diff
+ module "gke" {
+   source                  = "terraform-google-modules/kubernetes-engine/google"
+-  version                 = "~> 13.0"
++  version                 = "~> 14.0"
+
+-  registry_project_id  = "my-project-id"
++  registry_project_ids = ["my-project-id"]
+}
+```
 
 ### ASM default version changed to 1.8
 
