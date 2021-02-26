@@ -18,8 +18,8 @@ The `registry_project_id` variable has been replaced with a `registry_project_id
 ```
 
 ### network_policy disabled by default
-The `network_policy` variable is now `false` by default (instead of `true`). 
-If you want to keep using the network policy addon for your cluster, make 
+The `network_policy` variable is now `false` by default (instead of `true`).
+If you want to keep using the network policy addon for your cluster, make
 sure that the `network_policy` variable is set to `true`:
 ```diff
 module "gke" {
