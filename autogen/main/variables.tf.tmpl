@@ -99,7 +99,7 @@ variable "http_load_balancing" {
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
-  default     = true
+  default     = false
 }
 
 variable "network_policy_provider" {

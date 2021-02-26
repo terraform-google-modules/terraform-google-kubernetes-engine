@@ -17,6 +17,20 @@ The `registry_project_id` variable has been replaced with a `registry_project_id
 }
 ```
 
+### network_policy disabled by default
+The `network_policy` variable is now `false` by default (instead of `true`).
+If you want to keep using the network policy addon for your cluster, make
+sure that the `network_policy` variable is set to `true`:
+```diff
+module "gke" {
+   source                  = "terraform-google-modules/kubernetes-engine/google"
+-  version                 = "~> 13.0"
++  version                 = "~> 14.0"
+
++  network_policy = true
+}
+```
+
 ### ASM default version changed to 1.8
 
 [ASM submodule](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/modules/asm) has been changed to use ASM v1.8 as default.
