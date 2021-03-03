@@ -15,5 +15,10 @@
  */
 
 variable "project_id" {
-  description = "The project ID (environ) to register the cluster in"
+  description = "The project ID to host the cluster in"
+}
+
+variable "hub_project_id" {
+  description = "The project in which the GKE Hub belongs."
+  default     = ""
 }

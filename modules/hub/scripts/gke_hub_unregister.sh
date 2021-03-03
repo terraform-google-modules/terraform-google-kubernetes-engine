@@ -15,7 +15,7 @@
 
 set -e
 
-if [ "$#" -lt 5 ]; then
+if [ "$#" -lt 6 ]; then
     >&2 echo "Not all expected arguments set."
     exit 1
 fi
@@ -25,15 +25,17 @@ MEMBERSHIP_NAME=$2
 CLUSTER_LOCATION=$3
 CLUSTER_NAME=$4
 PROJECT_ID=$5
+HUB_PROJECT_ID=$6
 
 
 
 if [[ ${GKE_CLUSTER_FLAG} == 1 ]]; then
     echo "Un-Registering GKE Cluster."
-    gcloud container hub memberships unregister "${MEMBERSHIP_NAME}" --gke-cluster="${CLUSTER_LOCATION}"/"${CLUSTER_NAME}" --project "${PROJECT_ID}"
+    CLUSTER_URI="https://container.googleapis.com/projects/${PROJECT_ID}/locations/${CLUSTER_LOCATION}/clusters/${CLUSTER_NAME}"
+    gcloud container hub memberships unregister "${MEMBERSHIP_NAME}" --gke-uri="${CLUSTER_URI}" --project "${HUB_PROJECT_ID}"
 else
     echo "Un-Registering a non-GKE Cluster. Using current-context to unregister Hub membership."
     #Get Current context
     CONTEXT=$(kubectl config current-context)
-    gcloud container hub memberships unregister "${MEMBERSHIP_NAME}" --context="${CONTEXT}" --project="${PROJECT_ID}"
+    gcloud container hub memberships unregister "${MEMBERSHIP_NAME}" --context="${CONTEXT}" --project="${HUB_PROJECT_ID}"
 fi

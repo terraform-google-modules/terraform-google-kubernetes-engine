@@ -15,7 +15,7 @@
 
 set -e
 
-if [ "$#" -lt 5 ]; then
+if [ "$#" -lt 6 ]; then
     >&2 echo "Not all expected arguments set."
     exit 1
 fi
@@ -26,7 +26,8 @@ CLUSTER_LOCATION=$3
 CLUSTER_NAME=$4
 SERVICE_ACCOUNT_KEY=$5
 PROJECT_ID=$6
-LABELS=$7
+HUB_PROJECT_ID=$7
+LABELS=$8
 
 #write temp key, cleanup at exit
 tmp_file=$(mktemp)
@@ -37,12 +38,13 @@ echo "${SERVICE_ACCOUNT_KEY}" | base64 ${B64_ARG} > "$tmp_file"
 
 if [[ ${GKE_CLUSTER_FLAG} == 1 ]]; then
     echo "Registering GKE Cluster."
-    gcloud container hub memberships register "${MEMBERSHIP_NAME}" --gke-cluster="${CLUSTER_LOCATION}"/"${CLUSTER_NAME}" --service-account-key-file="${tmp_file}" --project="${PROJECT_ID}" --quiet
+    CLUSTER_URI="https://container.googleapis.com/projects/${PROJECT_ID}/locations/${CLUSTER_LOCATION}/clusters/${CLUSTER_NAME}"
+    gcloud container hub memberships register "${MEMBERSHIP_NAME}" --gke-uri="${CLUSTER_URI}" --service-account-key-file="${tmp_file}" --project="${HUB_PROJECT_ID}" --quiet
 else
     echo "Registering a non-GKE Cluster. Using current-context to register Hub membership."
     #Get the kubeconfig
     CONTEXT=$(kubectl config current-context)
-    gcloud container hub memberships register "${MEMBERSHIP_NAME}" --context="${CONTEXT}" --service-account-key-file="${tmp_file}" --project="${PROJECT_ID}" --quiet
+    gcloud container hub memberships register "${MEMBERSHIP_NAME}" --context="${CONTEXT}" --service-account-key-file="${tmp_file}" --project="${HUB_PROJECT_ID}" --quiet
 fi
 
 
@@ -50,5 +52,5 @@ fi
 if [ -z ${LABELS+x} ]; then
     echo "No hub labels to apply."
 else
-    gcloud container hub memberships update "${MEMBERSHIP_NAME}" --update-labels "$LABELS" --project="${PROJECT_ID}"
+    gcloud container hub memberships update "${MEMBERSHIP_NAME}" --update-labels "$LABELS" --project="${HUB_PROJECT_ID}"
 fi

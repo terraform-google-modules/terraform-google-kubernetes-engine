@@ -17,6 +17,7 @@
 module "hub" {
   source           = "../../modules/hub"
   project_id       = var.project_id
+  hub_project_id   = var.hub_project_id
   location         = module.gke.location
   cluster_name     = module.gke.name
   cluster_endpoint = module.gke.endpoint
