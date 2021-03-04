@@ -124,12 +124,6 @@ variable "regional" {
   default     = true
 }
 
-variable "network_policy" {
-  type        = bool
-  description = "Enable network policy addon"
-  default     = true
-}
-
 variable "datapath_provider" {
   type        = string
   description = "The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation."

@@ -63,7 +63,6 @@ module "this" {
   enable_pod_security_policy = true
 
   // Dataplane-V2 Feature
-  network_policy    = false
   datapath_provider = "ADVANCED_DATAPATH"
 }
 
