@@ -10,7 +10,6 @@ It incorporates the standard cluster module and the [Hub registration module](..
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
-| hub\_project\_id | The project in which the GKE Hub belongs. | `string` | `""` | no |
 | ip\_range\_pods | The secondary ip range to use for pods | `string` | `""` | no |
 | ip\_range\_services | The secondary ip range to use for services | `string` | `""` | no |
 | network | The VPC network to host the cluster in | `string` | `"default"` | no |

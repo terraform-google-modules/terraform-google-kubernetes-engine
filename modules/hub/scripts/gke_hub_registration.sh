@@ -15,19 +15,17 @@
 
 set -e
 
-if [ "$#" -lt 6 ]; then
+if [ "$#" -lt 5 ]; then
     >&2 echo "Not all expected arguments set."
     exit 1
 fi
 
 GKE_CLUSTER_FLAG=$1
 MEMBERSHIP_NAME=$2
-CLUSTER_LOCATION=$3
-CLUSTER_NAME=$4
-SERVICE_ACCOUNT_KEY=$5
-PROJECT_ID=$6
-HUB_PROJECT_ID=$7
-LABELS=$8
+SERVICE_ACCOUNT_KEY=$3
+CLUSTER_URI=$4
+HUB_PROJECT_ID=$5
+LABELS=$6
 
 #write temp key, cleanup at exit
 tmp_file=$(mktemp)
@@ -38,7 +36,6 @@ echo "${SERVICE_ACCOUNT_KEY}" | base64 ${B64_ARG} > "$tmp_file"
 
 if [[ ${GKE_CLUSTER_FLAG} == 1 ]]; then
     echo "Registering GKE Cluster."
-    CLUSTER_URI="https://container.googleapis.com/projects/${PROJECT_ID}/locations/${CLUSTER_LOCATION}/clusters/${CLUSTER_NAME}"
     gcloud container hub memberships register "${MEMBERSHIP_NAME}" --gke-uri="${CLUSTER_URI}" --service-account-key-file="${tmp_file}" --project="${HUB_PROJECT_ID}" --quiet
 else
     echo "Registering a non-GKE Cluster. Using current-context to register Hub membership."

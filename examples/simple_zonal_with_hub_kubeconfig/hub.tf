@@ -17,7 +17,6 @@
 module "hub" {
   source                  = "../../modules/hub"
   project_id              = var.project_id
-  hub_project_id          = var.hub_project_id
   location                = "remote"
   cluster_name            = kind_cluster.test-cluster.name
   cluster_endpoint        = kind_cluster.test-cluster.endpoint
