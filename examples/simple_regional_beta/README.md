@@ -20,7 +20,6 @@ This example illustrates how to create a simple cluster with beta features.
 | ip\_range\_services | The secondary ip range to use for services | `any` | n/a | yes |
 | istio | Boolean to enable / disable Istio | `bool` | `true` | no |
 | network | The VPC network to host the cluster in | `any` | n/a | yes |
-| network\_policy | Enable network policy addon | `bool` | `true` | no |
 | node\_pools | List of maps containing node pools | `list(map(string))` | <pre>[<br>  {<br>    "name": "default-node-pool"<br>  }<br>]</pre> | no |
 | project\_id | The project ID to host the cluster in | `any` | n/a | yes |
 | region | The region to host the cluster in | `any` | n/a | yes |
