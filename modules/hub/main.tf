@@ -45,17 +45,18 @@ resource "google_project_iam_member" "gke_hub_member" {
   member  = "serviceAccount:${google_service_account.gke_hub_sa[0].email}"
 }
 
-resource "google_project_iam_member" "hub_service_agent_project" {
-  project = var.project_id
-  role    = "roles/gkehub.serviceAgent"
-  member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-gkehub.iam.gserviceaccount.com"
-}
-
 resource "google_project_iam_member" "hub_service_agent_hub" {
   count   = var.hub_project_id == "" ? 0 : 1
   project = var.hub_project_id
   role    = "roles/gkehub.serviceAgent"
   member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-gkehub.iam.gserviceaccount.com"
+}
+
+resource "google_project_service_identity" "sa_gkehub" {
+  count    = var.hub_project_id == "" ? 0 : 1
+  provider = google-beta
+  project  = var.project_id
+  service  = "gkehub.googleapis.com"
 }
 
 resource "google_service_account_key" "gke_hub_key" {
