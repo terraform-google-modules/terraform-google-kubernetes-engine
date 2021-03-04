@@ -27,6 +27,7 @@ locals {
   master_auth_subnetwork = "safer-cluster-master-subnet"
   pods_range_name        = "ip-range-pods-${random_string.suffix.result}"
   svc_range_name         = "ip-range-svc-${random_string.suffix.result}"
+  subnet_names           = [for subnet_self_link in module.gcp-network.subnets_self_links : split("/", subnet_self_link)[length(split("/", subnet_self_link)) - 1]]
 }
 
 provider "google" {
@@ -34,23 +35,31 @@ provider "google" {
 }
 
 provider "google-beta" {
-  version = "~> 3.42.0"
+  version = "~> 3.49.0"
+}
+
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
 }
 
 module "gke" {
-  source                         = "../../modules/safer-cluster/"
-  project_id                     = var.project_id
-  name                           = "${local.cluster_type}-cluster-${random_string.suffix.result}"
-  regional                       = true
-  region                         = var.region
-  network                        = module.gcp-network.network_name
-  subnetwork                     = module.gcp-network.subnets_names[index(module.gcp-network.subnets_names, local.subnet_name)]
-  ip_range_pods                  = local.pods_range_name
-  ip_range_services              = local.svc_range_name
-  compute_engine_service_account = var.compute_engine_service_account
-  master_ipv4_cidr_block         = "172.16.0.0/28"
-  add_cluster_firewall_rules     = true
-  firewall_inbound_ports         = ["9443", "15017"]
+  source                     = "../../modules/safer-cluster/"
+  project_id                 = var.project_id
+  name                       = "${local.cluster_type}-cluster-${random_string.suffix.result}"
+  regional                   = true
+  region                     = var.region
+  network                    = module.gcp-network.network_name
+  subnetwork                 = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
+  ip_range_pods              = local.pods_range_name
+  ip_range_services          = local.svc_range_name
+  master_ipv4_cidr_block     = "172.16.0.0/28"
+  add_cluster_firewall_rules = true
+  firewall_inbound_ports     = ["9443", "15017"]
 
   master_authorized_networks = [
     {
@@ -63,9 +72,6 @@ module "gke" {
   cloudrun = true
 
   notification_config_topic = google_pubsub_topic.updates.id
-}
-
-data "google_client_config" "default" {
 }
 
 resource "google_pubsub_topic" "updates" {

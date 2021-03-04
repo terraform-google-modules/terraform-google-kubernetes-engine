@@ -49,7 +49,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  subnetwork = "projects/${local.network_project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
+  subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
   default_snat_status {
     disabled = var.disable_default_snat
@@ -66,7 +66,15 @@ resource "google_container_cluster" "primary" {
   monitoring_service = local.cluster_telemetry_type_is_set ? null : var.monitoring_service
 
   cluster_autoscaling {
-    enabled             = var.cluster_autoscaling.enabled
+    enabled = var.cluster_autoscaling.enabled
+    dynamic "auto_provisioning_defaults" {
+      for_each = var.cluster_autoscaling.enabled ? [1] : []
+
+      content {
+        service_account = local.service_account
+        oauth_scopes    = local.node_pools_oauth_scopes["all"]
+      }
+    }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
     dynamic "resource_limits" {
       for_each = local.autoscalling_resource_limits
@@ -78,16 +86,17 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  vertical_pod_autoscaling {
+    enabled = var.enable_vertical_pod_autoscaling
+  }
+
   default_max_pods_per_node = var.default_max_pods_per_node
 
   enable_shielded_nodes       = var.enable_shielded_nodes
   enable_binary_authorization = var.enable_binary_authorization
   enable_intranode_visibility = var.enable_intranode_visibility
   enable_kubernetes_alpha     = var.enable_kubernetes_alpha
-
-  vertical_pod_autoscaling {
-    enabled = var.enable_vertical_pod_autoscaling
-  }
+  enable_tpu                  = var.enable_tpu
 
   dynamic "pod_security_policy_config" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
@@ -187,6 +196,16 @@ resource "google_container_cluster" "primary" {
         start_time = var.maintenance_start_time
       }
     }
+
+    dynamic "maintenance_exclusion" {
+      for_each = var.maintenance_exclusions
+      content {
+        exclusion_name = maintenance_exclusion.value.name
+        start_time     = maintenance_exclusion.value.start_time
+        end_time       = maintenance_exclusion.value.end_time
+      }
+    }
+
   }
 
   lifecycle {
@@ -394,6 +413,28 @@ resource "google_container_node_pool" "pools" {
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
+    dynamic "kubelet_config" {
+      for_each = contains(keys(each.value), "cpu_manager_policy") ? [1] : []
+
+      content {
+        cpu_manager_policy = lookup(each.value, "cpu_manager_policy")
+      }
+    }
+
+    dynamic "linux_node_config" {
+      for_each = length(merge(
+        local.node_pools_linux_node_configs_sysctls["all"],
+        local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+      )) != 0 ? [1] : []
+
+      content {
+        sysctls = merge(
+          local.node_pools_linux_node_configs_sysctls["all"],
+          local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+        )
+      }
+    }
+
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
@@ -412,19 +453,3 @@ resource "google_container_node_pool" "pools" {
   }
 }
 
-module "gcloud_wait_for_cluster" {
-  source  = "terraform-google-modules/gcloud/google"
-  version = "~> 2.0.2"
-  enabled = ! var.skip_provisioners
-  upgrade = var.gcloud_upgrade
-
-  create_cmd_entrypoint  = "${path.module}/scripts/wait-for-cluster.sh"
-  create_cmd_body        = "${var.project_id} ${var.name} ${local.location} ${var.impersonate_service_account}"
-  destroy_cmd_entrypoint = "${path.module}/scripts/wait-for-cluster.sh"
-  destroy_cmd_body       = "${var.project_id} ${var.name} ${local.location} ${var.impersonate_service_account}"
-
-  module_depends_on = concat(
-    [google_container_cluster.primary.master_version],
-    [for pool in google_container_node_pool.pools : pool.name]
-  )
-}

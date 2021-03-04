@@ -19,8 +19,17 @@ locals {
 }
 
 provider "google-beta" {
-  version = "~> 3.42.0"
+  version = "~> 3.49.0"
   region  = var.region
+}
+
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
 }
 
 module "gke" {
@@ -55,7 +64,4 @@ module "gke" {
   # Support Dataplane Setup
   network_policy    = var.network_policy
   datapath_provider = var.datapath_provider
-}
-
-data "google_client_config" "default" {
 }

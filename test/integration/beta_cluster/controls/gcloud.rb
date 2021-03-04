@@ -57,7 +57,9 @@ control "gcloud" do
           },
           "kalmConfig" => {},
           "configConnectorConfig" => {},
-          "networkPolicyConfig" => {"disabled"=>true},
+          "networkPolicyConfig" => {
+            "disabled" => true,
+          },
           "istioConfig" => {"auth"=>"AUTH_MUTUAL_TLS"},
           "cloudRunConfig" => including(
               "loadBalancerType" => "LOAD_BALANCER_TYPE_EXTERNAL",

@@ -54,7 +54,6 @@ output "endpoint" {
     */
     google_container_cluster.primary,
     google_container_node_pool.pools,
-    module.gcloud_wait_for_cluster.wait,
   ]
 }
 
@@ -130,4 +129,9 @@ output "identity_namespace" {
   depends_on = [
     google_container_cluster.primary
   ]
+}
+
+output "instance_group_urls" {
+  description = "List of GKE generated instance groups"
+  value       = google_container_cluster.primary.instance_group_urls
 }

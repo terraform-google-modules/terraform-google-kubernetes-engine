@@ -65,6 +65,7 @@ module "gke-project-2" {
     "pubsub.googleapis.com",
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
+    "gkehub.googleapis.com",
   ]
   activate_api_identities = [
     {
@@ -74,7 +75,7 @@ module "gke-project-2" {
   ]
 }
 
-# apis as documented https://cloud.google.com/service-mesh/docs/gke-install-new-cluster#setting_up_your_project
+# apis as documented https://cloud.google.com/service-mesh/docs/scripted-install/reference#setting_up_your_project
 module "gke-project-asm" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 9.1.0"
@@ -93,5 +94,13 @@ module "gke-project-asm" {
     "meshconfig.googleapis.com",
     "anthos.googleapis.com",
     "cloudresourcemanager.googleapis.com",
+    "monitoring.googleapis.com",
+    "stackdriver.googleapis.com",
+    "cloudtrace.googleapis.com",
+    "meshca.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "gkeconnect.googleapis.com",
+    "privateca.googleapis.com",
+    "gkehub.googleapis.com",
   ]
 }
