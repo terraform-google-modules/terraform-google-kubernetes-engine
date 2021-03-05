@@ -60,4 +60,7 @@ module "gke" {
   # Disable workload identity
   identity_namespace = null
   node_metadata      = "UNSPECIFIED"
+
+  # Enable Dataplane Setup
+  datapath_provider = "ADVANCED_DATAPATH"
 }
