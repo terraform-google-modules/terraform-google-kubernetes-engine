@@ -30,10 +30,6 @@ locals {
 data "google_client_config" "default" {
 }
 
-data "google_project" "hub_project" {
-  project_id = local.hub_project
-}
-
 resource "google_service_account" "gke_hub_sa" {
   count        = var.use_existing_sa ? 0 : 1
   account_id   = var.gke_hub_sa_name
