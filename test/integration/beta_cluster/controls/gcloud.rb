@@ -73,6 +73,12 @@ control "gcloud" do
         )
       end
 
+      it "has the expected datapathProvider config" do
+        expect(data['networkConfig']).to include(
+          "datapathProvider" => "ADVANCED_DATAPATH"
+        )
+      end
+
       it "has the expected binaryAuthorization config" do
         expect(data['binaryAuthorization']).to eq({
           "enabled" => true,
