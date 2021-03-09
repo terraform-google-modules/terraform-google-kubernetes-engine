@@ -107,6 +107,11 @@ variable "network_policy_provider" {
   description = "The network policy provider."
   default     = "CALICO"
 }
+variable "datapath_provider" {
+  type        = string
+  description = "The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation."
+  default     = "DATAPATH_PROVIDER_UNSPECIFIED"
+}
 
 variable "maintenance_start_time" {
   type        = string
