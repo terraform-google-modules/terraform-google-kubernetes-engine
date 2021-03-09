@@ -20,7 +20,7 @@
 {% set module_registry_name = module_path_str.split('/')[-1] %}
 
 locals {
-  blueprint_name = join("/", compact([var._parent_module, "terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v13.0.0"]))
+  blueprint_name = join("/", compact([var._parent_module, "terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v14.0.0"]))
 }
 
 terraform {
