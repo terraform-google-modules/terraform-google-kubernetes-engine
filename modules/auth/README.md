@@ -9,15 +9,18 @@ This module retrieves a token for the account configured with the `google`
 provider as the Terraform runner using the provider's `credentials`,
 `access_token`, or other means of authentication.
 
+If you run a [private cluster](https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept), you can set the `use_private_endpoint` property to return the GKE private_endpoint IP address.
+
 ## Usage
 
 ```tf
 module "gke_auth" {
-  source           = "terraform-google-modules/kubernetes-engine/google//modules/auth"
+  source               = "terraform-google-modules/kubernetes-engine/google//modules/auth"
 
-  project_id       = "my-project-id"
-  cluster_name     = "my-cluster-name"
-  location         = module.gke.location
+  project_id           = "my-project-id"
+  cluster_name         = "my-cluster-name"
+  location             = module.gke.location
+  use_private_endpoint = true
 }
 ```
 
