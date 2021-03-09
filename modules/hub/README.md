@@ -39,6 +39,7 @@ To deploy this config:
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |
 | gke\_hub\_membership\_name | Membership name that uniquely represents the cluster being registered on the Hub | `string` | `"gke-hub-membership"` | no |
 | gke\_hub\_sa\_name | Name for the GKE Hub SA stored as a secret `creds-gcp` in the `gke-connect` namespace. | `string` | `"gke-hub-sa"` | no |
+| hub\_project\_id | The project in which the GKE Hub belongs. | `string` | `""` | no |
 | labels | Comma separated labels in the format name=value to apply to cluster in the GCP Console. | `string` | `""` | no |
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
 | module\_depends\_on | List of modules or resources this module depends on. | `list` | `[]` | no |

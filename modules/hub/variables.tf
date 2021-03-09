@@ -29,6 +29,12 @@ variable "project_id" {
   type        = string
 }
 
+variable "hub_project_id" {
+  description = "The project in which the GKE Hub belongs."
+  type        = string
+  default     = ""
+}
+
 variable "location" {
   description = "The location (zone or region) this cluster has been created in."
   type        = string

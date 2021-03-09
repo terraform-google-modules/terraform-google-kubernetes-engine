@@ -9,7 +9,7 @@ It creates a [kind](https://kind.sigs.k8s.io/) cluster, sets current kubecontext
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| project\_id | The project ID (environ) to register the cluster in | `any` | n/a | yes |
+| project\_id | The project ID to host the cluster in | `any` | n/a | yes |
 
 ## Outputs
 
