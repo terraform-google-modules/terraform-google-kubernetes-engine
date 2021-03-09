@@ -16,7 +16,7 @@
 
 
 locals {
-  blueprint_name = join("/", compact([var._parent_module, "terraform-google-kubernetes-engine:beta-public-cluster/v13.0.0"]))
+  blueprint_name = join("/", compact([var._parent_module, "terraform-google-kubernetes-engine:beta-public-cluster/v14.0.0"]))
 }
 
 terraform {
