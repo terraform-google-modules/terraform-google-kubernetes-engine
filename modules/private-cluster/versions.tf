@@ -14,11 +14,25 @@
  * limitations under the License.
  */
 
+
+locals {
+  blueprint_name = join("/", compact([var._parent_module, "terraform-google-kubernetes-engine:private-cluster/v14.0.0"]))
+}
+
 terraform {
-  required_version = ">=0.12.6"
+  required_version = ">=0.13"
 
   required_providers {
-    google     = ">= 3.39.0, <4.0.0"
-    kubernetes = "~> 1.10, != 1.11.0"
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.39.0, <4.0.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 1.10, != 1.11.0"
+    }
+  }
+  provider_meta "google" {
+    module_name = "blueprints/terraform/${local.blueprint_name}"
   }
 }

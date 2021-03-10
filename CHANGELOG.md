@@ -6,6 +6,72 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [14.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v13.1.0...v14.0.0) (2021-03-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* Added support for multi-project GKE Hub registration (#840)
+* The `network_policy` variable now defaults to `false`.
+* Replaced `registry_project_id` with `registry_project_ids` list.
+* Add support for asm v1.8 to the asm module (#824)
+
+### Features
+
+* Add dataplane-v2 provisioning support ([#753](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/753)) ([d1fbef4](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d1fbef4c9a88f8bf6d1f7e3e8cb9e87811a8a8b0))
+* Add new property to explicitly return GKE private_endpoint for auth module ([#841](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/841)) ([1b99c07](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1b99c078af8cc86a2199bc933ec2da88a4406f87))
+* Add support for asm v1.8 to the asm module ([#824](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/824)) ([923eff4](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/923eff44f29b234105c68f183872665deaeaf31a))
+* Added support for multi-project GKE Hub registration ([#840](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/840)) ([6dc1eb1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6dc1eb1a79b9ee73873a37d817e3cdc37f8c294e))
+* Require actively enabling network policy ([#809](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/809)) ([3354205](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/33542057d8c648d585e81afbe72eec0ca84a4fee))
+
+
+### Bug Fixes
+
+* Fix attribution for safer cluster modules ([#830](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/830)) ([bb7c3ce](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/bb7c3cee0f81a634a8e9dff7d141ada0cc8cb691))
+* Remove deprecated variable "registry_project_id" ([#832](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/832)) ([83eae98](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/83eae9823a6453fa5f6787af8184f306ca53a134))
+
+## [13.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v13.0.0...v13.1.0) (2021-02-16)
+
+
+### Features
+
+* Add support for creating "shadow" firewall rules for logging purposes ([#741](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/741)) ([259dbfb](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/259dbfbd9eb486710d909d2dc43a54b979d710cf))
+* Add support for multiple registry projects ([#815](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/815)) ([5562cd6](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5562cd6c993166aa6b0f89b53b618a95f0b14e72))
+* Add support for TPUs on beta clusters ([#810](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/810)) ([fff0078](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/fff007887483803101145be79e8f83c6dd288e0e))
+
+
+### Bug Fixes
+
+* Allow creating zonal clusters when region is not set. ([#806](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/806)) ([f32dea7](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f32dea7003e1a8f32c5f7ecd4e64fdcde8f44956))
+
+## [13.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v12.3.0...v13.0.0) (2021-01-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* Minimum Terraform core version increased to 0.13.
+* dynamic operator yaml (#693)
+* Using in-cluster features now requires additional provider configuration. See the upgrade guide for details.
+
+### Features
+
+* Add maintenance exclusions support ([#781](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/781)) ([0abbf41](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0abbf416d393dcae29661ded789a642bb5a9c3f8))
+* Add nodepool taints to keepers for update-variant ([#717](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/717)) ([372a11c](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/372a11c781479e0387231acfda4a724cdd46cc65))
+* add support for Linux node config ([#782](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/782)) ([98826e6](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/98826e6029d5510d38121f446c2056ef44ece385))
+* Add Terraform 0.13 constraint and module attribution ([#792](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/792)) ([32db990](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/32db990ce7072c310e2b2c954a1f8a06d5de4349))
+* Add the option to disable Kubernetes SA annotation in workload-identity. ([#787](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/787)) ([4e4ce02](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4e4ce0287b6169a4554daa93138191844a100496))
+* dynamic operator yaml ([#693](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/693)) ([b1cce30](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b1cce3091214389813fd40885f41590f7177edc6))
+* Hub registration using kubeconfig and labels support ([#785](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/785)) ([6a29e62](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6a29e6246de05cc01d518eecc15c9e1c21cb8ba9))
+* remove wait for cluster script ([#801](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/801)) ([356ed6d](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/356ed6d9b31648518c450bc5ed3f542f0a043a26))
+* Set auto-provisioned node pools to use configured service account ([#639](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/639)) ([4a61f76](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4a61f7627946489b9ff7e6c0ae978c38c95c5adf))
+* Support for ACM for non GKE clusters ([#786](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/786)) ([aa551d5](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/aa551d5b1fdc7bfa0d88bf4562ef5fbfe9da6122))
+
+
+### Bug Fixes
+
+* Move provider version constraint to required_providers block ([#774](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/774)) ([825f287](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/825f287351b1b7a8c832150072371452ff498bd2))
+* Remove provider config from module to be TF 0.13 compatible ([#777](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/777)) ([81b0a94](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/81b0a9491d51546eedc6c1aabd368dc085c16b5e))
+
 ## [12.3.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v12.2.0...v12.3.0) (2020-12-09)
 
 

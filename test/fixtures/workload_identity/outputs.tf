@@ -65,8 +65,8 @@ output "service_account" {
   value       = module.example.service_account
 }
 
-output "registry_project_id" {
-  value = var.registry_project_id
+output "registry_project_ids" {
+  value = var.registry_project_ids
 }
 
 output "cluster_name" {

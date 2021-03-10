@@ -51,6 +51,16 @@ intended for Terraform 0.11.x is [3.0.0].
 There are multiple examples included in the [examples](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/examples) folder but simple usage is as follows:
 
 ```hcl
+# google_client_config and kubernetes provider must be explicitly specified like the following.
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+}
+
 module "gke" {
   source                     = "terraform-google-modules/kubernetes-engine/google{{ module_path }}"
   project_id                 = "<PROJECT ID>"
@@ -63,7 +73,7 @@ module "gke" {
   ip_range_services          = "us-central1-01-gke-01-services"
   http_load_balancing        = false
   horizontal_pod_autoscaling = true
-  network_policy             = true
+  network_policy             = false
   {% if private_cluster %}
   enable_private_endpoint    = true
   enable_private_nodes       = true
@@ -231,7 +241,7 @@ following project roles:
 - roles/iam.serviceAccountUser
 - roles/resourcemanager.projectIamAdmin (only required if `service_account` is set to `create`)
 
-Additionally, if `service_account` is set to `create` and `grant_registry_access` is requested, the service account requires the following role on the `registry_project_id` project:
+Additionally, if `service_account` is set to `create` and `grant_registry_access` is requested, the service account requires the following role on the `registry_project_ids` projects:
 - roles/resourcemanager.projectIamAdmin
 
 ### Enable APIs

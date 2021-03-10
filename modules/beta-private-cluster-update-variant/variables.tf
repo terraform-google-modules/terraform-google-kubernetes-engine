@@ -99,7 +99,7 @@ variable "http_load_balancing" {
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
-  default     = true
+  default     = false
 }
 
 variable "network_policy_provider" {
@@ -107,11 +107,22 @@ variable "network_policy_provider" {
   description = "The network policy provider."
   default     = "CALICO"
 }
+variable "datapath_provider" {
+  type        = string
+  description = "The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation."
+  default     = "DATAPATH_PROVIDER_UNSPECIFIED"
+}
 
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
   default     = "05:00"
+}
+
+variable "maintenance_exclusions" {
+  type        = list(object({ name = string, start_time = string, end_time = string }))
+  description = "List of maintenance exclusions. A cluster can have up to three"
+  default     = []
 }
 
 variable "maintenance_end_time" {
@@ -179,6 +190,17 @@ variable "node_pools_labels" {
 variable "node_pools_metadata" {
   type        = map(map(string))
   description = "Map of maps containing node metadata by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
+variable "node_pools_linux_node_configs_sysctls" {
+  type        = map(map(string))
+  description = "Map of maps containing linux node config sysctls by node-pool name"
 
   # Default is being set in variables_defaults.tf
   default = {
@@ -329,10 +351,10 @@ variable "grant_registry_access" {
   default     = false
 }
 
-variable "registry_project_id" {
-  type        = string
-  description = "Project holding the Google Container Registry. If empty, we use the cluster project. If grant_registry_access is true, storage.objectViewer role is assigned on this project."
-  default     = ""
+variable "registry_project_ids" {
+  type        = list(string)
+  description = "Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` role is assigned on these projects."
+  default     = []
 }
 
 variable "service_account" {
@@ -545,6 +567,18 @@ variable "gcloud_upgrade" {
   default     = false
 }
 
+variable "add_shadow_firewall_rules" {
+  type        = bool
+  description = "Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled)."
+  default     = false
+}
+
+variable "shadow_firewall_rules_priority" {
+  type        = number
+  description = "The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000."
+  default     = 999
+}
+
 variable "disable_default_snat" {
   type        = bool
   description = "Whether to disable the default SNAT to support the private use of public IP addresses"
@@ -560,5 +594,17 @@ variable "impersonate_service_account" {
 variable "notification_config_topic" {
   type        = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
+  default     = ""
+}
+
+variable "enable_tpu" {
+  type        = bool
+  description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
+  default     = false
+}
+
+variable "_parent_module" {
+  type        = string
+  description = "(Internal) Parent module which should be referenced in API calls."
   default     = ""
 }

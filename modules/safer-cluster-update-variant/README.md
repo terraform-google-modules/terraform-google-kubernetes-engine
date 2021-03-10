@@ -53,7 +53,8 @@ developers, which mostly just want to deploy and debug applications.
     own projects, so that they can be administered independently (e.g., dev cluster;
     production clusters; staging clusters should go in different projects.)
 
--   *A shared GCR project (`registry_project_id`):* all clusters can share the same GCR project.
+-   *Shared GCR projects (`registry_project_ids`):* all clusters can share the same
+    GCR projects.
 
     -   Easier to share images between environments. The same image could be
         progressively rolled-out in dev, staging, and then production.
@@ -93,7 +94,7 @@ The Safer Cluster setup relies on several service accounts:
 
 ```
 create_service_account = true
-registry_project_id = <the project id for your GCR project>
+registry_project_ids = [<the project id for your GCR project>]
 grant_registry_access = true
 ```
 
@@ -200,6 +201,7 @@ For simplicity, we suggest using `roles/container.admin` and
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| \_parent\_module | (Internal) Parent module which should be referenced in API calls. | `string` | `""` | no |
 | add\_cluster\_firewall\_rules | Create additional firewall rules | `bool` | `false` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
 | cloudrun | (Beta) Enable CloudRun addon | `bool` | `false` | no |
@@ -248,7 +250,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | project\_id | The project ID to host the cluster in | `string` | n/a | yes |
 | region | The region to host the cluster in | `string` | n/a | yes |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | `bool` | `true` | no |
-| registry\_project\_id | Project holding the Google Container Registry. If empty, we use the cluster project. If grant\_registry\_access is true, storage.objectViewer role is assigned on this project. | `string` | `""` | no |
+| registry\_project\_ids | Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` role is assigned on these projects. | `list(string)` | `[]` | no |
 | release\_channel | (Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`. | `string` | `"REGULAR"` | no |
 | resource\_usage\_export\_dataset\_id | The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | `string` | `""` | no |
 | sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it). | `bool` | `false` | no |

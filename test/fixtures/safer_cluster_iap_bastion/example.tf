@@ -31,7 +31,8 @@ resource "google_project_iam_member" "member" {
 }
 
 data "google_container_cluster" "safer" {
-  project  = var.project_ids[1]
-  name     = module.example.cluster_name
-  location = module.example.location
+  project    = var.project_ids[1]
+  name       = module.example.cluster_name
+  location   = module.example.location
+  depends_on = [module.example]
 }

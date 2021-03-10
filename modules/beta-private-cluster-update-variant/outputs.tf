@@ -54,7 +54,6 @@ output "endpoint" {
     */
     google_container_cluster.primary,
     google_container_node_pool.pools,
-    module.gcloud_wait_for_cluster.wait,
   ]
 }
 
@@ -175,4 +174,9 @@ output "intranode_visibility_enabled" {
 output "vertical_pod_autoscaling_enabled" {
   description = "Whether veritical pod autoscaling is enabled"
   value       = local.cluster_vertical_pod_autoscaling_enabled
+}
+
+output "tpu_ipv4_cidr_block" {
+  description = "The IP range in CIDR notation used for the TPUs"
+  value       = var.enable_tpu ? google_container_cluster.primary.tpu_ipv4_cidr_block : null
 }
