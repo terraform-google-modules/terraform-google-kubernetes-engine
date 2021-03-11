@@ -24,3 +24,8 @@ variable "region" {
   description = "The region to host the cluster in"
   default     = "us-central1"
 }
+
+variable "compute_engine_service_account" {
+  type        = string
+  description = "Service account to associate to the nodes in the cluster"
+}

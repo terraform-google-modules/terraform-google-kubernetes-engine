@@ -7,6 +7,7 @@ This example illustrates how to instantiate the opinionated Safer Cluster module
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | `string` | n/a | yes |
 | project\_id | The project ID to host the cluster in | `string` | n/a | yes |
 | region | The region to host the cluster in | `string` | `"us-central1"` | no |
 
