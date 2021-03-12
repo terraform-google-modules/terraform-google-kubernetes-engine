@@ -17,6 +17,6 @@
 module "example" {
   source = "../../../examples/safer_cluster"
 
-  project_id                     = var.project_ids[0]
-  region                         = var.region
+  project_id = var.project_ids[0]
+  region     = var.region
 }
