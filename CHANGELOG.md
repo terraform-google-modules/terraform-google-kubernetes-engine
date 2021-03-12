@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+### [14.0.1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.0.0...v14.0.1) (2021-03-12)
+
+
+### Bug Fixes
+
+* Revert attribution fix ([#845](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/845)) ([c398144](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c3981445e1cf886a80f785560aef2f79d6dc4126))
+
 ## [14.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v13.1.0...v14.0.0) (2021-03-09)
 
 
