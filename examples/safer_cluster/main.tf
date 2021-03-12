@@ -57,7 +57,6 @@ module "gke" {
   subnetwork                     = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
   ip_range_pods                  = local.pods_range_name
   ip_range_services              = local.svc_range_name
-  compute_engine_service_account = var.compute_engine_service_account
   master_ipv4_cidr_block         = "172.16.0.0/28"
   add_cluster_firewall_rules     = true
   firewall_inbound_ports         = ["9443", "15017"]

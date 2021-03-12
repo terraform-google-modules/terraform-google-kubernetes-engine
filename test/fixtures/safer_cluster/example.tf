@@ -19,5 +19,4 @@ module "example" {
 
   project_id                     = var.project_ids[0]
   region                         = var.region
-  compute_engine_service_account = var.compute_engine_service_accounts[0]
 }
