@@ -27,7 +27,6 @@ module "gke-project-1" {
   org_id               = var.org_id
   folder_id            = var.folder_id
   billing_account      = var.billing_account
-  skip_gcloud_download = true
 
   auto_create_network = true
 
@@ -56,7 +55,6 @@ module "gke-project-2" {
   org_id               = var.org_id
   folder_id            = var.folder_id
   billing_account      = var.billing_account
-  skip_gcloud_download = true
 
   activate_apis = [
     "cloudkms.googleapis.com",
@@ -85,7 +83,6 @@ module "gke-project-asm" {
   org_id               = var.org_id
   folder_id            = var.folder_id
   billing_account      = var.billing_account
-  skip_gcloud_download = true
 
   activate_apis = [
     "logging.googleapis.com",
