@@ -31,7 +31,6 @@ resource "google_container_cluster" "primary" {
   node_locations    = local.node_locations
   cluster_ipv4_cidr = var.cluster_ipv4_cidr
   network           = "projects/${local.network_project_id}/global/networks/${var.network}"
-
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
 
@@ -55,7 +54,6 @@ resource "google_container_cluster" "primary" {
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
-
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
     dynamic "auto_provisioning_defaults" {
@@ -75,13 +73,10 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
-
-  default_max_pods_per_node = var.default_max_pods_per_node
-
+  default_max_pods_per_node   = var.default_max_pods_per_node
   enable_shielded_nodes       = var.enable_shielded_nodes
   enable_binary_authorization = var.enable_binary_authorization
   dynamic "master_authorized_networks_config" {
@@ -111,7 +106,6 @@ resource "google_container_cluster" "primary" {
     horizontal_pod_autoscaling {
       disabled = !var.horizontal_pod_autoscaling
     }
-
     network_policy_config {
       disabled = !var.network_policy
     }
@@ -231,9 +225,7 @@ resource "google_container_cluster" "primary" {
       security_group = authenticator_groups_config.value.security_group
     }
   }
-
 }
-
 /******************************************
   Create Container Cluster node pools
  *****************************************/
