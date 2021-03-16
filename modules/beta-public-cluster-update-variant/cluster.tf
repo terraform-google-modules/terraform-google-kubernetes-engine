@@ -31,7 +31,6 @@ resource "google_container_cluster" "primary" {
   node_locations    = local.node_locations
   cluster_ipv4_cidr = var.cluster_ipv4_cidr
   network           = "projects/${local.network_project_id}/global/networks/${var.network}"
-
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
 
@@ -85,7 +84,6 @@ resource "google_container_cluster" "primary" {
       enable_components = var.monitoring_enabled_components
     }
   }
-
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
     dynamic "auto_provisioning_defaults" {
@@ -112,8 +110,7 @@ resource "google_container_cluster" "primary" {
     enabled = var.enable_vertical_pod_autoscaling
   }
 
-  default_max_pods_per_node = var.default_max_pods_per_node
-
+  default_max_pods_per_node   = var.default_max_pods_per_node
   enable_shielded_nodes       = var.enable_shielded_nodes
   enable_binary_authorization = var.enable_binary_authorization
   enable_intranode_visibility = var.enable_intranode_visibility
@@ -124,13 +121,6 @@ resource "google_container_cluster" "primary" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
     content {
       enabled = pod_security_policy_config.value
-    }
-  }
-
-  dynamic "identity_service_config" {
-    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
-    content {
-      enabled = identity_service_config.value
     }
   }
 
@@ -234,7 +224,6 @@ resource "google_container_cluster" "primary" {
         end_time       = maintenance_exclusion.value.end_time
       }
     }
-
   }
 
   lifecycle {
@@ -333,7 +322,6 @@ resource "google_container_cluster" "primary" {
       security_group = authenticator_groups_config.value.security_group
     }
   }
-
   notification_config {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
@@ -341,7 +329,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 }
-
 /******************************************
   Create Container Cluster node pools
  *****************************************/
