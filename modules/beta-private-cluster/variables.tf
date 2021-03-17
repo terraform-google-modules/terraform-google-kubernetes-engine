@@ -538,11 +538,6 @@ variable "enable_shielded_nodes" {
   default     = true
 }
 
-variable "enable_autopilot" {
-  type        = bool
-  description = "Enable Autopilot for this cluster. Defaults to `false`. Note that when this option is enabled, certain features of Standard GKE are not available.See the [official documentation](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#comparison) for available features."
-  default     = false
-}
 
 variable "enable_binary_authorization" {
   description = "Enable BinAuthZ Admission controller"
