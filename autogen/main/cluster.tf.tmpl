@@ -247,7 +247,7 @@ resource "google_container_cluster" "primary" {
     update = "45m"
     delete = "45m"
   }
-
+{% if autopilot_cluster != true %}
   node_pool {
     name               = "default-pool"
     initial_node_count = var.initial_node_count
@@ -264,7 +264,7 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-
+{% endif %}
   dynamic "resource_usage_export_config" {
     for_each = var.resource_usage_export_dataset_id != "" ? [{
       enable_network_egress_metering       = var.enable_network_egress_export
@@ -430,7 +430,7 @@ resource "random_id" "name" {
 }
 
 {% endif %}
-{% if autopilot_cluster == false %}
+{% if autopilot_cluster != true %}
 resource "google_container_node_pool" "pools" {
   {% if beta_cluster %}
   provider = google-beta

@@ -51,7 +51,7 @@ resource "google_container_cluster" "primary" {
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
-  default_snat_status {
+  default_snat_status{
     disabled = var.disable_default_snat
   }
   min_master_version = var.release_channel != null ? null : local.master_version
@@ -72,7 +72,7 @@ resource "google_container_cluster" "primary" {
 
       content {
         service_account = local.service_account
-        oauth_scopes    = local.node_pools_oauth_scopes["all"]
+        oauth_scopes = local.node_pools_oauth_scopes["all"]
       }
     }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
@@ -218,24 +218,6 @@ resource "google_container_cluster" "primary" {
     update = "45m"
     delete = "45m"
   }
-
-  node_pool {
-    name               = "default-pool"
-    initial_node_count = var.initial_node_count
-
-    node_config {
-      service_account = lookup(var.node_pools[0], "service_account", local.service_account)
-
-      dynamic "workload_metadata_config" {
-        for_each = local.cluster_node_metadata_config
-
-        content {
-          node_metadata = workload_metadata_config.value.node_metadata
-        }
-      }
-    }
-  }
-
   dynamic "resource_usage_export_config" {
     for_each = var.resource_usage_export_dataset_id != "" ? [{
       enable_network_egress_metering       = var.enable_network_egress_export
@@ -282,7 +264,7 @@ resource "google_container_cluster" "primary" {
   notification_config {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
-      topic   = var.notification_config_topic
+      topic = var.notification_config_topic
     }
   }
 }

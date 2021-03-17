@@ -218,24 +218,6 @@ resource "google_container_cluster" "primary" {
     update = "45m"
     delete = "45m"
   }
-
-  node_pool {
-    name               = "default-pool"
-    initial_node_count = var.initial_node_count
-
-    node_config {
-      service_account = lookup(var.node_pools[0], "service_account", local.service_account)
-
-      dynamic "workload_metadata_config" {
-        for_each = local.cluster_node_metadata_config
-
-        content {
-          node_metadata = workload_metadata_config.value.node_metadata
-        }
-      }
-    }
-  }
-
   dynamic "resource_usage_export_config" {
     for_each = var.resource_usage_export_dataset_id != "" ? [{
       enable_network_egress_metering       = var.enable_network_egress_export
