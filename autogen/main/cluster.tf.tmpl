@@ -104,8 +104,9 @@ resource "google_container_cluster" "primary" {
   }
 
   default_max_pods_per_node = var.default_max_pods_per_node
-
+{% if autopilot_cluster != true %}
   enable_shielded_nodes       = var.enable_shielded_nodes
+{% endif %}
 {% if autopilot_cluster %}
   enable_autopilot            = var.enable_autopilot
 {% endif %}

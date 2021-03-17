@@ -84,6 +84,9 @@ module "gke" {
   cloudrun = true
   dns_cache = false
   {% endif %}
+  {% if autopilot_cluster %}
+  enable_autopilot = true
+  {% endif %}
 
   node_pools = [
     {

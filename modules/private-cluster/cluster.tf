@@ -72,8 +72,7 @@ resource "google_container_cluster" "primary" {
     enabled = var.enable_vertical_pod_autoscaling
   }
 
-  default_max_pods_per_node = var.default_max_pods_per_node
-
+  default_max_pods_per_node   = var.default_max_pods_per_node
   enable_shielded_nodes       = var.enable_shielded_nodes
   enable_binary_authorization = var.enable_binary_authorization
   dynamic "master_authorized_networks_config" {

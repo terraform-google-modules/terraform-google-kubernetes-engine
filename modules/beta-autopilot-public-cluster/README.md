@@ -47,6 +47,7 @@ module "gke" {
   istio = true
   cloudrun = true
   dns_cache = false
+  enable_autopilot = true
 
   node_pools = [
     {
@@ -147,7 +148,7 @@ Then perform the following commands on the root folder:
 | disable\_default\_snat | Whether to disable the default SNAT to support the private use of public IP addresses | `bool` | `false` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | `bool` | `true` | no |
 | dns\_cache | (Beta) The status of the NodeLocal DNSCache addon. | `bool` | `false` | no |
-| enable\_autopilot | Enable Autopilot for this cluster. Defaults to `false`. Note that when this option is enabled, certain features of Standard GKE are not available.See the [official documentation](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#comparison) for available features. | `bool` | `false` | no |
+| enable\_autopilot | Enable Autopilot for this cluster. Defaults to `false`. Note that when this option is enabled, certain features of Standard GKE are not available.See the [official documentation](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#comparison) for available features. | `bool` | `true` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | `bool` | `false` | no |
