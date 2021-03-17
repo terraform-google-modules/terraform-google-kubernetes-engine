@@ -430,6 +430,7 @@ resource "random_id" "name" {
 }
 
 {% endif %}
+{% if autopilot_cluster == false %}
 resource "google_container_node_pool" "pools" {
   {% if beta_cluster %}
   provider = google-beta
@@ -608,4 +609,4 @@ resource "google_container_node_pool" "pools" {
     delete = "45m"
   }
 }
-
+{% endif %}

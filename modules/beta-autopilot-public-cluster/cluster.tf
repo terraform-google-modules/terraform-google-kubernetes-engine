@@ -20,7 +20,7 @@
   Create Container Cluster
  *****************************************/
 resource "google_container_cluster" "primary" {
-  provider = google
+  provider = google-beta
 
   name            = var.name
   description     = var.description
@@ -51,13 +51,31 @@ resource "google_container_cluster" "primary" {
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
+  default_snat_status {
+    disabled = var.disable_default_snat
+  }
   min_master_version = var.release_channel != null ? null : local.master_version
 
-  logging_service    = var.logging_service
-  monitoring_service = var.monitoring_service
+  dynamic "cluster_telemetry" {
+    for_each = local.cluster_telemetry_type_is_set ? [1] : []
+    content {
+      type = var.cluster_telemetry_type
+    }
+  }
+  logging_service    = local.cluster_telemetry_type_is_set ? null : var.logging_service
+  monitoring_service = local.cluster_telemetry_type_is_set ? null : var.monitoring_service
 
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
+    dynamic "auto_provisioning_defaults" {
+      for_each = var.cluster_autoscaling.enabled ? [1] : []
+
+      content {
+        service_account = local.service_account
+        oauth_scopes    = local.node_pools_oauth_scopes["all"]
+      }
+    }
+    autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
     dynamic "resource_limits" {
       for_each = local.autoscalling_resource_limits
       content {
@@ -75,7 +93,18 @@ resource "google_container_cluster" "primary" {
   default_max_pods_per_node = var.default_max_pods_per_node
 
   enable_shielded_nodes       = var.enable_shielded_nodes
+  enable_autopilot            = var.enable_autopilot
   enable_binary_authorization = var.enable_binary_authorization
+  enable_intranode_visibility = var.enable_intranode_visibility
+  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
+  enable_tpu                  = var.enable_tpu
+
+  dynamic "pod_security_policy_config" {
+    for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
+    content {
+      enabled = pod_security_policy_config.value
+    }
+  }
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -110,17 +139,74 @@ resource "google_container_cluster" "primary" {
     network_policy_config {
       disabled = ! var.network_policy
     }
-  }
 
+    istio_config {
+      disabled = ! var.istio
+      auth     = var.istio_auth
+    }
+
+    dynamic "cloudrun_config" {
+      for_each = local.cluster_cloudrun_config
+
+      content {
+        disabled = cloudrun_config.value.disabled
+      }
+    }
+
+    dns_cache_config {
+      enabled = var.dns_cache
+    }
+
+    dynamic "gce_persistent_disk_csi_driver_config" {
+      for_each = local.cluster_gce_pd_csi_config
+
+      content {
+        enabled = gce_persistent_disk_csi_driver_config.value.enabled
+      }
+    }
+
+    kalm_config {
+      enabled = var.kalm_config
+    }
+
+    config_connector_config {
+      enabled = var.config_connector
+    }
+  }
+  datapath_provider = var.datapath_provider
+
+  networking_mode = "VPC_NATIVE"
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services
   }
 
   maintenance_policy {
-    daily_maintenance_window {
-      start_time = var.maintenance_start_time
+    dynamic "recurring_window" {
+      for_each = local.cluster_maintenance_window_is_recurring
+      content {
+        start_time = var.maintenance_start_time
+        end_time   = var.maintenance_end_time
+        recurrence = var.maintenance_recurrence
+      }
     }
+
+    dynamic "daily_maintenance_window" {
+      for_each = local.cluster_maintenance_window_is_daily
+      content {
+        start_time = var.maintenance_start_time
+      }
+    }
+
+    dynamic "maintenance_exclusion" {
+      for_each = var.maintenance_exclusions
+      content {
+        exclusion_name = maintenance_exclusion.value.name
+        start_time     = maintenance_exclusion.value.start_time
+        end_time       = maintenance_exclusion.value.end_time
+      }
+    }
+
   }
 
   lifecycle {
@@ -166,19 +252,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  dynamic "private_cluster_config" {
-    for_each = var.enable_private_nodes ? [{
-      enable_private_nodes    = var.enable_private_nodes,
-      enable_private_endpoint = var.enable_private_endpoint
-      master_ipv4_cidr_block  = var.master_ipv4_cidr_block
-    }] : []
-
-    content {
-      enable_private_endpoint = private_cluster_config.value.enable_private_endpoint
-      enable_private_nodes    = private_cluster_config.value.enable_private_nodes
-      master_ipv4_cidr_block  = private_cluster_config.value.master_ipv4_cidr_block
-    }
-  }
 
   remove_default_node_pool = var.remove_default_node_pool
 
@@ -199,6 +272,19 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "authenticator_groups_config" {
+    for_each = local.cluster_authenticator_security_group
+    content {
+      security_group = authenticator_groups_config.value.security_group
+    }
+  }
+
+  notification_config {
+    pubsub {
+      enabled = var.notification_config_topic != "" ? true : false
+      topic   = var.notification_config_topic
+    }
+  }
 }
 
 /******************************************
