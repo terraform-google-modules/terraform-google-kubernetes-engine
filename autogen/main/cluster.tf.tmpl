@@ -483,7 +483,7 @@ resource "google_container_node_pool" "pools" {
   {% endif %}
 
   node_config {
-  	{% if beta_cluster %}
+    {% if beta_cluster %}
     image_type   = lookup(each.value, "image_type", var.sandbox_enabled ? "COS_CONTAINERD" : "COS")
     {% else %}
     image_type   = lookup(each.value, "image_type", "COS")
