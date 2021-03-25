@@ -74,7 +74,9 @@ This is destructive and will result in deletion and recreation of the ACM operat
 Plan: 0 to add, 0 to change, 3 to destroy.
 ```
 
-### NodePool Random ID Keepers Modified
+### Node Pool Random ID Keepers Modified
+
+Note: This change only applies to the update variant submodules.
 
 As reported in issue [#842](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/842), the v13.0 release has
 added the node pool taints to the `keepers` for the `random_id` resource used in the naming of node pools.
