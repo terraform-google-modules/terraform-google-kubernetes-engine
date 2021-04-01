@@ -488,7 +488,11 @@ resource "google_container_node_pool" "pools" {
   {% endif %}
 
   node_config {
+    {% if beta_cluster %}
+    image_type   = lookup(each.value, "image_type", var.sandbox_enabled ? "COS_CONTAINERD" : "COS")
+    {% else %}
     image_type   = lookup(each.value, "image_type", "COS")
+    {% endif %}
     machine_type = lookup(each.value, "machine_type", "e2-medium")
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},

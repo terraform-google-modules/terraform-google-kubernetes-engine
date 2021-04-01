@@ -73,3 +73,22 @@ This is destructive and will result in deletion and recreation of the ACM operat
 
 Plan: 0 to add, 0 to change, 3 to destroy.
 ```
+
+### Node Pool Random ID Keepers Modified
+
+Note: This change only applies to the update variant submodules.
+
+As reported in issue [#842](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/842), the v13.0 release has
+added the node pool taints to the `keepers` for the `random_id` resource used in the naming of node pools.
+
+This addition forces a replacement of the `random_id` resource, and therefore the node pools themselves.
+
+To avoid this, it is possible to edit the remote state of the `random_id` resource to add the "missing" `keeper` attribute.
+
+1. Perform a `terraform plan` as normal, identifying the `random_id` resources changing and the new `"taints"` attribute
+1. Pull the remote state locally: `terraform state pull > default.tfstate`
+1. Back up the original remote state: `cp default.tfstate original.tfstate`
+1. Edit the `random_id` resources to add in the new `"taints"` attributes from the `terraform plan` step
+1. Bump the serial number at the top
+1. Push the modified state to the remote `terraform state push default.tfstate`
+1. Confirm the `random_id` resource no longer changes (or the corresponding `nodepool`) in a `terraform plan`
