@@ -472,13 +472,21 @@ variable "istio_auth" {
 variable "dns_cache" {
   type        = bool
   description = "(Beta) The status of the NodeLocal DNSCache addon."
+  {% if autopilot_cluster == true %}
+  default     = true
+  {% else %}
   default     = false
+  {% endif %}
 }
 
 variable "gce_pd_csi_driver" {
   type        = bool
   description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
+  {% if autopilot_cluster == true %}
+  default     = true
+  {% else %}
   default     = false
+  {% endif %}
 }
 
 variable "kalm_config" {

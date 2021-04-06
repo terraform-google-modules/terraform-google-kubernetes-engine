@@ -19,8 +19,8 @@
 # Setup dynamic default values for variables which can't be setup using
 # the standard terraform "variable default" functionality
 
-locals {
 {% if autopilot_cluster != true %}
+locals {
   node_pools_labels = merge(
     { all = {} },
     { default-node-pool = {} },
@@ -82,11 +82,5 @@ locals {
     var.node_pools_linux_node_configs_sysctls
   )
   {% endif %}
-{% endif %}
-{% if autopilot_cluster == true %}
-  dns_cache = true
-  istio = true
-  http_load_balancing = true
-  gce_pd_csi_driver = true
-{% endif %}
 }
+{% endif %}
