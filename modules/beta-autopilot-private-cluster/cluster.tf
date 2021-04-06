@@ -51,7 +51,7 @@ resource "google_container_cluster" "primary" {
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
-  default_snat_status {
+  default_snat_status{
     disabled = var.disable_default_snat
   }
   min_master_version = var.release_channel != null ? null : local.master_version
@@ -64,45 +64,10 @@ resource "google_container_cluster" "primary" {
   }
   logging_service    = local.cluster_telemetry_type_is_set ? null : var.logging_service
   monitoring_service = local.cluster_telemetry_type_is_set ? null : var.monitoring_service
-
-  cluster_autoscaling {
-    enabled = var.cluster_autoscaling.enabled
-    dynamic "auto_provisioning_defaults" {
-      for_each = var.cluster_autoscaling.enabled ? [1] : []
-
-      content {
-        service_account = local.service_account
-        oauth_scopes    = local.node_pools_oauth_scopes["all"]
-      }
-    }
-    autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
-    dynamic "resource_limits" {
-      for_each = local.autoscalling_resource_limits
-      content {
-        resource_type = lookup(resource_limits.value, "resource_type")
-        minimum       = lookup(resource_limits.value, "minimum")
-        maximum       = lookup(resource_limits.value, "maximum")
-      }
-    }
-  }
-
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
-
-  default_max_pods_per_node   = var.default_max_pods_per_node
   enable_autopilot            = var.enable_autopilot
-  enable_binary_authorization = var.enable_binary_authorization
-  enable_intranode_visibility = var.enable_intranode_visibility
-  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
-  enable_tpu                  = var.enable_tpu
-
-  dynamic "pod_security_policy_config" {
-    for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
-    content {
-      enabled = pod_security_policy_config.value
-    }
-  }
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -132,10 +97,6 @@ resource "google_container_cluster" "primary" {
 
     horizontal_pod_autoscaling {
       disabled = ! var.horizontal_pod_autoscaling
-    }
-
-    network_policy_config {
-      disabled = ! var.network_policy
     }
 
     istio_config {
@@ -252,8 +213,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  remove_default_node_pool = var.remove_default_node_pool
-
   dynamic "database_encryption" {
     for_each = var.database_encryption
 
@@ -262,15 +221,6 @@ resource "google_container_cluster" "primary" {
       state    = database_encryption.value.state
     }
   }
-
-  dynamic "workload_identity_config" {
-    for_each = local.cluster_workload_identity_config
-
-    content {
-      identity_namespace = workload_identity_config.value.identity_namespace
-    }
-  }
-
   dynamic "authenticator_groups_config" {
     for_each = local.cluster_authenticator_security_group
     content {
@@ -281,7 +231,7 @@ resource "google_container_cluster" "primary" {
   notification_config {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
-      topic   = var.notification_config_topic
+      topic = var.notification_config_topic
     }
   }
 }

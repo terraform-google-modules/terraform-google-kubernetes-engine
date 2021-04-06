@@ -55,7 +55,6 @@ resource "google_container_cluster" "primary" {
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
-
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
     dynamic "resource_limits" {
@@ -67,11 +66,9 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
-
   default_max_pods_per_node   = var.default_max_pods_per_node
   enable_shielded_nodes       = var.enable_shielded_nodes
   enable_binary_authorization = var.enable_binary_authorization
@@ -105,7 +102,6 @@ resource "google_container_cluster" "primary" {
     horizontal_pod_autoscaling {
       disabled = ! var.horizontal_pod_autoscaling
     }
-
     network_policy_config {
       disabled = ! var.network_policy
     }
@@ -163,7 +159,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-
   remove_default_node_pool = var.remove_default_node_pool
 
   dynamic "database_encryption" {
@@ -174,7 +169,6 @@ resource "google_container_cluster" "primary" {
       state    = database_encryption.value.state
     }
   }
-
   dynamic "workload_identity_config" {
     for_each = local.cluster_workload_identity_config
 
@@ -182,7 +176,6 @@ resource "google_container_cluster" "primary" {
       identity_namespace = workload_identity_config.value.identity_namespace
     }
   }
-
 }
 
 /******************************************
