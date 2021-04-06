@@ -41,13 +41,8 @@ module "gke" {
   subnetwork                 = "us-central1-01"
   ip_range_pods              = "us-central1-01-gke-01-pods"
   ip_range_services          = "us-central1-01-gke-01-services"
-  http_load_balancing        = false
   horizontal_pod_autoscaling = true
-  network_policy             = false
-  istio = true
-  cloudrun = true
-  dns_cache = false
-  enable_autopilot = true
+  enable_autopilot           = true
 
 ```
 

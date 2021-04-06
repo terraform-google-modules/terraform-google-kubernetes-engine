@@ -45,14 +45,14 @@ module "gke" {
   ip_range_pods              = "us-central1-01-gke-01-pods"
   ip_range_services          = "us-central1-01-gke-01-services"
   http_load_balancing        = false
-  horizontal_pod_autoscaling = true
   network_policy             = false
+  horizontal_pod_autoscaling = true
   enable_private_endpoint    = true
   enable_private_nodes       = true
   master_ipv4_cidr_block     = "10.0.0.0/28"
-  istio = true
-  cloudrun = true
-  dns_cache = false
+  istio                      = true
+  cloudrun                   = true
+  dns_cache                  = false
 
   node_pools = [
     {

@@ -71,21 +71,23 @@ module "gke" {
   subnetwork                 = "us-central1-01"
   ip_range_pods              = "us-central1-01-gke-01-pods"
   ip_range_services          = "us-central1-01-gke-01-services"
+  {% if autopilot_cluster != true %}
   http_load_balancing        = false
-  horizontal_pod_autoscaling = true
   network_policy             = false
+  {% endif %}
+  horizontal_pod_autoscaling = true
   {% if private_cluster %}
   enable_private_endpoint    = true
   enable_private_nodes       = true
   master_ipv4_cidr_block     = "10.0.0.0/28"
   {% endif %}
-  {% if beta_cluster %}
-  istio = true
-  cloudrun = true
-  dns_cache = false
+  {% if beta_cluster and autopilot_cluster != true  %}
+  istio                      = true
+  cloudrun                   = true
+  dns_cache                  = false
   {% endif %}
   {% if autopilot_cluster %}
-  enable_autopilot = true
+  enable_autopilot           = true
   {% endif %}
 
 {% if autopilot_cluster != true %}
