@@ -42,9 +42,6 @@ locals {
   master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
 
-  // Build a map of maps of node pools from a list of objects
-  node_pool_names = [for np in toset(var.node_pools) : np.name]
-  node_pools      = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
 
   release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
 
@@ -132,8 +129,6 @@ locals {
     cidr_blocks : var.master_authorized_networks
   }]
 
-  cluster_output_node_pools_names    = concat([for np in google_container_node_pool.pools : np.name], [""])
-  cluster_output_node_pools_versions = concat([for np in google_container_node_pool.pools : np.version], [""])
 
   cluster_master_auth_list_layer1 = local.cluster_output_master_auth
   cluster_master_auth_list_layer2 = local.cluster_master_auth_list_layer1[0]
@@ -150,8 +145,6 @@ locals {
   cluster_min_master_version                 = local.cluster_output_min_master_version
   cluster_logging_service                    = local.cluster_output_logging_service
   cluster_monitoring_service                 = local.cluster_output_monitoring_service
-  cluster_node_pools_names                   = local.cluster_output_node_pools_names
-  cluster_node_pools_versions                = local.cluster_output_node_pools_versions
   cluster_network_policy_enabled             = ! local.cluster_output_network_policy_enabled
   cluster_http_load_balancing_enabled        = ! local.cluster_output_http_load_balancing_enabled
   cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled

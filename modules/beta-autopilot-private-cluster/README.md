@@ -55,69 +55,6 @@ module "gke" {
   dns_cache = false
   enable_autopilot = true
 
-  node_pools = [
-    {
-      name               = "default-node-pool"
-      machine_type       = "e2-medium"
-      node_locations     = "us-central1-b,us-central1-c"
-      min_count          = 1
-      max_count          = 100
-      local_ssd_count    = 0
-      disk_size_gb       = 100
-      disk_type          = "pd-standard"
-      image_type         = "COS"
-      auto_repair        = true
-      auto_upgrade       = true
-      service_account    = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
-      preemptible        = false
-      initial_node_count = 80
-    },
-  ]
-
-  node_pools_oauth_scopes = {
-    all = []
-
-    default-node-pool = [
-      "https://www.googleapis.com/auth/cloud-platform",
-    ]
-  }
-
-  node_pools_labels = {
-    all = {}
-
-    default-node-pool = {
-      default-node-pool = true
-    }
-  }
-
-  node_pools_metadata = {
-    all = {}
-
-    default-node-pool = {
-      node-pool-metadata-custom-value = "my-node-pool"
-    }
-  }
-
-  node_pools_taints = {
-    all = []
-
-    default-node-pool = [
-      {
-        key    = "default-node-pool"
-        value  = true
-        effect = "PREFER_NO_SCHEDULE"
-      },
-    ]
-  }
-
-  node_pools_tags = {
-    all = []
-
-    default-node-pool = [
-      "default-node-pool",
-    ]
-  }
-}
 ```
 
 <!-- do not understand what this is about -->
@@ -176,7 +113,6 @@ Then perform the following commands on the root folder:
 | http\_load\_balancing | Enable httpload balancer addon | `bool` | `true` | no |
 | identity\_namespace | Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `[project_id].svc.id.goog`) | `string` | `"enabled"` | no |
 | impersonate\_service\_account | An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials. | `string` | `""` | no |
-| initial\_node\_count | The number of nodes to create in this cluster's default node pool. | `number` | `0` | no |
 | ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | `bool` | `false` | no |
 | ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | `string` | `"60s"` | no |
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | `string` | n/a | yes |
@@ -201,13 +137,6 @@ Then perform the following commands on the root folder:
 | network\_policy\_provider | The network policy provider. | `string` | `"CALICO"` | no |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | `string` | `""` | no |
 | node\_metadata | Specifies how node metadata is exposed to the workload running on the node | `string` | `"GKE_METADATA_SERVER"` | no |
-| node\_pools | List of maps containing node pools | `list(map(string))` | <pre>[<br>  {<br>    "name": "default-node-pool"<br>  }<br>]</pre> | no |
-| node\_pools\_labels | Map of maps containing node labels by node-pool name | `map(map(string))` | <pre>{<br>  "all": {},<br>  "default-node-pool": {}<br>}</pre> | no |
-| node\_pools\_linux\_node\_configs\_sysctls | Map of maps containing linux node config sysctls by node-pool name | `map(map(string))` | <pre>{<br>  "all": {},<br>  "default-node-pool": {}<br>}</pre> | no |
-| node\_pools\_metadata | Map of maps containing node metadata by node-pool name | `map(map(string))` | <pre>{<br>  "all": {},<br>  "default-node-pool": {}<br>}</pre> | no |
-| node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | `map(list(string))` | <pre>{<br>  "all": [<br>    "https://www.googleapis.com/auth/cloud-platform"<br>  ],<br>  "default-node-pool": []<br>}</pre> | no |
-| node\_pools\_tags | Map of lists containing node network tags by node-pool name | `map(list(string))` | <pre>{<br>  "all": [],<br>  "default-node-pool": []<br>}</pre> | no |
-| node\_pools\_taints | Map of lists containing node taints by node-pool name | `map(list(object({ key = string, value = string, effect = string })))` | <pre>{<br>  "all": [],<br>  "default-node-pool": []<br>}</pre> | no |
 | non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | `list(string)` | <pre>[<br>  "10.0.0.0/8",<br>  "172.16.0.0/12",<br>  "192.168.0.0/16"<br>]</pre> | no |
 | notification\_config\_topic | The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}. | `string` | `""` | no |
 | project\_id | The project ID to host the cluster in (required) | `string` | n/a | yes |
@@ -215,7 +144,6 @@ Then perform the following commands on the root folder:
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | `bool` | `true` | no |
 | registry\_project\_ids | Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` role is assigned on these projects. | `list(string)` | `[]` | no |
 | release\_channel | The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`. | `string` | `null` | no |
-| remove\_default\_node\_pool | Remove default node pool while setting up the cluster | `bool` | `false` | no |
 | resource\_usage\_export\_dataset\_id | The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export. | `string` | `""` | no |
 | sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it). | `bool` | `false` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The create\_service\_account variable default value (true) will cause a cluster-specific service account to be created. | `string` | `""` | no |
@@ -249,8 +177,6 @@ Then perform the following commands on the root folder:
 | monitoring\_service | Monitoring service used |
 | name | Cluster name |
 | network\_policy\_enabled | Whether network policy enabled |
-| node\_pools\_names | List of node pools names |
-| node\_pools\_versions | List of node pools versions |
 | peering\_name | The name of the peering between this cluster and the Google owned VPC. |
 | pod\_security\_policy\_enabled | Whether pod security policy is enabled |
 | region | Cluster region |
@@ -262,44 +188,6 @@ Then perform the following commands on the root folder:
 | zones | List of zones in which the cluster resides |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-
-## node_pools variable
-The node_pools variable takes the following parameters:
-
-| Name | Description | Default | Requirement |
-| --- | --- | --- | --- |
-| accelerator_count | The number of the guest accelerator cards exposed to this instance | 0 | Optional |
-| accelerator_type | The accelerator type resource to expose to the instance | " " | Optional |
-| auto_repair | Whether the nodes will be automatically repaired | true | Optional |
-| autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
-| auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
-| cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". | "none" | Optional |
-| disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100 | Optional |
-| disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |
-| effect | Effect for the taint | | Required |
-| enable_integrity_monitoring | Enables monitoring and attestation of the boot integrity of the instance. The attestation is performed against the integrity policy baseline. This baseline is initially derived from the implicitly trusted boot image when the instance is created. | true | Optional |
-| enable_secure_boot | Secure Boot helps ensure that the system only runs authentic software by verifying the digital signature of all boot components, and halting the boot process if signature verification fails. | false | Optional |
-| image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | COS | Optional |
-| initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
-| key | The key required for the taint | | Required |
-| local_ssd_count | The amount of local SSD disks that will be attached to each cluster node | 0 | Optional |
-| machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
-| max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
-| max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |
-| max_surge | The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. | 1 | Optional |
-| max_unavailable | The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater. | 0 | Optional |
-| min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true | 1 | Optional |
-| name | The name of the node pool |  | Required |
-| node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusers |  | Required |
-| node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. Defaults to cluster level node locations if nothing is specified | " " | Optional |
-| node_metadata | Options to expose the node metadata to the workload running on the node | | Optional |
-| preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
-| sandbox_type | Sandbox to use for pods in the node pool | | Required |
-| service_account | The service account to be used by the Node VMs | " " | Optional |
-| tags | The list of instance tags applied to all nodes | | Required |
-| value | The value for the taint | | Required |
-| version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
-
 
 ## Requirements
 

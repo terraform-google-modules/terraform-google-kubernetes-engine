@@ -88,6 +88,7 @@ module "gke" {
   enable_autopilot = true
   {% endif %}
 
+{% if autopilot_cluster != true %}
   node_pools = [
     {
       name               = "default-node-pool"
@@ -151,6 +152,7 @@ module "gke" {
     ]
   }
 }
+{% endif %}
 ```
 
 <!-- do not understand what this is about -->
@@ -164,6 +166,7 @@ Then perform the following commands on the root folder:
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
+{% if autopilot_cluster != true %}
 ## node_pools variable
 The node_pools variable takes the following parameters:
 
@@ -206,8 +209,7 @@ The node_pools variable takes the following parameters:
 | tags | The list of instance tags applied to all nodes | | Required |
 | value | The value for the taint | | Required |
 | version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
-
-
+{% endif %}
 ## Requirements
 
 Before this module can be used on a project, you must ensure that the following pre-requisites are fulfilled:

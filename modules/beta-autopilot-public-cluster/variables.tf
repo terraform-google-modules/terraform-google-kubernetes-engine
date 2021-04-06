@@ -147,17 +147,6 @@ variable "ip_range_services" {
   description = "The _name_ of the secondary subnet range to use for services"
 }
 
-variable "initial_node_count" {
-  type        = number
-  description = "The number of nodes to create in this cluster's default node pool."
-  default     = 0
-}
-
-variable "remove_default_node_pool" {
-  type        = bool
-  description = "Remove default node pool while setting up the cluster"
-  default     = false
-}
 
 variable "disable_legacy_metadata_endpoints" {
   type        = bool
@@ -165,49 +154,6 @@ variable "disable_legacy_metadata_endpoints" {
   default     = true
 }
 
-variable "node_pools" {
-  type        = list(map(string))
-  description = "List of maps containing node pools"
-
-  default = [
-    {
-      name = "default-node-pool"
-    },
-  ]
-}
-
-variable "node_pools_labels" {
-  type        = map(map(string))
-  description = "Map of maps containing node labels by node-pool name"
-
-  # Default is being set in variables_defaults.tf
-  default = {
-    all               = {}
-    default-node-pool = {}
-  }
-}
-
-variable "node_pools_metadata" {
-  type        = map(map(string))
-  description = "Map of maps containing node metadata by node-pool name"
-
-  # Default is being set in variables_defaults.tf
-  default = {
-    all               = {}
-    default-node-pool = {}
-  }
-}
-
-variable "node_pools_linux_node_configs_sysctls" {
-  type        = map(map(string))
-  description = "Map of maps containing linux node config sysctls by node-pool name"
-
-  # Default is being set in variables_defaults.tf
-  default = {
-    all               = {}
-    default-node-pool = {}
-  }
-}
 
 variable "resource_usage_export_dataset_id" {
   type        = string
@@ -252,40 +198,6 @@ variable "cluster_autoscaling" {
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
-
-variable "node_pools_taints" {
-  type        = map(list(object({ key = string, value = string, effect = string })))
-  description = "Map of lists containing node taints by node-pool name"
-
-  # Default is being set in variables_defaults.tf
-  default = {
-    all               = []
-    default-node-pool = []
-  }
-}
-
-variable "node_pools_tags" {
-  type        = map(list(string))
-  description = "Map of lists containing node network tags by node-pool name"
-
-  # Default is being set in variables_defaults.tf
-  default = {
-    all               = []
-    default-node-pool = []
-  }
-}
-
-variable "node_pools_oauth_scopes" {
-  type        = map(list(string))
-  description = "Map of lists containing node oauth scopes by node-pool name"
-
-  # Default is being set in variables_defaults.tf
-  default = {
-    all               = ["https://www.googleapis.com/auth/cloud-platform"]
-    default-node-pool = []
-  }
-}
-
 variable "stub_domains" {
   type        = map(list(string))
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"

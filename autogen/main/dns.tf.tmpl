@@ -35,7 +35,9 @@ module "gcloud_delete_default_kube_dns_configmap" {
   module_depends_on = concat(
     [data.google_client_config.default.access_token],
     [google_container_cluster.primary.master_version],
+    {% if autopilot_cluster != true %}
     [for pool in google_container_node_pool.pools : pool.name]
+    {% endif %}
   )
 }
 
@@ -64,7 +66,9 @@ EOF
     module.gcloud_delete_default_kube_dns_configmap.wait,
     data.google_client_config.default,
     google_container_cluster.primary,
+    {% if autopilot_cluster != true %}
     google_container_node_pool.pools,
+    {% endif %}
   ]
 }
 
@@ -91,7 +95,9 @@ EOF
     module.gcloud_delete_default_kube_dns_configmap.wait,
     data.google_client_config.default,
     google_container_cluster.primary,
+    {% if autopilot_cluster != true %}
     google_container_node_pool.pools,
+    {% endif %}
   ]
 }
 
@@ -121,6 +127,8 @@ EOF
     module.gcloud_delete_default_kube_dns_configmap.wait,
     data.google_client_config.default,
     google_container_cluster.primary,
+    {% if autopilot_cluster != true %}
     google_container_node_pool.pools,
+    {% endif %}
   ]
 }

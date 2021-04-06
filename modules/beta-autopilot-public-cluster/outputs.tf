@@ -53,7 +53,6 @@ output "endpoint" {
     * to be up.
     */
     google_container_cluster.primary,
-    google_container_node_pool.pools,
   ]
 }
 
@@ -101,16 +100,6 @@ output "http_load_balancing_enabled" {
 output "horizontal_pod_autoscaling_enabled" {
   description = "Whether horizontal pod autoscaling enabled"
   value       = local.cluster_horizontal_pod_autoscaling_enabled
-}
-
-output "node_pools_names" {
-  description = "List of node pools names"
-  value       = local.cluster_node_pools_names
-}
-
-output "node_pools_versions" {
-  description = "List of node pools versions"
-  value       = local.cluster_node_pools_versions
 }
 
 output "service_account" {
