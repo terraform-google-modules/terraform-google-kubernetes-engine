@@ -175,8 +175,8 @@ locals {
   {% if autopilot_cluster != true %}
   cluster_node_pools_names                   = local.cluster_output_node_pools_names
   cluster_node_pools_versions                = local.cluster_output_node_pools_versions
-  {% endif %}
   cluster_network_policy_enabled             = ! local.cluster_output_network_policy_enabled
+  {% endif %}
   cluster_http_load_balancing_enabled        = ! local.cluster_output_http_load_balancing_enabled
   cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled
   workload_identity_enabled                  = ! (var.identity_namespace == null || var.identity_namespace == "null")
