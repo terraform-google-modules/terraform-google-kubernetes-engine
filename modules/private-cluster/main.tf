@@ -77,7 +77,6 @@ locals {
     enabled  = false
     provider = null
   }]
-
   cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
     node_metadata = var.node_metadata
   }]

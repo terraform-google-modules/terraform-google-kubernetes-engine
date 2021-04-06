@@ -68,14 +68,6 @@ locals {
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
 
-  cluster_network_policy = var.network_policy ? [{
-    enabled  = true
-    provider = var.network_policy_provider
-    }] : [{
-    enabled  = false
-    provider = null
-  }]
-
   cluster_cloudrun_config_load_balancer_config = (var.cloudrun && var.cloudrun_load_balancer_type != "") ? {
     load_balancer_type = var.cloudrun_load_balancer_type
   } : {}
@@ -145,7 +137,6 @@ locals {
   cluster_min_master_version                 = local.cluster_output_min_master_version
   cluster_logging_service                    = local.cluster_output_logging_service
   cluster_monitoring_service                 = local.cluster_output_monitoring_service
-  cluster_network_policy_enabled             = ! local.cluster_output_network_policy_enabled
   cluster_http_load_balancing_enabled        = ! local.cluster_output_http_load_balancing_enabled
   cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled
   workload_identity_enabled                  = ! (var.identity_namespace == null || var.identity_namespace == "null")

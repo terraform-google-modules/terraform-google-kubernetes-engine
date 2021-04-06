@@ -78,7 +78,6 @@ locals {
     enabled  = false
     provider = null
   }]
-
   cluster_cloudrun_config_load_balancer_config = (var.cloudrun && var.cloudrun_load_balancer_type != "") ? {
     load_balancer_type = var.cloudrun_load_balancer_type
   } : {}
