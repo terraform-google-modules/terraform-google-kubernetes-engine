@@ -31,15 +31,7 @@ resource "google_container_cluster" "primary" {
   node_locations    = local.node_locations
   cluster_ipv4_cidr = var.cluster_ipv4_cidr
   network           = "projects/${local.network_project_id}/global/networks/${var.network}"
-
-  dynamic "network_policy" {
-    for_each = local.cluster_network_policy
-
-    content {
-      enabled  = network_policy.value.enabled
-      provider = network_policy.value.provider
-    }
-  }
+  
 
   dynamic "release_channel" {
     for_each = local.release_channel

@@ -176,7 +176,6 @@ Then perform the following commands on the root folder:
 | min\_master\_version | Minimum master kubernetes version |
 | monitoring\_service | Monitoring service used |
 | name | Cluster name |
-| network\_policy\_enabled | Whether network policy enabled |
 | peering\_name | The name of the peering between this cluster and the Google owned VPC. |
 | pod\_security\_policy\_enabled | Whether pod security policy is enabled |
 | region | Cluster region |
