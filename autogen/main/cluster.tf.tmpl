@@ -338,7 +338,7 @@ resource "google_container_cluster" "primary" {
   notification_config {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
-      topic = var.notification_config_topic
+      topic   = var.notification_config_topic
     }
   }
 {% endif %}

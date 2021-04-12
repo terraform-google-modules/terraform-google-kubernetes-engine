@@ -42,7 +42,7 @@ resource "google_container_cluster" "primary" {
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
-  default_snat_status{
+  default_snat_status {
     disabled = var.disable_default_snat
   }
   min_master_version = var.release_channel != null ? null : local.master_version
@@ -58,7 +58,7 @@ resource "google_container_cluster" "primary" {
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
-  enable_autopilot            = var.enable_autopilot
+  enable_autopilot = var.enable_autopilot
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -203,7 +203,7 @@ resource "google_container_cluster" "primary" {
   notification_config {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
-      topic = var.notification_config_topic
+      topic   = var.notification_config_topic
     }
   }
 }
