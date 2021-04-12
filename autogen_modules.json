@@ -29,7 +29,7 @@
     "options": {
       "module_path": "//modules/beta-autopilot-private-cluster",
       "private_cluster": true,
-      "autopilot_cluster": true, 
+      "autopilot_cluster": true,
       "beta_cluster": true
     }
   },
@@ -67,7 +67,7 @@
     "options": {
       "module_path": "//modules/beta-autopilot-public-cluster",
       "private_cluster": false,
-      "autopilot_cluster": true, 
+      "autopilot_cluster": true,
       "beta_cluster": true
     }
   },
