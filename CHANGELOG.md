@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [14.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.0.1...v14.1.0) (2021-04-01)
+
+
+### Features
+
+* Default to using cos_containerd image for GKE Sandbox clusters ([#854](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/854)) ([1a2c26e](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1a2c26e7ebb5d5e553ceb47e5464f59ff96db4bb))
+
 ### [14.0.1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.0.0...v14.0.1) (2021-03-12)
 
 
