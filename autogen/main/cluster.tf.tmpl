@@ -57,7 +57,7 @@ resource "google_container_cluster" "primary" {
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
 {% if beta_cluster %}
-  default_snat_status{
+  default_snat_status {
     disabled = var.disable_default_snat
   }
 {% endif %}
@@ -121,7 +121,7 @@ resource "google_container_cluster" "primary" {
 {% endif %}
 {% endif %}
 {% if autopilot_cluster %}
-  enable_autopilot            = var.enable_autopilot
+  enable_autopilot = var.enable_autopilot
 {% endif %}
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config

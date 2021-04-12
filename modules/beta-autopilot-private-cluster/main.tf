@@ -42,7 +42,6 @@ locals {
   master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
 
-
   release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
 
   autoscalling_resource_limits = var.cluster_autoscaling.enabled ? [{
