@@ -45,3 +45,24 @@ provider "kubernetes" {
   token                  = module.gke_auth.token
 }
 ```
+
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| cluster\_name | The name of the GKE cluster. | `string` | n/a | yes |
+| location | The location (region or zone) of the GKE cluster. | `string` | n/a | yes |
+| project\_id | The GCP project of the GKE cluster. | `string` | n/a | yes |
+| use\_private\_endpoint | Connect on the private GKE cluster endpoint | `bool` | `false` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| cluster\_ca\_certificate | The cluster\_ca\_certificate value for use with the kubernetes provider. |
+| host | The host value for use with the kubernetes provider. |
+| kubeconfig\_raw | A kubeconfig file configured to access the GKE cluster. |
+| token | The token value for use with the kubernetes provider. |
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
