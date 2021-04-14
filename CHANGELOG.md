@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+### [14.1.1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.1.0...v14.1.1) (2021-04-14)
+
+
+### Bug Fixes
+
+* Correct ConfigManagement hierarchyController definition ([#861](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/861)) ([062bd5e](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/062bd5eb93bdd2ea2e7c3f98324aa0f793e22163))
+
 ## [14.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.0.1...v14.1.0) (2021-04-01)
 
 
