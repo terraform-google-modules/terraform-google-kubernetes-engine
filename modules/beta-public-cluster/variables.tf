@@ -554,12 +554,6 @@ variable "disable_default_snat" {
   default     = false
 }
 
-variable "impersonate_service_account" {
-  type        = string
-  description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
-  default     = ""
-}
-
 variable "notification_config_topic" {
   type        = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
