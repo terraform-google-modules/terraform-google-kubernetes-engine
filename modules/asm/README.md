@@ -43,6 +43,7 @@ To deploy this config:
 | cluster\_name | The unique name to identify the cluster in ASM. | `string` | n/a | yes |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
+| managed | Whether the control plane should be managed. | `bool` | `false` | no |
 | project\_id | The project in which the resource belongs. | `string` | n/a | yes |
 | service\_account\_key\_file | Path to service account key file to auth as for running `gcloud container clusters get-credentials`. | `string` | `""` | no |
 
