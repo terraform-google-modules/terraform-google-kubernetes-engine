@@ -56,3 +56,9 @@ variable "asm_version" {
   type        = string
   default     = "1.8"
 }
+
+variable "managed" {
+  description = "Whether the control plane should be managed."
+  type        = bool
+  default     = false
+}

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Copyright 2018 Google LLC
+
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,11 +25,31 @@ PROJECT_ID=$1
 CLUSTER_NAME=$2
 CLUSTER_LOCATION=$3
 ASM_VERSION=$4
+MANAGED=$5
 MODE="install"
 
-#download the correct version of the install_asm script
+# Download the correct version of the install_asm script
 curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_VERSION}" > install_asm
 chmod u+x install_asm
 
-#run the script with appropriate flags
-./install_asm --verbose --project_id "${PROJECT_ID}" --cluster_name "${CLUSTER_NAME}" --cluster_location "${CLUSTER_LOCATION}" --mode "${MODE}" --enable_cluster_labels --enable_cluster_roles
+declare -a params=(
+    "--verbose"
+    "--project_id ${PROJECT_ID}"
+    "--cluster_name ${CLUSTER_NAME}"
+    "--cluster_location ${CLUSTER_LOCATION}"
+    "--mode ${MODE}"
+    "--enable_cluster_labels"
+    "--enable_cluster_roles"
+)
+
+# Add the --managed param if MANAGED is set to true
+if [[ "${MANAGED}" == true ]]; then
+    params+=("--managed")
+fi
+
+# Run the script with appropriate flags
+echo "Running ./install_asm" "${params[@]}"
+
+# Disable shell linting. Other forms will prevent the command to work
+# shellcheck disable=SC2046,SC2116
+./install_asm $(echo "${params[@]}")
