@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [14.2.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.1.0...v14.2.0) (2021-04-16)
+
+
+### Features
+
+* Add managed ctrl plane option to ASM module ([#864](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/864)) ([7034f68](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7034f6821904e432b622c76085daa1f226f3a576))
+
+
+### Bug Fixes
+
+* Correct ConfigManagement hierarchyController definition ([#861](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/861)) ([062bd5e](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/062bd5eb93bdd2ea2e7c3f98324aa0f793e22163))
+
 ## [14.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.0.1...v14.1.0) (2021-04-01)
 
 
