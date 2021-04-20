@@ -41,7 +41,7 @@ variable "operator_latest_manifest_url" {
 }
 
 variable "enable_multi_repo" {
-  description = "Whether to use Config Sync [multi-repo mode](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/multi-repo#2.-moving-configuration)"
+  description = "Whether to use Config Sync [multi-repo mode](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/multi-repo)."
   type        = bool
   default     = false
 }
@@ -142,7 +142,7 @@ variable "hierarchy_controller" {
     Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing-hierarchy-controller)
     for more details
   EOF
-  type        = map
+  type        = map(any)
   default     = null
 }
 
