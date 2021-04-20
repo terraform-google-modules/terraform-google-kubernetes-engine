@@ -49,6 +49,7 @@ By default, this module will attempt to download the ACM operator from Google di
 | cluster\_name | GCP cluster Name used to reach cluster and which becomes the cluster name in the Config Sync kubernetes custom resource. | `string` | n/a | yes |
 | create\_ssh\_key | Controls whether a key will be generated for Git authentication | `bool` | `true` | no |
 | enable\_log\_denies | Whether to enable logging of all denies and dryrun failures for ACM Policy Controller. | `bool` | `false` | no |
+| enable\_multi\_repo | Whether to use ACM Config Sync [multi-repo mode](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/multi-repo#2.-moving-configuration). | `bool` | `false` | no |
 | enable\_policy\_controller | Whether to enable the ACM Policy Controller on the cluster | `bool` | `true` | no |
 | hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/anthos-config-management/docs/how-to/installing-hierarchy-controller) for more details | `map` | `null` | no |
 | install\_template\_library | Whether to install the default Policy Controller template library | `bool` | `true` | no |
@@ -62,6 +63,7 @@ By default, this module will attempt to download the ACM operator from Google di
 | ssh\_auth\_key | Key for Git authentication. Overrides 'create\_ssh\_key' variable. Can be set using 'file(path/to/file)'-function. | `string` | `null` | no |
 | sync\_branch | ACM repo Git branch. If un-set, uses Config Management default. | `string` | `""` | no |
 | sync\_repo | ACM Git repo address | `string` | n/a | yes |
+| sync\_revision | ACM repo Git revision. If un-set, uses Config Management default. | `string` | `""` | no |
 | use\_existing\_context | Use existing kubecontext to auth kube-api. | `bool` | `false` | no |
 
 ## Outputs
