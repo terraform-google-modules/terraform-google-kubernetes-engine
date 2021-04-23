@@ -133,7 +133,7 @@ data "template_file" "rootsync_config" {
 
 resource "time_sleep" "wait_for_configsync_api" {
   depends_on      = [module.k8sop_config.wait]
-  create_duration = "15s"
+  create_duration = "30s"
 }
 
 module "rootsync_config" {
