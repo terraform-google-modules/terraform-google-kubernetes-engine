@@ -50,6 +50,7 @@ module "gke" {
   master_ipv4_cidr_block     = "10.0.0.0/28"
   enable_autopilot           = true
 
+}
 ```
 
 <!-- do not understand what this is about -->

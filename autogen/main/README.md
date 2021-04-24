@@ -153,8 +153,8 @@ module "gke" {
       "default-node-pool",
     ]
   }
-}
 {% endif %}
+}
 ```
 
 <!-- do not understand what this is about -->

@@ -44,6 +44,7 @@ module "gke" {
   horizontal_pod_autoscaling = true
   enable_autopilot           = true
 
+}
 ```
 
 <!-- do not understand what this is about -->

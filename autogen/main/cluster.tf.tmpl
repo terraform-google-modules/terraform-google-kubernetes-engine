@@ -327,7 +327,7 @@ resource "google_container_cluster" "primary" {
     }
   }
   {% endif %}
-{% if beta_cluster %}
+{% if beta_cluster and autopilot_cluster != true %}
   dynamic "authenticator_groups_config" {
     for_each = local.cluster_authenticator_security_group
     content {
