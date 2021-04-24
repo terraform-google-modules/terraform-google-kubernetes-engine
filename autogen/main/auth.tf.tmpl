@@ -16,13 +16,3 @@
 
 {{ autogeneration_note }}
 
-/******************************************
-  Retrieve authentication token
- *****************************************/
-data "google_client_config" "default" {
-  {% if  beta_cluster %}
-  provider = google-beta
-  {% else %}
-  provider = google
-  {% endif %}
-}

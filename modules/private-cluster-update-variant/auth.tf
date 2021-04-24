@@ -16,9 +16,3 @@
 
 // This file was automatically generated from a template in ./autogen/main
 
-/******************************************
-  Retrieve authentication token
- *****************************************/
-data "google_client_config" "default" {
-  provider = google
-}
