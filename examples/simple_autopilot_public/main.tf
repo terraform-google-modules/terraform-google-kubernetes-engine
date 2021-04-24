@@ -33,19 +33,19 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                      = "../../modules/beta-autopilot-public-cluster/"
-  project_id                  = var.project_id
-  name                        = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                    = var.regional
-  region                      = var.region
-  zones                       = var.zones
-  network                     = var.network
-  subnetwork                  = var.subnetwork
-  ip_range_pods               = var.ip_range_pods
-  ip_range_services           = var.ip_range_services
-  create_service_account      = var.compute_engine_service_account == "create"
-  service_account             = var.compute_engine_service_account
-  release_channel             = "REGULAR"
-  enable_autopilot            = var.enable_autopilot
+  source                 = "../../modules/beta-autopilot-public-cluster/"
+  project_id             = var.project_id
+  name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  regional               = var.regional
+  region                 = var.region
+  zones                  = var.zones
+  network                = var.network
+  subnetwork             = var.subnetwork
+  ip_range_pods          = var.ip_range_pods
+  ip_range_services      = var.ip_range_services
+  create_service_account = var.compute_engine_service_account == "create"
+  service_account        = var.compute_engine_service_account
+  release_channel        = "REGULAR"
+  enable_autopilot       = var.enable_autopilot
 
 }

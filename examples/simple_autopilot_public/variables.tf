@@ -49,7 +49,7 @@ variable "compute_engine_service_account" {
 
 variable "enable_autopilot" {
   description = "Enabling autopiolt functionality"
-  default = true
+  default     = true
 }
 
 variable "dns_cache" {
