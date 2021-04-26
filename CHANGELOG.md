@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+### [14.2.1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.2.0...v14.2.1) (2021-04-26)
+
+
+### Bug Fixes
+
+* Remove unused local kubectl wrapper scripts ([#876](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/876)) ([110adb6](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/110adb6ba085a028ae4fa6505959ebef464272a3))
+
 ## [14.2.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.1.0...v14.2.0) (2021-04-16)
 
 
