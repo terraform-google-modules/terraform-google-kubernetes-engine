@@ -63,6 +63,12 @@ variable "mode" {
   default     = "install"
 }
 
+variable "managed_control_plane" {
+  description = "ASM managed control plane boolean. Supported mode is install."
+  type        = bool
+  default     = false
+}
+
 variable "options" {
   description = "Comma separated list of options. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
   type        = list

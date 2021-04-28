@@ -41,6 +41,6 @@ module "asm_install" {
   project_id               = var.project_id
   service_account_key_file = var.service_account_key_file
 
-  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version} ${var.mode} ${var.skip_validation} ${local.options_string} ${local.custom_overlays_string} ${var.enable_all_apis} ${var.outdir} ${var.ca} ${local.ca_cert} ${local.ca_key} ${local.root_cert} ${local.cert_chain}"
+  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version} ${var.mode} ${var.managed_control_plane} ${var.skip_validation} ${local.options_string} ${local.custom_overlays_string} ${var.enable_all_apis} ${var.outdir} ${var.ca} ${local.ca_cert} ${local.ca_key} ${local.root_cert} ${local.cert_chain}"
   kubectl_destroy_command = "kubectl delete ns istio-system"
 }
