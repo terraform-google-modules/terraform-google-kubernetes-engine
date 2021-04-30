@@ -150,7 +150,6 @@ resource "google_container_cluster" "primary" {
         end_time       = maintenance_exclusion.value.end_time
       }
     }
-
   }
   
 

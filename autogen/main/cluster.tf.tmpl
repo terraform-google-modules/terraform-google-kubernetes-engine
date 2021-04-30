@@ -232,7 +232,6 @@ resource "google_container_cluster" "primary" {
         end_time       = maintenance_exclusion.value.end_time
       }
     }
-
   {% else %}
     daily_maintenance_window {
       start_time = var.maintenance_start_time
