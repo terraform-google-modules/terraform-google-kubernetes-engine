@@ -61,7 +61,7 @@ resource "google_compute_firewall" "intra_egress" {
   https://github.com/kubernetes/kubernetes/issues/79739
  *****************************************/
 resource "google_compute_firewall" "master_webhooks" {
-  count       = var.add_cluster_firewall_rules ? 1 : 0
+  count       = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules ? 1 : 0
   name        = "gke-${substr(var.name, 0, min(25, length(var.name)))}-webhooks"
   description = "Managed by terraform gke module: Allow master to hit pods for admission controllers/webhooks"
   project     = local.network_project_id
