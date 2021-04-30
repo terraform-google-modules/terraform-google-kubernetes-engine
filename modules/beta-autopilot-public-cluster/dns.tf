@@ -33,7 +33,6 @@ module "gcloud_delete_default_kube_dns_configmap" {
   kubectl_destroy_command = ""
 
   module_depends_on = concat(
-    [data.google_client_config.default.access_token],
     [google_container_cluster.primary.master_version],
   )
 }
@@ -61,7 +60,6 @@ EOF
 
   depends_on = [
     module.gcloud_delete_default_kube_dns_configmap.wait,
-    data.google_client_config.default,
     google_container_cluster.primary,
   ]
 }
@@ -87,7 +85,6 @@ EOF
 
   depends_on = [
     module.gcloud_delete_default_kube_dns_configmap.wait,
-    data.google_client_config.default,
     google_container_cluster.primary,
   ]
 }
@@ -116,7 +113,6 @@ EOF
 
   depends_on = [
     module.gcloud_delete_default_kube_dns_configmap.wait,
-    data.google_client_config.default,
     google_container_cluster.primary,
   ]
 }

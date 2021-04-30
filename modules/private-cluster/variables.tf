@@ -418,7 +418,6 @@ variable "enable_shielded_nodes" {
   default     = true
 }
 
-
 variable "enable_binary_authorization" {
   description = "Enable BinAuthZ Admission controller"
   default     = false

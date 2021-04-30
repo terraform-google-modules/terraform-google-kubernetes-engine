@@ -63,7 +63,7 @@ resource "google_container_cluster" "primary" {
 {% endif %}
   min_master_version = var.release_channel != null ? null : local.master_version
 
-{% if beta_cluster %}
+{% if beta_cluster and  autopilot_cluster != true %}
   dynamic "cluster_telemetry" {
     for_each = local.cluster_telemetry_type_is_set ? [1] : []
     content {
@@ -121,7 +121,7 @@ resource "google_container_cluster" "primary" {
 {% endif %}
 {% endif %}
 {% if autopilot_cluster %}
-  enable_autopilot = var.enable_autopilot
+  enable_autopilot = true
 {% endif %}
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
@@ -158,7 +158,7 @@ resource "google_container_cluster" "primary" {
       disabled = ! var.network_policy
     }
     {% endif %}
-    {% if beta_cluster %}
+    {% if beta_cluster and auto_pilot != true %}
 
     istio_config {
       disabled = ! var.istio
@@ -239,10 +239,12 @@ resource "google_container_cluster" "primary" {
     }
   {% endif %}
   }
-
+  
+{% if autopilot_cluster != true %}
   lifecycle {
     ignore_changes = [node_pool, initial_node_count]
   }
+  {% endif %}
 
   timeouts {
     create = "45m"
@@ -308,7 +310,6 @@ resource "google_container_cluster" "primary" {
 {% endif %}
   {% if autopilot_cluster != true %}
   remove_default_node_pool = var.remove_default_node_pool
-  {% endif %}
 
   dynamic "database_encryption" {
     for_each = var.database_encryption
@@ -318,7 +319,7 @@ resource "google_container_cluster" "primary" {
       state    = database_encryption.value.state
     }
   }
-  {% if autopilot_cluster != true %}
+
   dynamic "workload_identity_config" {
     for_each = local.cluster_workload_identity_config
 

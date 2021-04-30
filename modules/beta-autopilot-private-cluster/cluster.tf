@@ -47,18 +47,12 @@ resource "google_container_cluster" "primary" {
   }
   min_master_version = var.release_channel != null ? null : local.master_version
 
-  dynamic "cluster_telemetry" {
-    for_each = local.cluster_telemetry_type_is_set ? [1] : []
-    content {
-      type = var.cluster_telemetry_type
-    }
-  }
-  logging_service    = local.cluster_telemetry_type_is_set ? null : var.logging_service
-  monitoring_service = local.cluster_telemetry_type_is_set ? null : var.monitoring_service
+  logging_service    = var.logging_service
+  monitoring_service = var.monitoring_service
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
-  enable_autopilot = var.enable_autopilot
+  enable_autopilot = true
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -158,10 +152,7 @@ resource "google_container_cluster" "primary" {
     }
 
   }
-
-  lifecycle {
-    ignore_changes = [node_pool, initial_node_count]
-  }
+  
 
   timeouts {
     create = "45m"
@@ -201,15 +192,6 @@ resource "google_container_cluster" "primary" {
           enabled = master_global_access_config.value
         }
       }
-    }
-  }
-
-  dynamic "database_encryption" {
-    for_each = var.database_encryption
-
-    content {
-      key_name = database_encryption.value.key_name
-      state    = database_encryption.value.state
     }
   }
 }

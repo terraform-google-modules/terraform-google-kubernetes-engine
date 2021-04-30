@@ -41,7 +41,6 @@ EOF
   }
 
   depends_on = [
-    data.google_client_config.default,
     google_container_cluster.primary,
   ]
 }
