@@ -139,7 +139,7 @@ resource "time_sleep" "wait_for_configsync_api" {
 module "rootsync_config" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version = "~> 2.0.2"
-  enabled = var.enable_multi_repo ? true : false
+  enabled = var.enable_multi_repo
 
   module_depends_on        = [time_sleep.wait_for_configsync_api]
   cluster_name             = var.cluster_name
