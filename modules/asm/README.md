@@ -10,12 +10,12 @@ There is a [full example](../../examples/simple_zonal_with_asm) provided. Detail
 
 ```tf
 module "asm" {
-  source           = "terraform-google-modules/kubernetes-engine/google//modules/asm"
+  source                = "terraform-google-modules/kubernetes-engine/google//modules/asm"
 
-  project_id       = "my-project-id"
-  cluster_name     = "my-cluster-name"
-  location         = module.gke.location
-  cluster_endpoint = module.gke.endpoint
+  project_id            = "my-project-id"
+  cluster_name          = "my-cluster-name"
+  location              = module.gke.location
+  cluster_endpoint      = module.gke.endpoint
   enable_all            = false
   enable_cluster_roles  = true
   enable_cluster_labels = false
