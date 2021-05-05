@@ -205,6 +205,7 @@ Then perform the following commands on the root folder:
 | Name | Description |
 |------|-------------|
 | ca\_certificate | Cluster ca certificate (base64 encoded) |
+| cluster\_id | Cluster ID |
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
