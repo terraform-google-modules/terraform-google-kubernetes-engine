@@ -82,7 +82,7 @@ variable "custom_overlays" {
 }
 
 variable "skip_validation" {
-  description = "Sets _CI_NO_VALIDATE variable. Determines whether the script should perform validation checks for prerequisites such as IAM roles, Google APIs etc."
+  description = "Sets `_CI_NO_VALIDATE` variable. Determines whether the script should perform validation checks for prerequisites such as IAM roles, Google APIs etc."
   type        = bool
   default     = false
 }

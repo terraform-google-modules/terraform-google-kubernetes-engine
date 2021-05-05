@@ -70,7 +70,7 @@ To deploy this config:
 | outdir | Sets `--outdir` option. | `string` | `"none"` | no |
 | project\_id | The project in which the resource belongs. | `string` | n/a | yes |
 | service\_account\_key\_file | Path to service account key file to auth as for running `gcloud container clusters get-credentials`. | `string` | `""` | no |
-| skip\_validation | Sets \_CI\_NO\_VALIDATE variable. Determines whether the script should perform validation checks for prerequisites such as IAM roles, Google APIs etc. | `bool` | `false` | no |
+| skip\_validation | Sets `_CI_NO_VALIDATE` variable. Determines whether the script should perform validation checks for prerequisites such as IAM roles, Google APIs etc. | `bool` | `false` | no |
 
 ## Outputs
 
