@@ -45,24 +45,37 @@ To deploy this config:
 - One ASM mesh per Google Cloud project is supported.
 
  <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-
 ## Inputs
 
-| Name                     | Description                                                                                                                     | Type     | Default     | Required |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- | :------: |
-| asm_dir                  | Name of directory to keep ASM resource config files.                                                                            | `string` | `"asm-dir"` |    no    |
-| asm_version              | ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"1.8"`     |    no    |
-| cluster_endpoint         | The GKE cluster endpoint.                                                                                                       | `string` | n/a         |   yes    |
-| cluster_name             | The unique name to identify the cluster in ASM.                                                                                 | `string` | n/a         |   yes    |
-| gcloud_sdk_version       | The gcloud sdk version to use. Minimum required version is 293.0.0                                                              | `string` | `"296.0.1"` |    no    |
-| location                 | The location (zone or region) this cluster has been created in.                                                                 | `string` | n/a         |   yes    |
-| project_id               | The project in which the resource belongs.                                                                                      | `string` | n/a         |   yes    |
-| service_account_key_file | Path to service account key file to auth as for running `gcloud container clusters get-credentials`.                            | `string` | `""`        |    no    |
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| asm\_version | ASM version to deploy. This module supports versions `1.8` and `1.9`. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"1.9"` | no |
+| ca | Sets CA option. Possible values are `meshca` or `citadel`. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca. | `string` | `"meshca"` | no |
+| ca\_certs | Sets CA certificate file paths when `ca` is set to `citadel`. These values must be provided when using Citadel as CA. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca. | `map` | <pre>{<br>  "ca_cert": "none",<br>  "ca_key": "none",<br>  "cert_chain": "none",<br>  "root_cert": "none"<br>}</pre> | no |
+| cluster\_endpoint | The GKE cluster endpoint. | `string` | n/a | yes |
+| cluster\_name | The unique name to identify the cluster in ASM. | `string` | n/a | yes |
+| custom\_overlays | Comma separated list of custom\_overlay file paths. Works with in-cluster control plane only. Additional documentation available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_an_overlay_file | `list` | <pre>[<br>  "none"<br>]</pre> | no |
+| enable\_all | Sets `--enable_all` option if true. | `bool` | `false` | no |
+| enable\_cluster\_labels | Sets `--enable_cluster_labels` option if true. | `bool` | `false` | no |
+| enable\_cluster\_roles | Sets `--enable_cluster_roles` option if true. | `bool` | `false` | no |
+| enable\_gcp\_apis | Sets `--enable_gcp_apis` option if true. | `bool` | `false` | no |
+| enable\_gcp\_components | Sets --enable\_gcp\_components option if true. Can be true or false. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `bool` | `false` | no |
+| enable\_gcp\_iam\_roles | Sets `--enable_gcp_iam_roles` option if true. | `bool` | `false` | no |
+| enable\_registration | Sets `--enable_registration` option if true. | `bool` | `false` | no |
+| gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |
+| location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
+| managed\_control\_plane | ASM managed control plane boolean. Determines whether to install ASM managed control plane. Installing ASM managed control plane does not install gateways. Documentation on how to install gateways with ASM MCP can be found at https://cloud.google.com/service-mesh/docs/managed-control-plane#install_istio_gateways_optional. | `bool` | `false` | no |
+| mode | ASM mode for deployment. Supported mode is `install` only. | `string` | `"install"` | no |
+| options | Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features. | `list` | <pre>[<br>  "none"<br>]</pre> | no |
+| outdir | Sets `--outdir` option. | `string` | `"none"` | no |
+| project\_id | The project in which the resource belongs. | `string` | n/a | yes |
+| service\_account\_key\_file | Path to service account key file to auth as for running `gcloud container clusters get-credentials`. | `string` | `""` | no |
+| skip\_validation | Sets \_CI\_NO\_VALIDATE variable. Determines whether the script should perform validation checks for prerequisites such as IAM roles, Google APIs etc. | `bool` | `false` | no |
 
 ## Outputs
 
-| Name     | Description                                               |
-| -------- | --------------------------------------------------------- |
-| asm_wait | An output to use when you want to depend on ASM finishing |
+| Name | Description |
+|------|-------------|
+| asm\_wait | An output to use when you want to depend on ASM finishing |
 
  <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
