@@ -30,12 +30,18 @@ SKIP_VALIDATION=$7
 OPTIONS_LIST=$8
 CUSTOM_OVERLAYS_LIST=$9
 ENABLE_ALL=${10}
-OUTDIR=${11}
-CA=${12}
-CA_CERT=${13}
-CA_KEY=${14}
-ROOT_CERT=${15}
-CERT_CHAIN=${16}
+ENABLE_CLUSTER_ROLES=${11}
+ENABLE_CLUSTER_LABELS=${12}
+ENABLE_GCP_APIS=${13}
+ENABLE_GCP_IAM_ROLES=${14}
+ENABLE_GCP_COMPONENTS=${15}
+ENABLE_REGISTRATION=${16}
+OUTDIR=${17}
+CA=${18}
+CA_CERT=${19}
+CA_KEY=${20}
+ROOT_CERT=${21}
+CERT_CHAIN=${22}
 
 # Set SKIP_VALIDATION variable
 if [[ ${SKIP_VALIDATION} = "true" ]]; then 
@@ -70,6 +76,12 @@ echo -e "CUSTOM_OVERLAYS array length is ${#CUSTOM_OVERLAYS[@]}"
 item="${CUSTOM_OVERLAYS[@]}";CUSTOM_OVERLAYS_COMMAND=$(echo "--custom_overlay" ${item// / --custom_overlay })
 echo -e "CUSTOM_OVERLAYS_COMMAND is $CUSTOM_OVERLAYS_COMMAND"
 echo -e "ENABLE_ALL is $ENABLE_ALL"
+echo -e "ENABLE_CLUSTER_ROLES is $ENABLE_CLUSTER_ROLES"
+echo -e "ENABLE_CLUSTER_LABELS is $ENABLE_CLUSTER_LABELS"
+echo -e "ENABLE_GCP_APIS is $ENABLE_GCP_APIS"
+echo -e "ENABLE_GCP_IAM_ROLES is $ENABLE_GCP_IAM_ROLES"
+echo -e "ENABLE_GCP_COMPONENTS is $ENABLE_GCP_COMPONENTS"
+echo -e "ENABLE_REGISTRATION is $ENABLE_REGISTRATION"
 echo -e "OUTDIR is $OUTDIR"
 
 #download the correct version of the install_asm script
@@ -84,13 +96,13 @@ else
 fi
 
 # Craft options section for install_asm
-if [[ "${OPTIONS_COMMAND}" = "--option none" ]] || [[ "${MCP}" = true ]]; then
+if [[ "${OPTIONS_COMMAND}" = "--option none" ]]; then
     OPTIONS_COMMAND_SNIPPET=""
 else
     OPTIONS_COMMAND_SNIPPET="${OPTIONS_COMMAND}"
 fi
 
-if [[ "${CUSTOM_OVERLAYS_COMMAND}" = "--custom_overlay none" ]] || [[ "${MCP}" = true ]]; then
+if [[ "${CUSTOM_OVERLAYS_COMMAND}" = "--custom_overlay none" ]]; then
     CUSTOM_OVERLAYS_COMMAND_SNIPPET=""
 else
     CUSTOM_OVERLAYS_COMMAND_SNIPPET="${CUSTOM_OVERLAYS_COMMAND}"
@@ -102,6 +114,42 @@ else
     ENABLE_ALL_COMMAND_SNIPPET="--enable_all"
 fi
 
+if [[ "${ENABLE_CLUSTER_ROLES}" = false ]]; then
+    ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET=""
+else
+    ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET="--enable_cluster_roles"
+fi
+
+if [[ "${ENABLE_CLUSTER_LABELS}" = false ]]; then
+    ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET=""
+else
+    ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET="--enable_cluster_labels"
+fi
+
+if [[ "${ENABLE_GCP_APIS}" = false ]]; then
+    ENABLE_GCP_APIS_COMMAND_SNIPPET=""
+else
+    ENABLE_GCP_APIS_COMMAND_SNIPPET="--enable_gcp_apis"
+fi
+
+if [[ "${ENABLE_GCP_IAM_ROLES}" = false ]]; then
+    ENABLE_GCP_IAM_ROLES_COMMAND_SNIPPET=""
+else
+    ENABLE_GCP_IAM_ROLES_COMMAND_SNIPPET="--enable_gcp_iam_roles"
+fi
+
+if [[ "${ENABLE_GCP_COMPONENTS}" = false ]]; then
+    ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET=""
+else
+    ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET="--enable_gcp_components"
+fi
+
+if [[ "${ENABLE_REGISTRATION}" = false ]]; then
+    ENABLE_REGISTRATION_COMMAND_SNIPPET=""
+else
+    ENABLE_REGISTRATION_COMMAND_SNIPPET="--enable_registration"
+fi
+
 if [[ "${OUTDIR}" = "none" ]]; then
     OUTDIR_COMMAND_SNIPPET=""
 else
@@ -109,14 +157,14 @@ else
     mkdir -p ${OUTDIR}
 fi
 
-if [[ "${CA}" = "citadel" ]] && [[ "${MCP}" = false ]]; then
+if [[ "${CA}" = "citadel" ]]; then
     CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root_cert ${ROOT_CERT} --cert_chain ${CERT_CHAIN}"
 else
     CA_COMMAND_SNIPPET=""
 fi
 
 # Echo the command before executing
-echo -e "install_asm_${ASM_VERSION} --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} ${MCP_COMMAND_SNIPPET} ${OPTIONS_COMMAND_SNIPPET} ${CUSTOM_OVERLAYS_COMMAND_SNIPPET} ${OUTDIR_COMMAND_SNIPPET} ${ENABLE_ALL_COMMAND_SNIPPET} ${CA_COMMAND_SNIPPET}"
+echo -e "install_asm_${ASM_VERSION} --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} ${MCP_COMMAND_SNIPPET} ${OPTIONS_COMMAND_SNIPPET} ${CUSTOM_OVERLAYS_COMMAND_SNIPPET} ${OUTDIR_COMMAND_SNIPPET} ${ENABLE_ALL_COMMAND_SNIPPET} ${ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET} ${ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET} ${ENABLE_GCP_APIS_COMMAND_SNIPPET} ${ENABLE_GCP_IAM_ROLES_COMMAND_SNIPPET} ${ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET} ${ENABLE_REGISTRATION_COMMAND_SNIPPET} ${CA_COMMAND_SNIPPET}"
 
 # #run the script with appropriate flags
-./install_asm_${ASM_VERSION} --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} ${MCP_COMMAND_SNIPPET} ${OPTIONS_COMMAND_SNIPPET} ${CUSTOM_OVERLAYS_COMMAND_SNIPPET} ${OUTDIR_COMMAND_SNIPPET} ${ENABLE_ALL_COMMAND_SNIPPET} ${CA_COMMAND_SNIPPET}
+./install_asm_${ASM_VERSION} --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} ${MCP_COMMAND_SNIPPET} ${OPTIONS_COMMAND_SNIPPET} ${CUSTOM_OVERLAYS_COMMAND_SNIPPET} ${OUTDIR_COMMAND_SNIPPET} ${ENABLE_ALL_COMMAND_SNIPPET}  ${ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET} ${ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET} ${ENABLE_GCP_APIS_COMMAND_SNIPPET} ${ENABLE_GCP_IAM_ROLES_COMMAND_SNIPPET} ${ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET} ${ENABLE_REGISTRATION_COMMAND_SNIPPET} ${CA_COMMAND_SNIPPET}

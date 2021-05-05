@@ -40,11 +40,11 @@ variable "gcloud_sdk_version" {
   default     = "296.0.1"
 }
 
-variable "asm_dir" {
-  description = "Name of directory to keep ASM resource config files."
-  type        = string
-  default     = "asm-dir"
-}
+# variable "asm_dir" {
+#   description = "Name of directory to keep ASM resource config files."
+#   type        = string
+#   default     = "asm-dir"
+# }
 
 variable "service_account_key_file" {
   description = "Path to service account key file to auth as for running `gcloud container clusters get-credentials`."
@@ -52,61 +52,97 @@ variable "service_account_key_file" {
 }
 
 variable "asm_version" {
-  description = "ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  description = "ASM version to deploy. This module supports versions `1.8` and `1.9`. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
   type        = string
   default     = "1.9"
 }
 
 variable "mode" {
-  description = "ASM mode for deployment. Supported mode is install. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  description = "ASM mode for deployment. Supported mode is `install` only."
   type        = string
   default     = "install"
 }
 
 variable "managed_control_plane" {
-  description = "ASM managed control plane boolean. Supported mode is install."
+  description = "ASM managed control plane boolean. Determines whether to install ASM managed control plane. Installing ASM managed control plane does not install gateways. Documentation on how to install gateways with ASM MCP can be found at https://cloud.google.com/service-mesh/docs/managed-control-plane#install_istio_gateways_optional."
   type        = bool
   default     = false
 }
 
 variable "options" {
-  description = "Comma separated list of options. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  description = "Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features."
   type        = list
   default     = ["none"]
 }
 
 variable "custom_overlays" {
-  description = "Comma separated list of custom_overlay file paths. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  description = "Comma separated list of custom_overlay file paths. Works with in-cluster control plane only. Additional documentation available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_an_overlay_file"
   type        = list
   default     = ["none"]
 }
 
 variable "skip_validation" {
-  description = "Sets _CI_NO_VALIDATE variable. Can be true or false. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  description = "Sets _CI_NO_VALIDATE variable. Determines whether the script should perform validation checks for prerequisites such as IAM roles, Google APIs etc."
   type        = bool
   default     = false
 }
 
-variable "enable_all_apis" {
-  description = "Sets --enable-all option if true. Can be true or false. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+variable "enable_all" {
+  description = "Sets `--enable_all` option if true."
+  type        = bool
+  default     = false
+}
+
+variable "enable_cluster_roles" {
+  description = "Sets `--enable_cluster_roles` option if true."
+  type        = bool
+  default     = false
+}
+
+variable "enable_cluster_labels" {
+  description = "Sets `--enable_cluster_labels` option if true."
+  type        = bool
+  default     = false
+}
+
+variable "enable_gcp_apis" {
+  description = "Sets `--enable_gcp_apis` option if true."
+  type        = bool
+  default     = false
+}
+
+variable "enable_gcp_iam_roles" {
+  description = "Sets `--enable_gcp_iam_roles` option if true."
+  type        = bool
+  default     = false
+}
+
+variable "enable_gcp_components" {
+  description = "Sets --enable_gcp_components option if true. Can be true or false. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  type        = bool
+  default     = false
+}
+
+variable "enable_registration" {
+  description = "Sets `--enable_registration` option if true."
   type        = bool
   default     = false
 }
 
 variable "outdir" {
-  description = "Sets --outdir option. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  description = "Sets `--outdir` option."
   type        = string
   default     = "none"
 }
 
 variable "ca" {
-  description = "Sets CA option. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  description = "Sets CA option. Possible values are `meshca` or `citadel`. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca."
   type        = string
   default     = "meshca"
 }
 
 variable "ca_certs" {
-  description = "Sets CA certificate file paths. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  description = "Sets CA certificate file paths when `ca` is set to `citadel`. These values must be provided when using Citadel as CA. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca."
   type        = map
   default = {
     "ca_cert"    = "none"
