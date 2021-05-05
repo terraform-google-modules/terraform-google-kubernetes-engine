@@ -518,6 +518,12 @@ variable "add_cluster_firewall_rules" {
   default     = false
 }
 
+variable "add_master_webhook_firewall_rules" {
+  type        = bool
+  description = "Create master_webhook firewall rules for ports defined in `firewall_inbound_ports`"
+  default     = false
+}
+
 variable "firewall_priority" {
   type        = number
   description = "Priority rule for firewall rules"
@@ -526,7 +532,7 @@ variable "firewall_priority" {
 
 variable "firewall_inbound_ports" {
   type        = list(string)
-  description = "List of TCP ports for admission/webhook controllers"
+  description = "List of TCP ports for admission/webhook controllers. Either flag `add_master_webhook_firewall_rules` or `add_cluster_firewall_rules` (also adds egress rules) must be set to `true` for inbound-ports firewall rules to be applied."
   default     = ["8443", "9443", "15017"]
 }
 

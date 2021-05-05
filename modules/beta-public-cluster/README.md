@@ -127,6 +127,7 @@ Then perform the following commands on the root folder:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | add\_cluster\_firewall\_rules | Create additional firewall rules | `bool` | `false` | no |
+| add\_master\_webhook\_firewall\_rules | Create master\_webhook firewall rules for ports defined in `firewall_inbound_ports` | `bool` | `false` | no |
 | add\_shadow\_firewall\_rules | Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled). | `bool` | `false` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
 | basic\_auth\_password | The password to be used with Basic Authentication. | `string` | `""` | no |
@@ -156,7 +157,7 @@ Then perform the following commands on the root folder:
 | enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster | `bool` | `true` | no |
 | enable\_tpu | Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive! | `bool` | `false` | no |
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | `bool` | `false` | no |
-| firewall\_inbound\_ports | List of TCP ports for admission/webhook controllers | `list(string)` | <pre>[<br>  "8443",<br>  "9443",<br>  "15017"<br>]</pre> | no |
+| firewall\_inbound\_ports | List of TCP ports for admission/webhook controllers. Either flag `add_master_webhook_firewall_rules` or `add_cluster_firewall_rules` (also adds egress rules) must be set to `true` for inbound-ports firewall rules to be applied. | `list(string)` | <pre>[<br>  "8443",<br>  "9443",<br>  "15017"<br>]</pre> | no |
 | firewall\_priority | Priority rule for firewall rules | `number` | `1000` | no |
 | gce\_pd\_csi\_driver | (Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. | `bool` | `false` | no |
 | gcloud\_upgrade | Whether to upgrade gcloud at runtime | `bool` | `false` | no |
@@ -219,6 +220,7 @@ Then perform the following commands on the root folder:
 |------|-------------|
 | ca\_certificate | Cluster ca certificate (base64 encoded) |
 | cloudrun\_enabled | Whether CloudRun enabled |
+| cluster\_id | Cluster ID |
 | dns\_cache\_enabled | Whether DNS Cache enabled |
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
