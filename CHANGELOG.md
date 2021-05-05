@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [14.3.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.2.0...v14.3.0) (2021-05-05)
+
+
+### Features
+
+* Introduce add_master_webhook_firewall_rules flag to add webhooks ([#882](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/882)) ([8a5dcb8](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8a5dcb8ed0c38e5f89eaa4b370f65c431d1c6bb8))
+* **workload-identity:** add entire GSA in output ([#887](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/887)) ([734ce5d](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/734ce5d285c517a33c9f1881390a1b8f59df0dd1))
+
+
+### Bug Fixes
+
+* Add cluster ID to outputs ([#886](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/886)) ([fc34eb6](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/fc34eb64a1bc117503573894353854a32ff88402))
+* Remove data google_client_config from all modules as it is no longer used within modules ([#875](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/875)) ([687dc71](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/687dc719b0596c892b4143656fea7570da90f372))
+* Remove unused local kubectl wrapper scripts ([#876](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/876)) ([110adb6](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/110adb6ba085a028ae4fa6505959ebef464272a3))
+
 ## [14.2.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.1.0...v14.2.0) (2021-04-16)
 
 
