@@ -19,12 +19,13 @@ data "google_project" "asm_project" {
 }
 
 locals {
-  kubectl_create_command_base = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version}"
+  options                     = "${var.managed} ${var.enable_all} ${var.enable_cluster_labels} ${var.enable_cluster_roles} ${var.enable_gcp_apis} ${var.enable_gcp_iam_roles} ${var.enable_gcp_components} ${var.enable_registration} ${var.disable_canonical_service}"
+  kubectl_create_command_base = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version} ${local.options}"
 }
 
 module "asm_install" {
   source            = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version           = "~> 2.0.2"
+  version           = "~> 2.0.3"
   module_depends_on = [var.cluster_endpoint]
 
   gcloud_sdk_version       = var.gcloud_sdk_version
@@ -35,6 +36,6 @@ module "asm_install" {
   project_id               = var.project_id
   service_account_key_file = var.service_account_key_file
 
-  kubectl_create_command  = var.managed ? "${local.kubectl_create_command_base} ${var.managed}" : local.kubectl_create_command_base
+  kubectl_create_command  = local.kubectl_create_command_base
   kubectl_destroy_command = "kubectl delete ns istio-system"
 }

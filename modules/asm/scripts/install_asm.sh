@@ -25,7 +25,15 @@ PROJECT_ID=$1
 CLUSTER_NAME=$2
 CLUSTER_LOCATION=$3
 ASM_VERSION=$4
-MANAGED=$5
+MANAGED=${5:-false}
+ENABLE_ALL=${6:-false}
+ENABLE_CLUSTER_LABELS=${7:-false}
+ENABLE_CLUSTER_ROLES=${8:-false}
+ENABLE_GCP_APIS=${9:-false}
+ENABLE_GCP_IAM_ROLES=${10:-false}
+ENABLE_GCP_COMPONENTS=${11:-false}
+ENABLE_REGISTRATION=${12:-false}
+DISABLE_CANNONICAL_SERVICE=${13:-false}
 MODE="install"
 
 # Download the correct version of the install_asm script
@@ -38,13 +46,38 @@ declare -a params=(
     "--cluster_name ${CLUSTER_NAME}"
     "--cluster_location ${CLUSTER_LOCATION}"
     "--mode ${MODE}"
-    "--enable_cluster_labels"
-    "--enable_cluster_roles"
 )
 
 # Add the --managed param if MANAGED is set to true
 if [[ "${MANAGED}" == true ]]; then
     params+=("--managed")
+fi
+
+if [[ "${ENABLE_ALL}" == true ]]; then
+    params+=("--enable_all")
+else
+    if [[ "${ENABLE_CLUSTER_LABELS}" == true ]]; then
+        params+=("--enable_cluster_labels")
+    fi
+    if [[ "${ENABLE_CLUSTER_ROLES}" == true ]]; then
+        params+=("--enable_cluster_roles")
+    fi
+    if [[ "${ENABLE_GCP_APIS}" == true ]]; then
+        params+=("--enable_gcp_apis")
+    fi
+    if [[ "${ENABLE_GCP_IAM_ROLES}" == true ]]; then
+        params+=("--enable_gcp_iam_roles")
+    fi
+    if [[ "${ENABLE_GCP_COMPONENTS}" == true ]]; then
+        params+=("--enable_gcp_components")
+    fi
+    if [[ "${ENABLE_REGISTRATION}" == true ]]; then
+        params+=("--enable_registration")
+    fi
+fi
+
+if [[ "${DISABLE_CANNONICAL_SERVICE}" == true ]]; then
+    params+=("--disable_canonical_service")
 fi
 
 # Run the script with appropriate flags

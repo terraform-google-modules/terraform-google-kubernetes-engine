@@ -37,7 +37,7 @@ variable "location" {
 variable "gcloud_sdk_version" {
   description = "The gcloud sdk version to use. Minimum required version is 293.0.0"
   type        = string
-  default     = "296.0.1"
+  default     = "337.0.0"
 }
 
 variable "asm_dir" {
@@ -54,11 +54,59 @@ variable "service_account_key_file" {
 variable "asm_version" {
   description = "ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
   type        = string
-  default     = "1.8"
+  default     = "1.9"
 }
 
 variable "managed" {
   description = "Whether the control plane should be managed."
+  type        = bool
+  default     = false
+}
+
+variable "enable_all" {
+  description = "Whether you want to enable all asm script option."
+  type        = bool
+  default     = false
+}
+
+variable "enable_cluster_labels" {
+  description = "Whether the ASM's GKE cluster labels should be added."
+  type        = bool
+  default     = false
+}
+
+variable "enable_cluster_roles" {
+  description = "Whether the cluster roles should be managed."
+  type        = bool
+  default     = false
+}
+
+variable "enable_gcp_apis" {
+  description = "Whether the GCP APIs should be managed."
+  type        = bool
+  default     = false
+}
+
+variable "enable_gcp_iam_roles" {
+  description = "Whether the GCP IAM roles should be managed."
+  type        = bool
+  default     = false
+}
+
+variable "enable_gcp_components" {
+  description = "Whether the GCP components should be managed."
+  type        = bool
+  default     = false
+}
+
+variable "enable_registration" {
+  description = "Whether the cluster registration should be managed."
+  type        = bool
+  default     = false
+}
+
+variable "disable_canonical_service" {
+  description = "Whether the canonical service should be disabled."
   type        = bool
   default     = false
 }

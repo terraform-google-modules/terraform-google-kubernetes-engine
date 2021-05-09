@@ -38,10 +38,18 @@ To deploy this config:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | asm\_dir | Name of directory to keep ASM resource config files. | `string` | `"asm-dir"` | no |
-| asm\_version | ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"1.8"` | no |
+| asm\_version | ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"1.9"` | no |
 | cluster\_endpoint | The GKE cluster endpoint. | `string` | n/a | yes |
 | cluster\_name | The unique name to identify the cluster in ASM. | `string` | n/a | yes |
-| gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |
+| disable_canonical_service | Whether the canonical service should be disabled. | `bool` | `false` | no |
+| enable_all | Whether you want to enable all asm script option. | `bool` | `false` | no |
+| enable_cluster_labels | Whether the ASM's GKE cluster labels should be added. | `bool` | `false` | no |
+| enable_cluster_roles | Whether the cluster roles should be managed. | `bool` | `false` | no |
+| enable_gcp_apis | Whether the GCP APIs should be managed. | `bool` | `false` | no |
+| enable_gcp_components | Whether the GCP components should be managed. | `bool` | `false` | no |
+| enable_gcp_iam_roles | Whether the GCP IAM roles should be managed. | `bool` | `false` | no |
+| enable_registration | Whether the cluster registration should be managed. | `bool` | `false` | no |
+| gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"337.0.0"` | no |
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
 | managed | Whether the control plane should be managed. | `bool` | `false` | no |
 | project\_id | The project in which the resource belongs. | `string` | n/a | yes |
