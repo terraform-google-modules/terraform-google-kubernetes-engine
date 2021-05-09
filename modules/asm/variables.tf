@@ -76,25 +76,25 @@ variable "enable_cluster_labels" {
 }
 
 variable "enable_cluster_roles" {
-  description = "Whether the cluster roles should be managed."
+  description = "Whether the needed cluster roles should be added."
   type        = bool
   default     = false
 }
 
 variable "enable_gcp_apis" {
-  description = "Whether the GCP APIs should be managed."
+  description = "Whether the needed GCP APIs should be activated."
   type        = bool
   default     = false
 }
 
 variable "enable_gcp_iam_roles" {
-  description = "Whether the GCP IAM roles should be managed."
+  description = "Whether the `resourcemanager.projectIamAdmin` IAM roles should be set."
   type        = bool
   default     = false
 }
 
 variable "enable_gcp_components" {
-  description = "Whether the GCP components should be managed."
+  description = "Whether `workload_identity` and `stackdriver-kubernetes` should be activated."
   type        = bool
   default     = false
 }

@@ -41,14 +41,14 @@ To deploy this config:
 | asm\_version | ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"1.9"` | no |
 | cluster\_endpoint | The GKE cluster endpoint. | `string` | n/a | yes |
 | cluster\_name | The unique name to identify the cluster in ASM. | `string` | n/a | yes |
-| disable_canonical_service | Whether the canonical service should be disabled. | `bool` | `false` | no |
-| enable_all | Whether you want to enable all asm script option. | `bool` | `false` | no |
-| enable_cluster_labels | Whether the ASM's GKE cluster labels should be added. | `bool` | `false` | no |
-| enable_cluster_roles | Whether the needed cluster roles should be added. | `bool` | `false` | no |
-| enable_gcp_apis | Whether the needed GCP APIs should be activated. | `bool` | `false` | no |
-| enable_gcp_components | Whether `workload_identity` and `stackdriver-kubernetes` should be activated. | `bool` | `false` | no |
-| enable_gcp_iam_roles | Whether the `resourcemanager.projectIamAdmin` IAM roles should be set. | `bool` | `false` | no |
-| enable_registration | Whether the cluster registration should be managed. | `bool` | `false` | no |
+| disable\_canonical\_service | Whether the canonical service should be disabled. | `bool` | `false` | no |
+| enable\_all | Whether you want to enable all asm script option. | `bool` | `false` | no |
+| enable\_cluster\_labels | Whether the ASM's GKE cluster labels should be added. | `bool` | `false` | no |
+| enable\_cluster\_roles | Whether the needed cluster roles should be added. | `bool` | `false` | no |
+| enable\_gcp\_apis | Whether the needed GCP APIs should be activated. | `bool` | `false` | no |
+| enable\_gcp\_components | Whether `workload_identity` and `stackdriver-kubernetes` should be activated. | `bool` | `false` | no |
+| enable\_gcp\_iam\_roles | Whether the `resourcemanager.projectIamAdmin` IAM roles should be set. | `bool` | `false` | no |
+| enable\_registration | Whether the cluster registration should be managed. | `bool` | `false` | no |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"337.0.0"` | no |
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
 | managed | Whether the control plane should be managed. | `bool` | `false` | no |
