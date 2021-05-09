@@ -44,10 +44,10 @@ To deploy this config:
 | disable_canonical_service | Whether the canonical service should be disabled. | `bool` | `false` | no |
 | enable_all | Whether you want to enable all asm script option. | `bool` | `false` | no |
 | enable_cluster_labels | Whether the ASM's GKE cluster labels should be added. | `bool` | `false` | no |
-| enable_cluster_roles | Whether the cluster roles should be managed. | `bool` | `false` | no |
-| enable_gcp_apis | Whether the GCP APIs should be managed. | `bool` | `false` | no |
-| enable_gcp_components | Whether the GCP components should be managed. | `bool` | `false` | no |
-| enable_gcp_iam_roles | Whether the GCP IAM roles should be managed. | `bool` | `false` | no |
+| enable_cluster_roles | Whether the needed cluster roles should be added. | `bool` | `false` | no |
+| enable_gcp_apis | Whether the needed GCP APIs should be activated. | `bool` | `false` | no |
+| enable_gcp_components | Whether `workload_identity` and `stackdriver-kubernetes` should be activated. | `bool` | `false` | no |
+| enable_gcp_iam_roles | Whether the `resourcemanager.projectIamAdmin` IAM roles should be set. | `bool` | `false` | no |
 | enable_registration | Whether the cluster registration should be managed. | `bool` | `false` | no |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"337.0.0"` | no |
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
@@ -61,4 +61,4 @@ To deploy this config:
 |------|-------------|
 | asm\_wait | An output to use when you want to depend on ASM finishing |
 
- <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
