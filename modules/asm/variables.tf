@@ -63,6 +63,18 @@ variable "mode" {
   default     = "install"
 }
 
+variable "service_account" {
+  description = "The GCP Service Account email address used to deploy ASM."
+  type        = string
+  default     = ""
+}
+
+variable "key_file" {
+  description = "The GCP Service Account credentials file path used to deploy ASM."
+  type        = string
+  default     = ""
+}
+
 variable "managed_control_plane" {
   description = "ASM managed control plane boolean. Determines whether to install ASM managed control plane. Installing ASM managed control plane does not install gateways. Documentation on how to install gateways with ASM MCP can be found at https://cloud.google.com/service-mesh/docs/managed-control-plane#install_istio_gateways_optional."
   type        = bool

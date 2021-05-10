@@ -63,12 +63,14 @@ To deploy this config:
 | enable\_gcp\_iam\_roles | Sets `--enable_gcp_iam_roles` option if true. | `bool` | `false` | no |
 | enable\_registration | Sets `--enable_registration` option if true. | `bool` | `false` | no |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |
+| key\_file | The GCP Service Account credentials file path used to deploy ASM. | `string` | `""` | no |
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
 | managed\_control\_plane | ASM managed control plane boolean. Determines whether to install ASM managed control plane. Installing ASM managed control plane does not install gateways. Documentation on how to install gateways with ASM MCP can be found at https://cloud.google.com/service-mesh/docs/managed-control-plane#install_istio_gateways_optional. | `bool` | `false` | no |
 | mode | ASM mode for deployment. Supported mode is `install` only. | `string` | `"install"` | no |
 | options | Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features. | `list` | <pre>[<br>  "none"<br>]</pre> | no |
 | outdir | Sets `--outdir` option. | `string` | `"none"` | no |
 | project\_id | The project in which the resource belongs. | `string` | n/a | yes |
+| service\_account | The GCP Service Account email address used to deploy ASM. | `string` | `""` | no |
 | service\_account\_key\_file | Path to service account key file to auth as for running `gcloud container clusters get-credentials`. | `string` | `""` | no |
 | skip\_validation | Sets `_CI_NO_VALIDATE` variable. Determines whether the script should perform validation checks for prerequisites such as IAM roles, Google APIs etc. | `bool` | `false` | no |
 
