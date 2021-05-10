@@ -19,6 +19,29 @@ module "asm" {
 }
 ```
 
+Advanced example:
+```tf
+module "asm" {
+  source           = "terraform-google-modules/kubernetes-engine/google//modules/asm"
+
+  project_id       = "my-project-id"
+  cluster_name     = "my-cluster-name"
+  location         = module.gke.location
+  cluster_endpoint = module.gke.endpoint
+
+  asm_dir              = "asm-dir-${module.gke.name}"
+  asm_version          = "1.9"
+  managed              = true
+  enable_registration  = true
+  enable_cluster_roles = true
+  custom_overlay_file  = "${path.cwd}/../asm/istio-operator.yaml"
+
+  depends_on = [
+    module.gke.google_container_node_pool
+  ]
+}
+```
+
 To deploy this config:
 1. Run `terraform apply`
 
@@ -37,10 +60,11 @@ To deploy this config:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| asm\_dir | Name of directory to keep ASM resource config files. | `string` | `"asm-dir"` | no |
+| asm\_dir | Name of directory to keep ASM resource config files. | `string` | `""` | no |
 | asm\_version | ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"1.9"` | no |
 | cluster\_endpoint | The GKE cluster endpoint. | `string` | n/a | yes |
 | cluster\_name | The unique name to identify the cluster in ASM. | `string` | n/a | yes |
+| custom\_overlay\_file | Path of the custom overlay file. | `string` | `""` | no |
 | disable\_canonical\_service | Whether the canonical service should be disabled. | `bool` | `false` | no |
 | enable\_all | Whether you want to enable all asm script option. | `bool` | `false` | no |
 | enable\_cluster\_labels | Whether the ASM's GKE cluster labels should be added. | `bool` | `false` | no |

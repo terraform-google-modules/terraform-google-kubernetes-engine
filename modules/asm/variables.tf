@@ -43,7 +43,7 @@ variable "gcloud_sdk_version" {
 variable "asm_dir" {
   description = "Name of directory to keep ASM resource config files."
   type        = string
-  default     = "asm-dir"
+  default     = ""
 }
 
 variable "service_account_key_file" {
@@ -109,4 +109,10 @@ variable "disable_canonical_service" {
   description = "Whether the canonical service should be disabled."
   type        = bool
   default     = false
+}
+
+variable "custom_overlay_file" {
+  description = "Path of the custom overlay file."
+  type        = string
+  default     = ""
 }

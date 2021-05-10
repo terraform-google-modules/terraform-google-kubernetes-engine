@@ -19,7 +19,7 @@ data "google_project" "asm_project" {
 }
 
 locals {
-  options                     = "${var.managed} ${var.enable_all} ${var.enable_cluster_labels} ${var.enable_cluster_roles} ${var.enable_gcp_apis} ${var.enable_gcp_iam_roles} ${var.enable_gcp_components} ${var.enable_registration} ${var.disable_canonical_service}"
+  options                     = "\"${var.asm_dir}\" ${var.managed} ${var.enable_all} ${var.enable_cluster_labels} ${var.enable_cluster_roles} ${var.enable_gcp_apis} ${var.enable_gcp_iam_roles} ${var.enable_gcp_components} ${var.enable_registration} ${var.disable_canonical_service} \"${var.custom_overlay_file}\""
   kubectl_create_command_base = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version} ${local.options}"
 }
 
