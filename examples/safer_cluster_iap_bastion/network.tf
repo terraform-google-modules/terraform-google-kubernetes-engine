@@ -33,7 +33,7 @@ module "vpc" {
     }
   ]
   secondary_ranges = {
-    "${var.subnet_name}" = [
+    (var.subnet_name) = [
       {
         range_name    = var.ip_range_pods_name
         ip_cidr_range = "192.168.0.0/18"
