@@ -55,10 +55,14 @@ fi
 # Create bash arrays from options and custom_overlays lists
 if [[ ${OPTIONS_LIST} ]]; then
     IFS=',' read -r -a OPTIONS <<< "${OPTIONS_LIST}"
+elif [[ ${OPTIONS_LIST} = "" ]]; then
+    export OPTIONS="--option none"
 fi
 
 if [[ ${CUSTOM_OVERLAYS_LIST} ]]; then
     IFS=',' read -r -a CUSTOM_OVERLAYS <<< "${CUSTOM_OVERLAYS_LIST}"
+else
+    export CUSTOM_OVERLAYS="--custom_overlay none"
 fi
 
 # Echo all values
@@ -67,6 +71,7 @@ echo -e "MCP is $MCP"
 echo -e "ASM_VERSION is $ASM_VERSION"
 echo -e "SKIP_VALIDATION is $SKIP_VALIDATION"
 echo -e "_CI_NO_VALIDATE is $_CI_NO_VALIDATE"
+echo -e "OPTIONS_LIST is ${OPTIONS_LIST}"
 echo -e "OPTIONS is ${OPTIONS[@]}"
 echo -e "OPTIONS array length is ${#OPTIONS[@]}"
 # Create options command snippet
@@ -110,7 +115,7 @@ fi
 if [[ "${KEY_FILE}" = "" ]]; then
     KEY_FILE_COMMAND_SNIPPET=""
 else
-    KEY_FILE_COMMAND_SNIPPET="--key_file ${KEY_FILE}"
+    KEY_FILE_COMMAND_SNIPPET="--key_file `pwd`/${KEY_FILE}"
 fi
 
 # Craft options section for install_asm

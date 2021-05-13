@@ -19,12 +19,14 @@ data "google_project" "asm_project" {
 }
 
 locals {
-  options_string         = join(",", var.options)
-  custom_overlays_string = join(",", var.custom_overlays)
-  ca_cert                = var.ca_certs["ca_cert"]
-  ca_key                 = var.ca_certs["ca_key"]
-  root_cert              = var.ca_certs["root_cert"]
-  cert_chain             = var.ca_certs["cert_chain"]
+  options_to_string         = join(",", var.options)
+  options_string            = (local.options_to_string != "" ? join(",", var.options) : "none")
+  custom_overlays_to_string = join(",", var.custom_overlays)
+  custom_overlays_string    = (local.custom_overlays_to_string != "" ? join(",", var.custom_overlays) : "none")
+  ca_cert                   = var.ca_certs["ca_cert"]
+  ca_key                    = var.ca_certs["ca_key"]
+  root_cert                 = var.ca_certs["root_cert"]
+  cert_chain                = var.ca_certs["cert_chain"]
 }
 
 
