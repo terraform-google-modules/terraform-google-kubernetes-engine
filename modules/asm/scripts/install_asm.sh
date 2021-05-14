@@ -44,6 +44,7 @@ ROOT_CERT=${21}
 CERT_CHAIN=${22}
 SERVICE_ACCOUNT=${23}
 KEY_FILE=${24}
+ASM_GIT_TAG=${25}
 
 # Set SKIP_VALIDATION variable
 if [[ ${SKIP_VALIDATION} = "true" ]]; then 
@@ -69,6 +70,7 @@ fi
 echo -e "MODE is $MODE"
 echo -e "MCP is $MCP"
 echo -e "ASM_VERSION is $ASM_VERSION"
+echo -e "ASM_GIT_TAG is $ASM_GIT_TAG"
 echo -e "SKIP_VALIDATION is $SKIP_VALIDATION"
 echo -e "_CI_NO_VALIDATE is $_CI_NO_VALIDATE"
 echo -e "OPTIONS_LIST is ${OPTIONS_LIST}"
@@ -94,8 +96,16 @@ echo -e "SERVICE_ACCOUNT is $SERVICE_ACCOUNT"
 echo -e "KEY_FILE is $KEY_FILE"
 
 #download the correct version of the install_asm script
-curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_VERSION}" > install_asm_"${ASM_VERSION}"
-chmod u+x install_asm_"${ASM_VERSION}"
+if [[ "${ASM_GIT_TAG}" = "none" ]]; then
+    echo -e "Downloading install_asm with latest git tag..."
+    curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_VERSION}" > install_asm_"${ASM_VERSION}"
+    chmod u+x install_asm_"${ASM_VERSION}"
+else
+    ASM_GIT_TAG_FIXED=$(sed 's/+/-/g' <<<"$ASM_GIT_TAG")
+    echo -e "Downloading install_asm with git tag $ASM_GIT_TAG..."
+    curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_GIT_TAG_FIXED}" > install_asm_"${ASM_VERSION}"
+    chmod u+x install_asm_"${ASM_VERSION}"
+fi
 
 # Craft MCP section for install_asm
 if [[ "${MCP}" = true ]]; then

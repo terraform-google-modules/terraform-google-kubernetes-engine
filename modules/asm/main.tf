@@ -23,6 +23,7 @@ locals {
   options_string            = (local.options_to_string != "" ? join(",", var.options) : "none")
   custom_overlays_to_string = join(",", var.custom_overlays)
   custom_overlays_string    = (local.custom_overlays_to_string != "" ? join(",", var.custom_overlays) : "none")
+  asm_git_tag_string        = (var.asm_git_tag == "" ? "none" : var.asm_git_tag)
   ca_cert                   = var.ca_certs["ca_cert"]
   ca_key                    = var.ca_certs["ca_key"]
   root_cert                 = var.ca_certs["root_cert"]
@@ -43,6 +44,6 @@ module "asm_install" {
   project_id               = var.project_id
   service_account_key_file = var.service_account_key_file
 
-  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version} ${var.mode} ${var.managed_control_plane} ${var.skip_validation} ${local.options_string} ${local.custom_overlays_string} ${var.enable_all} ${var.enable_cluster_roles} ${var.enable_cluster_labels} ${var.enable_gcp_apis} ${var.enable_gcp_iam_roles} ${var.enable_gcp_components} ${var.enable_registration} ${var.outdir} ${var.ca} ${local.ca_cert} ${local.ca_key} ${local.root_cert} ${local.cert_chain} ${var.service_account} ${var.key_file}"
+  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version} ${var.mode} ${var.managed_control_plane} ${var.skip_validation} ${local.options_string} ${local.custom_overlays_string} ${var.enable_all} ${var.enable_cluster_roles} ${var.enable_cluster_labels} ${var.enable_gcp_apis} ${var.enable_gcp_iam_roles} ${var.enable_gcp_components} ${var.enable_registration} ${var.outdir} ${var.ca} ${local.ca_cert} ${local.ca_key} ${local.root_cert} ${local.cert_chain} ${var.service_account} ${var.key_file} ${local.asm_git_tag_string}"
   kubectl_destroy_command = "kubectl delete ns istio-system"
 }
