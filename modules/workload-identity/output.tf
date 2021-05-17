@@ -38,3 +38,8 @@ output "gcp_service_account_name" {
   description = "Name of GCP service account."
   value       = local.k8s_sa_gcp_derived_name
 }
+
+output "gcp_service_account" {
+  description = "GCP service account."
+  value       = google_service_account.cluster_service_account
+}
