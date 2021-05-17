@@ -50,7 +50,8 @@ To deploy this config:
 | cluster\_endpoint | Kubernetes cluster endpoint. | `string` | n/a | yes |
 | cluster\_name | GCP cluster name used to reach cluster and which becomes the cluster name in the Config Sync kubernetes custom resource. | `string` | n/a | yes |
 | create\_ssh\_key | Controls whether a key will be generated for Git authentication | `bool` | `true` | no |
-| hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing-hierarchy-controller) for more details. | `map` | `null` | no |
+| enable\_multi\_repo | Whether to use ACM Config Sync [multi-repo mode](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/multi-repo). | `bool` | `false` | no |
+| hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing-hierarchy-controller) for more details. | `map(any)` | `null` | no |
 | location | GCP location used to reach cluster. | `string` | n/a | yes |
 | operator\_path | Path to the operator yaml config. If unset, will download from GCS releases. | `string` | `null` | no |
 | policy\_dir | Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default. | `string` | `""` | no |
@@ -60,6 +61,7 @@ To deploy this config:
 | ssh\_auth\_key | Key for Git authentication. Overrides 'create\_ssh\_key' variable. Can be set using 'file(path/to/file)'-function. | `string` | `null` | no |
 | sync\_branch | ACM repo Git branch. If un-set, uses Config Management default. | `string` | `""` | no |
 | sync\_repo | ACM Git repo address | `string` | n/a | yes |
+| sync\_revision | ACM repo Git revision. If un-set, uses Config Management default. | `string` | `""` | no |
 
 ## Outputs
 
