@@ -35,6 +35,12 @@ variable "operator_path" {
   default     = null
 }
 
+variable "enable_multi_repo" {
+  description = "Whether to use ACM Config Sync [multi-repo mode](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/multi-repo)."
+  type        = bool
+  default     = false
+}
+
 variable "sync_repo" {
   description = "ACM Git repo address"
   type        = string
@@ -42,6 +48,12 @@ variable "sync_repo" {
 
 variable "sync_branch" {
   description = "ACM repo Git branch. If un-set, uses Config Management default."
+  type        = string
+  default     = ""
+}
+
+variable "sync_revision" {
+  description = "ACM repo Git revision. If un-set, uses Config Management default."
   type        = string
   default     = ""
 }
@@ -95,7 +107,7 @@ variable "source_format" {
 
 variable "hierarchy_controller" {
   description = "Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/anthos-config-management/docs/how-to/installing-hierarchy-controller) for more details"
-  type        = map
+  type        = map(any)
   default     = null
 }
 

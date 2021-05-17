@@ -40,6 +40,12 @@ variable "operator_latest_manifest_url" {
   type        = string
 }
 
+variable "enable_multi_repo" {
+  description = "Whether to use Config Sync [multi-repo mode](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/multi-repo)."
+  type        = bool
+  default     = false
+}
+
 variable "sync_repo" {
   description = "ACM Git repo address"
   type        = string
@@ -50,8 +56,20 @@ variable "secret_type" {
   type        = string
 }
 
+variable "secret_ref_name" {
+  description = "Name of Secret to use for authentication (Config Sync multi-repo setup only). If un-set, uses Config Management default."
+  type        = string
+  default     = ""
+}
+
 variable "sync_branch" {
   description = "ACM repo Git branch. If un-set, uses Config Management default."
+  type        = string
+  default     = ""
+}
+
+variable "sync_revision" {
+  description = "ACM repo Git revision. If un-set, uses Config Management default."
   type        = string
   default     = ""
 }
@@ -105,6 +123,11 @@ variable "operator_cr_template_path" {
   type        = string
 }
 
+variable "rootsync_cr_template_path" {
+  description = "path to template file to use for the root sync definition (Config Sync multi-repo setup only)"
+  type        = string
+}
+
 variable "source_format" {
   description = <<EOF
     Configures a non-hierarchical repo if set to 'unstructured'. Uses [Config Sync defaults](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing#configuring-config-management-operator)
@@ -119,7 +142,7 @@ variable "hierarchy_controller" {
     Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing-hierarchy-controller)
     for more details
   EOF
-  type        = map
+  type        = map(any)
   default     = null
 }
 
