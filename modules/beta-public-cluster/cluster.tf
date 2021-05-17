@@ -104,6 +104,8 @@ resource "google_container_cluster" "primary" {
       enabled = pod_security_policy_config.value
     }
   }
+
+  enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
