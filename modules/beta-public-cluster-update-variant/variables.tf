@@ -457,7 +457,7 @@ variable "enable_pod_security_policy" {
 
 variable "enable_l4_ilb_subsetting" {
   type        = bool
-  description = "enabled - Enable L4 ILB Subsetting on the cluster"
+  description = "Enable L4 ILB Subsetting on the cluster"
   default     = false
 }
 
