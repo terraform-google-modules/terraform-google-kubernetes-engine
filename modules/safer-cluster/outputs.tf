@@ -16,6 +16,11 @@
 
 // This file was automatically generated from a template in ./autogen/safer-cluster
 
+output "cluster_id" {
+  description = "Cluster ID"
+  value       = module.gke.cluster_id
+}
+
 output "name" {
   description = "Cluster name"
   value       = module.gke.name

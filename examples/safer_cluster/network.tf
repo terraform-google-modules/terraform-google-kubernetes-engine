@@ -34,7 +34,7 @@ module "gcp-network" {
   ]
 
   secondary_ranges = {
-    "${local.subnet_name}" = [
+    (local.subnet_name) = [
       {
         range_name    = local.pods_range_name
         ip_cidr_range = "192.168.0.0/18"
