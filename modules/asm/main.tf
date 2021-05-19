@@ -30,7 +30,6 @@ locals {
   cert_chain                = var.ca_certs["cert_chain"]
 }
 
-
 module "asm_install" {
   source            = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version           = "~> 2.0.2"

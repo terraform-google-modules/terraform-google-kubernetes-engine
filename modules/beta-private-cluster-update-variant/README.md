@@ -50,7 +50,6 @@ There are multiple examples included in the [examples](https://github.com/terraf
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
-  load_config_file       = false
   host                   = "https://${module.gke.endpoint}"
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.gke.ca_certificate)
@@ -155,6 +154,7 @@ Then perform the following commands on the root folder:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | add\_cluster\_firewall\_rules | Create additional firewall rules | `bool` | `false` | no |
+| add\_master\_webhook\_firewall\_rules | Create master\_webhook firewall rules for ports defined in `firewall_inbound_ports` | `bool` | `false` | no |
 | add\_shadow\_firewall\_rules | Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled). | `bool` | `false` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
 | basic\_auth\_password | The password to be used with Basic Authentication. | `string` | `""` | no |
@@ -179,6 +179,7 @@ Then perform the following commands on the root folder:
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | `bool` | `false` | no |
+| enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
 | enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | `bool` | `false` | no |
 | enable\_pod\_security\_policy | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | `bool` | `false` | no |
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | `bool` | `false` | no |
@@ -187,7 +188,7 @@ Then perform the following commands on the root folder:
 | enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster | `bool` | `true` | no |
 | enable\_tpu | Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive! | `bool` | `false` | no |
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | `bool` | `false` | no |
-| firewall\_inbound\_ports | List of TCP ports for admission/webhook controllers | `list(string)` | <pre>[<br>  "8443",<br>  "9443",<br>  "15017"<br>]</pre> | no |
+| firewall\_inbound\_ports | List of TCP ports for admission/webhook controllers. Either flag `add_master_webhook_firewall_rules` or `add_cluster_firewall_rules` (also adds egress rules) must be set to `true` for inbound-ports firewall rules to be applied. | `list(string)` | <pre>[<br>  "8443",<br>  "9443",<br>  "15017"<br>]</pre> | no |
 | firewall\_priority | Priority rule for firewall rules | `number` | `1000` | no |
 | gce\_pd\_csi\_driver | (Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. | `bool` | `false` | no |
 | gcloud\_upgrade | Whether to upgrade gcloud at runtime | `bool` | `false` | no |
@@ -252,6 +253,7 @@ Then perform the following commands on the root folder:
 |------|-------------|
 | ca\_certificate | Cluster ca certificate (base64 encoded) |
 | cloudrun\_enabled | Whether CloudRun enabled |
+| cluster\_id | Cluster ID |
 | dns\_cache\_enabled | Whether DNS Cache enabled |
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |

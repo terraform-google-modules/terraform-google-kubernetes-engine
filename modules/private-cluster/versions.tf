@@ -25,10 +25,10 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 1.10, != 1.11.0"
+      version = "~> 2.0"
     }
   }
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:private-cluster/v14.1.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:private-cluster/v14.3.0"
   }
 }

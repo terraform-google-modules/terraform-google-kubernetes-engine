@@ -169,3 +169,9 @@ variable "ca_certs" {
     "cert_chain" = "none"
   }
 }
+
+variable "managed" {
+  description = "Whether the control plane should be managed."
+  type        = bool
+  default     = false
+}

@@ -21,7 +21,6 @@ provider "google" {
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
-  load_config_file       = false
   host                   = "https://${module.gke.endpoint}"
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.gke.ca_certificate)
@@ -42,7 +41,7 @@ module "gcp-network" {
   ]
 
   secondary_ranges = {
-    "${var.subnetwork}" = [
+    (var.subnetwork) = [
       {
         range_name    = var.ip_range_pods_name
         ip_cidr_range = "192.168.0.0/18"
