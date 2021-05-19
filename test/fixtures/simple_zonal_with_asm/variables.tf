@@ -29,3 +29,8 @@ variable "zones" {
   description = "The GCP zones to create and test resources in, for applicable tests"
   default     = ["us-central1-a", "us-central1-b", "us-central1-c"]
 }
+
+variable "asm_version" {
+  description = "ASM major version for example 1.9"
+  default     = "1.9"
+}
