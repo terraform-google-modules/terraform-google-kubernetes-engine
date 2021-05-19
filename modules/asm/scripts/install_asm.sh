@@ -116,14 +116,14 @@ else
 fi
 
 # Craft service_account section for install_asm
-if [[ "${SERVICE_ACCOUNT}" = "" ]]; then
+if [[ "${SERVICE_ACCOUNT}" = "none" ]]; then
     SERVICE_ACCOUNT_COMMAND_SNIPPET=""
 else
     SERVICE_ACCOUNT_COMMAND_SNIPPET="--service_account ${SERVICE_ACCOUNT}"
 fi
 
 # Craft key_file section for install_asm
-if [[ "${KEY_FILE}" = "" ]]; then
+if [[ "${KEY_FILE}" = "none" ]]; then
     KEY_FILE_COMMAND_SNIPPET=""
 else
     KEY_FILE_COMMAND_SNIPPET="--key_file $(pwd)/${KEY_FILE}"

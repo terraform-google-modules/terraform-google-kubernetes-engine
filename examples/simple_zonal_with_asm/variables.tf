@@ -51,3 +51,9 @@ variable "ip_range_services" {
 variable "asm_version" {
   description = "ASM major version for example 1.9"
 }
+
+variable "service_account" {
+  description = "The GCP Service Account email address used to deploy ASM."
+  type        = string
+  default     = ""
+}
