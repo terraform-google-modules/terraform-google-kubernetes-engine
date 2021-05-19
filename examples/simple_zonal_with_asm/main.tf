@@ -80,6 +80,7 @@ module "asm" {
   enable_gcp_components = true
   enable_registration   = false
   managed_control_plane = false
+  asm_version           = "1.9"
   options               = ["envoy-access-log,egressgateways"]
   skip_validation       = true
   outdir                = "./${module.gke.name}-outdir-${var.asm_version}"

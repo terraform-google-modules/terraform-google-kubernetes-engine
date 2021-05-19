@@ -47,3 +47,7 @@ variable "ip_range_pods" {
 variable "ip_range_services" {
   description = "The secondary ip range to use for services"
 }
+
+variable "asm_version" {
+  description = "ASM major version for example 1.9"
+}

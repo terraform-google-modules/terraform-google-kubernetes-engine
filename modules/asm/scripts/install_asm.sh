@@ -48,9 +48,9 @@ KEY_FILE=${24}
 ASM_GIT_TAG=${25}
 
 # Set SKIP_VALIDATION variable
-if [[ ${SKIP_VALIDATION} = "true" ]]; then 
+if [[ ${SKIP_VALIDATION} = "true" ]]; then
     export _CI_NO_VALIDATE=1
-else 
+else
     export _CI_NO_VALIDATE=0
 fi
 
@@ -58,13 +58,13 @@ fi
 if [[ ${OPTIONS_LIST} ]]; then
     IFS=',' read -r -a OPTIONS <<< "${OPTIONS_LIST}"
 elif [[ ${OPTIONS_LIST} = "" ]]; then
-    export OPTIONS="--option none"
+    read -r -a OPTIONS <<< "none"
 fi
 
 if [[ ${CUSTOM_OVERLAYS_LIST} ]]; then
     IFS=',' read -r -a CUSTOM_OVERLAYS <<< "${CUSTOM_OVERLAYS_LIST}"
 else
-    export CUSTOM_OVERLAYS="--custom_overlay none"
+    read -r -a CUSTOM_OVERLAYS <<< "none"
 fi
 
 # Echo all values
@@ -75,15 +75,15 @@ echo -e "ASM_GIT_TAG is $ASM_GIT_TAG"
 echo -e "SKIP_VALIDATION is $SKIP_VALIDATION"
 echo -e "_CI_NO_VALIDATE is $_CI_NO_VALIDATE"
 echo -e "OPTIONS_LIST is ${OPTIONS_LIST}"
-echo -e "OPTIONS is ${OPTIONS[@]}"
+# echo -e "OPTIONS is ${OPTIONS[@]}"
 echo -e "OPTIONS array length is ${#OPTIONS[@]}"
 # Create options command snippet
-item="${OPTIONS[@]}";OPTIONS_COMMAND=$(echo "--option" ${item// / --option })
+item="${OPTIONS[*]}";OPTIONS_COMMAND=$(echo "--option" "${item// / --option }")
 echo -e "OPTIONS_COMMAND is $OPTIONS_COMMAND"
-echo -e "CUSTOM_OVERLAYS is ${CUSTOM_OVERLAYS[@]}"
+# echo -e "CUSTOM_OVERLAYS is ${CUSTOM_OVERLAYS[@]}"
 echo -e "CUSTOM_OVERLAYS array length is ${#CUSTOM_OVERLAYS[@]}"
 # Create custom_overlays command snippet
-item="${CUSTOM_OVERLAYS[@]}";CUSTOM_OVERLAYS_COMMAND=$(echo "--custom_overlay" ${item// / --custom_overlay })
+item="${CUSTOM_OVERLAYS[*]}";CUSTOM_OVERLAYS_COMMAND=$(echo "--custom_overlay" "${item// / --custom_overlay }")
 echo -e "CUSTOM_OVERLAYS_COMMAND is $CUSTOM_OVERLAYS_COMMAND"
 echo -e "ENABLE_ALL is $ENABLE_ALL"
 echo -e "ENABLE_CLUSTER_ROLES is $ENABLE_CLUSTER_ROLES"
@@ -126,7 +126,7 @@ fi
 if [[ "${KEY_FILE}" = "" ]]; then
     KEY_FILE_COMMAND_SNIPPET=""
 else
-    KEY_FILE_COMMAND_SNIPPET="--key_file `pwd`/${KEY_FILE}"
+    KEY_FILE_COMMAND_SNIPPET="--key_file $(pwd)/${KEY_FILE}"
 fi
 
 # Craft options section for install_asm
@@ -188,7 +188,7 @@ if [[ "${OUTDIR}" = "none" ]]; then
     OUTDIR_COMMAND_SNIPPET=""
 else
     OUTDIR_COMMAND_SNIPPET="--output_dir ${OUTDIR}"
-    mkdir -p ${OUTDIR}
+    mkdir -p "${OUTDIR}"
 fi
 
 if [[ "${CA}" = "citadel" ]]; then
@@ -201,4 +201,4 @@ fi
 echo -e "install_asm_${ASM_VERSION} --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} ${MCP_COMMAND_SNIPPET} ${OPTIONS_COMMAND_SNIPPET} ${CUSTOM_OVERLAYS_COMMAND_SNIPPET} ${OUTDIR_COMMAND_SNIPPET} ${ENABLE_ALL_COMMAND_SNIPPET} ${ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET} ${ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET} ${ENABLE_GCP_APIS_COMMAND_SNIPPET} ${ENABLE_GCP_IAM_ROLES_COMMAND_SNIPPET} ${ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET} ${ENABLE_REGISTRATION_COMMAND_SNIPPET} ${CA_COMMAND_SNIPPET} ${SERVICE_ACCOUNT_COMMAND_SNIPPET} ${KEY_FILE_COMMAND_SNIPPET}"
 
 # #run the script with appropriate flags
-./install_asm_${ASM_VERSION} --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} ${MCP_COMMAND_SNIPPET} ${OPTIONS_COMMAND_SNIPPET} ${CUSTOM_OVERLAYS_COMMAND_SNIPPET} ${OUTDIR_COMMAND_SNIPPET} ${ENABLE_ALL_COMMAND_SNIPPET}  ${ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET} ${ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET} ${ENABLE_GCP_APIS_COMMAND_SNIPPET} ${ENABLE_GCP_IAM_ROLES_COMMAND_SNIPPET} ${ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET} ${ENABLE_REGISTRATION_COMMAND_SNIPPET} ${CA_COMMAND_SNIPPET} ${SERVICE_ACCOUNT_COMMAND_SNIPPET} ${KEY_FILE_COMMAND_SNIPPET}
+./install_asm_"${ASM_VERSION}" --verbose --project_id "${PROJECT_ID}" --cluster_name "${CLUSTER_NAME}" --cluster_location "${CLUSTER_LOCATION}" --mode "${MODE}" "${MCP_COMMAND_SNIPPET}" "${OPTIONS_COMMAND_SNIPPET}" "${CUSTOM_OVERLAYS_COMMAND_SNIPPET}" "${OUTDIR_COMMAND_SNIPPET}" "${ENABLE_ALL_COMMAND_SNIPPET}"  "${ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET}" "${ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET}" "${ENABLE_GCP_APIS_COMMAND_SNIPPET}" "${ENABLE_GCP_IAM_ROLES_COMMAND_SNIPPET}" "${ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET}" "${ENABLE_REGISTRATION_COMMAND_SNIPPET}" "${CA_COMMAND_SNIPPET}" "${SERVICE_ACCOUNT_COMMAND_SNIPPET}" "${KEY_FILE_COMMAND_SNIPPET}"
