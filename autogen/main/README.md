@@ -86,20 +86,23 @@ module "gke" {
 
   node_pools = [
     {
-      name               = "default-node-pool"
-      machine_type       = "e2-medium"
-      node_locations     = "us-central1-b,us-central1-c"
-      min_count          = 1
-      max_count          = 100
-      local_ssd_count    = 0
-      disk_size_gb       = 100
-      disk_type          = "pd-standard"
-      image_type         = "COS"
-      auto_repair        = true
-      auto_upgrade       = true
-      service_account    = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
-      preemptible        = false
-      initial_node_count = 80
+      name                      = "default-node-pool"
+      machine_type              = "e2-medium"
+      node_locations            = "us-central1-b,us-central1-c"
+      min_count                 = 1
+      max_count                 = 100
+      local_ssd_count           = 0
+      {% if beta_cluster %}
+      local_ssd_ephemeral_count = 0
+      {% endif %}
+      disk_size_gb              = 100
+      disk_type                 = "pd-standard"
+      image_type                = "COS"
+      auto_repair               = true
+      auto_upgrade              = true
+      service_account           = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
+      preemptible               = false
+      initial_node_count        = 80
     },
   ]
 
@@ -181,7 +184,10 @@ The node_pools variable takes the following parameters:
 | image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | COS | Optional |
 | initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
 | key | The key required for the taint | | Required |
-| local_ssd_count | The amount of local SSD disks that will be attached to each cluster node | 0 | Optional |
+| local_ssd_count | The amount of local SSD disks that will be attached to each cluster node and may be used as a `hostpath` volume or a `local` PersistentVolume.  | 0 | Optional |
+{% if beta_cluster %}
+| local_ssd_ephemeral_count | The amount of local SSD disks that will be attached to each cluster node and assigned as scratch space as an `emptyDir` volume. If unspecified, ephemeral storage is backed by the cluster node boot disk. | 0 | Optional |
+{% endif %}
 | machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
 {% if beta_cluster %}
