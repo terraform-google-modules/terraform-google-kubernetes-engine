@@ -162,16 +162,11 @@ variable "ca" {
 variable "ca_certs" {
   description = "Sets CA certificate file paths when `ca` is set to `citadel`. These values must be provided when using Citadel as CA. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca."
   type        = map
-  default = {
-    "ca_cert"    = "none"
-    "ca_key"     = "none"
-    "root_cert"  = "none"
-    "cert_chain" = "none"
-  }
-}
-
-variable "managed" {
-  description = "Whether the control plane should be managed."
-  type        = bool
-  default     = false
+  default     = {}
+  # default = {
+  #   "ca_cert"    = "none"
+  #   "ca_key"     = "none"
+  #   "root_cert"  = "none"
+  #   "cert_chain" = "none"
+  # }
 }

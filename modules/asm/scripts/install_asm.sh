@@ -75,12 +75,10 @@ echo -e "ASM_GIT_TAG is $ASM_GIT_TAG"
 echo -e "SKIP_VALIDATION is $SKIP_VALIDATION"
 echo -e "_CI_NO_VALIDATE is $_CI_NO_VALIDATE"
 echo -e "OPTIONS_LIST is ${OPTIONS_LIST}"
-# echo -e "OPTIONS is ${OPTIONS[@]}"
 echo -e "OPTIONS array length is ${#OPTIONS[@]}"
 # Create options command snippet
 item="${OPTIONS[*]}";OPTIONS_COMMAND=$(echo "--option" "${item// / --option }")
 echo -e "OPTIONS_COMMAND is $OPTIONS_COMMAND"
-# echo -e "CUSTOM_OVERLAYS is ${CUSTOM_OVERLAYS[@]}"
 echo -e "CUSTOM_OVERLAYS array length is ${#CUSTOM_OVERLAYS[@]}"
 # Create custom_overlays command snippet
 item="${CUSTOM_OVERLAYS[*]}";CUSTOM_OVERLAYS_COMMAND=$(echo "--custom_overlay" "${item// / --custom_overlay }")
