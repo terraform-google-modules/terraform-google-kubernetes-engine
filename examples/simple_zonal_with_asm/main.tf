@@ -78,5 +78,5 @@ module "asm" {
   enable_gcp_iam_roles  = true
   enable_gcp_components = true
   options               = ["envoy-access-log"]
-  outdir                = "./${module.gke.name}-outdir-${var.asm_version}"
+  outdir                = "./${module.gke.name}-outdir"
 }
