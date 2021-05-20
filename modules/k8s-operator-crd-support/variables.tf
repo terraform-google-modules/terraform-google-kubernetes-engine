@@ -162,3 +162,9 @@ variable "use_existing_context" {
   type        = bool
   default     = false
 }
+
+variable "impersonate_service_account" {
+  type        = string
+  description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
+  default     = ""
+}

@@ -47,13 +47,14 @@ resource "kubernetes_service_account" "main" {
 
 module "annotate-sa" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "~> 2.0.2"
+  version = "~> 2.1.0"
 
-  enabled          = var.use_existing_k8s_sa && var.annotate_k8s_sa
-  skip_download    = true
-  cluster_name     = var.cluster_name
-  cluster_location = var.location
-  project_id       = var.project_id
+  enabled                     = var.use_existing_k8s_sa && var.annotate_k8s_sa
+  skip_download               = true
+  cluster_name                = var.cluster_name
+  cluster_location            = var.location
+  project_id                  = var.project_id
+  impersonate_service_account = var.impersonate_service_account
 
   kubectl_create_command  = "kubectl annotate --overwrite sa -n ${local.output_k8s_namespace} ${local.k8s_given_name} iam.gke.io/gcp-service-account=${local.gcp_sa_email}"
   kubectl_destroy_command = "kubectl annotate sa -n ${local.output_k8s_namespace} ${local.k8s_given_name} iam.gke.io/gcp-service-account-"
