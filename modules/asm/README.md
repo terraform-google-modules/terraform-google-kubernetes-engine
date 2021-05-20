@@ -42,6 +42,7 @@ To deploy this config:
 | cluster\_endpoint | The GKE cluster endpoint. | `string` | n/a | yes |
 | cluster\_name | The unique name to identify the cluster in ASM. | `string` | n/a | yes |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |
+| impersonate\_service\_account | An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials. | `string` | `""` | no |
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
 | managed | Whether the control plane should be managed. | `bool` | `false` | no |
 | project\_id | The project in which the resource belongs. | `string` | n/a | yes |
