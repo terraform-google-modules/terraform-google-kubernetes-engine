@@ -34,7 +34,7 @@ locals {
 
 module "k8sop_manifest" {
   source  = "terraform-google-modules/gcloud/google"
-  version = "~> 2.0.2"
+  version = "~> 2.1.0"
   enabled = local.should_download_manifest
 
   create_cmd_entrypoint  = "gsutil"
