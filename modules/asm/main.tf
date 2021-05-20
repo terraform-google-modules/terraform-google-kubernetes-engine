@@ -24,16 +24,17 @@ locals {
 
 module "asm_install" {
   source            = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version           = "~> 2.0.2"
+  version           = "~> 2.1.0"
   module_depends_on = [var.cluster_endpoint]
 
-  gcloud_sdk_version       = var.gcloud_sdk_version
-  upgrade                  = true
-  additional_components    = ["kubectl", "kpt", "beta", "kustomize"]
-  cluster_name             = var.cluster_name
-  cluster_location         = var.location
-  project_id               = var.project_id
-  service_account_key_file = var.service_account_key_file
+  gcloud_sdk_version          = var.gcloud_sdk_version
+  upgrade                     = true
+  additional_components       = ["kubectl", "kpt", "beta", "kustomize"]
+  cluster_name                = var.cluster_name
+  cluster_location            = var.location
+  project_id                  = var.project_id
+  service_account_key_file    = var.service_account_key_file
+  impersonate_service_account = var.impersonate_service_account
 
   kubectl_create_command  = var.managed ? "${local.kubectl_create_command_base} ${var.managed}" : local.kubectl_create_command_base
   kubectl_destroy_command = "kubectl delete ns istio-system"
