@@ -34,7 +34,7 @@ locals {
 
 module "k8sop_manifest" {
   source  = "terraform-google-modules/gcloud/google"
-  version = "~> 2.0.2"
+  version = "~> 2.1.0"
   enabled = local.should_download_manifest
 
   create_cmd_entrypoint  = "gsutil"
@@ -45,14 +45,15 @@ module "k8sop_manifest" {
 
 
 module "k8s_operator" {
-  source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version                  = "~> 2.0.2"
-  module_depends_on        = [module.k8sop_manifest.wait, var.cluster_endpoint]
-  cluster_name             = var.cluster_name
-  cluster_location         = var.location
-  project_id               = var.project_id
-  service_account_key_file = var.service_account_key_file
-  use_existing_context     = var.use_existing_context
+  source                      = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version                     = "~> 2.1.0"
+  module_depends_on           = [module.k8sop_manifest.wait, var.cluster_endpoint]
+  cluster_name                = var.cluster_name
+  cluster_location            = var.location
+  project_id                  = var.project_id
+  service_account_key_file    = var.service_account_key_file
+  use_existing_context        = var.use_existing_context
+  impersonate_service_account = var.impersonate_service_account
 
   kubectl_create_command  = "kubectl apply -f ${local.manifest_path}"
   kubectl_destroy_command = "kubectl delete -f ${local.manifest_path}"
@@ -67,15 +68,16 @@ resource "tls_private_key" "k8sop_creds" {
 
 module "k8sop_creds_secret" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "~> 2.0.2"
+  version = "~> 2.1.0"
 
-  enabled                  = var.create_ssh_key == true || var.ssh_auth_key != null ? "true" : "false"
-  module_depends_on        = [module.k8s_operator.wait]
-  cluster_name             = var.cluster_name
-  cluster_location         = var.location
-  project_id               = var.project_id
-  service_account_key_file = var.service_account_key_file
-  use_existing_context     = var.use_existing_context
+  enabled                     = var.create_ssh_key == true || var.ssh_auth_key != null ? "true" : "false"
+  module_depends_on           = [module.k8s_operator.wait]
+  cluster_name                = var.cluster_name
+  cluster_location            = var.location
+  project_id                  = var.project_id
+  service_account_key_file    = var.service_account_key_file
+  use_existing_context        = var.use_existing_context
+  impersonate_service_account = var.impersonate_service_account
 
   kubectl_create_command  = local.private_key != null ? "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'" : ""
   kubectl_destroy_command = "kubectl delete secret ${var.operator_credential_name} -n=${var.operator_credential_namespace}"
@@ -102,15 +104,16 @@ data "template_file" "k8sop_config" {
 }
 
 module "k8sop_config" {
-  source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version                  = "~> 2.0.2"
-  module_depends_on        = [module.k8s_operator.wait, module.k8sop_creds_secret.wait]
-  cluster_name             = var.cluster_name
-  cluster_location         = var.location
-  project_id               = var.project_id
-  create_cmd_triggers      = { configmanagement = data.template_file.k8sop_config.rendered }
-  service_account_key_file = var.service_account_key_file
-  use_existing_context     = var.use_existing_context
+  source                      = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version                     = "~> 2.1.0"
+  module_depends_on           = [module.k8s_operator.wait, module.k8sop_creds_secret.wait]
+  cluster_name                = var.cluster_name
+  cluster_location            = var.location
+  project_id                  = var.project_id
+  create_cmd_triggers         = { configmanagement = data.template_file.k8sop_config.rendered }
+  service_account_key_file    = var.service_account_key_file
+  use_existing_context        = var.use_existing_context
+  impersonate_service_account = var.impersonate_service_account
 
   kubectl_create_command  = "kubectl apply -f - <<EOF\n${data.template_file.k8sop_config.rendered}EOF"
   kubectl_destroy_command = "kubectl delete -f - <<EOF\n${data.template_file.k8sop_config.rendered}EOF"
@@ -133,7 +136,7 @@ data "template_file" "rootsync_config" {
 
 module "wait_for_configsync_api" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "~> 2.0.2"
+  version = "~> 2.1.0"
   enabled = var.enable_multi_repo
 
   module_depends_on = [module.k8sop_config.wait]
@@ -153,32 +156,34 @@ module "wait_for_configsync_api" {
 
 module "rootsync_config" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "~> 2.0.2"
+  version = "~> 2.1.0"
   enabled = var.enable_multi_repo
 
-  module_depends_on        = [module.wait_for_configsync_api.wait]
-  cluster_name             = var.cluster_name
-  project_id               = var.project_id
-  cluster_location         = var.location
-  create_cmd_triggers      = { rootsync = data.template_file.rootsync_config.rendered }
-  service_account_key_file = var.service_account_key_file
-  use_existing_context     = var.use_existing_context
+  module_depends_on           = [module.wait_for_configsync_api.wait]
+  cluster_name                = var.cluster_name
+  project_id                  = var.project_id
+  cluster_location            = var.location
+  create_cmd_triggers         = { rootsync = data.template_file.rootsync_config.rendered }
+  service_account_key_file    = var.service_account_key_file
+  use_existing_context        = var.use_existing_context
+  impersonate_service_account = var.impersonate_service_account
 
   kubectl_create_command  = "kubectl apply -f - <<EOF\n${data.template_file.rootsync_config.rendered}EOF"
   kubectl_destroy_command = "kubectl delete -f - <<EOF\n${data.template_file.rootsync_config.rendered}EOF"
 }
 
 module "wait_for_gatekeeper" {
-  source                   = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version                  = "~> 2.0.2"
-  enabled                  = var.enable_policy_controller ? true : false
-  module_depends_on        = [module.k8sop_config.wait]
-  cluster_name             = var.cluster_name
-  cluster_location         = var.location
-  project_id               = var.project_id
-  create_cmd_triggers      = { script_sha1 = sha1(file("${path.module}/scripts/wait_for_gatekeeper.sh")) }
-  service_account_key_file = var.service_account_key_file
-  use_existing_context     = var.use_existing_context
+  source                      = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version                     = "~> 2.1.0"
+  enabled                     = var.enable_policy_controller ? true : false
+  module_depends_on           = [module.k8sop_config.wait]
+  cluster_name                = var.cluster_name
+  cluster_location            = var.location
+  project_id                  = var.project_id
+  create_cmd_triggers         = { script_sha1 = sha1(file("${path.module}/scripts/wait_for_gatekeeper.sh")) }
+  service_account_key_file    = var.service_account_key_file
+  use_existing_context        = var.use_existing_context
+  impersonate_service_account = var.impersonate_service_account
 
   kubectl_create_command  = "${path.module}/scripts/wait_for_gatekeeper.sh ${var.project_id} ${var.cluster_name} ${var.location} ${local.append_arg_use_existing_context}"
   kubectl_destroy_command = ""

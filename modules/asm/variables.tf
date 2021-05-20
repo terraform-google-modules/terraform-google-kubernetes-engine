@@ -87,6 +87,12 @@ variable "managed_control_plane" {
   default     = false
 }
 
+variable "impersonate_service_account" {
+  type        = string
+  description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
+  default     = ""
+}
+
 variable "options" {
   description = "Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features."
   type        = list

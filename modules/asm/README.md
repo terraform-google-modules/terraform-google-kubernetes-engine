@@ -64,6 +64,7 @@ To deploy this config:
 | enable\_gcp\_iam\_roles | Sets `--enable_gcp_iam_roles` option if true. | `bool` | `false` | no |
 | enable\_registration | Sets `--enable_registration` option if true. | `bool` | `false` | no |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |
+| impersonate\_service\_account | An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials. | `string` | `""` | no |
 | key\_file | The GCP Service Account credentials file path used to deploy ASM. | `string` | `""` | no |
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
 | managed\_control\_plane | ASM managed control plane boolean. Determines whether to install ASM managed control plane. Installing ASM managed control plane does not install gateways. Documentation on how to install gateways with ASM MCP can be found at https://cloud.google.com/service-mesh/docs/managed-control-plane#install_istio_gateways_optional. | `bool` | `false` | no |
