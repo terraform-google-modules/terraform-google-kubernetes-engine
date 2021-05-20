@@ -479,6 +479,13 @@ resource "google_container_node_pool" "pools" {
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
+    dynamic "ephemeral_storage_config" {
+      for_each = lookup(each.value, "local_ssd_ephemeral_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
+      content {
+        local_ssd_count = ephemeral_storage_config.value
+      }
+    }
+
     service_account = lookup(
       each.value,
       "service_account",

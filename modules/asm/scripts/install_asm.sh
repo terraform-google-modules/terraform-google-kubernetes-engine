@@ -16,7 +16,7 @@
 
 set -e
 
-if [ "$#" -lt 4 ]; then
+if [ "$#" -lt 5 ]; then
     >&2 echo "Not all expected arguments set."
     exit 1
 fi
@@ -25,31 +25,179 @@ PROJECT_ID=$1
 CLUSTER_NAME=$2
 CLUSTER_LOCATION=$3
 ASM_VERSION=$4
-MANAGED=$5
-MODE="install"
+MODE=$5
+MCP=$6
+SKIP_VALIDATION=$7
+OPTIONS_LIST=$8
+CUSTOM_OVERLAYS_LIST=$9
+ENABLE_ALL=${10}
+ENABLE_CLUSTER_ROLES=${11}
+ENABLE_CLUSTER_LABELS=${12}
+ENABLE_GCP_APIS=${13}
+ENABLE_GCP_IAM_ROLES=${14}
+ENABLE_GCP_COMPONENTS=${15}
+ENABLE_REGISTRATION=${16}
+OUTDIR=${17}
+CA=${18}
+CA_CERT=${19}
+CA_KEY=${20}
+ROOT_CERT=${21}
+CERT_CHAIN=${22}
+SERVICE_ACCOUNT=${23}
+KEY_FILE=${24}
+ASM_GIT_TAG=${25}
 
-# Download the correct version of the install_asm script
-curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_VERSION}" > install_asm
-chmod u+x install_asm
-
-declare -a params=(
-    "--verbose"
-    "--project_id ${PROJECT_ID}"
-    "--cluster_name ${CLUSTER_NAME}"
-    "--cluster_location ${CLUSTER_LOCATION}"
-    "--mode ${MODE}"
-    "--enable_cluster_labels"
-    "--enable_cluster_roles"
-)
-
-# Add the --managed param if MANAGED is set to true
-if [[ "${MANAGED}" == true ]]; then
-    params+=("--managed")
+# Set SKIP_VALIDATION variable
+if [[ ${SKIP_VALIDATION} = "true" ]]; then
+    export _CI_NO_VALIDATE=1
+else
+    export _CI_NO_VALIDATE=0
 fi
 
-# Run the script with appropriate flags
-echo "Running ./install_asm" "${params[@]}"
+# Create bash arrays from options and custom_overlays lists
+if [[ ${OPTIONS_LIST} ]]; then
+    IFS=',' read -r -a OPTIONS <<< "${OPTIONS_LIST}"
+elif [[ ${OPTIONS_LIST} = "" ]]; then
+    read -r -a OPTIONS <<< "none"
+fi
 
-# Disable shell linting. Other forms will prevent the command to work
-# shellcheck disable=SC2046,SC2116
-./install_asm $(echo "${params[@]}")
+if [[ ${CUSTOM_OVERLAYS_LIST} ]]; then
+    IFS=',' read -r -a CUSTOM_OVERLAYS <<< "${CUSTOM_OVERLAYS_LIST}"
+else
+    read -r -a CUSTOM_OVERLAYS <<< "none"
+fi
+
+# Echo all values
+echo -e "MODE is $MODE"
+echo -e "MCP is $MCP"
+echo -e "ASM_VERSION is $ASM_VERSION"
+echo -e "ASM_GIT_TAG is $ASM_GIT_TAG"
+echo -e "SKIP_VALIDATION is $SKIP_VALIDATION"
+echo -e "_CI_NO_VALIDATE is $_CI_NO_VALIDATE"
+echo -e "OPTIONS_LIST is ${OPTIONS_LIST}"
+echo -e "OPTIONS array length is ${#OPTIONS[@]}"
+# Create options command snippet
+item="${OPTIONS[*]}";OPTIONS_COMMAND=$(echo "--option" "${item// / --option }")
+echo -e "OPTIONS_COMMAND is $OPTIONS_COMMAND"
+echo -e "CUSTOM_OVERLAYS array length is ${#CUSTOM_OVERLAYS[@]}"
+# Create custom_overlays command snippet
+item="${CUSTOM_OVERLAYS[*]}";CUSTOM_OVERLAYS_COMMAND=$(echo "--custom_overlay" "${item// / --custom_overlay }")
+echo -e "CUSTOM_OVERLAYS_COMMAND is $CUSTOM_OVERLAYS_COMMAND"
+echo -e "ENABLE_ALL is $ENABLE_ALL"
+echo -e "ENABLE_CLUSTER_ROLES is $ENABLE_CLUSTER_ROLES"
+echo -e "ENABLE_CLUSTER_LABELS is $ENABLE_CLUSTER_LABELS"
+echo -e "ENABLE_GCP_APIS is $ENABLE_GCP_APIS"
+echo -e "ENABLE_GCP_IAM_ROLES is $ENABLE_GCP_IAM_ROLES"
+echo -e "ENABLE_GCP_COMPONENTS is $ENABLE_GCP_COMPONENTS"
+echo -e "ENABLE_REGISTRATION is $ENABLE_REGISTRATION"
+echo -e "OUTDIR is $OUTDIR"
+echo -e "SERVICE_ACCOUNT is $SERVICE_ACCOUNT"
+echo -e "KEY_FILE is $KEY_FILE"
+
+#download the correct version of the install_asm script
+if [[ "${ASM_GIT_TAG}" = "none" ]]; then
+    echo -e "Downloading install_asm with latest git tag..."
+    curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_VERSION}" > install_asm_"${ASM_VERSION}"
+    chmod u+x install_asm_"${ASM_VERSION}"
+else
+    ASM_GIT_TAG_FIXED=$(sed 's/+/-/g' <<<"$ASM_GIT_TAG")
+    echo -e "Downloading install_asm with git tag $ASM_GIT_TAG..."
+    curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_GIT_TAG_FIXED}" > install_asm_"${ASM_VERSION}"
+    chmod u+x install_asm_"${ASM_VERSION}"
+fi
+
+# Craft MCP section for install_asm
+if [[ "${MCP}" = true ]]; then
+    MCP_COMMAND_SNIPPET="--managed"
+else
+    MCP_COMMAND_SNIPPET=""
+fi
+
+# Craft service_account section for install_asm
+if [[ "${SERVICE_ACCOUNT}" = "none" ]]; then
+    SERVICE_ACCOUNT_COMMAND_SNIPPET=""
+else
+    SERVICE_ACCOUNT_COMMAND_SNIPPET="--service_account ${SERVICE_ACCOUNT}"
+fi
+
+# Craft key_file section for install_asm
+if [[ "${KEY_FILE}" = "none" ]]; then
+    KEY_FILE_COMMAND_SNIPPET=""
+else
+    KEY_FILE_COMMAND_SNIPPET="--key_file $(pwd)/${KEY_FILE}"
+fi
+
+# Craft options section for install_asm
+if [[ "${OPTIONS_COMMAND}" = "--option none" ]]; then
+    OPTIONS_COMMAND_SNIPPET=""
+else
+    OPTIONS_COMMAND_SNIPPET="${OPTIONS_COMMAND}"
+fi
+
+if [[ "${CUSTOM_OVERLAYS_COMMAND}" = "--custom_overlay none" ]]; then
+    CUSTOM_OVERLAYS_COMMAND_SNIPPET=""
+else
+    CUSTOM_OVERLAYS_COMMAND_SNIPPET="${CUSTOM_OVERLAYS_COMMAND}"
+fi
+
+if [[ "${ENABLE_ALL}" = false ]]; then
+    ENABLE_ALL_COMMAND_SNIPPET=""
+else
+    ENABLE_ALL_COMMAND_SNIPPET="--enable_all"
+fi
+
+if [[ "${ENABLE_CLUSTER_ROLES}" = false ]]; then
+    ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET=""
+else
+    ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET="--enable_cluster_roles"
+fi
+
+if [[ "${ENABLE_CLUSTER_LABELS}" = false ]]; then
+    ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET=""
+else
+    ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET="--enable_cluster_labels"
+fi
+
+if [[ "${ENABLE_GCP_APIS}" = false ]]; then
+    ENABLE_GCP_APIS_COMMAND_SNIPPET=""
+else
+    ENABLE_GCP_APIS_COMMAND_SNIPPET="--enable_gcp_apis"
+fi
+
+if [[ "${ENABLE_GCP_IAM_ROLES}" = false ]]; then
+    ENABLE_GCP_IAM_ROLES_COMMAND_SNIPPET=""
+else
+    ENABLE_GCP_IAM_ROLES_COMMAND_SNIPPET="--enable_gcp_iam_roles"
+fi
+
+if [[ "${ENABLE_GCP_COMPONENTS}" = false ]]; then
+    ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET=""
+else
+    ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET="--enable_gcp_components"
+fi
+
+if [[ "${ENABLE_REGISTRATION}" = false ]]; then
+    ENABLE_REGISTRATION_COMMAND_SNIPPET=""
+else
+    ENABLE_REGISTRATION_COMMAND_SNIPPET="--enable_registration"
+fi
+
+if [[ "${OUTDIR}" = "none" ]]; then
+    OUTDIR_COMMAND_SNIPPET=""
+else
+    OUTDIR_COMMAND_SNIPPET="--output_dir ${OUTDIR}"
+    mkdir -p "${OUTDIR}"
+fi
+
+if [[ "${CA}" = "citadel" ]]; then
+    CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root_cert ${ROOT_CERT} --cert_chain ${CERT_CHAIN}"
+else
+    CA_COMMAND_SNIPPET=""
+fi
+
+# Echo the command before executing
+echo -e "install_asm_${ASM_VERSION} --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} ${MCP_COMMAND_SNIPPET} ${OPTIONS_COMMAND_SNIPPET} ${CUSTOM_OVERLAYS_COMMAND_SNIPPET} ${OUTDIR_COMMAND_SNIPPET} ${ENABLE_ALL_COMMAND_SNIPPET} ${ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET} ${ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET} ${ENABLE_GCP_APIS_COMMAND_SNIPPET} ${ENABLE_GCP_IAM_ROLES_COMMAND_SNIPPET} ${ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET} ${ENABLE_REGISTRATION_COMMAND_SNIPPET} ${CA_COMMAND_SNIPPET} ${SERVICE_ACCOUNT_COMMAND_SNIPPET} ${KEY_FILE_COMMAND_SNIPPET}"
+
+# run the script with appropriate flags
+# shellcheck disable=SC2086
+./install_asm_${ASM_VERSION} --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} ${MCP_COMMAND_SNIPPET} ${OPTIONS_COMMAND_SNIPPET} ${CUSTOM_OVERLAYS_COMMAND_SNIPPET} ${OUTDIR_COMMAND_SNIPPET} ${ENABLE_ALL_COMMAND_SNIPPET} ${ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET} ${ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET} ${ENABLE_GCP_APIS_COMMAND_SNIPPET} ${ENABLE_GCP_IAM_ROLES_COMMAND_SNIPPET} ${ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET} ${ENABLE_REGISTRATION_COMMAND_SNIPPET} ${CA_COMMAND_SNIPPET} ${SERVICE_ACCOUNT_COMMAND_SNIPPET} ${KEY_FILE_COMMAND_SNIPPET}
