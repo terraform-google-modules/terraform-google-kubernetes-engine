@@ -40,11 +40,11 @@ variable "gcloud_sdk_version" {
   default     = "296.0.1"
 }
 
-variable "asm_dir" {
-  description = "Name of directory to keep ASM resource config files."
-  type        = string
-  default     = "asm-dir"
-}
+# variable "asm_dir" {
+#   description = "Name of directory to keep ASM resource config files."
+#   type        = string
+#   default     = "asm-dir"
+# }
 
 variable "service_account_key_file" {
   description = "Path to service account key file to auth as for running `gcloud container clusters get-credentials`."
@@ -52,13 +52,121 @@ variable "service_account_key_file" {
 }
 
 variable "asm_version" {
-  description = "ASM version to deploy. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  description = "ASM version to deploy. This module supports versions `1.8` and `1.9`. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
   type        = string
-  default     = "1.8"
+  default     = "1.9"
 }
 
-variable "managed" {
-  description = "Whether the control plane should be managed."
+variable "asm_git_tag" {
+  description = "ASM git tag to deploy. This module supports versions `1.8` and `1.9`. You can get the exact `asm_git_tag` by running the command `install_asm --version`. The ASM git tab should be of the form `1.9.3-asm.2+config5`. You can also see all ASM git tags by running `curl https://storage.googleapis.com/csm-artifacts/asm/STABLE_VERSIONS`. You must provide the full and exact git tag. This variable is optional. Leaving it empty (default) will download the latest `install_asm` script for the version provided by the `asm_version` variable."
+  type        = string
+  default     = ""
+}
+
+variable "mode" {
+  description = "ASM mode for deployment. Supported mode is `install` only."
+  type        = string
+  default     = "install"
+}
+
+variable "service_account" {
+  description = "The GCP Service Account email address used to deploy ASM."
+  type        = string
+  default     = ""
+}
+
+variable "key_file" {
+  description = "The GCP Service Account credentials file path used to deploy ASM."
+  type        = string
+  default     = ""
+}
+
+variable "managed_control_plane" {
+  description = "ASM managed control plane boolean. Determines whether to install ASM managed control plane. Installing ASM managed control plane does not install gateways. Documentation on how to install gateways with ASM MCP can be found at https://cloud.google.com/service-mesh/docs/managed-control-plane#install_istio_gateways_optional."
   type        = bool
   default     = false
+}
+
+variable "options" {
+  description = "Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features."
+  type        = list
+  default     = []
+}
+
+variable "custom_overlays" {
+  description = "Comma separated list of custom_overlay file paths. Works with in-cluster control plane only. Additional documentation available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_an_overlay_file"
+  type        = list
+  default     = []
+}
+
+variable "skip_validation" {
+  description = "Sets `_CI_NO_VALIDATE` variable. Determines whether the script should perform validation checks for prerequisites such as IAM roles, Google APIs etc."
+  type        = bool
+  default     = false
+}
+
+variable "enable_all" {
+  description = "Sets `--enable_all` option if true."
+  type        = bool
+  default     = false
+}
+
+variable "enable_cluster_roles" {
+  description = "Sets `--enable_cluster_roles` option if true."
+  type        = bool
+  default     = false
+}
+
+variable "enable_cluster_labels" {
+  description = "Sets `--enable_cluster_labels` option if true."
+  type        = bool
+  default     = false
+}
+
+variable "enable_gcp_apis" {
+  description = "Sets `--enable_gcp_apis` option if true."
+  type        = bool
+  default     = false
+}
+
+variable "enable_gcp_iam_roles" {
+  description = "Sets `--enable_gcp_iam_roles` option if true."
+  type        = bool
+  default     = false
+}
+
+variable "enable_gcp_components" {
+  description = "Sets --enable_gcp_components option if true. Can be true or false. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  type        = bool
+  default     = false
+}
+
+variable "enable_registration" {
+  description = "Sets `--enable_registration` option if true."
+  type        = bool
+  default     = false
+}
+
+variable "outdir" {
+  description = "Sets `--outdir` option."
+  type        = string
+  default     = "none"
+}
+
+variable "ca" {
+  description = "Sets CA option. Possible values are `meshca` or `citadel`. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca."
+  type        = string
+  default     = "meshca"
+}
+
+variable "ca_certs" {
+  description = "Sets CA certificate file paths when `ca` is set to `citadel`. These values must be provided when using Citadel as CA. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca."
+  type        = map
+  default     = {}
+  # default = {
+  #   "ca_cert"    = "none"
+  #   "ca_key"     = "none"
+  #   "root_cert"  = "none"
+  #   "cert_chain" = "none"
+  # }
 }

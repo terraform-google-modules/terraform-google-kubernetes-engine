@@ -47,3 +47,9 @@ variable "ip_range_pods" {
 variable "ip_range_services" {
   description = "The secondary ip range to use for services"
 }
+
+variable "service_account" {
+  description = "The GCP Service Account email address used to deploy ASM."
+  type        = string
+  default     = ""
+}

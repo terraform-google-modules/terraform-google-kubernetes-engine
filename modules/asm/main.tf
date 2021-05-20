@@ -19,7 +19,15 @@ data "google_project" "asm_project" {
 }
 
 locals {
-  kubectl_create_command_base = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version}"
+  options_string         = length(var.options) > 0 ? join(",", var.options) : "none"
+  custom_overlays_string = length(var.custom_overlays) > 0 ? join(",", var.custom_overlays) : "none"
+  asm_git_tag_string     = (var.asm_git_tag == "" ? "none" : var.asm_git_tag)
+  service_account_string = (var.service_account == "" ? "none" : var.service_account)
+  key_file_string        = (var.key_file == "" ? "none" : var.key_file)
+  ca_cert                = lookup(var.ca_certs, "ca_cert", "none")
+  ca_key                 = lookup(var.ca_certs, "ca_key", "none")
+  root_cert              = lookup(var.ca_certs, "root_cert", "none")
+  cert_chain             = lookup(var.ca_certs, "cert_chain", "none")
 }
 
 module "asm_install" {
@@ -35,6 +43,6 @@ module "asm_install" {
   project_id               = var.project_id
   service_account_key_file = var.service_account_key_file
 
-  kubectl_create_command  = var.managed ? "${local.kubectl_create_command_base} ${var.managed}" : local.kubectl_create_command_base
+  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version} ${var.mode} ${var.managed_control_plane} ${var.skip_validation} ${local.options_string} ${local.custom_overlays_string} ${var.enable_all} ${var.enable_cluster_roles} ${var.enable_cluster_labels} ${var.enable_gcp_apis} ${var.enable_gcp_iam_roles} ${var.enable_gcp_components} ${var.enable_registration} ${var.outdir} ${var.ca} ${local.ca_cert} ${local.ca_key} ${local.root_cert} ${local.cert_chain} ${local.service_account_string} ${local.key_file_string} ${local.asm_git_tag_string}"
   kubectl_destroy_command = "kubectl delete ns istio-system"
 }
