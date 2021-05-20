@@ -73,7 +73,6 @@ module "asm" {
   project_id       = var.project_id
   location         = module.gke.location
   enable_all       = true
-  asm_version      = "1.9"
   options          = ["envoy-access-log"]
   outdir           = "./${module.gke.name}-outdir-${var.asm_version}"
 }

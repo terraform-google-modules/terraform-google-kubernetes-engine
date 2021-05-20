@@ -19,17 +19,19 @@ data "google_project" "asm_project" {
 }
 
 locals {
-  options_to_string         = join(",", var.options)
-  options_string            = (local.options_to_string != "" ? join(",", var.options) : "none")
-  custom_overlays_to_string = join(",", var.custom_overlays)
-  custom_overlays_string    = (local.custom_overlays_to_string != "" ? join(",", var.custom_overlays) : "none")
-  asm_git_tag_string        = (var.asm_git_tag == "" ? "none" : var.asm_git_tag)
-  service_account_string    = (var.service_account == "" ? "none" : var.service_account)
-  key_file_string           = (var.key_file == "" ? "none" : var.key_file)
-  ca_cert                   = var.ca_certs["ca_cert"]
-  ca_key                    = var.ca_certs["ca_key"]
-  root_cert                 = var.ca_certs["root_cert"]
-  cert_chain                = var.ca_certs["cert_chain"]
+  # options_to_string         = join(",", var.options)
+  # options_string            = (local.options_to_string != "" ? join(",", var.options) : "none")
+  options_string = length(var.options) > 0 ? join(",", var.options) : "none"
+  # custom_overlays_to_string = join(",", var.custom_overlays)
+  # custom_overlays_string    = (local.custom_overlays_to_string != "" ? join(",", var.custom_overlays) : "none")
+  custom_overlays_string = length(var.custom_overlays) > 0 ? join(",", var.custom_overlays) : "none"
+  asm_git_tag_string     = (var.asm_git_tag == "" ? "none" : var.asm_git_tag)
+  service_account_string = (var.service_account == "" ? "none" : var.service_account)
+  key_file_string        = (var.key_file == "" ? "none" : var.key_file)
+  ca_cert                = var.ca_certs["ca_cert"]
+  ca_key                 = var.ca_certs["ca_key"]
+  root_cert              = var.ca_certs["root_cert"]
+  cert_chain             = var.ca_certs["cert_chain"]
 }
 
 module "asm_install" {

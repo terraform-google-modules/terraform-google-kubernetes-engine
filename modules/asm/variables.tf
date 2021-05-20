@@ -90,13 +90,13 @@ variable "managed_control_plane" {
 variable "options" {
   description = "Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features."
   type        = list
-  default     = ["none"]
+  default     = []
 }
 
 variable "custom_overlays" {
   description = "Comma separated list of custom_overlay file paths. Works with in-cluster control plane only. Additional documentation available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_an_overlay_file"
   type        = list
-  default     = ["none"]
+  default     = []
 }
 
 variable "skip_validation" {

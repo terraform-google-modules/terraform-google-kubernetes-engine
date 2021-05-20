@@ -55,7 +55,7 @@ To deploy this config:
 | ca\_certs | Sets CA certificate file paths when `ca` is set to `citadel`. These values must be provided when using Citadel as CA. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca. | `map` | <pre>{<br>  "ca_cert": "none",<br>  "ca_key": "none",<br>  "cert_chain": "none",<br>  "root_cert": "none"<br>}</pre> | no |
 | cluster\_endpoint | The GKE cluster endpoint. | `string` | n/a | yes |
 | cluster\_name | The unique name to identify the cluster in ASM. | `string` | n/a | yes |
-| custom\_overlays | Comma separated list of custom\_overlay file paths. Works with in-cluster control plane only. Additional documentation available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_an_overlay_file | `list` | <pre>[<br>  "none"<br>]</pre> | no |
+| custom\_overlays | Comma separated list of custom\_overlay file paths. Works with in-cluster control plane only. Additional documentation available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_an_overlay_file | `list` | `[]` | no |
 | enable\_all | Sets `--enable_all` option if true. | `bool` | `false` | no |
 | enable\_cluster\_labels | Sets `--enable_cluster_labels` option if true. | `bool` | `false` | no |
 | enable\_cluster\_roles | Sets `--enable_cluster_roles` option if true. | `bool` | `false` | no |
@@ -69,7 +69,7 @@ To deploy this config:
 | managed | Whether the control plane should be managed. | `bool` | `false` | no |
 | managed\_control\_plane | ASM managed control plane boolean. Determines whether to install ASM managed control plane. Installing ASM managed control plane does not install gateways. Documentation on how to install gateways with ASM MCP can be found at https://cloud.google.com/service-mesh/docs/managed-control-plane#install_istio_gateways_optional. | `bool` | `false` | no |
 | mode | ASM mode for deployment. Supported mode is `install` only. | `string` | `"install"` | no |
-| options | Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features. | `list` | <pre>[<br>  "none"<br>]</pre> | no |
+| options | Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features. | `list` | `[]` | no |
 | outdir | Sets `--outdir` option. | `string` | `"none"` | no |
 | project\_id | The project in which the resource belongs. | `string` | n/a | yes |
 | service\_account | The GCP Service Account email address used to deploy ASM. | `string` | `""` | no |
