@@ -432,10 +432,10 @@ resource "google_container_node_pool" "pools" {
       }
     }
     dynamic "sandbox_config" {
-      for_each = local.cluster_sandbox_enabled
+      for_each = contains(keys(each.value), "sandbox_type") ? [1] : []
 
       content {
-        sandbox_type = sandbox_config.value
+        sandbox_type = lookup(each.value, "sandbox_type")
       }
     }
 
