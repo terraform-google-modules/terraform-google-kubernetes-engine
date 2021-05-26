@@ -64,7 +64,7 @@ variable "asm_git_tag" {
 }
 
 variable "mode" {
-  description = "ASM mode for deployment. Supported mode is `install` only."
+  description = "ASM mode for deployment. Supported modes are `install` and `upgrade`."
   type        = string
   default     = "install"
 }
@@ -75,7 +75,7 @@ variable "service_account" {
   default     = ""
 }
 
-variable "key_file" {
+variable "asm_key_file" {
   description = "The GCP Service Account credentials file path used to deploy ASM."
   type        = string
   default     = ""

@@ -50,6 +50,7 @@ To deploy this config:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | asm\_git\_tag | ASM git tag to deploy. This module supports versions `1.8` and `1.9`. You can get the exact `asm_git_tag` by running the command `install_asm --version`. The ASM git tab should be of the form `1.9.3-asm.2+config5`. You can also see all ASM git tags by running `curl https://storage.googleapis.com/csm-artifacts/asm/STABLE_VERSIONS`. You must provide the full and exact git tag. This variable is optional. Leaving it empty (default) will download the latest `install_asm` script for the version provided by the `asm_version` variable. | `string` | `""` | no |
+| asm\_key\_file | The GCP Service Account credentials file path used to deploy ASM. | `string` | `""` | no |
 | asm\_version | ASM version to deploy. This module supports versions `1.8` and `1.9`. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"1.9"` | no |
 | ca | Sets CA option. Possible values are `meshca` or `citadel`. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca. | `string` | `"meshca"` | no |
 | ca\_certs | Sets CA certificate file paths when `ca` is set to `citadel`. These values must be provided when using Citadel as CA. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca. | `map` | `{}` | no |
@@ -65,10 +66,9 @@ To deploy this config:
 | enable\_registration | Sets `--enable_registration` option if true. | `bool` | `false` | no |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |
 | impersonate\_service\_account | An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials. | `string` | `""` | no |
-| key\_file | The GCP Service Account credentials file path used to deploy ASM. | `string` | `""` | no |
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
 | managed\_control\_plane | ASM managed control plane boolean. Determines whether to install ASM managed control plane. Installing ASM managed control plane does not install gateways. Documentation on how to install gateways with ASM MCP can be found at https://cloud.google.com/service-mesh/docs/managed-control-plane#install_istio_gateways_optional. | `bool` | `false` | no |
-| mode | ASM mode for deployment. Supported mode is `install` only. | `string` | `"install"` | no |
+| mode | ASM mode for deployment. Supported modes are `install` and `upgrade`. | `string` | `"install"` | no |
 | options | Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features. | `list` | `[]` | no |
 | outdir | Sets `--outdir` option. | `string` | `"none"` | no |
 | project\_id | The project in which the resource belongs. | `string` | n/a | yes |
