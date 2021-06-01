@@ -61,9 +61,10 @@ To deploy this config:
 | enable\_cluster\_roles | Sets `--enable_cluster_roles` option if true. | `bool` | `false` | no |
 | enable\_gcp\_apis | Sets `--enable_gcp_apis` option if true. | `bool` | `false` | no |
 | enable\_gcp\_components | Sets --enable\_gcp\_components option if true. Can be true or false. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `bool` | `false` | no |
-| enable\_gcp\_iam\_roles | Sets `--enable_gcp_iam_roles` option if true. | `bool` | `false` | no |
+| enable\_gcp\_iam\_roles | Grants IAM roles required for ASM if true. If enable\_gcp\_iam\_roles, one of impersonate\_service\_account, service\_account, or iam\_member must be set. | `bool` | `false` | no |
 | enable\_registration | Sets `--enable_registration` option if true. | `bool` | `false` | no |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |
+| iam\_member | The GCP member email address to grant IAM roles to. If impersonate\_service\_account or service\_account is set, roles are granted to that SA. | `string` | `""` | no |
 | impersonate\_service\_account | An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials. | `string` | `""` | no |
 | key\_file | The GCP Service Account credentials file path used to deploy ASM. | `string` | `""` | no |
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
