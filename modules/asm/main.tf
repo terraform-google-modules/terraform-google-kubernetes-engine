@@ -43,10 +43,10 @@ locals {
     "roles/gkehub.viewer",
     "roles/gkehub.gatewayAdmin",
   ]
-  // if enable_gcp_iam_roles is set, grant IAM roles to first non null principal in the order below
+  # if enable_gcp_iam_roles is set, grant IAM roles to first non null principal in the order below
   asm_iam_member = var.enable_gcp_iam_roles ? coalesce(var.impersonate_service_account, var.service_account, var.iam_member) : ""
   # compute any additonal resources that ASM provisioner should depend on
-  additional_depends_on = concat(var.enable_gcp_apis ? [module.asm-services[0].project_id] : [], local.asm_iam_member != "" ? [for k,v in google_project_iam_member.asm_iam: v.etag] : [])
+  additional_depends_on = concat(var.enable_gcp_apis ? [module.asm-services[0].project_id] : [], local.asm_iam_member != "" ? [for k, v in google_project_iam_member.asm_iam : v.etag] : [])
 }
 
 resource "google_project_iam_member" "asm_iam" {
@@ -57,10 +57,13 @@ resource "google_project_iam_member" "asm_iam" {
 }
 
 module "asm-services" {
-  source     = "terraform-google-modules/project-factory/google//modules/project_services"
-  version    = "~> 10.0"
-  count     = var.enable_gcp_apis ? 1 : 0
-  project_id = var.project_id
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
+  version = "~> 10.0"
+  count   = var.enable_gcp_apis ? 1 : 0
+
+  project_id                  = var.project_id
+  disable_services_on_destroy = false
+  disable_dependent_services  = false
 
   # https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages/blob/1cf61b679cd369f42a0e735f8e201de1a6a6433b/scripts/asm-installer/install_asm#L2005
   activate_apis = [
