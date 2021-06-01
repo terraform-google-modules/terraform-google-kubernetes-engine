@@ -173,12 +173,10 @@ variable "git_token" {
   description = "Token for token-based git access."
   type        = string
   default     = null
-  sensitive   = true
 }
 
 variable "git_username" {
   description = "Username for token-based git access."
   type        = string
   default     = null
-  sensitive   = true
 }
