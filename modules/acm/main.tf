@@ -53,6 +53,8 @@ module "acm_operator" {
   enable_log_denies        = var.enable_log_denies
   service_account_key_file = var.service_account_key_file
   use_existing_context     = var.use_existing_context
+  git_token                = var.git_token
+  git_username             = var.git_username
 
   operator_latest_manifest_url  = "gs://config-management-release/released/latest/config-management-operator.yaml"
   operator_cr_template_path     = "${path.module}/templates/acm-config.yml.tpl"

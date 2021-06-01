@@ -70,7 +70,7 @@ module "k8sop_creds_secret" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version = "~> 2.1.0"
 
-  enabled                     = var.create_ssh_key == true || var.ssh_auth_key != null ? "true" : "false"
+  enabled                     = var.create_ssh_key == true || var.ssh_auth_key != null || var.secret_type == "token" ? "true" : "false"
   module_depends_on           = [module.k8s_operator.wait]
   cluster_name                = var.cluster_name
   cluster_location            = var.location
@@ -79,7 +79,7 @@ module "k8sop_creds_secret" {
   use_existing_context        = var.use_existing_context
   impersonate_service_account = var.impersonate_service_account
 
-  kubectl_create_command  = local.private_key != null ? "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}'" : ""
+  kubectl_create_command  = local.private_key != null ? "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=${local.k8sop_creds_secret_key}='${local.private_key}' --dry-run=true --save-config -o yaml | kubectl apply -f -" : var.secret_type == "token" ? "kubectl create secret generic ${var.operator_credential_name} -n=${var.operator_credential_namespace} --from-literal=token='${var.git_token}' --from-literal=username='${var.git_username}' --dry-run=true --save-config -o yaml | kubectl apply -f -" : ""
   kubectl_destroy_command = "kubectl delete secret ${var.operator_credential_name} -n=${var.operator_credential_namespace}"
 }
 
