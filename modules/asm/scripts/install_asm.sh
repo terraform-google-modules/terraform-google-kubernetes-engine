@@ -79,7 +79,7 @@ item="${OPTIONS[*]}";OPTIONS_COMMAND=$(echo "--option" "${item// / --option }")
 echo -e "OPTIONS_COMMAND is $OPTIONS_COMMAND"
 echo -e "CUSTOM_OVERLAYS array length is ${#CUSTOM_OVERLAYS[@]}"
 # Create custom_overlays command snippet
-item="${CUSTOM_OVERLAYS[*]}";CUSTOM_OVERLAYS_COMMAND=$(echo "--custom_overlay $(pwd)/" "${item// / --custom_overlay $(pwd)/}")
+item="${CUSTOM_OVERLAYS[*]}";CUSTOM_OVERLAYS_COMMAND=$(echo "--custom_overlay " "$(pwd)/${item// / --custom_overlay $(pwd)/}")
 echo -e "CUSTOM_OVERLAYS_COMMAND is $CUSTOM_OVERLAYS_COMMAND"
 echo -e "ENABLE_ALL is $ENABLE_ALL"
 echo -e "ENABLE_CLUSTER_ROLES is $ENABLE_CLUSTER_ROLES"
