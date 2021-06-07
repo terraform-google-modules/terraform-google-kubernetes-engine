@@ -96,5 +96,5 @@ module "asm_install" {
   impersonate_service_account = var.impersonate_service_account
 
   kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version} ${var.mode} ${var.managed_control_plane} ${var.skip_validation} ${local.options_string} ${local.custom_overlays_string} ${var.enable_all} ${var.enable_cluster_roles} ${var.enable_cluster_labels} ${var.enable_gcp_components} ${var.enable_registration} ${var.outdir} ${var.ca} ${local.ca_cert} ${local.ca_key} ${local.root_cert} ${local.cert_chain} ${local.service_account_string} ${local.key_file_string} ${local.asm_git_tag_string}"
-  kubectl_destroy_command = "kubectl delete ns asm-system istio-system && kubectl label namespaces --all istio-injection-"
+  kubectl_destroy_command = "${path.module}/scripts/destroy_asm.sh"
 }
