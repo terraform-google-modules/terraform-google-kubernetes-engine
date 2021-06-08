@@ -15,7 +15,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * K8s provider upgrade (#892)
 * Add multi-repo support for Config Sync (#872)
 * Add support for `enable_l4_ilb_subsetting` flag (#896)
-* For beta modules, support for google-beta provider versions older than v3.63 has been removed. 
+* For beta modules, support for google-beta provider versions older than v3.63 has been removed.
 
 ### Features
 
