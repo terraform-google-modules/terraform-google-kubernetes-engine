@@ -59,7 +59,7 @@ resource "google_container_cluster" "primary" {
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
     dynamic "resource_limits" {
-      for_each = local.autoscalling_resource_limits
+      for_each = local.autoscaling_resource_limits
       content {
         resource_type = lookup(resource_limits.value, "resource_type")
         minimum       = lookup(resource_limits.value, "minimum")
