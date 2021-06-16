@@ -75,7 +75,7 @@ variable "service_account" {
   default     = ""
 }
 
-variable "asm_key_file" {
+variable "key_file" {
   description = "The GCP Service Account credentials file path used to deploy ASM."
   type        = string
   default     = ""

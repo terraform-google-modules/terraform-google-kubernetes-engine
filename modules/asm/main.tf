@@ -23,7 +23,7 @@ locals {
   custom_overlays_string = length(var.custom_overlays) > 0 ? join(",", var.custom_overlays) : "none"
   asm_git_tag_string     = (var.asm_git_tag == "" ? "none" : var.asm_git_tag)
   service_account_string = (var.service_account == "" ? "none" : var.service_account)
-  key_file_string        = (var.asm_key_file == "" ? "none" : var.asm_key_file)
+  key_file_string        = (var.key_file == "" ? "none" : var.key_file)
   ca_cert                = lookup(var.ca_certs, "ca_cert", "none")
   ca_key                 = lookup(var.ca_certs, "ca_key", "none")
   root_cert              = lookup(var.ca_certs, "root_cert", "none")
