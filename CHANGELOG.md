@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+### [15.0.1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v15.0.0...v15.0.1) (2021-06-14)
+
+
+### Bug Fixes
+
+* Fix typo in local variable ([#925](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/925)) ([d60eec6](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d60eec63598a8ff2d39505cd68268cba2af8843b))
+* Remove kustomize requirement for ASM ([#930](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/930)) ([389521b](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/389521b77ec3b85380a3155ffd06ae2d4312230e))
+
 ## [15.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.3.0...v15.0.0) (2021-06-08)
 
 
