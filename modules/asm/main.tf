@@ -73,6 +73,7 @@ module "asm-services" {
     "cloudtrace.googleapis.com",
     "meshtelemetry.googleapis.com",
     "meshconfig.googleapis.com",
+    "meshca.googleapis.com",
     "iamcredentials.googleapis.com",
     "gkeconnect.googleapis.com",
     "gkehub.googleapis.com",
