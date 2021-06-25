@@ -6,6 +6,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+### [15.0.1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v15.0.0...v15.0.1) (2021-06-14)
+
+
+### Bug Fixes
+
+* Fix typo in local variable ([#925](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/925)) ([d60eec6](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d60eec63598a8ff2d39505cd68268cba2af8843b))
+* Remove kustomize requirement for ASM ([#930](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/930)) ([389521b](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/389521b77ec3b85380a3155ffd06ae2d4312230e))
+
+## [15.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.3.0...v15.0.0) (2021-06-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* Updated ASM terraform module for 1.8 and 1.9 (#895)
+* K8s provider upgrade (#892)
+* Add multi-repo support for Config Sync (#872)
+* Add support for `enable_l4_ilb_subsetting` flag (#896)
+* For beta modules, support for google-beta provider versions older than v3.63 has been removed.
+
+### Features
+
+* Add multi-repo support for Config Sync ([#872](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/872)) ([23da103](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/23da1035cf55bb4a2e371c905387d040a3748ac5))
+* Add support for `enable_l4_ilb_subsetting` flag ([#896](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/896)) ([7531f90](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7531f90c943e01238180f0afdc3f0d43b0f04c59))
+* Add use local_ssd_ephemeral_count attribute in node_pool config on beta clusters ([#902](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/902)) ([9335262](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/93352625dadf045ea1156f2fc0aab84a8c9a731a))
+* K8s provider upgrade ([#892](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/892)) ([9172b3e](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9172b3eaeeb806caca29aa1e3e83e58a26df57b1))
+* Updated ASM terraform module for 1.8 and 1.9 ([#895](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/895)) ([e2ba8d2](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e2ba8d221b743e8d092fc2f8e09fd392c882190b))
+
+
+### Bug Fixes
+
+* Add ability to impersonate service accounts in kubectl for all submodules ([#903](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/903)) ([fc43485](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/fc43485af5cce4a257a40110ffe72df55e13d67b))
+* asm destroy ([#922](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/922)) ([f3ddbf5](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f3ddbf5dd298ce2e6c9c858faf68131d62ae9ddb))
+* Asm overlay path ([#921](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/921)) ([5d3dc52](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5d3dc52096aa51c5f16f17778ebdd7f0e91d4b19))
+* **docs:** Describe `ADVANCED_DATAPATH` in more detail ([#907](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/907)) ([c32c5d1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c32c5d162c5a7ca52a563ecf3e5557c3c4bd32ba))
+* Ensure the ASM module's destroy command removes all ASM components ([#918](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/918)) ([00c2b71](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/00c2b719f592455982d8c1eb008b2c40fba98e54))
+* switch ASM API and IAM flags to use native resources ([#914](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/914)) ([ff71123](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ff71123a9a238dc2c061ebc25816eb7de9ca433b))
+
 ## [14.3.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v14.2.0...v14.3.0) (2021-05-05)
 
 

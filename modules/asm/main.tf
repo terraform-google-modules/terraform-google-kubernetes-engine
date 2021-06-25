@@ -73,6 +73,7 @@ module "asm-services" {
     "cloudtrace.googleapis.com",
     "meshtelemetry.googleapis.com",
     "meshconfig.googleapis.com",
+    "meshca.googleapis.com",
     "iamcredentials.googleapis.com",
     "gkeconnect.googleapis.com",
     "gkehub.googleapis.com",
@@ -88,7 +89,7 @@ module "asm_install" {
 
   gcloud_sdk_version          = var.gcloud_sdk_version
   upgrade                     = true
-  additional_components       = ["kubectl", "kpt", "beta", "kustomize"]
+  additional_components       = ["kubectl", "kpt", "beta"]
   cluster_name                = var.cluster_name
   cluster_location            = var.location
   project_id                  = var.project_id
