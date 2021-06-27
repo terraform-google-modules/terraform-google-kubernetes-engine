@@ -64,7 +64,7 @@ variable "asm_git_tag" {
 }
 
 variable "mode" {
-  description = "ASM mode for deployment. Supported mode is `install` only."
+  description = "ASM mode for deployment. Supported modes are `install` and `upgrade`."
   type        = string
   default     = "install"
 }
@@ -136,7 +136,7 @@ variable "enable_gcp_apis" {
 }
 
 variable "enable_gcp_iam_roles" {
-  description = "Sets `--enable_gcp_iam_roles` option if true."
+  description = "Grants IAM roles required for ASM if true. If enable_gcp_iam_roles, one of impersonate_service_account, service_account, or iam_member must be set."
   type        = bool
   default     = false
 }
@@ -175,4 +175,10 @@ variable "ca_certs" {
   #   "root_cert"  = "none"
   #   "cert_chain" = "none"
   # }
+}
+
+variable "iam_member" {
+  description = "The GCP member email address to grant IAM roles to. If impersonate_service_account or service_account is set, roles are granted to that SA."
+  type        = string
+  default     = ""
 }

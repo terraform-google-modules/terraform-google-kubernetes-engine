@@ -51,7 +51,7 @@ locals {
 
   release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
 
-  autoscalling_resource_limits = var.cluster_autoscaling.enabled ? [{
+  autoscaling_resource_limits = var.cluster_autoscaling.enabled ? [{
     resource_type = "cpu"
     minimum       = var.cluster_autoscaling.min_cpu_cores
     maximum       = var.cluster_autoscaling.max_cpu_cores

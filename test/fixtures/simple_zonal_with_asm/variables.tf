@@ -30,8 +30,3 @@ variable "zones" {
   default     = ["us-central1-a", "us-central1-b", "us-central1-c"]
 }
 
-variable "service_account" {
-  description = "The GCP Service Account email address used to deploy ASM."
-  type        = string
-  default     = ""
-}

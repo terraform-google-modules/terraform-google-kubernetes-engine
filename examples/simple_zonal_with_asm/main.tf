@@ -24,7 +24,7 @@ provider "google-beta" {
 }
 
 provider "google" {
-  version = "~> 3.42.0"
+  version = "~> 3.63.0"
   region  = var.region
 }
 
@@ -75,7 +75,6 @@ module "asm" {
   enable_cluster_roles  = true
   enable_cluster_labels = true
   enable_gcp_apis       = true
-  enable_gcp_iam_roles  = true
   enable_gcp_components = true
   options               = ["envoy-access-log"]
   outdir                = "./${module.gke.name}-outdir"
