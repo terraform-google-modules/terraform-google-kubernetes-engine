@@ -442,10 +442,16 @@ resource "google_container_node_pool" "pools" {
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
     dynamic "kubelet_config" {
-      for_each = contains(keys(each.value), "cpu_manager_policy") ? [1] : []
+      for_each = (
+        contains(keys(each.value), "cpu_cfs_quota") ||
+        contains(keys(each.value), "cpu_cfs_quota_period") ||
+        contains(keys(each.value), "cpu_manager_policy")
+      ) ? [1] : []
 
       content {
-        cpu_manager_policy = lookup(each.value, "cpu_manager_policy")
+        cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", true)
+        cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", "")
+        cpu_manager_policy   = lookup(each.value, "cpu_manager_policy", "none")
       }
     }
 
