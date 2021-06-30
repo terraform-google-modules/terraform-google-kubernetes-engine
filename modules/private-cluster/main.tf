@@ -51,7 +51,7 @@ locals {
 
   release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
 
-  autoscaling_resource_limits = var.cluster_autoscaling.enabled ? [{
+  autoscaling_resource_limits = var.cluster_autoscaling.enabled ? concat([{
     resource_type = "cpu"
     minimum       = var.cluster_autoscaling.min_cpu_cores
     maximum       = var.cluster_autoscaling.max_cpu_cores
@@ -59,7 +59,7 @@ locals {
     resource_type = "memory"
     minimum       = var.cluster_autoscaling.min_memory_gb
     maximum       = var.cluster_autoscaling.max_memory_gb
-  }] : []
+  }], var.cluster_autoscaling.gpu_resources) : []
 
 
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
