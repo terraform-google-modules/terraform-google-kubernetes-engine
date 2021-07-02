@@ -37,7 +37,7 @@ control "gcloud" do
       it "has the expected cluster autoscaling settings" do
         expect(data['autoscaling']).to eq({
             "autoprovisioningNodePoolDefaults" => {
-                "imageType"=>"COS",
+                "imageType"=>"COS_CONTAINERD",
                 "oauthScopes" => %w(https://www.googleapis.com/auth/cloud-platform),
                 "serviceAccount" => "default"
             },
