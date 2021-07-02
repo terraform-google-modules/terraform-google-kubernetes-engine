@@ -127,3 +127,15 @@ variable "use_existing_context" {
   type        = bool
   default     = false
 }
+
+variable "git_token" {
+  description = "Token for token-based git access."
+  type        = string
+  default     = null
+}
+
+variable "git_username" {
+  description = "Username for token-based git access."
+  type        = string
+  default     = null
+}
