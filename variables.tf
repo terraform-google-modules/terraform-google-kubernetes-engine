@@ -207,11 +207,7 @@ variable "cluster_autoscaling" {
     max_cpu_cores = number
     min_memory_gb = number
     max_memory_gb = number
-    gpu_resources = list(object({
-      resource_type = string
-      minimum       = number
-      maximum       = number
-    }))
+    gpu_resources = list(object({ resource_type = string, minimum = number, maximum = number }))
   })
   default = {
     enabled       = false
