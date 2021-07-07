@@ -446,6 +446,7 @@ resource "google_container_node_pool" "pools" {
 
       content {
         cpu_manager_policy = lookup(each.value, "cpu_manager_policy")
+        cpu_cfs_quota = lookup(each.value, "cpu_cfs_quota")
       }
     }
 
