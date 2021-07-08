@@ -3,7 +3,7 @@
 The v16.0 release of *kubernetes-engine* is a backwards incompatible release.
 
 ### cluster_autoscaling modified
-The `cluster_autoscaling` variable has been modified to require a `gpu_resources` value.
+The `cluster_autoscaling` variable has been modified to require a `gpu_resources` value. If you have enabled `cluster_autoscaling` and do not require `gpu_resources`, you can set it to an empty list as shown below.
 
 ```diff
  module "gke" {
@@ -18,11 +18,7 @@ The `cluster_autoscaling` variable has been modified to require a `gpu_resources
     max_cpu_cores       = 100
     min_memory_gb       = 1
     max_memory_gb       = 1000
-+   gpu_resources = [{
-+     resource_type = "nvidia-tesla-t4"
-+     minimum       = 1
-+     maximum       = 3
-+   }]
++   gpu_resources = []
   }
 }
 ```
