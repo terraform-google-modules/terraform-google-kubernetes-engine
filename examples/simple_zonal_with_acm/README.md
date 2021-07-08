@@ -4,23 +4,38 @@ This example illustrates how to create a simple cluster and install [Anthos Conf
 
 It incorporates the standard cluster module and the [ACM install module](../../modules/acm).
 
+## Verifying Success
+
+After applying the Terraform configuration, you can run the following commands to verify that your cluster has synced correctly:
+
+1. Check ACM install status:
+
+    ```
+    gcloud config set project $(terraform output --raw project_id)
+    gcloud alpha container hub config-management status
+    ```
+
+2. Connect to the cluster:
+
+    ```
+    gcloud container clusters get-credentials $(terraform output --raw cluster_name) --zone=$(terraform output --raw location)
+    ```
+
+3. Confirm the `shipping-dev` namespace was created:
+
+    ```
+    kubectl describe ns shipping-dev
+    ```
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| acm\_policy\_dir | Subfolder containing configs in ACM Git repo | `string` | `"foo-corp"` | no |
-| acm\_sync\_branch | Anthos config management Git branch | `string` | `"1.0.0"` | no |
-| acm\_sync\_repo | Anthos config management Git repo | `string` | `"git@github.com:GoogleCloudPlatform/csp-config-management.git"` | no |
 | cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
-| ip\_range\_pods | The secondary ip range to use for pods | `any` | n/a | yes |
-| ip\_range\_services | The secondary ip range to use for services | `any` | n/a | yes |
-| network | The VPC network to host the cluster in | `any` | n/a | yes |
-| operator\_path | Path to the operator yaml config. If unset, will download from GCS releases. | `string` | `null` | no |
 | project\_id | The project ID to host the cluster in | `any` | n/a | yes |
-| region | The region to host the cluster in | `any` | n/a | yes |
-| subnetwork | The subnetwork to host the cluster in | `any` | n/a | yes |
-| zones | The zone to host the cluster in (required if is a zonal cluster) | `list(string)` | n/a | yes |
+| region | The region to host the cluster in | `string` | `"us-central1"` | no |
+| zone | The zone to host the cluster in | `string` | `"us-central1-a"` | no |
 
 ## Outputs
 
@@ -36,7 +51,7 @@ It incorporates the standard cluster module and the [ACM install module](../../m
 | location | n/a |
 | master\_kubernetes\_version | The master Kubernetes version |
 | network | n/a |
-| project\_id | n/a |
+| project\_id | Standard test outputs |
 | region | n/a |
 | service\_account | The default service account used for running nodes. |
 | subnetwork | n/a |

@@ -18,6 +18,32 @@ resource "random_id" "random_project_id_suffix" {
   byte_length = 4
 }
 
+locals {
+  apis = [
+    "cloudkms.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "container.googleapis.com",
+    "pubsub.googleapis.com",
+    "serviceusage.googleapis.com",
+    "storage-api.googleapis.com",
+    "anthos.googleapis.com",
+    "anthosconfigmanagement.googleapis.com",
+    "logging.googleapis.com",
+    "meshca.googleapis.com",
+    "meshtelemetry.googleapis.com",
+    "meshconfig.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "monitoring.googleapis.com",
+    "stackdriver.googleapis.com",
+    "cloudtrace.googleapis.com",
+    "meshca.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "gkeconnect.googleapis.com",
+    "privateca.googleapis.com",
+    "gkehub.googleapis.com"
+  ]
+}
+
 module "gke-project-1" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 11.3"
@@ -30,14 +56,7 @@ module "gke-project-1" {
 
   auto_create_network = true
 
-  activate_apis = [
-    "cloudkms.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "container.googleapis.com",
-    "pubsub.googleapis.com",
-    "serviceusage.googleapis.com",
-    "storage-api.googleapis.com",
-  ]
+  activate_apis = local.apis
   activate_api_identities = [
     {
       api   = "container.googleapis.com"
@@ -56,15 +75,7 @@ module "gke-project-2" {
   folder_id         = var.folder_id
   billing_account   = var.billing_account
 
-  activate_apis = [
-    "cloudkms.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "container.googleapis.com",
-    "pubsub.googleapis.com",
-    "serviceusage.googleapis.com",
-    "storage-api.googleapis.com",
-    "gkehub.googleapis.com",
-  ]
+  activate_apis = local.apis
   activate_api_identities = [
     {
       api   = "container.googleapis.com"
@@ -84,20 +95,5 @@ module "gke-project-asm" {
   folder_id         = var.folder_id
   billing_account   = var.billing_account
 
-  activate_apis = [
-    "logging.googleapis.com",
-    "meshca.googleapis.com",
-    "meshtelemetry.googleapis.com",
-    "meshconfig.googleapis.com",
-    "anthos.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "monitoring.googleapis.com",
-    "stackdriver.googleapis.com",
-    "cloudtrace.googleapis.com",
-    "meshca.googleapis.com",
-    "iamcredentials.googleapis.com",
-    "gkeconnect.googleapis.com",
-    "privateca.googleapis.com",
-    "gkehub.googleapis.com",
-  ]
+  activate_apis = local.apis
 }

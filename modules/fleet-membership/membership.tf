@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-output "git_creds_public" {
-  description = "Public key of SSH keypair to allow the Anthos Operator to authenticate to your Git repository."
-  value       = var.create_ssh_key ? tls_private_key.k8sop_creds.*.public_key_openssh : null
+# Create the membership
+resource "google_gke_hub_membership" "primary" {
+  count    = var.enable_fleet_registration ? 1 : 0
+  provider = google-beta
+
+  project       = local.hub_project_id
+  membership_id = local.gke_hub_membership_name
+
+  endpoint {
+    gke_cluster {
+      resource_link = "//container.googleapis.com/${data.google_container_cluster.primary.id}"
+    }
+  }
+  authority {
+    issuer = "https://container.googleapis.com/v1/${data.google_container_cluster.primary.id}"
+  }
 }
-
-output "wait" {
-  description = "An output to use when you want to depend on cmd finishing"
-  value       = var.enable_policy_controller ? module.wait_for_gatekeeper.wait : module.k8sop_config.wait
-}
-
-
-
