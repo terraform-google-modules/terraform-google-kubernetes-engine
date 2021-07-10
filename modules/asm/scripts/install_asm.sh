@@ -178,7 +178,15 @@ else
 fi
 
 if [[ "${CA}" = "citadel" ]]; then
-    CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root_cert ${ROOT_CERT} --cert_chain ${CERT_CHAIN}"
+    CA_COMMAND_SNIPPET="--ca citadel"
+  if [[ "${CA_CERT}" -ne "" ]]; then 
+      CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT}"
+    if [[ "${CA_KEY}" -ne "" ]]; then 
+        CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY}"
+      if [[ "${ROOT_CERT}" -ne "" ]]; then 
+          CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root-cert ${ROOT_CERT}"
+        if [[ "${CERT_CHAIN}" -ne "" ]]; then 
+             CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root-cert ${ROOT_CERT} --cert_chain ${CERT_CHAIN}"
 else
     CA_COMMAND_SNIPPET=""
 fi
