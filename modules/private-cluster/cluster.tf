@@ -118,8 +118,10 @@ resource "google_container_cluster" "primary" {
   }
 
   maintenance_policy {
-    daily_maintenance_window {
+    recurring_window {
       start_time = var.maintenance_start_time
+      end_time = var.maintenance_end_time
+      recurrence = var.maintenance_recurrence
     }
   }
 
