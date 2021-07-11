@@ -111,13 +111,13 @@ variable "network_policy_provider" {
 variable "maintenance_start_time" {
   type        = string
   description = "Start time for maintenance operations in RFC3339 format"
-  default     = "06:00"
+  default     = "2021-07-01T06:00:00Z"
 }
 
 variable "maintenance_end_time" {
   type        = string
   description = "End time for maintenance operations in RFC3339 format"
-  default     = "18:00"
+  default     = "2021-07-01T18:00:00Z"
 }
 
 variable "maintenance_recurrence" {
