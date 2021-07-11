@@ -110,8 +110,20 @@ variable "network_policy_provider" {
 
 variable "maintenance_start_time" {
   type        = string
-  description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
-  default     = "05:00"
+  description = "Start time for maintenance operations in RFC3339 format"
+  default     = "06:00"
+}
+
+variable "maintenance_end_time" {
+  type        = string
+  description = "End time for maintenance operations in RFC3339 format"
+  default     = "18:00"
+}
+
+variable "maintenance_recurrence" {
+  type        = string
+  description = "Maintenance recurrence scheduler"
+  default     = "FREQ=WEEKLY;BYDAY=SU"
 }
 
 variable "maintenance_exclusions" {
