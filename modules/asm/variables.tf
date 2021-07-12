@@ -153,6 +153,12 @@ variable "enable_registration" {
   default     = false
 }
 
+variable "revision_name" {
+  description = "Sets `--revision-name` option."
+  type        = string
+  default     = "none"
+}
+
 variable "outdir" {
   description = "Sets `--outdir` option."
   type        = string

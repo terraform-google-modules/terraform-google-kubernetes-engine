@@ -35,15 +35,16 @@ ENABLE_CLUSTER_ROLES=${11}
 ENABLE_CLUSTER_LABELS=${12}
 ENABLE_GCP_COMPONENTS=${13}
 ENABLE_REGISTRATION=${14}
-OUTDIR=${15}
-CA=${16}
-CA_CERT=${17}
-CA_KEY=${18}
-ROOT_CERT=${19}
-CERT_CHAIN=${20}
-SERVICE_ACCOUNT=${21}
-KEY_FILE=${22}
-ASM_GIT_TAG=${23}
+REVISION_NAME=${15}
+OUTDIR=${16}
+CA=${17}
+CA_CERT=${18}
+CA_KEY=${19}
+ROOT_CERT=${20}
+CERT_CHAIN=${21}
+SERVICE_ACCOUNT=${22}
+KEY_FILE=${23}
+ASM_GIT_TAG=${24}
 
 # Set SKIP_VALIDATION variable
 if [[ ${SKIP_VALIDATION} = "true" ]]; then
@@ -90,6 +91,7 @@ echo -e "ENABLE_CLUSTER_ROLES is $ENABLE_CLUSTER_ROLES"
 echo -e "ENABLE_CLUSTER_LABELS is $ENABLE_CLUSTER_LABELS"
 echo -e "ENABLE_GCP_COMPONENTS is $ENABLE_GCP_COMPONENTS"
 echo -e "ENABLE_REGISTRATION is $ENABLE_REGISTRATION"
+echo -e "REVISION_NAME is $REVISION_NAME"
 echo -e "OUTDIR is $OUTDIR"
 echo -e "SERVICE_ACCOUNT is $SERVICE_ACCOUNT"
 echo -e "KEY_FILE is $KEY_FILE"
@@ -170,6 +172,12 @@ else
     ENABLE_REGISTRATION_COMMAND_SNIPPET="--enable_registration"
 fi
 
+if [[ "${REVISION_NAME}" = "none" ]]; then
+    REVISION_NAME_COMMAND_SNIPPET=""
+else
+    REVISION_NAME_COMMAND_SNIPPET="--revision-name ${REVISION_NAME}"
+fi
+
 if [[ "${OUTDIR}" = "none" ]]; then
     OUTDIR_COMMAND_SNIPPET=""
 else
@@ -177,16 +185,20 @@ else
     mkdir -p "${OUTDIR}"
 fi
 
-if [[ "${CA}" = "citadel" ]]; then
+if [[ "${CA}" == "citadel" ]]; then
     CA_COMMAND_SNIPPET="--ca citadel"
-  if [[ "${CA_CERT}" -ne "" ]]; then 
-      CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT}"
-    if [[ "${CA_KEY}" -ne "" ]]; then 
-        CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY}"
-      if [[ "${ROOT_CERT}" -ne "" ]]; then 
-          CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root-cert ${ROOT_CERT}"
-        if [[ "${CERT_CHAIN}" -ne "" ]]; then 
-             CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root-cert ${ROOT_CERT} --cert_chain ${CERT_CHAIN}"
+  if [[ "${CA_CERT}" != "none" ]]; then
+     CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT}"                
+    if [[ "${CA_CERT}" != "none" ]] && [[ "${CA_KEY}" != "none" ]]; then
+     CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY}"            
+      if [[ "${CA_CERT}" != "none" ]] && [[ "${CA_KEY}" != "none" ]] && [[ "${ROOT_CERT}" != "none" ]]; then
+       CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root_cert ${ROOT_CERT}"           
+        if [[ "${CA_CERT}" != "none" ]] && [[ "${CA_KEY}" != "none" ]] && [[ "${ROOT_CERT}" != "none" ]] && [[ "${CERT_CHAIN}" != "none" ]]; then
+         CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root_cert ${ROOT_CERT} --cert_chain ${CERT_CHAIN}"           
+        fi
+      fi
+    fi
+  fi
 else
     CA_COMMAND_SNIPPET=""
 fi
