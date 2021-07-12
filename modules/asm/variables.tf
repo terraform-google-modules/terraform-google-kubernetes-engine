@@ -153,10 +153,10 @@ variable "enable_registration" {
   default     = false
 }
 
-variable "revision_name" {
-  description = "Sets `--revision-name` option."
+variable "revision_label" {
+  description = "Sets `--revision-label` option."
   type        = string
-  default     = "none"
+  default     = ""
 }
 
 variable "outdir" {
