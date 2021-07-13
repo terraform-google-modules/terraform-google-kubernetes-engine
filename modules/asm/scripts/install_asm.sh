@@ -187,25 +187,53 @@ fi
 
 if [[ "${CA}" == "citadel" ]]; then
     CA_COMMAND_SNIPPET="--ca citadel"
-  if [[ "${CA_CERT}" != "none" ]]; then
-     CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT}"                
-    if [[ "${CA_CERT}" != "none" ]] && [[ "${CA_KEY}" != "none" ]]; then
-     CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY}"            
-      if [[ "${CA_CERT}" != "none" ]] && [[ "${CA_KEY}" != "none" ]] && [[ "${ROOT_CERT}" != "none" ]]; then
-       CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root_cert ${ROOT_CERT}"           
-        if [[ "${CA_CERT}" != "none" ]] && [[ "${CA_KEY}" != "none" ]] && [[ "${ROOT_CERT}" != "none" ]] && [[ "${CERT_CHAIN}" != "none" ]]; then
-         CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root_cert ${ROOT_CERT} --cert_chain ${CERT_CHAIN}"           
-        fi
-      fi
-    fi
-  fi
 else
     CA_COMMAND_SNIPPET=""
 fi
 
+if [[  "${CA_CERT}" != "none" ]]; then
+    CA_CERT_COMMAND_SNIPPET="--ca_cert ${CA_CERT}"
+else
+    CA_CERT_COMMAND_SNIPPET=""
+fi
+
+if [[  "${CA_KEY}" != "none" ]]; then
+    CA_KEY_COMMAND_SNIPPET="--ca_key ${CA_KEY}"
+else
+    CA_KEY_COMMAND_SNIPPET=""
+fi
+
+if [[  "${ROOT_CERT}" != "none" ]]; then
+    ROOT_CERT_COMMAND_SNIPPET="--root_cert ${ROOT_CERT}"
+else
+    ROOT_CERT_COMMAND_SNIPPET=""
+fi
+
+if [[  "${CERT_CHAIN}" != "none" ]]; then
+    CERT_CHAIN_COMMAND_SNIPPET="--cert-chain ${CERT_CHAIN}"
+else
+    CERT_CHAIN_COMMAND_SNIPPET=""
+fi
+
+# if [[ "${CA_CERT}" != "none" ]]; then
+#       CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT}"                
+#     if [[ "${CA_KEY}" != "none" ]]; then
+#         CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY}"            
+#       if [[ "${ROOT_CERT}" != "none" ]]; then
+#           CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root_cert ${ROOT_CERT}"           
+#         if [[ "${CERT_CHAIN}" != "none" ]]; then
+#             CA_COMMAND_SNIPPET="--ca citadel --ca_cert ${CA_CERT} --ca_key ${CA_KEY} --root_cert ${ROOT_CERT} --cert_chain ${CERT_CHAIN}"           
+#         fi
+#       fi
+#     fi
+#   fi
+# else
+#     CA_COMMAND_SNIPPET=""
+# fi
+
 # Echo the command before executing
-echo -e "install_asm_${ASM_VERSION} --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} ${MCP_COMMAND_SNIPPET} ${OPTIONS_COMMAND_SNIPPET} ${CUSTOM_OVERLAYS_COMMAND_SNIPPET} ${REVISION_LABEL_COMMAND_SNIPPET} ${OUTDIR_COMMAND_SNIPPET} ${ENABLE_ALL_COMMAND_SNIPPET} ${ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET} ${ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET} ${ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET} ${ENABLE_REGISTRATION_COMMAND_SNIPPET} ${CA_COMMAND_SNIPPET} ${SERVICE_ACCOUNT_COMMAND_SNIPPET} ${KEY_FILE_COMMAND_SNIPPET}"
+echo -e "install_asm_${ASM_VERSION} --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} ${MCP_COMMAND_SNIPPET} ${OPTIONS_COMMAND_SNIPPET} ${CUSTOM_OVERLAYS_COMMAND_SNIPPET} ${REVISION_LABEL_COMMAND_SNIPPET} ${OUTDIR_COMMAND_SNIPPET} ${ENABLE_ALL_COMMAND_SNIPPET} ${ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET} ${ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET} ${ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET} ${ENABLE_REGISTRATION_COMMAND_SNIPPET} ${CA_COMMAND_SNIPPET} ${CA_CERT_COMMAND_SNIPPET} ${CA_KEY_COMMAND_SNIPPET} ${ROOT_CERT_COMMAND_SNIPPET} ${CERT_CHAIN_COMMAND_SNIPPET} ${SERVICE_ACCOUNT_COMMAND_SNIPPET} ${KEY_FILE_COMMAND_SNIPPET}"
 
 # run the script with appropriate flags
 # shellcheck disable=SC2086
-./install_asm_${ASM_VERSION} --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} ${MCP_COMMAND_SNIPPET} ${OPTIONS_COMMAND_SNIPPET} ${CUSTOM_OVERLAYS_COMMAND_SNIPPET} ${REVISION_LABEL_COMMAND_SNIPPET} ${OUTDIR_COMMAND_SNIPPET} ${ENABLE_ALL_COMMAND_SNIPPET} ${ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET} ${ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET} ${ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET} ${ENABLE_REGISTRATION_COMMAND_SNIPPET} ${CA_COMMAND_SNIPPET} ${SERVICE_ACCOUNT_COMMAND_SNIPPET} ${KEY_FILE_COMMAND_SNIPPET}
+./install_asm_${ASM_VERSION} --verbose --project_id ${PROJECT_ID} --cluster_name ${CLUSTER_NAME} --cluster_location ${CLUSTER_LOCATION} --mode ${MODE} ${MCP_COMMAND_SNIPPET} ${OPTIONS_COMMAND_SNIPPET} ${CUSTOM_OVERLAYS_COMMAND_SNIPPET} ${REVISION_LABEL_COMMAND_SNIPPET} ${OUTDIR_COMMAND_SNIPPET} ${ENABLE_ALL_COMMAND_SNIPPET} ${ENABLE_CLUSTER_ROLES_COMMAND_SNIPPET} ${ENABLE_CLUSTER_LABELS_COMMAND_SNIPPET} ${ENABLE_GCP_COMPONENTS_COMMAND_SNIPPET} ${ENABLE_REGISTRATION_COMMAND_SNIPPET} ${CA_COMMAND_SNIPPET} ${CA_CERT_COMMAND_SNIPPET} ${CA_KEY_COMMAND_SNIPPET} ${ROOT_CERT_COMMAND_SNIPPET} ${CERT_CHAIN_COMMAND_SNIPPET} ${SERVICE_ACCOUNT_COMMAND_SNIPPET} ${KEY_FILE_COMMAND_SNIPPET}
