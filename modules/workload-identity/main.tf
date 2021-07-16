@@ -15,8 +15,12 @@
  */
 
 locals {
+  gcp_given_name = var.gcp_sa_name != null ? var.gcp_sa_name : var.name
+  gcp_sa_name    = var.use_existing_gcp_sa ? local.gcp_given_name : google_service_account.cluster_service_account[local.gcp_given_name].name
+  gcp_sa_email   = var.use_existing_gcp_sa ? "${local.gcp_given_name}@${var.project_id}.iam.gserviceaccount.com" : google_service_account.cluster_service_account[local.gcp_given_name].email
+  gcp_sa_fqn     = "serviceAccount:${local.gcp_sa_email}"
+
   k8s_sa_gcp_derived_name = "serviceAccount:${var.project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
-  gcp_sa_email            = google_service_account.cluster_service_account.email
 
   # This will cause terraform to block returning outputs until the service account is created
   k8s_given_name       = var.k8s_sa_name != null ? var.k8s_sa_name : var.name
@@ -25,9 +29,11 @@ locals {
 }
 
 resource "google_service_account" "cluster_service_account" {
+  for_each = var.use_existing_gcp_sa ? [] : toset([local.gcp_given_name])
+
   # GCP service account ids must be < 30 chars matching regex ^[a-z](?:[-a-z0-9]{4,28}[a-z0-9])$
-  # KSA do not have this naming restriction.
-  account_id   = substr(var.name, 0, 30)
+  # KSAs do not have this naming restriction.
+  account_id   = substr(each.key, 0, 30)
   display_name = substr("GCP SA bound to K8S SA ${local.k8s_given_name}", 0, 100)
   project      = var.project_id
 }
@@ -40,7 +46,7 @@ resource "kubernetes_service_account" "main" {
     name      = var.name
     namespace = var.namespace
     annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.cluster_service_account.email
+      "iam.gke.io/gcp-service-account" = local.gcp_sa_email
     }
   }
 }
@@ -61,7 +67,7 @@ module "annotate-sa" {
 }
 
 resource "google_service_account_iam_member" "main" {
-  service_account_id = google_service_account.cluster_service_account.name
+  service_account_id = local.gcp_sa_name
   role               = "roles/iam.workloadIdentityUser"
   member             = local.k8s_sa_gcp_derived_name
 }
@@ -72,5 +78,5 @@ resource "google_project_iam_member" "workload_identity_sa_bindings" {
 
   project = var.project_id
   role    = each.value
-  member  = "serviceAccount:${google_service_account.cluster_service_account.email}"
+  member  = local.gcp_sa_fqn
 }

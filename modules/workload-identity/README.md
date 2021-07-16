@@ -72,20 +72,22 @@ module "my-app-workload-identity" {
 | annotate\_k8s\_sa | Annotate the kubernetes service account with 'iam.gke.io/gcp-service-account' annotation. Valid in cases when an existing SA is used. | `bool` | `true` | no |
 | automount\_service\_account\_token | Enable automatic mounting of the service account token | `bool` | `false` | no |
 | cluster\_name | Cluster name. Required if using existing KSA. | `string` | `""` | no |
+| gcp\_sa\_name | Name for the Google service account | `string` | `null` | no |
 | impersonate\_service\_account | An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials. | `string` | `""` | no |
-| k8s\_sa\_name | Name for the existing Kubernetes service account | `string` | `null` | no |
+| k8s\_sa\_name | Name for the Kubernetes service account | `string` | `null` | no |
 | location | Cluster location (region if regional cluster, zone if zonal cluster). Required if using existing KSA. | `string` | `""` | no |
 | name | Name for both service accounts. The GCP SA will be truncated to the first 30 chars if necessary. | `string` | n/a | yes |
-| namespace | Namespace for k8s service account | `string` | `"default"` | no |
+| namespace | Namespace for the Kubernetes service account | `string` | `"default"` | no |
 | project\_id | GCP project ID | `string` | n/a | yes |
-| roles | (optional) A list of roles to be added to the created Service account | `list(string)` | `[]` | no |
+| roles | A list of roles to be added to the created service account | `list(string)` | `[]` | no |
+| use\_existing\_gcp\_sa | Use an existing Google service account instead of creating one | `bool` | `false` | no |
 | use\_existing\_k8s\_sa | Use an existing kubernetes service account instead of creating one | `bool` | `false` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| gcp\_service\_account | GCP service account. |
+| gcp\_service\_account | GCP service account, if created; null if existing account was used. |
 | gcp\_service\_account\_email | Email address of GCP service account. |
 | gcp\_service\_account\_fqn | FQN of GCP service account. |
 | gcp\_service\_account\_name | Name of GCP service account. |

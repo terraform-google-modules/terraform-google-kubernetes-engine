@@ -19,6 +19,23 @@ variable "name" {
   type        = string
 }
 
+variable "project_id" {
+  description = "GCP project ID"
+  type        = string
+}
+
+variable "gcp_sa_name" {
+  description = "Name for the Google service account"
+  type        = string
+  default     = null
+}
+
+variable "use_existing_gcp_sa" {
+  description = "Use an existing Google service account instead of creating one"
+  default     = false
+  type        = bool
+}
+
 variable "cluster_name" {
   description = "Cluster name. Required if using existing KSA."
   type        = string
@@ -32,19 +49,14 @@ variable "location" {
 }
 
 variable "k8s_sa_name" {
-  description = "Name for the existing Kubernetes service account"
+  description = "Name for the Kubernetes service account"
   type        = string
   default     = null
 }
 
 variable "namespace" {
-  description = "Namespace for k8s service account"
+  description = "Namespace for the Kubernetes service account"
   default     = "default"
-  type        = string
-}
-
-variable "project_id" {
-  description = "GCP project ID"
   type        = string
 }
 
@@ -69,7 +81,7 @@ variable "automount_service_account_token" {
 variable "roles" {
   type        = list(string)
   default     = []
-  description = "(optional) A list of roles to be added to the created Service account"
+  description = "A list of roles to be added to the created service account"
 }
 
 variable "impersonate_service_account" {
