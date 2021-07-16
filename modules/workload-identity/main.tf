@@ -17,7 +17,7 @@
 locals {
   gcp_given_name = var.gcp_sa_name != null ? var.gcp_sa_name : var.name
   gcp_sa_name    = var.use_existing_gcp_sa ? local.gcp_given_name : google_service_account.main[0].name
-  gcp_sa_email   = var.use_existing_gcp_sa ? "${local.gcp_given_name}@${var.project_id}.iam.gserviceaccount.com" : google_service_account.main[0].email
+  gcp_sa_email   = google_service_account.cluster_service_account.email
   gcp_sa_fqn     = "serviceAccount:${local.gcp_sa_email}"
 
   k8s_sa_gcp_derived_name = "serviceAccount:${var.project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
