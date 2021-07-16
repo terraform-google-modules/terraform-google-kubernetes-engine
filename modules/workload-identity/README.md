@@ -87,7 +87,7 @@ module "my-app-workload-identity" {
 
 | Name | Description |
 |------|-------------|
-| gcp\_service\_account | GCP service account, if created; null if existing account was used. |
+| gcp\_service\_account | GCP service account. |
 | gcp\_service\_account\_email | Email address of GCP service account. |
 | gcp\_service\_account\_fqn | FQN of GCP service account. |
 | gcp\_service\_account\_name | Name of GCP service account. |
