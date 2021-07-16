@@ -38,7 +38,7 @@ resource "google_service_account" "main" {
 
   # GCP service account ids must be < 30 chars matching regex ^[a-z](?:[-a-z0-9]{4,28}[a-z0-9])$
   # KSAs do not have this naming restriction.
-  account_id   = substr(each.key, 0, 30)
+  account_id   = substr(var.name, 0, 30)
   display_name = substr("GCP SA bound to K8S SA ${local.k8s_given_name}", 0, 100)
   project      = var.project_id
 }
