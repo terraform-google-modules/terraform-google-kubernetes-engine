@@ -25,7 +25,7 @@ variable "project_id" {
 }
 
 variable "gcp_sa_name" {
-  description = "Name for the Google service account"
+  description = "Name for the Google service account; overrides `var.name`."
   type        = string
   default     = null
 }
@@ -49,7 +49,7 @@ variable "location" {
 }
 
 variable "k8s_sa_name" {
-  description = "Name for the Kubernetes service account"
+  description = "Name for the Kubernetes service account; overrides `var.name`."
   type        = string
   default     = null
 }

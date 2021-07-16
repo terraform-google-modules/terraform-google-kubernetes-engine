@@ -16,8 +16,8 @@
 
 locals {
   gcp_given_name = var.gcp_sa_name != null ? var.gcp_sa_name : var.name
-  gcp_sa_name    = var.use_existing_gcp_sa ? local.gcp_given_name : google_service_account.cluster_service_account[local.gcp_given_name].name
-  gcp_sa_email   = var.use_existing_gcp_sa ? "${local.gcp_given_name}@${var.project_id}.iam.gserviceaccount.com" : google_service_account.cluster_service_account[local.gcp_given_name].email
+  gcp_sa_name    = var.use_existing_gcp_sa ? local.gcp_given_name : google_service_account.main[0].name
+  gcp_sa_email   = var.use_existing_gcp_sa ? "${local.gcp_given_name}@${var.project_id}.iam.gserviceaccount.com" : google_service_account.main[0].email
   gcp_sa_fqn     = "serviceAccount:${local.gcp_sa_email}"
 
   k8s_sa_gcp_derived_name = "serviceAccount:${var.project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
@@ -28,8 +28,8 @@ locals {
   output_k8s_namespace = var.use_existing_k8s_sa ? var.namespace : kubernetes_service_account.main[0].metadata[0].namespace
 }
 
-resource "google_service_account" "cluster_service_account" {
-  for_each = var.use_existing_gcp_sa ? [] : toset([local.gcp_given_name])
+resource "google_service_account" "main" {
+  count = var.use_existing_gcp_sa ? 0 : 1
 
   # GCP service account ids must be < 30 chars matching regex ^[a-z](?:[-a-z0-9]{4,28}[a-z0-9])$
   # KSAs do not have this naming restriction.
