@@ -41,5 +41,5 @@ output "gcp_service_account_name" {
 
 output "gcp_service_account" {
   description = "GCP service account."
-  value       = google_service_account.cluster_service_account
+  value       = data.google_service_account.cluster_service_account
 }
