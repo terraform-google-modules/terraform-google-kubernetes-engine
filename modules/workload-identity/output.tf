@@ -40,6 +40,6 @@ output "gcp_service_account_name" {
 }
 
 output "gcp_service_account" {
-  description = "GCP service account, if created; `null` if existing account was used."
+  description = "GCP service account."
   value       = google_service_account.cluster_service_account
 }

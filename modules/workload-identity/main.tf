@@ -28,6 +28,11 @@ locals {
   output_k8s_namespace = var.use_existing_k8s_sa ? var.namespace : kubernetes_service_account.main[0].metadata[0].namespace
 }
 
+data "google_service_account" "cluster_service_account" {
+  account_id = local.gcp_sa_name
+  project    = var.project_id
+}
+
 resource "google_service_account" "main" {
   count = var.use_existing_gcp_sa ? 0 : 1
 
