@@ -4,13 +4,13 @@
 
 This module creates:
 
-* GCP Service Account
 * IAM Service Account binding to `roles/iam.workloadIdentityUser`
+* Optionally, a Google Service Account
 * Optionally, a Kubernetes Service Account
 
 ## Usage
 
-The `terraform-google-workload-identity` can create a kubernetes service account for you, or use an existing kubernetes service account.
+The `terraform-google-workload-identity` can create a Kubernetes service account for you, or use an existing Kubernetes service account.
 
 ### Creating a Workload Identity
 
@@ -20,17 +20,17 @@ module "my-app-workload-identity" {
   name       = "my-application-name"
   namespace  = "default"
   project_id = "my-gcp-project-name"
-  roles = ["roles/storage.Admin", "roles/compute.Admin"]
+  roles      = ["roles/storage.Admin", "roles/compute.Admin"]
 }
 ```
 
 This will create:
 
-* GCP Service Account named: `my-application-name@my-gcp-project-name.iam.gserviceaccount.com`
+* Google Service Account named: `my-application-name@my-gcp-project-name.iam.gserviceaccount.com`
 * Kubernetes Service Account named: `my-application-name` in the `default` namespace
 * IAM Binding (`roles/iam.workloadIdentityUser`) between the service accounts
 
-Usage from a kubernetes deployment:
+Usage from a Kubernetes deployment:
 
 ```yaml
 metadata:
@@ -43,26 +43,46 @@ spec:
       serviceAccountName: my-application-name
 ```
 
+### Using an existing Google Service Account
+
+An existing Google service account can optionally be used.
+
+```hcl
+resource "google_service_account" "preexisting" {
+  account_id   = "preexisting-sa"
+}
+
+module "my-app-workload-identity" {
+  source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
+  use_existing_gcp_sa = true
+  name                = google_service_account.preexisting.account_id
+  project_id          = var.project_id
+}
+```
+
 ### Using an existing Kubernetes Service Account
 
-An existing kubernetes service account can optionally be used. When using an existing k8s servicea account the annotation `"iam.gke.io/gcp-service-account"` must be set.
+An existing Kubernetes service account can optionally be used.
 
 ```hcl
 resource "kubernetes_service_account" "preexisting" {
   metadata {
-    name = "preexisting-sa"
+    name      = "preexisting-sa"
     namespace = "prod"
   }
 }
 
 module "my-app-workload-identity" {
-  source    = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
+  source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   use_existing_k8s_sa = true
-  name                = "preexisting-sa"
-  namespace           = "prod"
+  name                = kubernetes_service_account.preexisting.metadata[0].name
+  namespace           = kubernetes_service_account.preexisting.metadata[0].namespace
   project_id          = var.project_id
 }
 ```
+
+If annotation is disabled (via `annotate_k8s_sa = false`), the existing Kubernetes service account must
+already bear the `"iam.gke.io/gcp-service-account"` annotation.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
