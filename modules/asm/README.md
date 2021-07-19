@@ -71,6 +71,7 @@ To deploy this config:
 | managed\_control\_plane | ASM managed control plane boolean. Determines whether to install ASM managed control plane. Installing ASM managed control plane does not install gateways. Documentation on how to install gateways with ASM MCP can be found at https://cloud.google.com/service-mesh/docs/managed-control-plane#install_istio_gateways_optional. | `bool` | `false` | no |
 | mode | ASM mode for deployment. Supported modes are `install` and `upgrade`. | `string` | `"install"` | no |
 | options | Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features. | `list` | `[]` | no |
+| revision_name | Sets `--revision_name` option. | `string` | `""` | no |
 | outdir | Sets `--outdir` option. | `string` | `"none"` | no |
 | project\_id | The project in which the resource belongs. | `string` | n/a | yes |
 | service\_account | The GCP Service Account email address used to deploy ASM. | `string` | `""` | no |
