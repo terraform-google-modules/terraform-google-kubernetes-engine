@@ -153,12 +153,6 @@ variable "enable_registration" {
   default     = false
 }
 
-variable "revision_label" {
-  description = "Sets `--revision-label` option."
-  type        = string
-  default     = ""
-}
-
 variable "outdir" {
   description = "Sets `--outdir` option."
   type        = string
@@ -175,21 +169,26 @@ variable "ca_certs" {
   description = "Sets CA certificate file paths when `ca` is set to `citadel`. These values must be provided when using Citadel as CA. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca."
   type        = map
   default     = {}
-  
-  validation {
-    condition     = "ca_cert" != "" &&   
-    error_message =
-  }
   # default = {
   #   "ca_cert"    = "none"
   #   "ca_key"     = "none"
   #   "root_cert"  = "none"
   #   "cert_chain" = "none"
-  # }  
+  # }
+    validation {
+    condition     = contains([4,0],length(compact([for k in ["ca_cert","ca_key","root_cert","cert_chain"]: lookup(var.ca_certs,k,"")]))) 
+    error_message = "One or more maps for ca_certs are missing. If you plan to use the self-signed certificate, do not declare the ca_certs variable."
+  }  
 }
 
 variable "iam_member" {
   description = "The GCP member email address to grant IAM roles to. If impersonate_service_account or service_account is set, roles are granted to that SA."
   type        = string
   default     = ""
+}
+
+variable "revision_name" {
+  description = "Sets `--revision-name` option."
+  type        = string
+  default     = "none"
 }
