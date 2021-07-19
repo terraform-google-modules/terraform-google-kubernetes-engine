@@ -15,7 +15,9 @@
  */
 
 locals {
-  gcp_given_name = var.gcp_sa_name != null ? var.gcp_sa_name : var.name
+  # GCP service account ids must be < 30 chars matching regex ^[a-z](?:[-a-z0-9]{4,28}[a-z0-9])$
+  # KSAs do not have this naming restriction.
+  gcp_given_name = var.gcp_sa_name != null ? var.gcp_sa_name : substr(var.name, 0, 30)
   gcp_sa_name    = var.use_existing_gcp_sa ? local.gcp_given_name : google_service_account.main[0].account_id
   gcp_sa_email   = data.google_service_account.cluster_service_account.email
   gcp_sa_fqn     = "serviceAccount:${local.gcp_sa_email}"
@@ -36,9 +38,7 @@ data "google_service_account" "cluster_service_account" {
 resource "google_service_account" "main" {
   count = var.use_existing_gcp_sa ? 0 : 1
 
-  # GCP service account ids must be < 30 chars matching regex ^[a-z](?:[-a-z0-9]{4,28}[a-z0-9])$
-  # KSAs do not have this naming restriction.
-  account_id   = substr(var.name, 0, 30)
+  account_id   = local.gcp_given_name
   display_name = substr("GCP SA bound to K8S SA ${local.k8s_given_name}", 0, 100)
   project      = var.project_id
 }
