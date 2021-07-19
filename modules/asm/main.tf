@@ -47,7 +47,7 @@ locals {
   asm_iam_member = var.enable_gcp_iam_roles ? coalesce(var.impersonate_service_account, var.service_account, var.iam_member) : ""
   # compute any additonal resources that ASM provisioner should depend on
   additional_depends_on = concat(var.enable_gcp_apis ? [module.asm-services[0].project_id] : [], local.asm_iam_member != "" ? [for k, v in google_project_iam_member.asm_iam : v.etag] : [])
-  revision_name_string     = (var.revision_name == "" ? "none" : var.revision_name)
+  revision_label_string     = (var.revision_label == "" ? "none" : var.revision_label)
 }
 
 resource "google_project_iam_member" "asm_iam" {
@@ -97,6 +97,6 @@ module "asm_install" {
   service_account_key_file    = var.service_account_key_file
   impersonate_service_account = var.impersonate_service_account
 
-  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version} ${var.mode} ${var.managed_control_plane} ${var.skip_validation} ${local.options_string} ${local.custom_overlays_string} ${var.enable_all} ${var.enable_cluster_roles} ${var.enable_cluster_labels} ${var.enable_gcp_components} ${var.enable_registration} ${local.revision_name_string} ${var.outdir} ${var.ca} ${local.ca_cert} ${local.ca_key} ${local.root_cert} ${local.cert_chain} ${local.service_account_string} ${local.key_file_string} ${local.asm_git_tag_string}"
+  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version} ${var.mode} ${var.managed_control_plane} ${var.skip_validation} ${local.options_string} ${local.custom_overlays_string} ${var.enable_all} ${var.enable_cluster_roles} ${var.enable_cluster_labels} ${var.enable_gcp_components} ${var.enable_registration} ${local.revision_label_string} ${var.outdir} ${var.ca} ${local.ca_cert} ${local.ca_key} ${local.root_cert} ${local.cert_chain} ${local.service_account_string} ${local.key_file_string} ${local.asm_git_tag_string}"
   kubectl_destroy_command = "${path.module}/scripts/destroy_asm.sh"
 }
