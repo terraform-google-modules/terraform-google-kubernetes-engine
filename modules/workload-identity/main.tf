@@ -16,7 +16,7 @@
 
 locals {
   gcp_given_name = var.gcp_sa_name != null ? var.gcp_sa_name : var.name
-  gcp_sa_name    = var.use_existing_gcp_sa ? local.gcp_given_name : google_service_account.main[0].name
+  gcp_sa_name    = var.use_existing_gcp_sa ? local.gcp_given_name : google_service_account.main[0].account_id
   gcp_sa_email   = data.google_service_account.cluster_service_account.email
   gcp_sa_fqn     = "serviceAccount:${local.gcp_sa_email}"
 
