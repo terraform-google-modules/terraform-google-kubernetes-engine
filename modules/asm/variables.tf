@@ -184,6 +184,7 @@ variable "ca_certs" {
     condition     = contains([4,0],length(compact([for k in ["ca_cert","ca_key","root_cert","cert_chain"]: lookup(var.ca_certs,k,"")])))
     error_message = "One or more maps for ca_certs are missing. If you plan to use a self-signed certificate, do not include any map for ca_certs."
   }
+}
 
 variable "iam_member" {
   description = "The GCP member email address to grant IAM roles to. If impersonate_service_account or service_account is set, roles are granted to that SA."
