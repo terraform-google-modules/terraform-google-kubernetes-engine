@@ -21,12 +21,12 @@ locals {
   gcp_sa_email   = data.google_service_account.cluster_service_account.email
   gcp_sa_fqn     = "serviceAccount:${local.gcp_sa_email}"
 
-  k8s_sa_gcp_derived_name = "serviceAccount:${var.project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
-
   # This will cause Terraform to block returning outputs until the service account is created
   k8s_given_name       = var.k8s_sa_name != null ? var.k8s_sa_name : var.name
   output_k8s_name      = var.use_existing_k8s_sa ? local.k8s_given_name : kubernetes_service_account.main[0].metadata[0].name
   output_k8s_namespace = var.use_existing_k8s_sa ? var.namespace : kubernetes_service_account.main[0].metadata[0].namespace
+
+  k8s_sa_gcp_derived_name = "serviceAccount:${var.project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
 }
 
 data "google_service_account" "cluster_service_account" {

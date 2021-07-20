@@ -10,7 +10,9 @@ This module creates:
 
 ## Usage
 
-The `terraform-google-workload-identity` can create a Kubernetes service account for you, or use an existing Kubernetes service account.
+The `terraform-google-workload-identity` can create service accounts for you,
+or you can use existing accounts; this applies for both the Google and
+Kubernetes accounts.
 
 ### Creating a Workload Identity
 
