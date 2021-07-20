@@ -18,20 +18,20 @@ locals {
   # GCP service account ids must be < 30 chars matching regex ^[a-z](?:[-a-z0-9]{4,28}[a-z0-9])$
   # KSAs do not have this naming restriction.
   gcp_given_name = var.gcp_sa_name != null ? var.gcp_sa_name : substr(var.name, 0, 30)
-  gcp_sa_name    = var.use_existing_gcp_sa ? local.gcp_given_name : google_service_account.main[0].account_id
   gcp_sa_email   = data.google_service_account.cluster_service_account.email
   gcp_sa_fqn     = "serviceAccount:${local.gcp_sa_email}"
 
   k8s_sa_gcp_derived_name = "serviceAccount:${var.project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
 
-  # This will cause terraform to block returning outputs until the service account is created
+  # This will cause Terraform to block returning outputs until the service account is created
   k8s_given_name       = var.k8s_sa_name != null ? var.k8s_sa_name : var.name
   output_k8s_name      = var.use_existing_k8s_sa ? local.k8s_given_name : kubernetes_service_account.main[0].metadata[0].name
   output_k8s_namespace = var.use_existing_k8s_sa ? var.namespace : kubernetes_service_account.main[0].metadata[0].namespace
 }
 
 data "google_service_account" "cluster_service_account" {
-  account_id = local.gcp_sa_name
+  # This will cause Terraform to block looking up details until the service account is created
+  account_id = var.use_existing_gcp_sa ? local.gcp_given_name : google_service_account.main[0].account_id
   project    = var.project_id
 }
 
@@ -72,11 +72,10 @@ module "annotate-sa" {
 }
 
 resource "google_service_account_iam_member" "main" {
-  service_account_id = local.gcp_sa_name
+  service_account_id = data.google_service_account.cluster_service_account.name
   role               = "roles/iam.workloadIdentityUser"
   member             = local.k8s_sa_gcp_derived_name
 }
-
 
 resource "google_project_iam_member" "workload_identity_sa_bindings" {
   for_each = toset(var.roles)
