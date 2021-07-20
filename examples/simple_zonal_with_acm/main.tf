@@ -32,17 +32,20 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source            = "../../"
-  project_id        = var.project_id
-  name              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional          = false
-  region            = var.region
-  zones             = var.zones
-  network           = var.network
-  subnetwork        = var.subnetwork
-  ip_range_pods     = var.ip_range_pods
-  ip_range_services = var.ip_range_services
-  service_account   = "create"
+  source     = "../../"
+  project_id = var.project_id
+  regional   = false
+  region     = var.region
+  zones      = [var.zone]
+
+  name = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+
+  network           = google_compute_network.main.name
+  subnetwork        = google_compute_subnetwork.main.name
+  ip_range_pods     = google_compute_subnetwork.main.secondary_ip_range[0].range_name
+  ip_range_services = google_compute_subnetwork.main.secondary_ip_range[1].range_name
+
+  service_account = "create"
   node_pools = [
     {
       name         = "acm-node-pool"

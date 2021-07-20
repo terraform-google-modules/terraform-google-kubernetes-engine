@@ -16,12 +16,15 @@
 
 output "git_creds_public" {
   description = "Public key of SSH keypair to allow the Anthos Operator to authenticate to your Git repository."
-  value       = var.create_ssh_key ? tls_private_key.k8sop_creds.*.public_key_openssh : null
+  value       = var.create_ssh_key ? coalesce(tls_private_key.k8sop_creds.*.public_key_openssh...) : null
 }
 
 output "wait" {
   description = "An output to use when you want to depend on cmd finishing"
-  value       = var.enable_policy_controller ? module.wait_for_gatekeeper.wait : module.k8sop_config.wait
+  value       = google_gke_hub_feature_membership.main.membership
+  depends_on = [
+    google_gke_hub_feature_membership.main
+  ]
 }
 
 

@@ -1,5 +1,6 @@
+
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +15,10 @@
  * limitations under the License.
  */
 
-module "acm" {
-  source       = "../../modules/acm"
-  project_id   = var.project_id
-  location     = module.gke.location
-  cluster_name = module.gke.name
+terraform {
+  required_version = ">= 0.13.0"
 
-  sync_repo   = "git@github.com:GoogleCloudPlatform/csp-config-management.git"
-  sync_branch = "1.0.0"
-  policy_dir  = "foo-corp"
-
-  secret_type = "ssh"
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:acm/v15.0.2"
+  }
 }

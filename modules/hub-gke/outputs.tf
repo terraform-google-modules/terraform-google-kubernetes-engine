@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-module "acm" {
-  source       = "../../modules/acm"
-  project_id   = var.project_id
-  location     = module.gke.location
-  cluster_name = module.gke.name
+output "membership_id" {
+  description = "The ID of the hub membership"
+  value       = google_gke_hub_membership.primary[0].membership_id
+  depends_on = [
+    google_gke_hub_membership.primary
+  ]
+}
 
-  sync_repo   = "git@github.com:GoogleCloudPlatform/csp-config-management.git"
-  sync_branch = "1.0.0"
-  policy_dir  = "foo-corp"
 
-  secret_type = "ssh"
+output "wait" {
+  description = "An output to use when you want to depend on registration finishing"
+  value       = local.gke_hub_membership_name
+  depends_on = [
+    google_gke_hub_membership.primary
+  ]
 }
