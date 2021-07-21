@@ -34,6 +34,7 @@ module "example" {
     min_cpu_cores       = 5
     max_memory_gb       = 30
     min_memory_gb       = 10
+    gpu_resources       = []
   }
 }
 

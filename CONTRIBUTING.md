@@ -59,15 +59,24 @@ Six test-kitchen instances are defined:
 The test-kitchen instances in `test/fixtures/` wrap identically-named examples in the `examples/` directory.`
 
 ### Test Environment
-The easiest way to test the module is in an isolated test project. The setup for such a project is defined in [test/setup](./test/setup/) directory.
+The easiest way to test the module is in an isolated test project. The
+setup for such a project is defined in [test/setup](./test/setup/)
+directory.
 
-To use this setup, you need a service account with Project Creator access on a folder. Export the Service Account credentials to your environment like so:
+To use this setup, you need a service account with Project Creator access
+on a folder; the Billing Account User role is also required. Export the
+Service Account credentials to your environment like so:
 
 ```
 export SERVICE_ACCOUNT_JSON=$(< credentials.json)
 ```
 
+Note that `SERVICE_ACCOUNT_JSON` holds the _contents_ of the credentials
+file; if you see errors pertaining to credential type, ensure this variable
+contains valid JSON, and not, for example, a path.
+
 You will also need to set a few environment variables:
+
 ```
 export TF_VAR_org_id="your_org_id"
 export TF_VAR_folder_id="your_folder_id"
@@ -75,6 +84,7 @@ export TF_VAR_billing_account="your_billing_account_id"
 ```
 
 With these settings in place, you can prepare a test project using Docker:
+
 ```
 make docker_test_prepare
 ```
