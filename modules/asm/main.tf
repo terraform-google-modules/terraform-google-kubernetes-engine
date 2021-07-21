@@ -28,7 +28,7 @@ locals {
   ca_key                 = lookup(var.ca_certs, "ca_key", "none")
   root_cert              = lookup(var.ca_certs, "root_cert", "none")
   cert_chain             = lookup(var.ca_certs, "cert_chain", "none")
-  revision_name_string  = (var.revision_name == "" ? "none" : var.revision_name)
+  revision_name_string   = (var.revision_name == "" ? "none" : var.revision_name)
   # https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages/blob/1cf61b679cd369f42a0e735f8e201de1a6a6433b/scripts/asm-installer/install_asm#L1970
   iam_roles = [
     "roles/container.admin",
