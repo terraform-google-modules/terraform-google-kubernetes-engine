@@ -31,7 +31,6 @@ resource "google_container_cluster" "primary" {
   node_locations    = local.node_locations
   cluster_ipv4_cidr = var.cluster_ipv4_cidr
   network           = "projects/${local.network_project_id}/global/networks/${var.network}"
-
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
 
@@ -55,7 +54,6 @@ resource "google_container_cluster" "primary" {
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
-
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
     dynamic "resource_limits" {
@@ -67,13 +65,10 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
-
-  default_max_pods_per_node = var.default_max_pods_per_node
-
+  default_max_pods_per_node   = var.default_max_pods_per_node
   enable_shielded_nodes       = var.enable_shielded_nodes
   enable_binary_authorization = var.enable_binary_authorization
   dynamic "master_authorized_networks_config" {
@@ -106,7 +101,6 @@ resource "google_container_cluster" "primary" {
     horizontal_pod_autoscaling {
       disabled = ! var.horizontal_pod_autoscaling
     }
-
     network_policy_config {
       disabled = ! var.network_policy
     }
@@ -132,7 +126,6 @@ resource "google_container_cluster" "primary" {
     update = "45m"
     delete = "45m"
   }
-
   node_pool {
     name               = "default-pool"
     initial_node_count = var.initial_node_count
@@ -149,7 +142,6 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-
   dynamic "resource_usage_export_config" {
     for_each = var.resource_usage_export_dataset_id != "" ? [{
       enable_network_egress_metering       = var.enable_network_egress_export
@@ -179,7 +171,6 @@ resource "google_container_cluster" "primary" {
       master_ipv4_cidr_block  = private_cluster_config.value.master_ipv4_cidr_block
     }
   }
-
   remove_default_node_pool = var.remove_default_node_pool
 
   dynamic "database_encryption" {
@@ -198,7 +189,6 @@ resource "google_container_cluster" "primary" {
       identity_namespace = workload_identity_config.value.identity_namespace
     }
   }
-
 }
 
 /******************************************
@@ -333,4 +323,3 @@ resource "google_container_node_pool" "pools" {
     delete = "45m"
   }
 }
-

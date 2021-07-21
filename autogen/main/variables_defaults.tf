@@ -19,6 +19,7 @@
 # Setup dynamic default values for variables which can't be setup using
 # the standard terraform "variable default" functionality
 
+{% if autopilot_cluster != true %}
 locals {
   node_pools_labels = merge(
     { all = {} },
@@ -82,3 +83,4 @@ locals {
   )
   {% endif %}
 }
+{% endif %}

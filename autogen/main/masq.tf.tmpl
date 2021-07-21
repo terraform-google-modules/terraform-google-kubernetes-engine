@@ -42,6 +42,8 @@ EOF
 
   depends_on = [
     google_container_cluster.primary,
+    {% if autopilot_cluster != true %}
     google_container_node_pool.pools,
+    {% endif %}
   ]
 }

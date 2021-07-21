@@ -35,7 +35,7 @@ resource "google_container_cluster" "primary" {
   node_locations    = local.node_locations
   cluster_ipv4_cidr = var.cluster_ipv4_cidr
   network           = "projects/${local.network_project_id}/global/networks/${var.network}"
-
+  {% if autopilot_cluster != true %}
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
 
@@ -44,6 +44,7 @@ resource "google_container_cluster" "primary" {
       provider = network_policy.value.provider
     }
   }
+  {% endif %}
 
   dynamic "release_channel" {
     for_each = local.release_channel
@@ -56,13 +57,13 @@ resource "google_container_cluster" "primary" {
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
 {% if beta_cluster %}
-  default_snat_status{
+  default_snat_status {
     disabled = var.disable_default_snat
   }
 {% endif %}
   min_master_version = var.release_channel != null ? null : local.master_version
 
-{% if beta_cluster %}
+{% if beta_cluster and  autopilot_cluster != true %}
   dynamic "cluster_telemetry" {
     for_each = local.cluster_telemetry_type_is_set ? [1] : []
     content {
@@ -75,7 +76,7 @@ resource "google_container_cluster" "primary" {
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 {% endif %}
-
+  {% if autopilot_cluster != true %}
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
 {% if beta_cluster %}
@@ -98,13 +99,12 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-
+  {% endif %}
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
-
+{% if autopilot_cluster != true %}
   default_max_pods_per_node = var.default_max_pods_per_node
-
   enable_shielded_nodes       = var.enable_shielded_nodes
   enable_binary_authorization = var.enable_binary_authorization
 {% if beta_cluster %}
@@ -120,6 +120,10 @@ resource "google_container_cluster" "primary" {
   }
 
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
+{% endif %}
+{% endif %}
+{% if autopilot_cluster %}
+  enable_autopilot = true
 {% endif %}
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
@@ -151,11 +155,12 @@ resource "google_container_cluster" "primary" {
     horizontal_pod_autoscaling {
       disabled = ! var.horizontal_pod_autoscaling
     }
-
+    {% if autopilot_cluster != true %}
     network_policy_config {
       disabled = ! var.network_policy
     }
-    {% if beta_cluster %}
+    {% endif %}
+    {% if beta_cluster and auto_pilot != true %}
 
     istio_config {
       disabled = ! var.istio
@@ -229,7 +234,6 @@ resource "google_container_cluster" "primary" {
         end_time       = maintenance_exclusion.value.end_time
       }
     }
-
   {% else %}
     daily_maintenance_window {
       start_time = var.maintenance_start_time
@@ -237,16 +241,18 @@ resource "google_container_cluster" "primary" {
   {% endif %}
   }
 
+{% if autopilot_cluster != true %}
   lifecycle {
     ignore_changes = [node_pool, initial_node_count]
   }
+  {% endif %}
 
   timeouts {
     create = "45m"
     update = "45m"
     delete = "45m"
   }
-
+{% if autopilot_cluster != true %}
   node_pool {
     name               = "default-pool"
     initial_node_count = var.initial_node_count
@@ -263,7 +269,7 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-
+{% endif %}
   dynamic "resource_usage_export_config" {
     for_each = var.resource_usage_export_dataset_id != "" ? [{
       enable_network_egress_metering       = var.enable_network_egress_export
@@ -303,7 +309,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 {% endif %}
-
+  {% if autopilot_cluster != true %}
   remove_default_node_pool = var.remove_default_node_pool
 
   dynamic "database_encryption" {
@@ -322,8 +328,8 @@ resource "google_container_cluster" "primary" {
       identity_namespace = workload_identity_config.value.identity_namespace
     }
   }
-
-{% if beta_cluster %}
+  {% endif %}
+{% if beta_cluster and autopilot_cluster != true %}
   dynamic "authenticator_groups_config" {
     for_each = local.cluster_authenticator_security_group
     content {
@@ -334,7 +340,7 @@ resource "google_container_cluster" "primary" {
   notification_config {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
-      topic = var.notification_config_topic
+      topic   = var.notification_config_topic
     }
   }
 {% endif %}
@@ -429,6 +435,7 @@ resource "random_id" "name" {
 }
 
 {% endif %}
+{% if autopilot_cluster != true %}
 resource "google_container_node_pool" "pools" {
   {% if beta_cluster %}
   provider = google-beta
@@ -620,4 +627,4 @@ resource "google_container_node_pool" "pools" {
     delete = "45m"
   }
 }
-
+{% endif %}
