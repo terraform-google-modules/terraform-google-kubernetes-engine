@@ -95,13 +95,13 @@ variable "impersonate_service_account" {
 
 variable "options" {
   description = "Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features."
-  type        = list
+  type        = list(any)
   default     = []
 }
 
 variable "custom_overlays" {
   description = "Comma separated list of custom_overlay file paths. Works with in-cluster control plane only. Additional documentation available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_an_overlay_file"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
@@ -167,7 +167,7 @@ variable "ca" {
 
 variable "ca_certs" {
   description = "Sets CA certificate file paths when `ca` is set to `citadel`. These values must be provided when using Citadel as CA. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca."
-  type        = map
+  type        = map(any)
   default     = {}
   # default = {
   #   "ca_cert"    = "none"
@@ -175,10 +175,20 @@ variable "ca_certs" {
   #   "root_cert"  = "none"
   #   "cert_chain" = "none"
   # }
+  validation {
+    condition     = contains([4, 0], length(compact([for k in ["ca_cert", "ca_key", "root_cert", "cert_chain"] : lookup(var.ca_certs, k, "")])))
+    error_message = "One or more required keys for ca_certs are missing. If you plan to use the self-signed certificate, do not declare the ca_certs variable."
+  }
 }
 
 variable "iam_member" {
   description = "The GCP member email address to grant IAM roles to. If impersonate_service_account or service_account is set, roles are granted to that SA."
   type        = string
   default     = ""
+}
+
+variable "revision_name" {
+  description = "Sets `--revision-name` option."
+  type        = string
+  default     = "none"
 }
