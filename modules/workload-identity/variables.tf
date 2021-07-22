@@ -19,6 +19,23 @@ variable "name" {
   type        = string
 }
 
+variable "project_id" {
+  description = "GCP project ID"
+  type        = string
+}
+
+variable "gcp_sa_name" {
+  description = "Name for the Google service account; overrides `var.name`."
+  type        = string
+  default     = null
+}
+
+variable "use_existing_gcp_sa" {
+  description = "Use an existing Google service account instead of creating one"
+  type        = bool
+  default     = false
+}
+
 variable "cluster_name" {
   description = "Cluster name. Required if using existing KSA."
   type        = string
@@ -32,48 +49,43 @@ variable "location" {
 }
 
 variable "k8s_sa_name" {
-  description = "Name for the existing Kubernetes service account"
+  description = "Name for the Kubernetes service account; overrides `var.name`."
   type        = string
   default     = null
 }
 
 variable "namespace" {
-  description = "Namespace for k8s service account"
+  description = "Namespace for the Kubernetes service account"
+  type        = string
   default     = "default"
-  type        = string
-}
-
-variable "project_id" {
-  description = "GCP project ID"
-  type        = string
 }
 
 variable "use_existing_k8s_sa" {
   description = "Use an existing kubernetes service account instead of creating one"
-  default     = false
   type        = bool
+  default     = false
 }
 
 variable "annotate_k8s_sa" {
   description = "Annotate the kubernetes service account with 'iam.gke.io/gcp-service-account' annotation. Valid in cases when an existing SA is used."
-  default     = true
   type        = bool
+  default     = true
 }
 
 variable "automount_service_account_token" {
   description = "Enable automatic mounting of the service account token"
-  default     = false
   type        = bool
+  default     = false
 }
 
 variable "roles" {
+  description = "A list of roles to be added to the created service account"
   type        = list(string)
   default     = []
-  description = "(optional) A list of roles to be added to the created Service account"
 }
 
 variable "impersonate_service_account" {
-  type        = string
   description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
+  type        = string
   default     = ""
 }
