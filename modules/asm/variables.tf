@@ -177,7 +177,7 @@ variable "ca_certs" {
   # }
   validation {
     condition     = contains([4, 0], length(compact([for k in ["ca_cert", "ca_key", "root_cert", "cert_chain"] : lookup(var.ca_certs, k, "")])))
-    error_message = "One or more maps for ca_certs are missing. If you plan to use the self-signed certificate, do not declare the ca_certs variable."
+    error_message = "One or more required keys for ca_certs are missing. If you plan to use the self-signed certificate, do not declare the ca_certs variable."
   }
 }
 
