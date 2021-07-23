@@ -52,10 +52,10 @@ To deploy this config:
 | asm\_git\_tag | ASM git tag to deploy. This module supports versions `1.8` and `1.9`. You can get the exact `asm_git_tag` by running the command `install_asm --version`. The ASM git tab should be of the form `1.9.3-asm.2+config5`. You can also see all ASM git tags by running `curl https://storage.googleapis.com/csm-artifacts/asm/STABLE_VERSIONS`. You must provide the full and exact git tag. This variable is optional. Leaving it empty (default) will download the latest `install_asm` script for the version provided by the `asm_version` variable. | `string` | `""` | no |
 | asm\_version | ASM version to deploy. This module supports versions `1.8` and `1.9`. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"1.9"` | no |
 | ca | Sets CA option. Possible values are `meshca` or `citadel`. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca. | `string` | `"meshca"` | no |
-| ca\_certs | Sets CA certificate file paths when `ca` is set to `citadel`. These values must be provided when using Citadel as CA. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca. | `map` | `{}` | no |
+| ca\_certs | Sets CA certificate file paths when `ca` is set to `citadel`. These values must be provided when using Citadel as CA. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca. | `map(any)` | `{}` | no |
 | cluster\_endpoint | The GKE cluster endpoint. | `string` | n/a | yes |
 | cluster\_name | The unique name to identify the cluster in ASM. | `string` | n/a | yes |
-| custom\_overlays | Comma separated list of custom\_overlay file paths. Works with in-cluster control plane only. Additional documentation available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_an_overlay_file | `list` | `[]` | no |
+| custom\_overlays | Comma separated list of custom\_overlay file paths. Works with in-cluster control plane only. Additional documentation available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_an_overlay_file | `list(any)` | `[]` | no |
 | enable\_all | Sets `--enable_all` option if true. | `bool` | `false` | no |
 | enable\_cluster\_labels | Sets `--enable_cluster_labels` option if true. | `bool` | `false` | no |
 | enable\_cluster\_roles | Sets `--enable_cluster_roles` option if true. | `bool` | `false` | no |
@@ -70,9 +70,10 @@ To deploy this config:
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
 | managed\_control\_plane | ASM managed control plane boolean. Determines whether to install ASM managed control plane. Installing ASM managed control plane does not install gateways. Documentation on how to install gateways with ASM MCP can be found at https://cloud.google.com/service-mesh/docs/managed-control-plane#install_istio_gateways_optional. | `bool` | `false` | no |
 | mode | ASM mode for deployment. Supported modes are `install` and `upgrade`. | `string` | `"install"` | no |
-| options | Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features. | `list` | `[]` | no |
+| options | Comma separated list of options. Works with in-cluster control plane only. Supported options are documented in https://cloud.google.com/service-mesh/docs/enable-optional-features. | `list(any)` | `[]` | no |
 | outdir | Sets `--outdir` option. | `string` | `"none"` | no |
 | project\_id | The project in which the resource belongs. | `string` | n/a | yes |
+| revision\_name | Sets `--revision-name` option. | `string` | `"none"` | no |
 | service\_account | The GCP Service Account email address used to deploy ASM. | `string` | `""` | no |
 | service\_account\_key\_file | Path to service account key file to auth as for running `gcloud container clusters get-credentials`. | `string` | `""` | no |
 | skip\_validation | Sets `_CI_NO_VALIDATE` variable. Determines whether the script should perform validation checks for prerequisites such as IAM roles, Google APIs etc. | `bool` | `false` | no |

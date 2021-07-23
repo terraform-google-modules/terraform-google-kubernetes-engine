@@ -28,6 +28,7 @@ locals {
   ca_key                 = lookup(var.ca_certs, "ca_key", "none")
   root_cert              = lookup(var.ca_certs, "root_cert", "none")
   cert_chain             = lookup(var.ca_certs, "cert_chain", "none")
+  revision_name_string   = (var.revision_name == "" ? "none" : var.revision_name)
   # https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages/blob/1cf61b679cd369f42a0e735f8e201de1a6a6433b/scripts/asm-installer/install_asm#L1970
   iam_roles = [
     "roles/container.admin",
@@ -96,6 +97,6 @@ module "asm_install" {
   service_account_key_file    = var.service_account_key_file
   impersonate_service_account = var.impersonate_service_account
 
-  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version} ${var.mode} ${var.managed_control_plane} ${var.skip_validation} ${local.options_string} ${local.custom_overlays_string} ${var.enable_all} ${var.enable_cluster_roles} ${var.enable_cluster_labels} ${var.enable_gcp_components} ${var.enable_registration} ${var.outdir} ${var.ca} ${local.ca_cert} ${local.ca_key} ${local.root_cert} ${local.cert_chain} ${local.service_account_string} ${local.key_file_string} ${local.asm_git_tag_string}"
+  kubectl_create_command  = "${path.module}/scripts/install_asm.sh ${var.project_id} ${var.cluster_name} ${var.location} ${var.asm_version} ${var.mode} ${var.managed_control_plane} ${var.skip_validation} ${local.options_string} ${local.custom_overlays_string} ${var.enable_all} ${var.enable_cluster_roles} ${var.enable_cluster_labels} ${var.enable_gcp_components} ${var.enable_registration} ${var.outdir} ${var.ca} ${local.ca_cert} ${local.ca_key} ${local.root_cert} ${local.cert_chain} ${local.service_account_string} ${local.key_file_string} ${local.asm_git_tag_string} ${local.revision_name_string}"
   kubectl_destroy_command = "${path.module}/scripts/destroy_asm.sh"
 }
