@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [16.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v15.0.2...v16.0.0) (2021-07-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* add gpu node autoscaling support (#807) (#944)
+
+### Features
+
+* add gpu node autoscaling support ([#807](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/807)) ([#944](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/944)) ([e53a949](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e53a949347417c1025eb433bc61c2a3e62e3df1c))
+* ASM CA option without providing CA_CERT maps and adding revision_name flag  ([#952](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/952)) ([64b782c](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/64b782cb02b18dc6454b1bacb25cdef3ab8b2c8d))
+* Enables an existing GSA to be used when setting up Workload Identity ([#955](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/955)) ([712fc54](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/712fc54983eccd072b49a7d75078334ef11baef4))
+
 ### [15.0.2](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v15.0.1...v15.0.2) (2021-07-02)
 
 
