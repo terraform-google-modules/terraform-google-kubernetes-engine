@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+### [16.0.1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v16.0.0...v16.0.1) (2021-07-23)
+
+
+### Bug Fixes
+
+* restore Workload Identity GSA resource name ([#960](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/960)) ([8dbda1a](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8dbda1a9e81e512ff94839cd19066922a7dbb520))
+
 ## [16.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v15.0.2...v16.0.0) (2021-07-23)
 
 
