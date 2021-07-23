@@ -31,11 +31,11 @@ locals {
 
 data "google_service_account" "cluster_service_account" {
   # This will cause Terraform to block looking up details until the service account is created
-  account_id = var.use_existing_gcp_sa ? local.gcp_given_name : google_service_account.main[0].account_id
+  account_id = var.use_existing_gcp_sa ? local.gcp_given_name : google_service_account.cluster_service_account[0].account_id
   project    = var.project_id
 }
 
-resource "google_service_account" "main" {
+resource "google_service_account" "cluster_service_account" {
   count = var.use_existing_gcp_sa ? 0 : 1
 
   account_id   = local.gcp_given_name
