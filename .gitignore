@@ -31,6 +31,9 @@ Session.vim
 *.tfstate
 *.tfstate.*
 
+# tf lock file
+.terraform.lock.hcl
+
 # Crash log files
 crash.log
 
