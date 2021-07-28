@@ -42,10 +42,12 @@ The implications of this are that:
 {% endif %}
 ## Compatibility
 
-This module is meant for use with Terraform 0.12. If you haven't
-[upgraded][terraform-0.12-upgrade] and need a Terraform
-0.11.x-compatible version of this module, the last released version
-intended for Terraform 0.11.x is [3.0.0].
+This module is meant for use with Terraform 0.13+ and tested using Terraform 1.0+.
+If you find incompatibilities using Terraform `>=0.13, <1.0`, please open an issue.
+
+If you haven't [upgraded][terraform-0.13-upgrade] and need a Terraform
+0.12.x-compatible version of this module, the last released version
+intended for Terraform 0.12.x is [12.3.0].
 
 ## Usage
 There are multiple examples included in the [examples](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/examples) folder but simple usage is as follows:
@@ -260,5 +262,5 @@ In order to operate with the Service Account you must activate the following API
 {% else %}
 [terraform-provider-google]: https://github.com/terraform-providers/terraform-provider-google
 {% endif %}
-[3.0.0]: https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/3.0.0
-[terraform-0.12-upgrade]: https://www.terraform.io/upgrade-guides/0-12.html
+[12.3.0]: https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/12.3.0
+[terraform-0.13-upgrade]: https://www.terraform.io/upgrade-guides/0-13.html
