@@ -123,7 +123,7 @@ resource "google_compute_firewall" "shadow_allow_master" {
 
   allow {
     protocol = "tcp"
-    ports    = ["10250", "443"]
+    ports    = flatten([["10250", "443"], var.firewall_shadow_allow_master])
   }
 
   log_config {

@@ -451,6 +451,12 @@ variable "firewall_inbound_ports" {
   default     = ["8443", "9443", "15017"]
 }
 
+variable "firewall_shadow_allow_master" {
+  type        = list(string)
+  description = "Additional List of TCP ports for shadow allow master"
+  default     = []
+}
+
 variable "gcloud_upgrade" {
   type        = bool
   description = "Whether to upgrade gcloud at runtime"
