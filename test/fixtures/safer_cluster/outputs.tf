@@ -48,6 +48,7 @@ output "client_token" {
 output "ca_certificate" {
   description = "The cluster CA certificate"
   value       = module.example.ca_certificate
+  sensitive   = true
 }
 
 output "service_account" {
