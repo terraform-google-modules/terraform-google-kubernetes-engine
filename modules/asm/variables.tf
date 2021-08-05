@@ -52,13 +52,13 @@ variable "service_account_key_file" {
 }
 
 variable "asm_version" {
-  description = "ASM version to deploy. This module supports versions `1.8` and `1.9`. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
+  description = "ASM version to deploy. This module supports versions `1.8`, `1.9` and `1.10`. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages"
   type        = string
   default     = "1.9"
 }
 
 variable "asm_git_tag" {
-  description = "ASM git tag to deploy. This module supports versions `1.8` and `1.9`. You can get the exact `asm_git_tag` by running the command `install_asm --version`. The ASM git tab should be of the form `1.9.3-asm.2+config5`. You can also see all ASM git tags by running `curl https://storage.googleapis.com/csm-artifacts/asm/STABLE_VERSIONS`. You must provide the full and exact git tag. This variable is optional. Leaving it empty (default) will download the latest `install_asm` script for the version provided by the `asm_version` variable."
+  description = "ASM git tag to deploy. This module supports versions `1.8`, `1.9` and `1.10`. You can get the exact `asm_git_tag` by running the command `install_asm --version`. The ASM git tab should be of the form `1.9.3-asm.2+config5`. You can also see all ASM git tags by running `curl https://storage.googleapis.com/csm-artifacts/asm/STABLE_VERSIONS`. You must provide the full and exact git tag. This variable is optional. Leaving it empty (default) will download the latest `install_asm` script for the version provided by the `asm_version` variable."
   type        = string
   default     = ""
 }
@@ -149,6 +149,12 @@ variable "enable_gcp_components" {
 
 variable "enable_registration" {
   description = "Sets `--enable_registration` option if true."
+  type        = bool
+  default     = false
+}
+
+variable "enable_namespace_creation" {
+  description = "Sets `--enable_namespace_creation` option if true."
   type        = bool
   default     = false
 }

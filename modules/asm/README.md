@@ -49,8 +49,8 @@ To deploy this config:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| asm\_git\_tag | ASM git tag to deploy. This module supports versions `1.8` and `1.9`. You can get the exact `asm_git_tag` by running the command `install_asm --version`. The ASM git tab should be of the form `1.9.3-asm.2+config5`. You can also see all ASM git tags by running `curl https://storage.googleapis.com/csm-artifacts/asm/STABLE_VERSIONS`. You must provide the full and exact git tag. This variable is optional. Leaving it empty (default) will download the latest `install_asm` script for the version provided by the `asm_version` variable. | `string` | `""` | no |
-| asm\_version | ASM version to deploy. This module supports versions `1.8` and `1.9`. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"1.9"` | no |
+| asm\_git\_tag | ASM git tag to deploy. This module supports versions `1.8`, `1.9` and `1.10`. You can get the exact `asm_git_tag` by running the command `install_asm --version`. The ASM git tab should be of the form `1.9.3-asm.2+config5`. You can also see all ASM git tags by running `curl https://storage.googleapis.com/csm-artifacts/asm/STABLE_VERSIONS`. You must provide the full and exact git tag. This variable is optional. Leaving it empty (default) will download the latest `install_asm` script for the version provided by the `asm_version` variable. | `string` | `""` | no |
+| asm\_version | ASM version to deploy. This module supports versions `1.8`, `1.9` and `1.10`. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `string` | `"1.9"` | no |
 | ca | Sets CA option. Possible values are `meshca` or `citadel`. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca. | `string` | `"meshca"` | no |
 | ca\_certs | Sets CA certificate file paths when `ca` is set to `citadel`. These values must be provided when using Citadel as CA. Additional documentation on Citadel is available at https://cloud.google.com/service-mesh/docs/scripted-install/gke-install#installation_with_citadel_as_the_ca. | `map(any)` | `{}` | no |
 | cluster\_endpoint | The GKE cluster endpoint. | `string` | n/a | yes |
@@ -62,6 +62,7 @@ To deploy this config:
 | enable\_gcp\_apis | Sets `--enable_gcp_apis` option if true. | `bool` | `false` | no |
 | enable\_gcp\_components | Sets --enable\_gcp\_components option if true. Can be true or false. Available versions are documented in https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages | `bool` | `false` | no |
 | enable\_gcp\_iam\_roles | Grants IAM roles required for ASM if true. If enable\_gcp\_iam\_roles, one of impersonate\_service\_account, service\_account, or iam\_member must be set. | `bool` | `false` | no |
+| enable\_namespace\_creation | Sets `--enable_namespace_creation` option if true. | `bool` | `false` | no |
 | enable\_registration | Sets `--enable_registration` option if true. | `bool` | `false` | no |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |
 | iam\_member | The GCP member email address to grant IAM roles to. If impersonate\_service\_account or service\_account is set, roles are granted to that SA. | `string` | `""` | no |
