@@ -48,7 +48,7 @@ resource "kubernetes_service_account" "main" {
 
   automount_service_account_token = var.automount_service_account_token
   metadata {
-    name      = var.name
+    name      = local.k8s_given_name
     namespace = var.namespace
     annotations = {
       "iam.gke.io/gcp-service-account" = local.gcp_sa_email
