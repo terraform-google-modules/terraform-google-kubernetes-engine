@@ -1,0 +1,17 @@
+apiVersion: config.gatekeeper.sh/v1alpha1
+kind: Config
+metadata:
+  name: config
+  namespace: "gatekeeper-system"
+spec:
+  match:
+    - excludedNamespaces: [
+        "kube-system", 
+        "kube-public",
+        "kube-node-lease",
+        "config-management-system", 
+        "config-management-monitoring", 
+        "gatekeeper-system",
+        "resource-group-system"
+      ]
+      processes: ["audit"]

@@ -1,0 +1,13 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPHostNamespace
+metadata: # kpt-merge: /psp-host-namespace
+  name: psp-host-namespace
+  annotations:
+    # This constraint is not certified by CIS.
+    description: "Prohibits containers from running with `hostPID` or `hostIPC` set to `true`."
+spec:
+  enforcementAction: dryrun # kpt-set: ${enforcementAction}
+  match:
+    kinds:
+    - apiGroups: [""]
+      kinds: ["Pod"]

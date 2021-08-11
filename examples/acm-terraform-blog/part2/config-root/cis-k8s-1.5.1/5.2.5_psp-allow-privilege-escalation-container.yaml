@@ -1,0 +1,13 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPAllowPrivilegeEscalationContainer
+metadata: # kpt-merge: /psp-allow-privilege-escalation-container
+  name: psp-allow-privilege-escalation-container
+  annotations:
+    # This constraint is not certified by CIS.
+    description: "Restricts containers with `allowPrivilegeEscalation` set to `true`."
+spec:
+  enforcementAction: dryrun # kpt-set: ${enforcementAction}
+  match:
+    kinds:
+    - apiGroups: [""]
+      kinds: ["Pod"]
