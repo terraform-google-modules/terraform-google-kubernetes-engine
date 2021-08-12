@@ -34,7 +34,7 @@ variable "zone" {
 variable "sync_repo" {
   type        = string
   description = "git URL for the repo which will be sync'ed into the cluster via Config Management"
-  default     = "https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git"
+  default     = "https://github.com/AlexBulankou/terraform-google-kubernetes-engine.git"
 }
 
 variable "sync_branch" {
@@ -46,5 +46,5 @@ variable "sync_branch" {
 variable "policy_dir" {
   type        = string
   description = "the root directory in the repo branch that contains the resources."
-  default     = "terraform-google-kubernetes-engine/examples/acm-terraform-blog/part2/config-root"
+  default     = "examples/acm-terraform-blog-part1/config-root"
 }

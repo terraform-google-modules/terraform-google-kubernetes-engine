@@ -28,25 +28,21 @@ provider "google-beta" {
   zone    = var.zone
 }
 
-resource "random_id" "rand" {
-  byte_length = 4
-}
-
-resource "google_container_cluster" "cluster" {
-  provider           = google-beta
-  name               = "sfl-acm-${random_id.rand.hex}"
-  location           = "us-central1-a"
-  initial_node_count = 4
-}
 
 resource "google_gke_hub_membership" "membership" {
   provider      = google-beta
   membership_id = "membership-${random_id.rand.hex}"
   endpoint {
     gke_cluster {
-      resource_link = "//container.googleapis.com/${google_container_cluster.cluster.id}"
+      resource_link = "//container.googleapis.com/${module.gke.cluster_id}"
     }
   }
+}
+
+resource "google_gke_hub_feature" "configmanagement_acm_feature" {
+  name     = "configmanagement"
+  location = "global"
+  provider = google-beta
 }
 
 resource "google_gke_hub_feature_membership" "feature_member" {
@@ -66,4 +62,17 @@ resource "google_gke_hub_feature_membership" "feature_member" {
       }
     }
   }
+  depends_on = [
+    google_gke_hub_feature.configmanagement_acm_feature
+  ]
 }
+
+output "cluster_location" {
+  value = module.gke.location
+}
+
+output "cluster_name" {
+  value = module.gke.name
+}
+
+

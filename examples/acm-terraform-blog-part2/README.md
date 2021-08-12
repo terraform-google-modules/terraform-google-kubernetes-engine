@@ -46,8 +46,8 @@ Subsequent articles will discuss other aspects of ACM to manage your GCP infrast
 
     ```bash
     # get values from cluster that was created
-    export CLUSTER_ZONE=`echo google_container_cluster.cluster.location | terraform console | sed s/\"//g`
-    export CLUSTER_NAME=`echo google_container_cluster.cluster.name | terraform console | sed s/\"//g`
+   export CLUSTER_ZONE=$(terraform output -raw cluster_location)
+    export CLUSTER_NAME=$(terraform output -raw cluster_name)
 
     # then get creditials for it
     gcloud container clusters get-credentials $CLUSTER_NAME --zone $CLUSTER_ZONE --project $PROJECT_ID

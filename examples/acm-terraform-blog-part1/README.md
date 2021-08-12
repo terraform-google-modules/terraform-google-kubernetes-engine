@@ -28,16 +28,6 @@ Subsequent articles will discuss other aspects of ACM to manage your GCP infrast
     gcloud config set project $PROJECT_ID
     ```
 
-1. Enable the Google Cloud APIs that will be used for this example and also enable the new configuration management feature for your project:
-
-    ```bash
-    gcloud services enable --project $PROJECT_ID  container.googleapis.com                \
-                                                    gkehub.googleapis.com                 \
-                                                    anthosconfigmanagement.googleapis.com
-
-    gcloud alpha container hub config-management enable  --project $PROJECT_ID
-    ```
-
 1. Create cluster using terraform using defaults other than the project:
 
     ```bash
@@ -64,8 +54,8 @@ Subsequent articles will discuss other aspects of ACM to manage your GCP infrast
 
     ```bash
     # get values from cluster that was created
-    export CLUSTER_ZONE=`echo google_container_cluster.cluster.location | terraform console | sed s/\"//g`
-    export CLUSTER_NAME=`echo google_container_cluster.cluster.name | terraform console | sed s/\"//g`
+    export CLUSTER_ZONE=$(terraform output -raw cluster_location)
+    export CLUSTER_NAME=$(terraform output -raw cluster_name)
 
     # then get creditials for it and proxy to the wordpress service to see it running
     gcloud container clusters get-credentials $CLUSTER_NAME --zone $CLUSTER_ZONE --project $PROJECT_ID
