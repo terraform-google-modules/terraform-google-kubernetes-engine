@@ -1,9 +1,0 @@
-apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sRequireNamespaceNetworkPolicies
-metadata: # kpt-merge: /require-namespace-network-policies
-  name: require-namespace-network-policies
-  annotations:
-    # This constraint is not certified by CIS.
-    description: "Requires that every namespace defined in the cluster has a NetworkPolicy."
-spec:
-  enforcementAction: dryrun # kpt-set: ${enforcementAction}
