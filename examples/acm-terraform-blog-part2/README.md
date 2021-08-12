@@ -42,11 +42,11 @@ Subsequent articles will discuss other aspects of ACM to manage your GCP infrast
 
 1. One difference you may notice from [part1](../acm-terraform-blog-part1) is that in the [config-root/cis-k8s-1.5.1](config-root/cis-k8s-1.5.1) directory. This is a bundle of Policy Controller constraints that were pulled into the repo from [acm-policy-controller-library repo](https://github.com/GoogleCloudPlatform/acm-policy-controller-library/tree/master/bundles/cis-k8s-1.5.1) using `kpt pkg get` command. Kpt is a helpful kubernetes config tool documented at [kpt.dev](https://kpt.dev/). We'll use Kpt tool directly in part3 of this tutorial. The goal of this bundle is to audit and enforce [CIS Benchmarks for Kubernetes](https://cloud.google.com/kubernetes-engine/docs/concepts/cis-benchmarks). At the moment, they have been deployed in `dryrun` mode so we can use them to audit the cluster.
 
-    To see the audit status first we get credentials for `kubectl` in the same way we did this in [part1](../part1):
+    To see the audit status first we get credentials for `kubectl` in the same way we did this in [part1](../acm-terraform-blog-part1):
 
     ```bash
     # get values from cluster that was created
-   export CLUSTER_ZONE=$(terraform output -raw cluster_location)
+    export CLUSTER_ZONE=$(terraform output -raw cluster_location)
     export CLUSTER_NAME=$(terraform output -raw cluster_name)
 
     # then get creditials for it
