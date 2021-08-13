@@ -62,7 +62,6 @@ module "workload_identity" {
   use_existing_k8s_sa = false
 }
 
-
 # example with existing KSA
 resource "kubernetes_service_account" "test" {
   metadata {
