@@ -145,15 +145,15 @@ resource "google_container_cluster" "primary" {
 
   addons_config {
     http_load_balancing {
-      disabled = ! var.http_load_balancing
+      disabled = !var.http_load_balancing
     }
 
     horizontal_pod_autoscaling {
-      disabled = ! var.horizontal_pod_autoscaling
+      disabled = !var.horizontal_pod_autoscaling
     }
 
     network_policy_config {
-      disabled = ! var.network_policy
+      disabled = !var.network_policy
     }
     {% if beta_cluster %}
 
