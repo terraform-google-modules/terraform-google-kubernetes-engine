@@ -35,7 +35,7 @@ The implications of this are that:
 ## Compatibility
 
 This module is meant for use with Terraform 0.13+ and tested using Terraform 1.0+.
-If you find incompatibilities using Terraform `>=0.13, <1.0`, please open an issue.
+If you find incompatibilities using Terraform `>=0.13`, please open an issue.
 
 If you haven't [upgraded][terraform-0.13-upgrade] and need a Terraform
 0.12.x-compatible version of this module, the last released version
