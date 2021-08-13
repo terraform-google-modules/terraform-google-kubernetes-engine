@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- terraform {
+terraform {
   required_providers {
     google-beta = {
       source  = "hashicorp/google-beta"
