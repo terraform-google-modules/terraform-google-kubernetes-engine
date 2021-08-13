@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
- resource "google_gke_hub_membership" "membership" {
+
+resource "google_gke_hub_membership" "membership" {
   provider      = google-beta
-  membership_id = "membership-${module.gke.cluster_id}"
+  membership_id = "membership-hub"
   endpoint {
     gke_cluster {
       resource_link = "//container.googleapis.com/${module.gke.cluster_id}"
@@ -52,7 +52,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
       referential_rules_enabled  = true
     }
   }
-    depends_on = [
+  depends_on = [
     google_gke_hub_feature.configmanagement_acm_feature
   ]
 }

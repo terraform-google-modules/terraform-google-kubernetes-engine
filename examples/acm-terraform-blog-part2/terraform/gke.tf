@@ -30,15 +30,15 @@ module "enabled_google_apis" {
 }
 
 module "gke" {
-  source                = "terraform-google-modules/kubernetes-engine/google"
-  version = "~> 16.0"
-  project_id            = module.enabled_google_apis.project_id
-  name                  = "sfl-acm-part2"
-  region                = var.region
-  zones                 = [var.zone]
-  initial_node_count    = 4
-  network               = "default"
-  subnetwork            = "default"
-  ip_range_pods         = ""
-  ip_range_services     = ""
+  source             = "terraform-google-modules/kubernetes-engine/google"
+  version            = "~> 16.0"
+  project_id         = module.enabled_google_apis.project_id
+  name               = "sfl-acm-part2"
+  region             = var.region
+  zones              = [var.zone]
+  initial_node_count = 4
+  network            = "default"
+  subnetwork         = "default"
+  ip_range_pods      = ""
+  ip_range_services  = ""
 }
