@@ -15,8 +15,11 @@
 project_id = attribute('project_id')
 location = attribute('location')
 cluster_name = attribute('cluster_name')
-k8s_service_account_email = attribute('k8s_service_account_email')
-k8s_service_account_name = attribute('k8s_service_account_name')
+wi_gsa_to_k8s_sa = {
+  attribute('default_wi_email') => attribute('default_wi_ksa_name'),
+  attribute('existing_ksa_email') => attribute('existing_ksa_name'),
+  attribute('existing_gsa_email') => attribute('existing_gsa_name')
+}
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
@@ -57,20 +60,21 @@ control "gcloud" do
       end
     end
   end
+  wi_gsa_to_k8s_sa.each do |gsa_email,ksa_name|
+    describe command("gcloud iam service-accounts get-iam-policy #{gsa_email} --format=json") do
+      its(:exit_status) { should eq 0 }
+      its(:stderr) { should eq '' }
 
-  describe command("gcloud iam service-accounts get-iam-policy #{k8s_service_account_email} --format=json") do
-    its(:exit_status) { should eq 0 }
-    its(:stderr) { should eq '' }
-
-    let!(:iam) do
-      if subject.exit_status == 0
-        JSON.parse(subject.stdout)
-      else
-        {}
+      let!(:iam) do
+        if subject.exit_status == 0
+          JSON.parse(subject.stdout)
+        else
+          {}
+        end
       end
-    end
-    it "has expected workload identity user roles" do
-      expect(iam['bindings'][0]).to include("members" => [k8s_service_account_name], "role" => "roles/iam.workloadIdentityUser")
+      it "has expected workload identity user roles" do
+        expect(iam['bindings'][0]).to include("members" => ["serviceAccount:#{project_id}.svc.id.goog[default/#{ksa_name}]"], "role" => "roles/iam.workloadIdentityUser")
+      end
     end
   end
 end
