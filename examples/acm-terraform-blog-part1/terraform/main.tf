@@ -14,24 +14,9 @@
  * limitations under the License.
  */
 
-terraform {
-  required_providers {
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "3.73.0"
-    }
-  }
-}
-provider "google-beta" {
-  project = var.project
-  region  = var.region
-  zone    = var.zone
-}
-
-
 resource "google_gke_hub_membership" "membership" {
   provider      = google-beta
-  membership_id = "membership-${random_id.rand.hex}"
+  membership_id = "membership-${module.gke.cluster_id}"
   endpoint {
     gke_cluster {
       resource_link = "//container.googleapis.com/${module.gke.cluster_id}"

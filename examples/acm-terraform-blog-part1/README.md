@@ -41,6 +41,7 @@ Subsequent articles will discuss other aspects of ACM to manage your GCP infrast
     terraform plan -var=project=$PROJECT_ID
     terraform apply -var=project=$PROJECT_ID
     ```
+   NOTE: if you get an error due to default network not being present, run `gcloud compute networks create default --subnet-mode=auto` and retry the commands.
 
 1. To verify things have sync'ed, you can use `gcloud` to check status:
 

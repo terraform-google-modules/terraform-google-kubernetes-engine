@@ -29,14 +29,11 @@ module "enabled_google_apis" {
   ]
 }
 
-resource "random_id" "rand" {
-  byte_length = 4
-}
-
 module "gke" {
   source                = "terraform-google-modules/kubernetes-engine/google"
-  project_id            = var.project
-  name                  = "sfl-acm-${random_id.rand.hex}"
+  version = "~> 16.0"
+  project_id            = module.enabled_google_apis.project_id
+  name                  = "sfl-acm-part1"
   region                = var.region
   zones                 = [var.zone]
   initial_node_count    = 4
@@ -44,5 +41,4 @@ module "gke" {
   subnetwork            = "default"
   ip_range_pods         = ""
   ip_range_services     = ""
-  depends_on = [module.enabled_google_apis]
 }

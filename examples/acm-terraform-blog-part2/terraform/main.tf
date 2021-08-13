@@ -13,25 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-terraform {
-  required_providers {
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "3.73.0"
-    }
-  }
-}
-provider "google-beta" {
-  project = var.project
-  region  = var.region
-  zone    = var.zone
-}
-
-
-resource "google_gke_hub_membership" "membership" {
+ 
+ resource "google_gke_hub_membership" "membership" {
   provider      = google-beta
-  membership_id = "membership-${random_id.rand.hex}"
+  membership_id = "membership-${module.gke.cluster_id}"
   endpoint {
     gke_cluster {
       resource_link = "//container.googleapis.com/${module.gke.cluster_id}"
@@ -70,12 +55,4 @@ resource "google_gke_hub_feature_membership" "feature_member" {
     depends_on = [
     google_gke_hub_feature.configmanagement_acm_feature
   ]
-}
-
-output "cluster_location" {
-  value = module.gke.location
-}
-
-output "cluster_name" {
-  value = module.gke.name
 }
