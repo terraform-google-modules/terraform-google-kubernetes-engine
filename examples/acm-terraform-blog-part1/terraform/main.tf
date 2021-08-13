@@ -51,13 +51,3 @@ resource "google_gke_hub_feature_membership" "feature_member" {
     google_gke_hub_feature.configmanagement_acm_feature
   ]
 }
-
-output "cluster_location" {
-  value = module.gke.location
-}
-
-output "cluster_name" {
-  value = module.gke.name
-}
-
-
