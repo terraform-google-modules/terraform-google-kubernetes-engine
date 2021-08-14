@@ -63,7 +63,7 @@ Subsequent articles will discuss other aspects of ACM to manage your GCP infrast
     kubectl proxy --port 8888 &
 
     # curl or use the browser
-    curl http://127.0.0.1:8888/api/v1/namespaces/default/services/wordpress/proxy/wp-admin/install.php
+    curl http://127.0.0.1:8888/api/v1/namespaces/wp/services/wordpress/proxy/wp-admin/install.php
 
     ```
 
