@@ -11,10 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wp
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  namespace: wp
   name: wp-config
 data:
   ### We're using a ConfigMap for simplicity, but in real life one should
@@ -24,6 +29,7 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: wp
   name: wordpress-mysql
   labels:
     app: wordpress
@@ -38,6 +44,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: wp
   name: mysql-pvc
   labels:
     app: wordpress
@@ -51,6 +58,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: wp
   name: wordpress-mysql
   labels:
     app: wordpress
@@ -90,6 +98,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: wp
   name: wordpress
   labels:
     app: wordpress
@@ -103,6 +112,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: wp
   name: wp-pvc
   labels:
     app: wordpress
@@ -116,6 +126,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: wp
   name: wordpress
   labels:
     app: wordpress
