@@ -62,7 +62,6 @@ module "workload_identity" {
   use_existing_k8s_sa = false
 }
 
-
 # example with existing KSA
 resource "kubernetes_service_account" "test" {
   metadata {
@@ -82,4 +81,19 @@ module "workload_identity_existing_ksa" {
   namespace           = "default"
   use_existing_k8s_sa = true
   k8s_sa_name         = kubernetes_service_account.test.metadata.0.name
+}
+
+# example with existing GSA
+resource "google_service_account" "custom" {
+  account_id = "custom-gsa"
+  project    = var.project_id
+}
+
+module "workload_identity_existing_gsa" {
+  source              = "../../modules/workload-identity"
+  project_id          = var.project_id
+  name                = google_service_account.custom.account_id
+  use_existing_gcp_sa = true
+  # wait till custom GSA is created to force module data source read during apply
+  depends_on = [google_service_account.custom]
 }
