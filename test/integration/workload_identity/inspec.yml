@@ -23,9 +23,21 @@ attributes:
   - name: project_id
     required: true
     type: string
-  - name: k8s_service_account_email
+  - name: default_wi_email
     required: true
     type: string
-  - name: k8s_service_account_name
+  - name: default_wi_ksa_name
+    required: true
+    type: string
+  - name: existing_ksa_email
+    required: true
+    type: string
+  - name: existing_ksa_name
+    required: true
+    type: string
+  - name: existing_gsa_email
+    required: true
+    type: string
+  - name: existing_gsa_name
     required: true
     type: string
