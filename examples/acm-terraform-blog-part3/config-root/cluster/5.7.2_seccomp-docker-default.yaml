@@ -11,13 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sRequireNamespaceNetworkPolicies
-metadata: # kpt-merge: /require-namespace-network-policies
-  name: require-namespace-network-policies
+kind: K8sPSPSeccomp
+metadata: # kpt-merge: /psp-seccomp-docker-default
+  name: psp-seccomp-docker-default
   annotations:
     # This constraint is not certified by CIS.
-    description: "Requires that every namespace defined in the cluster has a NetworkPolicy."
+    description: "Requires that Pods have seccomp profile set to `docker/default`."
 spec:
   enforcementAction: dryrun # kpt-set: ${enforcementAction}
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  parameters:
+    allowedProfiles:
+      - docker/default

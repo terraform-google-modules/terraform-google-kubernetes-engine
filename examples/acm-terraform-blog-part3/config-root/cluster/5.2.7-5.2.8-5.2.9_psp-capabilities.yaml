@@ -11,16 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sRestrictNamespaces
-metadata: # kpt-merge: /restrict-default-namespace
-  name: restrict-default-namespace
+kind: K8sPSPCapabilities
+metadata: # kpt-merge: /psp-capabilities
+  name: psp-capabilities
   annotations:
     # This constraint is not certified by CIS.
-    description: "Restricts resources from using the `default` namespace."
+    description: "Requires containers to drop the `NET_RAW` capability; constainers may not have allowedCapabilities set to anything other than an empty array; "
 spec:
   enforcementAction: dryrun # kpt-set: ${enforcementAction}
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
   parameters:
-    restrictedNamespaces:
-    - default
+    allowedCapabilities: []
+    requiredDropCapabilities: ["NET_RAW"]

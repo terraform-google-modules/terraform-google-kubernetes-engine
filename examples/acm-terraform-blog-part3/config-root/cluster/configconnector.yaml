@@ -1,0 +1,10 @@
+# configconnector.yaml
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  # the name is restricted to ensure that there is only one
+  # ConfigConnector instance installed in your cluster
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+  googleServiceAccount: "cnrmsa@${PROJECT_ID?}.iam.gserviceaccount.com" # {"$ref":"#/definitions/io.k8s.cli.substitutions.project-id-in-sa-sub"}
+  mode: cluster

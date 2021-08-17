@@ -11,13 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sNoEnvVarSecrets
-metadata: # kpt-merge: /no-secrets-as-env-vars
-  name: no-secrets-as-env-vars
+kind: K8sRequireNamespaceNetworkPolicies
+metadata: # kpt-merge: /require-namespace-network-policies
+  name: require-namespace-network-policies
   annotations:
     # This constraint is not certified by CIS.
-    description: "Prohibits secrets as environment variables in container definitions; instead, use mounted secret files in data volumes."
+    description: "Requires that every namespace defined in the cluster has a NetworkPolicy."
 spec:
   enforcementAction: dryrun # kpt-set: ${enforcementAction}

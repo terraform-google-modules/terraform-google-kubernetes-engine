@@ -11,19 +11,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sPSPPrivilegedContainer
-metadata: # kpt-merge: /psp-privileged-container
-  name: psp-privileged-container
+kind: K8sPSPHostNetworkingPorts
+metadata: # kpt-merge: /psp-host-network-ports
+  name: psp-host-network-ports
   annotations:
     # This constraint is not certified by CIS.
-    description: "Restricts containers with `securityContext.privileged` set to `true`."
+    description: "Restricts containers from rnuning with the `hostNetwork` flag set to `true`."
 spec:
   enforcementAction: dryrun # kpt-set: ${enforcementAction}
   match:
     kinds:
-    - apiGroups:
-      - ''
-      kinds:
-      - Pod
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  parameters:
+    hostNetwork: true
+    #min: 80
+    #max: 9000

@@ -11,13 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sProhibitRoleWildcardAccess
-metadata: # kpt-merge: /prohibit-role-wildcard-access
-  name: prohibit-role-wildcard-access
+kind: K8sPSPHostNamespace
+metadata: # kpt-merge: /psp-host-namespace
+  name: psp-host-namespace
   annotations:
     # This constraint is not certified by CIS.
-    description: "Restricts use of wildcards in Roles and ClusterRoles."
+    description: "Prohibits containers from running with `hostPID` or `hostIPC` set to `true`."
 spec:
   enforcementAction: dryrun # kpt-set: ${enforcementAction}
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]

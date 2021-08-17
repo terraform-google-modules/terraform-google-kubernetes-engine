@@ -11,20 +11,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sPSPCapabilities
-metadata: # kpt-merge: /psp-capabilities
-  name: psp-capabilities
+kind: K8sRestrictRoleBindings
+metadata: # kpt-merge: /restrict-clusteradmin-rolebindings
+  name: restrict-clusteradmin-rolebindings
   annotations:
     # This constraint is not certified by CIS.
-    description: "Requires containers to drop the `NET_RAW` capability; constainers may not have allowedCapabilities set to anything other than an empty array; "
+    description: "Restricts use of the cluster-admin role."
 spec:
   enforcementAction: dryrun # kpt-set: ${enforcementAction}
-  match:
-    kinds:
-    - apiGroups: [""]
-      kinds: ["Pod"]
   parameters:
-    allowedCapabilities: []
-    requiredDropCapabilities: ["NET_RAW"]
+    allowedSubjects:
+      - name: "system:masters"
+        kind: "Group"
+        apiGroup: "rbac.authorization.k8s.io"
+    restrictedRole:
+      name: "cluster-admin"
+      kind: "ClusterRole"
+      apiGroup: "rbac.authorization.k8s.io"

@@ -11,20 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sPSPSeccomp
-metadata: # kpt-merge: /psp-seccomp-docker-default
-  name: psp-seccomp-docker-default
+kind: K8sPSPAllowedUsers
+metadata: # kpt-merge: /psp-pods-must-run-as-nonroot
+  name: psp-pods-must-run-as-nonroot
   annotations:
     # This constraint is not certified by CIS.
-    description: "Requires that Pods have seccomp profile set to `docker/default`."
+    description: "Restricts containers from running as the root user."
 spec:
   enforcementAction: dryrun # kpt-set: ${enforcementAction}
   match:
     kinds:
-    - apiGroups: [""]
-      kinds: ["Pod"]
+      - apiGroups: [""]
+        kinds: ["Pod"]
   parameters:
-    allowedProfiles:
-    - docker/default
+    runAsUser:
+      rule: MustRunAsNonRoot

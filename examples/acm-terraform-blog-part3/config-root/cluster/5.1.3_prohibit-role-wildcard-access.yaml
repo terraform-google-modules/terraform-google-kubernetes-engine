@@ -11,13 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sPodsRequireSecurityContext
-metadata: # kpt-merge: /pods-require-security-context
-  name: pods-require-security-context
+kind: K8sProhibitRoleWildcardAccess
+metadata: # kpt-merge: /prohibit-role-wildcard-access
+  name: prohibit-role-wildcard-access
   annotations:
     # This constraint is not certified by CIS.
-    description: "Requires that Pods must have a `securityContext` defined."
+    description: "Restricts use of wildcards in Roles and ClusterRoles."
 spec:
   enforcementAction: dryrun # kpt-set: ${enforcementAction}

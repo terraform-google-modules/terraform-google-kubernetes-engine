@@ -11,17 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sPSPHostNamespace
-metadata: # kpt-merge: /psp-host-namespace
-  name: psp-host-namespace
+kind: K8sPSPAllowPrivilegeEscalationContainer
+metadata: # kpt-merge: /psp-allow-privilege-escalation-container
+  name: psp-allow-privilege-escalation-container
   annotations:
     # This constraint is not certified by CIS.
-    description: "Prohibits containers from running with `hostPID` or `hostIPC` set to `true`."
+    description: "Restricts containers with `allowPrivilegeEscalation` set to `true`."
 spec:
   enforcementAction: dryrun # kpt-set: ${enforcementAction}
   match:
     kinds:
-    - apiGroups: [""]
-      kinds: ["Pod"]
+      - apiGroups: [""]
+        kinds: ["Pod"]

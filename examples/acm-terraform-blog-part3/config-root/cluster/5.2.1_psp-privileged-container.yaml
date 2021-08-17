@@ -11,20 +11,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sPSPAllowedUsers
-metadata: # kpt-merge: /psp-pods-must-run-as-nonroot
-  name: psp-pods-must-run-as-nonroot
+kind: K8sPSPPrivilegedContainer
+metadata: # kpt-merge: /psp-privileged-container
+  name: psp-privileged-container
   annotations:
     # This constraint is not certified by CIS.
-    description: "Restricts containers from running as the root user."
+    description: "Restricts containers with `securityContext.privileged` set to `true`."
 spec:
   enforcementAction: dryrun # kpt-set: ${enforcementAction}
   match:
     kinds:
-    - apiGroups: [""]
-      kinds: ["Pod"]
-  parameters:
-    runAsUser:
-      rule: MustRunAsNonRoot
+      - apiGroups:
+          - ''
+        kinds:
+          - Pod
