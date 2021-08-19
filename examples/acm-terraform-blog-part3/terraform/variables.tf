@@ -40,7 +40,7 @@ variable "sync_repo" {
 variable "sync_branch" {
   type        = string
   description = "the git branch in the repo to sync"
-  default     = "master"
+  default     = "alexb-part3-20210816"
 }
 
 variable "policy_dir" {
