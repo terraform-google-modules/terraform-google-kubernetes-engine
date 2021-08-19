@@ -16,6 +16,8 @@ In this article we'll demonstrate how, using Config Connector, you can provision
     ```bash
     PROJECT_ID = [PROJECT_ID]
     ```
+1. Note that [wordpress-bundle.yaml](./config-root/wordpress-bundle) was updated to use GCP MySQL database. Also we added [configconnector.yaml](./config-root/configconnector.yaml) to initialize the instance of Config Connector add-on on the cluster.
+
 1. Use [kpt](kpt.dev) to customize the `config-root` directory that will be configured as the source of the objects installed on the cluster.
 
     ```bash
