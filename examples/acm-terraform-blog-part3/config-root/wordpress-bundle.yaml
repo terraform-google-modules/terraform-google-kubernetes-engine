@@ -22,7 +22,7 @@ metadata:
   name: sql-wp-ksa-wi
   namespace: wp
   annotations:
-    iam.gke.io/gcp-service-account: sql-wp-sa@alexbu-test-20210817.iam.gserviceaccount.com # kpt-set: sql-wp-sa@${projectId}.iam.gserviceaccount.com
+    iam.gke.io/gcp-service-account: sql-wp-sa@alexbu-test-20210819.iam.gserviceaccount.com # kpt-set: sql-wp-sa@${projectId}.iam.gserviceaccount.com
 ---
 apiVersion: v1
 kind: Secret
@@ -32,7 +32,7 @@ metadata:
 stringData:
   connectionName: us-central1:wp-db
   password: change-me
-  projectId: alexbu-test-20210817 # kpt-set: ${projectId}
+  projectId: alexbu-test-20210819 # kpt-set: ${projectId}
   username: wordpress
 ---
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
@@ -159,7 +159,7 @@ metadata:
 spec:
   bindings:
     - members:
-        - serviceAccount:alexbu-test-20210817.svc.id.goog[wp/sql-wp-ksa-wi] # kpt-set: serviceAccount:${projectId}.svc.id.goog[wp/sql-wp-ksa-wi]
+        - serviceAccount:alexbu-test-20210819.svc.id.goog[wp/sql-wp-ksa-wi] # kpt-set: serviceAccount:${projectId}.svc.id.goog[wp/sql-wp-ksa-wi]
       role: roles/iam.workloadIdentityUser
   resourceRef:
     name: sql-wp-sa
@@ -172,11 +172,11 @@ metadata:
   name: sql-wp-sa-project-policymember
   namespace: wp
 spec:
-  member: serviceAccount:alexbu-test-20210817.svc.id.goog[wp/sql-wp-ksa-wi] # kpt-set: serviceAccount:${projectId}.svc.id.goog[wp/sql-wp-ksa-wi]
+  member: serviceAccount:alexbu-test-20210819.svc.id.goog[wp/sql-wp-ksa-wi] # kpt-set: serviceAccount:${projectId}.svc.id.goog[wp/sql-wp-ksa-wi]
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
-    external: alexbu-test-20210817 # kpt-set: ${projectId}
+    external: alexbu-test-20210819 # kpt-set: ${projectId}
   role: roles/cloudsql.client
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
