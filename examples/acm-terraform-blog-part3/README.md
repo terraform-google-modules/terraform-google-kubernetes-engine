@@ -16,7 +16,11 @@ In this article we'll demonstrate how, using Config Connector, you can provision
     ```bash
     PROJECT_ID = [PROJECT_ID]
     ```
+1. Use kpt to customize the `config-root` directory that will be configured as the source of the objects installed on the cluster.
 
+    ```bash
+    kpt fn eval --image gcr.io/kpt-fn/apply-setters:v0.1 ./config-root -- projectId=$PROJECT_ID
+    ```
 1. As before, cluster using terraform using defaults other than the project. The main difference in the [terraform](terraform) files is that we turn on [PolicyController](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) and also install the build in [Policy Libary](https://cloud.google.com/anthos-config-management/docs/reference/constraint-template-library).
 
     ```bash

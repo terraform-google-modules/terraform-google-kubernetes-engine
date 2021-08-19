@@ -1,27 +1,45 @@
-# Source: wordpress-gcp/templates/k8s-service-account.yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wp
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: sql-wp-ksa-wi
+  namespace: wp
   annotations:
-    iam.gke.io/gcp-service-account: sql-wp-sa@${PROJECT_ID?}.iam.gserviceaccount.com # {"$ref":"#/definitions/io.k8s.cli.substitutions.project-id-in-sa-sub"}
+    iam.gke.io/gcp-service-account: sql-wp-sa@alexbu-test-20210817.iam.gserviceaccount.com # kpt-set: sql-wp-sa@${projectId}.iam.gserviceaccount.com
 ---
-# Source: wordpress-gcp/templates/k8s-sql-db-credentials.yaml
 apiVersion: v1
 kind: Secret
 metadata:
   name: wordpress-cloudsql-db-credentials
+  namespace: wp
 stringData:
   connectionName: us-central1:wp-db
   password: change-me
-  projectId: ${PROJECT_ID?} # {"$ref":"#/definitions/io.k8s.cli.substitutions.project-id-in-sa-sub"}
+  projectId: alexbu-test-20210817 # kpt-set: ${projectId}
   username: wordpress
 ---
-# Source: wordpress-gcp/templates/gcp-sql-api.yaml
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   name: sqladmin.googleapis.com
+  namespace: wp
   annotations:
     cnrm.cloud.google.com/deletion-policy: abandon
     cnrm.cloud.google.com/disable-dependent-services: "false"
@@ -31,6 +49,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wordpress-external
+  namespace: wp
   labels:
     app: wordpress
 spec:
@@ -43,11 +62,11 @@ spec:
       port: 80
       targetPort: 80
 ---
-# Source: wordpress-gcp/templates/k8s-stateful-set.yaml
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: wordpress
+  namespace: wp
 spec:
   replicas: 1
   selector:
@@ -132,68 +151,68 @@ spec:
         accessModes: ["ReadWriteOnce"]
   serviceName: "wordpress"
 ---
-# Source: wordpress-gcp/templates/gcp-wi-policy.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
   name: sql-wp-sa-wi-policy
+  namespace: wp
 spec:
   bindings:
     - members:
-        - serviceAccount:${PROJECT_ID?}.svc.id.goog[wp/sql-wp-ksa-wi] # {"$ref":"#/definitions/io.k8s.cli.substitutions.project-id-in-sa-sub"}
+        - serviceAccount:alexbu-test-20210817.svc.id.goog[wp/sql-wp-ksa-wi] # kpt-set: serviceAccount:${projectId}.svc.id.goog[wp/sql-wp-ksa-wi]
       role: roles/iam.workloadIdentityUser
   resourceRef:
     name: sql-wp-sa
     apiVersion: iam.cnrm.cloud.google.com/v1beta1
     kind: IAMServiceAccount
 ---
-# Source: wordpress-gcp/templates/gcp-sql-policy-member.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
   name: sql-wp-sa-project-policymember
+  namespace: wp
 spec:
-  member: serviceAccount:sql-wp-sa@${PROJECT_ID?}.iam.gserviceaccount.com # {"$ref":"#/definitions/io.k8s.cli.substitutions.project-id-in-sa-sub"}
+  member: serviceAccount:alexbu-test-20210817.svc.id.goog[wp/sql-wp-ksa-wi] # kpt-set: serviceAccount:${projectId}.svc.id.goog[wp/sql-wp-ksa-wi]
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
-    external: ${PROJECT_ID?} # {"$ref":"#/definitions/io.k8s.cli.substitutions.project-id-in-sa-sub"}
+    external: alexbu-test-20210817 # kpt-set: ${projectId}
   role: roles/cloudsql.client
 ---
-# Source: wordpress-gcp/templates/gcp-sql-service-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
   name: sql-wp-sa
+  namespace: wp
 spec:
   displayName: Service Account for WordPress Config Connector Sample
 ---
-# Source: wordpress-gcp/templates/gcp-sql-db.yaml
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLDatabase
 metadata:
   name: wordpress
+  namespace: wp
 spec:
   charset: utf8
   instanceRef:
     name: wp-db
 ---
-# Source: wordpress-gcp/templates/gcp-sql-instance.yaml
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
   name: wp-db
+  namespace: wp
 spec:
   databaseVersion: MYSQL_5_7
   region: us-central1
   settings:
     tier: db-f1-micro
 ---
-# Source: wordpress-gcp/templates/gcp-sql-user.yaml
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLUser
 metadata:
   name: wordpress
+  namespace: wp
 spec:
   host: "%"
   instanceRef:
