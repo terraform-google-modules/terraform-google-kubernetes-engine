@@ -16,7 +16,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: alexbu-test-20210819.iam # kpt-set: ${projectId}
+    cnrm.cloud.google.com/project-id: alexbu-test-20210819 # kpt-set: ${projectId}
   name: wp
 ---
 apiVersion: v1
