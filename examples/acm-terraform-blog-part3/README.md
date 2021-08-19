@@ -16,14 +16,18 @@ In this article we'll demonstrate how, using Config Connector, you can provision
     ```bash
     PROJECT_ID = [PROJECT_ID]
     ```
-1. Use kpt to customize the `config-root` directory that will be configured as the source of the objects installed on the cluster.
+1. Use [kpt](kpt.dev) to customize the `config-root` directory that will be configured as the source of the objects installed on the cluster.
 
     ```bash
     kpt fn eval --image gcr.io/kpt-fn/apply-setters:v0.1 ./config-root -- projectId=$PROJECT_ID
     ```
 1. Submit the updated configuration into your branch.
-1. Ensure that variables are updated 
-1. As before, cluster using terraform using defaults other than the project. The main difference in the [terraform](terraform) files is that we turn on [PolicyController](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) and also install the build in [Policy Libary](https://cloud.google.com/anthos-config-management/docs/reference/constraint-template-library).
+1. Ensure that `sync_repo` and `sync_brach` variables are updated in [variables.tf](./terraform/variables.tf)
+1. Before running Terraform, notice the changes in [gke.tf](./terraform/gke.tf):
+     - we are using `beta-public-cluster` module
+     - `config_connector` variable is set to true
+     - we are using `workload-identity` module to create Google Service Account used by Config Connector to create GCP resource and connect it to Kubernetes Service Account that is running in Config Connector `cnrm-system` namespace.
+1. As as in the previous part, create cluster using Terraform:
 
     ```bash
     # obtain user access credentials to use for Terraform commands
@@ -48,9 +52,8 @@ In this article we'll demonstrate how, using Config Connector, you can provision
 
     After a short time, in addition to the `Status` showing as `SYNCED` and the `Last_Synced_Token` matching the repo, there should also be a value of `INSTALLED` for `Policy_Controller`.
 
-1. One difference you may notice from [part1](../acm-terraform-blog-part1) is that in the [config-root/cis-k8s-1.5.1](config-root/cis-k8s-1.5.1) directory. This is a bundle of Policy Controller constraints that were pulled into the repo from [acm-policy-controller-library repo](https://github.com/GoogleCloudPlatform/acm-policy-controller-library/tree/master/bundles/cis-k8s-1.5.1) using `kpt pkg get` command. Kpt is a helpful kubernetes config tool documented at [kpt.dev](https://kpt.dev/). We'll use Kpt tool directly in part3 of this tutorial. The goal of this bundle is to audit and enforce [CIS Benchmarks for Kubernetes](https://cloud.google.com/kubernetes-engine/docs/concepts/cis-benchmarks). At the moment, they have been deployed in `dryrun` mode so we can use them to audit the cluster.
 
-    To see the audit status first we get credentials for `kubectl` in the same way we did this in [part1](../acm-terraform-blog-part1):
+1. Connect your kubectl instance to the newly created cluster:
 
     ```bash
     # get values from cluster that was created
@@ -62,11 +65,23 @@ In this article we'll demonstrate how, using Config Connector, you can provision
 
     ```
 
-    Now, let's look at the violations in the status of the constraints we have active. One handy way to do this is to dump the constraints in json so we can filter for violations using `jq`.
-
+1. Verify that Config Connector addon is installed and configured:
     ```bash
-    kubectl get constraint -o json | jq -C '.items[]| select(.status.violations)| .kind,.status.violations'
+    kubectl wait -n cnrm-system --for=condition=Ready pod --all
     ```
 
-    Seems like there is a LOT to clean up!
+    Note: The controller Pod can take several minutes to start. Once Config Connector is installed correctly, the output is similar to the following:
 
+    ```bash
+    pod/cnrm-controller-manager-0 condition met
+    ```
+1.  It will take a while for SQL db to be created. You can check on the status:
+    ```bash
+    kubectl describe sqlinstance -n wp
+    ```
+
+1.  Finally, validate that Wordpress powered by GCP database was created:
+
+    ```bash
+    curl -L $( kubectl get service wordpress-external -n wp -o=json | \
+            jq -r '.status["loadBalancer"]["ingress"][0]["ip"]')
