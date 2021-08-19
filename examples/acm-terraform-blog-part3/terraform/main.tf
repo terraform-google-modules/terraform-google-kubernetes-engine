@@ -38,7 +38,6 @@ resource "google_gke_hub_feature_membership" "feature_member" {
   configmanagement {
     version = "1.8.0"
     config_sync {
-      source_format = "unstructured"
       git {
         sync_repo   = var.sync_repo
         sync_branch = var.sync_branch

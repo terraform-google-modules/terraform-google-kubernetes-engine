@@ -30,7 +30,7 @@ module "enabled_google_apis" {
 }
 
 module "gke" {
-  source             = "terraform-google-modules/kubernetes-engine/google//modules/safer-cluster"
+  source             = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
   version            = "~> 16.0"
   project_id         = module.enabled_google_apis.project_id
   name               = "sfl-acm-part3"
@@ -42,34 +42,24 @@ module "gke" {
   ip_range_pods      = ""
   ip_range_services  = ""
   config_connector   = true
-  master_authorized_networks = [
-    {
-      cidr_block   = "10.60.0.0/17"
-      display_name = "VPC"
-    },
-  ]
-  depends_on = [
-    module.enabled_google_apis
-  ]
 }
 
-/*
+
 module "wi" {
   source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version             = "~> 16.0.1"
-  name                = "crnmsa"
-  cluster_name        = "sfl-acm-part3" 
-  k8s_sa_name         = "cnrm-controller-manager"
+  gcp_sa_name         = "crnmsa"
+  cluster_name        = module.gke.name
+  name                = "cnrm-controller-manager"
+  location            = var.zone
   use_existing_k8s_sa = true
+  annotate_k8s_sa     = false
   namespace           = "cnrm-system"
   project_id          = module.enabled_google_apis.project_id
   roles               = ["roles/owner"]
-   depends_on = [
-    module.gke
-  ]
 }
-*/
 
+/*
 resource "google_service_account" "cnrmsa" {
   account_id   = "cnrmsa"
   project = module.enabled_google_apis.project_id
@@ -96,3 +86,4 @@ resource "google_service_account_iam_binding" "admin-account-iam" {
   ]
 }
 
+*/
