@@ -6,5 +6,5 @@ metadata:
   # ConfigConnector instance installed in your cluster
   name: configconnector.core.cnrm.cloud.google.com
 spec:
-  googleServiceAccount: "cnrmsa@alexbu-test-20210819.iam.gserviceaccount.com" # kpt-set: cnrmsa@${projectId}.iam.gserviceaccount.com
+  googleServiceAccount: "cnrmsa@alexbu-test-20210819a.iam.gserviceaccount.com" # kpt-set: cnrmsa@${projectId}.iam.gserviceaccount.com
   mode: cluster
