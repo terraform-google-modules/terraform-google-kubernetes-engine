@@ -21,6 +21,8 @@ In this article we'll demonstrate how, using Config Connector, you can provision
     ```bash
     kpt fn eval --image gcr.io/kpt-fn/apply-setters:v0.1 ./config-root -- projectId=$PROJECT_ID
     ```
+1. Submit the updated configuration into your branch.
+1. Ensure that variables are updated 
 1. As before, cluster using terraform using defaults other than the project. The main difference in the [terraform](terraform) files is that we turn on [PolicyController](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) and also install the build in [Policy Libary](https://cloud.google.com/anthos-config-management/docs/reference/constraint-template-library).
 
     ```bash

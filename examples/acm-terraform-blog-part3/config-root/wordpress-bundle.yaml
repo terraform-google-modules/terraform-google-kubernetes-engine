@@ -175,7 +175,7 @@ metadata:
   name: sql-wp-sa-project-policymember
   namespace: wp
 spec:
-  member: serviceAccount:alexbu-test-20210819.svc.id.goog[wp/sql-wp-ksa-wi] # kpt-set: serviceAccount:${projectId}.svc.id.goog[wp/sql-wp-ksa-wi]
+  member: serviceAccount:sql-wp-sa@alexbu-test-20210819.iam.gserviceaccount.com # kpt-set: serviceAccount:sql-wp-sa@${projectId}.iam.gserviceaccount.com
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
