@@ -46,7 +46,6 @@ module "gke" {
   config_connector   = true
 }
 
-
 module "wi" {
   source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version             = "~> 16.0.1"
@@ -60,32 +59,3 @@ module "wi" {
   project_id          = module.enabled_google_apis.project_id
   roles               = ["roles/owner"]
 }
-
-/*
-resource "google_service_account" "cnrmsa" {
-  account_id   = "cnrmsa"
-  project = module.enabled_google_apis.project_id
-  display_name = "IAM service account used by Config Connector"
-  depends_on = [
-    module.gke
-  ]
-}
-
-resource "google_project_iam_member" "project" {
-  project = var.project
-  role    = "roles/owner"
-  member = "serviceAccount:${google_service_account.cnrmsa.email}"
-  depends_on = [
-    google_service_account.cnrmsa
-  ]
-}
-
-resource "google_service_account_iam_binding" "admin-account-iam" {
-  service_account_id = google_service_account.cnrmsa.name
-  role               = "roles/iam.workloadIdentityUser"
-  members = [
-    "serviceAccount:${var.project}.svc.id.goog[cnrm-system/cnrm-controller-manager]",
-  ]
-}
-
-*/
