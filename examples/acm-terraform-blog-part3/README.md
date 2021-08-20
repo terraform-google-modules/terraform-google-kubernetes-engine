@@ -6,8 +6,7 @@ In the [first part](../acm-terraform-blog-part1), we explained how to use Terafo
 
 In the [second part](../acm-terraform-blog-part2) we added guard rails for the cluster configuration via [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller).
 
-In this article we'll demonstrate how, using Config Connector, you can provision your GCP cloud resources following the same GitOps K8s native model. 
-
+In this article we'll demonstrate how, using Config Connector, you can provision your GCP cloud resources following the same GitOps K8s native model.
 
 ## Provision GCP resources
 
