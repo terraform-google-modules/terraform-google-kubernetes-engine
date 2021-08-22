@@ -345,6 +345,15 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
+  dynamic "network_config" {
+    for_each = lookup(each.value, "network_config", true) ? [each.value] : []
+    content {
+      create_pod_range    = lookup(network_config.value, "create_pod_range", null)
+      pod_ipv4_cidr_block = lookup(network_config.value, "pod_ipv4_cidr_block", null)
+      pod_range           = lookup(network_config.value, "pod_range", null)
+    }
+  }
+
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
     auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
