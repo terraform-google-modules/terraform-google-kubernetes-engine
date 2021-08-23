@@ -10,7 +10,7 @@ In this article we'll demonstrate how, using Config Connector, you can provision
 
 ## Provision GCP resources
 
-1. Set the variable for the project from [part2](../acm-terraform-blog-part2). We will re-use that project but create a new cluster since we cleaned up at the end of the first section. If you are working in a different project, enable required GCP APIs, as described in [part1/README.md](../part1/README.md).
+1. Set the variable for the project from [part two](../acm-terraform-blog-part2). We will re-use that project but create a new cluster since we cleaned up at the end of the first section. If you are working in a different project, enable required GCP APIs, as described in [part one](../part1/README.md).
 
     ```bash
     PROJECT_ID = [PROJECT_ID]
