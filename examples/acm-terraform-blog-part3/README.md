@@ -1,6 +1,6 @@
 # Enable ACM features with Terraform - Part 3
 
-This is Part3 of the tutorial to accompany a short series of  blog articles explaining how to enable [Anthos Config Management (ACM)](https://cloud.google.com/anthos/config-management) with Terraform.
+This is part three of the tutorial to accompany a short series of blog articles explaining how to enable [Anthos Config Management (ACM)](https://cloud.google.com/anthos/config-management) with Terraform.
 
 In the [first part](../acm-terraform-blog-part1), we explained how to use Teraform to create a cluster and manage its config from git via [Config Sync](https://cloud.google.com/anthos-config-management/docs/config-sync-overview).
 
