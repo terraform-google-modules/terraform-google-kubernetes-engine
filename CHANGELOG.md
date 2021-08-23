@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [16.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v16.0.1...v16.1.0) (2021-08-14)
+
+
+### Features
+
+* add enable_namespace_creation flag for ASM module ([#968](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/968)) ([8764b76](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8764b76a25be911501e6f30bc498fc2bda03ea84))
+
+
+### Bug Fixes
+
+* Use provided k8s service account name when setting up workload identity ([#972](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/972)) ([e00286f](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e00286fc23b5718587d630f1766d33559608250d))
+* WI conditionally invoke data source if using external GSA ([#974](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/974)) ([b208d5c](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b208d5cbd2ffd10e7889150428bb17bc1486c686))
+
 ### [16.0.1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v16.0.0...v16.0.1) (2021-07-23)
 
 
