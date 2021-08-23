@@ -76,7 +76,7 @@ In this article we'll demonstrate how, using Config Connector, you can provision
     ```bash
     pod/cnrm-controller-manager-0 condition met
     ```
-1.  It will take a while for SQL db to be created. You can check on the status:
+1.  It will take a while for the SQL database to be created. You can check on the status:
     ```bash
     kubectl describe sqlinstance -n wp
     ```
