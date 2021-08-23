@@ -81,7 +81,7 @@ In this article we'll demonstrate how, using Config Connector, you can provision
     kubectl describe sqlinstance -n wp
     ```
 
-1.  Finally, validate that Wordpress powered by GCP database was created:
+1.  Finally, validate that Wordpress powered Cloud SQL database was created:
 
     ```bash
     curl -L $( kubectl get service wordpress-external -n wp -o=json | \
