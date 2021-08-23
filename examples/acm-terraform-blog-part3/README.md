@@ -2,7 +2,7 @@
 
 This is part three of the tutorial to accompany a short series of blog articles explaining how to enable [Anthos Config Management (ACM)](https://cloud.google.com/anthos/config-management) with Terraform.
 
-In the [first part](../acm-terraform-blog-part1), we explained how to use Teraform to create a cluster and manage its config from git via [Config Sync](https://cloud.google.com/anthos-config-management/docs/config-sync-overview).
+In the [first part](../acm-terraform-blog-part1), we explained how to use Terraform to create a cluster and manage its config from git via [Config Sync](https://cloud.google.com/anthos-config-management/docs/config-sync-overview).
 
 In the [second part](../acm-terraform-blog-part2) we added guard rails for the cluster configuration via [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller).
 
