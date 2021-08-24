@@ -13,8 +13,6 @@ This example illustrates how to create a cluster with multiple custom node-pool 
 | ip\_range\_pods | The secondary ip range to use for pods | `any` | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for services | `any` | n/a | yes |
 | network | The VPC network to host the cluster in | `any` | n/a | yes |
-| network\_config | network configuration override for node pools | `any` | n/a | yes |
-| pod\_range | The ID of the secondary range for pod IPs. If create\_pod\_range is true, this ID is used for the new range. | `any` | n/a | yes |
 | project\_id | The project ID to host the cluster in | `any` | n/a | yes |
 | region | The region to host the cluster in | `any` | n/a | yes |
 | subnetwork | The subnetwork to host the cluster in | `any` | n/a | yes |

@@ -77,11 +77,3 @@ variable "cluster_autoscaling" {
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
-
-variable "network_config" {
-  description = "network configuration override for node pools"
-}
-
-variable "pod_range" {
-  description = "The ID of the secondary range for pod IPs. If create_pod_range is true, this ID is used for the new range."
-}
