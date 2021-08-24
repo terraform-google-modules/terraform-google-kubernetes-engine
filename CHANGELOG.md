@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+### [16.1.1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v16.1.0...v16.1.1) (2021-08-21)
+
+
+### Bug Fixes
+
+* Delete bundle.hcl ([#981](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/981)) ([b910639](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b9106391e458a69091b497f135cfdc10efdcbdf0))
+
 ## [16.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v16.0.1...v16.1.0) (2021-08-14)
 
 
