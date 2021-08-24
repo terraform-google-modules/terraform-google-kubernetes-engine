@@ -19,7 +19,7 @@ locals {
 }
 
 provider "google-beta" {
-  version = "~> 3.63.0"
+  version = "~> 3.79.0"
   region  = var.region
 }
 
@@ -77,6 +77,7 @@ module "gke" {
       image_type      = "COS"
       auto_upgrade    = true
       service_account = var.compute_engine_service_account
+      pod_range       = "test"
     },
   ]
 
