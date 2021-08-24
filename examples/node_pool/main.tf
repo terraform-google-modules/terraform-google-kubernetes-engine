@@ -77,7 +77,6 @@ module "gke" {
       image_type      = "COS"
       auto_upgrade    = true
       service_account = var.compute_engine_service_account
-      network_config  = true
       pod_range       = "test"
     },
   ]

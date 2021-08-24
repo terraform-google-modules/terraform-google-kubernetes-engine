@@ -243,7 +243,6 @@ The node_pools variable takes the following parameters:
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
 | min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true | 1 | Optional |
 | name | The name of the node pool |  | Required |
-| network_config | Configuration for Adding Pod IP address ranges to the node pool. |  | Optional |
 | pod_range |  The ID of the secondary range for pod IPs. |  | Optional |
 | node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusers |  | Required |
 | node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. Defaults to cluster level node locations if nothing is specified | " " | Optional |

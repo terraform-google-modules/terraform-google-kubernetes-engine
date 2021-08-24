@@ -411,9 +411,9 @@ resource "google_container_node_pool" "pools" {
   }
 
   dynamic "network_config" {
-    for_each = lookup(each.value, "network_config", null) ? [each.value] : []
+    for_each = lookup(each.value, "pod_range", null) ? [each.value] : []
     content {
-      pod_range = lookup(network_config.value, "pod_range", null)
+      pod_range = lookup(pod_range.value, "pod_range", null)
     }
   }
 
