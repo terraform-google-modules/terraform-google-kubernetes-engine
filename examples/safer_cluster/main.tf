@@ -35,7 +35,7 @@ provider "google" {
 }
 
 provider "google-beta" {
-  version = "~> 3.63.0"
+  version = "~> 3.79.0"
 }
 
 data "google_client_config" "default" {}
