@@ -388,6 +388,12 @@ variable "master_ipv4_cidr_block" {
   default     = "10.0.0.0/28"
 }
 
+variable "authenticator_security_group" {
+  type        = string
+  description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
+  default     = null
+}
+
 variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
   default     = "GKE_METADATA_SERVER"

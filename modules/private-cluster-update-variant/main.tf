@@ -81,6 +81,11 @@ locals {
     provider = null
   }]
 
+
+  cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
+    security_group = var.authenticator_security_group
+  }]
+
   cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
     node_metadata = var.node_metadata
   }]

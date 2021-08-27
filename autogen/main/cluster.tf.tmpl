@@ -323,7 +323,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-{% if beta_cluster %}
   dynamic "authenticator_groups_config" {
     for_each = local.cluster_authenticator_security_group
     content {
@@ -331,6 +330,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+{% if beta_cluster %}
   notification_config {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
@@ -480,7 +480,7 @@ resource "google_container_node_pool" "pools" {
     }
   }
   {% endif %}
-  
+
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
     auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
@@ -539,7 +539,7 @@ resource "google_container_node_pool" "pools" {
 
     {% if beta_cluster %}
     dynamic "ephemeral_storage_config" {
-      for_each = lookup(each.value, "local_ssd_ephemeral_count",0) > 0 ? [each.value.local_ssd_ephemeral_count] : [] 
+      for_each = lookup(each.value, "local_ssd_ephemeral_count",0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
       content {
         local_ssd_count = ephemeral_storage_config.value
       }
