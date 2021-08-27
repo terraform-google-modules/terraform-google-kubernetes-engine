@@ -25,10 +25,10 @@ In this article we'll demonstrate how, using Config Connector, you can provision
 1. Submit the updated configuration into your branch.
 1. Ensure that `sync_repo` and `sync_brach` variables are updated in [variables.tf](./terraform/variables.tf)
 1. Before running Terraform, notice the changes in [gke.tf](./terraform/gke.tf):
-     - we are using `beta-public-cluster` module
+     - We are using the `[beta-public-cluster](../modules/beta-public-cluster)` module
      - `config_connector` variable is set to true
-     - we are using `workload-identity` module to create Google Service Account used by Config Connector to create GCP resource and connect it to Kubernetes Service Account that is running in Config Connector `cnrm-system` namespace.
-1. As as in the previous part, create cluster using Terraform:
+     - We are using `workload-identity` module to create a Google Service Account and connect it to a Kubernetes Service Account that is running in Config Connector `cnrm-system` namespace, allowing Config Connector to create GCP resource.
+1. As as in the previous part, create the cluster using Terraform:
 
     ```bash
     # obtain user access credentials to use for Terraform commands
@@ -41,7 +41,7 @@ In this article we'll demonstrate how, using Config Connector, you can provision
     terraform plan -var=project=$PROJECT_ID
     terraform apply -var=project=$PROJECT_ID
     ```
-    NOTE: if you get an error due to default network not being present, run `gcloud compute networks create default --subnet-mode=auto` and retry the commands.
+    NOTE: if you get an error due to the default network not being present, run `gcloud compute networks create default --subnet-mode=auto` and retry the commands.
 
 1. To verify things have synced and Policy Controller is installed, you can again use `gcloud` to check status:
 
