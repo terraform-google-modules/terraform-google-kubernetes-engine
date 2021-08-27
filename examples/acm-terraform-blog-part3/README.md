@@ -36,10 +36,10 @@ In this article we'll demonstrate how, using Config Connector, you can provision
 
     # continue in /terraform directory
     cd terraform
-
+    export TF_VAR_project=$PROJECT_ID
     terraform init
-    terraform plan -var=project=$PROJECT_ID
-    terraform apply -var=project=$PROJECT_ID
+    terraform plan
+    terraform apply
     ```
     NOTE: if you get an error due to the default network not being present, run `gcloud compute networks create default --subnet-mode=auto` and retry the commands.
 
