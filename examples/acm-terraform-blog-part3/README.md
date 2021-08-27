@@ -49,7 +49,7 @@ In this article we'll demonstrate how, using Config Connector, you can provision
     gcloud alpha container hub config-management status --project $PROJECT_ID
     ```
 
-    As things initialize, you may see a few transient `error: KNV1021: No CustomResourceDefinition is defined` messages. This occurs when constraints from the repo are sync'ed before Policy Controller has had a chance to load the appropriate template from the policy library. It will eventually reconcile.
+    As things initialize, you may see a few transient `error: KNV1021: No CustomResourceDefinition is defined` messages. This occurs when constraints from the repo are synced before Policy Controller has had a chance to load the appropriate template from the policy library. It will eventually reconcile.
 
     After a short time, in addition to the `Status` showing as `SYNCED` and the `Last_Synced_Token` matching the repo, there should also be a value of `INSTALLED` for `Policy_Controller`.
 
