@@ -43,7 +43,7 @@ In this article we'll demonstrate how, using Config Connector, you can provision
     ```
     NOTE: if you get an error due to default network not being present, run `gcloud compute networks create default --subnet-mode=auto` and retry the commands.
 
-1. To verify things have sync'ed and the policy controller is installed, you can again use `gcloud` to check status:
+1. To verify things have synced and Policy Controller is installed, you can again use `gcloud` to check status:
 
     ```bash
     gcloud alpha container hub config-management status --project $PROJECT_ID
