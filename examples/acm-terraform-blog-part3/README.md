@@ -20,10 +20,11 @@ In this article we'll demonstrate how, using Config Connector, you can provision
 1. Use [kpt](https://kpt.dev) to customize the `config-root` directory that will be configured as the source of the objects installed on the cluster.
 
     ```bash
-    kpt fn eval --image gcr.io/kpt-fn/apply-setters:v0.1 ./config-root -- projectId=$PROJECT_ID
+    kpt fn eval --include-meta-resources --image gcr.io/kpt-fn/set-project-id:v0.1 ./config-root -- "project-id=$PROJECT_ID"
+    kpt fn render ./config-root 
     ```
 1. Submit the updated configuration into your branch.
-1. Ensure that `sync_repo` and `sync_brach` variables are updated in [variables.tf](./terraform/variables.tf)
+1. Ensure that `sync_repo` and `sync_brach` variables are updated in [terraform.tfvars](./terraform/terraform.tfvars)
 1. Before running Terraform, notice the changes in [gke.tf](./terraform/gke.tf):
      - We are using the `[beta-public-cluster](../modules/beta-public-cluster)` module
      - `config_connector` variable is set to true

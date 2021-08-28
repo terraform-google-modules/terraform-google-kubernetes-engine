@@ -36,10 +36,10 @@ Subsequent articles will discuss other aspects of ACM to manage your GCP infrast
 
     # continue in /terraform directory
     cd terraform
-
+    export TF_VAR_project=$PROJECT_ID
     terraform init
-    terraform plan -var=project=$PROJECT_ID
-    terraform apply -var=project=$PROJECT_ID
+    terraform plan
+    terraform apply
     ```
    NOTE: if you get an error due to default network not being present, run `gcloud compute networks create default --subnet-mode=auto` and retry the commands.
 
