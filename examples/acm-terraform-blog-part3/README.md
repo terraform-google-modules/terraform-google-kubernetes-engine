@@ -21,7 +21,7 @@ In this article we'll demonstrate how, using Config Connector, you can provision
 
     ```bash
     kpt fn eval --include-meta-resources --image gcr.io/kpt-fn/set-project-id:v0.1 ./config-root -- "project-id=$PROJECT_ID"
-    kpt fn render ./config-root 
+    kpt fn render ./config-root
     ```
 1. Submit the updated configuration into your branch.
 1. Ensure that `sync_repo` and `sync_brach` variables are updated in [terraform.tfvars](./terraform/terraform.tfvars)
