@@ -96,11 +96,12 @@ locals {
 
   cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
 
+  cluster_sandbox_enabled = var.sandbox_enabled ? ["gvisor"] : []
+
+
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
   }]
-
-  cluster_sandbox_enabled = var.sandbox_enabled ? ["gvisor"] : []
 
   cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
     node_metadata = var.node_metadata

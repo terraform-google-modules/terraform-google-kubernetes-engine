@@ -186,6 +186,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "authenticator_groups_config" {
+    for_each = local.cluster_authenticator_security_group
+    content {
+      security_group = authenticator_groups_config.value.security_group
+    }
+  }
+
 }
 
 /******************************************
