@@ -24,7 +24,7 @@ In this article we'll demonstrate how, using Config Connector, you can provision
     kpt fn render ./config-root
     ```
 1. Submit the updated configuration into your branch.
-1. Ensure that `sync_repo` and `sync_brach` variables are updated in [terraform.tfvars](./terraform/terraform.tfvars)
+1. Ensure that `sync_repo` and `sync_branch` variables are updated in [terraform.tfvars](./terraform/terraform.tfvars)
 1. Before running Terraform, notice the changes in [gke.tf](./terraform/gke.tf):
      - We are using the `[beta-public-cluster](../modules/beta-public-cluster)` module
      - `config_connector` variable is set to true
