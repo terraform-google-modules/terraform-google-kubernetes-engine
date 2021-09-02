@@ -1,0 +1,11 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata:
+  name: WordPress powered by Google Cloud SQL
+info:
+  description: create a WordPress in a container and connect it to a GCP-managed MySQL database
+pipeline:
+  mutators:
+    - image: gcr.io/kpt-fn/apply-setters:v0.1
+      configMap:
+        project-id: ""

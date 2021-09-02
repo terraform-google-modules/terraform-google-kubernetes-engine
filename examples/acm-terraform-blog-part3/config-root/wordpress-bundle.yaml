@@ -1,0 +1,226 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wp
+  annotations:
+    cnrm.cloud.google.com/project-id: to-be-specified # kpt-set: ${project-id}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sql-wp-ksa-wi
+  namespace: wp
+  annotations:
+    iam.gke.io/gcp-service-account: sql-wp-sa@to-be-specified.iam.gserviceaccount.com # kpt-set: sql-wp-sa@${project-id}.iam.gserviceaccount.com
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: wordpress-cloudsql-db-credentials
+  namespace: wp
+stringData:
+  connectionName: us-central1:wp-db
+  password: change-me
+  projectId: to-be-specified # kpt-set: ${project-id}
+  username: wordpress
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  name: sqladmin.googleapis.com
+  namespace: wp
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+---
+# Source: wordpress-gcp/templates/k8s-external-load-balancer.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-external
+  namespace: wp
+  labels:
+    app: wordpress
+spec:
+  type: LoadBalancer
+  selector:
+    app: wordpress
+  ports:
+    - name: web
+      protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: wordpress
+  namespace: wp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      terminationGracePeriodSeconds: 30
+      serviceAccountName: sql-wp-ksa-wi
+      containers:
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy", "-instances=$(PROJECT_ID):$(CONNECTION_NAME)=tcp:3306"]
+          env:
+            - name: CONNECTION_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: wordpress-cloudsql-db-credentials
+                  key: connectionName
+            - name: PROJECT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: wordpress-cloudsql-db-credentials
+                  key: projectId
+          resources:
+            limits:
+              cpu: "200m"
+              memory: "100Mi"
+        - name: wordpress
+          image: wordpress:5.2.2-apache
+          ports:
+            - containerPort: 80
+          env:
+            - name: WORDPRESS_DB_HOST
+              value: 127.0.0.1:3306
+            - name: WORDPRESS_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: wordpress-cloudsql-db-credentials
+                  key: username
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wordpress-cloudsql-db-credentials
+                  key: password
+          resources:
+            limits:
+              cpu: 200m
+              memory: 100Mi
+          volumeMounts:
+            - name: wordpress-volume
+              mountPath: /var/www/html
+          livenessProbe:
+            failureThreshold: 20
+            httpGet:
+              port: 80
+              path: /
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          readinessProbe:
+            failureThreshold: 10
+            httpGet:
+              port: 80
+              path: /
+            initialDelaySeconds: 180
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          imagePullPolicy: IfNotPresent
+  volumeClaimTemplates:
+    - metadata:
+        name: wordpress-volume
+      spec:
+        resources:
+          requests:
+            storage: 10Gi
+        accessModes: ["ReadWriteOnce"]
+  serviceName: "wordpress"
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: sql-wp-sa-wi-policy
+  namespace: wp
+spec:
+  bindings:
+    - members:
+        - serviceAccount:to-be-specified.svc.id.goog[wp/sql-wp-ksa-wi] # kpt-set: serviceAccount:${project-id}.svc.id.goog[wp/sql-wp-ksa-wi]
+      role: roles/iam.workloadIdentityUser
+  resourceRef:
+    name: sql-wp-sa
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: sql-wp-sa-project-policymember
+  namespace: wp
+spec:
+  member: serviceAccount:sql-wp-sa@to-be-specified.iam.gserviceaccount.com # kpt-set: serviceAccount:sql-wp-sa@${project-id}.iam.gserviceaccount.com
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: to-be-specified # kpt-set: ${project-id}
+  role: roles/cloudsql.client
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: sql-wp-sa
+  namespace: wp
+spec:
+  displayName: Service Account for WordPress Config Connector Sample
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLDatabase
+metadata:
+  name: wordpress
+  namespace: wp
+spec:
+  charset: utf8
+  instanceRef:
+    name: wp-db
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: wp-db
+  namespace: wp
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  settings:
+    tier: db-f1-micro
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLUser
+metadata:
+  name: wordpress
+  namespace: wp
+spec:
+  host: "%"
+  instanceRef:
+    name: wp-db
+  password:
+    valueFrom:
+      secretKeyRef:
+        name: wordpress-cloudsql-db-credentials
+        key: password
