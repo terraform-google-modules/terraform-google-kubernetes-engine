@@ -98,3 +98,9 @@ variable "labels" {
   type        = string
   default     = ""
 }
+
+variable "enable_workload_identity" {
+  description = "Enables workload identity when registering."
+  type        = bool
+  default     = false
+}

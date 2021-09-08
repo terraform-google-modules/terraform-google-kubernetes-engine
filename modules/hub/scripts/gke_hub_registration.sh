@@ -25,7 +25,8 @@ MEMBERSHIP_NAME=$2
 SERVICE_ACCOUNT_KEY=$3
 CLUSTER_URI=$4
 HUB_PROJECT_ID=$5
-LABELS=$6
+ENABLE_WORKLOAD_IDENTITY=$6
+LABELS=$7
 
 #write temp key, cleanup at exit
 tmp_file=$(mktemp)
@@ -35,8 +36,13 @@ base64 --help | grep "\--decode" && B64_ARG="--decode" || B64_ARG="-d"
 echo "${SERVICE_ACCOUNT_KEY}" | base64 ${B64_ARG} > "$tmp_file"
 
 if [[ ${GKE_CLUSTER_FLAG} == 1 ]]; then
-    echo "Registering GKE Cluster."
-    gcloud container hub memberships register "${MEMBERSHIP_NAME}" --gke-uri="${CLUSTER_URI}" --service-account-key-file="${tmp_file}" --project="${HUB_PROJECT_ID}" --quiet
+    if [[ ${ENABLE_WORKLOAD_IDENTITY} == 1 ]]; then
+      echo "Registering GKE Cluster with workload identity."
+      gcloud container hub memberships register "${MEMBERSHIP_NAME}" --gke-uri="${CLUSTER_URI}" --project="${HUB_PROJECT_ID}" --enable-workload-identity --quiet
+    else
+      echo "Registering GKE Cluster."
+      gcloud container hub memberships register "${MEMBERSHIP_NAME}" --gke-uri="${CLUSTER_URI}" --service-account-key-file="${tmp_file}" --project="${HUB_PROJECT_ID}"--quiet
+    fi
 else
     echo "Registering a non-GKE Cluster. Using current-context to register Hub membership."
     #Get the kubeconfig

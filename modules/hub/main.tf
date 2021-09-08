@@ -17,12 +17,13 @@
 locals {
   gke_hub_sa_key = var.use_existing_sa ? var.sa_private_key : google_service_account_key.gke_hub_key[0].private_key
 
-  is_gke_flag = var.use_kubeconfig ? 0 : 1
-  hub_project = var.hub_project_id == "" ? var.project_id : var.hub_project_id
+  is_gke_flag              = var.use_kubeconfig ? 0 : 1
+  hub_project              = var.hub_project_id == "" ? var.project_id : var.hub_project_id
+  enable_workload_identity = var.enable_workload_identity ? 1 : 0
 
   cluster_uri               = "https://container.googleapis.com/projects/${var.project_id}/locations/${var.location}/clusters/${var.cluster_name}"
   create_cmd_gke_entrypoint = "${path.module}/scripts/gke_hub_registration.sh"
-  create_cmd_gke_body       = "${local.is_gke_flag} ${var.gke_hub_membership_name} ${local.gke_hub_sa_key} ${local.cluster_uri} ${local.hub_project} ${var.labels}"
+  create_cmd_gke_body       = "${local.is_gke_flag} ${var.gke_hub_membership_name} ${local.gke_hub_sa_key} ${local.cluster_uri} ${local.hub_project} ${local.enable_workload_identity} ${var.labels}"
   destroy_gke_entrypoint    = "${path.module}/scripts/gke_hub_unregister.sh"
   destroy_gke_body          = "${local.is_gke_flag} ${var.gke_hub_membership_name} ${local.cluster_uri} ${local.hub_project}"
 }
