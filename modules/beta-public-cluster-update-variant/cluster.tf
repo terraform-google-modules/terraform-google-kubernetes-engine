@@ -98,11 +98,8 @@ resource "google_container_cluster" "primary" {
   enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   enable_tpu                  = var.enable_tpu
 
-  dynamic "pod_security_policy_config" {
-    for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
-    content {
-      enabled = pod_security_policy_config.value
-    }
+  pod_security_policy_config {
+    enabled = var.enable_pod_security_policy
   }
 
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
