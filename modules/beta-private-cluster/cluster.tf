@@ -439,9 +439,9 @@ resource "google_container_node_pool" "pools" {
       }
     }
     dynamic "sandbox_config" {
-      for_each = local.cluster_sandbox_enabled
-
+      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
       content {
+
         sandbox_type = sandbox_config.value
       }
     }
