@@ -41,10 +41,14 @@ resource "google_container_cluster" "primary" {
     }
   }
   
-  dynamic "dns_config" {
-    for_Each = local.dns_config
-    content = dns_config.value
-  }
+    dynamic "dns_config" {
+        for_each = local.dns_config
+        content {
+            cluster_dns = lookup(dns_config.value, "cluster_dns", "PROVIDER_UNSPECIFIED")
+            cluster_dns_scope = lookup(dns_config.value, "cluster_dns_scope", "DNS_SCOPE_UNSPECIFIED")
+            cluster_dns_domain = lookup(dns_config.value, "cluster_dns_domain", null)
+        }
+    }
 
   dynamic "release_channel" {
     for_each = local.release_channel
