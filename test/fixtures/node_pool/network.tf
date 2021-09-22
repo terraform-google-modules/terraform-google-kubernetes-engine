@@ -44,5 +44,9 @@ resource "google_compute_subnetwork" "main" {
     range_name    = "cft-gke-test-services-${random_string.suffix.result}"
     ip_cidr_range = "192.168.64.0/18"
   }
-}
 
+  secondary_ip_range {
+    range_name    = "test"
+    ip_cidr_range = "172.16.0.0/18"
+  }
+}
