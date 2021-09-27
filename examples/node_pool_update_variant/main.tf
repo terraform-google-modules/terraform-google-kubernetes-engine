@@ -82,22 +82,12 @@ module "gke" {
       auto_repair       = false
       service_account   = var.compute_engine_service_account
     },
-    {
-      name            = "pool-03"
-      min_count       = 1
-      max_count       = 2
-      service_account = var.compute_engine_service_account
-      auto_upgrade    = true
-      sandbox_enabled = true
-      image_type      = "COS"
-    },
   ]
 
   node_pools_oauth_scopes = {
     all     = []
     pool-01 = []
     pool-02 = []
-    pool-03 = []
   }
 
   node_pools_metadata = {
@@ -106,7 +96,6 @@ module "gke" {
       shutdown-script = file("${path.module}/data/shutdown-script.sh")
     }
     pool-02 = {}
-    pool-03 = {}
   }
 
   node_pools_labels = {
@@ -117,7 +106,6 @@ module "gke" {
       pool-01-example = true
     }
     pool-02 = {}
-    pool-03 = {}
   }
 
   node_pools_tags = {
@@ -128,6 +116,5 @@ module "gke" {
       "pool-01-example",
     ]
     pool-02 = []
-    pool-03 = []
   }
 }
