@@ -429,6 +429,18 @@ control "gcloud" do
           )
         end
 
+        it "has the expected pod range" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "networkConfig" => including(
+                "podIpv4CidrBlock" => "172.16.0.0/18",
+                "podRange" => "test"
+              )
+            )
+          )
+        end
+
         it "has the expected linux node config sysctls" do
           expect(data['nodePools']).to include(
             including(
