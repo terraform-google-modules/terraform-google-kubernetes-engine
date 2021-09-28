@@ -387,7 +387,7 @@ resource "google_container_node_pool" "pools" {
   }
 
   node_config {
-    image_type   = lookup(each.value, "image_type", "COS")
+    image_type   = lookup(each.value, "image_type", lookup(each.value, "sandbox_enabled", var.sandbox_enabled) ? "COS_CONTAINERD" : "COS")
     machine_type = lookup(each.value, "machine_type", "e2-medium")
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
@@ -456,8 +456,7 @@ resource "google_container_node_pool" "pools" {
       }
     }
     dynamic "sandbox_config" {
-      for_each = local.cluster_sandbox_enabled
-
+      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
       content {
         sandbox_type = sandbox_config.value
       }
