@@ -56,7 +56,7 @@ output "cluster_name" {
 # Default instantiation of WI module
 output "default_wi_email" {
   description = "GCP service account."
-  value       = module.workload_identity.gcp_service_account_email
+  value       = module.workload_identity.gcp_service_account.email
 }
 
 output "default_wi_ksa_name" {
