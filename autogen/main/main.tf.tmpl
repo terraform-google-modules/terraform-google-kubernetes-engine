@@ -105,8 +105,6 @@ locals {
 
   cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
 
-  cluster_sandbox_enabled = var.sandbox_enabled ? ["gvisor"] : []
-
 {% endif %}
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{

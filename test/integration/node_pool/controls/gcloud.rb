@@ -351,7 +351,7 @@ control "gcloud" do
             including(
               "name" => "pool-03",
               "config" => including(
-                "machineType" => "e2-medium",
+                "machineType" => "n1-standard-2",
               ),
             )
           )
@@ -408,6 +408,7 @@ control "gcloud" do
                   "all-pools-example" => "true",
                   "cluster_name" => cluster_name,
                   "node_pool" => "pool-03",
+                  "sandbox.gke.io/runtime"=>"gvisor"
                 },
               ),
             )
@@ -437,6 +438,17 @@ control "gcloud" do
                 "podIpv4CidrBlock" => "172.16.0.0/18",
                 "podRange" => "test"
               )
+            )
+          )
+        end
+
+        it "has the expected image" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "config" => including(
+                "imageType" => "COS_CONTAINERD",
+              ),
             )
           )
         end
