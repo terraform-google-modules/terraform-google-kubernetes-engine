@@ -448,6 +448,24 @@ variable "istio_auth" {
   default     = "AUTH_MUTUAL_TLS"
 }
 
+variable "cluster_dns" {
+  type        = string
+  description = "(Beta) Which in-cluster DNS provider should be used."
+  default     = "PROVIDER_UNSPECIFIED"
+}
+
+variable "cluster_dns_scope" {
+  type        = string
+  description = "(Beta) The scope of access to cluster DNS records.."
+  default     = "DNS_SCOPE_UNSPECIFIED"
+}
+
+variable "cluster_dns_domain" {
+  type        = string
+  description = "(Beta) The suffix used for all cluster service records."
+  default     = "cluster.local"
+}
+
 variable "dns_cache" {
   type        = bool
   description = "(Beta) The status of the NodeLocal DNSCache addon."

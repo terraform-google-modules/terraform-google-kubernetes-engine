@@ -154,6 +154,12 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    dns_config {
+      cluster_dns        = var.cluster_dns
+      cluster_dns_scope  = var.cluster_dns_scope
+      cluster_dns_domain = var.cluster_dns_domain
+    }
+
     dns_cache_config {
       enabled = var.dns_cache
     }
