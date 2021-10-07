@@ -148,10 +148,7 @@ resource "google_container_cluster" "primary" {
         }
       }
 
-      metadata = merge(
-        local.node_pools_metadata["all"],
-        local.node_pools_metadata["default-node-pool"],
-      )
+      metadata = local.node_pools_metadata["all"]
     }
   }
 
