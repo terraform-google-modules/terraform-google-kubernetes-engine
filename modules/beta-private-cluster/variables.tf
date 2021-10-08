@@ -455,10 +455,10 @@ variable "dns_cache" {
 }
 
 variable "dns_config" {
-  type = any
+  type        = any
   description = "(Beta) The DNS configuration to use on the cluster"
-  default = null
-  
+  default     = null
+
 }
 
 variable "gce_pd_csi_driver" {
