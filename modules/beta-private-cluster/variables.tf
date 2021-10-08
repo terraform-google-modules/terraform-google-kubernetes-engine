@@ -454,6 +454,13 @@ variable "dns_cache" {
   default     = false
 }
 
+variable "dns_config" {
+  type = any
+  description = "(Beta) The DNS configuration to use on the cluster"
+  default = null
+  
+}
+
 variable "gce_pd_csi_driver" {
   type        = bool
   description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
