@@ -50,7 +50,7 @@ locals {
   node_pools      = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
 
   release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
-  dns_config = var.dns_config != null? [var.dns_config]: []
+  dns_config      = var.dns_config != null ? [var.dns_config] : []
 
   autoscaling_resource_limits = var.cluster_autoscaling.enabled ? concat([{
     resource_type = "cpu"
