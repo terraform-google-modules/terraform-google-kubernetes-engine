@@ -234,6 +234,8 @@ resource "google_container_cluster" "primary" {
           node_metadata = workload_metadata_config.value.node_metadata
         }
       }
+
+      metadata = local.node_pools_metadata["all"]
     }
   }
 
