@@ -36,7 +36,7 @@ module "gke" {
       min_count     = 1
       max_count     = 4
       auto_upgrade  = true
-      node_metadata = "GKE_METADATA_SERVER"
+      node_metadata = "GKE_METADATA"
     }
   ]
 }

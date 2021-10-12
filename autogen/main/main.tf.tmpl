@@ -113,7 +113,7 @@ locals {
 
 {% endif %}
   cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
-    node_metadata = var.node_metadata
+    mode = var.node_metadata
   }]
 
   cluster_output_name           = google_container_cluster.primary.name

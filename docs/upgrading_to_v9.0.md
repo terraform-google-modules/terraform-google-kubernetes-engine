@@ -9,7 +9,7 @@ release.
 
 ## Beta Clusters
 
-Beta clusters now defaults `node_metadata` to `GKE_METADATA_SERVER` for enabling Workload Identity by default.
+Beta clusters now defaults `node_metadata` to `GKE_METADATA` for enabling Workload Identity by default.
 
 If you would like to continue using `SECURE` you can override the default value.
 
