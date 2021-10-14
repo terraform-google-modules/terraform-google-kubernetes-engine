@@ -97,8 +97,6 @@ locals {
     security_group = var.authenticator_security_group
   }]
 
-  cluster_sandbox_enabled = var.sandbox_enabled ? ["gvisor"] : []
-
   cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
     node_metadata = var.node_metadata
   }]

@@ -424,7 +424,7 @@ variable "cloudrun" {
 
 variable "cloudrun_load_balancer_type" {
   description = "(Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
-  default     = ""
+  default = ""
 }
 
 variable "enable_pod_security_policy" {
@@ -527,7 +527,7 @@ variable "impersonate_service_account" {
 }
 
 variable "notification_config_topic" {
-  type        = string
+  type = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
-  default     = ""
+  default = ""
 }

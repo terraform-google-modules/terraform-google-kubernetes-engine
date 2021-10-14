@@ -57,7 +57,7 @@ resource "google_container_cluster" "primary" {
   monitoring_service = var.monitoring_service
 
   cluster_autoscaling {
-    enabled = var.cluster_autoscaling.enabled
+    enabled             = var.cluster_autoscaling.enabled
     dynamic "resource_limits" {
       for_each = local.autoscalling_resource_limits
       content {
@@ -233,7 +233,7 @@ resource "google_container_node_pool" "pools" {
 
 
   node_config {
-    image_type   = lookup(each.value, "image_type", "COS")
+    image_type   = lookup(each.value, "image_type", lookup(each.value, "sandbox_enabled", var.sandbox_enabled) ? "COS_CONTAINERD" : "COS")
     machine_type = lookup(each.value, "machine_type", "e2-medium")
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
