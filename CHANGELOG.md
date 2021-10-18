@@ -212,6 +212,13 @@ Extending the adopted spec, each change should have a link to its corresponding 
 * Move provider version constraint to required_providers block ([#774](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/774)) ([825f287](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/825f287351b1b7a8c832150072371452ff498bd2))
 * Remove provider config from module to be TF 0.13 compatible ([#777](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/777)) ([81b0a94](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/81b0a9491d51546eedc6c1aabd368dc085c16b5e))
 
+## [12.4.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v12.3.0...v12.4.0) (2021-10-18)
+
+
+### Features
+
+* Backport of [#1001](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1001). Add support for gVisor per node pool ([#1001](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1001)) ([850c418](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/850c4181ec936f08c1617e4947f85e99c4de74ee))
+
 ## [12.3.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v12.2.0...v12.3.0) (2020-12-09)
 
 
