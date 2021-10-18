@@ -24,7 +24,7 @@ provider "google" {
 }
 
 provider "google-beta" {
-  version = "~> 3.79.0"
+  version = "~> 3.87.0"
   region  = var.region
 }
 
