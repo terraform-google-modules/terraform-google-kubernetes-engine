@@ -68,6 +68,7 @@ resource "google_container_cluster" "primary" {
   cluster_autoscaling {
     enabled             = var.cluster_autoscaling.enabled
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
+    min_cpu_platform    = var.min_cpu_platform
     dynamic "resource_limits" {
       for_each = local.autoscalling_resource_limits
       content {

@@ -220,6 +220,7 @@ variable "cluster_autoscaling" {
     enabled             = bool
 {% if beta_cluster %}
     autoscaling_profile = string
+    min_cpu_platform    = string
 {% endif %}
     min_cpu_cores       = number
     max_cpu_cores       = number
@@ -230,6 +231,7 @@ variable "cluster_autoscaling" {
     enabled             = false
 {% if beta_cluster %}
     autoscaling_profile = "BALANCED"
+    min_cpu_platform    = ""
 {% endif %}
     max_cpu_cores       = 0
     min_cpu_cores       = 0
