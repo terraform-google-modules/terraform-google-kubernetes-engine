@@ -453,6 +453,20 @@ control "gcloud" do
           )
         end
 
+        it "has the expected kubelet config" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "config" => including(
+                "kubeletConfig" => including(
+                  "cpuManagerPolicy" => "static",
+                  "cpuCfsQuota" => true
+                )
+              )
+            )
+          )
+        end
+
         it "has the expected linux node config sysctls" do
           expect(data['nodePools']).to include(
             including(
