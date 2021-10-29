@@ -225,6 +225,9 @@ resource "google_container_cluster" "primary" {
     initial_node_count = var.initial_node_count
 
     node_config {
+      image_type   = lookup(var.node_pools[0], "image_type", lookup(var.node_pools[0], "sandbox_enabled", var.sandbox_enabled) ? "COS_CONTAINERD" : "COS")
+      machine_type = lookup(var.node_pools[0], "machine_type", "e2-medium")
+
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
       dynamic "workload_metadata_config" {
@@ -236,6 +239,20 @@ resource "google_container_cluster" "primary" {
       }
 
       metadata = local.node_pools_metadata["all"]
+
+      dynamic "sandbox_config" {
+        for_each = tobool((lookup(var.node_pools[0], "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
+        content {
+          sandbox_type = sandbox_config.value
+        }
+      }
+
+      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", "")
+
+      shielded_instance_config {
+        enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
+        enable_integrity_monitoring = lookup(var.node_pools[0], "enable_integrity_monitoring", true)
+      }
     }
   }
 
@@ -559,4 +576,3 @@ resource "google_container_node_pool" "pools" {
     delete = "45m"
   }
 }
-
