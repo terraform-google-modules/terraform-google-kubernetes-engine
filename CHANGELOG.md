@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+### [17.1.1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v17.1.0...v17.1.1) (2021-10-29)
+
+
+### Bug Fixes
+
+* set image_type, machine_type, and sandboxing on default node pool to comply with validation policies ([#1038](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1038)) ([8e92f6e](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8e92f6ec0d71bfffee9fa3621b55bbbd9091b0d0))
+
 ## [17.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v17.0.0...v17.1.0) (2021-10-27)
 
 
