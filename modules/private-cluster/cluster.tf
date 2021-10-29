@@ -149,6 +149,12 @@ resource "google_container_cluster" "primary" {
       }
 
       metadata = local.node_pools_metadata["all"]
+
+
+      shielded_instance_config {
+        enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
+        enable_integrity_monitoring = lookup(var.node_pools[0], "enable_integrity_monitoring", true)
+      }
     }
   }
 
@@ -343,4 +349,3 @@ resource "google_container_node_pool" "pools" {
     delete = "45m"
   }
 }
-
