@@ -562,7 +562,7 @@ variable "shadow_firewall_rules_priority" {
   default     = 999
 }
 
-variable "confidential_node_config" {
+variable "enable_confidential_node" {
   type        = bool
   description = "An optional flag to enable confidential node config."
   default     = false
