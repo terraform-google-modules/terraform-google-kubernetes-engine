@@ -180,7 +180,7 @@ Then perform the following commands on the root folder:
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | `bool` | `true` | no |
 | dns\_cache | (Beta) The status of the NodeLocal DNSCache addon. | `bool` | `false` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
-| enable\_confidential\_node | An optional flag to enable confidential node config. | `bool` | `false` | no |
+| enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | `bool` | `false` | no |
 | enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
