@@ -27,7 +27,7 @@ resource "google_kms_key_ring" "db" {
 
 resource "google_kms_crypto_key" "db" {
   name     = local.name
-  key_ring = google_kms_key_ring.db.self_link
+  key_ring = google_kms_key_ring.db.id
 }
 
 module "this" {
@@ -49,7 +49,7 @@ module "this" {
 
   database_encryption = [{
     state    = "ENCRYPTED"
-    key_name = google_kms_crypto_key.db.self_link
+    key_name = google_kms_crypto_key.db.id
   }]
 
   cloudrun = true
