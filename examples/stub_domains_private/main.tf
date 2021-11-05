@@ -15,7 +15,7 @@
  */
 
 provider "google" {
-  version = "~> 3.90.0"
+  version = "~> 3.90.1"
   region  = var.region
 }
 
