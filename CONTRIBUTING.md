@@ -28,6 +28,7 @@ Note: The correct sequence to update the repo using autogen functionality is to 
 generate the Terraform documentation using `terraform-docs`.
 
 ### Autogeneration of documentation from .tf files
+
 To generate new Inputs and Outputs tables run
 ```
 make docker_generate_docs
@@ -56,9 +57,10 @@ Six test-kitchen instances are defined:
 - `simple-zonal`
 - `stub-domains`
 
-The test-kitchen instances in `test/fixtures/` wrap identically-named examples in the `examples/` directory.`
+The test-kitchen instances in `test/fixtures/` wrap identically-named examples in the `examples/` directory.
 
 ### Test Environment
+
 The easiest way to test the module is in an isolated test project. The
 setup for such a project is defined in [test/setup](./test/setup/)
 directory.
