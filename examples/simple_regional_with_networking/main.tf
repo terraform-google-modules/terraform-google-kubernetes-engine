@@ -15,7 +15,7 @@
  */
 
 provider "google" {
-  version = "~> 3.45.0"
+  version = "~> 3.90.0"
 }
 
 data "google_client_config" "default" {}
