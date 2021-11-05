@@ -81,7 +81,7 @@ output "service_account" {
 }
 
 output "database_encryption_key_name" {
-  value = google_kms_crypto_key.db.self_link
+  value = google_kms_crypto_key.db.id
 }
 
 output "identity_namespace" {
