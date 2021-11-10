@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [17.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v17.0.0...v17.1.0) (2021-10-27)
+
+
+### Features
+
+* Add support for CPU quota configs for node pools ([#1032](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1032)) ([80252f3](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/80252f3ffaa4c3e4eba7a180673f6108c46f7483))
+
+
+### Bug Fixes
+
+* add missing required_providers on workload identity module ([#1035](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1035)) ([04f7502](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/04f75029b7ff7d661832e91ac2ce9a24a990d34e))
+* adds metadata to the default node pool ([#1018](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1018)) ([660ddc9](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/660ddc9afc9ed8a308d9388a08eff3c36af551a0))
+
 ## [17.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v16.1.0...v17.0.0) (2021-09-28)
 
 
@@ -211,6 +224,13 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 * Move provider version constraint to required_providers block ([#774](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/774)) ([825f287](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/825f287351b1b7a8c832150072371452ff498bd2))
 * Remove provider config from module to be TF 0.13 compatible ([#777](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/777)) ([81b0a94](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/81b0a9491d51546eedc6c1aabd368dc085c16b5e))
+
+## [12.4.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v12.3.0...v12.4.0) (2021-10-18)
+
+
+### Features
+
+* Backport of [#1001](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1001). Add support for gVisor per node pool ([#1001](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1001)) ([850c418](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/850c4181ec936f08c1617e4947f85e99c4de74ee))
 
 ## [12.3.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v12.2.0...v12.3.0) (2020-12-09)
 

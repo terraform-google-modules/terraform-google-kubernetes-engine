@@ -71,7 +71,10 @@ control "gcloud" do
         end
       end
       it "has expected registry roles" do
-        expect(iam['bindings']).to include("members" => ["serviceAccount:#{service_account}"], "role" => "roles/storage.objectViewer")
+        expect(iam['bindings']).to include(
+          {"members" => ["serviceAccount:#{service_account}"], "role" => "roles/storage.objectViewer"},
+          {"members" => ["serviceAccount:#{service_account}"], "role" => "roles/artifactregistry.reader"}
+        )
       end
     end
   end

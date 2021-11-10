@@ -48,6 +48,12 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+  dynamic "confidential_nodes" {
+    for_each = local.confidential_node_config
+    content {
+      enabled = confidential_nodes.value.enabled
+    }
+  }
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
@@ -225,6 +231,9 @@ resource "google_container_cluster" "primary" {
     initial_node_count = var.initial_node_count
 
     node_config {
+      image_type   = lookup(var.node_pools[0], "image_type", lookup(var.node_pools[0], "sandbox_enabled", var.sandbox_enabled) ? "COS_CONTAINERD" : "COS")
+      machine_type = lookup(var.node_pools[0], "machine_type", "e2-medium")
+
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
       dynamic "workload_metadata_config" {
@@ -233,6 +242,22 @@ resource "google_container_cluster" "primary" {
         content {
           node_metadata = workload_metadata_config.value.node_metadata
         }
+      }
+
+      metadata = local.node_pools_metadata["all"]
+
+      dynamic "sandbox_config" {
+        for_each = tobool((lookup(var.node_pools[0], "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
+        content {
+          sandbox_type = sandbox_config.value
+        }
+      }
+
+      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", "")
+
+      shielded_instance_config {
+        enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
+        enable_integrity_monitoring = lookup(var.node_pools[0], "enable_integrity_monitoring", true)
       }
     }
   }
@@ -513,10 +538,15 @@ resource "google_container_node_pool" "pools" {
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
     dynamic "kubelet_config" {
-      for_each = contains(keys(each.value), "cpu_manager_policy") ? [1] : []
+      for_each = length(setintersection(
+        keys(each.value),
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period"]
+      )) != 0 ? [1] : []
 
       content {
-        cpu_manager_policy = lookup(each.value, "cpu_manager_policy")
+        cpu_manager_policy   = lookup(each.value, "cpu_manager_policy", "static")
+        cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
+        cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
       }
     }
 
@@ -552,4 +582,3 @@ resource "google_container_node_pool" "pools" {
     delete = "45m"
   }
 }
-

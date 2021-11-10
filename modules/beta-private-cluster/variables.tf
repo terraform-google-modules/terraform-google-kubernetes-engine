@@ -349,13 +349,13 @@ variable "create_service_account" {
 
 variable "grant_registry_access" {
   type        = bool
-  description = "Grants created cluster-specific service account storage.objectViewer role."
+  description = "Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles."
   default     = false
 }
 
 variable "registry_project_ids" {
   type        = list(string)
-  description = "Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` role is assigned on these projects."
+  description = "Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` and `artifactregsitry.reader` roles are assigned on these projects."
   default     = []
 }
 
@@ -591,6 +591,12 @@ variable "shadow_firewall_rules_priority" {
   type        = number
   description = "The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000."
   default     = 999
+}
+
+variable "enable_confidential_nodes" {
+  type        = bool
+  description = "An optional flag to enable confidential node config."
+  default     = false
 }
 
 variable "disable_default_snat" {

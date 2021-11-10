@@ -308,13 +308,13 @@ variable "create_service_account" {
 
 variable "grant_registry_access" {
   type        = bool
-  description = "Grants created cluster-specific service account storage.objectViewer role."
+  description = "Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles."
   default     = false
 }
 
 variable "registry_project_ids" {
   type        = list(string)
-  description = "Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` role is assigned on these projects."
+  description = "Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` and `artifactregsitry.reader` roles are assigned on these projects."
   default     = []
 }
 
