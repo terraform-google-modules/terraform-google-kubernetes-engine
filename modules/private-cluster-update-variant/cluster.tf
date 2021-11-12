@@ -138,8 +138,9 @@ resource "google_container_cluster" "primary" {
     initial_node_count = var.initial_node_count
 
     node_config {
-      image_type   = lookup(var.node_pools[0], "image_type", "COS")
-      machine_type = lookup(var.node_pools[0], "machine_type", "e2-medium")
+      image_type       = lookup(var.node_pools[0], "image_type", "COS")
+      machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
+      min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
 
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
@@ -230,6 +231,7 @@ locals {
     "accelerator_type",
     "local_ssd_count",
     "machine_type",
+    "min_cpu_platform",
     "preemptible",
     "service_account",
   ]
@@ -349,8 +351,9 @@ resource "google_container_node_pool" "pools" {
 
 
   node_config {
-    image_type   = lookup(each.value, "image_type", "COS")
-    machine_type = lookup(each.value, "machine_type", "e2-medium")
+    image_type       = lookup(each.value, "image_type", "COS")
+    machine_type     = lookup(each.value, "machine_type", "e2-medium")
+    min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
       lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
