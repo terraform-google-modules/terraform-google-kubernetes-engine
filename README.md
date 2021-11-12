@@ -19,6 +19,8 @@ If you haven't [upgraded][terraform-0.13-upgrade] and need a Terraform
 0.12.x-compatible version of this module, the last released version
 intended for Terraform 0.12.x is [12.3.0].
 
+Requires Google provider version greater than 3.39.0 or less than 4.0.0.
+
 ## Usage
 There are multiple examples included in the [examples](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/examples) folder but simple usage is as follows:
 
