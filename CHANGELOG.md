@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+### [17.2.1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v17.2.0...v17.2.1) (2021-11-16)
+
+
+### Bug Fixes
+
+* ignore ASM labels ([#1061](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1061)) ([3dea235](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3dea235faaf6b2ff3d54f1c70dca134f8c8ef378))
+
 ## [17.2.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v17.1.0...v17.2.0) (2021-11-12)
 
 
