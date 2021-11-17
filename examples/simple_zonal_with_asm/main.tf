@@ -18,16 +18,6 @@ locals {
   cluster_type = "simple-zonal-asm"
 }
 
-provider "google-beta" {
-  version = "~> 3.79.0"
-  region  = var.region
-}
-
-provider "google" {
-  version = "~> 3.63.0"
-  region  = var.region
-}
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {

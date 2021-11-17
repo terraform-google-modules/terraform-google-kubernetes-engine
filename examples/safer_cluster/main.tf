@@ -30,14 +30,6 @@ locals {
   subnet_names           = [for subnet_self_link in module.gcp-network.subnets_self_links : split("/", subnet_self_link)[length(split("/", subnet_self_link)) - 1]]
 }
 
-provider "google" {
-  version = "~> 3.42.0"
-}
-
-provider "google-beta" {
-  version = "~> 3.79.0"
-}
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {

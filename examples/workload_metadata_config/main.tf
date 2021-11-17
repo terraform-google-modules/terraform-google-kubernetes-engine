@@ -18,11 +18,6 @@ locals {
   cluster_type = "workload-metadata-private"
 }
 
-provider "google-beta" {
-  version = "~> 3.79.0"
-  region  = var.region
-}
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
