@@ -75,7 +75,7 @@ variable "annotate_k8s_sa" {
 variable "automount_service_account_token" {
   description = "Enable automatic mounting of the service account token"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "roles" {

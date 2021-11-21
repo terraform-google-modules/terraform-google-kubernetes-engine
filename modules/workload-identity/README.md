@@ -96,7 +96,7 @@ already bear the `"iam.gke.io/gcp-service-account"` annotation.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | annotate\_k8s\_sa | Annotate the kubernetes service account with 'iam.gke.io/gcp-service-account' annotation. Valid in cases when an existing SA is used. | `bool` | `true` | no |
-| automount\_service\_account\_token | Enable automatic mounting of the service account token | `bool` | `false` | no |
+| automount\_service\_account\_token | Enable automatic mounting of the service account token | `bool` | `true` | no |
 | cluster\_name | Cluster name. Required if using existing KSA. | `string` | `""` | no |
 | gcp\_sa\_name | Name for the Google service account; overrides `var.name`. | `string` | `null` | no |
 | impersonate\_service\_account | An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials. | `string` | `""` | no |
