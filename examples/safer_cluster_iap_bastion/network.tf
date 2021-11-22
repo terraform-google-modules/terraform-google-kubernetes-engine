@@ -17,7 +17,7 @@
 
 module "vpc" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 2.5"
+  version = ">= 4.0.1, < 5.0.0"
 
   project_id   = module.enabled_google_apis.project_id
   network_name = var.network_name
