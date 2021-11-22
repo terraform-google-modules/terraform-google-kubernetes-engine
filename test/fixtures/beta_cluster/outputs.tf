@@ -84,6 +84,6 @@ output "database_encryption_key_name" {
   value = google_kms_crypto_key.db.id
 }
 
-output "identity_namespace" {
-  value = module.this.identity_namespace
+output "workload_pool" {
+  value = module.this.workload_pool
 }

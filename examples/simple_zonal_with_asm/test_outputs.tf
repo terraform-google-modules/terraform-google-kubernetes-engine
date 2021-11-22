@@ -62,6 +62,6 @@ output "master_kubernetes_version" {
   value       = module.gke.master_version
 }
 
-output "identity_namespace" {
-  value = module.gke.identity_namespace
+output "workload_pool" {
+  value = module.gke.workload_pool
 }

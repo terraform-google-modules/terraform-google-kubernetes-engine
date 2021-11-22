@@ -153,7 +153,7 @@ module "gke" {
   enable_vertical_pod_autoscaling = var.enable_vertical_pod_autoscaling
 
   // We enable identity namespace by default.
-  identity_namespace = "${var.project_id}.svc.id.goog"
+  workload_pool = "${var.project_id}.svc.id.goog"
 
   authenticator_security_group = var.authenticator_security_group
 

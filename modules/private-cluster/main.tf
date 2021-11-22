@@ -136,9 +136,9 @@ locals {
   cluster_network_policy_enabled             = !local.cluster_output_network_policy_enabled
   cluster_http_load_balancing_enabled        = !local.cluster_output_http_load_balancing_enabled
   cluster_horizontal_pod_autoscaling_enabled = !local.cluster_output_horizontal_pod_autoscaling_enabled
-  workload_identity_enabled                  = !(var.identity_namespace == null || var.identity_namespace == "null")
-  cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
-    identity_namespace = "${var.project_id}.svc.id.goog" }] : [{ identity_namespace = var.identity_namespace
+  workload_identity_enabled                  = !(var.workload_pool == null || var.workload_pool == "null")
+  cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.workload_pool == "enabled" ? [{
+    workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.workload_pool
   }]
 
 }
