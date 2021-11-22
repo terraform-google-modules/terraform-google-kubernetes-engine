@@ -87,8 +87,8 @@ module "asm-services" {
 }
 
 module "asm_install" {
-  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "main"
+  source = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  #version = "main"
 
   module_depends_on = concat([var.cluster_endpoint], local.additional_depends_on)
 
