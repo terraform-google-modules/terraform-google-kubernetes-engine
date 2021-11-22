@@ -158,6 +158,7 @@ Then perform the following commands on the root folder:
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | `bool` | `true` | no |
 | dns\_cache | (Beta) The status of the NodeLocal DNSCache addon. | `bool` | `false` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
+| enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | `bool` | `false` | no |
 | enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
@@ -173,7 +174,7 @@ Then perform the following commands on the root folder:
 | firewall\_priority | Priority rule for firewall rules | `number` | `1000` | no |
 | gce\_pd\_csi\_driver | (Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. | `bool` | `false` | no |
 | gcloud\_upgrade | Whether to upgrade gcloud at runtime | `bool` | `false` | no |
-| grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | `bool` | `false` | no |
+| grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles. | `bool` | `false` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | `bool` | `true` | no |
 | http\_load\_balancing | Enable httpload balancer addon | `bool` | `true` | no |
 | identity\_namespace | Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `[project_id].svc.id.goog`) | `string` | `"enabled"` | no |
@@ -217,7 +218,7 @@ Then perform the following commands on the root folder:
 | project\_id | The project ID to host the cluster in (required) | `string` | n/a | yes |
 | region | The region to host the cluster in (optional if zonal cluster / required if regional) | `string` | `null` | no |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | `bool` | `true` | no |
-| registry\_project\_ids | Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` role is assigned on these projects. | `list(string)` | `[]` | no |
+| registry\_project\_ids | Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` and `artifactregsitry.reader` roles are assigned on these projects. | `list(string)` | `[]` | no |
 | release\_channel | The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`. | `string` | `null` | no |
 | remove\_default\_node\_pool | Remove default node pool while setting up the cluster | `bool` | `false` | no |
 | resource\_usage\_export\_dataset\_id | The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export. | `string` | `""` | no |
@@ -281,6 +282,7 @@ The node_pools variable takes the following parameters:
 | cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". | "static" | Optional |
 | cpu_cfs_quota | Enforces the Pod's CPU limit. Setting this value to false means that the CPU limits for Pods are ignored | null | Optional |
 | cpu_cfs_quota_period | The CPU CFS quota period value, which specifies the period of how often a cgroup's access to CPU resources should be reallocated | null | Optional |
+| enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
 | disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100 | Optional |
 | disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |
 | effect | Effect for the taint | | Required |
@@ -292,6 +294,7 @@ The node_pools variable takes the following parameters:
 | local_ssd_count | The amount of local SSD disks that will be attached to each cluster node and may be used as a `hostpath` volume or a `local` PersistentVolume.  | 0 | Optional |
 | local_ssd_ephemeral_count | The amount of local SSD disks that will be attached to each cluster node and assigned as scratch space as an `emptyDir` volume. If unspecified, ephemeral storage is backed by the cluster node boot disk. | 0 | Optional |
 | machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
+| min_cpu_platform | Minimum CPU platform to be used by the nodes in the pool. The nodes may be scheduled on the specified or newer CPU platform. | " " | Optional |
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
 | max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |
 | max_surge | The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. | 1 | Optional |

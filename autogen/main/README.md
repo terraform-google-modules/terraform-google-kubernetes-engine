@@ -179,6 +179,7 @@ The node_pools variable takes the following parameters:
 | cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". | "static" | Optional |
 | cpu_cfs_quota | Enforces the Pod's CPU limit. Setting this value to false means that the CPU limits for Pods are ignored | null | Optional |
 | cpu_cfs_quota_period | The CPU CFS quota period value, which specifies the period of how often a cgroup's access to CPU resources should be reallocated | null | Optional |
+| enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
 {% endif %}
 | disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100 | Optional |
 | disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |
@@ -193,6 +194,7 @@ The node_pools variable takes the following parameters:
 | local_ssd_ephemeral_count | The amount of local SSD disks that will be attached to each cluster node and assigned as scratch space as an `emptyDir` volume. If unspecified, ephemeral storage is backed by the cluster node boot disk. | 0 | Optional |
 {% endif %}
 | machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
+| min_cpu_platform | Minimum CPU platform to be used by the nodes in the pool. The nodes may be scheduled on the specified or newer CPU platform. | " " | Optional |
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count | 100 | Optional |
 {% if beta_cluster %}
 | max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |

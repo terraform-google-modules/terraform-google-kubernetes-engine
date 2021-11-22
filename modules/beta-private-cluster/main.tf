@@ -170,6 +170,7 @@ locals {
   cluster_pod_security_policy_enabled      = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled
   cluster_vertical_pod_autoscaling_enabled = local.cluster_output_vertical_pod_autoscaling_enabled
+  confidential_node_config                 = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
 
   # /BETA features
 
