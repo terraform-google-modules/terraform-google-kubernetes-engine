@@ -99,10 +99,6 @@ module "gke" {
   registry_project_ids   = var.registry_project_ids
   grant_registry_access  = var.grant_registry_access
 
-  // Basic Auth disabled
-  basic_auth_username = ""
-  basic_auth_password = ""
-
   issue_client_certificate = false
 
   cluster_resource_labels = var.cluster_resource_labels
