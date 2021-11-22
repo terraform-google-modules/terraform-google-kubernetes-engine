@@ -162,7 +162,7 @@ resource "google_container_cluster" "primary" {
         for_each = local.cluster_node_metadata_config
 
         content {
-          node_metadata = workload_metadata_config.value.node_metadata
+          mode = workload_metadata_config.value.mode
         }
       }
 
@@ -336,9 +336,10 @@ resource "google_container_node_pool" "pools" {
       for_each = local.cluster_node_metadata_config
 
       content {
-        node_metadata = lookup(each.value, "node_metadata", workload_metadata_config.value.node_metadata)
+        mode = lookup(each.value, "node_metadata", workload_metadata_config.value.mode)
       }
     }
+
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
