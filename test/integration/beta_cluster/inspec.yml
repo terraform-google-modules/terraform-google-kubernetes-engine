@@ -45,6 +45,6 @@ attributes:
   - name: database_encryption_key_name
     required: true
     type: string
-  - name: identity_namespace
+  - name: workload_pool
     required: true
     type: string

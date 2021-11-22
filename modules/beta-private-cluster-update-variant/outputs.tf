@@ -128,9 +128,9 @@ output "release_channel" {
   value       = var.release_channel
 }
 
-output "identity_namespace" {
-  description = "Workload Identity namespace"
-  value       = length(local.cluster_workload_identity_config) > 0 ? local.cluster_workload_identity_config[0].identity_namespace : null
+output "workload_pool" {
+  description = "Workload Identity pool"
+  value       = length(local.cluster_workload_identity_config) > 0 ? local.cluster_workload_identity_config[0].workload_pool : null
   depends_on = [
     google_container_cluster.primary
   ]
