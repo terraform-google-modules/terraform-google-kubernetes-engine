@@ -58,8 +58,8 @@ resource "kubernetes_service_account" "main" {
 }
 
 module "annotate-sa" {
-  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "main"
+  source = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  #version = "main"
 
   enabled                     = var.use_existing_k8s_sa && var.annotate_k8s_sa
   skip_download               = true
