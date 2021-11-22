@@ -20,6 +20,10 @@ terraform {
       source  = "hashicorp/google"
       version = "~> 4.0"
     }
+    kind = {
+      source  = "kyma-incubator/kind"
+      version = "0.0.6"
+    }
     kubernetes = {
       source = "hashicorp/kubernetes"
     }
