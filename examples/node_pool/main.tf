@@ -19,7 +19,7 @@ locals {
 }
 
 provider "google-beta" {
-  region  = var.region
+  region = var.region
 }
 
 data "google_client_config" "default" {}
