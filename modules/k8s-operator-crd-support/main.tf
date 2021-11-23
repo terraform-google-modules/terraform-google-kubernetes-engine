@@ -48,7 +48,7 @@ module "k8sop_manifest" {
 
 
 module "k8s_operator" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git?ref=master"
+  source = "github.com/terraform-google-modules/terraform-google-gcloud.git//modules/kubectl-wrapper?ref=master"
 
   #source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   #version = "~> 3.1"
@@ -73,7 +73,7 @@ resource "tls_private_key" "k8sop_creds" {
 }
 
 module "k8sop_creds_secret" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git?ref=master"
+  source = "github.com/terraform-google-modules/terraform-google-gcloud.git//modules/kubectl-wrapper?ref=master"
 
   #source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   #version = "~> 3.1"
@@ -112,7 +112,7 @@ data "template_file" "k8sop_config" {
 }
 
 module "k8sop_config" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git?ref=master"
+  source = "github.com/terraform-google-modules/terraform-google-gcloud.git//modules/kubectl-wrapper?ref=master"
 
   #source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   #version = "~> 3.1"
@@ -146,7 +146,7 @@ data "template_file" "rootsync_config" {
 }
 
 module "wait_for_configsync_api" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git?ref=master"
+  source = "github.com/terraform-google-modules/terraform-google-gcloud.git//modules/kubectl-wrapper?ref=master"
 
   #source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   #version = "~> 3.1"
@@ -169,7 +169,7 @@ module "wait_for_configsync_api" {
 }
 
 module "rootsync_config" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git?ref=master"
+  source = "github.com/terraform-google-modules/terraform-google-gcloud.git//modules/kubectl-wrapper?ref=master"
 
   #source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   #version = "~> 3.1"
@@ -190,7 +190,7 @@ module "rootsync_config" {
 }
 
 module "wait_for_gatekeeper" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git?ref=master"
+  source = "github.com/terraform-google-modules/terraform-google-gcloud.git//modules/kubectl-wrapper?ref=master"
 
   #source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   #version = "~> 3.1"
