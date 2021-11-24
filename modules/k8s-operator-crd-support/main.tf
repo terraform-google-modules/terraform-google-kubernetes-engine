@@ -33,10 +33,8 @@ locals {
 }
 
 module "k8sop_manifest" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git?ref=master"
-
-  #source  = "terraform-google-modules/gcloud/google"
-  #version = "~> 3.1"
+  source  = "terraform-google-modules/gcloud/google"
+  version = "~> 3.1"
 
   enabled = local.should_download_manifest
 
@@ -48,10 +46,8 @@ module "k8sop_manifest" {
 
 
 module "k8s_operator" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git//modules/kubectl-wrapper?ref=master"
-
-  #source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  #version = "~> 3.1"
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
 
   module_depends_on           = [module.k8sop_manifest.wait, var.cluster_endpoint]
   cluster_name                = var.cluster_name
@@ -73,10 +69,8 @@ resource "tls_private_key" "k8sop_creds" {
 }
 
 module "k8sop_creds_secret" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git//modules/kubectl-wrapper?ref=master"
-
-  #source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  #version = "~> 3.1"
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
 
   enabled                     = var.create_ssh_key == true || var.ssh_auth_key != null ? "true" : "false"
   module_depends_on           = [module.k8s_operator.wait]
@@ -112,10 +106,8 @@ data "template_file" "k8sop_config" {
 }
 
 module "k8sop_config" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git//modules/kubectl-wrapper?ref=master"
-
-  #source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  #version = "~> 3.1"
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
 
   module_depends_on           = [module.k8s_operator.wait, module.k8sop_creds_secret.wait]
   cluster_name                = var.cluster_name
@@ -146,10 +138,8 @@ data "template_file" "rootsync_config" {
 }
 
 module "wait_for_configsync_api" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git//modules/kubectl-wrapper?ref=master"
-
-  #source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  #version = "~> 3.1"
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
 
   enabled = var.enable_multi_repo
 
@@ -169,10 +159,8 @@ module "wait_for_configsync_api" {
 }
 
 module "rootsync_config" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git//modules/kubectl-wrapper?ref=master"
-
-  #source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  #version = "~> 3.1"
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
 
   enabled = var.enable_multi_repo
 
@@ -190,10 +178,8 @@ module "rootsync_config" {
 }
 
 module "wait_for_gatekeeper" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git//modules/kubectl-wrapper?ref=master"
-
-  #source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  #version = "~> 3.1"
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
 
   enabled                     = var.enable_policy_controller ? true : false
   module_depends_on           = [module.k8sop_config.wait]

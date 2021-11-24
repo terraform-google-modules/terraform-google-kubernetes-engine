@@ -15,10 +15,8 @@
  */
 
 module "enable_acm" {
-  source = "github.com/terraform-google-modules/terraform-google-gcloud.git?ref=master"
-
-  #source  = "terraform-google-modules/gcloud/google"
-  #version = "~> 3.1"
+  source  = "terraform-google-modules/gcloud/google"
+  version = "~> 3.1"
 
   platform              = "linux"
   upgrade               = true
