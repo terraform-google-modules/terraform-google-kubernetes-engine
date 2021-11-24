@@ -33,3 +33,11 @@ remains the same.
 +  workload_pool      = null
 }
 ```
+
+### node_pools_versions is now keyed by node-pool name
+The `node_pools_versions` output is now an object keyed by node-pool name,
+rather than a list as previously.
+
+### instance_group_urls is now removed
+The `instance_group_urls` output has been removed in favor of a node-pool level
+output `node_pools_instance_group_urls`, keyed by node-pool name.
