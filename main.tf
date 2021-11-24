@@ -112,8 +112,9 @@ locals {
     cidr_blocks : var.master_authorized_networks
   }]
 
-  cluster_output_node_pools_names    = concat([for np in google_container_node_pool.pools : np.name], [""])
-  cluster_output_node_pools_versions = concat([for np in google_container_node_pool.pools : np.version], [""])
+  cluster_output_node_pools_names               = concat([for np in google_container_node_pool.pools : np.name], [""])
+  cluster_output_node_pools_versions            = { for np in google_container_node_pool.pools : np.name => np.version }
+  cluster_output_node_pools_instance_group_urls = { for np in google_container_node_pool.pools : np.name => np.managed_instance_group_urls }
 
   cluster_master_auth_list_layer1 = local.cluster_output_master_auth
   cluster_master_auth_list_layer2 = local.cluster_master_auth_list_layer1[0]
@@ -132,6 +133,7 @@ locals {
   cluster_monitoring_service                 = local.cluster_output_monitoring_service
   cluster_node_pools_names                   = local.cluster_output_node_pools_names
   cluster_node_pools_versions                = local.cluster_output_node_pools_versions
+  cluster_node_pools_instance_group_urls     = local.cluster_output_node_pools_instance_group_urls
   cluster_network_policy_enabled             = !local.cluster_output_network_policy_enabled
   cluster_http_load_balancing_enabled        = !local.cluster_output_http_load_balancing_enabled
   cluster_horizontal_pod_autoscaling_enabled = !local.cluster_output_horizontal_pod_autoscaling_enabled
