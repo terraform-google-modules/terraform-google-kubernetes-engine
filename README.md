@@ -209,8 +209,9 @@ Then perform the following commands on the root folder:
 | monitoring\_service | Monitoring service used |
 | name | Cluster name |
 | network\_policy\_enabled | Whether network policy enabled |
+| node\_pools\_instance\_group\_urls | Lists of GKE generated instance groups by node pool name |
 | node\_pools\_names | List of node pools names |
-| node\_pools\_versions | List of node pools versions |
+| node\_pools\_versions | Node pool versions by node pool name |
 | region | Cluster region |
 | release\_channel | The release channel of this cluster |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
