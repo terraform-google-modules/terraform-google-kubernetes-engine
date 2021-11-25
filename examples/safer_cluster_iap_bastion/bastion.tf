@@ -27,8 +27,11 @@ data "template_file" "startup_script" {
 }
 
 module "bastion" {
-  source         = "terraform-google-modules/bastion-host/google"
-  version        = "~> 4.0"
+  source = "github.com/terraform-google-modules/terraform-google-bastion-host.git?ref=master"
+
+  #  source         = "terraform-google-modules/bastion-host/google"
+  #  version        = "~> 4.0"
+
   network        = module.vpc.network_self_link
   subnet         = module.vpc.subnets_self_links[0]
   project        = module.enabled_google_apis.project_id
