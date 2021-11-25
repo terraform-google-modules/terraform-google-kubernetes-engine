@@ -114,12 +114,12 @@ output "node_pools_names" {
 }
 
 output "node_pools_versions" {
-  description = "Node pool versions by node-pool name"
+  description = "Node pool versions by node pool name"
   value       = local.cluster_node_pools_versions
 }
 
 output "node_pools_instance_group_urls" {
-  description = "Lists of GKE generated instance groups by node-pool name"
+  description = "Lists of GKE generated instance groups by node pool name"
   value       = local.cluster_node_pools_instance_group_urls
 }
 
