@@ -22,7 +22,7 @@ module "gke-project-1" {
   source = "github.com/terraform-google-modules/terraform-google-project-factory.git?ref=master"
 
   #source  = "terraform-google-modules/project-factory/google"
-  #version = "~> 10.1"
+  #version = "~> 11.3"
 
   name              = "ci-gke-${random_id.random_project_id_suffix.hex}"
   random_project_id = true
@@ -52,7 +52,7 @@ module "gke-project-2" {
   source = "github.com/terraform-google-modules/terraform-google-project-factory.git?ref=master"
 
   #source  = "terraform-google-modules/project-factory/google"
-  #version = "~> 10.1"
+  #version = "~> 11.3"
 
   name              = "ci-gke-${random_id.random_project_id_suffix.hex}"
   random_project_id = true
@@ -82,7 +82,7 @@ module "gke-project-asm" {
   source = "github.com/terraform-google-modules/terraform-google-project-factory.git?ref=master"
 
   #source  = "terraform-google-modules/project-factory/google"
-  #version = "~> 10.1"
+  #version = "~> 11.3"
 
   name              = "ci-gke-asm-${random_id.random_project_id_suffix.hex}"
   random_project_id = true
