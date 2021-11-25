@@ -15,8 +15,10 @@
  */
 
 module "enabled_google_apis" {
-  source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 10.0"
+  source = "github.com/terraform-google-modules/terraform-google-project-factory.git//modules/project_services?ref=master"
+
+  #source  = "terraform-google-modules/project-factory/google//modules/project_services"
+  #version = "~> 10.0"
 
   project_id                  = var.project
   disable_services_on_destroy = false

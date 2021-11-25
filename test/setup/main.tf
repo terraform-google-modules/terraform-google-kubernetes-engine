@@ -19,8 +19,10 @@ resource "random_id" "random_project_id_suffix" {
 }
 
 module "gke-project-1" {
-  source  = "terraform-google-modules/project-factory/google"
-  version = "~> 10.1"
+  source = "github.com/terraform-google-modules/terraform-google-project-factory.git?ref=master"
+
+  #source  = "terraform-google-modules/project-factory/google"
+  #version = "~> 10.1"
 
   name              = "ci-gke-${random_id.random_project_id_suffix.hex}"
   random_project_id = true
@@ -47,8 +49,10 @@ module "gke-project-1" {
 }
 
 module "gke-project-2" {
-  source  = "terraform-google-modules/project-factory/google"
-  version = "~> 10.1"
+  source = "github.com/terraform-google-modules/terraform-google-project-factory.git?ref=master"
+
+  #source  = "terraform-google-modules/project-factory/google"
+  #version = "~> 10.1"
 
   name              = "ci-gke-${random_id.random_project_id_suffix.hex}"
   random_project_id = true
@@ -75,8 +79,10 @@ module "gke-project-2" {
 
 # apis as documented https://cloud.google.com/service-mesh/docs/scripted-install/reference#setting_up_your_project
 module "gke-project-asm" {
-  source  = "terraform-google-modules/project-factory/google"
-  version = "~> 10.1"
+  source = "github.com/terraform-google-modules/terraform-google-project-factory.git?ref=master"
+
+  #source  = "terraform-google-modules/project-factory/google"
+  #version = "~> 10.1"
 
   name              = "ci-gke-asm-${random_id.random_project_id_suffix.hex}"
   random_project_id = true
