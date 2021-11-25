@@ -210,7 +210,6 @@ Then perform the following commands on the root folder:
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
-| instance\_group\_urls | List of GKE generated instance groups |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |
 | logging\_service | Logging service used |
 | master\_authorized\_networks\_config | Networks from which access to master is permitted |
@@ -220,8 +219,9 @@ Then perform the following commands on the root folder:
 | monitoring\_service | Monitoring service used |
 | name | Cluster name |
 | network\_policy\_enabled | Whether network policy enabled |
+| node\_pools\_instance\_group\_urls | Lists of GKE generated instance groups by node pool name |
 | node\_pools\_names | List of node pools names |
-| node\_pools\_versions | List of node pools versions |
+| node\_pools\_versions | Node pool versions by node pool name |
 | peering\_name | The name of the peering between this cluster and the Google owned VPC. |
 | region | Cluster region |
 | release\_channel | The release channel of this cluster |
