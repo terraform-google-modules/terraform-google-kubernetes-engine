@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [17.2.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v17.1.0...v17.2.0) (2021-11-12)
+
+
+### Features
+
+* Add beta support for confidential_nodes ([#1040](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1040)) ([e105bb5](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e105bb5b5154b6c77f3256bc4ced28d3b3e26ad1))
+* Added support for specifying min_cpu_platform in node config - … ([#1057](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1057)) ([23b5243](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/23b524318c1052d9e39aa183839b28cad8fbe7bc))
+
+
+### Bug Fixes
+
+* Document grant_registry_access for Artifact Registry ([#1044](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1044)) ([d3ca023](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d3ca023f5f4ecbcf72ea63097c39254cd0439256))
+* pass REVISION_NAME to downstream install script ([#1048](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1048)) ([dd410d7](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/dd410d77bedb62c872ccdb71d51a614f9e5f40b9))
+* set image_type, machine_type, and sandboxing on default node pool to comply with validation policies ([#1038](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1038)) ([8e92f6e](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8e92f6ec0d71bfffee9fa3621b55bbbd9091b0d0))
+
 ## [17.1.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v17.0.0...v17.1.0) (2021-10-27)
 
 

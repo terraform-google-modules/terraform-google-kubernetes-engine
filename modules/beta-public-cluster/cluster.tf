@@ -217,7 +217,7 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
-    ignore_changes = [node_pool, initial_node_count]
+    ignore_changes = [node_pool, initial_node_count, resource_labels["asmv"], resource_labels["mesh_id"]]
   }
 
   timeouts {
@@ -231,8 +231,9 @@ resource "google_container_cluster" "primary" {
     initial_node_count = var.initial_node_count
 
     node_config {
-      image_type   = lookup(var.node_pools[0], "image_type", lookup(var.node_pools[0], "sandbox_enabled", var.sandbox_enabled) ? "COS_CONTAINERD" : "COS")
-      machine_type = lookup(var.node_pools[0], "machine_type", "e2-medium")
+      image_type       = lookup(var.node_pools[0], "image_type", lookup(var.node_pools[0], "sandbox_enabled", var.sandbox_enabled) ? "COS_CONTAINERD" : "COS")
+      machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
+      min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
 
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
@@ -369,8 +370,9 @@ resource "google_container_node_pool" "pools" {
   }
 
   node_config {
-    image_type   = lookup(each.value, "image_type", lookup(each.value, "sandbox_enabled", var.sandbox_enabled) ? "COS_CONTAINERD" : "COS")
-    machine_type = lookup(each.value, "machine_type", "e2-medium")
+    image_type       = lookup(each.value, "image_type", lookup(each.value, "sandbox_enabled", var.sandbox_enabled) ? "COS_CONTAINERD" : "COS")
+    machine_type     = lookup(each.value, "machine_type", "e2-medium")
+    min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
       lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
@@ -429,11 +431,13 @@ resource "google_container_node_pool" "pools" {
 
     guest_accelerator = [
       for guest_accelerator in lookup(each.value, "accelerator_count", 0) > 0 ? [{
-        type  = lookup(each.value, "accelerator_type", "")
-        count = lookup(each.value, "accelerator_count", 0)
+        type               = lookup(each.value, "accelerator_type", "")
+        count              = lookup(each.value, "accelerator_count", 0)
+        gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
         }] : [] : {
-        type  = guest_accelerator["type"]
-        count = guest_accelerator["count"]
+        type               = guest_accelerator["type"]
+        count              = guest_accelerator["count"]
+        gpu_partition_size = guest_accelerator["gpu_partition_size"]
       }
     ]
 

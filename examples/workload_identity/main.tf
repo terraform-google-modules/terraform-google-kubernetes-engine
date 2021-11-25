@@ -95,5 +95,6 @@ module "workload_identity_existing_gsa" {
   name                = google_service_account.custom.account_id
   use_existing_gcp_sa = true
   # wait till custom GSA is created to force module data source read during apply
+  # https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1059
   depends_on = [google_service_account.custom]
 }
