@@ -114,8 +114,13 @@ output "node_pools_names" {
 }
 
 output "node_pools_versions" {
-  description = "List of node pools versions"
+  description = "Node pool versions by node pool name"
   value       = local.cluster_node_pools_versions
+}
+
+output "node_pools_instance_group_urls" {
+  description = "Lists of GKE generated instance groups by node pool name"
+  value       = local.cluster_node_pools_instance_group_urls
 }
 
 output "service_account" {
@@ -134,11 +139,6 @@ output "workload_pool" {
   depends_on = [
     google_container_cluster.primary
   ]
-}
-
-output "instance_group_urls" {
-  description = "List of GKE generated instance groups"
-  value       = google_container_cluster.primary.instance_group_urls
 }
 
 output "master_ipv4_cidr_block" {
