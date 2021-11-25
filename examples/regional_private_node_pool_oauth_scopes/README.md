@@ -27,7 +27,7 @@ This example illustrates how to create a private cluster with node pool specific
 | network\_module | network module output |
 | network\_policy\_enabled | Whether network policy enabled |
 | node\_pools\_names | List of node pools names |
-| node\_pools\_versions | List of node pools versions |
+| node\_pools\_versions | Node pool versions by node pool name |
 | region | Cluster region |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | subnets\_ips | The IP and cidrs of the subnets being created |
