@@ -23,6 +23,7 @@ This example illustrates how to create a simple zonal cluster with ASM.
 | ca\_certificate | n/a |
 | client\_token | n/a |
 | cluster\_name | Cluster name |
+| identity\_namespace | n/a |
 | ip\_range\_pods | The secondary IP range used for pods |
 | ip\_range\_services | The secondary IP range used for services |
 | kubernetes\_endpoint | n/a |
@@ -33,7 +34,6 @@ This example illustrates how to create a simple zonal cluster with ASM.
 | region | n/a |
 | service\_account | The default service account used for running nodes. |
 | subnetwork | n/a |
-| workload\_pool | n/a |
 | zones | List of zones in which the cluster resides |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

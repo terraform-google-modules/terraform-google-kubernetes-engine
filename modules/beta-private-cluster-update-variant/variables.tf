@@ -502,7 +502,7 @@ variable "authenticator_security_group" {
 
 variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
-  default     = "GKE_METADATA_SERVER"
+  default     = "GKE_METADATA"
   type        = string
 }
 
@@ -516,7 +516,7 @@ variable "database_encryption" {
   }]
 }
 
-variable "workload_pool" {
+variable "identity_namespace" {
   description = "The workload pool to attach all Kubernetes service accounts to. (Default value of `enabled` automatically sets project-based pool `[project_id].svc.id.goog`)"
   type        = string
   default     = "enabled"
