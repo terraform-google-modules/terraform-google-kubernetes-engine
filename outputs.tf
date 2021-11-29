@@ -118,14 +118,14 @@ output "node_pools_versions" {
   value       = local.cluster_node_pools_versions
 }
 
-output "node_pools_instance_group_urls" {
-  description = "Lists of GKE generated instance groups by node pool name"
-  value       = local.cluster_node_pools_instance_group_urls
-}
-
 output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
   value       = local.service_account
+}
+
+output "instance_group_urls" {
+  description = "List of GKE generated instance groups"
+  value       = distinct(flatten([for np in google_container_node_pool.pools : np.managed_instance_group_urls]))
 }
 
 output "release_channel" {
@@ -133,7 +133,7 @@ output "release_channel" {
   value       = var.release_channel
 }
 
-output "workload_pool" {
+output "identity_namespace" {
   description = "Workload Identity pool"
   value       = length(local.cluster_workload_identity_config) > 0 ? local.cluster_workload_identity_config[0].workload_pool : null
   depends_on = [

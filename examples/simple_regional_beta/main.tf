@@ -52,8 +52,8 @@ module "gke" {
   release_channel             = "REGULAR"
 
   # Disable workload identity
-  workload_pool = null
-  node_metadata = "UNSPECIFIED"
+  identity_namespace = null
+  node_metadata      = "UNSPECIFIED"
 
   # Enable Dataplane Setup
   datapath_provider = "ADVANCED_DATAPATH"
