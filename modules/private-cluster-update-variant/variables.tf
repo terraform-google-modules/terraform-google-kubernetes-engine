@@ -108,6 +108,12 @@ variable "network_policy_provider" {
   default     = "CALICO"
 }
 
+variable "datapath_provider" {
+  type        = string
+  description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
+  default     = "DATAPATH_PROVIDER_UNSPECIFIED"
+}
+
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
