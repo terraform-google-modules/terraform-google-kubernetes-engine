@@ -67,6 +67,10 @@ module "gke" {
   // rather than individual teams.
   network_policy = true
 
+  // Default to the recommended Dataplane V2 which enables NetworkPolicies and
+  // allows for network policy logging of allowed and denied requests to Pods.
+  datapath_provider = var.datapath_provider
+
   maintenance_start_time = var.maintenance_start_time
 
   initial_node_count = var.initial_node_count
