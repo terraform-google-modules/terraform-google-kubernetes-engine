@@ -57,16 +57,23 @@ control "gcloud" do
             "kubernetesDashboard" => including(
               "disabled" => true,
             ),
-            "networkPolicyConfig" => {},
+            "networkPolicyConfig" => including(
+              "disabled" => true,
+            ),
           )
       end
     end
 
-    it "has network policy enabled" do
+    it "has network policy disabled" do
       expect(data['networkPolicy']).to eq({
-        "enabled" => true,
-        "provider" => "CALICO",
+        "enabled" => false,
       })
+    end
+
+    it "has dataplane v2 enabled" do
+      expect(data['networkConfig']).to include(
+        "datapathProvider" => "ADVANCED_DATAPATH"
+      )
     end
 
     it "has binary authorization" do
