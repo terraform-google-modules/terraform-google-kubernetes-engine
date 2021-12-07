@@ -95,6 +95,12 @@ variable "http_load_balancing" {
   default     = true
 }
 
+variable "datapath_provider" {
+  type        = string
+  description = "The desired datapath provider for this cluster. By default, `ADVANCED_DATAPATH` enables Dataplane-V2 feature. `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation as a fallback since upgrading to V2 requires a cluster re-creation."
+  default     = "ADVANCED_DATAPATH"
+}
+
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily maintenance operations in RFC3339 format"
