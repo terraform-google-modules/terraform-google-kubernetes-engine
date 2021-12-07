@@ -65,9 +65,7 @@ control "gcloud" do
     end
 
     it "has network policy disabled" do
-      expect(data['networkPolicy']).to eq({
-        "enabled" => false,
-      })
+      expect(data['networkPolicy']).to be_nil
     end
 
     it "has dataplane v2 enabled" do
