@@ -61,10 +61,8 @@ resource "google_project_iam_member" "asm_iam" {
 }
 
 module "asm-services" {
-  source = "github.com/terraform-google-modules/terraform-google-project-factory.git//modules/project_services?ref=master"
-
-  #source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  #version = "~> 11.3"
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
+  version = "~> 11.3"
 
   count = var.enable_gcp_apis ? 1 : 0
 
