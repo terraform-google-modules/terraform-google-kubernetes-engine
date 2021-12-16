@@ -68,8 +68,23 @@ resource "google_container_cluster" "primary" {
       type = var.cluster_telemetry_type
     }
   }
-  logging_service    = local.cluster_telemetry_type_is_set ? null : var.logging_service
+  logging_service = local.cluster_telemetry_type_is_set ? null : var.logging_service
+  dynamic "logging_config" {
+    for_each = length(var.logging_enabled_components) > 0 ? [1] : []
+
+    content {
+      enable_components = var.logging_enabled_components
+    }
+  }
+
   monitoring_service = local.cluster_telemetry_type_is_set ? null : var.monitoring_service
+  dynamic "monitoring_config" {
+    for_each = length(var.monitoring_enabled_components) > 0 ? [1] : []
+
+    content {
+      enable_components = var.monitoring_enabled_components
+    }
+  }
 
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
