@@ -197,7 +197,7 @@ resource "google_container_cluster" "primary" {
     for_each = local.cluster_workload_identity_config
 
     content {
-      identity_namespace = workload_identity_config.value.identity_namespace
+      workload_pool = workload_identity_config.value.identity_namespace
     }
   }
 
