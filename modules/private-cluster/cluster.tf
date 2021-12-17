@@ -90,8 +90,7 @@ resource "google_container_cluster" "primary" {
   }
 
   master_auth {
-    username = var.basic_auth_username
-    password = var.basic_auth_password
+
 
     client_certificate_config {
       issue_client_certificate = var.issue_client_certificate
@@ -197,7 +196,7 @@ resource "google_container_cluster" "primary" {
     for_each = local.cluster_workload_identity_config
 
     content {
-      identity_namespace = workload_identity_config.value.identity_namespace
+      workload_pool = workload_identity_config.value.identity_namespace
     }
   }
 
