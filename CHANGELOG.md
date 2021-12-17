@@ -12,6 +12,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 ### ⚠ BREAKING CHANGES
 
 * safer-cluster modules now use ADVANCED_DATAPATH by default. Set `datapath_provider` to `DATAPATH_PROVIDER_UNSPECIFIED` to continue using Dataplane v1.
+* Minimum beta provider version increased to v3.87.0.
 
 ### Features
 
