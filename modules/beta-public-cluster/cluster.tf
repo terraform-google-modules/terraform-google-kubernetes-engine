@@ -68,8 +68,23 @@ resource "google_container_cluster" "primary" {
       type = var.cluster_telemetry_type
     }
   }
-  logging_service    = local.cluster_telemetry_type_is_set ? null : var.logging_service
+  logging_service = local.cluster_telemetry_type_is_set ? null : var.logging_service
+  dynamic "logging_config" {
+    for_each = length(var.logging_enabled_components) > 0 ? [1] : []
+
+    content {
+      enable_components = var.logging_enabled_components
+    }
+  }
+
   monitoring_service = local.cluster_telemetry_type_is_set ? null : var.monitoring_service
+  dynamic "monitoring_config" {
+    for_each = length(var.monitoring_enabled_components) > 0 ? [1] : []
+
+    content {
+      enable_components = var.monitoring_enabled_components
+    }
+  }
 
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
@@ -77,8 +92,9 @@ resource "google_container_cluster" "primary" {
       for_each = var.cluster_autoscaling.enabled ? [1] : []
 
       content {
-        service_account = local.service_account
-        oauth_scopes    = local.node_pools_oauth_scopes["all"]
+        service_account  = local.service_account
+        oauth_scopes     = local.node_pools_oauth_scopes["all"]
+        min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
       }
     }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"

@@ -19,6 +19,7 @@ locals {
 }
 
 provider "google-beta" {
+
   credentials = file(var.credentials_path)
   region      = var.region
 }

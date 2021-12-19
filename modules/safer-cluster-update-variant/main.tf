@@ -61,7 +61,15 @@ module "gke" {
   // NetworkPolicies need to be configured in every namespace. The network
   // policies should be under the control of a cental cluster management team,
   // rather than individual teams.
-  network_policy = true
+  //
+  // NOTE: Dataplane-V2 conflicts with the Calico network policy add-on because
+  // it provides redundant NetworkPolicy capabilities. If V2 is enabled, the
+  // Calico add-on should be disabled.
+  network_policy = var.datapath_provider == "ADVANCED_DATAPATH" ? false : true
+
+  // Default to the recommended Dataplane V2 which enables NetworkPolicies and
+  // allows for network policy logging of allowed and denied requests to Pods.
+  datapath_provider = var.datapath_provider
 
   maintenance_start_time = var.maintenance_start_time
 

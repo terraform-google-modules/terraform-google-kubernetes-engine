@@ -18,6 +18,9 @@ locals {
   cluster_type = "simple-regional-beta"
 }
 
+
+
+
 data "google_client_config" "default" {}
 
 provider "kubernetes" {

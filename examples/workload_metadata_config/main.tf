@@ -18,6 +18,9 @@ locals {
   cluster_type = "workload-metadata-private"
 }
 
+
+
+
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
