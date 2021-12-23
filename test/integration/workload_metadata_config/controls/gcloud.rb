@@ -31,12 +31,6 @@ control "gcloud" do
         {}
       end
     end
-
-    describe "workload metada config" do
-      it "is secure" do
-        expect(data['nodePools'][0]["config"]["workloadMetadataConfig"]["nodeMetadata"]).to eq 'SECURE'
-      end
-    end
   end
 
   describe command("gcloud beta --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json --format=\"json(nodeConfig.workloadMetadataConfig)\"") do
@@ -48,12 +42,6 @@ control "gcloud" do
         JSON.parse(subject.stdout)
       else
         {}
-      end
-    end
-
-    describe "workload metada config" do
-      it "is secure" do
-        expect(data["nodeConfig"]["workloadMetadataConfig"]["nodeMetadata"]).to eq 'SECURE'
       end
     end
   end
