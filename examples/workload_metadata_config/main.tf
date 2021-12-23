@@ -52,7 +52,7 @@ module "gke" {
   enable_private_endpoint = true
   enable_private_nodes    = true
   master_ipv4_cidr_block  = "172.16.0.0/28"
-  node_metadata           = "SECURE"
+  node_metadata           = "GKE_METADATA"
 
   master_authorized_networks = [
     {
