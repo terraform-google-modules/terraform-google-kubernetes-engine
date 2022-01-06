@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [18.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v17.3.0...v18.0.0) (2021-12-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* safer-cluster modules now use ADVANCED_DATAPATH by default. Set `datapath_provider` to `DATAPATH_PROVIDER_UNSPECIFIED` to continue using Dataplane v1.
+* Minimum beta provider version increased to v3.87.0.
+
+### Features
+
+* Added monitoring_enabled_components and logging_enabled_components variables to beta clusters ([#1028](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1028)) ([9278265](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/92782657320de244629b50058ac07d7fb808859b))
+* Make auto_provisioning_defaults a non-beta feature and set `min_cpu_platform` for auto-provisioned node pools ([#1077](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1077)) ([5603718](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5603718d81920c141103993abbc72e2080aa2701))
+* Use ADVANCED_DATAPATH (aka. Dataplane V2) for safer-cluster modules ([#1085](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1085)) ([41a0c83](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/41a0c83955079464d044adbd52d972fb8d69a909))
+
 ## [17.3.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v17.2.0...v17.3.0) (2021-11-23)
 
 
