@@ -30,14 +30,3 @@ data "google_container_cluster" "gke_cluster" {
 }
 
 data "google_client_config" "provider" {}
-
-data "template_file" "kubeconfig" {
-  template = file("${path.module}/templates/kubeconfig-template.yaml.tpl")
-
-  vars = {
-    context                = local.context
-    cluster_ca_certificate = local.cluster_ca_certificate
-    endpoint               = local.endpoint
-    token                  = data.google_client_config.provider.access_token
-  }
-}
