@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+### [18.0.1](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v18.0.0...v18.0.1) (2022-01-10)
+
+
+### Bug Fixes
+
+* Removed dependency to obsolete template_file by upgrading to templatefile ([#1119](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1119)) ([14a0536](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/14a0536bbcfeb89dc1af21f8fef0cb46affdc52e))
+
 ## [18.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v17.3.0...v18.0.0) (2021-12-16)
 
 
