@@ -253,6 +253,13 @@ resource "google_container_cluster" "primary" {
 
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
+      tags = concat(
+        lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
+        lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-default-pool"] : [],
+        lookup(local.node_pools_tags, "all", []),
+        lookup(local.node_pools_tags, var.node_pools[0].name, []),
+      )
+
       dynamic "workload_metadata_config" {
         for_each = local.cluster_node_metadata_config
 
