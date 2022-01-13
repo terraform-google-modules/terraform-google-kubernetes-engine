@@ -107,6 +107,7 @@ variable "network_policy_provider" {
   description = "The network policy provider."
   default     = "CALICO"
 }
+
 variable "datapath_provider" {
   type        = string
   description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
