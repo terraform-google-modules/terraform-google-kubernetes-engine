@@ -93,6 +93,7 @@ module "gke" {
       auto_upgrade              = true
       service_account           = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
       preemptible               = false
+      spot                      = false
       initial_node_count        = 80
     },
   ]
@@ -327,6 +328,7 @@ The node_pools variable takes the following parameters:
 | node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. Defaults to cluster level node locations if nothing is specified | " " | Optional |
 | node_metadata | Options to expose the node metadata to the workload running on the node | | Optional |
 | preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
+| spot | A boolean that represents whether or not the underlying node VMs are spot | false | Optional |
 | sandbox_type | Sandbox to use for pods in the node pool | | Required |
 | service_account | The service account to be used by the Node VMs | " " | Optional |
 | tags | The list of instance tags applied to all nodes | | Required |

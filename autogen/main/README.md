@@ -104,6 +104,9 @@ module "gke" {
       auto_upgrade              = true
       service_account           = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
       preemptible               = false
+      {% if beta_cluster %}
+      spot                      = false
+      {% endif %}
       initial_node_count        = 80
     },
   ]
@@ -212,6 +215,7 @@ The node_pools variable takes the following parameters:
 | node_metadata | Options to expose the node metadata to the workload running on the node | | Optional |
 | preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
 {% if beta_cluster %}
+| spot | A boolean that represents whether or not the underlying node VMs are spot | false | Optional |
 | sandbox_type | Sandbox to use for pods in the node pool | | Required |
 {% endif %}
 | service_account | The service account to be used by the Node VMs | " " | Optional |
