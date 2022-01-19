@@ -70,7 +70,7 @@ resource "google_compute_firewall" "master_webhooks" {
   direction   = "INGRESS"
 
   source_ranges = [local.cluster_endpoint_for_nodes]
-  source_tags   = [""]
+  source_tags   = []
   target_tags   = [local.cluster_network_tag]
 
   allow {
