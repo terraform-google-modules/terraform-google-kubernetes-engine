@@ -37,7 +37,7 @@ control "gcloud" do
 
     describe "workload metada config" do
       it "is secure" do
-        expect(data['nodePools'][0]["config"]["workloadMetadataConfig"]["nodeMetadata"]).to eq 'GKE_METADATA'
+        expect(data['nodePools'][0]["config"]["workloadMetadataConfig"]["nodeMetadata"]).to eq 'GKE_METADATA_SERVER'
       end
     end
   end
