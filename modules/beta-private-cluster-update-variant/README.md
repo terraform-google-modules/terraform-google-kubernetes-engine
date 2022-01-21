@@ -85,6 +85,7 @@ module "gke" {
       min_count                 = 1
       max_count                 = 100
       local_ssd_count           = 0
+      spot                      = false
       local_ssd_ephemeral_count = 0
       disk_size_gb              = 100
       disk_type                 = "pd-standard"
@@ -93,7 +94,6 @@ module "gke" {
       auto_upgrade              = true
       service_account           = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
       preemptible               = false
-      spot                      = false
       initial_node_count        = 80
     },
   ]
