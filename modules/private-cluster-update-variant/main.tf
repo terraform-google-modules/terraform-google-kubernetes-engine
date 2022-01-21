@@ -88,10 +88,9 @@ locals {
 
   // legacy mappings https://github.com/hashicorp/terraform-provider-google/pull/10238
   old_node_metadata_config_mapping = { GKE_METADATA_SERVER = "GKE_METADATA", GCE_METADATA = "EXPOSE" }
-  mapped_node_metadata_config      = lookup(local.old_node_metadata_config_mapping, var.node_metadata, var.node_metadata)
 
-  cluster_node_metadata_config = local.mapped_node_metadata_config == "UNSPECIFIED" ? [] : [{
-    mode = local.mapped_node_metadata_config
+  cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
+    mode = lookup(local.old_node_metadata_config_mapping, var.node_metadata, var.node_metadata)
   }]
 
   cluster_output_name           = google_container_cluster.primary.name
