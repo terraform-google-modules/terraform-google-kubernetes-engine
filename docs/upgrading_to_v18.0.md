@@ -41,10 +41,11 @@ have been eliminated.
 ```
 
 ### Acceptable values for node_metadata modified
-The `node_metadata` variable should now be set to one of `GKE_METADATA`,
+It is recommended to update `node_metadata` variable to one of `GKE_METADATA`,
 `GCE_METADATA` or `UNSPECIFIED`. `GKE_METADATA` replaces the previous
 `GKE_METADATA_SERVER` value, `GCE_METADATA` should be used in place of
-`EXPOSE`. The `SECURE` option, previously deprecated, has now been removed.
+`EXPOSE`, however old values continue to be supported for backwards compatibility.
+The `SECURE` option, previously deprecated, has now been removed.
 
 ```diff
 module "gke" {
