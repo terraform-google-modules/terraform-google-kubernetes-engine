@@ -62,8 +62,9 @@ resource "google_project_iam_member" "asm_iam" {
 
 module "asm-services" {
   source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 10.0"
-  count   = var.enable_gcp_apis ? 1 : 0
+  version = "~> 11.3"
+
+  count = var.enable_gcp_apis ? 1 : 0
 
   project_id                  = var.project_id
   disable_services_on_destroy = false
@@ -87,8 +88,9 @@ module "asm-services" {
 }
 
 module "asm_install" {
-  source            = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version           = "~> 2.1.0"
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
+
   module_depends_on = concat([var.cluster_endpoint], local.additional_depends_on)
 
   gcloud_sdk_version          = var.gcloud_sdk_version

@@ -279,7 +279,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | name | Cluster name |
 | network\_policy\_enabled | Whether network policy enabled |
 | node\_pools\_names | List of node pools names |
-| node\_pools\_versions | List of node pools versions |
+| node\_pools\_versions | Node pool versions by node pool name |
 | peering\_name | The name of the peering between this cluster and the Google owned VPC. |
 | region | Cluster region |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
