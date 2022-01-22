@@ -114,7 +114,7 @@ output "node_pools_names" {
 }
 
 output "node_pools_versions" {
-  description = "List of node pools versions"
+  description = "Node pool versions by node pool name"
   value       = local.cluster_node_pools_versions
 }
 
@@ -123,22 +123,22 @@ output "service_account" {
   value       = local.service_account
 }
 
+output "instance_group_urls" {
+  description = "List of GKE generated instance groups"
+  value       = distinct(flatten([for np in google_container_node_pool.pools : np.managed_instance_group_urls]))
+}
+
 output "release_channel" {
   description = "The release channel of this cluster"
   value       = var.release_channel
 }
 
 output "identity_namespace" {
-  description = "Workload Identity namespace"
-  value       = length(local.cluster_workload_identity_config) > 0 ? local.cluster_workload_identity_config[0].identity_namespace : null
+  description = "Workload Identity pool"
+  value       = length(local.cluster_workload_identity_config) > 0 ? local.cluster_workload_identity_config[0].workload_pool : null
   depends_on = [
     google_container_cluster.primary
   ]
-}
-
-output "instance_group_urls" {
-  description = "List of GKE generated instance groups"
-  value       = google_container_cluster.primary.instance_group_urls
 }
 
 output "master_ipv4_cidr_block" {

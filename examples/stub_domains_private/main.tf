@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-provider "google" {
-  version = "~> 3.55.0"
-  region  = var.region
-}
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
