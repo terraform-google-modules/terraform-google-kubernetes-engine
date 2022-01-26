@@ -28,6 +28,22 @@ data "google_container_cluster" "asm_cluster" {
   project = var.project_id
   name = var.cluster_name
   location = var.cluster_location
+
+  // This evaluates during planning phase unless we explicitly require a dependency on
+  // a resource here. This keeps from breaking in cases where we create the GKE cluster and enable
+  // ASM in the same terraform step.
+  depends_on = [kubernetes_namespace.system_namespace]
+}
+
+module "project-services" {
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
+  version = "~> 10.0"
+
+  project_id    = var.project_id
+  activate_apis = ["meshconfig.googleapis.com"]
+
+  disable_services_on_destroy = false
+  disable_dependent_services  = false
 }
 
 resource "kubernetes_namespace" "system_namespace" {
