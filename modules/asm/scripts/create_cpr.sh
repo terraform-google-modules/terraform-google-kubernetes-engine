@@ -21,6 +21,9 @@ if [ "$#" -lt 3 ]; then
     exit 1
 fi
 
+echo "Sleeping for CPR... do retries instead..."
+sleep 30
+
 REVISION_NAME=$1; shift
 CHANNEL=$1; shift
 ENABLE_CNI=$1; shift

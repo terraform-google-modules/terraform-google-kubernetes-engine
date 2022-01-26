@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-module "hub" {
-  source                  = "../../modules/hub"
-  project_id              = var.project_id
-  location                = module.gke.location
-  cluster_name            = module.gke.name
-  cluster_endpoint        = module.gke.endpoint
-  gke_hub_membership_name = "gke-asm-membership"
+resource "google_gke_hub_membership" "cluster_membership" {
+  provider = google-beta
+  project = var.project_id
+  membership_id = "${google_container_cluster.primary.name}-membership"
+  endpoint{
+    gke_cluster {
+      resource_link = "//container.googleapis.com/${google_container_cluster.primary.id}"
+    }
+  }
+}
+# enable Anthos Configmanagement feature on the project.
+resource "google_gke_hub_feature" "mesh_feature" {
+  name = "servicemesh"
+  project = var.project_id
+  location = "global"
+  provider = google-beta
 }

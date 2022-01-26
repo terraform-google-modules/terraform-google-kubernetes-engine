@@ -21,52 +21,42 @@ locals {
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
-  host                   = "https://${module.gke.endpoint}"
+  host                   = "https://${google_container_cluster.primary.endpoint}"
   token                  = data.google_client_config.default.access_token
-  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+  cluster_ca_certificate = base64decode(google_container_cluster.primary.master_auth[0].cluster_ca_certificate)
 }
 
 data "google_project" "project" {
   project_id = var.project_id
 }
 
-module "gke" {
-  source                  = "../../"
-  project_id              = var.project_id
-  name                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                = false
-  region                  = var.region
-  zones                   = var.zones
-  release_channel         = "REGULAR"
-  network                 = var.network
-  subnetwork              = var.subnetwork
-  ip_range_pods           = var.ip_range_pods
-  ip_range_services       = var.ip_range_services
-  network_policy          = false
-  cluster_resource_labels = { "mesh_id" : "proj-${data.google_project.project.number}" }
-  node_pools = [
-    {
-      name         = "asm-node-pool"
-      autoscaling  = false
-      auto_upgrade = true
-      # ASM requires minimum 4 nodes and e2-standard-4
-      node_count   = 4
-      machine_type = "e2-standard-4"
-    },
-  ]
+resource "google_container_cluster" "primary" {
+  name               = "drew-barrymore"
+  project = var.project_id
+  location           = "us-central1-a"
+  initial_node_count = 3
+  workload_identity_config {
+    identity_namespace = "${var.project_id}.svc.id.goog"
+  }
+  node_config {
+    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+    labels = {
+      foo = "bar"
+    }
+    tags = ["foo", "bar"]
+  }
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
 }
 
 module "asm" {
   source                    = "../../modules/asm"
-  cluster_name              = module.gke.name
-  cluster_endpoint          = module.gke.endpoint
   project_id                = var.project_id
-  location                  = module.gke.location
-  enable_cluster_roles      = true
-  enable_cluster_labels     = true
-  enable_gcp_apis           = true
-  enable_gcp_components     = true
-  enable_namespace_creation = true
-  options                   = ["envoy-access-log"]
-  outdir                    = "./${module.gke.name}-outdir"
+  cluster_name              = google_container_cluster.primary.name
+  cluster_location          = google_container_cluster.primary.location
 }
