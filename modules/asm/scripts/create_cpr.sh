@@ -38,4 +38,4 @@ spec:
   channel: "${CHANNEL}"
 EOF
 
-kubectl wait --for=condition=Reconciled controlplanerevision/asm-managed --timeout 30s
+kubectl wait -n istio-system --for=condition=Reconciled controlplanerevision/${REVISION_NAME} --timeout 30s
