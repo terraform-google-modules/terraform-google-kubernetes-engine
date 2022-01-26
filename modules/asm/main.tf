@@ -15,7 +15,7 @@
  */
 
 locals {
-  // GKE release channel is a list with max length 1 for some reason https://github.com/hashicorp/terraform-provider-google/blob/9d5f69f9f0f74f1a8245f1a52dd6cffb572bbce4/google/resource_container_cluster.go#L954
+  // GKE release channel is a list with max length 1 https://github.com/hashicorp/terraform-provider-google/blob/9d5f69f9f0f74f1a8245f1a52dd6cffb572bbce4/google/resource_container_cluster.go#L954
   gke_release_channel = length(data.google_container_cluster.asm_cluster.release_channel) > 0 ? data.google_container_cluster.asm_cluster.release_channel[0].channel : ""
   gke_release_channel_fixed = local.gke_release_channel == "UNSPECIFIED" ? "" : local.gke_release_channel
   // In order or precedence, use (1) user specified channel, (2) GKE release channel, and (3) regular channel
@@ -30,43 +30,16 @@ data "google_container_cluster" "asm_cluster" {
   location = var.cluster_location
 }
 
-resource "kubernetes_manifest" "cpr" {
-  manifest = {
-    "apiVersion" = "mesh.cloud.google.com/v1beta1"
-    "kind" = "ControlPlaneRevision"
-    "metadata" = {
-      "name" = local.revision_name
-      "namespace" = "istio-system"
-      "labels" = {
-        "mesh.cloud.google.com/managed-cni-enabled" = var.enable_cni
-      }
-    }
-    spec = {
-      type = "managed_service"
-      channel = local.channel
-    }
+resource "kubernetes_namespace" "system_namespace" {
+  metadata {
+    name = "istio-system"
   }
-
-  wait_for = {
-    fields = {
-      // In a perfect world we could do wait_for { condition = "Provisioned" } as described in https://github.com/hashicorp/terraform-provider-kubernetes-alpha/issues/12
-      // but it isn't implemented.
-      "status.conditions[0].reason": "Provisioned",
-      "status.conditions[0].status": "True"
-    }
-  }
-
-  timeouts {
-    create = "10m"
-  }
-
-  depends_on = [kubernetes_config_map.asm_options, kubernetes_config_map.mesh_config]
 }
 
 resource "kubernetes_config_map" "mesh_config" {
     metadata {
       name = local.mesh_config_name
-      namespace = "istio-system"
+      namespace = kubernetes_namespace.system_namespace.metadata[0].name
       annotations = {
         "mesh.cloud.google.com/proxy" = "{\"managed\": \"${var.enable_mdp}\"}"
       }
@@ -82,10 +55,23 @@ resource "kubernetes_config_map" "mesh_config" {
 resource "kubernetes_config_map" "asm_options" {
   metadata {
     name = "asm-options"
-    namespace = "istio-system"
+    namespace = kubernetes_namespace.system_namespace.metadata[0].name
   }
 
   data = {
     CROSS_CLUSTER_SERVICE_DISCOVERY = var.enable_cross_cluster_service_discovery ? "ON" : "OFF"
   }
+}
+
+module "cpr" {
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+
+  project_id                  = var.project_id
+  cluster_name                = var.cluster_name
+  cluster_location            = var.cluster_location
+
+  kubectl_create_command  = "${path.module}/scripts/create_cpr.sh ${local.revision_name} ${local.channel} ${var.enable_cni}"
+  kubectl_destroy_command = "${path.module}/scripts/destroy_cpr.sh ${local.revision_name}"
+
+  module_depends_on = [kubernetes_config_map.asm_options, kubernetes_config_map.mesh_config]
 }
