@@ -41,4 +41,4 @@ spec:
   channel: "${CHANNEL}"
 EOF
 
-kubectl wait -n istio-system --for=condition=Reconciled controlplanerevision/${REVISION_NAME} --timeout 30s
+kubectl wait -n istio-system --for=condition=Reconciled controlplanerevision/${REVISION_NAME} --timeout 5m
