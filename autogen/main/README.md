@@ -95,6 +95,7 @@ module "gke" {
       max_count                 = 100
       local_ssd_count           = 0
       {% if beta_cluster %}
+      spot                      = false
       local_ssd_ephemeral_count = 0
       {% endif %}
       disk_size_gb              = 100
@@ -212,6 +213,7 @@ The node_pools variable takes the following parameters:
 | node_metadata | Options to expose the node metadata to the workload running on the node | | Optional |
 | preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
 {% if beta_cluster %}
+| spot | A boolean that represents whether the underlying node VMs are spot | false | Optional |
 | sandbox_type | Sandbox to use for pods in the node pool | | Required |
 {% endif %}
 | service_account | The service account to be used by the Node VMs | " " | Optional |

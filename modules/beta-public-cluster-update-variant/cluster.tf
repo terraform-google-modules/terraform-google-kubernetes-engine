@@ -348,6 +348,7 @@ locals {
     "machine_type",
     "min_cpu_platform",
     "preemptible",
+    "spot",
     "service_account",
   ]
 }
@@ -529,6 +530,7 @@ resource "google_container_node_pool" "pools" {
       local.service_account,
     )
     preemptible = lookup(each.value, "preemptible", false)
+    spot        = lookup(each.value, "spot", false)
 
     oauth_scopes = concat(
       local.node_pools_oauth_scopes["all"],
