@@ -62,6 +62,23 @@ module "gke" {
 }
 ```
 
+### Default node image changed to COS_CONTAINERD
+
+The `COS` image is [deprecated](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images#cos-variants), therefore the default has been updated to `COS_CONTAINERD`. If you want to keep using the COS image for your node pool, you can override the default value.
+
+```diff
+module "gke" {
+  source = "../../modules/safer-cluster"
+
+  node_pools = [
+    {
+     name       = "pool-01"
++    image_type = "COS"
+    }
+  ]
+}
+```
+
 ### node_pools_versions is now keyed by node-pool name
 The `node_pools_versions` output is now an object keyed by node pool name,
 rather than a list as previously.
