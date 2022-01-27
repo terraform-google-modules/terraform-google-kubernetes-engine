@@ -18,11 +18,6 @@ locals {
   cluster_type = "node-pool-update-variant"
 }
 
-provider "google" {
-  version = "~> 3.42.0"
-  region  = var.region
-}
-
 data "google_compute_subnetwork" "subnetwork" {
   name    = var.subnetwork
   project = var.project_id

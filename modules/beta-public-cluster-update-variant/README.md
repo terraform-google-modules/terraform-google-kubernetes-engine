@@ -79,6 +79,7 @@ module "gke" {
       min_count                 = 1
       max_count                 = 100
       local_ssd_count           = 0
+      spot                      = false
       local_ssd_ephemeral_count = 0
       disk_size_gb              = 100
       disk_type                 = "pd-standard"
@@ -154,8 +155,6 @@ Then perform the following commands on the root folder:
 | add\_master\_webhook\_firewall\_rules | Create master\_webhook firewall rules for ports defined in `firewall_inbound_ports` | `bool` | `false` | no |
 | add\_shadow\_firewall\_rules | Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled). | `bool` | `false` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
-| basic\_auth\_password | The password to be used with Basic Authentication. | `string` | `""` | no |
-| basic\_auth\_username | The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration. | `string` | `""` | no |
 | cloudrun | (Beta) Enable CloudRun addon | `bool` | `false` | no |
 | cloudrun\_load\_balancer\_type | (Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer. | `string` | `""` | no |
 | cluster\_autoscaling | Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling) | <pre>object({<br>    enabled             = bool<br>    autoscaling_profile = string<br>    min_cpu_cores       = number<br>    max_cpu_cores       = number<br>    min_memory_gb       = number<br>    max_memory_gb       = number<br>    gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))<br>  })</pre> | <pre>{<br>  "autoscaling_profile": "BALANCED",<br>  "enabled": false,<br>  "gpu_resources": [],<br>  "max_cpu_cores": 0,<br>  "max_memory_gb": 0,<br>  "min_cpu_cores": 0,<br>  "min_memory_gb": 0<br>}</pre> | no |
@@ -190,7 +189,7 @@ Then perform the following commands on the root folder:
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles. | `bool` | `false` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | `bool` | `true` | no |
 | http\_load\_balancing | Enable httpload balancer addon | `bool` | `true` | no |
-| identity\_namespace | Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `[project_id].svc.id.goog`) | `string` | `"enabled"` | no |
+| identity\_namespace | The workload pool to attach all Kubernetes service accounts to. (Default value of `enabled` automatically sets project-based pool `[project_id].svc.id.goog`) | `string` | `"enabled"` | no |
 | impersonate\_service\_account | An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials. | `string` | `""` | no |
 | initial\_node\_count | The number of nodes to create in this cluster's default node pool. | `number` | `0` | no |
 | ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | `bool` | `false` | no |
@@ -216,7 +215,7 @@ Then perform the following commands on the root folder:
 | network\_policy | Enable network policy addon | `bool` | `false` | no |
 | network\_policy\_provider | The network policy provider. | `string` | `"CALICO"` | no |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | `string` | `""` | no |
-| node\_metadata | Specifies how node metadata is exposed to the workload running on the node | `string` | `"GKE_METADATA_SERVER"` | no |
+| node\_metadata | Specifies how node metadata is exposed to the workload running on the node | `string` | `"GKE_METADATA"` | no |
 | node\_pools | List of maps containing node pools | `list(map(string))` | <pre>[<br>  {<br>    "name": "default-node-pool"<br>  }<br>]</pre> | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | `map(map(string))` | <pre>{<br>  "all": {},<br>  "default-node-pool": {}<br>}</pre> | no |
 | node\_pools\_linux\_node\_configs\_sysctls | Map of maps containing linux node config sysctls by node-pool name | `map(map(string))` | <pre>{<br>  "all": {},<br>  "default-node-pool": {}<br>}</pre> | no |
@@ -253,7 +252,7 @@ Then perform the following commands on the root folder:
 | endpoint | Cluster endpoint |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
-| identity\_namespace | Workload Identity namespace |
+| identity\_namespace | Workload Identity pool |
 | instance\_group\_urls | List of GKE generated instance groups |
 | intranode\_visibility\_enabled | Whether intra-node visibility is enabled |
 | istio\_enabled | Whether Istio is enabled |
@@ -266,7 +265,7 @@ Then perform the following commands on the root folder:
 | name | Cluster name |
 | network\_policy\_enabled | Whether network policy enabled |
 | node\_pools\_names | List of node pools names |
-| node\_pools\_versions | List of node pools versions |
+| node\_pools\_versions | Node pool versions by node pool name |
 | pod\_security\_policy\_enabled | Whether pod security policy is enabled |
 | region | Cluster region |
 | release\_channel | The release channel of this cluster |
@@ -316,6 +315,7 @@ The node_pools variable takes the following parameters:
 | node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. Defaults to cluster level node locations if nothing is specified | " " | Optional |
 | node_metadata | Options to expose the node metadata to the workload running on the node | | Optional |
 | preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
+| spot | A boolean that represents whether the underlying node VMs are spot | false | Optional |
 | sandbox_type | Sandbox to use for pods in the node pool | | Required |
 | service_account | The service account to be used by the Node VMs | " " | Optional |
 | tags | The list of instance tags applied to all nodes | | Required |

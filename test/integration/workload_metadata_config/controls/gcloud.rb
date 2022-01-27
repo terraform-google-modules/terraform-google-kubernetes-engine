@@ -31,12 +31,6 @@ control "gcloud" do
         {}
       end
     end
-
-    describe "workload metada config" do
-      it "is secure" do
-        expect(data['nodePools'][0]["config"]["workloadMetadataConfig"]["nodeMetadata"]).to eq 'SECURE'
-      end
-    end
   end
 
   describe command("gcloud beta --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json --format=\"json(nodeConfig.workloadMetadataConfig)\"") do
@@ -50,12 +44,6 @@ control "gcloud" do
         {}
       end
     end
-
-    describe "workload metada config" do
-      it "is secure" do
-        expect(data["nodeConfig"]["workloadMetadataConfig"]["nodeMetadata"]).to eq 'SECURE'
-      end
-    end
   end
 
   registry_project_ids.each do |registry_project_id|
@@ -63,17 +51,21 @@ control "gcloud" do
       its(:exit_status) { should eq 0 }
       its(:stderr) { should eq '' }
 
-      let!(:iam) do
+      let(:bindings) do
         if subject.exit_status == 0
-          JSON.parse(subject.stdout)
+          JSON.parse(subject.stdout, symbolize_names: true)[:bindings]
         else
-          {}
+          []
         end
       end
       it "has expected registry roles" do
-        expect(iam['bindings']).to include(
-          {"members" => ["serviceAccount:#{service_account}"], "role" => "roles/storage.objectViewer"},
-          {"members" => ["serviceAccount:#{service_account}"], "role" => "roles/artifactregistry.reader"}
+        expect(bindings).to include(
+          members: including("serviceAccount:#{service_account}"),
+          role: "roles/storage.objectViewer",
+        )
+        expect(bindings).to include(
+          members: including("serviceAccount:#{service_account}"),
+          role: "roles/artifactregistry.reader",
         )
       end
     end

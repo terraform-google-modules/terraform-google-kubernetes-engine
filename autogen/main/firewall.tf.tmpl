@@ -34,20 +34,11 @@ resource "google_compute_firewall" "intra_egress" {
   direction   = "EGRESS"
 
   target_tags = [local.cluster_network_tag]
-  {% if beta_cluster %}
-  destination_ranges = compact([
-    local.cluster_endpoint_for_nodes,
-    local.cluster_subnet_cidr,
-    local.cluster_alias_ranges_cidr[var.ip_range_pods],
-    google_container_cluster.primary.tpu_ipv4_cidr_block,
-  ])
-  {% else %}
   destination_ranges = [
     local.cluster_endpoint_for_nodes,
     local.cluster_subnet_cidr,
     local.cluster_alias_ranges_cidr[var.ip_range_pods],
   ]
-  {% endif %}
 
   # Allow all possible protocols
   allow { protocol = "tcp" }
@@ -65,6 +56,46 @@ resource "google_compute_firewall" "intra_egress" {
 }
 
 
+{% if beta_cluster %}
+/******************************************
+  Allow egress to the TPU IPv4 CIDR block
+
+  This rule is defined separately from the
+  intra_egress rule above since it requires
+  an output from the google_container_cluster
+  resource.
+
+  https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1124
+ *****************************************/
+resource "google_compute_firewall" "tpu_egress" {
+  count       = var.add_cluster_firewall_rules && var.enable_tpu ? 1 : 0
+  name        = "gke-${substr(var.name, 0, min(25, length(var.name)))}-tpu-egress"
+  description = "Managed by terraform gke module: Allow pods to communicate with TPUs"
+  project     = local.network_project_id
+  network     = var.network
+  priority    = var.firewall_priority
+  direction   = "EGRESS"
+
+  target_tags        = [local.cluster_network_tag]
+  destination_ranges = [google_container_cluster.primary.tpu_ipv4_cidr_block]
+
+  # Allow all possible protocols
+  allow { protocol = "tcp" }
+  allow { protocol = "udp" }
+  allow { protocol = "icmp" }
+  allow { protocol = "sctp" }
+  allow { protocol = "esp" }
+  allow { protocol = "ah" }
+
+  {% if not private_cluster %}
+  depends_on = [
+    google_container_cluster.primary,
+  ]
+  {% endif %}
+}
+
+
+{% endif %}
 /******************************************
   Allow GKE master to hit non 443 ports for
   Webhooks/Admission Controllers
@@ -81,6 +112,7 @@ resource "google_compute_firewall" "master_webhooks" {
   direction   = "INGRESS"
 
   source_ranges = [local.cluster_endpoint_for_nodes]
+  source_tags   = []
   target_tags   = [local.cluster_network_tag]
 
   allow {

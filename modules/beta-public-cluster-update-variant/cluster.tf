@@ -142,9 +142,6 @@ resource "google_container_cluster" "primary" {
   }
 
   master_auth {
-    username = var.basic_auth_username
-    password = var.basic_auth_password
-
     client_certificate_config {
       issue_client_certificate = var.issue_client_certificate
     }
@@ -196,6 +193,7 @@ resource "google_container_cluster" "primary" {
       enabled = var.config_connector
     }
   }
+
   datapath_provider = var.datapath_provider
 
   networking_mode = "VPC_NATIVE"
@@ -253,11 +251,18 @@ resource "google_container_cluster" "primary" {
 
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
+      tags = concat(
+        lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
+        lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-default-pool"] : [],
+        lookup(local.node_pools_tags, "all", []),
+        lookup(local.node_pools_tags, var.node_pools[0].name, []),
+      )
+
       dynamic "workload_metadata_config" {
         for_each = local.cluster_node_metadata_config
 
         content {
-          node_metadata = workload_metadata_config.value.node_metadata
+          mode = workload_metadata_config.value.mode
         }
       }
 
@@ -311,7 +316,7 @@ resource "google_container_cluster" "primary" {
     for_each = local.cluster_workload_identity_config
 
     content {
-      identity_namespace = workload_identity_config.value.identity_namespace
+      workload_pool = workload_identity_config.value.workload_pool
     }
   }
 
@@ -343,6 +348,7 @@ locals {
     "machine_type",
     "min_cpu_platform",
     "preemptible",
+    "spot",
     "service_account",
   ]
 }
@@ -524,6 +530,7 @@ resource "google_container_node_pool" "pools" {
       local.service_account,
     )
     preemptible = lookup(each.value, "preemptible", false)
+    spot        = lookup(each.value, "spot", false)
 
     oauth_scopes = concat(
       local.node_pools_oauth_scopes["all"],
@@ -546,9 +553,10 @@ resource "google_container_node_pool" "pools" {
       for_each = local.cluster_node_metadata_config
 
       content {
-        node_metadata = lookup(each.value, "node_metadata", workload_metadata_config.value.node_metadata)
+        mode = lookup(each.value, "node_metadata", workload_metadata_config.value.mode)
       }
     }
+
     dynamic "sandbox_config" {
       for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
       content {

@@ -21,7 +21,6 @@ resource "random_string" "suffix" {
 }
 
 provider "google" {
-  version = "~> 3.42.0"
   project = var.project_ids[1]
 }
 

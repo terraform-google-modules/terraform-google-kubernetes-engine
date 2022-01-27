@@ -18,11 +18,6 @@ locals {
   cluster_type = "regional"
 }
 
-provider "google" {
-  version = "~> 3.42.0"
-  region  = var.region
-}
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
@@ -42,7 +37,7 @@ module "gke" {
   ip_range_services        = var.ip_range_services
   remove_default_node_pool = true
   service_account          = "create"
-  node_metadata            = "GKE_METADATA_SERVER"
+  node_metadata            = "GKE_METADATA"
   node_pools = [
     {
       name         = "wi-pool"

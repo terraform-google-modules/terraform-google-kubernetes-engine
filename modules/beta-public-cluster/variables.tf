@@ -107,6 +107,7 @@ variable "network_policy_provider" {
   description = "The network policy provider."
   default     = "CALICO"
 }
+
 variable "datapath_provider" {
   type        = string
   description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
@@ -377,18 +378,6 @@ variable "service_account" {
   default     = ""
 }
 
-variable "basic_auth_username" {
-  type        = string
-  description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
-  default     = ""
-}
-
-variable "basic_auth_password" {
-  type        = string
-  description = "The password to be used with Basic Authentication."
-  default     = ""
-}
-
 variable "issue_client_certificate" {
   type        = bool
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
@@ -495,8 +484,13 @@ variable "authenticator_security_group" {
 
 variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
-  default     = "GKE_METADATA_SERVER"
+  default     = "GKE_METADATA"
   type        = string
+
+  validation {
+    condition     = contains(["GKE_METADATA", "GCE_METADATA", "UNSPECIFIED", "GKE_METADATA_SERVER", "EXPOSE"], var.node_metadata)
+    error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA or UNSPECIFIED."
+  }
 }
 
 variable "database_encryption" {
@@ -510,7 +504,7 @@ variable "database_encryption" {
 }
 
 variable "identity_namespace" {
-  description = "Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `[project_id].svc.id.goog`)"
+  description = "The workload pool to attach all Kubernetes service accounts to. (Default value of `enabled` automatically sets project-based pool `[project_id].svc.id.goog`)"
   type        = string
   default     = "enabled"
 }

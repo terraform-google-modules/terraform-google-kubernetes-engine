@@ -18,11 +18,6 @@ locals {
   cluster_type = "disable-cluster-cert"
 }
 
-provider "google" {
-  version = "~> 3.42.0"
-  region  = var.region
-}
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {

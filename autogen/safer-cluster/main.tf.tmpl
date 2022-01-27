@@ -111,10 +111,6 @@ module "gke" {
   registry_project_ids   = var.registry_project_ids
   grant_registry_access  = var.grant_registry_access
 
-  // Basic Auth disabled
-  basic_auth_username = ""
-  basic_auth_password = ""
-
   issue_client_certificate = false
 
   cluster_resource_labels = var.cluster_resource_labels
@@ -164,7 +160,7 @@ module "gke" {
 
   enable_vertical_pod_autoscaling = var.enable_vertical_pod_autoscaling
 
-  // We enable identity namespace by default.
+  // We enable Workload Identity by default.
   identity_namespace = "${var.project_id}.svc.id.goog"
 
   authenticator_security_group = var.authenticator_security_group
