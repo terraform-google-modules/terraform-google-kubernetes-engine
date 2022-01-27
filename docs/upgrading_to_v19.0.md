@@ -1,10 +1,11 @@
-# Upgrading to v18.0
+# Upgrading to v19.0
 
-The v18.0 release of *kubernetes-engine* is a backwards incompatible release.
+The v19.0 release of *kubernetes-engine* is a backwards incompatible release.
 
 ### Google Cloud Platform Provider upgrade
 The Terraform Kubernetes Engine Module now requires version 4.0 or higher of
-the Google Cloud Platform Provider.
+the Google Cloud Platform Provider and 4.3 or higher of
+the Google Cloud Platform Beta Provider.
 
 ```diff
 terraform {
