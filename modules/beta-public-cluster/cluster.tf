@@ -245,7 +245,7 @@ resource "google_container_cluster" "primary" {
     initial_node_count = var.initial_node_count
 
     node_config {
-      image_type       = lookup(var.node_pools[0], "image_type", lookup(var.node_pools[0], "sandbox_enabled", var.sandbox_enabled) ? "COS_CONTAINERD" : "COS")
+      image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
       machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
       min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
 
@@ -391,7 +391,7 @@ resource "google_container_node_pool" "pools" {
   }
 
   node_config {
-    image_type       = lookup(each.value, "image_type", lookup(each.value, "sandbox_enabled", var.sandbox_enabled) ? "COS_CONTAINERD" : "COS")
+    image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type     = lookup(each.value, "machine_type", "e2-medium")
     min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
     labels = merge(
