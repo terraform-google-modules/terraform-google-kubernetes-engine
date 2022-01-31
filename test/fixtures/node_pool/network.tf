@@ -32,7 +32,7 @@ resource "google_compute_network" "main" {
 resource "google_compute_subnetwork" "main" {
   name          = "cft-gke-test-${random_string.suffix.result}"
   ip_cidr_range = "10.0.0.0/17"
-  region        = var.region
+  region        = "europe-west4"
   network       = google_compute_network.main.self_link
 
   secondary_ip_range {
