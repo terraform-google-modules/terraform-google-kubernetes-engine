@@ -29,6 +29,6 @@ terraform {
     }
   }
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:private-cluster/v18.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:private-cluster/v19.0.0"
   }
 }
