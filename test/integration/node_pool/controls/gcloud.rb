@@ -514,8 +514,8 @@ control "gcloud" do
         including(
           "name" => "pool-03",
           "locations" => match_array([
-            "us-central1-b",
-            "us-central1-c",
+            "#{location}-b",
+            "#{location}-c",
           ]),
         )
       )
