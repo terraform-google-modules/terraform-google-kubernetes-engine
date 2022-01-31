@@ -6,6 +6,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [19.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v18.0.0...v19.0.0) (2022-01-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Change default node image from COS to COS_CONTAINERD (#1122)
+* Add spot vm support to beta clusters (#1131)
+* update TPG version constraints to 4.0 (#1129)
+* TPU firewall rule split into a separate resource
+
+### Features
+
+* Add spot vm support to beta clusters ([#1131](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1131)) ([ae0d953](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ae0d9536e006663701202e7e18eb932a8c195dac))
+* Allow datapath_provider in GA main module ([#1084](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1084)) ([3b5ddb9](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3b5ddb92e41e79e900a716326c135e618fa974ec))
+* Change default node image from COS to COS_CONTAINERD ([#1122](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1122)) ([e6b9282](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e6b928288cdd79035d32ea84fd8ce6ca40979246))
+* update TPG version constraints to 4.0 ([#1129](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1129)) ([d494b0f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d494b0f1ee346440af3b9c734eceb0f72b804379))
+
+
+### Bug Fixes
+
+* Allow users to specify network tags for the default node pool ([#1123](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1123)) ([b8b8547](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b8b854793410473f4f7469d2675d8a58aaffd18a))
+* Create separate firewall rule for egress to TPUs ([#1126](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1126)) ([99cfd98](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/99cfd98a523f9410a8dc06503b566f51bfe8b158))
+* Removed dependency to obsolete template_file by upgrading to templatefile ([#1119](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1119)) ([14a0536](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/14a0536bbcfeb89dc1af21f8fef0cb46affdc52e))
+
 ## [18.0.0](https://www.github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v17.3.0...v18.0.0) (2021-12-16)
 
 
