@@ -527,6 +527,12 @@ variable "enable_intranode_visibility" {
   description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
   default     = false
 }
+
+variable "enable_identity_service" {
+  type        = bool
+  description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
+  default     = false
+}
 {% endif %}
 
 variable "authenticator_security_group" {

@@ -97,6 +97,12 @@ control "gcloud" do
           "keyName" => attribute('database_encryption_key_name'),
         })
       end
+
+      it "has the expected identityServiceConfig config" do
+        expect(data['identityServiceConfig']).to eq({
+          "enabled" => true,
+        })
+      end
     end
 
     describe "default node pool" do
