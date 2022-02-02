@@ -35,17 +35,6 @@ data "google_container_cluster" "asm_cluster" {
   depends_on = [kubernetes_namespace.system_namespace]
 }
 
-module "project-services" {
-  source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 10.0"
-
-  project_id    = var.project_id
-  activate_apis = ["meshconfig.googleapis.com"]
-
-  disable_services_on_destroy = false
-  disable_dependent_services  = false
-}
-
 resource "kubernetes_namespace" "system_namespace" {
   metadata {
     name = "istio-system"
@@ -79,6 +68,13 @@ resource "kubernetes_config_map" "asm_options" {
   }
 }
 
+resource "google_gke_hub_feature" "mesh_feature" {
+  name = "servicemesh"
+  project = var.project_id
+  location = "global"
+  provider = google-beta
+}
+
 module "cpr" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
 
@@ -90,4 +86,15 @@ module "cpr" {
   kubectl_destroy_command = "${path.module}/scripts/destroy_cpr.sh ${local.revision_name}"
 
   module_depends_on = [kubernetes_config_map.asm_options, kubernetes_config_map.mesh_config]
+}
+
+module "project-services" {
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
+  version = "~> 10.0"
+
+  project_id    = var.project_id
+  activate_apis = ["mesh.googleapis.com"]
+
+  disable_services_on_destroy = false
+  disable_dependent_services  = false
 }
