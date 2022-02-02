@@ -62,8 +62,6 @@ module "this" {
 
   enable_pod_security_policy = true
 
-  enable_identity_service = true
-
   // Dataplane-V2 Feature
   datapath_provider = "ADVANCED_DATAPATH"
 }
