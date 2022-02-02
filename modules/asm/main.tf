@@ -16,19 +16,19 @@
 
 locals {
   // GKE release channel is a list with max length 1 https://github.com/hashicorp/terraform-provider-google/blob/9d5f69f9f0f74f1a8245f1a52dd6cffb572bbce4/google/resource_container_cluster.go#L954
-  gke_release_channel = length(data.google_container_cluster.asm_cluster.release_channel) > 0 ? data.google_container_cluster.asm_cluster.release_channel[0].channel : ""
+  gke_release_channel       = length(data.google_container_cluster.asm_cluster.release_channel) > 0 ? data.google_container_cluster.asm_cluster.release_channel[0].channel : ""
   gke_release_channel_fixed = local.gke_release_channel == "UNSPECIFIED" ? "" : local.gke_release_channel
   // In order or precedence, use (1) user specified channel, (2) GKE release channel, and (3) regular channel
-  channel = lower(coalesce(var.channel, local.gke_release_channel_fixed, "regular"))
-  revision_name = "asm-managed${local.channel == "regular" ? "" : "-${local.channel}"}"
+  channel          = lower(coalesce(var.channel, local.gke_release_channel_fixed, "regular"))
+  revision_name    = "asm-managed${local.channel == "regular" ? "" : "-${local.channel}"}"
   mesh_config_name = "istio-${local.revision_name}"
   // CNI should be enabled if either enable_cni or enable_mdp are set
   enable_cni = var.enable_cni || var.enable_mdp
 }
 
 data "google_container_cluster" "asm_cluster" {
-  project = var.project_id
-  name = var.cluster_name
+  project  = var.project_id
+  name     = var.cluster_name
   location = var.cluster_location
 
   // This evaluates during planning phase unless we explicitly require a dependency on
@@ -44,21 +44,21 @@ resource "kubernetes_namespace" "system_namespace" {
 }
 
 resource "kubernetes_config_map" "mesh_config" {
-    metadata {
-      name = local.mesh_config_name
-      namespace = kubernetes_namespace.system_namespace.metadata[0].name
-      labels = {
-        "istio.io/rev" = local.revision_name
-      }
+  metadata {
+    name      = local.mesh_config_name
+    namespace = kubernetes_namespace.system_namespace.metadata[0].name
+    labels = {
+      "istio.io/rev" = local.revision_name
     }
-    data = {
-      mesh = yamlencode(var.mesh_config)
-    }
+  }
+  data = {
+    mesh = yamlencode(var.mesh_config)
+  }
 }
 
 resource "kubernetes_config_map" "asm_options" {
   metadata {
-    name = "asm-options"
+    name      = "asm-options"
     namespace = kubernetes_namespace.system_namespace.metadata[0].name
   }
 
@@ -68,18 +68,18 @@ resource "kubernetes_config_map" "asm_options" {
 }
 
 resource "google_gke_hub_feature" "mesh_feature" {
-  name = "servicemesh"
-  project = var.project_id
+  name     = "servicemesh"
+  project  = var.project_id
   location = "global"
   provider = google-beta
 }
 
 module "cpr" {
-  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  source = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
 
-  project_id                  = var.project_id
-  cluster_name                = var.cluster_name
-  cluster_location            = var.cluster_location
+  project_id       = var.project_id
+  cluster_name     = var.cluster_name
+  cluster_location = var.cluster_location
 
   kubectl_create_command  = "${path.module}/scripts/create_cpr.sh ${local.revision_name} ${local.channel} ${local.enable_cni}"
   kubectl_destroy_command = "${path.module}/scripts/destroy_cpr.sh ${local.revision_name}"

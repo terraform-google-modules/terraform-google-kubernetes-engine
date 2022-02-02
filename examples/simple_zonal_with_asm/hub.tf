@@ -15,10 +15,10 @@
  */
 
 resource "google_gke_hub_membership" "cluster_membership" {
-  provider = google-beta
-  project = var.project_id
+  provider      = google-beta
+  project       = var.project_id
   membership_id = "${module.gke.name}-membership"
-  endpoint{
+  endpoint {
     gke_cluster {
       resource_link = "//container.googleapis.com/${module.gke.cluster_id}"
     }

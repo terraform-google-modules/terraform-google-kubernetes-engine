@@ -23,6 +23,6 @@ fi
 
 REVISION_NAME=$1; shift
 
-if !kubectl delete controlplanerevision -n istio-system ${REVISION_NAME} ; then
+if ! kubectl delete controlplanerevision -n istio-system "${REVISION_NAME}" ; then
   echo "ControlPlaneRevision ${REVISION_NAME} not found"
 fi

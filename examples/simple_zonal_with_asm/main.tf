@@ -57,9 +57,9 @@ module "gke" {
 }
 
 module "asm" {
-  source                    = "../../modules/asm"
-  cluster_name              = module.gke.name
-  cluster_location          = module.gke.location
-  project_id                = var.project_id
-  location                  = module.gke.location
+  source           = "../../modules/asm"
+  cluster_name     = module.gke.name
+  cluster_location = module.gke.location
+  project_id       = var.project_id
+  location         = module.gke.location
 }

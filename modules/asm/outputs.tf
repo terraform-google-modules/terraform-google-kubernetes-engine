@@ -15,6 +15,6 @@
  */
 
 output "revision_name" {
-  value = local.revision_name
+  value       = local.revision_name
   description = "The name of the installed managed ASM revision."
 }

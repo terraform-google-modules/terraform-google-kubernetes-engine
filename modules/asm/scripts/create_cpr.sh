@@ -23,8 +23,17 @@ fi
 
 # Wait for the CRD to get created before creating the CPR.
 readonly CPR_RESOURCE=controlplanerevisions.mesh.cloud.google.com
-for i in {1..6}; do kubectl get crd ${CPR_RESOURCE} && break || sleep 10; done
-kubectl wait --for condition=established --timeout=60s crd/${CPR_RESOURCE}
+for _i in {1..6}; do
+  echo "Ensuring ControlPlaneRevision exists in cluster... attempt ${_i}"
+  if kubectl get crd "${CPR_RESOURCE}"
+  then
+    break
+  else
+    sleep 10
+  fi
+done
+
+kubectl wait --for condition=established --timeout=60s crd/"${CPR_RESOURCE}"
 
 REVISION_NAME=$1; shift
 CHANNEL=$1; shift
@@ -43,4 +52,4 @@ spec:
   channel: "${CHANNEL}"
 EOF
 
-kubectl wait -n istio-system --for=condition=Reconciled controlplanerevision/${REVISION_NAME} --timeout 5m
+kubectl wait -n istio-system --for=condition=Reconciled controlplanerevision/"${REVISION_NAME}" --timeout 5m
