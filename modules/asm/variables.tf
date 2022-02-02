@@ -50,6 +50,8 @@ variable "enable_cni" {
   default = true
 }
 
+// This should be validated so that it cannot be enabled while CNI is disabled
+// but validating based on other variables is not possible today (https://github.com/hashicorp/terraform/issues/25609)
 variable "enable_mdp" {
   description = "Determines whether to enable Managed Data Plane (MDP) for this ASM installation."
   type = bool

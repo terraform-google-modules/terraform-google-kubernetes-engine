@@ -21,7 +21,9 @@ locals {
   // In order or precedence, use (1) user specified channel, (2) GKE release channel, and (3) regular channel
   channel = lower(coalesce(var.channel, local.gke_release_channel_fixed, "regular"))
   revision_name = "asm-managed${local.channel == "regular" ? "" : "-${local.channel}"}"
-  mesh_config_name= "istio-${local.revision_name}"
+  mesh_config_name = "istio-${local.revision_name}"
+  // CNI should be enabled if either enable_cni or enable_mdp are set
+  enable_cni = var.enable_cni || var.enable_mdp
 }
 
 data "google_container_cluster" "asm_cluster" {
@@ -45,9 +47,6 @@ resource "kubernetes_config_map" "mesh_config" {
     metadata {
       name = local.mesh_config_name
       namespace = kubernetes_namespace.system_namespace.metadata[0].name
-      annotations = {
-        "mesh.cloud.google.com/proxy" = "{\"managed\": \"${var.enable_mdp}\"}"
-      }
       labels = {
         "istio.io/rev" = local.revision_name
       }
@@ -82,7 +81,7 @@ module "cpr" {
   cluster_name                = var.cluster_name
   cluster_location            = var.cluster_location
 
-  kubectl_create_command  = "${path.module}/scripts/create_cpr.sh ${local.revision_name} ${local.channel} ${var.enable_cni}"
+  kubectl_create_command  = "${path.module}/scripts/create_cpr.sh ${local.revision_name} ${local.channel} ${local.enable_cni}"
   kubectl_destroy_command = "${path.module}/scripts/destroy_cpr.sh ${local.revision_name}"
 
   module_depends_on = [kubernetes_config_map.asm_options, kubernetes_config_map.mesh_config]
