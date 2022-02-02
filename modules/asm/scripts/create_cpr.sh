@@ -21,8 +21,10 @@ if [ "$#" -lt 3 ]; then
     exit 1
 fi
 
-echo "Sleeping for CPR... do retries instead..."
-sleep 30
+# Wait for the CRD to get created before creating the CPR.
+readonly CPR_RESOURCE=controlplanerevisions.mesh.cloud.google.com
+for i in {1..6}; do kubectl get crd ${CPR_RESOURCE} && break || sleep 10; done
+kubectl wait --for condition=established --timeout=60s crd/${CPR_RESOURCE}
 
 REVISION_NAME=$1; shift
 CHANNEL=$1; shift
