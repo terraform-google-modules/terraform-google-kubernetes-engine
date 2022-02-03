@@ -49,7 +49,7 @@ variable "location" {
 }
 
 variable "k8s_sa_name" {
-  description = "Name for the Kubernetes service account; overrides `var.name`."
+  description = "Name for the Kubernetes service account; overrides `var.name`. `cluster_name` and `location` must be set when this input is specified."
   type        = string
   default     = null
 }
