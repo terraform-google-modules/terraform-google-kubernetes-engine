@@ -16,7 +16,7 @@
 
 locals {
   // GKE release channel is a list with max length 1 https://github.com/hashicorp/terraform-provider-google/blob/9d5f69f9f0f74f1a8245f1a52dd6cffb572bbce4/google/resource_container_cluster.go#L954
-  gke_release_channel       = length(data.google_container_cluster.asm_cluster.release_channel) > 0 ? data.google_container_cluster.asm_cluster.release_channel[0].channel : ""
+  gke_release_channel       = data.google_container_cluster.asm_cluster.release_channel != null ? data.google_container_cluster.asm_cluster.release_channel[0].channel : ""
   gke_release_channel_fixed = local.gke_release_channel == "UNSPECIFIED" ? "" : local.gke_release_channel
   // In order or precedence, use (1) user specified channel, (2) GKE release channel, and (3) regular channel
   channel          = lower(coalesce(var.channel, local.gke_release_channel_fixed, "regular"))
@@ -30,11 +30,6 @@ data "google_container_cluster" "asm_cluster" {
   project  = var.project_id
   name     = var.cluster_name
   location = var.cluster_location
-
-  // This evaluates during planning phase unless we explicitly require a dependency on
-  // a resource here. This keeps from breaking in cases where we create the GKE cluster and enable
-  // ASM in the same terraform step.
-  depends_on = [kubernetes_namespace.system_namespace]
 }
 
 resource "kubernetes_namespace" "system_namespace" {
@@ -67,12 +62,14 @@ resource "kubernetes_config_map" "asm_options" {
   }
 }
 
-resource "google_gke_hub_feature" "mesh_feature" {
-  name     = "servicemesh"
-  project  = var.project_id
-  location = "global"
-  provider = google-beta
-}
+# TODO(Monkeyanator) due to a bug in the gke_hub_feature resource implementation this fails when enabling an enabled
+# feature (i.e. running the module twice) and does not disable the feature upon TF destroy.
+#resource "google_gke_hub_feature" "mesh_feature" {
+#  name     = "servicemesh"
+#  project  = var.project_id
+#  location = "global"
+#  provider = google-beta
+#}
 
 module "cpr" {
   source = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
@@ -84,16 +81,5 @@ module "cpr" {
   kubectl_create_command  = "${path.module}/scripts/create_cpr.sh ${local.revision_name} ${local.channel} ${local.enable_cni}"
   kubectl_destroy_command = "${path.module}/scripts/destroy_cpr.sh ${local.revision_name}"
 
-  module_depends_on = [kubernetes_config_map.asm_options, kubernetes_config_map.mesh_config]
-}
-
-module "project-services" {
-  source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 10.0"
-
-  project_id    = var.project_id
-  activate_apis = ["mesh.googleapis.com"]
-
-  disable_services_on_destroy = false
-  disable_dependent_services  = false
+  module_depends_on = [kubernetes_config_map.mesh_config, kubernetes_config_map.asm_options]
 }

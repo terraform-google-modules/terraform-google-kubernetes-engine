@@ -47,7 +47,7 @@ variable "channel" {
 variable "enable_cni" {
   description = "Determines whether to enable CNI for this ASM installation."
   type        = bool
-  default     = true
+  default     = false
 }
 
 // This should be validated so that it cannot be enabled while CNI is disabled
@@ -55,7 +55,7 @@ variable "enable_cni" {
 variable "enable_mdp" {
   description = "Determines whether to enable Managed Data Plane (MDP) for this ASM installation."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "enable_cross_cluster_service_discovery" {

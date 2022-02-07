@@ -35,6 +35,10 @@ done
 
 kubectl wait --for condition=established --timeout=60s crd/"${CPR_RESOURCE}"
 
+if ! kubectl create namespace istio-system; then
+  echo "Failed to create system namespace; continuing since this can indicate existence"
+fi
+
 REVISION_NAME=$1; shift
 CHANNEL=$1; shift
 ENABLE_CNI=$1; shift
