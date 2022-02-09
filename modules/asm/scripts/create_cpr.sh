@@ -23,7 +23,7 @@ fi
 
 # Wait for the CRD to get created before creating the CPR.
 readonly CPR_RESOURCE=controlplanerevisions.mesh.cloud.google.com
-for _i in {1..6}; do
+for _i in {1..18}; do
   echo "Ensuring ControlPlaneRevision exists in cluster... attempt ${_i}"
   if kubectl get crd "${CPR_RESOURCE}"
   then
@@ -34,10 +34,6 @@ for _i in {1..6}; do
 done
 
 kubectl wait --for condition=established --timeout=60s crd/"${CPR_RESOURCE}"
-
-if ! kubectl create namespace istio-system; then
-  echo "Failed to create system namespace; continuing since this can indicate existence"
-fi
 
 REVISION_NAME=$1; shift
 CHANNEL=$1; shift
@@ -56,4 +52,4 @@ spec:
   channel: "${CHANNEL}"
 EOF
 
-kubectl wait -n istio-system --for=condition=Reconciled controlplanerevision/"${REVISION_NAME}" --timeout 5m
+kubectl wait -n istio-system --for=condition=Reconciled controlplanerevision/"${REVISION_NAME}" --timeout 10m
