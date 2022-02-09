@@ -127,6 +127,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "identity_service_config" {
+    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
+    content {
+      enabled = identity_service_config.value
+    }
+  }
+
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
