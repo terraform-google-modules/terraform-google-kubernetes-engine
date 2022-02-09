@@ -115,6 +115,11 @@ resource "google_container_cluster" "primary" {
     network_policy_config {
       disabled = !var.network_policy
     }
+
+    gcp_filestore_csi_driver_config {
+      enabled = var.filestore_csi_driver
+    }
+
   }
 
   datapath_provider = var.datapath_provider
