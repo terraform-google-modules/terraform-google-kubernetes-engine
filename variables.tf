@@ -361,6 +361,12 @@ variable "default_max_pods_per_node" {
   default     = 110
 }
 
+variable "filestore_csi_driver" {
+  type        = bool
+  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
+  default     = false
+}
+
 variable "authenticator_security_group" {
   type        = string
   description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
