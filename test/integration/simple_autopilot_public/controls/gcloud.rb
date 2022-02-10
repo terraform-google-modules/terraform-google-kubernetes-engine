@@ -35,6 +35,10 @@ control "gcloud" do
         expect(data['status']).to eq 'RUNNING'
       end
 
+      it "is autopilot" do
+        expect(data['autopilot']['enabled']).to eq true
+      end
+
       it "is regional" do
         expect(data['location']).to match(/^.*[1-9]$/)
       end
