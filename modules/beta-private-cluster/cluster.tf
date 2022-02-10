@@ -105,11 +105,9 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
-
   default_max_pods_per_node   = var.default_max_pods_per_node
   enable_shielded_nodes       = var.enable_shielded_nodes
   enable_binary_authorization = var.enable_binary_authorization
@@ -152,7 +150,6 @@ resource "google_container_cluster" "primary" {
     horizontal_pod_autoscaling {
       disabled = !var.horizontal_pod_autoscaling
     }
-
     network_policy_config {
       disabled = !var.network_policy
     }
@@ -235,7 +232,6 @@ resource "google_container_cluster" "primary" {
     update = "45m"
     delete = "45m"
   }
-
   node_pool {
     name               = "default-pool"
     initial_node_count = var.initial_node_count
