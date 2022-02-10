@@ -65,7 +65,7 @@ variable "enable_cross_cluster_service_discovery" {
 }
 
 variable "mesh_config" {
-  description = "MeshConfig specifies configuration available to the control plane. The full list of options can be found at https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig"
+  description = "MeshConfig specifies configuration available to the control plane. If unset the module will not attempt to create the MeshConfig (i.e. if managing this configuration elsewhere). The full list of options can be found at https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig"
   type        = map(any)
   default     = {}
 }

@@ -39,6 +39,8 @@ resource "kubernetes_namespace" "system_namespace" {
 }
 
 resource "kubernetes_config_map" "mesh_config" {
+  count = length(var.mesh_config) == 0 ? 0 : 1
+
   metadata {
     name      = local.mesh_config_name
     namespace = kubernetes_namespace.system_namespace.metadata[0].name
@@ -46,6 +48,7 @@ resource "kubernetes_config_map" "mesh_config" {
       "istio.io/rev" = local.revision_name
     }
   }
+
   data = {
     mesh = yamlencode(var.mesh_config)
   }
@@ -55,7 +58,8 @@ resource "kubernetes_config_map" "asm_options" {
   metadata {
     name      = "asm-options"
     namespace = kubernetes_namespace.system_namespace.metadata[0].name
-  }
+}
+
 
   data = {
     CROSS_CLUSTER_SERVICE_DISCOVERY = var.enable_cross_cluster_service_discovery ? "ON" : "OFF"
