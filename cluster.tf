@@ -133,7 +133,6 @@ resource "google_container_cluster" "primary" {
     update = "45m"
     delete = "45m"
   }
-
   node_pool {
     name               = "default-pool"
     initial_node_count = var.initial_node_count
