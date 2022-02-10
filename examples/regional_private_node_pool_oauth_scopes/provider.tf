@@ -14,14 +14,6 @@
  * limitations under the License.
  */
 
-provider "google" {
-  version = "~> 3.42.0"
-}
-
-provider "google-beta" {
-  version = "~> 3.63.0"
-}
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {

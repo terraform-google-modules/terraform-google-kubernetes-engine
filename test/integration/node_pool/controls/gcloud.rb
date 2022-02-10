@@ -17,7 +17,7 @@ location = attribute('location')
 cluster_name = attribute('cluster_name')
 
 expected_accelerators_count = "1"
-expected_accelerators_type = "nvidia-tesla-p4"
+expected_accelerators_type = "nvidia-tesla-a100"
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
@@ -37,6 +37,7 @@ control "gcloud" do
       it "has the expected cluster autoscaling settings" do
         expect(data['autoscaling']).to eq({
             "autoprovisioningNodePoolDefaults" => {
+                "imageType"=>"COS_CONTAINERD",
                 "oauthScopes" => %w(https://www.googleapis.com/auth/cloud-platform),
                 "serviceAccount" => "default"
             },
@@ -80,6 +81,17 @@ control "gcloud" do
               "name" => "pool-01",
               "config" => including(
                 "machineType" => "e2-medium",
+              ),
+            )
+          )
+        end
+
+        it "has the expected image type" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-01",
+              "config" => including(
+                "imageType" => "COS_CONTAINERD",
               ),
             )
           )
@@ -206,7 +218,7 @@ control "gcloud" do
             including(
               "name" => "pool-02",
               "config" => including(
-                "machineType" => "n1-standard-2",
+                "machineType" => "a2-highgpu-1g",
               ),
             )
           )
@@ -251,7 +263,8 @@ control "gcloud" do
               "name" => "pool-02",
               "config" => including(
                 "accelerators" => [{"acceleratorCount" => expected_accelerators_count,
-                                    "acceleratorType" => expected_accelerators_type}],
+                                    "acceleratorType" => expected_accelerators_type,
+                                    "gpuPartitionSize" => "1g.5gb"}],
               ),
             )
           )
@@ -350,7 +363,7 @@ control "gcloud" do
             including(
               "name" => "pool-03",
               "config" => including(
-                "machineType" => "e2-medium",
+                "machineType" => "n1-standard-2",
               ),
             )
           )
@@ -407,6 +420,7 @@ control "gcloud" do
                   "all-pools-example" => "true",
                   "cluster_name" => cluster_name,
                   "node_pool" => "pool-03",
+                  "sandbox.gke.io/runtime"=>"gvisor"
                 },
               ),
             )
@@ -424,6 +438,43 @@ control "gcloud" do
                   "gke-#{cluster_name}-pool-03",
                 ]),
               ),
+            )
+          )
+        end
+
+        it "has the expected pod range" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "networkConfig" => including(
+                "podIpv4CidrBlock" => "172.16.0.0/18",
+                "podRange" => "test"
+              )
+            )
+          )
+        end
+
+        it "has the expected image" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "config" => including(
+                "imageType" => "COS_CONTAINERD",
+              ),
+            )
+          )
+        end
+
+        it "has the expected kubelet config" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-03",
+              "config" => including(
+                "kubeletConfig" => including(
+                  "cpuManagerPolicy" => "static",
+                  "cpuCfsQuota" => true
+                )
+              )
             )
           )
         end
@@ -463,8 +514,8 @@ control "gcloud" do
         including(
           "name" => "pool-03",
           "locations" => match_array([
-            "us-central1-b",
-            "us-central1-c",
+            "#{location}-b",
+            "#{location}-c",
           ]),
         )
       )

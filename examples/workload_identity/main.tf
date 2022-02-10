@@ -18,11 +18,6 @@ locals {
   cluster_type = "regional"
 }
 
-provider "google" {
-  version = "~> 3.42.0"
-  region  = var.region
-}
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
@@ -42,7 +37,7 @@ module "gke" {
   ip_range_services        = var.ip_range_services
   remove_default_node_pool = true
   service_account          = "create"
-  node_metadata            = "GKE_METADATA_SERVER"
+  node_metadata            = "GKE_METADATA"
   node_pools = [
     {
       name         = "wi-pool"
@@ -61,7 +56,6 @@ module "workload_identity" {
   namespace           = "default"
   use_existing_k8s_sa = false
 }
-
 
 # example with existing KSA
 resource "kubernetes_service_account" "test" {
@@ -82,4 +76,20 @@ module "workload_identity_existing_ksa" {
   namespace           = "default"
   use_existing_k8s_sa = true
   k8s_sa_name         = kubernetes_service_account.test.metadata.0.name
+}
+
+# example with existing GSA
+resource "google_service_account" "custom" {
+  account_id = "custom-gsa"
+  project    = var.project_id
+}
+
+module "workload_identity_existing_gsa" {
+  source              = "../../modules/workload-identity"
+  project_id          = var.project_id
+  name                = google_service_account.custom.account_id
+  use_existing_gcp_sa = true
+  # wait till custom GSA is created to force module data source read during apply
+  # https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1059
+  depends_on = [google_service_account.custom]
 }

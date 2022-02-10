@@ -18,11 +18,6 @@ locals {
   cluster_type = "simple-regional-beta"
 }
 
-provider "google-beta" {
-  version = "~> 3.63.0"
-  region  = var.region
-}
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
@@ -54,6 +49,7 @@ module "gke" {
   database_encryption         = var.database_encryption
   enable_binary_authorization = var.enable_binary_authorization
   enable_pod_security_policy  = var.enable_pod_security_policy
+  enable_identity_service     = true
   release_channel             = "REGULAR"
 
   # Disable workload identity

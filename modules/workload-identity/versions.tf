@@ -18,7 +18,18 @@
 terraform {
   required_version = ">= 0.13.0"
 
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.39.0, < 5.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.0"
+    }
+  }
+
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:workload-identity/v14.3.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:workload-identity/v19.0.0"
   }
 }

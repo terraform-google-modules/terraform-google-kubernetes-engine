@@ -61,7 +61,15 @@ module "gke" {
   // NetworkPolicies need to be configured in every namespace. The network
   // policies should be under the control of a cental cluster management team,
   // rather than individual teams.
-  network_policy = true
+  //
+  // NOTE: Dataplane-V2 conflicts with the Calico network policy add-on because
+  // it provides redundant NetworkPolicy capabilities. If V2 is enabled, the
+  // Calico add-on should be disabled.
+  network_policy = var.datapath_provider == "ADVANCED_DATAPATH" ? false : true
+
+  // Default to the recommended Dataplane V2 which enables NetworkPolicies and
+  // allows for network policy logging of allowed and denied requests to Pods.
+  datapath_provider = var.datapath_provider
 
   maintenance_start_time = var.maintenance_start_time
 
@@ -98,10 +106,6 @@ module "gke" {
   service_account        = var.compute_engine_service_account
   registry_project_ids   = var.registry_project_ids
   grant_registry_access  = var.grant_registry_access
-
-  // Basic Auth disabled
-  basic_auth_username = ""
-  basic_auth_password = ""
 
   issue_client_certificate = false
 
@@ -152,7 +156,7 @@ module "gke" {
 
   enable_vertical_pod_autoscaling = var.enable_vertical_pod_autoscaling
 
-  // We enable identity namespace by default.
+  // We enable Workload Identity by default.
   identity_namespace = "${var.project_id}.svc.id.goog"
 
   authenticator_security_group = var.authenticator_security_group

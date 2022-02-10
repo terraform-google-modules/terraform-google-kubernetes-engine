@@ -56,8 +56,16 @@ resource "google_container_cluster" "primary" {
   monitoring_service = var.monitoring_service
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
+    dynamic "auto_provisioning_defaults" {
+      for_each = var.cluster_autoscaling.enabled ? [1] : []
+
+      content {
+        service_account = local.service_account
+        oauth_scopes    = local.node_pools_oauth_scopes["all"]
+      }
+    }
     dynamic "resource_limits" {
-      for_each = local.autoscalling_resource_limits
+      for_each = local.autoscaling_resource_limits
       content {
         resource_type = lookup(resource_limits.value, "resource_type")
         minimum       = lookup(resource_limits.value, "minimum")
@@ -85,9 +93,6 @@ resource "google_container_cluster" "primary" {
   }
 
   master_auth {
-    username = var.basic_auth_username
-    password = var.basic_auth_password
-
     client_certificate_config {
       issue_client_certificate = var.issue_client_certificate
     }
@@ -95,16 +100,18 @@ resource "google_container_cluster" "primary" {
 
   addons_config {
     http_load_balancing {
-      disabled = ! var.http_load_balancing
+      disabled = !var.http_load_balancing
     }
 
     horizontal_pod_autoscaling {
-      disabled = ! var.horizontal_pod_autoscaling
+      disabled = !var.horizontal_pod_autoscaling
     }
     network_policy_config {
-      disabled = ! var.network_policy
+      disabled = !var.network_policy
     }
   }
+
+  datapath_provider = var.datapath_provider
 
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
@@ -118,7 +125,7 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
-    ignore_changes = [node_pool, initial_node_count]
+    ignore_changes = [node_pool, initial_node_count, resource_labels["asmv"], resource_labels["mesh_id"]]
   }
 
   timeouts {
@@ -131,14 +138,33 @@ resource "google_container_cluster" "primary" {
     initial_node_count = var.initial_node_count
 
     node_config {
+      image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
+      machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
+      min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
+
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
+
+      tags = concat(
+        lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
+        lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-default-pool"] : [],
+        lookup(local.node_pools_tags, "all", []),
+        lookup(local.node_pools_tags, var.node_pools[0].name, []),
+      )
 
       dynamic "workload_metadata_config" {
         for_each = local.cluster_node_metadata_config
 
         content {
-          node_metadata = workload_metadata_config.value.node_metadata
+          mode = workload_metadata_config.value.mode
         }
+      }
+
+      metadata = local.node_pools_metadata["all"]
+
+
+      shielded_instance_config {
+        enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
+        enable_integrity_monitoring = lookup(var.node_pools[0], "enable_integrity_monitoring", true)
       }
     }
   }
@@ -186,7 +212,14 @@ resource "google_container_cluster" "primary" {
     for_each = local.cluster_workload_identity_config
 
     content {
-      identity_namespace = workload_identity_config.value.identity_namespace
+      workload_pool = workload_identity_config.value.workload_pool
+    }
+  }
+
+  dynamic "authenticator_groups_config" {
+    for_each = local.cluster_authenticator_security_group
+    content {
+      security_group = authenticator_groups_config.value.security_group
     }
   }
 }
@@ -229,6 +262,7 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
+
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
     auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
@@ -236,8 +270,9 @@ resource "google_container_node_pool" "pools" {
 
 
   node_config {
-    image_type   = lookup(each.value, "image_type", "COS")
-    machine_type = lookup(each.value, "machine_type", "e2-medium")
+    image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
+    machine_type     = lookup(each.value, "machine_type", "e2-medium")
+    min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
       lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
@@ -275,6 +310,7 @@ resource "google_container_node_pool" "pools" {
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
+
     service_account = lookup(
       each.value,
       "service_account",
@@ -289,11 +325,13 @@ resource "google_container_node_pool" "pools" {
 
     guest_accelerator = [
       for guest_accelerator in lookup(each.value, "accelerator_count", 0) > 0 ? [{
-        type  = lookup(each.value, "accelerator_type", "")
-        count = lookup(each.value, "accelerator_count", 0)
+        type               = lookup(each.value, "accelerator_type", "")
+        count              = lookup(each.value, "accelerator_count", 0)
+        gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
         }] : [] : {
-        type  = guest_accelerator["type"]
-        count = guest_accelerator["count"]
+        type               = guest_accelerator["type"]
+        count              = guest_accelerator["count"]
+        gpu_partition_size = guest_accelerator["gpu_partition_size"]
       }
     ]
 
@@ -301,9 +339,10 @@ resource "google_container_node_pool" "pools" {
       for_each = local.cluster_node_metadata_config
 
       content {
-        node_metadata = lookup(each.value, "node_metadata", workload_metadata_config.value.node_metadata)
+        mode = lookup(each.value, "node_metadata", workload_metadata_config.value.mode)
       }
     }
+
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)

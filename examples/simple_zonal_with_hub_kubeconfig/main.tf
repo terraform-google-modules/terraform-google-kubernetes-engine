@@ -14,14 +14,6 @@
  * limitations under the License.
  */
 
-terraform {
-  required_providers {
-    kind = {
-      source  = "kyma-incubator/kind"
-      version = "0.0.6"
-    }
-  }
-}
 provider "kind" {}
 
 # creating a cluster with kind of the name "test-cluster" with kubernetes version v1.18.4 and two nodes

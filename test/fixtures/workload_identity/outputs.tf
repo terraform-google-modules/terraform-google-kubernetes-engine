@@ -58,6 +58,7 @@ output "client_token" {
 output "ca_certificate" {
   description = "The cluster CA certificate"
   value       = module.example.ca_certificate
+  sensitive   = true
 }
 
 output "service_account" {
@@ -74,12 +75,36 @@ output "cluster_name" {
   value       = module.example.cluster_name
 }
 
-output "k8s_service_account_email" {
-  description = "K8S GCP service account."
-  value       = module.example.k8s_service_account_email
+# Default instantiation of WI module
+output "default_wi_email" {
+  description = "GCP service account."
+  value       = module.example.default_wi_email
 }
 
-output "k8s_service_account_name" {
+output "default_wi_ksa_name" {
   description = "K8S GCP service account name."
-  value       = module.example.k8s_service_account_name
+  value       = module.example.default_wi_ksa_name
 }
+
+# Existing KSA instantiation of WI module
+output "existing_ksa_email" {
+  description = "GCP service account."
+  value       = module.example.existing_ksa_email
+}
+
+output "existing_ksa_name" {
+  description = "K8S GCP service name"
+  value       = module.example.existing_ksa_name
+}
+
+# Existing GSA instantiation of WI module
+output "existing_gsa_email" {
+  description = "GCP service account."
+  value       = module.example.existing_gsa_email
+}
+
+output "existing_gsa_name" {
+  description = "K8S GCP service name"
+  value       = module.example.existing_gsa_name
+}
+

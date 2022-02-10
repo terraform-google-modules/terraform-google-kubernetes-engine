@@ -108,6 +108,12 @@ variable "network_policy_provider" {
   default     = "CALICO"
 }
 
+variable "datapath_provider" {
+  type        = string
+  description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
+  default     = "DATAPATH_PROVIDER_UNSPECIFIED"
+}
+
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
@@ -207,6 +213,7 @@ variable "cluster_autoscaling" {
     max_cpu_cores = number
     min_memory_gb = number
     max_memory_gb = number
+    gpu_resources = list(object({ resource_type = string, minimum = number, maximum = number }))
   })
   default = {
     enabled       = false
@@ -214,6 +221,7 @@ variable "cluster_autoscaling" {
     min_cpu_cores = 0
     max_memory_gb = 0
     min_memory_gb = 0
+    gpu_resources = []
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
@@ -280,6 +288,7 @@ variable "ip_masq_link_local" {
 }
 
 variable "configure_ip_masq" {
+  type        = bool
   description = "Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server."
   default     = false
 }
@@ -304,31 +313,19 @@ variable "create_service_account" {
 
 variable "grant_registry_access" {
   type        = bool
-  description = "Grants created cluster-specific service account storage.objectViewer role."
+  description = "Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles."
   default     = false
 }
 
 variable "registry_project_ids" {
   type        = list(string)
-  description = "Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` role is assigned on these projects."
+  description = "Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` and `artifactregsitry.reader` roles are assigned on these projects."
   default     = []
 }
 
 variable "service_account" {
   type        = string
   description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
-  default     = ""
-}
-
-variable "basic_auth_username" {
-  type        = string
-  description = "The username to be used with Basic Authentication. An empty value will disable Basic Authentication, which is the recommended configuration."
-  default     = ""
-}
-
-variable "basic_auth_password" {
-  type        = string
-  description = "The password to be used with Basic Authentication."
   default     = ""
 }
 
@@ -339,6 +336,7 @@ variable "issue_client_certificate" {
 }
 
 variable "cluster_ipv4_cidr" {
+  type        = string
   default     = null
   description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
 }
@@ -356,14 +354,26 @@ variable "skip_provisioners" {
 }
 
 variable "default_max_pods_per_node" {
+  type        = number
   description = "The maximum number of pods to schedule per node"
   default     = 110
 }
 
+variable "authenticator_security_group" {
+  type        = string
+  description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
+  default     = null
+}
+
 variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
-  default     = "GKE_METADATA_SERVER"
+  default     = "GKE_METADATA"
   type        = string
+
+  validation {
+    condition     = contains(["GKE_METADATA", "GCE_METADATA", "UNSPECIFIED", "GKE_METADATA_SERVER", "EXPOSE"], var.node_metadata)
+    error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA or UNSPECIFIED."
+  }
 }
 
 variable "database_encryption" {
@@ -377,7 +387,7 @@ variable "database_encryption" {
 }
 
 variable "identity_namespace" {
-  description = "Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `[project_id].svc.id.goog`)"
+  description = "The workload pool to attach all Kubernetes service accounts to. (Default value of `enabled` automatically sets project-based pool `[project_id].svc.id.goog`)"
   type        = string
   default     = "enabled"
 }
@@ -395,6 +405,7 @@ variable "enable_shielded_nodes" {
 }
 
 variable "enable_binary_authorization" {
+  type        = bool
   description = "Enable BinAuthZ Admission controller"
   default     = false
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">=0.12"
-}
+region = "us-central1"
+zone = "us-central1-c"
+sync_repo = "https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git"
+sync_branch = "master"
+policy_dir = "examples/acm-terraform-blog-part1/config-root"

@@ -53,12 +53,35 @@ output "cluster_name" {
   value       = module.gke.name
 }
 
-output "k8s_service_account_email" {
-  description = "K8S GCP service account."
-  value       = module.workload_identity.gcp_service_account_email
+# Default instantiation of WI module
+output "default_wi_email" {
+  description = "GCP service account."
+  value       = module.workload_identity.gcp_service_account.email
 }
 
-output "k8s_service_account_name" {
-  description = "K8S GCP service name"
-  value       = module.workload_identity.gcp_service_account_name
+output "default_wi_ksa_name" {
+  description = "K8S SA name"
+  value       = module.workload_identity.k8s_service_account_name
+}
+
+# Existing KSA instantiation of WI module
+output "existing_ksa_email" {
+  description = "GCP service account."
+  value       = module.workload_identity_existing_ksa.gcp_service_account_email
+}
+
+output "existing_ksa_name" {
+  description = "K8S SA name"
+  value       = module.workload_identity_existing_ksa.k8s_service_account_name
+}
+
+# Existing GSA instantiation of WI module
+output "existing_gsa_email" {
+  description = "GCP service account."
+  value       = google_service_account.custom.email
+}
+
+output "existing_gsa_name" {
+  description = "K8S SA name"
+  value       = module.workload_identity_existing_gsa.k8s_service_account_name
 }

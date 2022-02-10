@@ -97,7 +97,7 @@ output "node_pools_names" {
 }
 
 output "node_pools_versions" {
-  description = "List of node pools versions"
+  description = "Node pool versions by node pool name"
   value       = module.gke.node_pools_versions
 }
 

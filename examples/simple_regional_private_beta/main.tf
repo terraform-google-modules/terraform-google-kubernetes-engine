@@ -18,16 +18,6 @@ locals {
   cluster_type = "simple-regional-private-beta"
 }
 
-provider "google" {
-  version = "~> 3.42.0"
-  region  = var.region
-}
-
-provider "google-beta" {
-  version = "~> 3.63.0"
-  region  = var.region
-}
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
@@ -63,6 +53,8 @@ module "gke" {
       display_name = "VPC"
     },
   ]
+
+  enable_confidential_nodes = true
 
   istio             = var.istio
   cloudrun          = var.cloudrun

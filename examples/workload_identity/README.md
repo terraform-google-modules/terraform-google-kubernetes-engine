@@ -24,8 +24,12 @@ Read more about [workload identity in the docs](https://cloud.google.com/kuberne
 | ca\_certificate | n/a |
 | client\_token | n/a |
 | cluster\_name | Cluster name |
-| k8s\_service\_account\_email | K8S GCP service account. |
-| k8s\_service\_account\_name | K8S GCP service name |
+| default\_wi\_email | GCP service account. |
+| default\_wi\_ksa\_name | K8S SA name |
+| existing\_gsa\_email | GCP service account. |
+| existing\_gsa\_name | K8S SA name |
+| existing\_ksa\_email | GCP service account. |
+| existing\_ksa\_name | K8S SA name |
 | kubernetes\_endpoint | n/a |
 | location | Cluster location (zones) |
 | project\_id | Project id where GKE cluster is created. |

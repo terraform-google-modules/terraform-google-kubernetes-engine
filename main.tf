@@ -50,7 +50,7 @@ locals {
 
   release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
 
-  autoscalling_resource_limits = var.cluster_autoscaling.enabled ? [{
+  autoscaling_resource_limits = var.cluster_autoscaling.enabled ? concat([{
     resource_type = "cpu"
     minimum       = var.cluster_autoscaling.min_cpu_cores
     maximum       = var.cluster_autoscaling.max_cpu_cores
@@ -58,7 +58,7 @@ locals {
     resource_type = "memory"
     minimum       = var.cluster_autoscaling.min_memory_gb
     maximum       = var.cluster_autoscaling.max_memory_gb
-  }] : []
+  }], var.cluster_autoscaling.gpu_resources) : []
 
 
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
@@ -79,8 +79,17 @@ locals {
     enabled  = false
     provider = null
   }]
+
+
+  cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
+    security_group = var.authenticator_security_group
+  }]
+
+  // legacy mappings https://github.com/hashicorp/terraform-provider-google/pull/10238
+  old_node_metadata_config_mapping = { GKE_METADATA_SERVER = "GKE_METADATA", GCE_METADATA = "EXPOSE" }
+
   cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
-    node_metadata = var.node_metadata
+    mode = lookup(local.old_node_metadata_config_mapping, var.node_metadata, var.node_metadata)
   }]
 
   cluster_output_name           = google_container_cluster.primary.name
@@ -106,7 +115,7 @@ locals {
   }]
 
   cluster_output_node_pools_names    = concat([for np in google_container_node_pool.pools : np.name], [""])
-  cluster_output_node_pools_versions = concat([for np in google_container_node_pool.pools : np.version], [""])
+  cluster_output_node_pools_versions = { for np in google_container_node_pool.pools : np.name => np.version }
 
   cluster_master_auth_list_layer1 = local.cluster_output_master_auth
   cluster_master_auth_list_layer2 = local.cluster_master_auth_list_layer1[0]
@@ -125,12 +134,12 @@ locals {
   cluster_monitoring_service                 = local.cluster_output_monitoring_service
   cluster_node_pools_names                   = local.cluster_output_node_pools_names
   cluster_node_pools_versions                = local.cluster_output_node_pools_versions
-  cluster_network_policy_enabled             = ! local.cluster_output_network_policy_enabled
-  cluster_http_load_balancing_enabled        = ! local.cluster_output_http_load_balancing_enabled
-  cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled
-  workload_identity_enabled                  = ! (var.identity_namespace == null || var.identity_namespace == "null")
-  cluster_workload_identity_config = ! local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
-    identity_namespace = "${var.project_id}.svc.id.goog" }] : [{ identity_namespace = var.identity_namespace
+  cluster_network_policy_enabled             = !local.cluster_output_network_policy_enabled
+  cluster_http_load_balancing_enabled        = !local.cluster_output_http_load_balancing_enabled
+  cluster_horizontal_pod_autoscaling_enabled = !local.cluster_output_horizontal_pod_autoscaling_enabled
+  workload_identity_enabled                  = !(var.identity_namespace == null || var.identity_namespace == "null")
+  cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
+    workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
 
 }

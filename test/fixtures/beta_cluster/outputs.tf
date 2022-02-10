@@ -72,6 +72,7 @@ output "client_token" {
 output "ca_certificate" {
   description = "The cluster CA certificate"
   value       = module.this.ca_certificate
+  sensitive   = true
 }
 
 output "service_account" {
@@ -80,7 +81,7 @@ output "service_account" {
 }
 
 output "database_encryption_key_name" {
-  value = google_kms_crypto_key.db.self_link
+  value = google_kms_crypto_key.db.id
 }
 
 output "identity_namespace" {
