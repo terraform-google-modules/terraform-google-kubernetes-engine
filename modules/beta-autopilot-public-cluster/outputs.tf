@@ -16,6 +16,11 @@
 
 // This file was automatically generated from a template in ./autogen/main
 
+output "cluster_id" {
+  description = "Cluster ID"
+  value       = local.cluster_id
+}
+
 output "name" {
   description = "Cluster name"
   value       = local.cluster_name
@@ -103,22 +108,22 @@ output "service_account" {
   value       = local.service_account
 }
 
+output "instance_group_urls" {
+  description = "List of GKE generated instance groups"
+  value       = distinct(flatten([for np in google_container_node_pool.pools : np.managed_instance_group_urls]))
+}
+
 output "release_channel" {
   description = "The release channel of this cluster"
   value       = var.release_channel
 }
 
 output "identity_namespace" {
-  description = "Workload Identity namespace"
-  value       = length(local.cluster_workload_identity_config) > 0 ? local.cluster_workload_identity_config[0].identity_namespace : null
+  description = "Workload Identity pool"
+  value       = length(local.cluster_workload_identity_config) > 0 ? local.cluster_workload_identity_config[0].workload_pool : null
   depends_on = [
     google_container_cluster.primary
   ]
-}
-
-output "instance_group_urls" {
-  description = "List of GKE generated instance groups"
-  value       = google_container_cluster.primary.instance_group_urls
 }
 
 output "istio_enabled" {
@@ -149,6 +154,11 @@ output "intranode_visibility_enabled" {
 output "vertical_pod_autoscaling_enabled" {
   description = "Whether veritical pod autoscaling is enabled"
   value       = local.cluster_vertical_pod_autoscaling_enabled
+}
+
+output "identity_service_enabled" {
+  description = "Whether Identity Service is enabled"
+  value       = local.cluster_pod_security_policy_enabled
 }
 
 output "tpu_ipv4_cidr_block" {

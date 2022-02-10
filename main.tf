@@ -80,7 +80,6 @@ locals {
     provider = null
   }]
 
-
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
   }]

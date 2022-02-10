@@ -39,6 +39,12 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+  dynamic "confidential_nodes" {
+    for_each = local.confidential_node_config
+    content {
+      enabled = confidential_nodes.value.enabled
+    }
+  }
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
@@ -67,9 +73,6 @@ resource "google_container_cluster" "primary" {
   }
 
   master_auth {
-    username = var.basic_auth_username
-    password = var.basic_auth_password
-
     client_certificate_config {
       issue_client_certificate = var.issue_client_certificate
     }
@@ -117,6 +120,7 @@ resource "google_container_cluster" "primary" {
       enabled = var.config_connector
     }
   }
+
   datapath_provider = var.datapath_provider
 
   networking_mode = "VPC_NATIVE"
@@ -158,6 +162,7 @@ resource "google_container_cluster" "primary" {
     update = "45m"
     delete = "45m"
   }
+
   dynamic "resource_usage_export_config" {
     for_each = var.resource_usage_export_dataset_id != "" ? [{
       enable_network_egress_metering       = var.enable_network_egress_export
@@ -193,8 +198,12 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-}
 
-/******************************************
-  Create Container Cluster node pools
- *****************************************/
+
+  notification_config {
+    pubsub {
+      enabled = var.notification_config_topic != "" ? true : false
+      topic   = var.notification_config_topic
+    }
+  }
+}

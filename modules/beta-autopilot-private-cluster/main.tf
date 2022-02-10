@@ -32,6 +32,9 @@ resource "random_shuffle" "available_zones" {
 }
 
 locals {
+  // ID of the cluster
+  cluster_id = google_container_cluster.primary.id
+
   // location
   location = var.regional ? var.region : var.zones[0]
   region   = var.regional ? var.region : join("-", slice(split("-", var.zones[0]), 0, 2))
@@ -44,7 +47,7 @@ locals {
 
   release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
 
-  autoscalling_resource_limits = var.cluster_autoscaling.enabled ? [{
+  autoscaling_resource_limits = var.cluster_autoscaling.enabled ? concat([{
     resource_type = "cpu"
     minimum       = var.cluster_autoscaling.min_cpu_cores
     maximum       = var.cluster_autoscaling.max_cpu_cores
@@ -52,7 +55,7 @@ locals {
     resource_type = "memory"
     minimum       = var.cluster_autoscaling.min_memory_gb
     maximum       = var.cluster_autoscaling.max_memory_gb
-  }] : []
+  }], var.cluster_autoscaling.gpu_resources) : []
 
 
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
@@ -81,14 +84,16 @@ locals {
 
   cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
 
+
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
   }]
 
-  cluster_sandbox_enabled = var.sandbox_enabled ? ["gvisor"] : []
+  // legacy mappings https://github.com/hashicorp/terraform-provider-google/pull/10238
+  old_node_metadata_config_mapping = { GKE_METADATA_SERVER = "GKE_METADATA", GCE_METADATA = "EXPOSE" }
 
   cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
-    node_metadata = var.node_metadata
+    mode = lookup(local.old_node_metadata_config_mapping, var.node_metadata, var.node_metadata)
   }]
 
   cluster_output_name           = google_container_cluster.primary.name
@@ -114,6 +119,7 @@ locals {
   cluster_output_pod_security_policy_enabled      = google_container_cluster.primary.pod_security_policy_config != null && length(google_container_cluster.primary.pod_security_policy_config) == 1 ? google_container_cluster.primary.pod_security_policy_config.0.enabled : false
   cluster_output_intranode_visbility_enabled      = google_container_cluster.primary.enable_intranode_visibility
   cluster_output_vertical_pod_autoscaling_enabled = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling.0.enabled : false
+  cluster_output_identity_service_enabled         = google_container_cluster.primary.identity_service_config != null && length(google_container_cluster.primary.identity_service_config) == 1 ? google_container_cluster.primary.identity_service_config.0.enabled : false
 
   # /BETA features
 
@@ -137,20 +143,21 @@ locals {
   cluster_min_master_version                 = local.cluster_output_min_master_version
   cluster_logging_service                    = local.cluster_output_logging_service
   cluster_monitoring_service                 = local.cluster_output_monitoring_service
-  cluster_http_load_balancing_enabled        = ! local.cluster_output_http_load_balancing_enabled
-  cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled
-  workload_identity_enabled                  = ! (var.identity_namespace == null || var.identity_namespace == "null")
-  cluster_workload_identity_config = ! local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
-    identity_namespace = "${var.project_id}.svc.id.goog" }] : [{ identity_namespace = var.identity_namespace
+  cluster_http_load_balancing_enabled        = !local.cluster_output_http_load_balancing_enabled
+  cluster_horizontal_pod_autoscaling_enabled = !local.cluster_output_horizontal_pod_autoscaling_enabled
+  workload_identity_enabled                  = !(var.identity_namespace == null || var.identity_namespace == "null")
+  cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
+    workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
   # BETA features
-  cluster_istio_enabled                    = ! local.cluster_output_istio_disabled
+  cluster_istio_enabled                    = !local.cluster_output_istio_disabled
   cluster_cloudrun_enabled                 = var.cloudrun
   cluster_dns_cache_enabled                = var.dns_cache
   cluster_telemetry_type_is_set            = var.cluster_telemetry_type != null
   cluster_pod_security_policy_enabled      = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled
   cluster_vertical_pod_autoscaling_enabled = local.cluster_output_vertical_pod_autoscaling_enabled
+  confidential_node_config                 = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
 
   # /BETA features
 

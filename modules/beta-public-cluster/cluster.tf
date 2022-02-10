@@ -84,7 +84,6 @@ resource "google_container_cluster" "primary" {
       enable_components = var.monitoring_enabled_components
     }
   }
-
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
     dynamic "auto_provisioning_defaults" {
@@ -120,13 +119,6 @@ resource "google_container_cluster" "primary" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
     content {
       enabled = pod_security_policy_config.value
-    }
-  }
-
-  dynamic "identity_service_config" {
-    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
-    content {
-      enabled = identity_service_config.value
     }
   }
 
@@ -283,6 +275,7 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
+
   dynamic "resource_usage_export_config" {
     for_each = var.resource_usage_export_dataset_id != "" ? [{
       enable_network_egress_metering       = var.enable_network_egress_export
@@ -298,6 +291,7 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
+
 
   remove_default_node_pool = var.remove_default_node_pool
 
@@ -317,13 +311,13 @@ resource "google_container_cluster" "primary" {
       workload_pool = workload_identity_config.value.workload_pool
     }
   }
+
   dynamic "authenticator_groups_config" {
     for_each = local.cluster_authenticator_security_group
     content {
       security_group = authenticator_groups_config.value.security_group
     }
   }
-
   notification_config {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
@@ -331,7 +325,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 }
-
 /******************************************
   Create Container Cluster node pools
  *****************************************/

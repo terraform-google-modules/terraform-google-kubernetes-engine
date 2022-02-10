@@ -168,6 +168,7 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
+
   dynamic "resource_usage_export_config" {
     for_each = var.resource_usage_export_dataset_id != "" ? [{
       enable_network_egress_metering       = var.enable_network_egress_export
@@ -183,6 +184,7 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
+
 
   remove_default_node_pool = var.remove_default_node_pool
 
@@ -210,7 +212,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 }
-
 /******************************************
   Create Container Cluster node pools
  *****************************************/

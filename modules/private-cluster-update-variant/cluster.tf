@@ -168,6 +168,7 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
+
   dynamic "resource_usage_export_config" {
     for_each = var.resource_usage_export_dataset_id != "" ? [{
       enable_network_egress_metering       = var.enable_network_egress_export
@@ -197,6 +198,7 @@ resource "google_container_cluster" "primary" {
       master_ipv4_cidr_block  = private_cluster_config.value.master_ipv4_cidr_block
     }
   }
+
   remove_default_node_pool = var.remove_default_node_pool
 
   dynamic "database_encryption" {
@@ -223,7 +225,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 }
-
 /******************************************
   Create Container Cluster node pools
  *****************************************/
