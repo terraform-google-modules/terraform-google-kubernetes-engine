@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+resource "google_gke_hub_feature" "mesh_feature" {
+  name     = "servicemesh"
+  project  = var.project_id
+  location = "global"
+  provider = google-beta
+}
+
 resource "google_gke_hub_membership" "cluster_membership" {
   provider      = google-beta
   project       = var.project_id
@@ -24,3 +31,4 @@ resource "google_gke_hub_membership" "cluster_membership" {
     }
   }
 }
+

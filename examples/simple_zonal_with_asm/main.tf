@@ -58,8 +58,9 @@ module "gke" {
 
 module "asm" {
   source           = "../../modules/asm"
+  project_id       = var.project_id
   cluster_name     = module.gke.name
   cluster_location = module.gke.location
-  project_id       = var.project_id
-  location         = module.gke.location
+  enable_cross_cluster_service_discovery = true
+  enable_cni = true
 }
