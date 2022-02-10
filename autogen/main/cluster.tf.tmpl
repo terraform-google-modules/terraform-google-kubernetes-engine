@@ -172,21 +172,21 @@ resource "google_container_cluster" "primary" {
 
   addons_config {
     http_load_balancing {
-      disabled = ! var.http_load_balancing
+      disabled = !var.http_load_balancing
     }
 
     horizontal_pod_autoscaling {
-      disabled = ! var.horizontal_pod_autoscaling
+      disabled = !var.horizontal_pod_autoscaling
     }
     {% if autopilot_cluster != true %}
     network_policy_config {
-      disabled = ! var.network_policy
+      disabled = !var.network_policy
     }
     {% endif %}
     {% if beta_cluster and auto_pilot != true %}
 
     istio_config {
-      disabled = ! var.istio
+      disabled = !var.istio
       auth     = var.istio_auth
     }
 
