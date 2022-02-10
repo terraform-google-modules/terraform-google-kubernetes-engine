@@ -35,12 +35,20 @@ control "gcloud" do
         expect(data['status']).to eq 'RUNNING'
       end
 
+      it "is autopilot" do
+        expect(data['autopilot']['enabled']).to eq true
+      end
+
       it "is regional" do
         expect(data['location']).to match(/^.*[1-9]$/)
       end
 
-      it "uses public nodes and master endpoint" do
-        expect(data['privateClusterConfig']).to eq nil
+      it "uses the private endpoint" do
+        expect(data['privateClusterConfig']['enablePrivateEndpoint']).to eq true
+      end
+
+      it "uses private nodes" do
+        expect(data['privateClusterConfig']['enablePrivateNodes']).to eq true
       end
 
       it "has the expected addon settings" do
