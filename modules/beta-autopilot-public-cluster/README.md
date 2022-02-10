@@ -156,7 +156,6 @@ Then perform the following commands on the root folder:
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
 | identity\_namespace | Workload Identity pool |
 | identity\_service\_enabled | Whether Identity Service is enabled |
-| instance\_group\_urls | List of GKE generated instance groups |
 | intranode\_visibility\_enabled | Whether intra-node visibility is enabled |
 | istio\_enabled | Whether Istio is enabled |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |

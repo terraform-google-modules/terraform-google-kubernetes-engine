@@ -109,10 +109,6 @@ output "service_account" {
   value       = local.service_account
 }
 
-output "instance_group_urls" {
-  description = "List of GKE generated instance groups"
-  value       = distinct(flatten([for np in google_container_node_pool.pools : np.managed_instance_group_urls]))
-}
 
 output "release_channel" {
   description = "The release channel of this cluster"
