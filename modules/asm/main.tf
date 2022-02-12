@@ -16,23 +16,21 @@
 
 locals {
   // GKE release channel is a list with max length 1 https://github.com/hashicorp/terraform-provider-google/blob/9d5f69f9f0f74f1a8245f1a52dd6cffb572bbce4/google/resource_container_cluster.go#L954
-  gke_release_channel       = data.google_container_cluster.asm_cluster.release_channel != null ? data.google_container_cluster.asm_cluster.release_channel[0].channel : ""
-  gke_release_channel_fixed = local.gke_release_channel == "UNSPECIFIED" ? "" : local.gke_release_channel
+  gke_release_channel       = data.google_container_cluster.asm.release_channel != null ? data.google_container_cluster.asm.release_channel[0].channel : ""
   // In order or precedence, use (1) user specified channel, (2) GKE release channel, and (3) regular channel
-  channel          = lower(coalesce(var.channel, local.gke_release_channel_fixed, "regular"))
+  channel          = lower(coalesce(var.channel, local.gke_release_channel, "regular"))
   revision_name    = "asm-managed${local.channel == "regular" ? "" : "-${local.channel}"}"
-  mesh_config_name = "istio-${local.revision_name}"
   // CNI should be enabled if either enable_cni or enable_mdp are set
   enable_cni = var.enable_cni || var.enable_mdp
 }
 
-data "google_container_cluster" "asm_cluster" {
+data "google_container_cluster" "asm" {
   project  = var.project_id
   name     = var.cluster_name
   location = var.cluster_location
 }
 
-resource "kubernetes_namespace" "system_namespace" {
+resource "kubernetes_namespace" "system" {
   metadata {
     name = "istio-system"
   }
@@ -42,8 +40,8 @@ resource "kubernetes_config_map" "mesh_config" {
   count = length(var.mesh_config) == 0 ? 0 : 1
 
   metadata {
-    name      = local.mesh_config_name
-    namespace = kubernetes_namespace.system_namespace.metadata[0].name
+    name      = "istio-${local.revision_name}"
+    namespace = kubernetes_namespace.system.metadata[0].name
     labels = {
       "istio.io/rev" = local.revision_name
     }
@@ -57,7 +55,7 @@ resource "kubernetes_config_map" "mesh_config" {
 resource "kubernetes_config_map" "asm_options" {
   metadata {
     name      = "asm-options"
-    namespace = kubernetes_namespace.system_namespace.metadata[0].name
+    namespace = kubernetes_namespace.system.metadata[0].name
 }
 
 

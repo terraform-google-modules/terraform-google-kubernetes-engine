@@ -21,7 +21,12 @@ if [ "$#" -lt 3 ]; then
     exit 1
 fi
 
-# Wait for the CRD to get created before creating the CPR.
+REVISION_NAME=$1; shift
+CHANNEL=$1; shift
+ENABLE_CNI=$1; shift
+
+# Wait for the CRD to get created before creating the CPR. Not possible to use `kubectl --wait ...` here since
+# the CRD won't exist at the time of checking (https://stackoverflow.com/questions/57115602/how-to-kubectl-wait-for-crd-creation)
 readonly CPR_RESOURCE=controlplanerevisions.mesh.cloud.google.com
 for _i in {1..18}; do
   echo "Ensuring ControlPlaneRevision exists in cluster... attempt ${_i}"
@@ -34,10 +39,6 @@ for _i in {1..18}; do
 done
 
 kubectl wait --for condition=established --timeout=60s crd/"${CPR_RESOURCE}"
-
-REVISION_NAME=$1; shift
-CHANNEL=$1; shift
-ENABLE_CNI=$1; shift
 
 cat <<EOF | kubectl apply -f -
 apiVersion: mesh.cloud.google.com/v1beta1
