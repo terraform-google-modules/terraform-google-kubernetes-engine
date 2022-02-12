@@ -36,28 +36,11 @@ resource "kubernetes_namespace" "system" {
   }
 }
 
-resource "kubernetes_config_map" "mesh_config" {
-  count = length(var.mesh_config) == 0 ? 0 : 1
-
-  metadata {
-    name      = "istio-${local.revision_name}"
-    namespace = kubernetes_namespace.system.metadata[0].name
-    labels = {
-      "istio.io/rev" = local.revision_name
-    }
-  }
-
-  data = {
-    mesh = yamlencode(var.mesh_config)
-  }
-}
-
 resource "kubernetes_config_map" "asm_options" {
   metadata {
     name      = "asm-options"
     namespace = kubernetes_namespace.system.metadata[0].name
-}
-
+  }
 
   data = {
     CROSS_CLUSTER_SERVICE_DISCOVERY = var.enable_cross_cluster_service_discovery ? "ON" : "OFF"
@@ -83,5 +66,5 @@ module "cpr" {
   kubectl_create_command  = "${path.module}/scripts/create_cpr.sh ${local.revision_name} ${local.channel} ${local.enable_cni}"
   kubectl_destroy_command = "${path.module}/scripts/destroy_cpr.sh ${local.revision_name}"
 
-  module_depends_on = [kubernetes_config_map.mesh_config, kubernetes_config_map.asm_options]
+  module_depends_on = [kubernetes_config_map.asm_options]
 }
