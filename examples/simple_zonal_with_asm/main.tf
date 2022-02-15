@@ -49,8 +49,7 @@ module "gke" {
       name         = "asm-node-pool"
       autoscaling  = false
       auto_upgrade = true
-      # ASM requires minimum 4 nodes and e2-standard-4
-      node_count   = 4
+      node_count   = 3
       machine_type = "e2-standard-4"
     },
   ]
