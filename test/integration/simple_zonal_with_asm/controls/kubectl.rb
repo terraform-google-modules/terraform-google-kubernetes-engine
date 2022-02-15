@@ -41,18 +41,5 @@ control "kubectl" do
         },
       )
     end
-
-    describe "Mesh" do
-      describe "CA" do
-        let(:pod) { client.get_pods(label_selector:"app=istio-ingressgateway", namespace: "istio-system", as: :raw) }
-        it "ingressgateway exists" do
-          expect(pod).not_to be_nil
-        end
-
-        it "ingressgateway has correct CA_ADDR " do
-          expect(pod).to include("{\"name\":\"CA_ADDR\",\"value\":\"meshca.googleapis.com:443\"}")
-        end
-      end
-    end
   end
 end

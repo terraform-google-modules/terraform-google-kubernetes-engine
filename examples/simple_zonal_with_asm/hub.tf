@@ -24,7 +24,7 @@ resource "google_gke_hub_feature" "mesh_feature" {
 resource "google_gke_hub_membership" "cluster_membership" {
   provider      = google-beta
   project       = var.project_id
-  membership_id = "${module.gke.name}-membership"
+  membership_id = "gke-asm-membership"
   endpoint {
     gke_cluster {
       resource_link = "//container.googleapis.com/${module.gke.cluster_id}"
