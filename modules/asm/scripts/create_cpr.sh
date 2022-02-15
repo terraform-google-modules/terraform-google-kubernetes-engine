@@ -47,9 +47,10 @@ kind: ControlPlaneRevision
 metadata:
   name: "${REVISION_NAME}"
   namespace: istio-system
+  annotations:
+    mesh.cloud.google.com/vpcsc: "${ENABLE_VPC_SC}"
   labels:
     mesh.cloud.google.com/managed-cni-enabled: "${ENABLE_CNI}"
-    mesh.cloud.google.com/vpcsc: "${ENABLE_VPC_SC}"
 spec:
   type: managed_service
   channel: "${CHANNEL}"
