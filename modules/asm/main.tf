@@ -30,6 +30,13 @@ data "google_container_cluster" "asm" {
   location = var.cluster_location
 }
 
+resource "google_gke_hub_feature" "mesh" {
+  name     = "servicemesh"
+  project  = var.project_id
+  location = "global"
+  provider = google-beta
+}
+
 resource "kubernetes_namespace" "system" {
   metadata {
     name = "istio-system"
@@ -45,16 +52,9 @@ resource "kubernetes_config_map" "asm_options" {
   data = {
     CROSS_CLUSTER_SERVICE_DISCOVERY = var.enable_cross_cluster_service_discovery ? "ON" : "OFF"
   }
-}
 
-# TODO(Monkeyanator) due to a bug in the gke_hub_feature resource implementation this fails when enabling an enabled
-# feature (i.e. running the module twice) and does not disable the feature upon TF destroy.
-#resource "google_gke_hub_feature" "mesh_feature" {
-#  name     = "servicemesh"
-#  project  = var.project_id
-#  location = "global"
-#  provider = google-beta
-#}
+  depends_on = [google_gke_hub_feature.mesh]
+}
 
 module "cpr" {
   source = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
