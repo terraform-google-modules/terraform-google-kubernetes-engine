@@ -16,10 +16,10 @@
 
 locals {
   // GKE release channel is a list with max length 1 https://github.com/hashicorp/terraform-provider-google/blob/9d5f69f9f0f74f1a8245f1a52dd6cffb572bbce4/google/resource_container_cluster.go#L954
-  gke_release_channel       = data.google_container_cluster.asm.release_channel != null ? data.google_container_cluster.asm.release_channel[0].channel : ""
+  gke_release_channel = data.google_container_cluster.asm.release_channel != null ? data.google_container_cluster.asm.release_channel[0].channel : ""
   // In order or precedence, use (1) user specified channel, (2) GKE release channel, and (3) regular channel
-  channel          = lower(coalesce(var.channel, local.gke_release_channel, "regular"))
-  revision_name    = "asm-managed${local.channel == "regular" ? "" : "-${local.channel}"}"
+  channel       = lower(coalesce(var.channel, local.gke_release_channel, "regular"))
+  revision_name = "asm-managed${local.channel == "regular" ? "" : "-${local.channel}"}"
   // CNI should be enabled if either enable_cni or enable_mdp are set
   enable_cni = var.enable_cni || var.enable_mdp
 }
