@@ -44,6 +44,7 @@ module "gke" {
   ip_range_services       = var.ip_range_services
   network_policy          = false
   cluster_resource_labels = { "mesh_id" : "proj-${data.google_project.project.number}" }
+  identity_namespace = "${var.project_id}.svc.id.goog"
   node_pools = [
     {
       name         = "asm-node-pool"
