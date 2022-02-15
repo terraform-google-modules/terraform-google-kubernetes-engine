@@ -20,8 +20,8 @@ locals {
   // In order or precedence, use (1) user specified channel, (2) GKE release channel, and (3) regular channel
   channel       = lower(coalesce(var.channel, local.gke_release_channel, "regular"))
   revision_name = "asm-managed${local.channel == "regular" ? "" : "-${local.channel}"}"
-  // CNI should be enabled if either enable_cni or enable_mdp are set
-  enable_cni = var.enable_cni || var.enable_mdp
+  // Fleet ID should default to project ID if unset
+  fleet_id = coalesce(var.fleet_id, var.project_id)
 }
 
 data "google_container_cluster" "asm" {
@@ -63,7 +63,7 @@ module "cpr" {
   cluster_name     = var.cluster_name
   cluster_location = var.cluster_location
 
-  kubectl_create_command  = "${path.module}/scripts/create_cpr.sh ${local.revision_name} ${local.channel} ${local.enable_cni}"
+  kubectl_create_command  = "${path.module}/scripts/create_cpr.sh ${local.revision_name} ${local.channel} ${var.enable_cni} ${var.enable_vpc_sc}"
   kubectl_destroy_command = "${path.module}/scripts/destroy_cpr.sh ${local.revision_name}"
 
   module_depends_on = [kubernetes_config_map.asm_options]

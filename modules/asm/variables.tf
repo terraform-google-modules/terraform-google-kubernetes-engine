@@ -29,6 +29,12 @@ variable "cluster_location" {
   type        = string
 }
 
+variable "fleet_id" {
+  description = "The fleet to use for this ASM installation."
+  type        = string
+  default     = ""
+}
+
 variable "channel" {
   description = "The channel to use for this ASM installation."
   type        = string
@@ -45,15 +51,13 @@ variable "channel" {
 }
 
 variable "enable_cni" {
-  description = "Determines whether to enable CNI for this ASM installation."
+  description = "Determines whether to enable CNI for this ASM installation. Required to use Managed Data Plane (MDP)."
   type        = bool
   default     = false
 }
 
-// This should be validated so that it cannot be enabled while CNI is disabled
-// but validating based on other variables is not possible today (https://github.com/hashicorp/terraform/issues/25609)
-variable "enable_mdp" {
-  description = "Determines whether to enable Managed Data Plane (MDP) for this ASM installation."
+variable "enable_vpc_sc" {
+  description = "Determines whether to enable VPC-SC for this ASM installation. For more information read https://cloud.google.com/service-mesh/docs/managed/vpc-sc"
   type        = bool
   default     = false
 }
