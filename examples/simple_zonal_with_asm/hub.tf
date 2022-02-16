@@ -24,3 +24,10 @@ resource "google_gke_hub_membership" "cluster_membership" {
     }
   }
 }
+
+resource "google_gke_hub_feature" "mesh" {
+  name     = "servicemesh"
+  project  = var.project_id
+  location = "global"
+  provider = google-beta
+}
