@@ -52,8 +52,6 @@ resource "kubernetes_config_map" "asm_options" {
   data = {
     CROSS_CLUSTER_SERVICE_DISCOVERY = var.enable_cross_cluster_service_discovery ? "ON" : "OFF"
   }
-
-  depends_on = [google_gke_hub_feature.mesh]
 }
 
 module "cpr" {
