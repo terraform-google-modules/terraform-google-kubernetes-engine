@@ -30,6 +30,31 @@ locals {
   hierarchy_controller_map_node   = var.hierarchy_controller == null ? "" : format("hierarchyController:\n    %s", indent(4, replace(yamlencode(var.hierarchy_controller), "/((?:^|\n)[\\s-]*)\"([\\w-]+)\":/", "$1$2:")))
   source_format_node              = var.source_format != "" ? format("sourceFormat: %s", var.source_format) : ""
   append_arg_use_existing_context = var.use_existing_context ? "USE_EXISTING_CONTEXT_ARG" : ""
+
+  k8sop_config = templatefile(var.operator_cr_template_path, {
+    cluster_name                  = var.cluster_name
+    enable_multi_repo             = var.enable_multi_repo
+    sync_repo                     = var.sync_repo
+    sync_branch_node              = local.sync_branch_node
+    sync_revision_node            = local.sync_revision_node
+    policy_dir_node               = local.policy_dir_node
+    secret_type                   = var.create_ssh_key ? "ssh" : var.secret_type
+    enable_policy_controller      = var.enable_policy_controller ? "true" : "false"
+    install_template_library      = var.install_template_library ? "true" : "false"
+    source_format_node            = local.source_format_node
+    hierarchy_controller_map_node = local.hierarchy_controller_map_node
+    enable_log_denies             = var.enable_log_denies
+    }
+  )
+  rootsync_config = templatefile(var.rootsync_cr_template_path, {
+    sync_repo          = var.sync_repo
+    sync_branch_node   = local.sync_branch_node
+    sync_revision_node = local.sync_revision_node
+    policy_dir_node    = local.policy_dir_node
+    secret_ref_node    = local.secret_ref_node
+    secret_type        = var.create_ssh_key ? "ssh" : var.secret_type
+    source_format_node = local.source_format_node
+  })
 }
 
 module "k8sop_manifest" {
@@ -86,25 +111,6 @@ module "k8sop_creds_secret" {
 }
 
 
-data "template_file" "k8sop_config" {
-
-  template = file(var.operator_cr_template_path)
-  vars = {
-    cluster_name                  = var.cluster_name
-    enable_multi_repo             = var.enable_multi_repo
-    sync_repo                     = var.sync_repo
-    sync_branch_node              = local.sync_branch_node
-    sync_revision_node            = local.sync_revision_node
-    policy_dir_node               = local.policy_dir_node
-    secret_type                   = var.create_ssh_key ? "ssh" : var.secret_type
-    enable_policy_controller      = var.enable_policy_controller ? "true" : "false"
-    install_template_library      = var.install_template_library ? "true" : "false"
-    source_format_node            = local.source_format_node
-    hierarchy_controller_map_node = local.hierarchy_controller_map_node
-    enable_log_denies             = var.enable_log_denies
-  }
-}
-
 module "k8sop_config" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version = "~> 3.1"
@@ -113,29 +119,15 @@ module "k8sop_config" {
   cluster_name                = var.cluster_name
   cluster_location            = var.location
   project_id                  = var.project_id
-  create_cmd_triggers         = { configmanagement = data.template_file.k8sop_config.rendered }
+  create_cmd_triggers         = { configmanagement = local.k8sop_config }
   service_account_key_file    = var.service_account_key_file
   use_existing_context        = var.use_existing_context
   impersonate_service_account = var.impersonate_service_account
 
-  kubectl_create_command  = "kubectl apply -f - <<EOF\n${data.template_file.k8sop_config.rendered}EOF"
-  kubectl_destroy_command = "kubectl delete -f - <<EOF\n${data.template_file.k8sop_config.rendered}EOF"
+  kubectl_create_command  = "kubectl apply -f - <<EOF\n${local.k8sop_config}EOF"
+  kubectl_destroy_command = "kubectl delete -f - <<EOF\n${local.k8sop_config}EOF"
 }
 
-
-data "template_file" "rootsync_config" {
-
-  template = file(var.rootsync_cr_template_path)
-  vars = {
-    sync_repo          = var.sync_repo
-    sync_branch_node   = local.sync_branch_node
-    sync_revision_node = local.sync_revision_node
-    policy_dir_node    = local.policy_dir_node
-    secret_ref_node    = local.secret_ref_node
-    secret_type        = var.create_ssh_key ? "ssh" : var.secret_type
-    source_format_node = local.source_format_node
-  }
-}
 
 module "wait_for_configsync_api" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
@@ -148,7 +140,7 @@ module "wait_for_configsync_api" {
   project_id        = var.project_id
   cluster_location  = var.location
   create_cmd_triggers = {
-    rootsync    = data.template_file.rootsync_config.rendered,
+    rootsync    = local.rootsync_config,
     script_sha1 = sha1(file("${path.module}/scripts/wait_for_configsync.sh"))
   }
   service_account_key_file = var.service_account_key_file
@@ -168,13 +160,13 @@ module "rootsync_config" {
   cluster_name                = var.cluster_name
   project_id                  = var.project_id
   cluster_location            = var.location
-  create_cmd_triggers         = { rootsync = data.template_file.rootsync_config.rendered }
+  create_cmd_triggers         = { rootsync = local.rootsync_config }
   service_account_key_file    = var.service_account_key_file
   use_existing_context        = var.use_existing_context
   impersonate_service_account = var.impersonate_service_account
 
-  kubectl_create_command  = "kubectl apply -f - <<EOF\n${data.template_file.rootsync_config.rendered}EOF"
-  kubectl_destroy_command = "kubectl delete -f - <<EOF\n${data.template_file.rootsync_config.rendered}EOF"
+  kubectl_create_command  = "kubectl apply -f - <<EOF\n${local.rootsync_config}EOF"
+  kubectl_destroy_command = "kubectl delete -f - <<EOF\n${local.rootsync_config}EOF"
 }
 
 module "wait_for_gatekeeper" {
