@@ -1,6 +1,6 @@
 # Simple Regional Autopilot Cluster
 
-This example illustrates how to create a simple cluster with beta features.
+This example illustrates how to create a simple autopilot cluster with beta features.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
