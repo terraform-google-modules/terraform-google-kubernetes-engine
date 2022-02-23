@@ -23,5 +23,6 @@ This module installs [Anthos Service Mesh](https://cloud.google.com/service-mesh
 | Name | Description |
 |------|-------------|
 | revision\_name | The name of the installed managed ASM revision. |
+| wait | An output to use when depending on the ASM installation finishing. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
