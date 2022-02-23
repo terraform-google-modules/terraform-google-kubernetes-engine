@@ -7,7 +7,6 @@ This example illustrates how to create a simple autopilot cluster with beta feat
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | `any` | n/a | yes |
 | project\_id | The project ID to host the cluster in | `any` | n/a | yes |
 | region | The region the cluster in | `string` | `"us-central1"` | no |
 
@@ -16,7 +15,6 @@ This example illustrates how to create a simple autopilot cluster with beta feat
 | Name | Description |
 |------|-------------|
 | ca\_certificate | The cluster ca certificate (base64 encoded) |
-| client\_token | The bearer token for auth |
 | cluster\_name | Cluster name |
 | kubernetes\_endpoint | The cluster endpoint |
 | location | n/a |
