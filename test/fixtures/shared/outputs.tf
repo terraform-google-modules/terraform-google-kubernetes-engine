@@ -26,32 +26,8 @@ output "cluster_name" {
   description = "Cluster name"
   value       = module.example.cluster_name
 }
-
-output "network" {
-  value = google_compute_network.main.name
-}
-
-output "subnetwork" {
-  value = google_compute_subnetwork.main.name
-}
-
 output "location" {
   value = module.example.location
-}
-
-output "ip_range_pods" {
-  description = "The secondary IP range used for pods"
-  value       = google_compute_subnetwork.main.secondary_ip_range[0].range_name
-}
-
-output "ip_range_services" {
-  description = "The secondary IP range used for services"
-  value       = google_compute_subnetwork.main.secondary_ip_range[1].range_name
-}
-
-output "zones" {
-  description = "List of zones in which the cluster resides"
-  value       = module.example.zones
 }
 
 output "master_kubernetes_version" {
@@ -78,8 +54,4 @@ output "ca_certificate" {
 output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
   value       = module.example.service_account
-}
-
-output "registry_project_ids" {
-  value = var.registry_project_ids
 }

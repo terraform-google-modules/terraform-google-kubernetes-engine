@@ -15,13 +15,16 @@ This example illustrates how to create a simple autopilot cluster with beta feat
 
 | Name | Description |
 |------|-------------|
-| ca\_certificate | n/a |
+| ca\_certificate | The cluster ca certificate (base64 encoded) |
+| client\_token | The bearer token for auth |
 | cluster\_name | Cluster name |
-| kubernetes\_endpoint | n/a |
+| kubernetes\_endpoint | The cluster endpoint |
+| location | n/a |
+| master\_kubernetes\_version | Kubernetes version of the master |
 | network\_name | The name of the VPC being created |
-| project\_id | n/a |
+| project\_id | The project ID the cluster is in |
 | region | The region in which the cluster resides |
-| service\_account | The default service account used for running nodes. |
+| service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | subnet\_names | The names of the subnet being created |
 | zones | List of zones in which the cluster resides |
 

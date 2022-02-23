@@ -24,18 +24,7 @@ variable "region" {
   default     = "us-central1"
 }
 
-variable "zones" {
-  type        = list(string)
-  description = "The GCP zones to create and test resources in, for applicable tests"
-  default     = ["us-central1-a", "us-central1-b", "us-central1-c"]
-}
-
 variable "compute_engine_service_accounts" {
   type        = list(string)
   description = "The email addresses of the service account to associate with the GKE cluster"
-}
-
-variable "registry_project_ids" {
-  description = "Projects to use for granting access to GCR registries, if requested"
-  type        = list(string)
 }
