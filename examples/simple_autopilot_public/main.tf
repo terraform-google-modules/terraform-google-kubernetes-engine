@@ -23,8 +23,8 @@ resource "random_string" "suffix" {
 locals {
   cluster_type           = "simple-autopilot-public"
   network_name           = "simple-autopilot-network-${random_string.suffix.result}"
-  subnet_name            = "simple-autopilot-subnet"
-  master_auth_subnetwork = "simple-autopilot-master-subnet"
+  subnet_name            = "simple-autopilot-subnet-${random_string.suffix.result}"
+  master_auth_subnetwork = "simple-autopilot-master-subnet-${random_string.suffix.result}"
   pods_range_name        = "ip-range-pods-${random_string.suffix.result}"
   svc_range_name         = "ip-range-svc-${random_string.suffix.result}"
   subnet_names           = [for subnet_self_link in module.gcp-network.subnets_self_links : split("/", subnet_self_link)[length(split("/", subnet_self_link)) - 1]]
