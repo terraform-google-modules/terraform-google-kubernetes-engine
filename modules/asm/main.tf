@@ -51,7 +51,7 @@ resource "kubernetes_config_map" "asm_options" {
   }
 
   data = {
-    CROSS_CLUSTER_SERVICE_DISCOVERY = var.enable_cross_cluster_service_discovery ? "ON" : "OFF"
+    CROSS_CLUSTER_SERVICE_DISCOVERY = var.enable_cross_cluster_service_discovery ? "on" : "off"
   }
 }
 

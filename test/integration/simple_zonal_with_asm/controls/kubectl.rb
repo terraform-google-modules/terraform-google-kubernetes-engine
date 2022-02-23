@@ -41,5 +41,26 @@ control "kubectl" do
         },
       )
     end
+
+    describe "configmap" do
+      describe "asm-options" do
+        let(:asmoptions_configmap) { client.get_config_map("asm-options", "istio-system") }
+
+        it "exists" do
+          expect(asmoptions_configmap.metadata.name).to eq "asm-options"
+        end
+
+        it "has multicluster disabled" do
+          expect(asmoptions_configmap.data.CROSS_CLUSTER_SERVICE_DISCOVERY).to eq "off"
+        end
+      end
+    end
+
+    describe "namespace" do
+      let(:system_namespace) { client.get_namespace("istio-system") }
+      it "exists" do
+        expect(system_namespace).not_to be_nil
+      end
+    end
   end
 end
