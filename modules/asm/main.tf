@@ -17,8 +17,9 @@
 locals {
   // GKE release channel is a list with max length 1 https://github.com/hashicorp/terraform-provider-google/blob/9d5f69f9f0f74f1a8245f1a52dd6cffb572bbce4/google/resource_container_cluster.go#L954
   gke_release_channel = data.google_container_cluster.asm.release_channel != null ? data.google_container_cluster.asm.release_channel[0].channel : ""
+  gke_release_channel_filtered = lower(local.gke_release_channel) == "unspecified" ? "" : local.gke_release_channel
   // In order or precedence, use (1) user specified channel, (2) GKE release channel, and (3) regular channel
-  channel       = lower(coalesce(var.channel, local.gke_release_channel, "regular"))
+  channel       = lower(coalesce(var.channel, local.gke_release_channel_filtered, "regular"))
   revision_name = "asm-managed${local.channel == "regular" ? "" : "-${local.channel}"}"
   // Fleet ID should default to project ID if unset
   fleet_id = coalesce(var.fleet_id, var.project_id)
