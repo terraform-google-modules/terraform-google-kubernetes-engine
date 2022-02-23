@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+resource "random_string" "suffix" {
+  length  = 4
+  special = false
+  upper   = false
+}
 
 locals {
-  cluster_type = "simple-autopilot-private"
+  cluster_type           = "simple-autopilot-private"
+  network_name           = "simple-autopilot-network-${random_string.suffix.result}"
+  subnet_name            = "simple-autopilot-subnet"
+  master_auth_subnetwork = "simple-autopilot-master-subnet"
+  pods_range_name        = "ip-range-pods-${random_string.suffix.result}"
+  svc_range_name         = "ip-range-svc-${random_string.suffix.result}"
+  subnet_names           = [for subnet_self_link in module.gcp-network.subnets_self_links : split("/", subnet_self_link)[length(split("/", subnet_self_link)) - 1]]
 }
+
 
 data "google_client_config" "default" {}
 
@@ -26,23 +38,16 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(module.gke.ca_certificate)
 }
 
-data "google_compute_subnetwork" "subnetwork" {
-  name    = var.subnetwork
-  project = var.project_id
-  region  = var.region
-}
-
 module "gke" {
   source                          = "../../modules/beta-autopilot-private-cluster/"
   project_id                      = var.project_id
-  name                            = "simple-autopilot-private-cluster${var.cluster_name_suffix}"
-  regional                        = var.regional
+  name                            = "${local.cluster_type}-cluster-${random_string.suffix.result}"
+  regional                        = true
   region                          = var.region
-  zones                           = var.zones
-  network                         = var.network
-  subnetwork                      = var.subnetwork
-  ip_range_pods                   = var.ip_range_pods
-  ip_range_services               = var.ip_range_services
+  network                         = module.gcp-network.network_name
+  subnetwork                      = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
+  ip_range_pods                   = local.pods_range_name
+  ip_range_services               = local.svc_range_name
   create_service_account          = var.compute_engine_service_account == "create"
   service_account                 = var.compute_engine_service_account
   release_channel                 = "REGULAR"
@@ -53,7 +58,7 @@ module "gke" {
 
   master_authorized_networks = [
     {
-      cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
+      cidr_block   = "10.60.0.0/17"
       display_name = "VPC"
     },
   ]
