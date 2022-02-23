@@ -16,7 +16,7 @@
 
 locals {
   // GKE release channel is a list with max length 1 https://github.com/hashicorp/terraform-provider-google/blob/9d5f69f9f0f74f1a8245f1a52dd6cffb572bbce4/google/resource_container_cluster.go#L954
-  gke_release_channel = data.google_container_cluster.asm.release_channel != null ? data.google_container_cluster.asm.release_channel[0].channel : ""
+  gke_release_channel          = data.google_container_cluster.asm.release_channel != null ? data.google_container_cluster.asm.release_channel[0].channel : ""
   gke_release_channel_filtered = lower(local.gke_release_channel) == "unspecified" ? "" : local.gke_release_channel
   // In order or precedence, use (1) user specified channel, (2) GKE release channel, and (3) regular channel
   channel       = lower(coalesce(var.channel, local.gke_release_channel_filtered, "regular"))
@@ -56,7 +56,8 @@ resource "kubernetes_config_map" "asm_options" {
 }
 
 module "cpr" {
-  source = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "3.1.0"
 
   project_id       = var.project_id
   cluster_name     = var.cluster_name
