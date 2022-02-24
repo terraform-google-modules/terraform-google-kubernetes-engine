@@ -64,11 +64,6 @@ output "kubernetes_endpoint" {
   value     = module.this.kubernetes_endpoint
 }
 
-output "client_token" {
-  sensitive = true
-  value     = base64encode(data.google_client_config.default.access_token)
-}
-
 output "ca_certificate" {
   description = "The cluster CA certificate"
   value       = module.this.ca_certificate

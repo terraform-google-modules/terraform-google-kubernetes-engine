@@ -224,21 +224,21 @@ steps:
     - verify workload-metadata-config-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy workload-metadata-config-local']
-- id: converge beta-cluster-local
+- id: apply beta-cluster
   waitFor:
     - create all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge beta-cluster-local']
-- id: verify beta-cluster-local
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage apply --verbose']
+- id: verify beta-cluster
   waitFor:
-    - converge beta-cluster-local
+    - apply beta-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify beta-cluster-local']
-- id: destroy beta-cluster-local
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage verify --verbose']
+- id: teardown beta-cluster
   waitFor:
-    - verify beta-cluster-local
+    - verify beta-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy beta-cluster-local']
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage teardown --verbose']
 - id: converge deploy-service-local
   waitFor:
     - create all
@@ -334,6 +334,6 @@ tags:
 - 'integration'
 substitutions:
   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.0'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.3'
 options:
   machineType: 'N1_HIGHCPU_8'
