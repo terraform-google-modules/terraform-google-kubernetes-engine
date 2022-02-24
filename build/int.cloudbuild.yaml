@@ -228,17 +228,17 @@ steps:
   waitFor:
     - create all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage apply --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage apply --verbose --test-dir test/integration']
 - id: verify beta-cluster
   waitFor:
     - apply beta-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage verify --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage verify --verbose --test-dir test/integration']
 - id: teardown beta-cluster
   waitFor:
     - verify beta-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage teardown --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage teardown --verbose --test-dir test/integration']
 - id: converge deploy-service-local
   waitFor:
     - create all
