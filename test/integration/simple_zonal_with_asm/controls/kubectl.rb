@@ -51,7 +51,7 @@ control "kubectl" do
         end
 
         it "has multicluster disabled" do
-          expect(asmoptions_configmap.data.CROSS_CLUSTER_SERVICE_DISCOVERY).to eq "off"
+          expect(asmoptions_configmap.data.CROSS_CLUSTER_SERVICE_DISCOVERY).to eq "on"
         end
       end
     end
