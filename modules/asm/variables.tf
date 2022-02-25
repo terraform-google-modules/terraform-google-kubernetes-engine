@@ -55,8 +55,8 @@ variable "multicluster_mode" {
   type        = string
   validation {
     condition = anytrue([
-      var.channel == "manual",
-      var.channel == "connected",
+      var.multicluster_mode == "manual",
+      var.multicluster_mode == "connected",
     ])
     error_message = "Must be one of manual or connected."
   }
