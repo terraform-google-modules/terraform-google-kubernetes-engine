@@ -50,8 +50,8 @@ control "kubectl" do
           expect(asmoptions_configmap.metadata.name).to eq "asm-options"
         end
 
-        it "has multicluster disabled" do
-          expect(asmoptions_configmap.data.CROSS_CLUSTER_SERVICE_DISCOVERY).to eq "on"
+        it "has multicluster_mode connected" do
+          expect(asmoptions_configmap.data.multicluster_mode).to eq "connected"
         end
       end
     end
