@@ -12,7 +12,7 @@ There are a few prerequisites to using this module that can be done either throu
 
 ## Migration
 
-Direct migration from the previous Terraform module is not supported in the first iteration of this module.
+Direct migration from the previous Terraform module implementation is not supported in the first iteration of this module.
 
  <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
