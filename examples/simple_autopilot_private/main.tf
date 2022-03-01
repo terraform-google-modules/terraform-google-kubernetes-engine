@@ -13,19 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-resource "random_string" "suffix" {
-  length  = 4
-  special = false
-  upper   = false
-}
 
 locals {
   cluster_type           = "simple-autopilot-private"
-  network_name           = "simple-autopilot-network-${random_string.suffix.result}"
-  subnet_name            = "simple-autopilot-subnet-${random_string.suffix.result}"
-  master_auth_subnetwork = "simple-autopilot-master-subnet-${random_string.suffix.result}"
-  pods_range_name        = "ip-range-pods-${random_string.suffix.result}"
-  svc_range_name         = "ip-range-svc-${random_string.suffix.result}"
+  network_name           = "simple-autopilot-private-network"
+  subnet_name            = "simple-autopilot-private-subnet"
+  master_auth_subnetwork = "simple-autopilot-private-master-subnet"
+  pods_range_name        = "ip-range-pods-simple-autopilot-private"
+  svc_range_name         = "ip-range-svc-simple-autopilot-private"
   subnet_names           = [for subnet_self_link in module.gcp-network.subnets_self_links : split("/", subnet_self_link)[length(split("/", subnet_self_link)) - 1]]
 }
 
@@ -41,7 +36,7 @@ provider "kubernetes" {
 module "gke" {
   source                          = "../../modules/beta-autopilot-private-cluster/"
   project_id                      = var.project_id
-  name                            = "${local.cluster_type}-cluster-${random_string.suffix.result}"
+  name                            = "${local.cluster_type}-cluster"
   regional                        = true
   region                          = var.region
   network                         = module.gcp-network.network_name
