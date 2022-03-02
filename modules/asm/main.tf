@@ -31,13 +31,6 @@ data "google_container_cluster" "asm" {
   location = var.cluster_location
 }
 
-#resource "google_gke_hub_feature" "mesh" {
-#  name     = "servicemesh"
-#  project  = var.project_id
-#  location = "global"
-#  provider = google-beta
-#}
-
 resource "kubernetes_namespace" "system" {
   metadata {
     name = "istio-system"

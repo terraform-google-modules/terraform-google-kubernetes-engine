@@ -10,9 +10,21 @@ There are a few prerequisites to using this module that can be done either throu
 1. Enable the `servicemesh` feature on the cluster hub
 1. Register target cluster to the servicemesh-enabled hub
 
-## Migration
+There is a full example provided [here](../../examples/simple_zonal_with_asm). Detailed usage example is as follows:
 
-Direct migration from the previous Terraform module is not supported in the first iteration of this module.
+```tf
+module "asm" {
+  source            = "../../modules/asm"
+  project_id        = var.project_id
+  cluster_name      = module.gke.name
+  cluster_location  = module.gke.location
+  enable_cni        = true
+}
+```
+
+To deploy this config:
+
+1. Run `terraform apply`
 
  <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

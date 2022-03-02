@@ -16,7 +16,7 @@
 
 set -e
 
-if [ "$#" -lt 3 ]; then
+if [ "$#" -lt 4 ]; then
     >&2 echo "Not all expected arguments set."
     exit 1
 fi

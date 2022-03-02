@@ -49,10 +49,6 @@ control "kubectl" do
         it "exists" do
           expect(asmoptions_configmap.metadata.name).to eq "asm-options"
         end
-
-        it "has multicluster_mode connected" do
-          expect(asmoptions_configmap.data.multicluster_mode).to eq "connected"
-        end
       end
     end
 
