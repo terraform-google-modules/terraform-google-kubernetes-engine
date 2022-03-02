@@ -244,3 +244,17 @@ suites:
           controls:
             - gcloud
             - kubectl
+  - name: "simple_autopilot_private"
+    driver:
+      root_module_directory: test/fixtures/simple_autopilot_private
+    verifier:
+      systems:
+        - name: simple_autopilot_private
+          backend: local
+  - name: "simple_autopilot_public"
+    driver:
+      root_module_directory: test/fixtures/simple_autopilot_public
+    verifier:
+      systems:
+        - name: simple_autopilot_public
+          backend: local

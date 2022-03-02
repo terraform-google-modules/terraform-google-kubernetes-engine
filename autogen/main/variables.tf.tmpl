@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -150,6 +150,7 @@ variable "ip_range_services" {
   description = "The _name_ of the secondary subnet range to use for services"
 }
 
+{% if autopilot_cluster != true %}
 variable "initial_node_count" {
   type        = number
   description = "The number of nodes to create in this cluster's default node pool."
@@ -161,6 +162,7 @@ variable "remove_default_node_pool" {
   description = "Remove default node pool while setting up the cluster"
   default     = false
 }
+{% endif %}
 
 variable "disable_legacy_metadata_endpoints" {
   type        = bool
@@ -168,6 +170,7 @@ variable "disable_legacy_metadata_endpoints" {
   default     = true
 }
 
+{% if autopilot_cluster != true %}
 variable "node_pools" {
   type        = list(map(string))
   description = "List of maps containing node pools"
@@ -212,6 +215,7 @@ variable "node_pools_linux_node_configs_sysctls" {
     default-node-pool = {}
   }
 }
+{% endif %}
 {% endif %}
 
 variable "resource_usage_export_dataset_id" {
@@ -266,6 +270,7 @@ variable "cluster_autoscaling" {
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
 
+{% if autopilot_cluster != true %}
 variable "node_pools_taints" {
   type        = map(list(object({ key = string, value = string, effect = string })))
   description = "Map of lists containing node taints by node-pool name"
@@ -298,6 +303,7 @@ variable "node_pools_oauth_scopes" {
     default-node-pool = []
   }
 }
+{% endif %}
 
 variable "stub_domains" {
   type        = map(list(string))
@@ -476,13 +482,21 @@ variable "istio_auth" {
 variable "dns_cache" {
   type        = bool
   description = "(Beta) The status of the NodeLocal DNSCache addon."
+  {% if autopilot_cluster == true %}
+  default     = true
+  {% else %}
   default     = false
+  {% endif %}
 }
 
 variable "gce_pd_csi_driver" {
   type        = bool
   description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
+  {% if autopilot_cluster == true %}
+  default     = true
+  {% else %}
   default     = false
+  {% endif %}
 }
 
 variable "kalm_config" {
