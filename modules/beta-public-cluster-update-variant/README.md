@@ -65,11 +65,11 @@ module "gke" {
   ip_range_pods              = "us-central1-01-gke-01-pods"
   ip_range_services          = "us-central1-01-gke-01-services"
   http_load_balancing        = false
-  horizontal_pod_autoscaling = true
   network_policy             = false
-  istio = true
-  cloudrun = true
-  dns_cache = false
+  horizontal_pod_autoscaling = true
+  istio                      = true
+  cloudrun                   = true
+  dns_cache                  = false
 
   node_pools = [
     {
@@ -323,8 +323,6 @@ The node_pools variable takes the following parameters:
 | tags | The list of instance tags applied to all nodes | | Required |
 | value | The value for the taint | | Required |
 | version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
-
-
 ## Requirements
 
 Before this module can be used on a project, you must ensure that the following pre-requisites are fulfilled:
