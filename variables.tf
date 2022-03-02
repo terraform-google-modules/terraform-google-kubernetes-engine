@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -290,6 +290,7 @@ variable "ip_masq_link_local" {
 }
 
 variable "configure_ip_masq" {
+  type        = bool
   description = "Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server."
   default     = false
 }
@@ -337,6 +338,7 @@ variable "issue_client_certificate" {
 }
 
 variable "cluster_ipv4_cidr" {
+  type        = string
   default     = null
   description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
 }
@@ -354,6 +356,7 @@ variable "skip_provisioners" {
 }
 
 variable "default_max_pods_per_node" {
+  type        = number
   description = "The maximum number of pods to schedule per node"
   default     = 110
 }
@@ -404,6 +407,7 @@ variable "enable_shielded_nodes" {
 }
 
 variable "enable_binary_authorization" {
+  type        = bool
   description = "Enable BinAuthZ Admission controller"
   default     = false
 }

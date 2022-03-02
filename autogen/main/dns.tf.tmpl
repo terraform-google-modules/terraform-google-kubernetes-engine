@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,9 @@ module "gcloud_delete_default_kube_dns_configmap" {
 
   module_depends_on = concat(
     [google_container_cluster.primary.master_version],
+    {% if autopilot_cluster != true %}
     [for pool in google_container_node_pool.pools : pool.name]
+    {% endif %}
   )
 }
 
@@ -63,7 +65,9 @@ EOF
   depends_on = [
     module.gcloud_delete_default_kube_dns_configmap.wait,
     google_container_cluster.primary,
+    {% if autopilot_cluster != true %}
     google_container_node_pool.pools,
+    {% endif %}
   ]
 }
 
@@ -89,7 +93,9 @@ EOF
   depends_on = [
     module.gcloud_delete_default_kube_dns_configmap.wait,
     google_container_cluster.primary,
+    {% if autopilot_cluster != true %}
     google_container_node_pool.pools,
+    {% endif %}
   ]
 }
 
@@ -118,6 +124,8 @@ EOF
   depends_on = [
     module.gcloud_delete_default_kube_dns_configmap.wait,
     google_container_cluster.primary,
+    {% if autopilot_cluster != true %}
     google_container_node_pool.pools,
+    {% endif %}
   ]
 }

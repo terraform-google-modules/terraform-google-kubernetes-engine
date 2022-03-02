@@ -46,14 +46,14 @@ module "gke" {
   ip_range_pods              = "us-central1-01-gke-01-pods"
   ip_range_services          = "us-central1-01-gke-01-services"
   http_load_balancing        = false
-  horizontal_pod_autoscaling = true
   network_policy             = false
+  horizontal_pod_autoscaling = true
   enable_private_endpoint    = true
   enable_private_nodes       = true
   master_ipv4_cidr_block     = "10.0.0.0/28"
-  istio = true
-  cloudrun = true
-  dns_cache = false
+  istio                      = true
+  cloudrun                   = true
+  dns_cache                  = false
 
   node_pools = [
     {
@@ -142,7 +142,7 @@ Then perform the following commands on the root folder:
 | cloudrun | (Beta) Enable CloudRun addon | `bool` | `false` | no |
 | cloudrun\_load\_balancer\_type | (Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer. | `string` | `""` | no |
 | cluster\_autoscaling | Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling) | <pre>object({<br>    enabled             = bool<br>    autoscaling_profile = string<br>    min_cpu_cores       = number<br>    max_cpu_cores       = number<br>    min_memory_gb       = number<br>    max_memory_gb       = number<br>    gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))<br>  })</pre> | <pre>{<br>  "autoscaling_profile": "BALANCED",<br>  "enabled": false,<br>  "gpu_resources": [],<br>  "max_cpu_cores": 0,<br>  "max_memory_gb": 0,<br>  "min_cpu_cores": 0,<br>  "min_memory_gb": 0<br>}</pre> | no |
-| cluster\_ipv4\_cidr | The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR. | `any` | `null` | no |
+| cluster\_ipv4\_cidr | The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR. | `string` | `null` | no |
 | cluster\_resource\_labels | The GCE resource labels (a map of key/value pairs) to be applied to the cluster | `map(string)` | `{}` | no |
 | cluster\_telemetry\_type | Available options include ENABLED, DISABLED, and SYSTEM\_ONLY | `string` | `null` | no |
 | config\_connector | (Beta) Whether ConfigConnector is enabled for this cluster. | `bool` | `false` | no |
@@ -158,6 +158,7 @@ Then perform the following commands on the root folder:
 | dns\_cache | (Beta) The status of the NodeLocal DNSCache addon. | `bool` | `false` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
 | enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
+| enable\_identity\_service | Enable the Identity Service component, which allows customers to use external identity providers with the K8S API. | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | `bool` | `false` | no |
 | enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
@@ -242,6 +243,7 @@ Then perform the following commands on the root folder:
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
 | identity\_namespace | Workload Identity pool |
+| identity\_service\_enabled | Whether Identity Service is enabled |
 | instance\_group\_urls | List of GKE generated instance groups |
 | intranode\_visibility\_enabled | Whether intra-node visibility is enabled |
 | istio\_enabled | Whether Istio is enabled |
@@ -312,8 +314,6 @@ The node_pools variable takes the following parameters:
 | tags | The list of instance tags applied to all nodes | | Required |
 | value | The value for the taint | | Required |
 | version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
-
-
 ## Requirements
 
 Before this module can be used on a project, you must ensure that the following pre-requisites are fulfilled:

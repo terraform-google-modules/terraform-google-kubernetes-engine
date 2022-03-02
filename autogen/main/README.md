@@ -72,20 +72,26 @@ module "gke" {
   subnetwork                 = "us-central1-01"
   ip_range_pods              = "us-central1-01-gke-01-pods"
   ip_range_services          = "us-central1-01-gke-01-services"
+  {% if autopilot_cluster != true %}
   http_load_balancing        = false
-  horizontal_pod_autoscaling = true
   network_policy             = false
+  {% endif %}
+  horizontal_pod_autoscaling = true
   {% if private_cluster %}
   enable_private_endpoint    = true
   enable_private_nodes       = true
   master_ipv4_cidr_block     = "10.0.0.0/28"
   {% endif %}
-  {% if beta_cluster %}
-  istio = true
-  cloudrun = true
-  dns_cache = false
+  {% if beta_cluster and autopilot_cluster != true  %}
+  istio                      = true
+  cloudrun                   = true
+  dns_cache                  = false
+  {% endif %}
+  {% if autopilot_cluster %}
+  enable_autopilot           = true
   {% endif %}
 
+{% if autopilot_cluster != true %}
   node_pools = [
     {
       name                      = "default-node-pool"
@@ -152,6 +158,7 @@ module "gke" {
       "default-node-pool",
     ]
   }
+{% endif %}
 }
 ```
 
@@ -166,6 +173,7 @@ Then perform the following commands on the root folder:
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
+{% if autopilot_cluster != true %}
 ## node_pools variable
 The node_pools variable takes the following parameters:
 
@@ -220,8 +228,7 @@ The node_pools variable takes the following parameters:
 | tags | The list of instance tags applied to all nodes | | Required |
 | value | The value for the taint | | Required |
 | version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
-
-
+{% endif %}
 ## Requirements
 
 Before this module can be used on a project, you must ensure that the following pre-requisites are fulfilled:

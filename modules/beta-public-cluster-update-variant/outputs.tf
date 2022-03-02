@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -169,6 +169,11 @@ output "intranode_visibility_enabled" {
 output "vertical_pod_autoscaling_enabled" {
   description = "Whether veritical pod autoscaling is enabled"
   value       = local.cluster_vertical_pod_autoscaling_enabled
+}
+
+output "identity_service_enabled" {
+  description = "Whether Identity Service is enabled"
+  value       = local.cluster_pod_security_policy_enabled
 }
 
 output "tpu_ipv4_cidr_block" {

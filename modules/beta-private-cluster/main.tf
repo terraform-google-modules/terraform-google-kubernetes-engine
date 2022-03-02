@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,6 @@ locals {
   master_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version
   master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
-
   // Build a map of maps of node pools from a list of objects
   node_pool_names = [for np in toset(var.node_pools) : np.name]
   node_pools      = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
@@ -81,7 +80,6 @@ locals {
     enabled  = false
     provider = null
   }]
-
   cluster_cloudrun_config_load_balancer_config = (var.cloudrun && var.cloudrun_load_balancer_type != "") ? {
     load_balancer_type = var.cloudrun_load_balancer_type
   } : {}
@@ -131,6 +129,7 @@ locals {
   cluster_output_pod_security_policy_enabled      = google_container_cluster.primary.pod_security_policy_config != null && length(google_container_cluster.primary.pod_security_policy_config) == 1 ? google_container_cluster.primary.pod_security_policy_config.0.enabled : false
   cluster_output_intranode_visbility_enabled      = google_container_cluster.primary.enable_intranode_visibility
   cluster_output_vertical_pod_autoscaling_enabled = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling.0.enabled : false
+  cluster_output_identity_service_enabled         = google_container_cluster.primary.identity_service_config != null && length(google_container_cluster.primary.identity_service_config) == 1 ? google_container_cluster.primary.identity_service_config.0.enabled : false
 
   # /BETA features
 
