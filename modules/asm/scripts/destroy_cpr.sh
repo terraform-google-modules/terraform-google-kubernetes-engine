@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,5 +16,13 @@
 
 set -e
 
-kubectl delete ns asm-system istio-system --ignore-not-found
-kubectl label namespaces --all istio-injection-
+if [ "$#" -lt 1 ]; then
+    >&2 echo "Not all expected arguments set."
+    exit 1
+fi
+
+REVISION_NAME=$1; shift
+
+if ! kubectl delete controlplanerevision -n istio-system "${REVISION_NAME}" ; then
+  echo "ControlPlaneRevision ${REVISION_NAME} not found"
+fi
