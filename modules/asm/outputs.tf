@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-output "asm_wait" {
-  description = "An output to use when you want to depend on ASM finishing"
-  value       = module.asm_install.wait
+output "revision_name" {
+  value       = local.revision_name
+  description = "The name of the installed managed ASM revision."
+}
+
+output "wait" {
+  value       = module.cpr.wait
+  description = "An output to use when depending on the ASM installation finishing."
 }
