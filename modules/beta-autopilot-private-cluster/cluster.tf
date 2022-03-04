@@ -86,6 +86,7 @@ resource "google_container_cluster" "primary" {
     horizontal_pod_autoscaling {
       disabled = !var.horizontal_pod_autoscaling
     }
+
   }
 
   datapath_provider = var.datapath_provider

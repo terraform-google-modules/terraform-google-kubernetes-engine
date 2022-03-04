@@ -67,10 +67,10 @@ module "gke" {
   http_load_balancing        = false
   network_policy             = false
   horizontal_pod_autoscaling = true
+  filestore_csi_driver       = false
   istio                      = true
   cloudrun                   = true
   dns_cache                  = false
-  filestore_csi_driver       = false
 
   node_pools = [
     {
