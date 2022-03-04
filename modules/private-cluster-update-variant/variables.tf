@@ -149,6 +149,12 @@ variable "remove_default_node_pool" {
   default     = false
 }
 
+variable "filestore_csi_driver" {
+  type        = bool
+  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
+  default     = false
+}
+
 variable "disable_legacy_metadata_endpoints" {
   type        = bool
   description = "Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated."
@@ -383,12 +389,6 @@ variable "master_ipv4_cidr_block" {
   type        = string
   description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
   default     = "10.0.0.0/28"
-}
-
-variable "filestore_csi_driver" {
-  type        = bool
-  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
-  default     = false
 }
 
 variable "authenticator_security_group" {

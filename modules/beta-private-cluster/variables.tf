@@ -160,6 +160,12 @@ variable "remove_default_node_pool" {
   default     = false
 }
 
+variable "filestore_csi_driver" {
+  type        = bool
+  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
+  default     = false
+}
+
 variable "disable_legacy_metadata_endpoints" {
   type        = bool
   description = "Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated."
@@ -513,12 +519,6 @@ variable "enable_intranode_visibility" {
 variable "enable_identity_service" {
   type        = bool
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
-  default     = false
-}
-
-variable "filestore_csi_driver" {
-  type        = bool
-  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
   default     = false
 }
 

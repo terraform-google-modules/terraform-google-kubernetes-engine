@@ -162,6 +162,12 @@ variable "remove_default_node_pool" {
   description = "Remove default node pool while setting up the cluster"
   default     = false
 }
+
+variable "filestore_csi_driver" {
+  type        = bool
+  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
+  default     = false
+}
 {% endif %}
 
 variable "disable_legacy_metadata_endpoints" {
@@ -551,12 +557,6 @@ variable "enable_identity_service" {
   default     = false
 }
 {% endif %}
-
-variable "filestore_csi_driver" {
-  type        = bool
-  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
-  default     = false
-}
 
 variable "authenticator_security_group" {
   type        = string
