@@ -40,7 +40,7 @@ control "gcloud" do
     end
   end
 
-  describe command("gcloud container hub memberships describe gke-asm-membership --project=#{project_id} --format=json") do
+  describe command("gcloud container hub memberships describe #{cluster_name}-membership --project=#{project_id} --format=json") do
     its(:exit_status) { should eq 0 }
     its(:stderr) { should eq '' }
 

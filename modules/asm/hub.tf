@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-resource "google_gke_hub_membership" "cluster_membership" {
+resource "google_gke_hub_membership" "membership" {
+  count         = var.enable_fleet_registration ? 1 : 0
   provider      = google-beta
   project       = var.project_id
-  membership_id = "gke-asm-membership"
+  membership_id = "${data.google_container_cluster.asm.name}-membership"
   endpoint {
     gke_cluster {
-      resource_link = "//container.googleapis.com/${module.gke.cluster_id}"
+      resource_link = "//container.googleapis.com/${data.google_container_cluster.asm.id}"
     }
   }
 }
 
 resource "google_gke_hub_feature" "mesh" {
+  count    = var.enable_mesh_feature ? 1 : 0
   name     = "servicemesh"
   project  = var.project_id
   location = "global"

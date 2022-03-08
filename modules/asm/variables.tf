@@ -74,3 +74,15 @@ variable "enable_vpc_sc" {
   type        = bool
   default     = false
 }
+
+variable "enable_fleet_registration" {
+  description = "Determines whether the module enables the mesh feature on the fleet."
+  type        = bool
+  default     = false
+}
+
+variable "enable_mesh_feature" {
+  description = "Determines whether the module registers the cluster to the fleet."
+  type        = bool
+  default     = false
+}
