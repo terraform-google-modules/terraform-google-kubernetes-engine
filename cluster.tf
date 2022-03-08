@@ -106,8 +106,13 @@ resource "google_container_cluster" "primary" {
     horizontal_pod_autoscaling {
       disabled = !var.horizontal_pod_autoscaling
     }
+
     network_policy_config {
       disabled = !var.network_policy
+    }
+
+    gcp_filestore_csi_driver_config {
+      enabled = var.filestore_csi_driver
     }
   }
 

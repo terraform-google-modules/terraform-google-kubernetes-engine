@@ -77,6 +77,7 @@ module "gke" {
   network_policy             = false
   {% endif %}
   horizontal_pod_autoscaling = true
+  filestore_csi_driver       = false
   {% if private_cluster %}
   enable_private_endpoint    = true
   enable_private_nodes       = true
