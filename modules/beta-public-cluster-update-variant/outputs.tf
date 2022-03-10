@@ -141,14 +141,14 @@ output "identity_namespace" {
   ]
 }
 
-output "istio_enabled" {
-  description = "Whether Istio is enabled"
-  value       = local.cluster_istio_enabled
-}
-
 output "cloudrun_enabled" {
   description = "Whether CloudRun enabled"
   value       = local.cluster_cloudrun_enabled
+}
+
+output "istio_enabled" {
+  description = "Whether Istio is enabled"
+  value       = local.cluster_istio_enabled
 }
 
 output "dns_cache_enabled" {
