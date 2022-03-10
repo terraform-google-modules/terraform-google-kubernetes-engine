@@ -133,6 +133,11 @@ output "peering_name" {
   value       = local.cluster_peering_name
 }
 
+output "cloudrun_enabled" {
+  description = "Whether CloudRun enabled"
+  value       = false
+}
+
 output "istio_enabled" {
   description = "Whether Istio is enabled"
   value       = local.cluster_istio_enabled
