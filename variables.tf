@@ -96,18 +96,6 @@ variable "http_load_balancing" {
   default     = true
 }
 
-variable "network_policy" {
-  type        = bool
-  description = "Enable network policy addon"
-  default     = false
-}
-
-variable "network_policy_provider" {
-  type        = string
-  description = "The network policy provider."
-  default     = "CALICO"
-}
-
 variable "datapath_provider" {
   type        = string
   description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
@@ -135,30 +123,6 @@ variable "ip_range_pods" {
 variable "ip_range_services" {
   type        = string
   description = "The _name_ of the secondary subnet range to use for services"
-}
-
-variable "initial_node_count" {
-  type        = number
-  description = "The number of nodes to create in this cluster's default node pool."
-  default     = 0
-}
-
-variable "remove_default_node_pool" {
-  type        = bool
-  description = "Remove default node pool while setting up the cluster"
-  default     = false
-}
-
-variable "filestore_csi_driver" {
-  type        = bool
-  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
-  default     = false
-}
-
-variable "disable_legacy_metadata_endpoints" {
-  type        = bool
-  description = "Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated."
-  default     = true
 }
 
 variable "node_pools" {
@@ -361,37 +325,10 @@ variable "skip_provisioners" {
   default     = false
 }
 
-variable "default_max_pods_per_node" {
-  type        = number
-  description = "The maximum number of pods to schedule per node"
-  default     = 110
-}
-
 variable "authenticator_security_group" {
   type        = string
   description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
   default     = null
-}
-
-variable "node_metadata" {
-  description = "Specifies how node metadata is exposed to the workload running on the node"
-  default     = "GKE_METADATA"
-  type        = string
-
-  validation {
-    condition     = contains(["GKE_METADATA", "GCE_METADATA", "UNSPECIFIED", "GKE_METADATA_SERVER", "EXPOSE"], var.node_metadata)
-    error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA or UNSPECIFIED."
-  }
-}
-
-variable "database_encryption" {
-  description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
-  type        = list(object({ state = string, key_name = string }))
-
-  default = [{
-    state    = "DECRYPTED"
-    key_name = ""
-  }]
 }
 
 variable "identity_namespace" {
@@ -404,18 +341,6 @@ variable "release_channel" {
   type        = string
   description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
   default     = null
-}
-
-variable "enable_shielded_nodes" {
-  type        = bool
-  description = "Enable Shielded Nodes features on all nodes in this cluster"
-  default     = true
-}
-
-variable "enable_binary_authorization" {
-  type        = bool
-  description = "Enable BinAuthZ Admission controller"
-  default     = false
 }
 
 variable "add_cluster_firewall_rules" {
@@ -467,3 +392,77 @@ variable "impersonate_service_account" {
   default     = ""
 }
 
+variable "network_policy" {
+  type        = bool
+  description = "Enable network policy addon"
+  default     = false
+}
+
+variable "network_policy_provider" {
+  type        = string
+  description = "The network policy provider."
+  default     = "CALICO"
+}
+
+variable "initial_node_count" {
+  type        = number
+  description = "The number of nodes to create in this cluster's default node pool."
+  default     = 0
+}
+
+variable "remove_default_node_pool" {
+  type        = bool
+  description = "Remove default node pool while setting up the cluster"
+  default     = false
+}
+
+variable "filestore_csi_driver" {
+  type        = bool
+  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
+  default     = false
+}
+
+variable "disable_legacy_metadata_endpoints" {
+  type        = bool
+  description = "Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated."
+  default     = true
+}
+
+variable "default_max_pods_per_node" {
+  type        = number
+  description = "The maximum number of pods to schedule per node"
+  default     = 110
+}
+
+variable "database_encryption" {
+  description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
+  type        = list(object({ state = string, key_name = string }))
+
+  default = [{
+    state    = "DECRYPTED"
+    key_name = ""
+  }]
+}
+
+variable "enable_shielded_nodes" {
+  type        = bool
+  description = "Enable Shielded Nodes features on all nodes in this cluster"
+  default     = true
+}
+
+variable "enable_binary_authorization" {
+  type        = bool
+  description = "Enable BinAuthZ Admission controller"
+  default     = false
+}
+
+variable "node_metadata" {
+  description = "Specifies how node metadata is exposed to the workload running on the node"
+  default     = "GKE_METADATA"
+  type        = string
+
+  validation {
+    condition     = contains(["GKE_METADATA", "GCE_METADATA", "UNSPECIFIED", "GKE_METADATA_SERVER", "EXPOSE"], var.node_metadata)
+    error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA or UNSPECIFIED."
+  }
+}

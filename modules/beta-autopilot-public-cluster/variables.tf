@@ -96,18 +96,6 @@ variable "http_load_balancing" {
   default     = true
 }
 
-variable "network_policy" {
-  type        = bool
-  description = "Enable network policy addon"
-  default     = false
-}
-
-variable "network_policy_provider" {
-  type        = string
-  description = "The network policy provider."
-  default     = "CALICO"
-}
-
 variable "datapath_provider" {
   type        = string
   description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
@@ -149,13 +137,6 @@ variable "ip_range_services" {
 }
 
 
-variable "disable_legacy_metadata_endpoints" {
-  type        = bool
-  description = "Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated."
-  default     = true
-}
-
-
 variable "resource_usage_export_dataset_id" {
   type        = string
   description = "The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export."
@@ -172,34 +153,6 @@ variable "enable_resource_consumption_export" {
   type        = bool
   description = "Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export."
   default     = true
-}
-
-variable "enable_kubernetes_alpha" {
-  type        = bool
-  description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
-  default     = false
-}
-
-variable "cluster_autoscaling" {
-  type = object({
-    enabled             = bool
-    autoscaling_profile = string
-    min_cpu_cores       = number
-    max_cpu_cores       = number
-    min_memory_gb       = number
-    max_memory_gb       = number
-    gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))
-  })
-  default = {
-    enabled             = false
-    autoscaling_profile = "BALANCED"
-    max_cpu_cores       = 0
-    min_cpu_cores       = 0
-    max_memory_gb       = 0
-    min_memory_gb       = 0
-    gpu_resources       = []
-  }
-  description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
 
 
@@ -251,22 +204,10 @@ variable "logging_service" {
   default     = "logging.googleapis.com/kubernetes"
 }
 
-variable "logging_enabled_components" {
-  type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS. Empty list is default GKE configuration."
-  default     = []
-}
-
 variable "monitoring_service" {
   type        = string
   description = "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none"
   default     = "monitoring.googleapis.com/kubernetes"
-}
-
-variable "monitoring_enabled_components" {
-  type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS (provider version >= 3.89.0). Empty list is default GKE configuration."
-  default     = []
 }
 
 variable "create_service_account" {
@@ -317,113 +258,16 @@ variable "skip_provisioners" {
   default     = false
 }
 
-variable "default_max_pods_per_node" {
-  type        = number
-  description = "The maximum number of pods to schedule per node"
-  default     = 110
-}
-
-
-variable "istio" {
-  description = "(Beta) Enable Istio addon"
-  default     = false
-}
-
-variable "istio_auth" {
-  type        = string
-  description = "(Beta) The authentication type between services in Istio."
-  default     = "AUTH_MUTUAL_TLS"
-}
-
 variable "dns_cache" {
   type        = bool
   description = "(Beta) The status of the NodeLocal DNSCache addon."
   default     = true
 }
 
-variable "gce_pd_csi_driver" {
-  type        = bool
-  description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
-  default     = true
-}
-
-variable "kalm_config" {
-  type        = bool
-  description = "(Beta) Whether KALM is enabled for this cluster."
-  default     = false
-}
-
-variable "config_connector" {
-  type        = bool
-  description = "(Beta) Whether ConfigConnector is enabled for this cluster."
-  default     = false
-}
-
-variable "cloudrun" {
-  description = "(Beta) Enable CloudRun addon"
-  default     = false
-}
-
-variable "cloudrun_load_balancer_type" {
-  description = "(Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
-  default     = ""
-}
-
-variable "enable_pod_security_policy" {
-  type        = bool
-  description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
-  default     = false
-}
-
-variable "enable_l4_ilb_subsetting" {
-  type        = bool
-  description = "Enable L4 ILB Subsetting on the cluster"
-  default     = false
-}
-
-variable "sandbox_enabled" {
-  type        = bool
-  description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
-  default     = false
-}
-
-variable "enable_intranode_visibility" {
-  type        = bool
-  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
-  default     = false
-}
-
-variable "enable_identity_service" {
-  type        = bool
-  description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
-  default     = false
-}
-
 variable "authenticator_security_group" {
   type        = string
   description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
   default     = null
-}
-
-variable "node_metadata" {
-  description = "Specifies how node metadata is exposed to the workload running on the node"
-  default     = "GKE_METADATA"
-  type        = string
-
-  validation {
-    condition     = contains(["GKE_METADATA", "GCE_METADATA", "UNSPECIFIED", "GKE_METADATA_SERVER", "EXPOSE"], var.node_metadata)
-    error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA or UNSPECIFIED."
-  }
-}
-
-variable "database_encryption" {
-  description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
-  type        = list(object({ state = string, key_name = string }))
-
-  default = [{
-    state    = "DECRYPTED"
-    key_name = ""
-  }]
 }
 
 variable "identity_namespace" {
@@ -436,18 +280,6 @@ variable "release_channel" {
   type        = string
   description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
   default     = null
-}
-
-variable "enable_shielded_nodes" {
-  type        = bool
-  description = "Enable Shielded Nodes features on all nodes in this cluster"
-  default     = true
-}
-
-variable "enable_binary_authorization" {
-  type        = bool
-  description = "Enable BinAuthZ Admission controller"
-  default     = false
 }
 
 variable "add_cluster_firewall_rules" {
