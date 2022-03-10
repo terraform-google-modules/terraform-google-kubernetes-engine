@@ -91,9 +91,7 @@ locals {
       local.cluster_cloudrun_config_load_balancer_config
     )
   ] : []
-
-  cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
-
+  cluster_cloudrun_enabled = var.cloudrun
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
@@ -166,12 +164,12 @@ locals {
   }]
   # BETA features
   cluster_istio_enabled                    = !local.cluster_output_istio_disabled
-  cluster_cloudrun_enabled                 = var.cloudrun
   cluster_dns_cache_enabled                = var.dns_cache
   cluster_telemetry_type_is_set            = var.cluster_telemetry_type != null
   cluster_pod_security_policy_enabled      = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled
   cluster_vertical_pod_autoscaling_enabled = local.cluster_output_vertical_pod_autoscaling_enabled
+  cluster_gce_pd_csi_config                = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
   confidential_node_config                 = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
 
   # /BETA features

@@ -47,15 +47,6 @@ locals {
 
   release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
 
-  autoscaling_resource_limits = var.cluster_autoscaling.enabled ? concat([{
-    resource_type = "cpu"
-    minimum       = var.cluster_autoscaling.min_cpu_cores
-    maximum       = var.cluster_autoscaling.max_cpu_cores
-    }, {
-    resource_type = "memory"
-    minimum       = var.cluster_autoscaling.min_memory_gb
-    maximum       = var.cluster_autoscaling.max_memory_gb
-  }], var.cluster_autoscaling.gpu_resources) : []
 
 
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
@@ -70,31 +61,11 @@ locals {
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
 
-  cluster_cloudrun_config_load_balancer_config = (var.cloudrun && var.cloudrun_load_balancer_type != "") ? {
-    load_balancer_type = var.cloudrun_load_balancer_type
-  } : {}
-  cluster_cloudrun_config = var.cloudrun ? [
-    merge(
-      {
-        disabled = false
-      },
-      local.cluster_cloudrun_config_load_balancer_config
-    )
-  ] : []
-
-  cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
-
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
   }]
 
-  // legacy mappings https://github.com/hashicorp/terraform-provider-google/pull/10238
-  old_node_metadata_config_mapping = { GKE_METADATA_SERVER = "GKE_METADATA", GCE_METADATA = "EXPOSE" }
-
-  cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
-    mode = lookup(local.old_node_metadata_config_mapping, var.node_metadata, var.node_metadata)
-  }]
 
   cluster_output_name           = google_container_cluster.primary.name
   cluster_output_regional_zones = google_container_cluster.primary.node_locations
@@ -151,12 +122,12 @@ locals {
   }]
   # BETA features
   cluster_istio_enabled                    = !local.cluster_output_istio_disabled
-  cluster_cloudrun_enabled                 = var.cloudrun
   cluster_dns_cache_enabled                = var.dns_cache
   cluster_telemetry_type_is_set            = var.cluster_telemetry_type != null
   cluster_pod_security_policy_enabled      = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled
   cluster_vertical_pod_autoscaling_enabled = local.cluster_output_vertical_pod_autoscaling_enabled
+  cluster_gce_pd_csi_config                = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
   confidential_node_config                 = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
 
   # /BETA features

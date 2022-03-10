@@ -156,11 +156,6 @@ output "istio_enabled" {
   value       = local.cluster_istio_enabled
 }
 
-output "cloudrun_enabled" {
-  description = "Whether CloudRun enabled"
-  value       = local.cluster_cloudrun_enabled
-}
-
 output "dns_cache_enabled" {
   description = "Whether DNS Cache enabled"
   value       = local.cluster_dns_cache_enabled
@@ -189,4 +184,9 @@ output "identity_service_enabled" {
 output "tpu_ipv4_cidr_block" {
   description = "The IP range in CIDR notation used for the TPUs"
   value       = var.enable_tpu ? google_container_cluster.primary.tpu_ipv4_cidr_block : null
+}
+
+output "cloudrun_enabled" {
+  description = "Whether CloudRun enabled"
+  value       = local.cluster_cloudrun_enabled
 }
