@@ -11,8 +11,9 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### ⚠ BREAKING CHANGES
 
-* add gcp_filestore_csi_driver_config to addons config (#1166)
-* Rewrite ASM module (#1140)
+* Added gcp_filestore_csi_driver_config to addons config (#1166)
+* Rewrote ASM module, see the [upgrade guide](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/blob/master/docs/upgrading_to_v20.0.md) for details (#1140)
+* Minimum provider version increased to 4.10.
 
 ### Features
 
