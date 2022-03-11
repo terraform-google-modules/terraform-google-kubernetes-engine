@@ -143,18 +143,15 @@ resource "google_container_cluster" "primary" {
     initial_node_count = var.initial_node_count
 
     node_config {
-      image_type       = lookup(var.node_pools[0], "enable_gcfs", false) ? "COS_CONTAINERD" : lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
+      image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
       machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
       min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
+
       gcfs_config {
         enabled = lookup(var.node_pools[0], "enable_gcfs", false)
       }
 
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
-
-      gcfs_config {
-        enabled = lookup(var.node_pools[0], "enable_gcfs", false)
-      }
 
       tags = concat(
         lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
@@ -283,13 +280,12 @@ resource "google_container_node_pool" "pools" {
 
 
   node_config {
-    image_type       = lookup(each.value, "enable_gcfs", false) ? "COS_CONTAINERD" : lookup(each.value, "image_type", "COS_CONTAINERD")
+    image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type     = lookup(each.value, "machine_type", "e2-medium")
-    min_cpu_platform = lookup(each.value, "min_cpu_platform", "")
+    min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
     gcfs_config {
       enabled = lookup(each.value, "enable_gcfs", false)
     }
-
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
       lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
