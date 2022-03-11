@@ -62,4 +62,6 @@ module "cpr" {
   kubectl_destroy_command = "${path.module}/scripts/destroy_cpr.sh ${local.revision_name}"
 
   module_depends_on = [kubernetes_config_map.asm_options]
+
+  impersonate_service_account = var.impersonate_service_account
 }
