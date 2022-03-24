@@ -45,6 +45,7 @@ resource "kubernetes_config_map" "asm_options" {
 
   data = {
     multicluster_mode = var.multicluster_mode
+    ASM_OPTS          = var.enable_cni ? "CNI=on" : null
   }
 
   depends_on = [google_gke_hub_membership.membership, google_gke_hub_feature.mesh]
