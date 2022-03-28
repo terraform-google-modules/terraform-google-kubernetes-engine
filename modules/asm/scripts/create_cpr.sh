@@ -51,6 +51,7 @@ metadata:
     mesh.cloud.google.com/vpcsc: "${ENABLE_VPC_SC}"
   labels:
     mesh.cloud.google.com/managed-cni-enabled: "${ENABLE_CNI}"
+    app.kubernetes.io/created-by: terraform-module
 spec:
   type: managed_service
   channel: "${CHANNEL}"
