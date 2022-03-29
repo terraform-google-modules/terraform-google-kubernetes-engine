@@ -23,7 +23,7 @@ output "cluster_id" {
 
 output "name" {
   description = "Cluster name"
-  value       = local.cluster_name
+  value       = local.cluster_name_computed
   depends_on = [
     /* Nominally, the cluster name is populated as soon as it is known to Terraform.
     * However, the cluster may not be in a usable state yet.  Therefore any
