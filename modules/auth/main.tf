@@ -18,9 +18,17 @@ locals {
   cluster_ca_certificate = data.google_container_cluster.gke_cluster.master_auth != null ? data.google_container_cluster.gke_cluster.master_auth[0].cluster_ca_certificate : ""
   private_endpoint       = try(data.google_container_cluster.gke_cluster.private_cluster_config[0].private_endpoint, "")
   default_endpoint       = data.google_container_cluster.gke_cluster.endpoint != null ? data.google_container_cluster.gke_cluster.endpoint : ""
-  endpoint               = var.use_private_endpoint == true ? local.private_endpoint : local.default_endpoint
+  direct_endpoint        = var.use_private_endpoint == true ? local.private_endpoint : local.default_endpoint
+  project_number = try(data.google_project.project[0].number, "")
+  gateway_endpoint       = "connectgateway.googleapis.com/v1/projects/${local.project_number}/memberships/${data.google_container_cluster.gke_cluster.name}"
+  endpoint               = var.use_connect_gateway ? local.gateway_endpoint : local.direct_endpoint
   host                   = local.endpoint != "" ? "https://${local.endpoint}" : ""
   context                = data.google_container_cluster.gke_cluster.name != null ? data.google_container_cluster.gke_cluster.name : ""
+}
+
+data "google_project" "project" {
+  count = var.use_connect_gateway ? 1 : 0
+  project_id  = var.project_id
 }
 
 data "google_container_cluster" "gke_cluster" {

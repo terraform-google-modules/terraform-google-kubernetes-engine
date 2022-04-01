@@ -45,3 +45,9 @@ output "token" {
   description = "The token value for use with the kubernetes provider."
   value       = data.google_client_config.provider.access_token
 }
+
+output "cluster" {
+  sensitive = true
+  description = "The full cluster details"
+  value = data.google_container_cluster.gke_cluster
+}

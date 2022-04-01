@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Google LLC
+ * Copyright 2018 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,15 @@
  */
 
 variable "project_id" {
-  description = "The GCP project of the GKE cluster."
-  type        = string
+  description = "The project ID to host the cluster in"
 }
 
-variable "location" {
-  description = "The location (region or zone) of the GKE cluster."
-  type        = string
+variable "region" {
+  description = "The region to host the cluster in"
+  default     = "us-central1"
 }
 
-variable "cluster_name" {
-  description = "The name of the GKE cluster."
-  type        = string
-}
-
-variable "use_private_endpoint" {
-  description = "Connect on the private GKE cluster endpoint"
-  type        = bool
-  default     = false
-}
-
-variable "use_connect_gateway" {
-  description = "Connect via Connect Gateway"
-  type        = bool
-  default     = false
+variable "subnet_name" {
+  description = "The name of the subnet to create for the cluster"
+  default     = "gke-subnet"
 }
