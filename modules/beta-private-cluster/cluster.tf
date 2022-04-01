@@ -93,7 +93,7 @@ resource "google_container_cluster" "primary" {
         service_account  = local.service_account
         oauth_scopes     = local.node_pools_oauth_scopes["all"]
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
-        image_type       = lookup(var.node_pools[0], "image_type", "")
+        image_type       = lookup(var.node_pools[0], "image_type", null)
       }
     }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
