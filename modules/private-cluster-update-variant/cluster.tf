@@ -62,7 +62,7 @@ resource "google_container_cluster" "primary" {
       content {
         service_account = local.service_account
         oauth_scopes    = local.node_pools_oauth_scopes["all"]
-        image_type      = lookup(var.node_pools[0], "image_type", null)
+        image_type      = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
       }
     }
     dynamic "resource_limits" {
