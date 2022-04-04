@@ -14,7 +14,7 @@ There is a full example provided [here](../../examples/simple_zonal_with_asm). D
 
 ```tf
 module "asm" {
-  source            = "../../modules/asm"
+  source            = "terraform-google-modules/kubernetes-engine/google//modules/asm"
   project_id        = var.project_id
   cluster_name      = module.gke.name
   cluster_location  = module.gke.location
