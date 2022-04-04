@@ -125,7 +125,6 @@ locals {
   cluster_region   = var.regional ? var.region : join("-", slice(split("-", local.cluster_location), 0, 2))
   cluster_zones    = sort(local.cluster_output_zones)
 
-  cluster_name = local.cluster_output_name
   // node pool ID is in the form projects/<project-id>/locations/<location>/clusters/<cluster-name>/nodePools/<nodepool-name>
   cluster_name_parts_from_nodepool           = split("/", element(values(google_container_node_pool.pools)[*].id, 0))
   cluster_name_computed                      = element(local.cluster_name_parts_from_nodepool, length(local.cluster_name_parts_from_nodepool) - 3)
