@@ -53,6 +53,7 @@ resource "google_container_cluster" "primary" {
   }
   min_master_version = var.release_channel != null ? null : local.master_version
 
+
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
   vertical_pod_autoscaling {

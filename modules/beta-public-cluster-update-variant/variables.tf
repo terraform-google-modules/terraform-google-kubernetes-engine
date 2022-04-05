@@ -612,3 +612,27 @@ variable "gce_pd_csi_driver" {
   description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
   default     = false
 }
+
+variable "enable_cloud_dns" {
+  type        = bool
+  description = "(Beta) Whether to enable Google Cloud DNS integration."
+  default     = false
+}
+
+variable "cluster_dns_provider" {
+  type        = string
+  description = "(Beta) Which in-cluster DNS provider should be used. PROVIDER_UNSPECIFIED (default) or PLATFORM_DEFAULT or CLOUD_DNS."
+  default     = "PROVIDER_UNSPECIFIED"
+}
+
+variable "cluster_dns_scope" {
+  type        = string
+  description = "(Beta) The scope of access to cluster DNS records. DNS_SCOPE_UNSPECIFIED (default) or CLUSTER_SCOPE or VPC_SCOPE. "
+  default     = "DNS_SCOPE_UNSPECIFIED"
+}
+
+variable "cluster_dns_domain" {
+  type        = string
+  description = "(Beta) The suffix used for all cluster service records."
+  default     = ""
+}
