@@ -107,7 +107,8 @@ locals {
   cluster_region   = var.regional ? var.region : join("-", slice(split("-", local.cluster_location), 0, 2))
   cluster_zones    = sort(local.cluster_output_zones)
 
-  cluster_name                               = local.cluster_output_name
+  // cluster ID is in the form project/location/name
+  cluster_name_computed                      = element(split("/", local.cluster_id), length(split("/", local.cluster_id)) - 1)
   cluster_network_tag                        = "gke-${var.name}"
   cluster_ca_certificate                     = local.cluster_master_auth_map["cluster_ca_certificate"]
   cluster_master_version                     = local.cluster_output_master_version
