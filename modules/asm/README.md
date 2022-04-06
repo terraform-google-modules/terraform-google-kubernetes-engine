@@ -6,7 +6,7 @@ This module installs [Anthos Service Mesh](https://cloud.google.com/service-mesh
 
 There are a few prerequisites to using this module that can be done either through Terraform or manually:
 
-1. Enable the `mesh.cloud.googleapis.com` service
+1. Enable the `mesh.googleapis.com` service
 1. Enable the `servicemesh` feature on the cluster hub
 1. Register target cluster to the servicemesh-enabled hub
 
