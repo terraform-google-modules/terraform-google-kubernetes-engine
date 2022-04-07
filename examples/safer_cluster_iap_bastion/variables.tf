@@ -69,9 +69,3 @@ variable "bastion_members" {
   description = "List of users, groups, SAs who need access to the bastion host"
   default     = []
 }
-
-variable "ip_source_ranges_ssh" {
-  type        = list(string)
-  description = "Additional source ranges to allow for ssh to bastion host. 35.235.240.0/20 allowed by default for IAP tunnel."
-  default     = []
-}
