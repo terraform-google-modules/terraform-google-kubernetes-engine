@@ -490,3 +490,27 @@ variable "node_metadata" {
     error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA or UNSPECIFIED."
   }
 }
+
+variable "dns_config" {
+  description = "Configuration for Using Cloud DNS for GKE."
+  type = object({
+    cluster_dns        = string
+    cluster_dns_scope  = string
+    cluster_dns_domain = string
+  })
+
+  default = {
+    cluster_dns        = ""
+    cluster_dns_scope  = ""
+    cluster_dns_domain = ""
+  }
+  validation {
+    condition     = var.dns_config.cluster_dns == "" || contains(["PROVIDER_UNSPECIFIED", "PLATFORM_DEFAULT", "CLOUD_DNS"], var.dns_config.cluster_dns)
+    error_message = "The dns_config.cluster_dns value must be one of 'PROVIDER_UNSPECIFIED', 'PLATFORM_DEFAULT' or 'CLOUD_DNS'."
+  }
+
+  validation {
+    condition     = var.dns_config.cluster_dns_scope == "" || contains(["DNS_SCOPE_UNSPECIFIED", "CLUSTER_SCOPE", "VPC_SCOPE"], var.dns_config.cluster_dns_scope)
+    error_message = "The dns_config.cluster_dns_scope value must be one of 'DNS_SCOPE_UNSPECIFIED', 'CLUSTER_SCOPE' or 'VPC_SCOPE'."
+  }
+}

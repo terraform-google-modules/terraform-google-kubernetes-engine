@@ -48,6 +48,12 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dns_config {
+    cluster_dns        = var.dns_config.cluster_dns == "" ? "PROVIDER_UNSPECIFIED" : var.dns_config.cluster_dns
+    cluster_dns_scope  = var.dns_config.cluster_dns_scope == "" ? "DNS_SCOPE_UNSPECIFIED" : ""
+    cluster_dns_domain = var.dns_config.cluster_dns_domain
+  }
+
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
   min_master_version = var.release_channel != null ? null : local.master_version
