@@ -384,3 +384,9 @@ variable "enable_tpu" {
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
   default     = false
 }
+
+variable "terraform_timeouts" {
+  type        = object({create = string, update = string, delete = string})
+  description = "Timeouts for Terraform operations."
+  default     = {create = "45m", update = "45m", delete = "45m"}
+}

@@ -490,3 +490,9 @@ variable "node_metadata" {
     error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA or UNSPECIFIED."
   }
 }
+
+variable "terraform_timeouts" {
+  type        = object({create = string, update = string, delete = string})
+  description = "Timeouts for Terraform operations."
+  default     = {create = "45m", update = "45m", delete = "45m"}
+}

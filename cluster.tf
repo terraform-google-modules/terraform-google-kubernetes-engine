@@ -134,9 +134,9 @@ resource "google_container_cluster" "primary" {
   }
 
   timeouts {
-    create = "45m"
-    update = "45m"
-    delete = "45m"
+    create = var.terraform_timeouts.create
+    update = var.terraform_timeouts.update
+    delete = var.terraform_timeouts.delete
   }
   node_pool {
     name               = "default-pool"
@@ -349,8 +349,8 @@ resource "google_container_node_pool" "pools" {
   }
 
   timeouts {
-    create = "45m"
-    update = "45m"
-    delete = "45m"
+    create = var.terraform_timeouts.create
+    update = var.terraform_timeouts.update
+    delete = var.terraform_timeouts.delete
   }
 }
