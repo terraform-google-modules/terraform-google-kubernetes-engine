@@ -386,7 +386,7 @@ variable "enable_tpu" {
 }
 
 variable "terraform_timeouts" {
-  type        = object({create = string, update = string, delete = string})
+  type        = object({ create = string, update = string, delete = string })
   description = "Timeouts for Terraform operations."
   default     = { create = "45m", update = "45m", delete = "45m" }
 }
