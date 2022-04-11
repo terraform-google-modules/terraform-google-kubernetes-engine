@@ -230,6 +230,7 @@ Then perform the following commands on the root folder:
 | skip\_provisioners | Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality. | `bool` | `false` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | `map(list(string))` | `{}` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | `string` | n/a | yes |
+| terraform\_timeouts | Timeouts for Terraform operations. | `object({create = string, update = string, delete = string})` | <pre>{<br>  "create": "45m",<br>  "delete": "45m",<br>  "update": "45m"<br>}</pre> | no |
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | `list(string)` | `[]` | no |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | `list(string)` | `[]` | no |
 
