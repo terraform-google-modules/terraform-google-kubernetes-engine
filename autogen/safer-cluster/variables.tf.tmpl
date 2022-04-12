@@ -346,6 +346,12 @@ variable "gce_pd_csi_driver" {
   default     = true
 }
 
+variable "filestore_csi_driver" {
+  type        = bool
+  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
+  default     = false
+}
+
 variable "add_cluster_firewall_rules" {
   type        = bool
   description = "Create additional firewall rules"
