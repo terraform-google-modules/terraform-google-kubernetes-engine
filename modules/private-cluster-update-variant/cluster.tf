@@ -247,6 +247,7 @@ locals {
     "min_cpu_platform",
     "preemptible",
     "service_account",
+    "enable_gcfs",
   ]
 }
 

@@ -374,6 +374,7 @@ locals {
     "preemptible",
     "spot",
     "service_account",
+    "enable_gcfs",
   ]
 }
 
