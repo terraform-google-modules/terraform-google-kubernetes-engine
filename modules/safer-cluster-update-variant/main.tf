@@ -165,7 +165,8 @@ module "gke" {
 
   skip_provisioners = var.skip_provisioners
 
-  gce_pd_csi_driver = var.gce_pd_csi_driver
+  gce_pd_csi_driver    = var.gce_pd_csi_driver
+  filestore_csi_driver = var.filestore_csi_driver
 
   notification_config_topic = var.notification_config_topic
 }
