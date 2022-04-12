@@ -4,17 +4,28 @@ This module installs [Anthos Service Mesh](https://cloud.google.com/service-mesh
 
 ## Usage
 
-There are a few prerequisites to using this module that can be done either through Terraform or manually:
+There are a few prerequisites to using this module that can be done either through Terraform and/or manually:
 
-1. Enable the `mesh.cloud.googleapis.com` service
+1. Enable the `mesh.googleapis.com` service
 1. Enable the `servicemesh` feature on the cluster hub
 1. Register target cluster to the servicemesh-enabled hub
+1. Configure the [Kubernetes Provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs) for the target cluster, for example:
+
+```tf
+provider "kubernetes" {
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+}
+
+data "google_client_config" "default" {}
+```
 
 There is a full example provided [here](../../examples/simple_zonal_with_asm). Detailed usage example is as follows:
 
 ```tf
 module "asm" {
-  source            = "../../modules/asm"
+  source            = "terraform-google-modules/kubernetes-engine/google//modules/asm"
   project_id        = var.project_id
   cluster_name      = module.gke.name
   cluster_location  = module.gke.location

@@ -23,7 +23,17 @@ output "cluster_id" {
 
 output "name" {
   description = "Cluster name"
-  value       = local.cluster_name
+  value       = local.cluster_name_computed
+  depends_on = [
+    /* Nominally, the cluster name is populated as soon as it is known to Terraform.
+    * However, the cluster may not be in a usable state yet.  Therefore any
+    * resources dependent on the cluster being up will fail to deploy.  With
+    * this explicit dependency, dependent resources can wait for the cluster
+    * to be up.
+    */
+    google_container_cluster.primary,
+    google_container_node_pool.pools,
+  ]
 }
 
 output "type" {

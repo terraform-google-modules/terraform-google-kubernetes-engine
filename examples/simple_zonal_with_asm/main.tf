@@ -33,7 +33,7 @@ data "google_project" "project" {
 module "gke" {
   source                  = "../../"
   project_id              = var.project_id
-  name                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  name                    = "test-prefix-cluster-test-suffix"
   regional                = false
   region                  = var.region
   zones                   = var.zones
