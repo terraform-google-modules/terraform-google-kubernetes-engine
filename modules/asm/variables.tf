@@ -86,3 +86,9 @@ variable "enable_mesh_feature" {
   type        = bool
   default     = false
 }
+
+variable "kubectl_internal_ip" {
+  description = "Use internal ip for the cluster endpoint when running kubectl commands."
+  type        = bool
+  default     = false
+}
