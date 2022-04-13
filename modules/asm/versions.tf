@@ -18,6 +18,13 @@
 terraform {
   required_version = ">= 0.13.0"
 
+  required_providers {
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.0"
+    }
+  }
+
   provider_meta "google" {
     module_name = "blueprints/terraform/terraform-google-kubernetes-engine:asm/v20.0.0"
   }
