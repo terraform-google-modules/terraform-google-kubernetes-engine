@@ -58,6 +58,7 @@ module "cpr" {
   project_id       = var.project_id
   cluster_name     = var.cluster_name
   cluster_location = var.cluster_location
+  internal_ip      = var.internal_ip
 
   kubectl_create_command  = "${path.module}/scripts/create_cpr.sh ${local.revision_name} ${local.channel} ${var.enable_cni} ${var.enable_vpc_sc}"
   kubectl_destroy_command = "${path.module}/scripts/destroy_cpr.sh ${local.revision_name}"
