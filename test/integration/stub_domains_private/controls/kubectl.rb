@@ -42,8 +42,8 @@ control "kubectl" do
       describe "kube-dns" do
         let(:kubedns_configmap) { client.get_config_map("kube-dns", "kube-system") }
 
-        it "is created by Terraform" do
-          expect(kubedns_configmap.metadata.labels.maintained_by).to eq "terraform"
+        it "is managed by Terraform" do
+          expect(kubedns_configmap.metadata.managedFields[0].manager).to eq "Terraform"
         end
 
         it "reflects the stub_domains configuration" do
