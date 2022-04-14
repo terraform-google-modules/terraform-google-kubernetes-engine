@@ -4,7 +4,7 @@ This module installs [Anthos Service Mesh](https://cloud.google.com/service-mesh
 
 ## Usage
 
-There are a few prerequisites to using this module that can be done either through Terraform and/or manually:
+ The ASM module requires Terraform 0.14+. There are a few prerequisites to using this module that can be done either through Terraform and/or manually:
 
 1. Enable the `mesh.googleapis.com` service
 1. Enable the `servicemesh` feature on the cluster hub
