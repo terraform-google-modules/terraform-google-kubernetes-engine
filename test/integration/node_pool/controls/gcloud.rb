@@ -60,7 +60,7 @@ control "gcloud" do
     end
 
     describe "node pools" do
-      let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" } }
+      let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" || p['name'] =~ %r{^nap-.*} } }
 
       it "has 3" do
         expect(node_pools.count).to eq 3
