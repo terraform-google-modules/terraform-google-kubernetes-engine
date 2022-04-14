@@ -367,12 +367,6 @@ variable "firewall_inbound_ports" {
   default     = ["8443", "9443", "15017"]
 }
 
-variable "gcloud_upgrade" {
-  type        = bool
-  description = "Whether to upgrade gcloud at runtime"
-  default     = false
-}
-
 variable "add_shadow_firewall_rules" {
   type        = bool
   description = "Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled)."
@@ -385,12 +379,6 @@ variable "shadow_firewall_rules_priority" {
   default     = 999
 }
 
-
-variable "impersonate_service_account" {
-  type        = string
-  description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
-  default     = ""
-}
 
 variable "network_policy" {
   type        = bool
