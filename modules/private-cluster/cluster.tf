@@ -281,7 +281,7 @@ resource "google_container_node_pool" "pools" {
   node_config {
     image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type     = lookup(each.value, "machine_type", "e2-medium")
-    min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
+    min_cpu_platform = lookup(each.value, "min_cpu_platform", "")
     gcfs_config {
       enabled = lookup(each.value, "enable_gcfs", false)
     }
