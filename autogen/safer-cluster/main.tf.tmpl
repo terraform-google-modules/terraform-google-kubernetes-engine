@@ -79,7 +79,7 @@ module "gke" {
 
   initial_node_count = var.initial_node_count
 
-  // We suggest removing the default node pull, as it cannot be modified without
+  // We suggest removing the default node pool, as it cannot be modified without
   // destroying the cluster.
   remove_default_node_pool = true
 
@@ -103,7 +103,7 @@ module "gke" {
 
   // We either:
   // - Create a dedicated service account with minimal permissions to run nodes.
-  //   All applications shuold run with an identity defined via Workload Identity anyway.
+  //   All applications should run with an identity defined via Workload Identity anyway.
   // - Use a service account passed as a parameter to the module, in case the user
   //   wants to maintain control of their service accounts.
   create_service_account = var.compute_engine_service_account == "" ? true : false
