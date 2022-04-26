@@ -255,6 +255,9 @@ resource "google_container_cluster" "primary" {
       gcfs_config {
         enabled = lookup(var.node_pools[0], "enable_gcfs", false)
       }
+      reservation_affinity {
+        consume_reservation_type = lookup(each.value, "reservation_affinity_type", "UNSPECIFIED")
+      }
 
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
@@ -401,6 +404,9 @@ resource "google_container_node_pool" "pools" {
     min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
     gcfs_config {
       enabled = lookup(each.value, "enable_gcfs", false)
+    }
+    reservation_affinity {
+      consume_reservation_type = lookup(each.value, "reservation_affinity_type", "UNSPECIFIED")
     }
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
