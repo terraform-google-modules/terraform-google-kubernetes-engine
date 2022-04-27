@@ -368,6 +368,8 @@ locals {
     "disk_type",
     "accelerator_count",
     "accelerator_type",
+    "enable_secure_boot",
+    "enable_integrity_monitoring",
     "local_ssd_count",
     "machine_type",
     "min_cpu_platform",
