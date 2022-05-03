@@ -168,6 +168,7 @@ locals {
   # BETA features
   cluster_istio_enabled                    = !local.cluster_output_istio_disabled
   cluster_dns_cache_enabled                = var.dns_cache
+  logmon_config_is_set                     = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0
   cluster_telemetry_type_is_set            = var.cluster_telemetry_type != null
   cluster_pod_security_policy_enabled      = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled
