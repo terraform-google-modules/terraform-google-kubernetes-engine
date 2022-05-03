@@ -103,6 +103,19 @@ control "gcloud" do
           "enabled" => true,
         })
       end
+
+      it "has the expected logging config" do
+        expect(data['loggingConfig']['componentConfig']['enableComponents']).to match_array([
+          "SYSTEM_COMPONENTS"
+        ])
+      end
+
+      it "has the expected monitoring config" do
+        expect(data['monitoringConfig']['componentConfig']['enableComponents']).to match_array([
+          "WORKLOADS",
+          "SYSTEM_COMPONENTS"
+        ])
+      end
     end
 
     describe "default node pool" do
