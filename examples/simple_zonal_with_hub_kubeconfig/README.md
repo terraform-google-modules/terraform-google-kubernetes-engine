@@ -2,7 +2,7 @@
 
 This example illustrates how to register a non-GKE Kubernetes Cluster with [Anthos](https://cloud.google.com/anthos/multicluster-management/environs) a.k.a Attached cluster.
 
-It creates a [kind](https://kind.sigs.k8s.io/) cluster, sets current kubecontext to the cluster and registers the cluster using the [Hub registration module](../../modules/hub).
+It creates a [kind](https://kind.sigs.k8s.io/) cluster, sets current kubecontext to the cluster and registers the cluster using the [Hub registration module](../../modules/hub-legacy).
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

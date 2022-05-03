@@ -25,29 +25,11 @@ variable "cluster_name_suffix" {
 
 variable "region" {
   description = "The region to host the cluster in"
+  default     = "us-central1"
 }
 
-variable "zones" {
-  type        = list(string)
-  description = "The zone to host the cluster in (required if is a zonal cluster)"
-}
-
-variable "network" {
-  description = "The VPC network to host the cluster in"
-  default     = "default"
-}
-
-variable "subnetwork" {
-  description = "The subnetwork to host the cluster in"
-  default     = "default"
-}
-
-variable "ip_range_pods" {
-  description = "The secondary ip range to use for pods"
-  default     = ""
-}
-
-variable "ip_range_services" {
-  description = "The secondary ip range to use for services"
-  default     = ""
+variable "zone" {
+  type        = string
+  description = "The zone to host the cluster in"
+  default     = "us-central1-a"
 }
