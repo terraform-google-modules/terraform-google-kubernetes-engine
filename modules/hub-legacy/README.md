@@ -1,8 +1,10 @@
-# Terraform Kubernetes Engine Hub Submodule
+# Hub Submodule
+
+**Note**: This module is legacy. For registering GKE clusters, you should switch to the new, native [module](../fleet-membership).
 
 This module [registers a Kubernetes cluster](https://cloud.google.com/anthos/multicluster-management/connect/registering-a-cluster) in an Anthos [Environ](https://cloud.google.com/anthos/multicluster-management/environs).
 
-Specifically, this module automates the following steps for [registering a cluster](https://cloud.google.com/anthos/multicluster-management/connect/registering-a-cluster#register_cluster)
+Specifically, this module automates the following steps for [registering a cluster](https://cloud.google.com/anthos/multicluster-management/connect/registering-a-cluster#register_cluster).
 
 ## Usage
 

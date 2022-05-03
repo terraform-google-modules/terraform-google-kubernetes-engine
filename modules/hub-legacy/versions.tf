@@ -1,5 +1,6 @@
+
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +15,10 @@
  * limitations under the License.
  */
 
-output "wait" {
-  description = "An output to use when you want to depend on registration finishing"
-  value       = module.gke_hub_registration.wait
+terraform {
+  required_version = ">= 0.13.0"
+
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:hub/v16.1.0"
+  }
 }

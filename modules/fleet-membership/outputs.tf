@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-module "hub" {
-  source       = "../../modules/fleet-membership"
-  project_id   = var.project_id
-  location     = module.gke.location
-  cluster_name = module.gke.name
+output "cluster_membership_id" {
+  description = "The ID of the hub membership"
+  value       = var.enable_fleet_registration ? google_gke_hub_membership.primary[0].membership_id : local.gke_hub_membership_name
+}
 
-  depends_on = [module.gke]
+output "wait" {
+  description = "An output to use when you want to depend on registration finishing"
+  value       = var.enable_fleet_registration ? google_gke_hub_membership.primary[0].membership_id : local.gke_hub_membership_name
 }
