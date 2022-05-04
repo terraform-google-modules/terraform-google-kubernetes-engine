@@ -45,6 +45,9 @@ resource "google_container_cluster" "primary" {
       enabled = confidential_nodes.value.enabled
     }
   }
+  node_config {
+    service_account = local.service_account
+  }
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 

@@ -61,6 +61,11 @@ resource "google_container_cluster" "primary" {
     }
   }
 {% endif %}
+{% if autopilot_cluster %}
+  node_config {
+    service_account = local.service_account
+  }
+{% endif %}
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
