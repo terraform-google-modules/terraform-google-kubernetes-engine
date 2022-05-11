@@ -33,7 +33,6 @@ module "example" {
   node_pools = [
     {
       name         = "default-node-pool"
-      image_type   = "COS_CONTAINERD"
       machine_type = "n1-standard-2"
     },
   ]

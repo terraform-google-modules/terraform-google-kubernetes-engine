@@ -32,7 +32,7 @@ control "gcloud" do
 
     describe "cluster" do
       it "is running" do
-        expect(data['status']).to eq 'RUNNING'
+        expect(data['status']).to eq('RUNNING').or eq('RECONCILING')
       end
 
       it "is autopilot" do
