@@ -48,7 +48,6 @@ module "gke" {
       max_count          = 1
       disk_size_gb       = 100
       disk_type          = "pd-ssd"
-      image_type         = "COS"
       auto_repair        = true
       auto_upgrade       = false
       preemptible        = false

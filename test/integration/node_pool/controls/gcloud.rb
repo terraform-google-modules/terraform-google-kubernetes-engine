@@ -297,7 +297,7 @@ control "gcloud" do
             including(
               "name" => "pool-02",
               "config" => including(
-                "imageType" => "COS",
+                "imageType" => "COS_CONTAINERD",
               ),
             )
           )
