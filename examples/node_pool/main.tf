@@ -60,7 +60,6 @@ module "gke" {
       accelerator_count  = 1
       accelerator_type   = "nvidia-tesla-a100"
       gpu_partition_size = "1g.5gb"
-      image_type         = "COS"
       auto_repair        = false
       service_account    = var.compute_engine_service_account
     },

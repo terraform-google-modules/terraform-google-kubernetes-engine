@@ -22,6 +22,7 @@ module "enabled_google_apis" {
   disable_services_on_destroy = false
 
   activate_apis = [
+    "serviceusage.googleapis.com",
     "iam.googleapis.com",
     "compute.googleapis.com",
     "logging.googleapis.com",
