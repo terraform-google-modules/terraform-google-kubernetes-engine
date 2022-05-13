@@ -15,9 +15,9 @@
  */
 
 locals {
-  # GCP service account ids must be < 30 chars matching regex ^[a-z](?:[-a-z0-9]{4,28}[a-z0-9])$
+  # GCP service account ids must be <= 30 chars matching regex ^[a-z](?:[-a-z0-9]{4,28}[a-z0-9])$
   # KSAs do not have this naming restriction.
-  gcp_given_name = var.gcp_sa_name != null ? var.gcp_sa_name : substr(var.name, 0, 30)
+  gcp_given_name = var.gcp_sa_name != null ? var.gcp_sa_name : trimsuffix(substr(var.name, 0, 30), "-")
   gcp_sa_email   = var.use_existing_gcp_sa ? data.google_service_account.cluster_service_account[0].email : google_service_account.cluster_service_account[0].email
   gcp_sa_fqn     = "serviceAccount:${local.gcp_sa_email}"
 
