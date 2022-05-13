@@ -6,6 +6,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [21.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v20.0.0...v21.0.0) (2022-05-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* update kube-dns configMap using kubernetes_config_map_v1_data (#1214)
+
+### Features
+
+* Add `filestore_csi_driver` option for safer cluster variants ([#1176](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1176)) ([40ef1a1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/40ef1a178281ab967ed60ddf1a28304a76e8982d))
+* Add app.kubernetes.io/created-by label to CPR in ASM module ([#1190](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1190)) ([bbd9b77](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/bbd9b770987b6e8e502ce3747ccc6ce0a96e79c1))
+* Add keeper for `enable_gcfs` node pool option for update variants ([#1218](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1218)) ([f431756](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f4317560c8978b9b4946cc0484fc7f8703a37a38)), closes [#1217](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1217)
+* Add support for image streaming/GCFS ([#1174](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1174)) ([3a94528](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3a94528701a06b99bbb02274c3a75012eeae72ea))
+* Add support for internal endpoint with ASM module ([#1219](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1219)) ([8e87308](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8e873089af810b23aaa8b368b31bca737ec61835))
+* Switch to native Terraform resources for hub registration and ACM ([#947](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/947)) ([9359961](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/93599618529ba532ad5b118b59497f502a020d4e))
+* update kube-dns configMap using kubernetes_config_map_v1_data ([#1214](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1214)) ([8547935](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/85479352a7250ac32eed61a885dad0ccb34bfd3b))
+
+
+### Bug Fixes
+
+* add output "service_account" to simple_zonal ([9e92318](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9e9231897f7897d684e8231d1dcde7ba120bece8))
+* add provider_meta for google-beta to ASM submodule ([#1186](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1186)) ([9f06ef4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9f06ef4562adcc9096fbf2da6041746d3d08c483))
+* Add required kubernetes provider to ASM module ([#1221](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1221)) ([77d08e0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/77d08e02d738c38a5c68987572ef506a987dd41e))
+* Apply applicable ASM_OPTS in config_map ([#1183](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1183)) ([79d604a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/79d604aa40db27e17a679eaf4902fedf6de7cf67))
+* ASM module required TF 0.14+ ([#1209](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1209)) ([55a1e15](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/55a1e15ec6ce43eb87185854e5988424e0be2eae))
+* make GKE module cluster_name computed attribute ([#1189](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1189)) ([7a09acd](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7a09acdecb0c13657194579ee3446a6e2fe1421e))
+* misspellings in comments and min_cpu_platform ([#1207](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1207)) ([7553a2b](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7553a2b760455636b164c2a0cd9f06f23c8a9466))
+* Remove unnecessary auth files. ([#1231](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1231)) ([aa47e23](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/aa47e23ec114a4d07cf737c4be60596b00a723cc))
+* removed unused variable ip_source_ranges_ssh from example safer_cluster_iap_bastion ([#1199](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1199)) ([5197f22](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5197f2214bff1693a0d469d66f3430a994d6a885))
+* set initial_node_count with remove_default_node_pool ([#1228](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1228)) ([151c8c4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/151c8c4fb3e62fe91762e7b2f7d97f7581b48024))
+* set only one of log/mon config or service ([#1240](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1240)) ([2316e77](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2316e7775ae0322ff72650caca66d6d34a92ec02))
+* Use fleet_id instead of project_id for hub operations ([#1238](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1238)) ([a9a69ed](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a9a69edaed7dac3b700ad48309d7922c722609bb))
+* various fix to address CI issues ([#1248](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1248)) ([9e92318](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9e9231897f7897d684e8231d1dcde7ba120bece8))
+
 ## [20.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v19.0.0...v20.0.0) (2022-03-10)
 
 
