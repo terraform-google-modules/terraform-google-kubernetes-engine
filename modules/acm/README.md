@@ -18,6 +18,8 @@ Other clusters should disable feature activation by setting `enable_fleet_featur
 There is a [full example](../../examples/simple_zonal_with_acm) provided. Simple usage is as follows:
 
 ```tf
+data "google_client_config" "default" {}
+
 provider "kubernetes" {
   host                   = "https://${module.gke.endpoint}"
   token                  = data.google_client_config.default.access_token
