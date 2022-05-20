@@ -18,14 +18,20 @@ Other clusters should disable feature activation by setting `enable_fleet_featur
 There is a [full example](../../examples/simple_zonal_with_acm) provided. Simple usage is as follows:
 
 ```tf
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+}
+
 module "acm" {
   source           = "terraform-google-modules/kubernetes-engine/google//modules/acm"
 
   project_id       = "my-project-id"
   cluster_name     = "my-cluster-name"
   location         = module.gke.location
-  cluster_endpoint = module.gke.endpoint
-
   sync_repo        = "git@github.com:GoogleCloudPlatform/csp-config-management.git"
   sync_branch      = "1.0.0"
   policy_dir       = "foo-corp"
@@ -33,8 +39,20 @@ module "acm" {
 ```
 
 To deploy this config:
-1. Run `terraform apply`
-2. Inspect the `git_creds_public` [output](#outputs) to retrieve the public key used for accessing Git. Whitelist this key for access to your Git repo. Instructions for some popular Git hosting providers are included for convenience:
+1. Configure the [Kubernetes Provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs) for the target cluster, for example:
+
+```
+provider "kubernetes" {
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+}
+
+data "google_client_config" "default" {}
+```
+
+2. Run `terraform apply`
+3. Inspect the `git_creds_public` [output](#outputs) to retrieve the public key used for accessing Git. Whitelist this key for access to your Git repo. Instructions for some popular Git hosting providers are included for convenience:
 
   * [Cloud Souce Repositories](https://cloud.google.com/source-repositories/docs/authentication#ssh)
   * [Bitbucket](https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html)
