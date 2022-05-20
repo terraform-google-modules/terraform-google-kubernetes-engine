@@ -379,16 +379,6 @@ variable "shadow_firewall_rules_priority" {
   default     = 999
 }
 
-variable "database_encryption" {
-  description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
-  type        = list(object({ state = string, key_name = string }))
-
-  default = [{
-    state    = "DECRYPTED"
-    key_name = ""
-  }]
-}
-
 
 variable "network_policy" {
   type        = bool
@@ -430,6 +420,16 @@ variable "default_max_pods_per_node" {
   type        = number
   description = "The maximum number of pods to schedule per node"
   default     = 110
+}
+
+variable "database_encryption" {
+  description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
+  type        = list(object({ state = string, key_name = string }))
+
+  default = [{
+    state    = "DECRYPTED"
+    key_name = ""
+  }]
 }
 
 variable "enable_shielded_nodes" {
