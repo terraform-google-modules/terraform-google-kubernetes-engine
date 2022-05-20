@@ -212,20 +212,19 @@ resource "google_container_cluster" "primary" {
 
   remove_default_node_pool = var.remove_default_node_pool
 
-  dynamic "workload_identity_config" {
-    for_each = local.cluster_workload_identity_config
-
-    content {
-      workload_pool = workload_identity_config.value.workload_pool
-    }
-  }
-
   dynamic "database_encryption" {
     for_each = var.database_encryption
 
     content {
       key_name = database_encryption.value.key_name
       state    = database_encryption.value.state
+    }
+  }
+  dynamic "workload_identity_config" {
+    for_each = local.cluster_workload_identity_config
+
+    content {
+      workload_pool = workload_identity_config.value.workload_pool
     }
   }
 
@@ -235,6 +234,7 @@ resource "google_container_cluster" "primary" {
       security_group = authenticator_groups_config.value.security_group
     }
   }
+
 }
 /******************************************
   Create Container Cluster node pools

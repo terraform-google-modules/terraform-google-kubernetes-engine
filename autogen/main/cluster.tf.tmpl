@@ -382,14 +382,6 @@ resource "google_container_cluster" "primary" {
 
   {% if autopilot_cluster != true %}
   remove_default_node_pool = var.remove_default_node_pool
-
-  dynamic "workload_identity_config" {
-    for_each = local.cluster_workload_identity_config
-
-    content {
-      workload_pool = workload_identity_config.value.workload_pool
-    }
-  }
   {% endif %}
 
   dynamic "database_encryption" {
@@ -400,6 +392,15 @@ resource "google_container_cluster" "primary" {
       state    = database_encryption.value.state
     }
   }
+  {% if autopilot_cluster != true %}
+  dynamic "workload_identity_config" {
+    for_each = local.cluster_workload_identity_config
+
+    content {
+      workload_pool = workload_identity_config.value.workload_pool
+    }
+  }
+  {% endif %}
 
   dynamic "authenticator_groups_config" {
     for_each = local.cluster_authenticator_security_group
@@ -407,6 +408,7 @@ resource "google_container_cluster" "primary" {
       security_group = authenticator_groups_config.value.security_group
     }
   }
+
   {% if beta_cluster %}
   notification_config {
     pubsub {
