@@ -147,6 +147,7 @@ resource "google_container_cluster" "primary" {
         start_time     = maintenance_exclusion.value.start_time
         end_time       = maintenance_exclusion.value.end_time
       }
+    }
   }
 
   lifecycle {
