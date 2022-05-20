@@ -340,6 +340,7 @@ resource "google_container_cluster" "primary" {
       state    = database_encryption.value.state
     }
   }
+
   dynamic "workload_identity_config" {
     for_each = local.cluster_workload_identity_config
 
