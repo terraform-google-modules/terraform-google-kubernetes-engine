@@ -149,6 +149,23 @@ resource "google_container_cluster" "primary" {
 
 
 
+  dynamic "database_encryption" {
+    for_each = var.database_encryption
+
+    content {
+      key_name = database_encryption.value.key_name
+      state    = database_encryption.value.state
+    }
+  }
+
+
+  dynamic "authenticator_groups_config" {
+    for_each = local.cluster_authenticator_security_group
+    content {
+      security_group = authenticator_groups_config.value.security_group
+    }
+  }
+
   notification_config {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
