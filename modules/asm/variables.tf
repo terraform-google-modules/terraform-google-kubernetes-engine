@@ -92,3 +92,9 @@ variable "internal_ip" {
   type        = bool
   default     = false
 }
+
+variable "skip_download" {
+  description = "Whether to skip downloading gcloud (assumes gcloud and kubectl is already available outside the module)"
+  type        = bool
+  default     = true
+}
