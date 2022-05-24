@@ -92,3 +92,15 @@ variable "internal_ip" {
   type        = bool
   default     = false
 }
+
+variable "skip_download" {
+  description = "Whether to skip downloading gcloud (assumes gcloud and kubectl is already available outside the module)"
+  type        = bool
+  default     = true
+}
+
+variable "use_tf_google_credentials_env_var" {
+  description = "Use `GOOGLE_CREDENTIALS` environment variable to run `gcloud auth activate-service-account` with. Optional."
+  type        = bool
+  default     = false
+}
