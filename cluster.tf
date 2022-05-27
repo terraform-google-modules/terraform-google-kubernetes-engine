@@ -243,6 +243,7 @@ resource "google_container_cluster" "primary" {
       security_group = authenticator_groups_config.value.security_group
     }
   }
+
 }
 /******************************************
   Create Container Cluster node pools
