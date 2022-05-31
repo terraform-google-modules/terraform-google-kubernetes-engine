@@ -114,6 +114,17 @@ variable "maintenance_exclusions" {
   default     = []
 }
 
+variable "maintenance_end_time" {
+  type        = string
+  description = "Time window specified for recurring maintenance operations in RFC3339 format"
+  default     = ""
+}
+
+variable "maintenance_recurrence" {
+  type        = string
+  description = "Frequency of the recurring maintenance window in RFC5545 format."
+  default     = ""
+}
 
 variable "ip_range_pods" {
   type        = string
