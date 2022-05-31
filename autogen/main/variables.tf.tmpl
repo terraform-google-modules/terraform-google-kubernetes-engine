@@ -114,7 +114,6 @@ variable "maintenance_exclusions" {
   default = []
 }
 
-{% if beta_cluster %}
 variable "maintenance_end_time" {
   type        = string
   description = "Time window specified for recurring maintenance operations in RFC3339 format"
@@ -126,7 +125,6 @@ variable "maintenance_recurrence" {
   description = "Frequency of the recurring maintenance window in RFC5545 format."
   default     = ""
 }
-{% endif %}
 
 variable "ip_range_pods" {
   type        = string
