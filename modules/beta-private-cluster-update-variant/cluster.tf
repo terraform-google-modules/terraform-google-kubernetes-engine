@@ -379,6 +379,7 @@ locals {
     "spot",
     "service_account",
     "enable_gcfs",
+    "enable_secure_boot",
   ]
 }
 
