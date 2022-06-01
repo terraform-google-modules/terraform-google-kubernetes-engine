@@ -114,7 +114,6 @@ variable "maintenance_exclusions" {
   default = []
 }
 
-{% if beta_cluster %}
 variable "maintenance_end_time" {
   type        = string
   description = "Time window specified for recurring maintenance operations in RFC3339 format"
@@ -126,7 +125,6 @@ variable "maintenance_recurrence" {
   description = "Frequency of the recurring maintenance window in RFC5545 format."
   default     = ""
 }
-{% endif %}
 
 variable "ip_range_pods" {
   type        = string
@@ -540,6 +538,7 @@ variable "default_max_pods_per_node" {
   default     = 110
 }
 
+{% endif %}
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
   type        = list(object({ state = string, key_name = string }))
@@ -550,6 +549,7 @@ variable "database_encryption" {
   }]
 }
 
+{% if autopilot_cluster != true %}
 variable "enable_shielded_nodes" {
   type        = bool
   description = "Enable Shielded Nodes features on all nodes in this cluster"
@@ -573,6 +573,16 @@ variable "node_metadata" {
   }
 }
 {% endif %}
+
+variable "timeouts" {
+  type        = map(string)
+  description = "Timeout for cluster operations."
+  default     = {}
+  validation {
+    condition     = !contains([for t in keys(var.timeouts): contains(["create", "update", "delete"],t)], false)
+    error_message = "Only create, update, delete timeouts can be specified."
+  }
+}
 {% if beta_cluster and  autopilot_cluster != true %}
 
 variable "enable_kubernetes_alpha" {

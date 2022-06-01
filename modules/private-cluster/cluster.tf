@@ -124,8 +124,29 @@ resource "google_container_cluster" "primary" {
   }
 
   maintenance_policy {
-    daily_maintenance_window {
-      start_time = var.maintenance_start_time
+    dynamic "recurring_window" {
+      for_each = local.cluster_maintenance_window_is_recurring
+      content {
+        start_time = var.maintenance_start_time
+        end_time   = var.maintenance_end_time
+        recurrence = var.maintenance_recurrence
+      }
+    }
+
+    dynamic "daily_maintenance_window" {
+      for_each = local.cluster_maintenance_window_is_daily
+      content {
+        start_time = var.maintenance_start_time
+      }
+    }
+
+    dynamic "maintenance_exclusion" {
+      for_each = var.maintenance_exclusions
+      content {
+        exclusion_name = maintenance_exclusion.value.name
+        start_time     = maintenance_exclusion.value.start_time
+        end_time       = maintenance_exclusion.value.end_time
+      }
     }
   }
 
@@ -134,9 +155,9 @@ resource "google_container_cluster" "primary" {
   }
 
   timeouts {
-    create = "45m"
-    update = "45m"
-    delete = "45m"
+    create = lookup(var.timeouts, "create", "45m")
+    update = lookup(var.timeouts, "update", "45m")
+    delete = lookup(var.timeouts, "delete", "45m")
   }
   node_pool {
     name               = "default-pool"
@@ -146,8 +167,11 @@ resource "google_container_cluster" "primary" {
       image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
       machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
       min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
-      gcfs_config {
-        enabled = lookup(var.node_pools[0], "enable_gcfs", false)
+      dynamic "gcfs_config" {
+        for_each = lookup(var.node_pools[0], "enable_gcfs", false) ? [true] : []
+        content {
+          enabled = gcfs_config.value
+        }
       }
 
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
@@ -232,6 +256,7 @@ resource "google_container_cluster" "primary" {
       security_group = authenticator_groups_config.value.security_group
     }
   }
+
 }
 /******************************************
   Create Container Cluster node pools
@@ -282,8 +307,11 @@ resource "google_container_node_pool" "pools" {
     image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type     = lookup(each.value, "machine_type", "e2-medium")
     min_cpu_platform = lookup(each.value, "min_cpu_platform", "")
-    gcfs_config {
-      enabled = lookup(each.value, "enable_gcfs", false)
+    dynamic "gcfs_config" {
+      for_each = lookup(each.value, "enable_gcfs", false) ? [true] : []
+      content {
+        enabled = gcfs_config.value
+      }
     }
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
@@ -368,8 +396,8 @@ resource "google_container_node_pool" "pools" {
   }
 
   timeouts {
-    create = "45m"
-    update = "45m"
-    delete = "45m"
+    create = lookup(var.timeouts, "create", "45m")
+    update = lookup(var.timeouts, "update", "45m")
+    delete = lookup(var.timeouts, "delete", "45m")
   }
 }

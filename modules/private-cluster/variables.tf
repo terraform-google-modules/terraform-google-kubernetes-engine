@@ -114,6 +114,17 @@ variable "maintenance_exclusions" {
   default     = []
 }
 
+variable "maintenance_end_time" {
+  type        = string
+  description = "Time window specified for recurring maintenance operations in RFC3339 format"
+  default     = ""
+}
+
+variable "maintenance_recurrence" {
+  type        = string
+  description = "Frequency of the recurring maintenance window in RFC5545 format."
+  default     = ""
+}
 
 variable "ip_range_pods" {
   type        = string
@@ -476,5 +487,15 @@ variable "node_metadata" {
   validation {
     condition     = contains(["GKE_METADATA", "GCE_METADATA", "UNSPECIFIED", "GKE_METADATA_SERVER", "EXPOSE"], var.node_metadata)
     error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA or UNSPECIFIED."
+  }
+}
+
+variable "timeouts" {
+  type        = map(string)
+  description = "Timeout for cluster operations."
+  default     = {}
+  validation {
+    condition     = !contains([for t in keys(var.timeouts) : contains(["create", "update", "delete"], t)], false)
+    error_message = "Only create, update, delete timeouts can be specified."
   }
 }

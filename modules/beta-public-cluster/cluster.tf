@@ -240,9 +240,9 @@ resource "google_container_cluster" "primary" {
   }
 
   timeouts {
-    create = "45m"
-    update = "45m"
-    delete = "45m"
+    create = lookup(var.timeouts, "create", "45m")
+    update = lookup(var.timeouts, "update", "45m")
+    delete = lookup(var.timeouts, "delete", "45m")
   }
   node_pool {
     name               = "default-pool"
@@ -252,8 +252,11 @@ resource "google_container_cluster" "primary" {
       image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
       machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
       min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
-      gcfs_config {
-        enabled = lookup(var.node_pools[0], "enable_gcfs", false)
+      dynamic "gcfs_config" {
+        for_each = lookup(var.node_pools[0], "enable_gcfs", false) ? [true] : []
+        content {
+          enabled = gcfs_config.value
+        }
       }
 
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
@@ -333,6 +336,7 @@ resource "google_container_cluster" "primary" {
       security_group = authenticator_groups_config.value.security_group
     }
   }
+
   notification_config {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
@@ -399,8 +403,11 @@ resource "google_container_node_pool" "pools" {
     image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type     = lookup(each.value, "machine_type", "e2-medium")
     min_cpu_platform = lookup(each.value, "min_cpu_platform", "")
-    gcfs_config {
-      enabled = lookup(each.value, "enable_gcfs", false)
+    dynamic "gcfs_config" {
+      for_each = lookup(each.value, "enable_gcfs", false) ? [true] : []
+      content {
+        enabled = gcfs_config.value
+      }
     }
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
@@ -527,8 +534,8 @@ resource "google_container_node_pool" "pools" {
   }
 
   timeouts {
-    create = "45m"
-    update = "45m"
-    delete = "45m"
+    create = lookup(var.timeouts, "create", "45m")
+    update = lookup(var.timeouts, "update", "45m")
+    delete = lookup(var.timeouts, "delete", "45m")
   }
 }
