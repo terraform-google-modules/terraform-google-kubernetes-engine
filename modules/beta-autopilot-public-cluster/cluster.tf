@@ -126,9 +126,9 @@ resource "google_container_cluster" "primary" {
 
 
   timeouts {
-    create = "45m"
-    update = "45m"
-    delete = "45m"
+    create = lookup(var.timeouts, "create", "45m")
+    update = lookup(var.timeouts, "update", "45m")
+    delete = lookup(var.timeouts, "delete", "45m")
   }
 
   dynamic "resource_usage_export_config" {
