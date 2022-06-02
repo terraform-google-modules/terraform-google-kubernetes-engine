@@ -273,6 +273,7 @@ locals {
     "preemptible",
     "service_account",
     "enable_gcfs",
+    "enable_secure_boot",
   ]
 }
 
