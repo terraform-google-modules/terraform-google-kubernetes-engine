@@ -72,6 +72,9 @@ module "gke" {
   datapath_provider = var.datapath_provider
 
   maintenance_start_time = var.maintenance_start_time
+  maintenance_end_time   = var.maintenance_end_time
+  maintenance_recurrence = var.maintenance_recurrence
+  maintenance_exclusions = var.maintenance_exclusions
 
   // We suggest removing the default node pool, as it cannot be modified without
   // destroying the cluster.
