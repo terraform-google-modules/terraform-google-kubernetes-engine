@@ -35,6 +35,7 @@ module "asm" {
 
 Note that the `mesh_id` label on the cluster is required for metrics to get displayed on the Anthos Service Mesh pages in the Cloud console (Topology, etc.). Illustrated with the full example mentioned above, here is an example of what your cluster should have:
 ```tf
+module "gke" {
 ...
 cluster_resource_labels = { "mesh_id" : "proj-${data.google_project.project.number}" }
 ...
