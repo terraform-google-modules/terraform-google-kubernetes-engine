@@ -31,6 +31,10 @@ data "google_container_cluster" "asm" {
   location = var.cluster_location
 }
 
+data "google_project" "fleet" {
+  project_id = local.fleet_id
+}
+
 resource "kubernetes_namespace" "system" {
   metadata {
     name = "istio-system"
@@ -49,6 +53,16 @@ resource "kubernetes_config_map" "asm_options" {
   }
 
   depends_on = [google_gke_hub_membership.membership, google_gke_hub_feature.mesh]
+}
+
+module "mesh_id" {
+  source  = "terraform-google-modules/gcloud/google"
+  version = "~> 3.1"
+
+  create_cmd_entrypoint  = "gcloud"
+  create_cmd_body        = "container clusters update ${var.cluster_name} --project=${var.project_id} --zone=${var.cluster_location} --update-labels=mesh_id=proj-${data.google_project.fleet.number}"
+  destroy_cmd_entrypoint = "gcloud"
+  destroy_cmd_body       = "container clusters update ${var.cluster_name} --project=${var.project_id} --zone=${var.cluster_location} --remove-labels=mesh_id"
 }
 
 module "cpr" {
