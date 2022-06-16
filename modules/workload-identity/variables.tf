@@ -89,3 +89,9 @@ variable "impersonate_service_account" {
   type        = string
   default     = ""
 }
+
+variable "use_existing_context" {
+  description = "An optional flag to use local kubectl config context."
+  type        = bool
+  default     = false
+}
