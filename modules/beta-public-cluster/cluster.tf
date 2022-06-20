@@ -84,6 +84,15 @@ resource "google_container_cluster" "primary" {
       enable_components = var.monitoring_enabled_components
     }
   }
+  dynamic "monitoring_config" {
+    for_each = var.enable_managed_prometheus ? [1] : []
+
+    content {
+      managed_prometheus = {
+        enabled = var.enable_managed_prometheus
+      }
+    }
+  }
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
     dynamic "auto_provisioning_defaults" {

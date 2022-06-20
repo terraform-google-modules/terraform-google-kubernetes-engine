@@ -572,6 +572,12 @@ variable "monitoring_enabled_components" {
   default     = []
 }
 
+variable "enable_managed_prometheus" {
+  type        = bool
+  description = "(Beta) Whether or not the managed collection is enabled."
+  default     = false
+}
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   default     = false
