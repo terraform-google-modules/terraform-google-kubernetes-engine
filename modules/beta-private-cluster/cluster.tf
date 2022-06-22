@@ -82,12 +82,14 @@ resource "google_container_cluster" "primary" {
 
     content {
       enable_components = var.monitoring_enabled_components
-      dynamic "managed_prometheus" {
-        for_each = var.enable_managed_prometheus ? [1] : []
+    }
+  }
+  dynamic "monitoring_config" {
+    for_each = var.enable_managed_prometheus ? [1] : []
 
-        content {
-          enabled = var.enable_managed_prometheus
-        }
+    content {
+      managed_prometheus {
+        enabled = var.enable_managed_prometheus
       }
     }
   }
