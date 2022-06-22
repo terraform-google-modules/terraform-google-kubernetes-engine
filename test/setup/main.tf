@@ -53,6 +53,8 @@ module "gke-project-1" {
   org_id            = var.org_id
   folder_id         = var.folder_id
   billing_account   = var.billing_account
+  # due to https://github.com/hashicorp/terraform-provider-google/issues/9505 for AP
+  default_service_account = "keep"
 
   auto_create_network = true
 
@@ -74,6 +76,8 @@ module "gke-project-2" {
   org_id            = var.org_id
   folder_id         = var.folder_id
   billing_account   = var.billing_account
+  # due to https://github.com/hashicorp/terraform-provider-google/issues/9505 for AP
+  default_service_account = "keep"
 
   activate_apis = local.apis
   activate_api_identities = [
@@ -94,6 +98,8 @@ module "gke-project-asm" {
   org_id            = var.org_id
   folder_id         = var.folder_id
   billing_account   = var.billing_account
+  # due to https://github.com/hashicorp/terraform-provider-google/issues/9505 for AP
+  default_service_account = "keep"
 
   activate_apis = local.apis
 }
