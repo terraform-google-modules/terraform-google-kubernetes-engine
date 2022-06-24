@@ -107,6 +107,24 @@ variable "maintenance_start_time" {
   default     = "05:00"
 }
 
+variable "maintenance_exclusions" {
+  type        = list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string }))
+  description = "List of maintenance exclusions. A cluster can have up to three"
+  default     = []
+}
+
+variable "maintenance_end_time" {
+  type        = string
+  description = "Time window specified for recurring maintenance operations in RFC3339 format"
+  default     = ""
+}
+
+variable "maintenance_recurrence" {
+  type        = string
+  description = "Frequency of the recurring maintenance window in RFC5545 format."
+  default     = ""
+}
+
 variable "ip_range_pods" {
   type        = string
   description = "The _name_ of the secondary subnet ip range to use for pods"
