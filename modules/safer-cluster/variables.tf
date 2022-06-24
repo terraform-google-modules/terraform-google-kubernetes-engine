@@ -108,7 +108,7 @@ variable "maintenance_start_time" {
 }
 
 variable "maintenance_exclusions" {
-  type        = list(object({ name = string, start_time = string, end_time = string }))
+  type        = list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string }))
   description = "List of maintenance exclusions. A cluster can have up to three"
   default     = []
 }
