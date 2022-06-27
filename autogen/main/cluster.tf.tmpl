@@ -71,7 +71,7 @@ resource "google_container_cluster" "primary" {
 {% endif %}
   min_master_version = var.release_channel != null ? null : local.master_version
 
-{% if beta_cluster and  autopilot_cluster != true %}
+{% if beta_cluster and autopilot_cluster != true %}
   dynamic "cluster_telemetry" {
     for_each = local.cluster_telemetry_type_is_set ? [1] : []
     content {
@@ -106,6 +106,17 @@ resource "google_container_cluster" "primary" {
 {% else %}
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
+  {% if beta_cluster %}
+  dynamic "monitoring_config" {
+    for_each = var.monitoring_enable_managed_prometheus ? [1] : []
+
+    content {
+      managed_prometheus {
+        enabled = var.monitoring_enable_managed_prometheus
+      }
+    }
+  }
+  {% endif %}
 {% endif %}
   {% if autopilot_cluster != true %}
   cluster_autoscaling {

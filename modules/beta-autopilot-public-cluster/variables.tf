@@ -361,3 +361,9 @@ variable "timeouts" {
     error_message = "Only create, update, delete timeouts can be specified."
   }
 }
+
+variable "monitoring_enable_managed_prometheus" {
+  type        = bool
+  description = "(Beta) Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
+  default     = false
+}
