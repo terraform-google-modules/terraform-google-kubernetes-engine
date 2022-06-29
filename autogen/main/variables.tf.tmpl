@@ -109,7 +109,7 @@ variable "maintenance_start_time" {
 }
 
 variable "maintenance_exclusions" {
-  type        = list(object({ name = string, start_time = string, end_time = string }))
+  type        = list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string }))
   description = "List of maintenance exclusions. A cluster can have up to three"
   default = []
 }
@@ -601,6 +601,12 @@ variable "monitoring_enabled_components" {
   type        = list(string)
   description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS (provider version >= 3.89.0). Empty list is default GKE configuration."
   default     = []
+}
+
+variable "monitoring_enable_managed_prometheus" {
+  type        = bool
+  description = "(Beta) Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
+  default     = false
 }
 
 variable "istio" {
