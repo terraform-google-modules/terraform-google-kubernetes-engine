@@ -583,7 +583,8 @@ variable "timeouts" {
     error_message = "Only create, update, delete timeouts can be specified."
   }
 }
-{% if beta_cluster and  autopilot_cluster != true %}
+{% if beta_cluster %}
+  {% if autopilot_cluster != true %}
 
 variable "enable_kubernetes_alpha" {
   type        = bool
@@ -602,12 +603,14 @@ variable "monitoring_enabled_components" {
   description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS (provider version >= 3.89.0). Empty list is default GKE configuration."
   default     = []
 }
+  {% endif %}
 
 variable "monitoring_enable_managed_prometheus" {
   type        = bool
   description = "(Beta) Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
   default     = false
 }
+  {% if autopilot_cluster != true %}
 
 variable "istio" {
   description = "(Beta) Enable Istio addon"
@@ -678,4 +681,5 @@ variable "gce_pd_csi_driver" {
   description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
   default     = false
 }
+  {% endif %}
 {% endif %}
