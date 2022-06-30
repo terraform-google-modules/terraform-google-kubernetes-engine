@@ -54,6 +54,12 @@ variable "k8s_sa_name" {
   default     = null
 }
 
+variable "k8s_sa_project_id" {
+  description = "GCP project ID of the k8s service account; overrides `var.project_id`."
+  type        = string
+  default     = null
+}
+
 variable "namespace" {
   description = "Namespace for the Kubernetes service account"
   type        = string

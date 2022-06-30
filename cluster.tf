@@ -146,6 +146,13 @@ resource "google_container_cluster" "primary" {
         exclusion_name = maintenance_exclusion.value.name
         start_time     = maintenance_exclusion.value.start_time
         end_time       = maintenance_exclusion.value.end_time
+
+        dynamic "exclusion_options" {
+          for_each = maintenance_exclusion.value.exclusion_scope == null ? [] : [maintenance_exclusion.value.exclusion_scope]
+          content {
+            scope = exclusion_options.value
+          }
+        }
       }
     }
   }
@@ -171,6 +178,13 @@ resource "google_container_cluster" "primary" {
         for_each = lookup(var.node_pools[0], "enable_gcfs", false) ? [true] : []
         content {
           enabled = gcfs_config.value
+        }
+      }
+
+      dynamic "gvnic" {
+        for_each = lookup(var.node_pools[0], "enable_gvnic", false) ? [true] : []
+        content {
+          enabled = gvnic.value
         }
       }
 
@@ -259,7 +273,7 @@ resource "google_container_node_pool" "pools" {
 
   cluster = google_container_cluster.primary.name
 
-  version = lookup(each.value, "auto_upgrade", false) ? "" : lookup(
+  version = lookup(each.value, "auto_upgrade", local.default_auto_upgrade) ? "" : lookup(
     each.value,
     "version",
     google_container_cluster.primary.min_master_version,
@@ -298,6 +312,12 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "enable_gcfs", false) ? [true] : []
       content {
         enabled = gcfs_config.value
+      }
+    }
+    dynamic "gvnic" {
+      for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
+      content {
+        enabled = gvnic.value
       }
     }
     labels = merge(
@@ -344,6 +364,7 @@ resource "google_container_node_pool" "pools" {
       local.service_account,
     )
     preemptible = lookup(each.value, "preemptible", false)
+    spot        = lookup(each.value, "spot", false)
 
     oauth_scopes = concat(
       local.node_pools_oauth_scopes["all"],

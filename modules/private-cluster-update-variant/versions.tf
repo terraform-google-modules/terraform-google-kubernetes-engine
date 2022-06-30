@@ -21,7 +21,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 4.10.0, < 5.0"
+      version = ">= 4.25.0, < 5.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -29,6 +29,6 @@ terraform {
     }
   }
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:private-cluster-update-variant/v21.1.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:private-cluster-update-variant/v21.2.0"
   }
 }
