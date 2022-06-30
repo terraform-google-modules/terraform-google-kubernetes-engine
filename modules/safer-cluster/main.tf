@@ -72,6 +72,9 @@ module "gke" {
   datapath_provider = var.datapath_provider
 
   maintenance_start_time = var.maintenance_start_time
+  maintenance_end_time   = var.maintenance_end_time
+  maintenance_recurrence = var.maintenance_recurrence
+  maintenance_exclusions = var.maintenance_exclusions
 
   // We suggest removing the default node pool, as it cannot be modified without
   // destroying the cluster.
@@ -92,6 +95,8 @@ module "gke" {
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
+
+  monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
 
   // We never use the default service account for the cluster. The default
   // project/editor permissions can create problems if nodes were to be ever

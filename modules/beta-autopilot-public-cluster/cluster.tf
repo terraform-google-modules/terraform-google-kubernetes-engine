@@ -55,6 +55,15 @@ resource "google_container_cluster" "primary" {
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
+  dynamic "monitoring_config" {
+    for_each = var.monitoring_enable_managed_prometheus ? [1] : []
+
+    content {
+      managed_prometheus {
+        enabled = var.monitoring_enable_managed_prometheus
+      }
+    }
+  }
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
@@ -120,6 +129,13 @@ resource "google_container_cluster" "primary" {
         exclusion_name = maintenance_exclusion.value.name
         start_time     = maintenance_exclusion.value.start_time
         end_time       = maintenance_exclusion.value.end_time
+
+        dynamic "exclusion_options" {
+          for_each = maintenance_exclusion.value.exclusion_scope == null ? [] : [maintenance_exclusion.value.exclusion_scope]
+          content {
+            scope = exclusion_options.value
+          }
+        }
       }
     }
   }

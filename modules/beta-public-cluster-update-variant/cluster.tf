@@ -78,10 +78,18 @@ resource "google_container_cluster" "primary" {
   }
   monitoring_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.monitoring_service
   dynamic "monitoring_config" {
-    for_each = length(var.monitoring_enabled_components) > 0 ? [1] : []
+    for_each = length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus ? [1] : []
 
     content {
-      enable_components = var.monitoring_enabled_components
+      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : null
+
+      dynamic "managed_prometheus" {
+        for_each = var.monitoring_enable_managed_prometheus ? [1] : []
+
+        content {
+          enabled = var.monitoring_enable_managed_prometheus
+        }
+      }
     }
   }
   cluster_autoscaling {
@@ -231,6 +239,13 @@ resource "google_container_cluster" "primary" {
         exclusion_name = maintenance_exclusion.value.name
         start_time     = maintenance_exclusion.value.start_time
         end_time       = maintenance_exclusion.value.end_time
+
+        dynamic "exclusion_options" {
+          for_each = maintenance_exclusion.value.exclusion_scope == null ? [] : [maintenance_exclusion.value.exclusion_scope]
+          content {
+            scope = exclusion_options.value
+          }
+        }
       }
     }
   }
@@ -256,6 +271,13 @@ resource "google_container_cluster" "primary" {
         for_each = lookup(var.node_pools[0], "enable_gcfs", false) ? [true] : []
         content {
           enabled = gcfs_config.value
+        }
+      }
+
+      dynamic "gvnic" {
+        for_each = lookup(var.node_pools[0], "enable_gvnic", false) ? [true] : []
+        content {
+          enabled = gvnic.value
         }
       }
 
@@ -362,6 +384,8 @@ locals {
     "spot",
     "service_account",
     "enable_gcfs",
+    "enable_gvnic",
+    "enable_secure_boot",
   ]
 }
 
@@ -447,7 +471,7 @@ resource "google_container_node_pool" "pools" {
 
   cluster = google_container_cluster.primary.name
 
-  version = lookup(each.value, "auto_upgrade", false) ? "" : lookup(
+  version = lookup(each.value, "auto_upgrade", local.default_auto_upgrade) ? "" : lookup(
     each.value,
     "version",
     google_container_cluster.primary.min_master_version,
@@ -496,6 +520,12 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "enable_gcfs", false) ? [true] : []
       content {
         enabled = gcfs_config.value
+      }
+    }
+    dynamic "gvnic" {
+      for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
+      content {
+        enabled = gvnic.value
       }
     }
     labels = merge(
