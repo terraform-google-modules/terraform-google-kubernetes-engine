@@ -181,6 +181,13 @@ resource "google_container_cluster" "primary" {
         }
       }
 
+      dynamic "gvnic" {
+        for_each = lookup(var.node_pools[0], "enable_gvnic", false) ? [true] : []
+        content {
+          enabled = gvnic.value
+        }
+      }
+
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
       tags = concat(
@@ -307,6 +314,12 @@ resource "google_container_node_pool" "pools" {
         enabled = gcfs_config.value
       }
     }
+    dynamic "gvnic" {
+      for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
+      content {
+        enabled = gvnic.value
+      }
+    }
     labels = merge(
       lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
       lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
@@ -351,6 +364,7 @@ resource "google_container_node_pool" "pools" {
       local.service_account,
     )
     preemptible = lookup(each.value, "preemptible", false)
+    spot        = lookup(each.value, "spot", false)
 
     oauth_scopes = concat(
       local.node_pools_oauth_scopes["all"],
