@@ -161,6 +161,15 @@ resource "google_container_cluster" "primary" {
     ignore_changes = [node_pool, initial_node_count, resource_labels["asmv"], resource_labels["mesh_id"]]
   }
 
+  dynamic "dns_config" {
+    for_each = var.cluster_dns_provider == "CLOUD_DNS" ? [1] : []
+    content {
+      cluster_dns        = var.cluster_dns_provider
+      cluster_dns_scope  = var.cluster_dns_scope
+      cluster_dns_domain = var.cluster_dns_domain
+    }
+  }
+
   timeouts {
     create = lookup(var.timeouts, "create", "45m")
     update = lookup(var.timeouts, "update", "45m")
@@ -395,15 +404,6 @@ resource "google_container_node_pool" "pools" {
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
-    }
-  }
-
-  dynamic "dns_config" {
-    for_each = var.cluster_dns_provider == "CLOUD_DNS" ? [1] : []
-    content {
-      cluster_dns        = var.cluster_dns_provider
-      cluster_dns_scope  = var.cluster_dns_scope
-      cluster_dns_domain = var.cluster_dns_domain
     }
   }
 
