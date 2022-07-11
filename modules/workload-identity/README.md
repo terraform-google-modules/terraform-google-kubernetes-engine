@@ -109,6 +109,7 @@ already bear the `"iam.gke.io/gcp-service-account"` annotation.
 | namespace | Namespace for the Kubernetes service account | `string` | `"default"` | no |
 | project\_id | GCP project ID | `string` | n/a | yes |
 | roles | A list of roles to be added to the created service account | `list(string)` | `[]` | no |
+| use\_existing\_context | An optional flag to use local kubectl config context. | `bool` | `false` | no |
 | use\_existing\_gcp\_sa | Use an existing Google service account instead of creating one | `bool` | `false` | no |
 | use\_existing\_k8s\_sa | Use an existing kubernetes service account instead of creating one | `bool` | `false` | no |
 
