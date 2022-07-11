@@ -297,12 +297,6 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
-  dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
-    content {
-      pod_range = lookup(network_config.value, "pod_range", null)
-    }
-  }
 
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
