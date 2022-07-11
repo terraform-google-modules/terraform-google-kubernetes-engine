@@ -148,7 +148,7 @@ resource "google_container_cluster" "primary" {
       cluster_dns_scope  = var.cluster_dns_scope
       cluster_dns_domain = var.cluster_dns_domain
     }
-  }  
+  }
 
   timeouts {
     create = lookup(var.timeouts, "create", "45m")
