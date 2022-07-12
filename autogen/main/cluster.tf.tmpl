@@ -249,9 +249,13 @@ resource "google_container_cluster" "primary" {
       enabled = var.config_connector
     }
 
-    gke_backup_agent_config {
-      enabled = var.gke_backup_agent_config
-    }    
+    dynamic "gke_backup_agent_config" {
+      for_each = local.gke_backup_agent_config
+
+      content {
+        enabled = gke_backup_agent_config.value.enabled
+      }
+    }
     {% endif %}
   }
 
