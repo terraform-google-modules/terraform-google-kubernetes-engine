@@ -6,6 +6,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [22.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v21.2.0...v22.0.0) (2022-07-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* Minimum Google/Google Beta provider versions increased to v4.25.0.
+* promote Spot VM to GA (#1294)
+* support maintenance_exclusion (#1273)
+
+### Features
+
+* Allow enabling managed Prometheus in beta cluster submodules ([#1307](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1307)) ([71e7067](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/71e7067c7b0279a84284cf0713ed77d79c19e86b))
+* expose use_existing_context variable in WI module ([#1295](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1295)) ([d802e49](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d802e492832dde1bf2ac01a540c8281dd7c35e49))
+* promote Spot VM to GA ([#1294](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1294)) ([274da2f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/274da2fd594684d2400d29ceff96342be01aebf1))
+* support gVNIC ([#1296](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1296)) ([5d6eac1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5d6eac194e06129306cfeb25552107bd0f8baf55))
+* support maintenance_exclusion ([#1273](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1273)) ([425bf93](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/425bf93e60c75a0b238ca3c6aa968000f89a9271))
+* Support managed Prometheus for safer cluster variants ([#1311](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1311)) ([55faaf5](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/55faaf51ba9996b9dd3741258524fd642f5c4d8f))
+* WorkloadIdenity allow to use k8s sa from the different project ([#1275](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1275)) ([4f5dded](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4f5ddeded6dd2dbe47342a948e1fb2c011002eee))
+
+
+### Bug Fixes
+
+* Create new node pool when shielded_instance_config changes ([#1237](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1237)) ([a2272f0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a2272f0c158642dd166a14415944a5541c6ff174))
+* support managed prometheus for autopilot ([#1310](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1310)) ([568c824](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/568c82468cb611b6425c480799e9a5b3fd5dc252))
+
 ## [21.2.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v21.1.0...v21.2.0) (2022-06-22)
 
 
