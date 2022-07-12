@@ -11,6 +11,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### ⚠ BREAKING CHANGES
 
+* Minimum Google/Google Beta provider versions increased to v4.25.0.
 * promote Spot VM to GA (#1294)
 * support maintenance_exclusion (#1273)
 
