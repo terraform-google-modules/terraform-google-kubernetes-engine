@@ -26,7 +26,8 @@ locals {
   output_k8s_name      = var.use_existing_k8s_sa ? local.k8s_given_name : kubernetes_service_account.main[0].metadata[0].name
   output_k8s_namespace = var.use_existing_k8s_sa ? var.namespace : kubernetes_service_account.main[0].metadata[0].namespace
 
-  k8s_sa_gcp_derived_name = "serviceAccount:${var.project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
+  k8s_sa_project_id       = var.k8s_sa_project_id != null ? var.k8s_sa_project_id : var.project_id
+  k8s_sa_gcp_derived_name = "serviceAccount:${local.k8s_sa_project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
 }
 
 data "google_service_account" "cluster_service_account" {
@@ -40,7 +41,7 @@ resource "google_service_account" "cluster_service_account" {
   count = var.use_existing_gcp_sa ? 0 : 1
 
   account_id   = local.gcp_given_name
-  display_name = substr("GCP SA bound to K8S SA ${local.k8s_given_name}", 0, 100)
+  display_name = substr("GCP SA bound to K8S SA ${local.k8s_sa_project_id}[${local.k8s_given_name}]", 0, 100)
   project      = var.project_id
 }
 
@@ -65,8 +66,9 @@ module "annotate-sa" {
   skip_download               = true
   cluster_name                = var.cluster_name
   cluster_location            = var.location
-  project_id                  = var.project_id
+  project_id                  = local.k8s_sa_project_id
   impersonate_service_account = var.impersonate_service_account
+  use_existing_context        = var.use_existing_context
 
   kubectl_create_command  = "kubectl annotate --overwrite sa -n ${local.output_k8s_namespace} ${local.k8s_given_name} iam.gke.io/gcp-service-account=${local.gcp_sa_email}"
   kubectl_destroy_command = "kubectl annotate sa -n ${local.output_k8s_namespace} ${local.k8s_given_name} iam.gke.io/gcp-service-account-"

@@ -54,6 +54,12 @@ variable "k8s_sa_name" {
   default     = null
 }
 
+variable "k8s_sa_project_id" {
+  description = "GCP project ID of the k8s service account; overrides `var.project_id`."
+  type        = string
+  default     = null
+}
+
 variable "namespace" {
   description = "Namespace for the Kubernetes service account"
   type        = string
@@ -88,4 +94,10 @@ variable "impersonate_service_account" {
   description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
   type        = string
   default     = ""
+}
+
+variable "use_existing_context" {
+  description = "An optional flag to use local kubectl config context."
+  type        = bool
+  default     = false
 }

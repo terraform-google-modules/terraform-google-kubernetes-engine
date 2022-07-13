@@ -19,6 +19,6 @@ terraform {
   required_version = ">= 0.13.0"
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:binary-authorization/v21.2.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:binary-authorization/v22.0.0"
   }
 }

@@ -274,6 +274,13 @@ resource "google_container_cluster" "primary" {
         }
       }
 
+      dynamic "gvnic" {
+        for_each = lookup(var.node_pools[0], "enable_gvnic", false) ? [true] : []
+        content {
+          enabled = gvnic.value
+        }
+      }
+
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
       tags = concat(
@@ -441,6 +448,12 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "enable_gcfs", false) ? [true] : []
       content {
         enabled = gcfs_config.value
+      }
+    }
+    dynamic "gvnic" {
+      for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
+      content {
+        enabled = gvnic.value
       }
     }
     labels = merge(
