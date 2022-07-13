@@ -63,5 +63,5 @@ module "cpr" {
   kubectl_create_command  = "${path.module}/scripts/create_cpr.sh ${local.revision_name} ${local.channel} ${var.enable_cni} ${var.enable_vpc_sc}"
   kubectl_destroy_command = "${path.module}/scripts/destroy_cpr.sh ${local.revision_name}"
 
-  module_depends_on = [kubernetes_config_map.asm_options]
+  module_depends_on = concat([kubernetes_config_map.asm_options], var.module_depends_on)
 }
