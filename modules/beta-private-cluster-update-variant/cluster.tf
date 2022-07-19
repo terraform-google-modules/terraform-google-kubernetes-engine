@@ -174,8 +174,13 @@ resource "google_container_cluster" "primary" {
       disabled = !var.horizontal_pod_autoscaling
     }
 
+
     network_policy_config {
       disabled = !var.network_policy
+    }
+
+    dns_cache_config {
+      enabled = var.dns_cache
     }
 
     gcp_filestore_csi_driver_config {
@@ -193,10 +198,6 @@ resource "google_container_cluster" "primary" {
       content {
         disabled = cloudrun_config.value.disabled
       }
-    }
-
-    dns_cache_config {
-      enabled = var.dns_cache
     }
 
     dynamic "gce_persistent_disk_csi_driver_config" {
