@@ -653,6 +653,12 @@ variable "config_connector" {
   default     = false
 }
 
+variable "gke_backup_agent_config" {
+  type        = bool
+  description = "(Beta) Whether Backup for GKE agent is enabled for this cluster."
+  default     = false
+}
+
 variable "cloudrun" {
   description = "(Beta) Enable CloudRun addon"
   default     = false
