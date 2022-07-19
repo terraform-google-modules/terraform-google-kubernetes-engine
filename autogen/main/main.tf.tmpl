@@ -122,6 +122,10 @@ locals {
   cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
     mode = lookup(local.old_node_metadata_config_mapping, var.node_metadata, var.node_metadata)
   }]
+
+  {% if beta_cluster != true %}
+  logmon_config_is_set      = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0
+  {% endif %}
   {% endif %}
 
   cluster_output_name           = google_container_cluster.primary.name

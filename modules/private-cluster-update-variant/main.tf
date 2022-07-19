@@ -91,6 +91,8 @@ locals {
     mode = lookup(local.old_node_metadata_config_mapping, var.node_metadata, var.node_metadata)
   }]
 
+  logmon_config_is_set = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0
+
   cluster_output_name           = google_container_cluster.primary.name
   cluster_output_regional_zones = google_container_cluster.primary.node_locations
   cluster_output_zonal_zones    = local.zone_count > 1 ? slice(var.zones, 1, local.zone_count) : []

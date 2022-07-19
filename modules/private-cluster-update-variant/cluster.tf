@@ -52,8 +52,23 @@ resource "google_container_cluster" "primary" {
 
   min_master_version = var.release_channel != null ? null : local.master_version
 
-  logging_service    = var.logging_service
-  monitoring_service = var.monitoring_service
+  # only one of logging/monitoring_service or logging/monitoring_config can be specified
+  logging_service = local.logmon_config_is_set ? null : var.logging_service
+  dynamic "logging_config" {
+    for_each = length(var.logging_enabled_components) > 0 ? [1] : []
+
+    content {
+      enable_components = var.logging_enabled_components
+    }
+  }
+  monitoring_service = local.logmon_config_is_set ? null : var.monitoring_service
+  dynamic "monitoring_config" {
+    for_each = length(var.monitoring_enabled_components) > 0 ? [1] : []
+
+    content {
+      enable_components = var.monitoring_enabled_components
+    }
+  }
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
     dynamic "auto_provisioning_defaults" {
