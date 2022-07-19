@@ -47,6 +47,12 @@ variable "cluster_membership_id" {
   default     = ""
 }
 
+variable "configmanagement_version" {
+  description = "Version of ACM."
+  type        = string
+  default     = ""
+}
+
 # Config Sync variables
 variable "sync_repo" {
   description = "ACM Git repo address"
