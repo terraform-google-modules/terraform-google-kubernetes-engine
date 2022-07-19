@@ -107,8 +107,13 @@ resource "google_container_cluster" "primary" {
       disabled = !var.horizontal_pod_autoscaling
     }
 
+
     network_policy_config {
       disabled = !var.network_policy
+    }
+
+    dns_cache_config {
+      enabled = var.dns_cache
     }
 
     gcp_filestore_csi_driver_config {
@@ -271,6 +276,12 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  notification_config {
+    pubsub {
+      enabled = var.notification_config_topic != "" ? true : false
+      topic   = var.notification_config_topic
+    }
+  }
 }
 /******************************************
   Create Container Cluster node pools

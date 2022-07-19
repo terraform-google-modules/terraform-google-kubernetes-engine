@@ -360,6 +360,12 @@ variable "master_ipv4_cidr_block" {
   default     = "10.0.0.0/28"
 }
 
+variable "dns_cache" {
+  type        = bool
+  description = "The status of the NodeLocal DNSCache addon."
+  default     = false
+}
+
 variable "authenticator_security_group" {
   type        = string
   description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
@@ -414,6 +420,12 @@ variable "shadow_firewall_rules_priority" {
   default     = 999
 }
 
+
+variable "notification_config_topic" {
+  type        = string
+  description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
+  default     = ""
+}
 
 variable "network_policy" {
   type        = bool
