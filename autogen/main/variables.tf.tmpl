@@ -574,6 +574,7 @@ variable "node_metadata" {
 }
 {% endif %}
 
+{% if autopilot_cluster != true %}
 variable "cluster_dns_provider" {
   type        = string
   description = "Which in-cluster DNS provider should be used. PROVIDER_UNSPECIFIED (default) or PLATFORM_DEFAULT or CLOUD_DNS."
@@ -592,6 +593,7 @@ variable "cluster_dns_domain" {
   default     = ""
 }
 
+{% endif %}
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."

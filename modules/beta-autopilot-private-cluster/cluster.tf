@@ -141,15 +141,6 @@ resource "google_container_cluster" "primary" {
   }
 
 
-  dynamic "dns_config" {
-    for_each = var.cluster_dns_provider == "CLOUD_DNS" ? [1] : []
-    content {
-      cluster_dns        = var.cluster_dns_provider
-      cluster_dns_scope  = var.cluster_dns_scope
-      cluster_dns_domain = var.cluster_dns_domain
-    }
-  }
-
   timeouts {
     create = lookup(var.timeouts, "create", "45m")
     update = lookup(var.timeouts, "update", "45m")

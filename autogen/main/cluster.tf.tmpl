@@ -309,6 +309,7 @@ resource "google_container_cluster" "primary" {
   }
   {% endif %}
 
+  {% if autopilot_cluster != true %}
   dynamic "dns_config" {
     for_each = var.cluster_dns_provider == "CLOUD_DNS" ? [1] : []
     content {
@@ -318,6 +319,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  {% endif %}
   timeouts {
     create = lookup(var.timeouts, "create", "45m")
     update = lookup(var.timeouts, "update", "45m")
