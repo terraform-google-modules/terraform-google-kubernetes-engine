@@ -59,6 +59,9 @@ resource "kubernetes_manifest" "main_secret" {
 
     "type" = "kubernetes.io/service-account-token"
   }
+  depends_on = [
+    kubernetes_manifest.main_sa
+  ]
 }
 
 resource "kubernetes_manifest" "main_sa" {
@@ -81,9 +84,6 @@ resource "kubernetes_manifest" "main_sa" {
       }
     ]
   }
-  depends_on = [
-    kubernetes_manifest.main_secret
-  ]
 }
 
 module "annotate-sa" {
