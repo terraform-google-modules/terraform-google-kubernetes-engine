@@ -81,7 +81,7 @@ control "gcloud" do
 
       it "has the expected binaryAuthorization config" do
         expect(data['binaryAuthorization']).to eq({
-          "enabled" => true,
+          "evaluationMode" => "PROJECT_SINGLETON_POLICY_ENFORCE",
         })
       end
 
