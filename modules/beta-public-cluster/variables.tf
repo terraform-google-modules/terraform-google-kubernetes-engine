@@ -427,17 +427,18 @@ variable "disable_default_snat" {
   default     = false
 }
 
+variable "enable_tpu" {
+  type        = bool
+  description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
+  default     = false
+}
+
 variable "notification_config_topic" {
   type        = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
   default     = ""
 }
 
-variable "enable_tpu" {
-  type        = bool
-  description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
-  default     = false
-}
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
@@ -523,12 +524,6 @@ variable "timeouts" {
   }
 }
 
-variable "enable_kubernetes_alpha" {
-  type        = bool
-  description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
-  default     = false
-}
-
 variable "logging_enabled_components" {
   type        = list(string)
   description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS. Empty list is default GKE configuration."
@@ -544,6 +539,12 @@ variable "monitoring_enabled_components" {
 variable "monitoring_enable_managed_prometheus" {
   type        = bool
   description = "(Beta) Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
+  default     = false
+}
+
+variable "enable_kubernetes_alpha" {
+  type        = bool
+  description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
   default     = false
 }
 

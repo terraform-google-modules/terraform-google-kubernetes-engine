@@ -120,8 +120,8 @@ resource "google_container_cluster" "primary" {
   enable_shielded_nodes       = var.enable_shielded_nodes
   enable_binary_authorization = var.enable_binary_authorization
   enable_intranode_visibility = var.enable_intranode_visibility
-  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   enable_tpu                  = var.enable_tpu
+  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
 
   dynamic "pod_security_policy_config" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []

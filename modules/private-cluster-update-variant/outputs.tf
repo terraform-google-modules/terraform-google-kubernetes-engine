@@ -160,3 +160,8 @@ output "peering_name" {
   description = "The name of the peering between this cluster and the Google owned VPC."
   value       = local.cluster_peering_name
 }
+
+output "tpu_ipv4_cidr_block" {
+  description = "The IP range in CIDR notation used for the TPUs"
+  value       = var.enable_tpu ? google_container_cluster.primary.tpu_ipv4_cidr_block : null
+}

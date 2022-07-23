@@ -361,17 +361,18 @@ variable "disable_default_snat" {
   default     = false
 }
 
+variable "enable_tpu" {
+  type        = bool
+  description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
+  default     = false
+}
+
 variable "notification_config_topic" {
   type        = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
   default     = ""
 }
 
-variable "enable_tpu" {
-  type        = bool
-  description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
-  default     = false
-}
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
   type        = list(object({ state = string, key_name = string }))

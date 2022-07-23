@@ -47,9 +47,18 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+  dynamic "confidential_nodes" {
+    for_each = local.confidential_node_config
+    content {
+      enabled = confidential_nodes.value.enabled
+    }
+  }
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
+  default_snat_status {
+    disabled = var.disable_default_snat
+  }
   min_master_version = var.release_channel != null ? null : local.master_version
 
   logging_service    = var.logging_service
@@ -79,6 +88,9 @@ resource "google_container_cluster" "primary" {
   default_max_pods_per_node   = var.default_max_pods_per_node
   enable_shielded_nodes       = var.enable_shielded_nodes
   enable_binary_authorization = var.enable_binary_authorization
+  enable_intranode_visibility = var.enable_intranode_visibility
+  enable_tpu                  = var.enable_tpu
+  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {

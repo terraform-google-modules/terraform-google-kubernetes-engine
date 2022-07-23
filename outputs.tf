@@ -150,3 +150,8 @@ output "identity_namespace" {
     google_container_cluster.primary
   ]
 }
+
+output "tpu_ipv4_cidr_block" {
+  description = "The IP range in CIDR notation used for the TPUs"
+  value       = var.enable_tpu ? google_container_cluster.primary.tpu_ipv4_cidr_block : null
+}

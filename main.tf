@@ -107,6 +107,7 @@ locals {
   cluster_output_network_policy_enabled             = google_container_cluster.primary.addons_config.0.network_policy_config.0.disabled
   cluster_output_http_load_balancing_enabled        = google_container_cluster.primary.addons_config.0.http_load_balancing.0.disabled
   cluster_output_horizontal_pod_autoscaling_enabled = google_container_cluster.primary.addons_config.0.horizontal_pod_autoscaling.0.disabled
+  cluster_output_intranode_visbility_enabled        = google_container_cluster.primary.enable_intranode_visibility
 
 
   master_authorized_networks_config = length(var.master_authorized_networks) == 0 ? [] : [{
@@ -142,6 +143,7 @@ locals {
   cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
     workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
+  confidential_node_config = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
 
   cluster_maintenance_window_is_recurring = var.maintenance_recurrence != "" && var.maintenance_end_time != "" ? [1] : []
   cluster_maintenance_window_is_daily     = length(local.cluster_maintenance_window_is_recurring) > 0 ? [] : [1]
