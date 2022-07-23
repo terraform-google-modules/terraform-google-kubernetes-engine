@@ -23,8 +23,8 @@ locals {
 
   # This will cause Terraform to block returning outputs until the service account is created
   k8s_given_name          = var.k8s_sa_name != null ? var.k8s_sa_name : var.name
-  output_k8s_name         = var.use_existing_k8s_sa ? local.k8s_given_name : kubernetes_manifest.main_sa[0].manifest.metadata.name
-  output_k8s_namespace    = var.use_existing_k8s_sa ? var.namespace : kubernetes_manifest.main_sa[0].manifest.metadata.namespace
+  output_k8s_name         = var.use_existing_k8s_sa ? local.k8s_given_name : data.kubernetes_secret.main.metadata.0.name
+  output_k8s_namespace    = var.use_existing_k8s_sa ? var.namespace : data.kubernetes_secret.main.metadata.0.namespace
   k8s_sa_project_id       = var.k8s_sa_project_id != null ? var.k8s_sa_project_id : var.project_id
   k8s_sa_gcp_derived_name = "serviceAccount:${local.k8s_sa_project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
 }
@@ -44,46 +44,76 @@ resource "google_service_account" "cluster_service_account" {
   project      = var.project_id
 }
 
-resource "kubernetes_manifest" "main_secret" {
+module "service_account" {
   count = var.use_existing_k8s_sa ? 0 : 1
-  manifest = {
-    "apiVersion" = "v1"
-    "kind"       = "Secret"
-    "metadata" = {
-      "namespace" = var.namespace
-      "name"      = local.k8s_given_name
-      "annotations" = {
-        "kubernetes.io/service-account.name" = local.k8s_given_name
-      }
-    }
 
-    "type" = "kubernetes.io/service-account-token"
-  }
-  depends_on = [
-    kubernetes_manifest.main_sa
-  ]
+  source                      = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version                     = "~> 3.1"
+  enabled                     = var.use_existing_k8s_sa ? false : true
+  skip_download               = true
+  cluster_name                = var.cluster_name
+  cluster_location            = var.location
+  project_id                  = local.k8s_sa_project_id
+  impersonate_service_account = var.impersonate_service_account
+  use_existing_context        = var.use_existing_context
+  internal_ip                 = false
+  kubectl_create_command      = <<-EOT
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ${local.k8s_given_name}
+  namespace: ${var.namespace}
+  annotations:
+    iam.gke.io/gcp-service-account: ${local.gcp_sa_email}
+secrets:
+- name: ${local.k8s_given_name}
+EOF
+
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ${local.k8s_given_name}
+  namespace: ${var.namespace}
+  annotations:
+    kubernetes.io/service-account.name: ${local.k8s_given_name}
+type: kubernetes.io/service-account-token
+EOF
+EOT
+
+  kubectl_destroy_command = <<-EOT
+kubectl delete -f - <<EOF
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: local.k8s_given_name
+  namespace: ${var.namespace}
+  annotations:
+    iam.gke.io/gcp-service-account: ${local.gcp_sa_email}
+secrets:
+- name: ${local.k8s_given_name}
+EOF || echo "resource does not exist"
+
+kubectl delete -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ${local.k8s_given_name}
+  namespace: ${var.namespace}
+  annotations:
+    kubernetes.io/service-account.name: ${local.k8s_given_name}
+type: kubernetes.io/service-account-token
+EOF || echo "resource does not exist"
+EOT
 }
 
-resource "kubernetes_manifest" "main_sa" {
-  count = var.use_existing_k8s_sa ? 0 : 1
-  manifest = {
-    "apiVersion" = "v1"
-    "kind"       = "ServiceAccount"
-    "metadata" = {
-      "namespace" = var.namespace
-      "name"      = local.k8s_given_name
-      "annotations" = {
-        "iam.gke.io/gcp-service-account" = local.gcp_sa_email
-      }
-    }
-
-    "automountServiceAccountToken" = var.automount_service_account_token
-    "secrets" = [
-      {
-        "name" = local.k8s_given_name
-      }
-    ]
+data "kubernetes_secret" "main" {
+  metadata {
+    name      = local.k8s_given_name
+    namespace = var.namespace
   }
+  depends_on = [module.service_account]
 }
 
 module "annotate-sa" {
