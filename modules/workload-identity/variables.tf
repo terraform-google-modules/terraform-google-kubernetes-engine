@@ -39,11 +39,13 @@ variable "use_existing_gcp_sa" {
 variable "cluster_name" {
   description = "Cluster name."
   type        = string
+  default     = ""
 }
 
 variable "location" {
   description = "Cluster location (region if regional cluster, zone if zonal cluster)."
   type        = string
+  default     = ""
 }
 
 variable "k8s_sa_name" {
