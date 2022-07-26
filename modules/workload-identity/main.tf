@@ -83,7 +83,7 @@ EOF
 EOT
 
   kubectl_destroy_command = <<-EOT
-kubectl delete -f - <<EOF
+kubectl delete -f - <<EOF || echo "resource does not exist"
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -93,9 +93,9 @@ metadata:
     iam.gke.io/gcp-service-account: ${local.gcp_sa_email}
 secrets:
 - name: ${local.k8s_given_name}
-EOF || echo "resource does not exist"
+EOF
 
-kubectl delete -f - <<EOF
+kubectl delete -f - <<EOF || echo "resource does not exist"
 apiVersion: v1
 kind: Secret
 metadata:
@@ -104,7 +104,7 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: ${local.k8s_given_name}
 type: kubernetes.io/service-account-token
-EOF || echo "resource does not exist"
+EOF
 EOT
 }
 
