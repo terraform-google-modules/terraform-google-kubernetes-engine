@@ -50,7 +50,7 @@ resource "google_container_cluster" "primary" {
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
-  min_master_version = var.release_channel != null ? null : local.master_version
+  min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : null
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
