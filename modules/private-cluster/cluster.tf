@@ -49,7 +49,6 @@ resource "google_container_cluster" "primary" {
   }
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
-  
   default_snat_status {
     disabled = var.disable_default_snat
   }
