@@ -55,3 +55,7 @@ output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
   value       = module.example.service_account
 }
+
+output "explicit_k8s_version" {
+  value = module.example.explicit_k8s_version
+}
