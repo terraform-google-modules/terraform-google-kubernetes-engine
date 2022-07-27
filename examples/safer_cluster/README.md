@@ -17,6 +17,7 @@ This example illustrates how to instantiate the opinionated Safer Cluster module
 | ca\_certificate | The cluster ca certificate (base64 encoded) |
 | client\_token | The bearer token for auth |
 | cluster\_name | Cluster name |
+| explicit\_k8s\_version | Explicit version used for cluster creation |
 | kubernetes\_endpoint | The cluster endpoint |
 | location | n/a |
 | master\_kubernetes\_version | Kubernetes version of the master |

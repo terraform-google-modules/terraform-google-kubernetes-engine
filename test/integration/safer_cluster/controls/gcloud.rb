@@ -15,6 +15,7 @@
 project_id = attribute('project_id')
 location = attribute('location')
 cluster_name = attribute('cluster_name')
+explicit_version = attribute('explicit_k8s_version')
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
@@ -33,6 +34,11 @@ control "gcloud" do
     describe "cluster" do
       it "is running" do
         expect(data['status']).to eq 'RUNNING'
+      end
+
+      it "has expected explicit version" do
+        expect(data['currentMasterVersion']).to eq explicit_version
+        expect(data['currentNodeVersion']).to eq explicit_version
       end
 
       it "is regional" do
