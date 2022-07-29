@@ -64,11 +64,10 @@ resource "google_container_cluster" "primary" {
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
-{% if beta_cluster %}
   default_snat_status {
     disabled = var.disable_default_snat
   }
-{% endif %}
+
   min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : null
 
 {% if beta_cluster and autopilot_cluster != true %}
