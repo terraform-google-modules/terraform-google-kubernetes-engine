@@ -415,6 +415,12 @@ variable "shadow_firewall_rules_priority" {
 }
 
 
+variable "disable_default_snat" {
+  type        = bool
+  description = "Whether to disable the default SNAT to support the private use of public IP addresses"
+  default     = false
+}
+
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
@@ -516,10 +522,4 @@ variable "timeouts" {
     condition     = !contains([for t in keys(var.timeouts) : contains(["create", "update", "delete"], t)], false)
     error_message = "Only create, update, delete timeouts can be specified."
   }
-}
-
-variable "disable_default_snat" {
-  type        = bool
-  description = "Whether to disable the default SNAT to support the private use of public IP addresses"
-  default     = false
 }
