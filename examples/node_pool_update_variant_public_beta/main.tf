@@ -23,12 +23,6 @@ provider "google-beta" {
   region      = var.region
 }
 
-data "google_compute_subnetwork" "subnetwork" {
-  name    = var.subnetwork
-  project = var.project_id
-  region  = var.region
-}
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
@@ -43,16 +37,16 @@ module "gke" {
   name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   region                 = var.region
   zones                  = var.zones
-  network                = var.network
-  subnetwork             = var.subnetwork
-  ip_range_pods          = var.ip_range_pods
-  ip_range_services      = var.ip_range_services
+  network                = google_compute_network.main.name
+  subnetwork             = google_compute_subnetwork.main.name
+  ip_range_pods          = google_compute_subnetwork.main.secondary_ip_range[0].range_name
+  ip_range_services      = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   create_service_account = false
   service_account        = var.compute_engine_service_account
 
   master_authorized_networks = [
     {
-      cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
+      cidr_block   = google_compute_subnetwork.main.ip_cidr_range
       display_name = "VPC"
     },
   ]

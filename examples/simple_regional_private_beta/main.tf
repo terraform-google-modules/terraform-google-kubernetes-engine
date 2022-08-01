@@ -38,10 +38,10 @@ module "gke" {
   name                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   regional                = true
   region                  = var.region
-  network                 = var.network
-  subnetwork              = var.subnetwork
-  ip_range_pods           = var.ip_range_pods
-  ip_range_services       = var.ip_range_services
+  network                 = google_compute_network.main.name
+  subnetwork              = google_compute_subnetwork.main.name
+  ip_range_pods           = google_compute_subnetwork.main.secondary_ip_range[0].range_name
+  ip_range_services       = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   service_account         = var.compute_engine_service_account
   enable_private_endpoint = true
   enable_private_nodes    = true

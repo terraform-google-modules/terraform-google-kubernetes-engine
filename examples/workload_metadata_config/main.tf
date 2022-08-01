@@ -39,10 +39,10 @@ module "gke" {
   regional                = false
   region                  = var.region
   zones                   = var.zones
-  network                 = var.network
-  subnetwork              = var.subnetwork
-  ip_range_pods           = var.ip_range_pods
-  ip_range_services       = var.ip_range_services
+  network                 = google_compute_network.main.name
+  subnetwork              = google_compute_subnetwork.main.name
+  ip_range_pods           = google_compute_subnetwork.main.secondary_ip_range[0].range_name
+  ip_range_services       = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   create_service_account  = true
   grant_registry_access   = true
   registry_project_ids    = var.registry_project_ids

@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2018 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,10 @@ resource "random_string" "suffix" {
   upper   = false
 }
 
-provider "google" {
-  project = var.project_ids[0]
-}
-
 resource "google_compute_network" "main" {
   name                    = "cft-gke-test-${random_string.suffix.result}"
   auto_create_subnetworks = false
+  project                 = var.project_id
 }
 
 resource "google_compute_subnetwork" "main" {
@@ -45,4 +42,3 @@ resource "google_compute_subnetwork" "main" {
     ip_cidr_range = "192.168.64.0/18"
   }
 }
-

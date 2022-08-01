@@ -32,10 +32,10 @@ module "gke" {
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   region                            = var.region
   zones                             = var.zones
-  network                           = var.network
-  subnetwork                        = var.subnetwork
-  ip_range_pods                     = var.ip_range_pods
-  ip_range_services                 = var.ip_range_services
+  network                           = google_compute_network.main.name
+  subnetwork                        = google_compute_subnetwork.main.name
+  ip_range_pods                     = google_compute_subnetwork.main.secondary_ip_range[0].range_name
+  ip_range_services                 = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   create_service_account            = false
   remove_default_node_pool          = true
   disable_legacy_metadata_endpoints = false

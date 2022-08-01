@@ -38,10 +38,10 @@ module "gke" {
   region                  = var.region
   zones                   = var.zones
   release_channel         = "REGULAR"
-  network                 = var.network
-  subnetwork              = var.subnetwork
-  ip_range_pods           = var.ip_range_pods
-  ip_range_services       = var.ip_range_services
+  network                 = google_compute_network.main.name
+  subnetwork              = google_compute_subnetwork.main.name
+  ip_range_pods           = google_compute_subnetwork.main.secondary_ip_range[0].range_name
+  ip_range_services       = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   network_policy          = false
   cluster_resource_labels = { "mesh_id" : "proj-${data.google_project.project.number}" }
   identity_namespace      = "${var.project_id}.svc.id.goog"

@@ -29,14 +29,15 @@ provider "kubernetes" {
 module "gke" {
   source = "../../"
 
-  project_id               = var.project_id
-  name                     = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  region                   = var.region
-  network                  = var.network
+  project_id = var.project_id
+  name       = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  region     = var.region
+  network    = google_compute_network.main.name
+
   network_project_id       = var.network_project_id
-  subnetwork               = var.subnetwork
-  ip_range_pods            = var.ip_range_pods
-  ip_range_services        = var.ip_range_services
+  subnetwork               = google_compute_subnetwork.main.name
+  ip_range_pods            = google_compute_subnetwork.main.secondary_ip_range[0].range_name
+  ip_range_services        = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   create_service_account   = false
   service_account          = var.compute_engine_service_account
   issue_client_certificate = false

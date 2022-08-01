@@ -20,18 +20,13 @@ resource "random_string" "suffix" {
   upper   = false
 }
 
-provider "google-beta" {
-  project = var.project_ids[1]
-}
-
 resource "google_compute_network" "main" {
-  project                 = var.project_ids[1]
   name                    = "cft-gke-test-${random_string.suffix.result}"
-  auto_create_subnetworks = "false"
+  auto_create_subnetworks = false
+  project                 = var.project_id
 }
 
 resource "google_compute_subnetwork" "main" {
-  project       = var.project_ids[1]
   name          = "cft-gke-test-${random_string.suffix.result}"
   ip_cidr_range = "10.0.0.0/17"
   region        = var.region

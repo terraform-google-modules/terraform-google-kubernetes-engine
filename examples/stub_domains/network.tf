@@ -20,13 +20,10 @@ resource "random_string" "suffix" {
   upper   = false
 }
 
-provider "google" {
-  project = var.project_ids[0]
-}
-
 resource "google_compute_network" "main" {
   name                    = "cft-gke-test-${random_string.suffix.result}"
   auto_create_subnetworks = false
+  project                 = var.project_id
 }
 
 resource "google_compute_subnetwork" "main" {

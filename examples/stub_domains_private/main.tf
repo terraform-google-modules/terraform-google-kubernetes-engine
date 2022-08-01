@@ -31,13 +31,13 @@ data "google_compute_subnetwork" "subnetwork" {
 module "gke" {
   source = "../../modules/private-cluster"
 
-  ip_range_pods     = var.ip_range_pods
-  ip_range_services = var.ip_range_services
+  ip_range_pods     = google_compute_subnetwork.main.secondary_ip_range[0].range_name
+  ip_range_services = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   name              = "stub-domains-private-cluster${var.cluster_name_suffix}"
-  network           = var.network
+  network           = google_compute_network.main.name
   project_id        = var.project_id
   region            = var.region
-  subnetwork        = var.subnetwork
+  subnetwork        = google_compute_subnetwork.main.name
 
   deploy_using_private_endpoint = true
   enable_private_endpoint       = false

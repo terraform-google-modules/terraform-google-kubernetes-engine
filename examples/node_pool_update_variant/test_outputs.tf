@@ -31,11 +31,11 @@ output "cluster_name" {
 }
 
 output "network" {
-  value = var.network
+  value = google_compute_network.main.name
 }
 
 output "subnetwork" {
-  value = var.subnetwork
+  value = google_compute_subnetwork.main.name
 }
 
 output "location" {
@@ -44,12 +44,12 @@ output "location" {
 
 output "ip_range_pods" {
   description = "The secondary IP range used for pods"
-  value       = var.ip_range_pods
+  value       = google_compute_subnetwork.main.secondary_ip_range[0].range_name
 }
 
 output "ip_range_services" {
   description = "The secondary IP range used for services"
-  value       = var.ip_range_services
+  value       = google_compute_subnetwork.main.secondary_ip_range[1].range_name
 }
 
 output "zones" {

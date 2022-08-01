@@ -27,11 +27,11 @@ module "gcp-network" {
   version = ">= 4.0.1, < 5.0.0"
 
   project_id   = var.project_id
-  network_name = var.network
+  network_name = google_compute_network.main.name
 
   subnets = [
     {
-      subnet_name           = var.subnetwork
+      subnet_name           = google_compute_subnetwork.main.name
       subnet_ip             = "10.0.0.0/17"
       subnet_region         = var.region
       subnet_private_access = "true"
@@ -67,10 +67,10 @@ module "gke" {
   region     = var.region
   zones      = slice(var.zones, 0, 1)
 
-  network                 = module.gcp-network.network_name
-  subnetwork              = module.gcp-network.subnets_names[0]
-  ip_range_pods           = var.ip_range_pods_name
-  ip_range_services       = var.ip_range_services_name
+  network                 = google_compute_network.main.name
+  subnetwork              = google_compute_subnetwork.main.name
+  ip_range_pods           = google_compute_subnetwork.main.secondary_ip_range[0].range_name
+  ip_range_services       = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   create_service_account  = true
   enable_private_endpoint = true
   enable_private_nodes    = true
