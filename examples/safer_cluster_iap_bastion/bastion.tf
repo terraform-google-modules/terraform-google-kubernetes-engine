@@ -37,7 +37,6 @@ module "bastion" {
   name           = local.bastion_name
   zone           = local.bastion_zone
   image_project  = "debian-cloud"
-  image_family   = "debian-11"
   machine_type   = "g1-small"
   startup_script = data.template_file.startup_script.rendered
   members        = var.bastion_members
