@@ -103,7 +103,7 @@ variable "use_existing_context" {
 }
 
 variable "module_depends_on" {
-  description = "List of modules or resources this module depends on."
+  description = "List of modules or resources to depend on before annotating KSA."
   type        = list(any)
   default     = []
 }
