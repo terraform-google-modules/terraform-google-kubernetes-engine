@@ -18,7 +18,8 @@
 # Make will use bash instead of sh
 SHELL := /usr/bin/env bash
 
-DOCKER_TAG_VERSION_DEVELOPER_TOOLS := 1.5
+# Pin to 1.3.9 per https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/issues/1208
+DOCKER_TAG_VERSION_DEVELOPER_TOOLS := 1.3.9
 DOCKER_IMAGE_DEVELOPER_TOOLS := cft/developer-tools
 REGISTRY_URL := gcr.io/cloud-foundation-cicd
 DOCKER_BIN ?= docker
