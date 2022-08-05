@@ -94,7 +94,7 @@ variable "internal_ip" {
 }
 
 variable "module_depends_on" {
-  description = "List of modules or resources this module depends on."
+  description = "List of modules or resources this module depends on.  If multiple, all items must be the same type."
   type        = list(any)
   default     = []
 }
