@@ -401,18 +401,16 @@ variable "master_global_access_enabled" {
 }
 {% endif %}
 {% endif %}
-{% if beta_cluster %}
 
 variable "dns_cache" {
   type        = bool
-  description = "(Beta) The status of the NodeLocal DNSCache addon."
+  description = "The status of the NodeLocal DNSCache addon."
   {% if autopilot_cluster == true %}
   default     = true
   {% else %}
   default     = false
   {% endif %}
 }
-{% endif %}
 
 variable "authenticator_security_group" {
   type        = string
@@ -482,13 +480,13 @@ variable "disable_default_snat" {
   default     = false
 }
 
-{% if beta_cluster %}
 variable "notification_config_topic" {
   type = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
   default = ""
 }
 
+{% if beta_cluster %}
 variable "enable_tpu" {
   type        = bool
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"

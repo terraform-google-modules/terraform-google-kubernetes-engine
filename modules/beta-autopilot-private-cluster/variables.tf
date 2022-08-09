@@ -291,7 +291,7 @@ variable "master_global_access_enabled" {
 
 variable "dns_cache" {
   type        = bool
-  description = "(Beta) The status of the NodeLocal DNSCache addon."
+  description = "The status of the NodeLocal DNSCache addon."
   default     = true
 }
 
