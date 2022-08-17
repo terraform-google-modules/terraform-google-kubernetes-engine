@@ -72,6 +72,8 @@ module "annotate-sa" {
 
   kubectl_create_command  = "kubectl annotate --overwrite sa -n ${local.output_k8s_namespace} ${local.k8s_given_name} iam.gke.io/gcp-service-account=${local.gcp_sa_email}"
   kubectl_destroy_command = "kubectl annotate sa -n ${local.output_k8s_namespace} ${local.k8s_given_name} iam.gke.io/gcp-service-account-"
+
+  module_depends_on = var.module_depends_on
 }
 
 resource "google_service_account_iam_member" "main" {
