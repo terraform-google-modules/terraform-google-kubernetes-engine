@@ -105,6 +105,7 @@ already bear the `"iam.gke.io/gcp-service-account"` annotation.
 | k8s\_sa\_name | Name for the Kubernetes service account; overrides `var.name`. `cluster_name` and `location` must be set when this input is specified. | `string` | `null` | no |
 | k8s\_sa\_project\_id | GCP project ID of the k8s service account; overrides `var.project_id`. | `string` | `null` | no |
 | location | Cluster location (region if regional cluster, zone if zonal cluster). Required if using existing KSA. | `string` | `""` | no |
+| module\_depends\_on | List of modules or resources to depend on before annotating KSA. If multiple, all items must be the same type. | `list(any)` | `[]` | no |
 | name | Name for both service accounts. The GCP SA will be truncated to the first 30 chars if necessary. | `string` | n/a | yes |
 | namespace | Namespace for the Kubernetes service account | `string` | `"default"` | no |
 | project\_id | GCP project ID | `string` | n/a | yes |
