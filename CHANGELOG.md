@@ -11,8 +11,7 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### ⚠ BREAKING CHANGES
 
-* promote notification config & dns to ga (#1327)
-* new binary_authorization (#1332) requires TPG 4.29 (#1353)
+* Increased minimum Google Provider version to 4.29
 
 ### Features
 
