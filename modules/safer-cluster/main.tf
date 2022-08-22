@@ -137,7 +137,8 @@ module "gke" {
 
   dns_cache = var.dns_cache
 
-  config_connector = var.config_connector
+  config_connector        = var.config_connector
+  gke_backup_agent_config = var.gke_backup_agent_config
 
   default_max_pods_per_node = var.default_max_pods_per_node
 
