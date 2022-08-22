@@ -6,6 +6,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [23.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v22.1.0...v23.0.0) (2022-08-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* Increased minimum Google Provider version to 4.29 ([#1353](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1353))
+* The new binary_authorization ([#1332](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1332)) may result in the first apply after upgrading taking additional time
+
+### Features
+
+* add module_depends_on to workload-identity ([#1341](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1341)) ([a6dce1a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a6dce1a491956d536ecf969b3bf22c6dede4da18))
+* promote notification config & dns to ga ([#1327](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1327)) ([47b5ff6](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/47b5ff67595b090446d563c406fca89d8f1f7c1e))
+
+
+### Bug Fixes
+
+* add depends_on to asm module google_container_cluster data resource ([#1365](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1365)) ([9140c60](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9140c60fe51d83fe69500227915b17a9cd01d3cb))
+* change asm module depends_on method ([#1354](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1354)) ([300eb1f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/300eb1f2cee66a5057380967e09d1340e74b545a))
+* new binary_authorization ([#1332](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1332)) requires TPG 4.29 ([#1353](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1353)) ([4f0d19e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4f0d19e46d87f5670f0afbf6f806269b0fc3e775))
+
 ## [22.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v22.0.0...v22.1.0) (2022-08-02)
 
 
