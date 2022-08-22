@@ -29,6 +29,8 @@ data "google_container_cluster" "asm" {
   project  = var.project_id
   name     = var.cluster_name
   location = var.cluster_location
+
+  depends_on = [var.module_depends_on]
 }
 
 resource "kubernetes_namespace" "system" {
