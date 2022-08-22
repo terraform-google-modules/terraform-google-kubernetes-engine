@@ -11,7 +11,8 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### ⚠ BREAKING CHANGES
 
-* Increased minimum Google Provider version to 4.29
+* Increased minimum Google Provider version to 4.29 ([#1353](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1353))
+* The new binary_authorization ([#1332](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1332)) may result in the first apply after upgrading taking additional time
 
 ### Features
 
