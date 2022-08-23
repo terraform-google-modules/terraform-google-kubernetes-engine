@@ -43,6 +43,7 @@ module "gke" {
   ip_range_pods              = "us-central1-01-gke-01-pods"
   ip_range_services          = "us-central1-01-gke-01-services"
   horizontal_pod_autoscaling = true
+  filestore_csi_driver       = false
 
 }
 ```
