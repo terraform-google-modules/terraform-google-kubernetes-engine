@@ -46,11 +46,9 @@ module "gke" {
   ip_range_pods              = "us-central1-01-gke-01-pods"
   ip_range_services          = "us-central1-01-gke-01-services"
   horizontal_pod_autoscaling = true
-  filestore_csi_driver       = false
   enable_private_endpoint    = true
   enable_private_nodes       = true
   master_ipv4_cidr_block     = "10.0.0.0/28"
-  enable_autopilot           = true
 
 }
 ```
