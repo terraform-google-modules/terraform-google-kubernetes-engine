@@ -98,3 +98,8 @@ variable "module_depends_on" {
   type        = list(any)
   default     = []
 }
+
+variable "service_account_key_file" {
+  description = "Path to service account key file to auth as for running `gcloud container clusters get-credentials`."
+  default     = ""
+}
