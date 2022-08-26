@@ -146,6 +146,8 @@ resource "google_container_cluster" "primary" {
       image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
       machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
       min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
+      disk_size_gb    = lookup(var.node_pools[0], "disk_size_gb", 30)
+      disk_type       = lookup(var.node_pools[0], "disk_type", "pd-balanced")
       dynamic "gcfs_config" {
         for_each = lookup(var.node_pools[0], "enable_gcfs", false) ? [true] : []
         content {
