@@ -55,6 +55,7 @@ resource "google_gke_hub_feature_membership" "main" {
 
       content {
         enabled                    = true
+        referential_rules_enabled  = true
         template_library_installed = var.install_template_library
         log_denies_enabled         = var.enable_log_denies
       }
