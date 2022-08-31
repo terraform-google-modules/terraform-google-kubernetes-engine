@@ -41,9 +41,11 @@ locals {
   // for regional cluster - use var.zones if provided, use available otherwise, for zonal cluster use var.zones with first element extracted
   node_locations = var.regional ? coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result)) : slice(var.zones, 1, length(var.zones))
   // Kubernetes version
-  master_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version
-  master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
-  master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
+  static_master_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version
+  static_master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
+  static_master_version          = var.regional ? local.static_master_version_regional : local.static_master_version_zonal
+  release_channel_master_version = var.kubernetes_version == "latest" ? null : var.kubernetes_version
+
   // Build a map of maps of node pools from a list of objects
   node_pool_names = [for np in toset(var.node_pools) : np.name]
   node_pools      = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
