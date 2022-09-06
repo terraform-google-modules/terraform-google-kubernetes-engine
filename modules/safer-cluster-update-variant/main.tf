@@ -137,6 +137,12 @@ module "gke" {
 
   dns_cache = var.dns_cache
 
+  cluster_dns_provider = var.cluster_dns_provider
+
+  cluster_dns_scope = var.cluster_dns_scope
+
+  cluster_dns_domain = var.cluster_dns_domain
+
   config_connector = var.config_connector
 
   default_max_pods_per_node = var.default_max_pods_per_node
