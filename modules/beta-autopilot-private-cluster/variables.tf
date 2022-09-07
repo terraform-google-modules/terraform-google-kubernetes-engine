@@ -273,7 +273,7 @@ variable "enable_private_endpoint" {
 variable "enable_private_nodes" {
   type        = bool
   description = "(Beta) Whether nodes have internal IP addresses only"
-  default     = false
+  default     = true
 }
 
 variable "master_ipv4_cidr_block" {
