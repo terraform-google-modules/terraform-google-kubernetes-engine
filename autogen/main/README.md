@@ -213,6 +213,7 @@ The node_pools variable takes the following parameters:
 | min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true | 1 | Optional |
 | name | The name of the node pool |  | Required |
 {% if beta_cluster %}
+| placement_policy | Placement type to set for nodes in a node pool. Can be set as [COMPACT](https://cloud.google.com/kubernetes-engine/docs/how-to/compact-placement#overview) if desired | Optional |
 | pod_range |  The ID of the secondary range for pod IPs. |  | Optional |
 {% endif %}
 | node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusters |  | Required |
