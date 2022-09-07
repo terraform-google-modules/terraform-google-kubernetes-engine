@@ -127,3 +127,9 @@ variable "hierarchy_controller" {
   type        = map(any)
   default     = null
 }
+
+variable "enable_referential_rules" {
+  description = "Enables referential constraints which reference another object in it definition and are therefore eventually consistent."
+  type        = bool
+  default     = true
+}

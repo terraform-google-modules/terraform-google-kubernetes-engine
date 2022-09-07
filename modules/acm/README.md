@@ -72,6 +72,7 @@ data "google_client_config" "default" {}
 | enable\_fleet\_registration | Whether to create a new membership. | `bool` | `true` | no |
 | enable\_log\_denies | Whether to enable logging of all denies and dryrun failures for ACM Policy Controller. | `bool` | `false` | no |
 | enable\_policy\_controller | Whether to enable the ACM Policy Controller on the cluster | `bool` | `true` | no |
+| enable\_referential\_rules | Enables referential constraints which reference another object in it definition and are therefore eventually consistent. | `bool` | `true` | no |
 | hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/anthos-config-management/docs/how-to/installing-hierarchy-controller) for more details | `map(any)` | `null` | no |
 | install\_template\_library | Whether to install the default Policy Controller template library | `bool` | `true` | no |
 | location | GCP location used to reach cluster. | `string` | n/a | yes |
