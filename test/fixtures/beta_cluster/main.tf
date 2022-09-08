@@ -44,6 +44,18 @@ module "this" {
   ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   compute_engine_service_account = "create"
 
+  node_pools = [
+    {
+      name         = "pool-01"
+      machine_type = "n2-standard-2"
+      min_count    = 1
+      max_count    = 2
+      auto_upgrade = true
+      // Beta feature
+      placement_policy = "COMPACT"
+    },
+  ]
+
   // Beta features
   istio = true
 
