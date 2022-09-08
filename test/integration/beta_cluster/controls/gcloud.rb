@@ -167,7 +167,7 @@ control "gcloud" do
         expect(node_pools).to include(
           including(
             "autoscaling" => including(
-              "maxNodeCount" => 100,
+              "maxNodeCount" => 2,
             ),
           )
         )
@@ -177,7 +177,7 @@ control "gcloud" do
         expect(node_pools).to include(
           including(
             "config" => including(
-              "machineType" => "e2-medium",
+              "machineType" => "n2-standard-2",
             ),
           )
         )
@@ -199,7 +199,7 @@ control "gcloud" do
             "config" => including(
               "labels" => including(
                 "cluster_name" => cluster_name,
-                "node_pool" => "default-node-pool",
+                "node_pool" => "pool-01",
               ),
             ),
           )
@@ -212,7 +212,7 @@ control "gcloud" do
             "config" => including(
               "tags" => match_array([
                 "gke-#{cluster_name}",
-                "gke-#{cluster_name}-default-node-pool",
+                "gke-#{cluster_name}-pool-01",
               ]),
             ),
           )
@@ -224,6 +224,16 @@ control "gcloud" do
           including(
             "management" => including(
               "autoRepair" => true,
+            ),
+          )
+        )
+      end
+
+      it "has placement policy set to COMPACT" do
+        expect(node_pools).to include(
+          including(
+            "placementPolicy" => including(
+              "type" => "COMPACT",
             ),
           )
         )
