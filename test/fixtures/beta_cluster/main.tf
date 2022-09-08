@@ -46,11 +46,11 @@ module "this" {
 
   node_pools = [
     {
-      name             = "pool-01"
-      machine_type     = "n2-standard-2"
-      min_count        = 1
-      max_count        = 2
-      auto_upgrade     = true
+      name         = "pool-01"
+      machine_type = "n2-standard-2"
+      min_count    = 1
+      max_count    = 2
+      auto_upgrade = true
       // Beta feature
       placement_policy = "COMPACT"
     },
