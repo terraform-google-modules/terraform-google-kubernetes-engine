@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [23.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v23.0.0...v23.1.0) (2022-09-08)
+
+
+### Features
+
+* add enable_referential_rules variable ([#1394](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1394)) ([1fd7184](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1fd7184c5be51d183908499d3cb2392b551031a4))
+* adds placement policy argument to the beta modules ([#1385](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1385)) ([c0f5881](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c0f588194b1845f51db6ee04253393b38b35faa5))
+* Allow enabling GKE backup agent for safer cluster variants ([#1367](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1367)) ([5fb077d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5fb077dee404e8669c256961c4ba26904d321db6))
+* cloud dns support for safer clusters ([#1384](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1384)) ([4e817be](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4e817be3f09fe45f095c6b3debf755005efb9ac3))
+* enable PoCo referential_rules for ACM ([#1373](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1373)) ([b9287de](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b9287de679592a2adcae4d98dcfee33a001f328b))
+
 ## [23.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v22.1.0...v23.0.0) (2022-08-22)
 
 
