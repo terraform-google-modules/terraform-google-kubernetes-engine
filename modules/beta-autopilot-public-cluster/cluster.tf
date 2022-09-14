@@ -52,7 +52,7 @@ resource "google_container_cluster" "primary" {
     disabled = var.disable_default_snat
   }
 
-  min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : null
+  min_master_version = local.master_version
 
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
