@@ -500,7 +500,7 @@ locals {
 # resources where "ForceNew" is "true". schemaNodeConfig can be found in node_config.go at
 # https://github.com/terraform-providers/terraform-provider-google/blob/master/google/node_config.go#L22
 resource "random_id" "name" {
-  for_each    = local.node_pools
+  for_each    = merge(local.node_pools, local.windows_node_pools)
   byte_length = 2
   prefix      = format("%s-", lookup(each.value, "name"))
   keepers = merge(
@@ -569,13 +569,22 @@ resource "random_id" "name" {
 
 {% endif %}
 {% if autopilot_cluster != true %}
+{% for i in range(2) %}
+{% if i == 0 %}
 resource "google_container_node_pool" "pools" {
+{% else %}
+resource "google_container_node_pool" "windows_pools" {
+{% endif %}
   {% if beta_cluster %}
   provider = google-beta
   {% else %}
   provider = google
   {% endif %}
+  {% if i == 0 %}
   for_each = local.node_pools
+  {% else %}
+  for_each = local.windows_node_pools
+  {% endif %}  
   {% if update_variant %}
   name     = { for k, v in random_id.name : k => v.hex }[each.key]
   {% else %}
@@ -756,6 +765,7 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    {% if i == 0 %}
     dynamic "linux_node_config" {
       for_each = length(merge(
         local.node_pools_linux_node_configs_sysctls["all"],
@@ -769,6 +779,7 @@ resource "google_container_node_pool" "pools" {
         )
       }
     }
+    {% endif %}
     {% endif %}
 
     shielded_instance_config {
@@ -790,5 +801,10 @@ resource "google_container_node_pool" "pools" {
     update = lookup(var.timeouts, "update", "45m")
     delete = lookup(var.timeouts, "delete", "45m")
   }
+
+  {% if i == 1 %}
+  depends_on = [google_container_node_pool.pools[0]]
+  {% endif %}
 }
+{% endfor %}
 {% endif %}

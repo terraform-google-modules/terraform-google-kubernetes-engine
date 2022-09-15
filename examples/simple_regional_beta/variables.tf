@@ -92,6 +92,13 @@ variable "node_pools" {
   ]
 }
 
+variable "windows_node_pools" {
+  type        = list(map(string))
+  description = "List of maps containing node pools"
+
+  default = []
+}
+
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
   type        = list(object({ state = string, key_name = string }))

@@ -46,6 +46,7 @@ module "gke" {
   sandbox_enabled               = var.sandbox_enabled
   remove_default_node_pool      = var.remove_default_node_pool
   node_pools                    = var.node_pools
+  windows_node_pools            = var.windows_node_pools
   database_encryption           = var.database_encryption
   enable_binary_authorization   = var.enable_binary_authorization
   enable_pod_security_policy    = var.enable_pod_security_policy

@@ -201,6 +201,19 @@ suites:
           backend: gcp
           controls:
             - gcp
+  - name: "windows_beta_cluster"
+    driver:
+      root_module_directory: test/fixtures/windows_beta_cluster
+    verifier:
+      systems:
+        - name: gcloud
+          backend: local
+          controls:
+            - gcloud
+        - name: gcp
+          backend: gcp
+          controls:
+            - gcp
   - name: "deploy_service"
     driver:
       root_module_directory: test/fixtures/deploy_service
