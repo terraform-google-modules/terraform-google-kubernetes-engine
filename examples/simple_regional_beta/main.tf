@@ -51,6 +51,7 @@ module "gke" {
   enable_pod_security_policy    = var.enable_pod_security_policy
   enable_identity_service       = true
   release_channel               = "REGULAR"
+  kubernetes_version            = "1.24.2-gke.1900"
   logging_enabled_components    = ["SYSTEM_COMPONENTS"]
   monitoring_enabled_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
 
