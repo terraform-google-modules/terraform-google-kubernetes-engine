@@ -1,6 +1,6 @@
 # Simple Regional Cluster
 
-This example illustrates how to create a simple cluster with beta features.
+This example illustrates how to create a simple cluster with a windows node pool.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -27,6 +27,7 @@ This example illustrates how to create a simple cluster with beta features.
 | remove\_default\_node\_pool | Remove default node pool while setting up the cluster | `bool` | `false` | no |
 | sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` and `node_version` = `1.12.7-gke.17` or later to use it). | `bool` | `false` | no |
 | subnetwork | The subnetwork to host the cluster in | `any` | n/a | yes |
+| windows\_node\_pools | List of maps containing node pools | `list(map(string))` | `[]` | no |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | `list(string)` | `[]` | no |
 
 ## Outputs

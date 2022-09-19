@@ -15,7 +15,7 @@
  */
 
 locals {
-  cluster_type = "simple-regional-beta"
+  cluster_type = "simple-windows-node-pool"
 }
 
 data "google_client_config" "default" {}
@@ -44,8 +44,6 @@ module "gke" {
   dns_cache                     = var.dns_cache
   gce_pd_csi_driver             = var.gce_pd_csi_driver
   sandbox_enabled               = var.sandbox_enabled
-  remove_default_node_pool      = var.remove_default_node_pool
-  node_pools                    = var.node_pools
   database_encryption           = var.database_encryption
   enable_binary_authorization   = var.enable_binary_authorization
   enable_pod_security_policy    = var.enable_pod_security_policy
@@ -53,6 +51,29 @@ module "gke" {
   release_channel               = "REGULAR"
   logging_enabled_components    = ["SYSTEM_COMPONENTS"]
   monitoring_enabled_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
+
+  remove_default_node_pool = true
+
+  node_pools = [
+    {
+      name         = "pool-01"
+      machine_type = "n2-standard-2"
+      min_count    = 1
+      max_count    = 2
+      auto_upgrade = true
+    },
+  ]
+
+  windows_node_pools = [
+    {
+      name         = "win-pool-01"
+      machine_type = "n2-standard-2"
+      min_count    = 1
+      max_count    = 2
+      auto_upgrade = true
+      image_type   = "WINDOWS_LTSC"
+    },
+  ]
 
   # Disable workload identity
   identity_namespace = null

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: windows_beta_cluster
+name: simple_windows_node_pool
 depends:
   - name: inspec-gcp
     git: https://github.com/inspec/inspec-gcp.git

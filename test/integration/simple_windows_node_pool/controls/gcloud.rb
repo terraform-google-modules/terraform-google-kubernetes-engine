@@ -118,18 +118,6 @@ control "gcloud" do
       end
     end
 
-    describe "default node pool" do
-      let(:default_node_pool) { data['nodePools'].select { |p| p['name'] == "default-pool" }.first }
-
-      it "has no initial node count" do
-        expect(default_node_pool['initialNodeCount']).to eq nil
-      end
-
-      it "does not have autoscaling enabled" do
-        expect(default_node_pool['autoscaling']).to eq nil
-      end
-    end
-
     describe "node pool" do
       let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" } }
 
@@ -250,17 +238,6 @@ control "gcloud" do
             )
           )
         end
-
-        it "has placement policy set to COMPACT" do
-          expect(node_pools).to include(
-            including(
-              "name" => "pool-01",
-              "placementPolicy" => including(
-                "type" => "COMPACT",
-              ),
-            )
-          )
-        end
       end
 
       describe "win-pool-01" do
@@ -372,17 +349,6 @@ control "gcloud" do
               "name" => "win-pool-01",
               "management" => including(
                 "autoRepair" => true,
-              ),
-            )
-          )
-        end
-
-        it "has placement policy set to COMPACT" do
-          expect(node_pools).to include(
-            including(
-              "name" => "win-pool-01",
-              "placementPolicy" => including(
-                "type" => "COMPACT",
               ),
             )
           )

@@ -201,9 +201,9 @@ suites:
           backend: gcp
           controls:
             - gcp
-  - name: "windows_beta_cluster"
+  - name: "simple_windows_node_pool"
     driver:
-      root_module_directory: test/fixtures/windows_beta_cluster
+      root_module_directory: test/fixtures/simple_windows_node_pool
     verifier:
       systems:
         - name: gcloud

@@ -15,7 +15,7 @@
  */
 
 locals {
-  name       = "windows-beta-cluster-${random_string.suffix.result}"
+  name       = "simple-windows-node-pool-${random_string.suffix.result}"
   project_id = var.project_ids[0]
 }
 
@@ -31,7 +31,7 @@ resource "google_kms_crypto_key" "db" {
 }
 
 module "this" {
-  source = "../../../examples/simple_regional_beta"
+  source = "../../../examples/simple_windows_node_pool"
 
   cluster_name_suffix            = "-${random_string.suffix.result}"
   project_id                     = local.project_id
@@ -44,48 +44,16 @@ module "this" {
   ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   compute_engine_service_account = "create"
 
-  node_pools = [
-    {
-      name         = "pool-01"
-      machine_type = "n2-standard-2"
-      min_count    = 1
-      max_count    = 2
-      auto_upgrade = true
-      // Beta feature
-      placement_policy = "COMPACT"
-    },
-  ]
-
-  windows_node_pools = [
-    {
-      name         = "win-pool-01"
-      machine_type = "n2-standard-2"
-      min_count    = 1
-      max_count    = 2
-      auto_upgrade = true
-      // Beta feature
-      placement_policy = "COMPACT"
-      image_type       = "WINDOWS_LTSC"
-    },
-  ]
-
-  // Beta features
-  istio = true
-
   database_encryption = [{
     state    = "ENCRYPTED"
     key_name = google_kms_crypto_key.db.id
   }]
 
-  cloudrun = true
-
-  dns_cache = true
-
-  gce_pd_csi_driver = true
-
+  cloudrun                    = true
+  dns_cache                   = true
+  gce_pd_csi_driver           = true
   enable_binary_authorization = true
-
-  enable_pod_security_policy = true
+  enable_pod_security_policy  = true
 
   // Dataplane-V2 Feature
   datapath_provider = "ADVANCED_DATAPATH"

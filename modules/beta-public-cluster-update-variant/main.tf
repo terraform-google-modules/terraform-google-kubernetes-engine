@@ -140,9 +140,10 @@ locals {
   }]
 
   cluster_output_node_pools_names = concat(
-    concat([for np in google_container_node_pool.pools : np.name], [""]),
-    concat([for np in google_container_node_pool.windows_pools : np.name], [""])
+    [for np in google_container_node_pool.pools : np.name], [""],
+    [for np in google_container_node_pool.windows_pools : np.name], [""]
   )
+
   cluster_output_node_pools_versions = merge(
     { for np in google_container_node_pool.pools : np.name => np.version },
     { for np in google_container_node_pool.windows_pools : np.name => np.version },
