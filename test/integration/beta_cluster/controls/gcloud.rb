@@ -112,7 +112,6 @@ control "gcloud" do
 
       it "has the expected monitoring config" do
         expect(data['monitoringConfig']['componentConfig']['enableComponents']).to match_array([
-          "WORKLOADS",
           "SYSTEM_COMPONENTS"
         ])
       end

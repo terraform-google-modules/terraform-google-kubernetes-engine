@@ -52,7 +52,7 @@ module "gke" {
   enable_identity_service       = true
   release_channel               = "REGULAR"
   logging_enabled_components    = ["SYSTEM_COMPONENTS"]
-  monitoring_enabled_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
+  monitoring_enabled_components = ["SYSTEM_COMPONENTS"]
 
   # Disable workload identity
   identity_namespace = null
