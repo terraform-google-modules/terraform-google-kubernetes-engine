@@ -90,6 +90,8 @@ module "gke" {
 
   node_pools_oauth_scopes = var.node_pools_oauth_scopes
 
+  cluster_autoscaling = var.cluster_autoscaling
+
   stub_domains         = var.stub_domains
   upstream_nameservers = var.upstream_nameservers
 
