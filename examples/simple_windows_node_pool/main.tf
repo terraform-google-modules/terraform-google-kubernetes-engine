@@ -27,58 +27,41 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                        = "../../modules/beta-public-cluster/"
-  project_id                    = var.project_id
-  name                          = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                      = var.regional
-  region                        = var.region
-  zones                         = var.zones
-  network                       = var.network
-  subnetwork                    = var.subnetwork
-  ip_range_pods                 = var.ip_range_pods
-  ip_range_services             = var.ip_range_services
-  create_service_account        = var.compute_engine_service_account == "create"
-  service_account               = var.compute_engine_service_account
-  istio                         = var.istio
-  cloudrun                      = var.cloudrun
-  dns_cache                     = var.dns_cache
-  gce_pd_csi_driver             = var.gce_pd_csi_driver
-  sandbox_enabled               = var.sandbox_enabled
-  database_encryption           = var.database_encryption
-  enable_binary_authorization   = var.enable_binary_authorization
-  enable_pod_security_policy    = var.enable_pod_security_policy
-  enable_identity_service       = true
-  release_channel               = "REGULAR"
-  logging_enabled_components    = ["SYSTEM_COMPONENTS"]
-  monitoring_enabled_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
+  source     = "../../modules/beta-public-cluster/"
+  project_id = var.project_id
+  regional   = false
+  region     = var.region
+  zones      = [var.zone]
+
+  name = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+
+  network           = google_compute_network.main.name
+  subnetwork        = google_compute_subnetwork.main.name
+  ip_range_pods     = google_compute_subnetwork.main.secondary_ip_range[0].range_name
+  ip_range_services = google_compute_subnetwork.main.secondary_ip_range[1].range_name
 
   remove_default_node_pool = true
+  service_account          = "create"
+  release_channel          = "REGULAR"
 
   node_pools = [
     {
       name         = "pool-01"
-      machine_type = "n2-standard-2"
-      min_count    = 1
-      max_count    = 2
+      autoscaling  = false
       auto_upgrade = true
+      node_count   = 1
+      machine_type = "n2-standard-2"
     },
   ]
 
   windows_node_pools = [
     {
       name         = "win-pool-01"
-      machine_type = "n2-standard-2"
-      min_count    = 1
-      max_count    = 2
+      autoscaling  = false
       auto_upgrade = true
+      node_count   = 1
+      machine_type = "n2-standard-2"
       image_type   = "WINDOWS_LTSC"
     },
   ]
-
-  # Disable workload identity
-  identity_namespace = null
-  node_metadata      = "UNSPECIFIED"
-
-  # Enable Dataplane Setup
-  datapath_provider = "ADVANCED_DATAPATH"
 }

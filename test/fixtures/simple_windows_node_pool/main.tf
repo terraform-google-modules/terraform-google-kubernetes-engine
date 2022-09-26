@@ -14,50 +14,7 @@
  * limitations under the License.
  */
 
-locals {
-  name       = "simple-windows-node-pool-${random_string.suffix.result}"
-  project_id = var.project_ids[0]
-}
-
-resource "google_kms_key_ring" "db" {
-  location = var.region
-  name     = "${local.name}-db"
-  project  = local.project_id
-}
-
-resource "google_kms_crypto_key" "db" {
-  name     = local.name
-  key_ring = google_kms_key_ring.db.id
-}
-
 module "this" {
-  source = "../../../examples/simple_windows_node_pool"
-
-  cluster_name_suffix            = "-${random_string.suffix.result}"
-  project_id                     = local.project_id
-  regional                       = true
-  region                         = var.region
-  zones                          = slice(var.zones, 0, 1)
-  network                        = google_compute_network.main.name
-  subnetwork                     = google_compute_subnetwork.main.name
-  ip_range_pods                  = google_compute_subnetwork.main.secondary_ip_range[0].range_name
-  ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
-  compute_engine_service_account = "create"
-
-  database_encryption = [{
-    state    = "ENCRYPTED"
-    key_name = google_kms_crypto_key.db.id
-  }]
-
-  cloudrun                    = true
-  dns_cache                   = true
-  gce_pd_csi_driver           = true
-  enable_binary_authorization = true
-  enable_pod_security_policy  = true
-
-  // Dataplane-V2 Feature
-  datapath_provider = "ADVANCED_DATAPATH"
-}
-
-data "google_client_config" "default" {
+  source     = "../../../examples/simple_windows_node_pool"
+  project_id = var.project_ids[0]
 }

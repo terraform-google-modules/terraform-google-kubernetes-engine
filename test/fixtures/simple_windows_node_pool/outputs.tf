@@ -15,7 +15,7 @@
  */
 
 output "project_id" {
-  value = local.project_id
+  value = module.this.project_id
 }
 
 output "region" {
@@ -27,26 +27,8 @@ output "cluster_name" {
   value       = module.this.cluster_name
 }
 
-output "network" {
-  value = google_compute_network.main.name
-}
-
-output "subnetwork" {
-  value = google_compute_subnetwork.main.name
-}
-
 output "location" {
   value = module.this.location
-}
-
-output "ip_range_pods" {
-  description = "The secondary IP range used for pods"
-  value       = google_compute_subnetwork.main.secondary_ip_range[0].range_name
-}
-
-output "ip_range_services" {
-  description = "The secondary IP range used for services"
-  value       = google_compute_subnetwork.main.secondary_ip_range[1].range_name
 }
 
 output "zones" {
@@ -66,7 +48,7 @@ output "kubernetes_endpoint" {
 
 output "client_token" {
   sensitive = true
-  value     = base64encode(data.google_client_config.default.access_token)
+  value     = module.this.client_token
 }
 
 output "ca_certificate" {
@@ -78,12 +60,4 @@ output "ca_certificate" {
 output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
   value       = module.this.service_account
-}
-
-output "database_encryption_key_name" {
-  value = google_kms_crypto_key.db.id
-}
-
-output "identity_namespace" {
-  value = module.this.identity_namespace
 }
