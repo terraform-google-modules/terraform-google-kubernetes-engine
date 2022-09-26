@@ -37,84 +37,15 @@ control "gcloud" do
       end
 
       it "is regional" do
-        expect(data['location']).to match(/^.*[1-9]$/)
+        expect(data['location']).to match(/^.*[1-9]-[a-z]$/)
       end
 
       it "is single zoned" do
         expect(data['locations'].size).to eq 1
       end
 
-      it "uses public nodes and master endpoint" do
-        expect(data['privateClusterConfig']).to eq nil
-      end
-
-      it "has the expected addon settings" do
-        expect(data['addonsConfig']).to include(
-          "horizontalPodAutoscaling" => {},
-          "httpLoadBalancing" => {},
-          "kubernetesDashboard" => {
-            "disabled" => true,
-          },
-          "kalmConfig" => {},
-          "configConnectorConfig" => {},
-          "networkPolicyConfig" => {
-            "disabled" => true,
-          },
-          "istioConfig" => {"auth"=>"AUTH_MUTUAL_TLS"},
-          "cloudRunConfig" => including(
-              "loadBalancerType" => "LOAD_BALANCER_TYPE_EXTERNAL",
-            ),
-          "dnsCacheConfig" => {
-            "enabled" => true,
-          },
-          "gcePersistentDiskCsiDriverConfig" => {
-            "enabled" => true,
-          }
-        )
-      end
-
-      it "has the expected datapathProvider config" do
-        expect(data['networkConfig']).to include(
-          "datapathProvider" => "ADVANCED_DATAPATH"
-        )
-      end
-
-      it "has the expected binaryAuthorization config" do
-        expect(data['binaryAuthorization']).to eq({
-          "evaluationMode" => "PROJECT_SINGLETON_POLICY_ENFORCE",
-        })
-      end
-
-      it "has the expected podSecurityPolicyConfig config" do
-        expect(data['podSecurityPolicyConfig']).to eq({
-          "enabled" => true,
-        })
-      end
-
-      it "has the expected databaseEncryption config" do
-        expect(data['databaseEncryption']).to eq({
-          "state" => 'ENCRYPTED',
-          "keyName" => attribute('database_encryption_key_name'),
-        })
-      end
-
-      it "has the expected identityServiceConfig config" do
-        expect(data['identityServiceConfig']).to eq({
-          "enabled" => true,
-        })
-      end
-
-      it "has the expected logging config" do
-        expect(data['loggingConfig']['componentConfig']['enableComponents']).to match_array([
-          "SYSTEM_COMPONENTS"
-        ])
-      end
-
-      it "has the expected monitoring config" do
-        expect(data['monitoringConfig']['componentConfig']['enableComponents']).to match_array([
-          "WORKLOADS",
-          "SYSTEM_COMPONENTS"
-        ])
+      it "has the release channel set to REGULAR " do
+        expect(data['releaseChannel']['channel']).to eq "REGULAR"
       end
     end
 
@@ -145,35 +76,11 @@ control "gcloud" do
           )
         end
 
-        it "has autoscaling enabled" do
+        it "has the node count set to 1" do
           expect(node_pools).to include(
             including(
               "name" => "pool-01",
-              "autoscaling" => including(
-                "enabled" => true,
-              ),
-            )
-          )
-        end
-
-        it "has the expected minimum node count" do
-          expect(node_pools).to include(
-            including(
-              "name" => "pool-01",
-              "autoscaling" => including(
-                "minNodeCount" => 1,
-              ),
-            )
-          )
-        end
-
-        it "has the expected maximum node count" do
-          expect(node_pools).to include(
-            including(
-              "name" => "pool-01",
-              "autoscaling" => including(
-                "maxNodeCount" => 2,
-              ),
+              "initialNodeCount" => 1,
             )
           )
         end
@@ -184,31 +91,6 @@ control "gcloud" do
               "name" => "pool-01",
               "config" => including(
                 "machineType" => "n2-standard-2",
-              ),
-            )
-          )
-        end
-
-        it "has the expected disk size" do
-          expect(node_pools).to include(
-            including(
-              "name" => "pool-01",
-              "config" => including(
-                "diskSizeGb" => 100,
-              ),
-            )
-          )
-        end
-
-        it "has the expected labels" do
-          expect(node_pools).to include(
-            including(
-              "name" => "pool-01",
-              "config" => including(
-                "labels" => including(
-                  "cluster_name" => cluster_name,
-                  "node_pool" => "pool-01",
-                ),
               ),
             )
           )
@@ -228,12 +110,12 @@ control "gcloud" do
           )
         end
 
-        it "has autorepair enabled" do
+        it "has autoupgrade enabled" do
           expect(node_pools).to include(
             including(
               "name" => "pool-01",
               "management" => including(
-                "autoRepair" => true,
+                "autoUpgrade" => true,
               ),
             )
           )
@@ -260,35 +142,11 @@ control "gcloud" do
           )
         end
 
-        it "has autoscaling enabled" do
+        it "has the node count set to 1" do
           expect(node_pools).to include(
             including(
               "name" => "win-pool-01",
-              "autoscaling" => including(
-                "enabled" => true,
-              ),
-            )
-          )
-        end
-
-        it "has the expected minimum node count" do
-          expect(node_pools).to include(
-            including(
-              "name" => "win-pool-01",
-              "autoscaling" => including(
-                "minNodeCount" => 1,
-              ),
-            )
-          )
-        end
-
-        it "has the expected maximum node count" do
-          expect(node_pools).to include(
-            including(
-              "name" => "win-pool-01",
-              "autoscaling" => including(
-                "maxNodeCount" => 2,
-              ),
+              "initialNodeCount" => 1,
             )
           )
         end
@@ -299,31 +157,6 @@ control "gcloud" do
               "name" => "win-pool-01",
               "config" => including(
                 "machineType" => "n2-standard-2",
-              ),
-            )
-          )
-        end
-
-        it "has the expected disk size" do
-          expect(node_pools).to include(
-            including(
-              "name" => "win-pool-01",
-              "config" => including(
-                "diskSizeGb" => 100,
-              ),
-            )
-          )
-        end
-
-        it "has the expected labels" do
-          expect(node_pools).to include(
-            including(
-              "name" => "win-pool-01",
-              "config" => including(
-                "labels" => including(
-                  "cluster_name" => cluster_name,
-                  "node_pool" => "win-pool-01",
-                ),
               ),
             )
           )
@@ -343,12 +176,12 @@ control "gcloud" do
           )
         end
 
-        it "has autorepair enabled" do
+        it "has autoupgrade enabled" do
           expect(node_pools).to include(
             including(
               "name" => "win-pool-01",
               "management" => including(
-                "autoRepair" => true,
+                "autoUpgrade" => true,
               ),
             )
           )
