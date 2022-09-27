@@ -201,6 +201,19 @@ suites:
           backend: gcp
           controls:
             - gcp
+  - name: "simple_windows_node_pool"
+    driver:
+      root_module_directory: test/fixtures/simple_windows_node_pool
+    verifier:
+      systems:
+        - name: gcloud
+          backend: local
+          controls:
+            - gcloud
+        - name: gcp
+          backend: gcp
+          controls:
+            - gcp
   - name: "deploy_service"
     driver:
       root_module_directory: test/fixtures/deploy_service

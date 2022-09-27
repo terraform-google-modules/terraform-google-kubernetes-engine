@@ -83,6 +83,7 @@ module "gke" {
   initial_node_count = (var.initial_node_count == 0) ? 1 : var.initial_node_count
 
   node_pools          = var.node_pools
+  windows_node_pools  = var.windows_node_pools
   node_pools_labels   = var.node_pools_labels
   node_pools_metadata = var.node_pools_metadata
   node_pools_taints   = var.node_pools_taints

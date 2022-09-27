@@ -166,6 +166,7 @@ Then perform the following commands on the root folder:
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
+
 ## Requirements
 
 Before this module can be used on a project, you must ensure that the following pre-requisites are fulfilled:
