@@ -39,6 +39,9 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+  cost_management_config {
+    enabled = var.enable_cost_allocation
+  }
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
