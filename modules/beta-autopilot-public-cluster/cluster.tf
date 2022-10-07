@@ -190,4 +190,9 @@ resource "google_container_cluster" "primary" {
       topic   = var.notification_config_topic
     }
   }
+  node_pool_auto_config {
+    network_tags {
+      tags = [local.cluster_network_tag]
+    }
+  }
 }
