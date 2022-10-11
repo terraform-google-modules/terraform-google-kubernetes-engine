@@ -428,9 +428,9 @@ resource "google_container_node_pool" "pools" {
     content {
       min_node_count       = lookup(autoscaling.value, "min_count", 1)
       max_node_count       = lookup(autoscaling.value, "max_count", 100)
-      total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
-      total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
-      location_policy      = lookup(autoscaling.value, "location_policy", null)
+      total_min_node_count = lookup(autoscaling.value, "total_min_count", var.release_channel == "RAPID" ? 2 : null)
+      total_max_node_count = lookup(autoscaling.value, "total_max_count", var.release_channel == "RAPID" ? 200 : null)
+      location_policy      = lookup(autoscaling.value, "location_policy", var.release_channel == "RAPID" ? "BALANCED" : null)
     }
   }
 
@@ -638,9 +638,9 @@ resource "google_container_node_pool" "windows_pools" {
     content {
       min_node_count       = lookup(autoscaling.value, "min_count", 1)
       max_node_count       = lookup(autoscaling.value, "max_count", 100)
-      total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
-      total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
-      location_policy      = lookup(autoscaling.value, "location_policy", null)
+      total_min_node_count = lookup(autoscaling.value, "total_min_count", var.release_channel == "RAPID" ? 2 : null)
+      total_max_node_count = lookup(autoscaling.value, "total_max_count", var.release_channel == "RAPID" ? 200 : null)
+      location_policy      = lookup(autoscaling.value, "location_policy", var.release_channel == "RAPID" ? "BALANCED" : null)
     }
   }
 
