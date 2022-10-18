@@ -64,8 +64,6 @@ module "this" {
     key_name = google_kms_crypto_key.db.id
   }]
 
-  cloudrun = true
-
   dns_cache = true
 
   gce_pd_csi_driver = true
