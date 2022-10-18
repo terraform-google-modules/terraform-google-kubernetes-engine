@@ -56,9 +56,6 @@ module "this" {
     },
   ]
 
-  // Beta features
-  istio = true
-
   database_encryption = [{
     state    = "ENCRYPTED"
     key_name = google_kms_crypto_key.db.id
