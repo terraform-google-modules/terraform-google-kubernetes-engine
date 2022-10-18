@@ -220,7 +220,6 @@ resource "google_container_cluster" "primary" {
         lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-default-pool"] : [],
         lookup(local.node_pools_tags, "all", []),
         lookup(local.node_pools_tags, var.node_pools[0].name, []),
-        
       )
 
       dynamic "workload_metadata_config" {
@@ -375,7 +374,7 @@ resource "google_container_node_pool" "pools" {
       lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
       local.node_pools_labels["all"],
       local.node_pools_labels[each.value["name"]],
-      lookup(each.value, "labels", {})
+      lookup(each.value, "labels", {}),
     )
     metadata = merge(
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
