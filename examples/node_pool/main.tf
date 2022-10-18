@@ -81,7 +81,7 @@ module "gke" {
 
   node_pools_metadata = {
     pool-01 = {
-      shutdown-script = file("${path.module}/data/shutdown-script.sh")
+      shutdown-script = "kubectl --kubeconfig=/var/lib/kubelet/kubeconfig drain --force=true --ignore-daemonsets=true --delete-local-data \"$HOSTNAME\""
     }
   }
 
