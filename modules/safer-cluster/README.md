@@ -268,6 +268,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | `map(list(string))` | `{}` | no |
 | subnetwork | The subnetwork to host the cluster in | `string` | n/a | yes |
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | `list(string)` | `[]` | no |
+| windows\_node\_pools | List of maps containing node pools | `list(map(string))` | `[]` | no |
 | zones | The zones to host the cluster in | `list(string)` | `[]` | no |
 
 ## Outputs

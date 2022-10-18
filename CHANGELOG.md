@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [23.2.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v23.1.0...v23.2.0) (2022-09-27)
+
+
+### Features
+
+* add support for provisioning windows node pools ([92d7c67](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/92d7c67bc656e1caddb9a5f3771fab54e84e1ee5))
+* Allow configuring cluster_autoscaling for safer cluster variants ([#1407](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1407)) ([a661eea](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a661eeabaf7f430df77933be1d9d27f699239be6))
+
 ## [23.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v23.0.0...v23.1.0) (2022-09-08)
 
 
