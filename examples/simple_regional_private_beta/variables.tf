@@ -47,16 +47,6 @@ variable "compute_engine_service_account" {
   description = "Service account to associate to the nodes in the cluster"
 }
 
-variable "istio" {
-  description = "Boolean to enable / disable Istio"
-  default     = true
-}
-
-variable "cloudrun" {
-  description = "Boolean to enable / disable CloudRun"
-  default     = true
-}
-
 variable "dns_cache" {
   description = "Boolean to enable / disable NodeLocal DNSCache "
   default     = false
