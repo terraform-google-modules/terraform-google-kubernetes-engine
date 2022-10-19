@@ -56,8 +56,6 @@ module "gke" {
 
   enable_confidential_nodes = true
 
-  istio             = var.istio
-  cloudrun          = var.cloudrun
   dns_cache         = var.dns_cache
   gce_pd_csi_driver = var.gce_pd_csi_driver
 }
