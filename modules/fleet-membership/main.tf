@@ -17,7 +17,7 @@
 locals {
   hub_project_id                   = var.hub_project_id == "" ? var.project_id : var.hub_project_id
   gke_hub_membership_name_complete = var.membership_name != "" ? var.membership_name : "${var.project_id}-${var.location}-${var.cluster_name}"
-  gke_hub_membership_name          = length(local.gke_hub_membership_name_complete) > 63 ? substr(local.gke_hub_membership_name_complete, 0, 63) : local.gke_hub_membership_name_complete
+  gke_hub_membership_name          = trimsuffix(substr(local.gke_hub_membership_name_complete, 0, 63), "-")
 }
 
 # Retrieve GKE cluster info
