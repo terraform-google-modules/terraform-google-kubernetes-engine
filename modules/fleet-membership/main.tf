@@ -20,13 +20,6 @@ locals {
   gke_hub_membership_name          = trimsuffix(substr(local.gke_hub_membership_name_complete, 0, 63), "-")
 }
 
-# Retrieve GKE cluster info
-data "google_container_cluster" "primary" {
-  name     = var.cluster_name
-  location = var.location
-  project  = var.project_id
-}
-
 # Give the service agent permissions on hub project
 resource "google_project_iam_member" "hub_service_agent_gke" {
   count   = var.hub_project_id == "" ? 0 : 1

@@ -25,6 +25,7 @@ To deploy this config:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| cluster\_id | The GKE cluster ID | `string` | n/a | yes |
 | cluster\_name | The GKE cluster name | `string` | n/a | yes |
 | enable\_fleet\_registration | Enables GKE Hub Registration when set to true | `bool` | `true` | no |
 | hub\_project\_id | The project in which the GKE Hub belongs. Defaults to GKE cluster project\_id. | `string` | `""` | no |

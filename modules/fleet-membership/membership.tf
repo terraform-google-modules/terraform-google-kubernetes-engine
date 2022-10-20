@@ -24,10 +24,10 @@ resource "google_gke_hub_membership" "primary" {
 
   endpoint {
     gke_cluster {
-      resource_link = "//container.googleapis.com/${data.google_container_cluster.primary.id}"
+      resource_link = "//container.googleapis.com/${var.cluster_id}"
     }
   }
   authority {
-    issuer = "https://container.googleapis.com/v1/${data.google_container_cluster.primary.id}"
+    issuer = "https://container.googleapis.com/v1/${var.cluster_id}"
   }
 }
