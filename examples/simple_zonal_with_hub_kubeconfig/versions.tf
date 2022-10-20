@@ -22,7 +22,7 @@ terraform {
     }
     kind = {
       source  = "kyma-incubator/kind"
-      version = "0.0.6"
+      version = "0.0.11"
     }
     kubernetes = {
       source = "hashicorp/kubernetes"
