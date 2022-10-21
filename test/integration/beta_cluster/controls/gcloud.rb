@@ -60,10 +60,6 @@ control "gcloud" do
           "networkPolicyConfig" => {
             "disabled" => true,
           },
-          "istioConfig" => {"auth"=>"AUTH_MUTUAL_TLS"},
-          "cloudRunConfig" => including(
-              "loadBalancerType" => "LOAD_BALANCER_TYPE_EXTERNAL",
-            ),
           "dnsCacheConfig" => {
             "enabled" => true,
           },

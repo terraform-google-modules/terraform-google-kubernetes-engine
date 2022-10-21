@@ -27,6 +27,10 @@ locals {
       [for node_pool in var.node_pools : node_pool["name"]],
       [for node_pool in var.node_pools : {}]
     ),
+    zipmap(
+      [for node_pool in var.windows_node_pools : node_pool["name"]],
+      [for node_pool in var.windows_node_pools : {}]
+    ),
     var.node_pools_labels
   )
 
@@ -36,6 +40,10 @@ locals {
     zipmap(
       [for node_pool in var.node_pools : node_pool["name"]],
       [for node_pool in var.node_pools : {}]
+    ),
+    zipmap(
+      [for node_pool in var.windows_node_pools : node_pool["name"]],
+      [for node_pool in var.windows_node_pools : {}]
     ),
     var.node_pools_metadata
   )
@@ -47,6 +55,10 @@ locals {
       [for node_pool in var.node_pools : node_pool["name"]],
       [for node_pool in var.node_pools : []]
     ),
+    zipmap(
+      [for node_pool in var.windows_node_pools : node_pool["name"]],
+      [for node_pool in var.windows_node_pools : []]
+    ),
     var.node_pools_taints
   )
 
@@ -57,6 +69,10 @@ locals {
       [for node_pool in var.node_pools : node_pool["name"]],
       [for node_pool in var.node_pools : []]
     ),
+    zipmap(
+      [for node_pool in var.windows_node_pools : node_pool["name"]],
+      [for node_pool in var.windows_node_pools : []]
+    ),
     var.node_pools_tags
   )
 
@@ -66,6 +82,10 @@ locals {
     zipmap(
       [for node_pool in var.node_pools : node_pool["name"]],
       [for node_pool in var.node_pools : []]
+    ),
+    zipmap(
+      [for node_pool in var.windows_node_pools : node_pool["name"]],
+      [for node_pool in var.windows_node_pools : []]
     ),
     var.node_pools_oauth_scopes
   )

@@ -118,6 +118,11 @@ output "horizontal_pod_autoscaling_enabled" {
   value       = local.cluster_horizontal_pod_autoscaling_enabled
 }
 
+output "vertical_pod_autoscaling_enabled" {
+  description = "Whether vertical pod autoscaling enabled"
+  value       = local.cluster_vertical_pod_autoscaling_enabled
+}
+
 output "node_pools_names" {
   description = "List of node pools names"
   value       = local.cluster_node_pools_names
