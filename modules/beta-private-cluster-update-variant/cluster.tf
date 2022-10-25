@@ -638,17 +638,14 @@ resource "google_container_node_pool" "pools" {
       local.node_pools_oauth_scopes[each.value["name"]],
     )
 
-    guest_accelerator = [
-      for guest_accelerator in lookup(each.value, "accelerator_count", 0) > 0 ? [{
+    dynamic "guest_accelerator" {
+      for_each = lookup(each.value, "accelerator_count", 0) > 0 ? [1] : []
+      content {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
-        }] : [] : {
-        type               = guest_accelerator["type"]
-        count              = guest_accelerator["count"]
-        gpu_partition_size = guest_accelerator["gpu_partition_size"]
       }
-    ]
+    }
 
     dynamic "workload_metadata_config" {
       for_each = local.cluster_node_metadata_config
@@ -846,17 +843,14 @@ resource "google_container_node_pool" "windows_pools" {
       local.node_pools_oauth_scopes[each.value["name"]],
     )
 
-    guest_accelerator = [
-      for guest_accelerator in lookup(each.value, "accelerator_count", 0) > 0 ? [{
+    dynamic "guest_accelerator" {
+      for_each = lookup(each.value, "accelerator_count", 0) > 0 ? [1] : []
+      content {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
-        }] : [] : {
-        type               = guest_accelerator["type"]
-        count              = guest_accelerator["count"]
-        gpu_partition_size = guest_accelerator["gpu_partition_size"]
       }
-    ]
+    }
 
     dynamic "workload_metadata_config" {
       for_each = local.cluster_node_metadata_config
