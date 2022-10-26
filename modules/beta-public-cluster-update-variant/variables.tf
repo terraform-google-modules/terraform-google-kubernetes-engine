@@ -143,7 +143,7 @@ variable "ip_range_services" {
 }
 
 variable "node_pools" {
-  type        = list(map(string))
+  type        = list(map(any))
   description = "List of maps containing node pools"
 
   default = [
