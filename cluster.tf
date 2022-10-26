@@ -109,6 +109,10 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  service_external_ips_config {
+    enabled = var.service_externalips
+  }
+
   addons_config {
     http_load_balancing {
       disabled = !var.http_load_balancing
