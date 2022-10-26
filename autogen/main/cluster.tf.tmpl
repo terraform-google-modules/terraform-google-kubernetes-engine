@@ -202,6 +202,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "service_external_ips_config" {
+    for_each = var.service_external_ips ? [1] : []
+    content {
+        enabled = var.service_external_ips
+    }
+  }
+
   addons_config {
     http_load_balancing {
       disabled = !var.http_load_balancing
