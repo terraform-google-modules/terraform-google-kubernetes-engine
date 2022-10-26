@@ -91,7 +91,7 @@ resource "google_container_cluster" "primary" {
   dynamic "service_external_ips_config" {
     for_each = var.service_external_ips ? [1] : []
     content {
-        enabled = var.service_external_ips
+      enabled = var.service_external_ips
     }
   }
 
