@@ -235,6 +235,7 @@ resource "google_container_cluster" "primary" {
       services_secondary_range_name = var.ip_range_services
     }
   }
+
   maintenance_policy {
     dynamic "recurring_window" {
       for_each = local.cluster_maintenance_window_is_recurring
