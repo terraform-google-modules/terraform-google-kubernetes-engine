@@ -83,12 +83,15 @@ module "gke" {
   initial_node_count = (var.initial_node_count == 0) ? 1 : var.initial_node_count
 
   node_pools          = var.node_pools
+  windows_node_pools  = var.windows_node_pools
   node_pools_labels   = var.node_pools_labels
   node_pools_metadata = var.node_pools_metadata
   node_pools_taints   = var.node_pools_taints
   node_pools_tags     = var.node_pools_tags
 
   node_pools_oauth_scopes = var.node_pools_oauth_scopes
+
+  cluster_autoscaling = var.cluster_autoscaling
 
   stub_domains         = var.stub_domains
   upstream_nameservers = var.upstream_nameservers
@@ -137,7 +140,15 @@ module "gke" {
 
   dns_cache = var.dns_cache
 
-  config_connector = var.config_connector
+
+  config_connector        = var.config_connector
+  gke_backup_agent_config = var.gke_backup_agent_config
+
+  cluster_dns_provider = var.cluster_dns_provider
+
+  cluster_dns_scope = var.cluster_dns_scope
+
+  cluster_dns_domain = var.cluster_dns_domain
 
   default_max_pods_per_node = var.default_max_pods_per_node
 

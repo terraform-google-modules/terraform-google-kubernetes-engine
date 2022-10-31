@@ -210,7 +210,7 @@ Then perform the following commands on the root folder:
 | network\_policy\_provider | The network policy provider. | `string` | `"CALICO"` | no |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | `string` | `""` | no |
 | node\_metadata | Specifies how node metadata is exposed to the workload running on the node | `string` | `"GKE_METADATA"` | no |
-| node\_pools | List of maps containing node pools | `list(map(string))` | <pre>[<br>  {<br>    "name": "default-node-pool"<br>  }<br>]</pre> | no |
+| node\_pools | List of maps containing node pools | `list(map(any))` | <pre>[<br>  {<br>    "name": "default-node-pool"<br>  }<br>]</pre> | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | `map(map(string))` | <pre>{<br>  "all": {},<br>  "default-node-pool": {}<br>}</pre> | no |
 | node\_pools\_metadata | Map of maps containing node metadata by node-pool name | `map(map(string))` | <pre>{<br>  "all": {},<br>  "default-node-pool": {}<br>}</pre> | no |
 | node\_pools\_oauth\_scopes | Map of lists containing node oauth scopes by node-pool name | `map(list(string))` | <pre>{<br>  "all": [<br>    "https://www.googleapis.com/auth/cloud-platform"<br>  ],<br>  "default-node-pool": []<br>}</pre> | no |
@@ -232,6 +232,7 @@ Then perform the following commands on the root folder:
 | subnetwork | The subnetwork to host the cluster in (required) | `string` | n/a | yes |
 | timeouts | Timeout for cluster operations. | `map(string)` | `{}` | no |
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | `list(string)` | `[]` | no |
+| windows\_node\_pools | List of maps containing Windows node pools | `list(map(string))` | `[]` | no |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | `list(string)` | `[]` | no |
 
 ## Outputs
@@ -261,11 +262,15 @@ Then perform the following commands on the root folder:
 | release\_channel | The release channel of this cluster |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | type | Cluster type (regional / zonal) |
+| vertical\_pod\_autoscaling\_enabled | Whether vertical pod autoscaling enabled |
 | zones | List of zones in which the cluster resides |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## node_pools variable
+
+> Use this variable for provisioning linux based node pools. For Windows based node pools use [windows_node_pools](#windows\_node\_pools-variable)
+
 The node_pools variable takes the following parameters:
 
 | Name | Description | Default | Requirement |
@@ -305,6 +310,11 @@ The node_pools variable takes the following parameters:
 | tags | The list of instance tags applied to all nodes | | Required |
 | value | The value for the taint | | Required |
 | version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
+
+## windows_node_pools variable
+The windows_node_pools variable takes the same parameters as [node_pools](#node\_pools-variable) but is reserved for provisioning Windows based node pools only. This variable is introduced to satisfy a [specific requirement](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster-windows#create_a_cluster_and_node_pools) for the presence of at least one linux based node pool in the cluster before a windows based node pool can be created.
+
+
 ## Requirements
 
 Before this module can be used on a project, you must ensure that the following pre-requisites are fulfilled:

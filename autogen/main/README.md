@@ -174,6 +174,9 @@ Then perform the following commands on the root folder:
 
 {% if autopilot_cluster != true %}
 ## node_pools variable
+
+> Use this variable for provisioning linux based node pools. For Windows based node pools use [windows_node_pools](#windows\_node\_pools-variable)
+
 The node_pools variable takes the following parameters:
 
 | Name | Description | Default | Requirement |
@@ -214,6 +217,7 @@ The node_pools variable takes the following parameters:
 | min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true | 1 | Optional |
 | name | The name of the node pool |  | Required |
 {% if beta_cluster %}
+| placement_policy | Placement type to set for nodes in a node pool. Can be set as [COMPACT](https://cloud.google.com/kubernetes-engine/docs/how-to/compact-placement#overview) if desired | Optional |
 | pod_range |  The ID of the secondary range for pod IPs. |  | Optional |
 {% endif %}
 | node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusters |  | Required |
@@ -228,7 +232,12 @@ The node_pools variable takes the following parameters:
 | tags | The list of instance tags applied to all nodes | | Required |
 | value | The value for the taint | | Required |
 | version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
+
+## windows_node_pools variable
+The windows_node_pools variable takes the same parameters as [node_pools](#node\_pools-variable) but is reserved for provisioning Windows based node pools only. This variable is introduced to satisfy a [specific requirement](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster-windows#create_a_cluster_and_node_pools) for the presence of at least one linux based node pool in the cluster before a windows based node pool can be created.
+
 {% endif %}
+
 ## Requirements
 
 Before this module can be used on a project, you must ensure that the following pre-requisites are fulfilled:

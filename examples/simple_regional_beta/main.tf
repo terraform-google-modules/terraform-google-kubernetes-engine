@@ -39,8 +39,6 @@ module "gke" {
   ip_range_services             = var.ip_range_services
   create_service_account        = var.compute_engine_service_account == "create"
   service_account               = var.compute_engine_service_account
-  istio                         = var.istio
-  cloudrun                      = var.cloudrun
   dns_cache                     = var.dns_cache
   gce_pd_csi_driver             = var.gce_pd_csi_driver
   sandbox_enabled               = var.sandbox_enabled
@@ -52,7 +50,7 @@ module "gke" {
   enable_identity_service       = true
   release_channel               = "REGULAR"
   logging_enabled_components    = ["SYSTEM_COMPONENTS"]
-  monitoring_enabled_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
+  monitoring_enabled_components = ["SYSTEM_COMPONENTS"]
 
   # Disable workload identity
   identity_namespace = null

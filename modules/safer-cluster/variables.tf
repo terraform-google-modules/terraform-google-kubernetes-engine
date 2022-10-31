@@ -152,6 +152,12 @@ variable "node_pools" {
   ]
 }
 
+variable "windows_node_pools" {
+  type        = list(map(string))
+  description = "List of maps containing node pools"
+  default     = []
+}
+
 variable "node_pools_labels" {
   type        = map(map(string))
   description = "Map of maps containing node labels by node-pool name"
@@ -200,6 +206,28 @@ variable "node_pools_oauth_scopes" {
     all               = ["https://www.googleapis.com/auth/cloud-platform"]
     default-node-pool = []
   }
+}
+
+variable "cluster_autoscaling" {
+  type = object({
+    enabled             = bool
+    autoscaling_profile = string
+    min_cpu_cores       = number
+    max_cpu_cores       = number
+    min_memory_gb       = number
+    max_memory_gb       = number
+    gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))
+  })
+  default = {
+    enabled             = false
+    autoscaling_profile = "BALANCED"
+    max_cpu_cores       = 0
+    min_cpu_cores       = 0
+    max_memory_gb       = 0
+    min_memory_gb       = 0
+    gpu_resources       = []
+  }
+  description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
 
 variable "stub_domains" {
@@ -271,6 +299,24 @@ variable "dns_cache" {
   type        = bool
   description = "(Beta) The status of the NodeLocal DNSCache addon."
   default     = false
+}
+
+variable "cluster_dns_provider" {
+  type        = string
+  description = "Which in-cluster DNS provider should be used. PROVIDER_UNSPECIFIED (default) or PLATFORM_DEFAULT or CLOUD_DNS."
+  default     = "PROVIDER_UNSPECIFIED"
+}
+
+variable "cluster_dns_scope" {
+  type        = string
+  description = "The scope of access to cluster DNS records. DNS_SCOPE_UNSPECIFIED (default) or CLUSTER_SCOPE or VPC_SCOPE. "
+  default     = "DNS_SCOPE_UNSPECIFIED"
+}
+
+variable "cluster_dns_domain" {
+  type        = string
+  description = "The suffix used for all cluster service records."
+  default     = ""
 }
 
 variable "default_max_pods_per_node" {
@@ -397,6 +443,12 @@ variable "firewall_inbound_ports" {
 variable "config_connector" {
   type        = bool
   description = "(Beta) Whether ConfigConnector is enabled for this cluster."
+  default     = false
+}
+
+variable "gke_backup_agent_config" {
+  type        = bool
+  description = "(Beta) Whether Backup for GKE agent is enabled for this cluster."
   default     = false
 }
 
