@@ -134,11 +134,14 @@ resource "google_container_cluster" "primary" {
 
   datapath_provider = var.datapath_provider
 
-  ip_allocation_policy {
-    cluster_secondary_range_name  = var.ip_range_pods
-    services_secondary_range_name = var.ip_range_services
+  networking_mode = var.networking_mode
+  dynamic "ip_allocation_policy" {
+    for_each = var.networking_mode == "VPC_NATIVE" ? [1] : []
+    content {
+      cluster_secondary_range_name  = var.ip_range_pods
+      services_secondary_range_name = var.ip_range_services
+    }
   }
-
   maintenance_policy {
     dynamic "recurring_window" {
       for_each = local.cluster_maintenance_window_is_recurring

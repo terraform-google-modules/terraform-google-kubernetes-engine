@@ -126,6 +126,12 @@ variable "maintenance_recurrence" {
   default     = ""
 }
 
+variable "networking_mode" {
+  type        = string
+  description = "Determines whether alias IPs or routes will be used for pod IPs in the cluster. By default, `VPC_NATIVE` enables IP aliasing"
+  default     = "VPC_NATIVE"
+}
+
 variable "ip_range_pods" {
   type        = string
   description = "The _name_ of the secondary subnet ip range to use for pods"

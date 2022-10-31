@@ -125,6 +125,14 @@ variable "maintenance_recurrence" {
   description = "Frequency of the recurring maintenance window in RFC5545 format."
   default     = ""
 }
+{% if autopilot_cluster != true and private_cluster != true %}
+
+variable "networking_mode" {
+  type        = string
+  description = "Determines whether alias IPs or routes will be used for pod IPs in the cluster. By default, `VPC_NATIVE` enables IP aliasing"
+  default     = "VPC_NATIVE"
+}
+{% endif %}
 
 variable "ip_range_pods" {
   type        = string
