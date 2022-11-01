@@ -506,7 +506,7 @@ locals {
 # resources where "ForceNew" is "true". schemaNodeConfig can be found in node_config.go at
 # https://github.com/terraform-providers/terraform-provider-google/blob/master/google/node_config.go#L22
 resource "random_id" "name" {
-  for_each    = local.node_pools
+  for_each    = merge(local.node_pools, local.windows_node_pools)
   byte_length = 2
   prefix      = format("%s-", lookup(each.value, "name"))
   keepers = merge(
@@ -575,13 +575,22 @@ resource "random_id" "name" {
 
 {% endif %}
 {% if autopilot_cluster != true %}
+{% for i in range(2) %}
+{% if i == 0 %}
 resource "google_container_node_pool" "pools" {
+{% else %}
+resource "google_container_node_pool" "windows_pools" {
+{% endif %}
   {% if beta_cluster %}
   provider = google-beta
   {% else %}
   provider = google
   {% endif %}
+  {% if i == 0 %}
   for_each = local.node_pools
+  {% else %}
+  for_each = local.windows_node_pools
+  {% endif %}  
   {% if update_variant %}
   name     = { for k, v in random_id.name : k => v.hex }[each.key]
   {% else %}
@@ -719,17 +728,14 @@ resource "google_container_node_pool" "pools" {
       local.node_pools_oauth_scopes[each.value["name"]],
     )
 
-    guest_accelerator = [
-      for guest_accelerator in lookup(each.value, "accelerator_count", 0) > 0 ? [{
+    dynamic "guest_accelerator" {
+      for_each = lookup(each.value, "accelerator_count", 0) > 0 ? [1] : []
+      content {
         type  = lookup(each.value, "accelerator_type", "")
         count = lookup(each.value, "accelerator_count", 0)
-	gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
-        }] : [] : {
-        type  = guest_accelerator["type"]
-        count = guest_accelerator["count"]
-	gpu_partition_size = guest_accelerator["gpu_partition_size"]
+        gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
       }
-    ]
+    }
 
     dynamic "workload_metadata_config" {
       for_each = local.cluster_node_metadata_config
@@ -762,6 +768,7 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    {% if i == 0 %}
     dynamic "linux_node_config" {
       for_each = length(merge(
         local.node_pools_linux_node_configs_sysctls["all"],
@@ -775,6 +782,7 @@ resource "google_container_node_pool" "pools" {
         )
       }
     }
+    {% endif %}
     {% endif %}
 
     shielded_instance_config {
@@ -796,5 +804,10 @@ resource "google_container_node_pool" "pools" {
     update = lookup(var.timeouts, "update", "45m")
     delete = lookup(var.timeouts, "delete", "45m")
   }
+
+  {% if i == 1 %}
+  depends_on = [google_container_node_pool.pools[0]]
+  {% endif %}
 }
+{% endfor %}
 {% endif %}

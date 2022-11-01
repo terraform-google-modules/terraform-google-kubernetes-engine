@@ -131,21 +131,22 @@ steps:
     - verify simple-regional-with-networking-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-regional-with-networking-local']
-- id: converge simple-zonal-local
-  waitFor:
-    - create all
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge simple-zonal-local']
-- id: verify simple-zonal-local
-  waitFor:
-    - converge simple-zonal-local
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify simple-zonal-local']
-- id: destroy simple-zonal-local
-  waitFor:
-    - verify simple-zonal-local
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-zonal-local']
+# TODO(bharathkkb): https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1431
+# - id: converge simple-zonal-local
+#   waitFor:
+#     - create all
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge simple-zonal-local']
+# - id: verify simple-zonal-local
+#   waitFor:
+#     - converge simple-zonal-local
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify simple-zonal-local']
+# - id: destroy simple-zonal-local
+#   waitFor:
+#     - verify simple-zonal-local
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-zonal-local']
 - id: converge simple-zonal-private-local
   waitFor:
     - create all
@@ -236,6 +237,21 @@ steps:
     - verify beta-cluster-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy beta-cluster-local']
+- id: converge simple-windows-node-pool-local
+  waitFor:
+    - create all
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge simple-windows-node-pool-local']
+- id: verify simple-windows-node-pool-local
+  waitFor:
+    - converge simple-windows-node-pool-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify simple-windows-node-pool-local']
+- id: destroy simple-windows-node-pool-local
+  waitFor:
+    - verify simple-windows-node-pool-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-windows-node-pool-local']
 - id: converge deploy-service-local
   waitFor:
     - create all

@@ -6,6 +6,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [23.3.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v23.2.0...v23.3.0) (2022-10-28)
+
+
+### Features
+
+* move vpa out of beta ([df16cda](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/df16cda06d692842ac124bb1bb28353656ee9205))
+
+
+### Bug Fixes
+
+* Exposing VPA to GA module ([#1404](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1404)) ([df16cda](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/df16cda06d692842ac124bb1bb28353656ee9205))
+* incorrect `node_pools` variable type ([#1424](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1424)) ([faaee19](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/faaee19d4989cb974d61f6a3f35f6f5b0a866848))
+* Truncating hub membership ID when greater than 63 character ([#1429](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1429)) ([0c5660d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0c5660d8399fc0a236eff0dbdfeacef5d5ca7706))
+* use dynamic block for accelerators, updates for CI ([#1428](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1428)) ([0304a20](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0304a2074bf9d9d8e4b23b52448837c216e3d03b))
+
+## [23.2.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v23.1.0...v23.2.0) (2022-09-27)
+
+
+### Features
+
+* add support for provisioning windows node pools ([92d7c67](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/92d7c67bc656e1caddb9a5f3771fab54e84e1ee5))
+* Allow configuring cluster_autoscaling for safer cluster variants ([#1407](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1407)) ([a661eea](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a661eeabaf7f430df77933be1d9d27f699239be6))
+
 ## [23.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v23.0.0...v23.1.0) (2022-09-08)
 
 
