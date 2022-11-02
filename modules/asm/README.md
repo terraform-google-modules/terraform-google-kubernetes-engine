@@ -54,6 +54,7 @@ To deploy this config:
 | channel | The channel to use for this ASM installation. | `string` | `""` | no |
 | cluster\_location | The cluster location for this ASM installation. | `string` | n/a | yes |
 | cluster\_name | The unique name to identify the cluster in ASM. | `string` | n/a | yes |
+| create\_system\_namespace | Determines whether the module creates the istio-system namespace. | `bool` | `true` | no |
 | enable\_cni | Determines whether to enable CNI for this ASM installation. Required to use Managed Data Plane (MDP). | `bool` | `false` | no |
 | enable\_fleet\_registration | Determines whether the module registers the cluster to the fleet. | `bool` | `false` | no |
 | enable\_mesh\_feature | Determines whether the module enables the mesh feature on the fleet. | `bool` | `false` | no |

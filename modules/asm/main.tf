@@ -34,6 +34,8 @@ data "google_container_cluster" "asm" {
 }
 
 resource "kubernetes_namespace" "system" {
+  count = var.create_system_namespace ? 1 : 0
+
   metadata {
     name = "istio-system"
   }
@@ -42,7 +44,7 @@ resource "kubernetes_namespace" "system" {
 resource "kubernetes_config_map" "asm_options" {
   metadata {
     name      = "asm-options"
-    namespace = kubernetes_namespace.system.metadata[0].name
+    namespace = try(kubernetes_namespace.system[0].metadata[0].name, "istio-system")
   }
 
   data = {

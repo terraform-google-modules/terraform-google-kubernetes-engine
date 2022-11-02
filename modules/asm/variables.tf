@@ -98,3 +98,9 @@ variable "module_depends_on" {
   type        = list(any)
   default     = []
 }
+
+variable "create_system_namespace" {
+  description = "Determines whether the module creates the istio-system namespace."
+  type        = bool
+  default     = true
+}

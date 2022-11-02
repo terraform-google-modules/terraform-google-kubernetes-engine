@@ -47,6 +47,12 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+  dynamic "cost_management_config" {
+    for_each = var.enable_cost_allocation ? [1] : []
+    content {
+      enabled = var.enable_cost_allocation
+    }
+  }
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
@@ -578,8 +584,6 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
-    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
-
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
@@ -606,6 +610,8 @@ resource "google_container_node_pool" "pools" {
         )
       }
     }
+
+    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
@@ -782,8 +788,6 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
-    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
-
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
@@ -797,6 +801,8 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
+
+    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
