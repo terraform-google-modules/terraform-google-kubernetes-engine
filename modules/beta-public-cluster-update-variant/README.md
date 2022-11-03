@@ -178,6 +178,7 @@ Then perform the following commands on the root folder:
 | dns\_cache | The status of the NodeLocal DNSCache addon. | `bool` | `false` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
 | enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
+| enable\_cost\_allocation | Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery | `bool` | `false` | no |
 | enable\_identity\_service | Enable the Identity Service component, which allows customers to use external identity providers with the K8S API. | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | `bool` | `false` | no |
@@ -242,6 +243,7 @@ Then perform the following commands on the root folder:
 | resource\_usage\_export\_dataset\_id | The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export. | `string` | `""` | no |
 | sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it). | `bool` | `false` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The create\_service\_account variable default value (true) will cause a cluster-specific service account to be created. | `string` | `""` | no |
+| service\_external\_ips | Whether external ips specified by a service will be allowed in this cluster | `bool` | `false` | no |
 | shadow\_firewall\_rules\_priority | The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000. | `number` | `999` | no |
 | skip\_provisioners | Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality. | `bool` | `false` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | `map(list(string))` | `{}` | no |
