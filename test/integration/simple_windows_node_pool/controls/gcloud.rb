@@ -192,7 +192,7 @@ control "gcloud" do
             including(
               "name" => "win-pool-01",
               "config" => including(
-                "imageType" => "WINDOWS_LTSC",
+                "imageType" => "WINDOWS_LTSC_CONTAINERD",
               ),
             ),
           )
