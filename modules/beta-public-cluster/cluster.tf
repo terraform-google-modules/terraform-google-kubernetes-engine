@@ -439,8 +439,9 @@ resource "google_container_node_pool" "pools" {
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
-      min_node_count = lookup(autoscaling.value, "min_count", 1)
-      max_node_count = lookup(autoscaling.value, "max_count", 100)
+      min_node_count  = lookup(autoscaling.value, "min_count", 1)
+      max_node_count  = lookup(autoscaling.value, "max_count", 100)
+      location_policy = lookup(autoscaling.value, "location_policy", "BALANCED")
     }
   }
 
@@ -643,8 +644,9 @@ resource "google_container_node_pool" "windows_pools" {
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
-      min_node_count = lookup(autoscaling.value, "min_count", 1)
-      max_node_count = lookup(autoscaling.value, "max_count", 100)
+      min_node_count  = lookup(autoscaling.value, "min_count", 1)
+      max_node_count  = lookup(autoscaling.value, "max_count", 100)
+      location_policy = lookup(autoscaling.value, "location_policy", "BALANCED")
     }
   }
 
