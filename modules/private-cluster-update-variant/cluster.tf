@@ -109,6 +109,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "service_external_ips_config" {
+    for_each = var.service_external_ips ? [1] : []
+    content {
+      enabled = var.service_external_ips
+    }
+  }
+
   addons_config {
     http_load_balancing {
       disabled = !var.http_load_balancing
@@ -530,6 +537,8 @@ resource "google_container_node_pool" "pools" {
     }
 
 
+    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
+
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
@@ -681,6 +690,8 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
+
+    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
