@@ -437,7 +437,7 @@ resource "google_container_node_pool" "pools" {
     content {
       min_node_count  = lookup(autoscaling.value, "min_count", 1)
       max_node_count  = lookup(autoscaling.value, "max_count", 100)
-      location_policy = lookup(autoscaling.value, "location_policy", "BALANCED")
+      location_policy = lookup(autoscaling.value, "location_policy", (lookup(autoscaling.value, "spot", false) || lookup(autoscaling.value, "preemptible", false) ? "ANY" : "BALANCED"))
     }
   }
 
@@ -591,7 +591,7 @@ resource "google_container_node_pool" "windows_pools" {
     content {
       min_node_count  = lookup(autoscaling.value, "min_count", 1)
       max_node_count  = lookup(autoscaling.value, "max_count", 100)
-      location_policy = lookup(autoscaling.value, "location_policy", "BALANCED")
+      location_policy = lookup(autoscaling.value, "location_policy", (lookup(autoscaling.value, "spot", false) || lookup(autoscaling.value, "preemptible", false) ? "ANY" : "BALANCED"))
     }
   }
 
