@@ -30,6 +30,12 @@
       "matchPackageNames": ["go"],
       "allowedVersions": "<1.19.0",
       "postUpdateOptions": ["gomodTidy"]
+    },
+    {
+      "matchPackageNames": ["google", "google-beta"],
+      "groupName": "terraform googles",
+      "separateMajorMinor": false,
+      "rangeStrategy": "widen"
     }
   ]
 }
