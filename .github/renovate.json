@@ -34,8 +34,7 @@
     {
       "matchPackageNames": ["google", "google-beta"],
       "groupName": "terraform googles",
-      "separateMajorMinor": false,
-      "rangeStrategy": "widen"
+      "separateMajorMinor": false
     }
   ]
 }
