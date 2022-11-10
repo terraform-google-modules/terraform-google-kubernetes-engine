@@ -90,6 +90,12 @@ variable "secret_type" {
   default     = "ssh"
 }
 
+variable "https_proxy" {
+  description = "URL for the HTTPS proxy to be used when communicating with the Git repo."
+  type        = string
+  default     = null
+}
+
 variable "create_ssh_key" {
   description = "Controls whether a key will be generated for Git authentication"
   type        = bool

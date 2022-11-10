@@ -47,6 +47,7 @@ resource "google_gke_hub_feature_membership" "main" {
         sync_branch = var.sync_branch != "" ? var.sync_branch : null
         sync_rev    = var.sync_revision != "" ? var.sync_revision : null
         secret_type = var.secret_type
+        https_proxy = var.https_proxy
       }
     }
 
