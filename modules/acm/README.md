@@ -74,12 +74,12 @@ data "google_client_config" "default" {}
 | enable\_policy\_controller | Whether to enable the ACM Policy Controller on the cluster | `bool` | `true` | no |
 | enable\_referential\_rules | Enables referential constraints which reference another object in it definition and are therefore eventually consistent. | `bool` | `true` | no |
 | hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/anthos-config-management/docs/how-to/installing-hierarchy-controller) for more details | `map(any)` | `null` | no |
+| https\_proxy | URL for the HTTPS proxy to be used when communicating with the Git repo. | `string` | `null` | no |
 | install\_template\_library | Whether to install the default Policy Controller template library | `bool` | `true` | no |
 | location | GCP location used to reach cluster. | `string` | n/a | yes |
 | policy\_dir | Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default. | `string` | `""` | no |
 | project\_id | GCP project\_id used to reach cluster. | `string` | n/a | yes |
 | secret\_type | git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true | `string` | `"ssh"` | no |
-| https\_proxy | URL for the HTTPS proxy to be used when communicating with the Git repo. | `string` | `null` | no |
 | source\_format | Configures a non-hierarchical repo if set to 'unstructured'. Uses [ACM defaults](https://cloud.google.com/anthos-config-management/docs/how-to/installing#configuring-config-management-operator) when unset. | `string` | `""` | no |
 | ssh\_auth\_key | Key for Git authentication. Overrides 'create\_ssh\_key' variable. Can be set using 'file(path/to/file)'-function. | `string` | `null` | no |
 | sync\_branch | ACM repo Git branch. If un-set, uses Config Management default. | `string` | `""` | no |
