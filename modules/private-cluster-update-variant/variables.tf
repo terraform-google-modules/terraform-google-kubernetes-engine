@@ -376,7 +376,7 @@ variable "master_global_access_enabled" {
   type        = bool
   description = "Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
 
-  default = false
+  default = true
 }
 
 variable "dns_cache" {
