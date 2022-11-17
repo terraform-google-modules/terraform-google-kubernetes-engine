@@ -410,15 +410,12 @@ variable "master_ipv4_cidr_block" {
   description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
   default     = "10.0.0.0/28"
 }
-{% if beta_cluster %}
 
 variable "master_global_access_enabled" {
   type        = bool
-  description = "(Beta) Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
-
+  description = "Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
   default     = true
 }
-{% endif %}
 {% endif %}
 
 variable "dns_cache" {
