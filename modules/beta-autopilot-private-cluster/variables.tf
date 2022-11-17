@@ -295,9 +295,8 @@ variable "master_ipv4_cidr_block" {
 
 variable "master_global_access_enabled" {
   type        = bool
-  description = "(Beta) Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
-
-  default = true
+  description = "Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
+  default     = true
 }
 
 variable "dns_cache" {
