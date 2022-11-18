@@ -9,7 +9,7 @@ This example illustrates how to create a VPC and a simple cluster.
 |------|-------------|------|---------|:--------:|
 | cluster\_name | The name for the GKE cluster | `string` | `"gke-on-vpc-cluster"` | no |
 | ip\_range\_pods\_name | The secondary ip range to use for pods | `string` | `"ip-range-pods"` | no |
-| ip\_range\_services\_name | The secondary ip range to use for services | `string` | `"ip-range-scv"` | no |
+| ip\_range\_services\_name | The secondary ip range to use for services | `string` | `"ip-range-svc"` | no |
 | network | The VPC network created to host the cluster in | `string` | `"gke-network"` | no |
 | project\_id | The project ID to host the cluster in | `any` | n/a | yes |
 | region | The region to host the cluster in | `string` | `"us-central1"` | no |

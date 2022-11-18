@@ -112,6 +112,11 @@ output "horizontal_pod_autoscaling_enabled" {
   value       = local.cluster_horizontal_pod_autoscaling_enabled
 }
 
+output "vertical_pod_autoscaling_enabled" {
+  description = "Whether vertical pod autoscaling enabled"
+  value       = local.cluster_vertical_pod_autoscaling_enabled
+}
+
 
 output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
@@ -155,11 +160,6 @@ output "pod_security_policy_enabled" {
 output "intranode_visibility_enabled" {
   description = "Whether intra-node visibility is enabled"
   value       = local.cluster_intranode_visibility_enabled
-}
-
-output "vertical_pod_autoscaling_enabled" {
-  description = "Whether veritical pod autoscaling is enabled"
-  value       = local.cluster_vertical_pod_autoscaling_enabled
 }
 
 output "identity_service_enabled" {

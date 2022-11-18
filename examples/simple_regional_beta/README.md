@@ -7,7 +7,6 @@ This example illustrates how to create a simple cluster with beta features.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| cloudrun | Boolean to enable / disable CloudRun | `bool` | `true` | no |
 | cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | `any` | n/a | yes |
 | database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key\_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key\_name is the name of a CloudKMS key. | `list(object({ state = string, key_name = string }))` | <pre>[<br>  {<br>    "key_name": "",<br>    "state": "DECRYPTED"<br>  }<br>]</pre> | no |
@@ -18,7 +17,6 @@ This example illustrates how to create a simple cluster with beta features.
 | gce\_pd\_csi\_driver | (Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. | `bool` | `false` | no |
 | ip\_range\_pods | The secondary ip range to use for pods | `any` | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for services | `any` | n/a | yes |
-| istio | Boolean to enable / disable Istio | `bool` | `true` | no |
 | network | The VPC network to host the cluster in | `any` | n/a | yes |
 | node\_pools | List of maps containing node pools | `list(map(string))` | <pre>[<br>  {<br>    "name": "default-node-pool"<br>  }<br>]</pre> | no |
 | project\_id | The project ID to host the cluster in | `any` | n/a | yes |

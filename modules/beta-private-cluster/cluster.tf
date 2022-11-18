@@ -47,6 +47,12 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+  dynamic "cost_management_config" {
+    for_each = var.enable_cost_allocation ? [1] : []
+    content {
+      enabled = var.enable_cost_allocation
+    }
+  }
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
@@ -162,6 +168,13 @@ resource "google_container_cluster" "primary" {
   master_auth {
     client_certificate_config {
       issue_client_certificate = var.issue_client_certificate
+    }
+  }
+
+  dynamic "service_external_ips_config" {
+    for_each = var.service_external_ips ? [1] : []
+    content {
+      enabled = var.service_external_ips
     }
   }
 
@@ -447,9 +460,9 @@ resource "google_container_node_pool" "pools" {
     content {
       min_node_count       = lookup(autoscaling.value, "min_count", 1)
       max_node_count       = lookup(autoscaling.value, "max_count", 100)
-      total_min_node_count = lookup(autoscaling.value, "total_min_count", var.release_channel == "RAPID" ? 2 : null)
-      total_max_node_count = lookup(autoscaling.value, "total_max_count", var.release_channel == "RAPID" ? 200 : null)
-      location_policy      = lookup(autoscaling.value, "location_policy", var.release_channel == "RAPID" ? "BALANCED" : null)
+      total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
+      total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
+      location_policy      = lookup(autoscaling.value, "location_policy", null)
     }
   }
 
@@ -550,17 +563,14 @@ resource "google_container_node_pool" "pools" {
       local.node_pools_oauth_scopes[each.value["name"]],
     )
 
-    guest_accelerator = [
-      for guest_accelerator in lookup(each.value, "accelerator_count", 0) > 0 ? [{
+    dynamic "guest_accelerator" {
+      for_each = lookup(each.value, "accelerator_count", 0) > 0 ? [1] : []
+      content {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
-        }] : [] : {
-        type               = guest_accelerator["type"]
-        count              = guest_accelerator["count"]
-        gpu_partition_size = guest_accelerator["gpu_partition_size"]
       }
-    ]
+    }
 
     dynamic "workload_metadata_config" {
       for_each = local.cluster_node_metadata_config
@@ -576,8 +586,6 @@ resource "google_container_node_pool" "pools" {
         sandbox_type = sandbox_config.value
       }
     }
-
-    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
     dynamic "kubelet_config" {
       for_each = length(setintersection(
@@ -605,6 +613,8 @@ resource "google_container_node_pool" "pools" {
         )
       }
     }
+
+    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
@@ -657,9 +667,9 @@ resource "google_container_node_pool" "windows_pools" {
     content {
       min_node_count       = lookup(autoscaling.value, "min_count", 1)
       max_node_count       = lookup(autoscaling.value, "max_count", 100)
-      total_min_node_count = lookup(autoscaling.value, "total_min_count", var.release_channel == "RAPID" ? 2 : null)
-      total_max_node_count = lookup(autoscaling.value, "total_max_count", var.release_channel == "RAPID" ? 200 : null)
-      location_policy      = lookup(autoscaling.value, "location_policy", var.release_channel == "RAPID" ? "BALANCED" : null)
+      total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
+      total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
+      location_policy      = lookup(autoscaling.value, "location_policy", null)
     }
   }
 
@@ -760,17 +770,14 @@ resource "google_container_node_pool" "windows_pools" {
       local.node_pools_oauth_scopes[each.value["name"]],
     )
 
-    guest_accelerator = [
-      for guest_accelerator in lookup(each.value, "accelerator_count", 0) > 0 ? [{
+    dynamic "guest_accelerator" {
+      for_each = lookup(each.value, "accelerator_count", 0) > 0 ? [1] : []
+      content {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
-        }] : [] : {
-        type               = guest_accelerator["type"]
-        count              = guest_accelerator["count"]
-        gpu_partition_size = guest_accelerator["gpu_partition_size"]
       }
-    ]
+    }
 
     dynamic "workload_metadata_config" {
       for_each = local.cluster_node_metadata_config
@@ -787,8 +794,6 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
-    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
-
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
@@ -802,6 +807,8 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
+
+    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)

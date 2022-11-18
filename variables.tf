@@ -96,6 +96,12 @@ variable "http_load_balancing" {
   default     = true
 }
 
+variable "service_external_ips" {
+  type        = bool
+  description = "Whether external ips specified by a service will be allowed in this cluster"
+  default     = false
+}
+
 variable "datapath_provider" {
   type        = string
   description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
@@ -137,7 +143,7 @@ variable "ip_range_services" {
 }
 
 variable "node_pools" {
-  type        = list(map(string))
+  type        = list(map(any))
   description = "List of maps containing node pools"
 
   default = [

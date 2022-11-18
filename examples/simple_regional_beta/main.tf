@@ -39,8 +39,6 @@ module "gke" {
   ip_range_services             = var.ip_range_services
   create_service_account        = var.compute_engine_service_account == "create"
   service_account               = var.compute_engine_service_account
-  istio                         = var.istio
-  cloudrun                      = var.cloudrun
   dns_cache                     = var.dns_cache
   gce_pd_csi_driver             = var.gce_pd_csi_driver
   sandbox_enabled               = var.sandbox_enabled

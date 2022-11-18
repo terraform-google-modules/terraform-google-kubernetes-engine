@@ -35,12 +35,12 @@ control "gcloud" do
 
     describe "cluster-autoscaling" do
       it "has the expected cluster autoscaling settings" do
-        expect(data['autoscaling']).to eq({
-            "autoprovisioningNodePoolDefaults" => {
+        expect(data['autoscaling']).to include({
+            "autoprovisioningNodePoolDefaults" => including({
                 "imageType"=>"COS_CONTAINERD",
                 "oauthScopes" => %w(https://www.googleapis.com/auth/cloud-platform),
                 "serviceAccount" => "default"
-            },
+            }),
             "autoscalingProfile" => "OPTIMIZE_UTILIZATION",
             "enableNodeAutoprovisioning" => true,
             "resourceLimits" => [
@@ -147,7 +147,7 @@ control "gcloud" do
               "name" => "pool-01",
               "config" => including(
                 "metadata" => including(
-                  "shutdown-script" => File.open("examples/node_pool/data/shutdown-script.sh").read,
+                  "shutdown-script" => "kubectl --kubeconfig=/var/lib/kubelet/kubeconfig drain --force=true --ignore-daemonsets=true --delete-local-data \"$HOSTNAME\"",
                   "disable-legacy-endpoints" => "false",
                 ),
               ),
