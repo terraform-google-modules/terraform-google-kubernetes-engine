@@ -6,6 +6,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [24.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v23.3.0...v24.0.0) (2022-11-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* cost_management_config is out of beta now (#1470)
+* update variant - recreate node pools on max_pods_per_node or pod_range change (#1464)
+* expose global master access in GA modules (#1421)
+* min tpb bump for location_policy
+* min TPG bump for location_policy (#1453)
+* add service_external_ips option (#1441)
+* Adding Support for Cost Allocation Feature in Beta (#1413)
+* add boot_disk_kms_key variable for node pools to GA modules (#1371)
+
+### Features
+
+* add boot_disk_kms_key variable for node pools to GA modules ([#1371](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1371)) ([d9a44c6](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d9a44c60198e2bea72aa1f36c5dbe34e59416dbf))
+* add location_policy and fix permadiff ([#1452](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1452)) ([aecccf0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/aecccf0bb8ca950fab5598ce8ec4b91f45dcb4a9))
+* add nodepool autoscaling vars avail in GKE 1.24.1 ([#1415](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1415)) ([f57f3ce](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f57f3ce58de14076a03182aa3b37aae58beac29a))
+* add service_external_ips option ([#1441](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1441)) ([e9de006](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e9de006f535e67a311a01e60a554c636f127fafa))
+* Add support for https_proxy parameter for the config_sync.git block ([#1457](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1457)) ([43bbd3c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/43bbd3c7ac48560e76a6ad2448d8e1901f9d4e4a))
+* Adding Support for Cost Allocation Feature in Beta ([#1413](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1413)) ([ba3dcd0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ba3dcd0b617ff82367c5fbaffa5dc76e6f9f2cb1))
+* cost_management_config is out of beta now ([#1470](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1470)) ([10ea608](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/10ea6081c532aa0bcd5fdd8addbb15fedfe18ee0))
+* expose global master access in GA modules ([#1421](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1421)) ([4278f2c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4278f2cd2dfc81ae71230162d53ec30401a5e54f))
+* Make creation of istio-system namespace optional ([#1439](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1439)) ([335c62a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/335c62a546f9b35b6825783e004c46f3d5f2440b))
+* update variant - recreate node pools on max_pods_per_node or pod_range change ([#1464](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1464)) ([b006593](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b006593cf9d81ca018468ad440c70509fdcef082))
+
+
+### Bug Fixes
+
+* location-policy permadrifting [#1445](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1445) ([aecccf0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/aecccf0bb8ca950fab5598ce8ec4b91f45dcb4a9))
+* min tpb bump for location_policy ([0ddd297](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0ddd297a1d57cd4e58849e780d592147eac24321))
+* min TPG bump for location_policy ([#1453](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1453)) ([0ddd297](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0ddd297a1d57cd4e58849e780d592147eac24321))
+
 ## [23.3.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v23.2.0...v23.3.0) (2022-10-28)
 
 
