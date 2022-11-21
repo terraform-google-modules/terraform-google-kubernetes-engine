@@ -47,6 +47,12 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+  dynamic "cost_management_config" {
+    for_each = var.enable_cost_allocation ? [1] : []
+    content {
+      enabled = var.enable_cost_allocation
+    }
+  }
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
@@ -322,7 +328,6 @@ resource "google_container_cluster" "primary" {
 resource "google_container_node_pool" "pools" {
   provider = google
   for_each = local.node_pools
-
   name     = each.key
   project  = var.project_id
   location = local.location
@@ -477,7 +482,6 @@ resource "google_container_node_pool" "pools" {
 resource "google_container_node_pool" "windows_pools" {
   provider = google
   for_each = local.windows_node_pools
-
   name     = each.key
   project  = var.project_id
   location = local.location

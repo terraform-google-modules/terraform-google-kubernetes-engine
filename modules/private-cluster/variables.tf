@@ -181,6 +181,11 @@ variable "node_pools_metadata" {
   }
 }
 
+variable "enable_cost_allocation" {
+  type        = bool
+  description = "Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery"
+  default     = false
+}
 variable "resource_usage_export_dataset_id" {
   type        = string
   description = "The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export."

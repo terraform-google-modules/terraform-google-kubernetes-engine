@@ -411,7 +411,6 @@ resource "google_container_cluster" "primary" {
 resource "google_container_node_pool" "pools" {
   provider = google-beta
   for_each = local.node_pools
-
   name     = each.key
   project  = var.project_id
   location = local.location
@@ -618,7 +617,6 @@ resource "google_container_node_pool" "pools" {
 resource "google_container_node_pool" "windows_pools" {
   provider = google-beta
   for_each = local.windows_node_pools
-
   name     = each.key
   project  = var.project_id
   location = local.location
