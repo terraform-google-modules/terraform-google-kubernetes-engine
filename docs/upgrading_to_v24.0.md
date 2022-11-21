@@ -59,4 +59,4 @@ To avoid this, it is possible to edit the remote state of the `random_id` resour
 
 ### Minimum Google Provider versions
 
-Minimum Google Provider versions have been updated to `4.36.0`.
+Minimum Google Provider versions have been updated to `4.42.0`.
