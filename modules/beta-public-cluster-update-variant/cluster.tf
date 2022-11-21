@@ -505,7 +505,6 @@ resource "random_id" "name" {
 resource "google_container_node_pool" "pools" {
   provider = google-beta
   for_each = local.node_pools
-
   name     = { for k, v in random_id.name : k => v.hex }[each.key]
   project  = var.project_id
   location = local.location
@@ -713,7 +712,6 @@ resource "google_container_node_pool" "pools" {
 resource "google_container_node_pool" "windows_pools" {
   provider = google-beta
   for_each = local.windows_node_pools
-
   name     = { for k, v in random_id.name : k => v.hex }[each.key]
   project  = var.project_id
   location = local.location

@@ -53,13 +53,13 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
-{% if beta_cluster %}
   dynamic "cost_management_config" {
     for_each = var.enable_cost_allocation ? [1] : []
     content {
       enabled = var.enable_cost_allocation
     }
   }
+{% if beta_cluster %}
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
@@ -598,7 +598,7 @@ resource "google_container_node_pool" "windows_pools" {
   for_each = local.node_pools
   {% else %}
   for_each = local.windows_node_pools
-  {% endif %}  
+  {% endif %}
   {% if update_variant %}
   name     = { for k, v in random_id.name : k => v.hex }[each.key]
   {% else %}
@@ -645,7 +645,7 @@ resource "google_container_node_pool" "windows_pools" {
       type = lookup(placement_policy.value, "placement_policy", null)
     }
   }
-  
+
   dynamic "network_config" {
     for_each = length(lookup(each.value, "pod_range", "")) > 0  ? [each.value] : []
     content {
