@@ -157,6 +157,9 @@ module "gke" {
   // We suggest to define policies about  which images can run on a cluster.
   enable_binary_authorization = true
 
+  // Enable cost allocation support
+  enable_cost_allocation = var.enable_cost_allocation
+
   // Use of PodSecurityPolicy admission controller
   // https://cloud.google.com/kubernetes-engine/docs/how-to/pod-security-policies
   enable_pod_security_policy = var.enable_pod_security_policy
