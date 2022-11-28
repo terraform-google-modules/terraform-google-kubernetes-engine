@@ -60,7 +60,7 @@ locals {
 
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
-  pod_all_ip_ranges         = var.add_cluster_firewall_rules ? [local.cluster_alias_ranges_cidr[var.ip_range_pods] : []
+  pod_all_ip_ranges         = var.add_cluster_firewall_rules ? [local.cluster_alias_ranges_cidr[var.ip_range_pods]] : []
 
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
@@ -88,10 +88,10 @@ locals {
   cluster_output_vertical_pod_autoscaling_enabled   = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling.0.enabled : false
 
   # BETA features
-  cluster_output_istio_disabled                   = google_container_cluster.primary.addons_config.0.istio_config != null && length(google_container_cluster.primary.addons_config.0.istio_config) == 1 ? google_container_cluster.primary.addons_config.0.istio_config.0.disabled : false
-  cluster_output_pod_security_policy_enabled      = google_container_cluster.primary.pod_security_policy_config != null && length(google_container_cluster.primary.pod_security_policy_config) == 1 ? google_container_cluster.primary.pod_security_policy_config.0.enabled : false
-  cluster_output_intranode_visbility_enabled      = google_container_cluster.primary.enable_intranode_visibility
-  cluster_output_identity_service_enabled         = google_container_cluster.primary.identity_service_config != null && length(google_container_cluster.primary.identity_service_config) == 1 ? google_container_cluster.primary.identity_service_config.0.enabled : false
+  cluster_output_istio_disabled              = google_container_cluster.primary.addons_config.0.istio_config != null && length(google_container_cluster.primary.addons_config.0.istio_config) == 1 ? google_container_cluster.primary.addons_config.0.istio_config.0.disabled : false
+  cluster_output_pod_security_policy_enabled = google_container_cluster.primary.pod_security_policy_config != null && length(google_container_cluster.primary.pod_security_policy_config) == 1 ? google_container_cluster.primary.pod_security_policy_config.0.enabled : false
+  cluster_output_intranode_visbility_enabled = google_container_cluster.primary.enable_intranode_visibility
+  cluster_output_identity_service_enabled    = google_container_cluster.primary.identity_service_config != null && length(google_container_cluster.primary.identity_service_config) == 1 ? google_container_cluster.primary.identity_service_config.0.enabled : false
 
   # /BETA features
 
@@ -116,20 +116,20 @@ locals {
   cluster_min_master_version                 = local.cluster_output_min_master_version
   cluster_logging_service                    = local.cluster_output_logging_service
   cluster_monitoring_service                 = local.cluster_output_monitoring_service
-  cluster_http_load_balancing_enabled        = ! local.cluster_output_http_load_balancing_enabled
-  cluster_horizontal_pod_autoscaling_enabled = ! local.cluster_output_horizontal_pod_autoscaling_enabled
+  cluster_http_load_balancing_enabled        = !local.cluster_output_http_load_balancing_enabled
+  cluster_horizontal_pod_autoscaling_enabled = !local.cluster_output_horizontal_pod_autoscaling_enabled
   cluster_vertical_pod_autoscaling_enabled   = local.cluster_output_vertical_pod_autoscaling_enabled
-  workload_identity_enabled                  = ! (var.identity_namespace == null || var.identity_namespace == "null")
-  cluster_workload_identity_config = ! local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
+  workload_identity_enabled                  = !(var.identity_namespace == null || var.identity_namespace == "null")
+  cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
     workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
   # BETA features
-  cluster_istio_enabled                    = ! local.cluster_output_istio_disabled
-  cluster_dns_cache_enabled                = var.dns_cache
-  cluster_telemetry_type_is_set            = var.cluster_telemetry_type != null
-  cluster_pod_security_policy_enabled      = local.cluster_output_pod_security_policy_enabled
-  cluster_intranode_visibility_enabled     = local.cluster_output_intranode_visbility_enabled
-  confidential_node_config                 = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
+  cluster_istio_enabled                = !local.cluster_output_istio_disabled
+  cluster_dns_cache_enabled            = var.dns_cache
+  cluster_telemetry_type_is_set        = var.cluster_telemetry_type != null
+  cluster_pod_security_policy_enabled  = local.cluster_output_pod_security_policy_enabled
+  cluster_intranode_visibility_enabled = local.cluster_output_intranode_visbility_enabled
+  confidential_node_config             = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
 
   # /BETA features
 
