@@ -34,11 +34,11 @@ resource "google_compute_firewall" "intra_egress" {
   direction   = "EGRESS"
 
   target_tags = [local.cluster_network_tag]
-  destination_ranges = [
+  destination_ranges = compact([
     local.cluster_endpoint_for_nodes,
     local.cluster_subnet_cidr,
-    local.cluster_alias_ranges_cidr[var.ip_range_pods],
-  ]
+    lookup(local.cluster_alias_ranges_cidr, var.ip_range_pods, null),
+  ])
 
   # Allow all possible protocols
   allow { protocol = "tcp" }

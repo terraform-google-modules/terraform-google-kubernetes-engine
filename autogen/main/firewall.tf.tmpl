@@ -34,11 +34,11 @@ resource "google_compute_firewall" "intra_egress" {
   direction   = "EGRESS"
 
   target_tags = [local.cluster_network_tag]
-  destination_ranges = [
+  destination_ranges = compact([
     local.cluster_endpoint_for_nodes,
     local.cluster_subnet_cidr,
-    local.cluster_alias_ranges_cidr[var.ip_range_pods],
-  ]
+    lookup(local.cluster_alias_ranges_cidr, var.ip_range_pods, null),
+  ])
 
   # Allow all possible protocols
   allow { protocol = "tcp" }
@@ -134,7 +134,7 @@ resource "google_compute_firewall" "master_webhooks" {
   traffic flow between the managed firewall rules
  *****************************************/
 resource "google_compute_firewall" "shadow_allow_pods" {
-  count = var.add_shadow_firewall_rules ? 1 : 0
+  count = var.add_shadow_firewall_rules && can(local.cluster_alias_ranges_cidr[var.ip_range_pods]) ? 1 : 0
 
   name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-all"
   description = "Managed by terraform gke module: A shadow firewall rule to match the default rule allowing pod communication."
@@ -183,7 +183,7 @@ resource "google_compute_firewall" "shadow_allow_master" {
 }
 
 resource "google_compute_firewall" "shadow_allow_nodes" {
-  count = var.add_shadow_firewall_rules ? 1 : 0
+  count = var.add_shadow_firewall_rules && local.cluster_subnet_cidr != null ? 1 : 0
 
   name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-vms"
   description = "Managed by Terraform GKE module: A shadow firewall rule to match the default rule allowing worker nodes communication."

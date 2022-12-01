@@ -20,26 +20,30 @@
   Get available zones in region
  *****************************************/
 data "google_compute_zones" "available" {
+  count    = var.zones == [] ? 1 : 0
   provider = google
 
   project = var.project_id
-  region  = local.region
+  region  = var.region
 }
 
 resource "random_shuffle" "available_zones" {
-  input        = data.google_compute_zones.available.names
+  count        = var.zones == [] ? 1 : 0
+  input        = one(data.google_compute_zones.available[*].names)
   result_count = 3
 }
 
 locals {
   // ID of the cluster
   cluster_id = google_container_cluster.primary.id
+  // Zone(s) of the cluster
+  zones = var.zones == [] ? sort(one(random_shuffle.available_zones[*].result)) : var.zones
 
   // location
   location = var.regional ? var.region : var.zones[0]
-  region   = var.regional ? var.region : join("-", slice(split("-", var.zones[0]), 0, 2))
+  region   = var.region != null ? var.region : join("-", slice(split("-", var.zones[0]), 0, 2))
   // for regional cluster - use var.zones if provided, use available otherwise, for zonal cluster use var.zones with first element extracted
-  node_locations = var.regional ? coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result)) : slice(var.zones, 1, length(var.zones))
+  node_locations = var.regional ? local.zones : slice(local.zones, 1, length(local.zones))
   // Kubernetes version
   master_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version
   master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
@@ -66,13 +70,12 @@ locals {
   custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
   upstream_nameservers_config = length(var.upstream_nameservers) > 0
   network_project_id          = var.network_project_id != "" ? var.network_project_id : var.project_id
-  zone_count                  = length(var.zones)
   cluster_type                = var.regional ? "regional" : "zonal"
   // auto upgrade by defaults only for regional cluster as long it has multiple masters versus zonal clusters have only have a single master so upgrades are more dangerous.
   default_auto_upgrade = var.regional ? true : false
 
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
-  cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
+  cluster_alias_ranges_cidr = var.add_cluster_firewall_rules && data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range != null ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
 
   cluster_network_policy = var.network_policy ? [{
     enabled  = true
@@ -95,7 +98,7 @@ locals {
 
   cluster_output_name           = google_container_cluster.primary.name
   cluster_output_regional_zones = google_container_cluster.primary.node_locations
-  cluster_output_zonal_zones    = local.zone_count > 1 ? slice(var.zones, 1, local.zone_count) : []
+  cluster_output_zonal_zones    = local.zones
   cluster_output_zones          = local.cluster_output_regional_zones
 
   cluster_endpoint           = google_container_cluster.primary.endpoint
@@ -167,10 +170,6 @@ data "google_container_engine_versions" "region" {
 }
 
 data "google_container_engine_versions" "zone" {
-  // Work around to prevent a lack of zone declaration from causing regional cluster creation from erroring out due to error
-  //
-  //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
-  //
-  location = local.zone_count == 0 ? data.google_compute_zones.available.names[0] : var.zones[0]
+  location = local.zones[0]
   project  = var.project_id
 }
