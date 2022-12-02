@@ -181,6 +181,11 @@ variable "node_pools_metadata" {
   }
 }
 
+variable "enable_cost_allocation" {
+  type        = bool
+  description = "Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery"
+  default     = false
+}
 variable "resource_usage_export_dataset_id" {
   type        = string
   description = "The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export."
@@ -370,6 +375,12 @@ variable "master_ipv4_cidr_block" {
   type        = string
   description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
   default     = "10.0.0.0/28"
+}
+
+variable "master_global_access_enabled" {
+  type        = bool
+  description = "Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
+  default     = true
 }
 
 variable "dns_cache" {

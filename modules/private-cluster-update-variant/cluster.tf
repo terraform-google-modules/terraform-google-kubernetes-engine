@@ -47,6 +47,12 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+  dynamic "cost_management_config" {
+    for_each = var.enable_cost_allocation ? [1] : []
+    content {
+      enabled = var.enable_cost_allocation
+    }
+  }
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
@@ -274,6 +280,12 @@ resource "google_container_cluster" "primary" {
       enable_private_endpoint = private_cluster_config.value.enable_private_endpoint
       enable_private_nodes    = private_cluster_config.value.enable_private_nodes
       master_ipv4_cidr_block  = private_cluster_config.value.master_ipv4_cidr_block
+      dynamic "master_global_access_config" {
+        for_each = var.master_global_access_enabled ? [var.master_global_access_enabled] : []
+        content {
+          enabled = master_global_access_config.value
+        }
+      }
     }
   }
 
@@ -323,7 +335,9 @@ locals {
     "enable_integrity_monitoring",
     "local_ssd_count",
     "machine_type",
+    "max_pods_per_node",
     "min_cpu_platform",
+    "pod_range",
     "preemptible",
     "spot",
     "service_account",
@@ -334,8 +348,9 @@ locals {
 }
 
 # This keepers list is based on the terraform google provider schemaNodeConfig
-# resources where "ForceNew" is "true". schemaNodeConfig can be found in node_config.go at
-# https://github.com/terraform-providers/terraform-provider-google/blob/master/google/node_config.go#L22
+# resources where "ForceNew" is "true". schemaNodeConfig can be found in resource_container_node_pool.go at
+# https://github.com/hashicorp/terraform-provider-google/blob/main/google/resource_container_node_pool.go and node_config.go at
+# https://github.com/terraform-providers/terraform-provider-google/blob/main/google/node_config.go
 resource "random_id" "name" {
   for_each    = merge(local.node_pools, local.windows_node_pools)
   byte_length = 2
@@ -407,7 +422,6 @@ resource "random_id" "name" {
 resource "google_container_node_pool" "pools" {
   provider = google
   for_each = local.node_pools
-
   name     = { for k, v in random_id.name : k => v.hex }[each.key]
   project  = var.project_id
   location = local.location
@@ -435,9 +449,11 @@ resource "google_container_node_pool" "pools" {
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
-      min_node_count  = lookup(autoscaling.value, "min_count", 1)
-      max_node_count  = lookup(autoscaling.value, "max_count", 100)
-      location_policy = lookup(autoscaling.value, "location_policy", null)
+      min_node_count       = lookup(autoscaling.value, "min_count", 1)
+      max_node_count       = lookup(autoscaling.value, "max_count", 100)
+      location_policy      = lookup(autoscaling.value, "location_policy", null)
+      total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
+      total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
     }
   }
 
@@ -561,7 +577,6 @@ resource "google_container_node_pool" "pools" {
 resource "google_container_node_pool" "windows_pools" {
   provider = google
   for_each = local.windows_node_pools
-
   name     = { for k, v in random_id.name : k => v.hex }[each.key]
   project  = var.project_id
   location = local.location
@@ -589,9 +604,11 @@ resource "google_container_node_pool" "windows_pools" {
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
-      min_node_count  = lookup(autoscaling.value, "min_count", 1)
-      max_node_count  = lookup(autoscaling.value, "max_count", 100)
-      location_policy = lookup(autoscaling.value, "location_policy", null)
+      min_node_count       = lookup(autoscaling.value, "min_count", 1)
+      max_node_count       = lookup(autoscaling.value, "max_count", 100)
+      location_policy      = lookup(autoscaling.value, "location_policy", null)
+      total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
+      total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
     }
   }
 

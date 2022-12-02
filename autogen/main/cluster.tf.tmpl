@@ -53,13 +53,13 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
-{% if beta_cluster %}
   dynamic "cost_management_config" {
     for_each = var.enable_cost_allocation ? [1] : []
     content {
       enabled = var.enable_cost_allocation
     }
   }
+{% if beta_cluster %}
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
@@ -443,14 +443,12 @@ resource "google_container_cluster" "primary" {
       enable_private_endpoint = private_cluster_config.value.enable_private_endpoint
       enable_private_nodes    = private_cluster_config.value.enable_private_nodes
       master_ipv4_cidr_block  = private_cluster_config.value.master_ipv4_cidr_block
-      {% if beta_cluster %}
       dynamic "master_global_access_config" {
         for_each = var.master_global_access_enabled ? [var.master_global_access_enabled] : []
         content {
           enabled = master_global_access_config.value
         }
       }
-      {% endif %}
     }
   }
 {% endif %}
@@ -508,7 +506,9 @@ locals {
     "enable_integrity_monitoring",
     "local_ssd_count",
     "machine_type",
+    "max_pods_per_node",
     "min_cpu_platform",
+    "pod_range",
     "preemptible",
     "spot",
     "service_account",
@@ -519,8 +519,9 @@ locals {
 }
 
 # This keepers list is based on the terraform google provider schemaNodeConfig
-# resources where "ForceNew" is "true". schemaNodeConfig can be found in node_config.go at
-# https://github.com/terraform-providers/terraform-provider-google/blob/master/google/node_config.go#L22
+# resources where "ForceNew" is "true". schemaNodeConfig can be found in resource_container_node_pool.go at
+# https://github.com/hashicorp/terraform-provider-google/blob/main/google/resource_container_node_pool.go and node_config.go at
+# https://github.com/terraform-providers/terraform-provider-google/blob/main/google/node_config.go
 resource "random_id" "name" {
   for_each    = merge(local.node_pools, local.windows_node_pools)
   byte_length = 2
@@ -606,7 +607,7 @@ resource "google_container_node_pool" "windows_pools" {
   for_each = local.node_pools
   {% else %}
   for_each = local.windows_node_pools
-  {% endif %}  
+  {% endif %}
   {% if update_variant %}
   name     = { for k, v in random_id.name : k => v.hex }[each.key]
   {% else %}
@@ -641,6 +642,8 @@ resource "google_container_node_pool" "windows_pools" {
       min_node_count = lookup(autoscaling.value, "min_count", 1)
       max_node_count = lookup(autoscaling.value, "max_count", 100)
       location_policy = lookup(autoscaling.value, "location_policy", null)
+      total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
+      total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
     }
   }
 
@@ -651,7 +654,7 @@ resource "google_container_node_pool" "windows_pools" {
       type = lookup(placement_policy.value, "placement_policy", null)
     }
   }
-  
+
   dynamic "network_config" {
     for_each = length(lookup(each.value, "pod_range", "")) > 0  ? [each.value] : []
     content {
