@@ -382,15 +382,6 @@ steps:
     - verify simple-autopilot-public-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-autopilot-public-local']
-tags:
-- 'ci'
-- 'integration'
-substitutions:
-  _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.8'
-options:
-  machineType: 'N1_HIGHCPU_8'
-
 - id: init private-zonal-with-networking
   waitFor:
     - prepare
@@ -411,3 +402,14 @@ options:
     - verify private-zonal-with-networking
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage teardown --verbose --test-dir test/integration']
+
+
+
+tags:
+- 'ci'
+- 'integration'
+substitutions:
+  _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.8'
+options:
+  machineType: 'N1_HIGHCPU_8'
