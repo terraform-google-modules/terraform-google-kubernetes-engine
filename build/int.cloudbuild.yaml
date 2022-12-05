@@ -392,7 +392,7 @@ steps:
     - init private-zonal-with-networking
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage apply --verbose --test-dir test/integration']
-- id: verify beta-cluster
+- id: verify private-zonal-with-networking
   waitFor:
     - apply private-zonal-with-networking
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
