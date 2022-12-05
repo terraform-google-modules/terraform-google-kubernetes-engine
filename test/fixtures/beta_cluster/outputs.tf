@@ -64,16 +64,16 @@ output "kubernetes_endpoint" {
   value     = module.this.kubernetes_endpoint
 }
 
-output "client_token" {
-  sensitive = true
-  value     = base64encode(data.google_client_config.default.access_token)
-}
+# output "client_token" {
+#   sensitive = true
+#   value     = base64encode(data.google_client_config.default.access_token)
+# }
 
-output "ca_certificate" {
-  description = "The cluster CA certificate"
-  value       = module.this.ca_certificate
-  sensitive   = true
-}
+# output "ca_certificate" {
+#   description = "The cluster CA certificate"
+#   value       = module.this.ca_certificate
+#   sensitive   = true
+# }
 
 output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
@@ -84,6 +84,6 @@ output "database_encryption_key_name" {
   value = google_kms_crypto_key.db.id
 }
 
-output "identity_namespace" {
-  value = module.this.identity_namespace
-}
+# output "identity_namespace" {
+#   value = module.this.identity_namespace
+# }
