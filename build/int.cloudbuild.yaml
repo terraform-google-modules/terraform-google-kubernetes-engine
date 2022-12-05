@@ -38,7 +38,7 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestDisableClientCert --stage apply --verbose --test-dir test/integration']
 - id: verify disable-client-cert
   waitFor:
-    - apply beta-cluster
+    - apply disable-client-cert
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestDisableClientCert --stage verify --verbose --test-dir test/integration']
 - id: teardown disable-client-cert
