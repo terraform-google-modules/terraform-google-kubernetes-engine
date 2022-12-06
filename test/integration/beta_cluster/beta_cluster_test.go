@@ -57,8 +57,7 @@ func TestBetaCluster(t *testing.T) {
 			"networkConfig",
 			"binaryAuthorization",
 			"podSecurityPolicyConfig",
-			"databaseEncryption",
-			"identityServiceConfig",
+			"databaseEncryption.state",
 			"loggingConfig",
 			"monitoringConfig",
 		}
