@@ -39,12 +39,15 @@ func TestPrivateZonalWithNetworking(t *testing.T) {
 		region := bpt.GetStringOutput("region")
 		ipRangePodsName := bpt.GetStringOutput("ip_range_pods_name")
 		ipRangeServicesName := bpt.GetStringOutput("ip_range_services_name")
+		serviceAccount := bpt.GetStringOutput("service_account")
 
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		g := golden.NewOrUpdate(t, op.String(),
 			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
 			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
+			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
 		)
+		fmt.Printf("Service Account Printing %s", serviceAccount)
 		validateJSONPaths := []string{
 			"status",
 			"location",
@@ -73,12 +76,11 @@ func TestPrivateZonalWithNetworking(t *testing.T) {
 			}
 		}
 
-		sop := gcloud.Runf(t, "compute networks subnets describe %s --project=%s --region=%s", subnetName, projectId, region)
-		fmt.Printf(sop.Get("secondaryIpRanges").String())
-		assert.Contains(sop.Get("secondaryIpRanges").Array()[0].Get("rangeName").String(), ipRangePodsName, "Contains Pod Address Name")
-		assert.Contains(sop.Get("secondaryIpRanges").Array()[0].Get("ipCidrRange").String(), "192.168.0.0/18", "Contains Pod Address")
-		assert.Contains(sop.Get("secondaryIpRanges").Array()[1].Get("rangeName").String(), ipRangeServicesName, "Contains SVC Address Name")
-		assert.Contains(sop.Get("secondaryIpRanges").Array()[1].Get("ipCidrRange").String(), "192.168.64.0/18", "Contains SVC Address")
+		sOp := gcloud.Runf(t, "compute networks subnets describe %s --project=%s --region=%s", subnetName, projectId, region)
+		assert.Contains(sOp.Get("secondaryIpRanges").Array()[0].Get("rangeName").String(), ipRangePodsName, "Contains Pod Address Name")
+		assert.Contains(sOp.Get("secondaryIpRanges").Array()[0].Get("ipCidrRange").String(), "192.168.0.0/18", "Contains Pod Address")
+		assert.Contains(sOp.Get("secondaryIpRanges").Array()[1].Get("rangeName").String(), ipRangeServicesName, "Contains SVC Address Name")
+		assert.Contains(sOp.Get("secondaryIpRanges").Array()[1].Get("ipCidrRange").String(), "192.168.64.0/18", "Contains SVC Address")
 
 	})
 

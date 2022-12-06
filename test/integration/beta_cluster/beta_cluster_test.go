@@ -54,13 +54,17 @@ func TestBetaCluster(t *testing.T) {
 			"databaseEncryption.state",
 			"identityServiceConfig.enabled",
 			"addonsConfig",
+			"networkConfig",
+			"binaryAuthorization",
+			"podSecurityPolicyConfig",
+			"databaseEncryption",
+			"identityServiceConfig",
+			"loggingConfig",
+			"monitoringConfig",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
-		assert.Equal(op.Get("privateCluster").String(), "true", "Does not use public nodes and master endpoint")
-		assert.Equal(gke.GetStringOutput("database_encryption_key_name"), op.Get("databaseEncryption.keyName").String(), "has the expected databaseEncryption config")
-
 		for _, np := range op.Get("nodePools").Array() {
 			npName := np.Get("name").String()
 			// sanitze current nodepool data
