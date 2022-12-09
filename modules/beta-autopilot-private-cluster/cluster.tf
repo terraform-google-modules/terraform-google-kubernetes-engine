@@ -72,7 +72,6 @@ resource "google_container_cluster" "primary" {
     }
   }
   cluster_autoscaling {
-    enabled = var.create_service_account
     dynamic "auto_provisioning_defaults" {
       for_each = var.create_service_account ? [1] : []
 
