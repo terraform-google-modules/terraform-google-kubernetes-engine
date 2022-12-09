@@ -78,7 +78,6 @@ resource "google_container_cluster" "primary" {
 
       content {
         service_account = local.service_account
-        oauth_scopes = local.node_pools_oauth_scopes["https://www.googleapis.com/auth/cloud-platform"]
       }
     }
   }
