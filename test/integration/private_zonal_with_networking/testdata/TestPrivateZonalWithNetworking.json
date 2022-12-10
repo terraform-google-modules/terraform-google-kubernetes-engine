@@ -116,7 +116,7 @@
       "https://www.googleapis.com/auth/userinfo.email",
       "https://www.googleapis.com/auth/cloud-platform"
     ],
-    "serviceAccount": "tf-gke-gke-on-vpc-clus-r9g6@PROJECT_ID.iam.gserviceaccount.com",
+    "serviceAccount": "SERVICE_ACCOUNT",
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
     },
@@ -157,7 +157,7 @@
           "https://www.googleapis.com/auth/userinfo.email",
           "https://www.googleapis.com/auth/cloud-platform"
         ],
-        "serviceAccount": "tf-gke-gke-on-vpc-clus-r9g6@PROJECT_ID.iam.gserviceaccount.com",
+        "serviceAccount": "SERVICE_ACCOUNT",
         "shieldedInstanceConfig": {
           "enableIntegrityMonitoring": true
         },
@@ -225,7 +225,7 @@
         "oauthScopes": [
           "https://www.googleapis.com/auth/cloud-platform"
         ],
-        "serviceAccount": "tf-gke-gke-on-vpc-clus-r9g6@PROJECT_ID.iam.gserviceaccount.com",
+        "serviceAccount": "SERVICE_ACCOUNT",
         "shieldedInstanceConfig": {
           "enableIntegrityMonitoring": true
         },
