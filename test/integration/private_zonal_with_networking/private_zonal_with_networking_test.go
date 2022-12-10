@@ -15,7 +15,6 @@
 package private_zonal_with_networking
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
@@ -40,6 +39,7 @@ func TestPrivateZonalWithNetworking(t *testing.T) {
 		ipRangePodsName := bpt.GetStringOutput("ip_range_pods_name")
 		ipRangeServicesName := bpt.GetStringOutput("ip_range_services_name")
 		serviceAccount := bpt.GetStringOutput("service_account")
+		peeringName := bpt.GetStringOutput("peering_name")
 
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		g := golden.NewOrUpdate(t, op.String(),
@@ -47,14 +47,13 @@ func TestPrivateZonalWithNetworking(t *testing.T) {
 			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
 			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
 		)
-		fmt.Printf("Service Account Printing %s", serviceAccount)
+		assert.Equal(peeringName, op.Get("privateClusterConfig.peeringName").String(), "has the correct PeeringName")
 		validateJSONPaths := []string{
 			"status",
 			"location",
 			"locations",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
-			"privateClusterConfig.peeringName",
 			"addonsConfig",
 		}
 		for _, pth := range validateJSONPaths {
