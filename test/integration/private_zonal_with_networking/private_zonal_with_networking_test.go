@@ -41,7 +41,10 @@ func TestPrivateZonalWithNetworking(t *testing.T) {
 		serviceAccount := bpt.GetStringOutput("service_account")
 		peeringName := bpt.GetStringOutput("peering_name")
 
+		//Unsetting project as the default sanitizer order replaced project id but retains SA
+		gcloud.Runf(t, "config unset project")
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
+
 		g := golden.NewOrUpdate(t, op.String(),
 			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
 			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
