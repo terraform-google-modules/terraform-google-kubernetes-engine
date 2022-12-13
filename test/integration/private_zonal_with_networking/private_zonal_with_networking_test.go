@@ -28,7 +28,7 @@ func TestPrivateZonalWithNetworking(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
-		// Skipping Test Due to location_policy Under AutoScaling in Node Pool for default-node-pool
+		// Commenting Default Verify due to issue 1478 for location Policy
 		// bpt.DefaultVerify(assert)
 
 		projectId := bpt.GetStringOutput("project_id")
