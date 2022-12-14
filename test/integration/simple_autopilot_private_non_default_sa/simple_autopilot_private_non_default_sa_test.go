@@ -24,7 +24,7 @@ import (
 )
 
 func TestSimpleAutopilotPrivateNonDefaultSA(t *testing.T) {
-	projectID := utils.GetTestProjectFromSetup(t, 0)
+	projectID := utils.GetTestProjectFromSetup(t, 1)
 	bpt := tft.NewTFBlueprintTest(t, tft.WithVars(map[string]interface{}{"project_id": projectID}))
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
