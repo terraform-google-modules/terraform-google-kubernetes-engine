@@ -29,15 +29,6 @@ platforms:
   - name: local
 
 suites:
-  - name: "disable_client_cert"
-    driver:
-      root_module_directory: test/fixtures/disable_client_cert
-    verifier:
-      systems:
-        - name: disable_client_cert
-          backend: local
-          controls:
-            - gcloud
   - name: "shared_vpc"
     driver:
       root_module_directory: test/fixtures/shared_vpc
@@ -65,23 +56,6 @@ suites:
       systems:
         - name: simple_regional
           backend: local
-  - name: "private_zonal_with_networking"
-    driver:
-      root_module_directory: test/fixtures/private_zonal_with_networking
-    verifier:
-      systems:
-        - name: private_zonal_with_networking
-          backend: local
-          controls:
-            - gcloud
-        - name: private_zonal_with_networking
-          backend: local
-          controls:
-            - subnet
-        - name: network
-          backend: gcp
-          controls:
-            - network
   - name: "simple_regional_with_networking"
     driver:
       root_module_directory: test/fixtures/simple_regional_with_networking
@@ -188,19 +162,6 @@ suites:
       systems:
         - name: workload_metadata_config
           backend: local
-  - name: "beta_cluster"
-    driver:
-      root_module_directory: test/fixtures/beta_cluster
-    verifier:
-      systems:
-        - name: gcloud
-          backend: local
-          controls:
-            - gcloud
-        - name: gcp
-          backend: gcp
-          controls:
-            - gcp
   - name: "simple_windows_node_pool"
     driver:
       root_module_directory: test/fixtures/simple_windows_node_pool
