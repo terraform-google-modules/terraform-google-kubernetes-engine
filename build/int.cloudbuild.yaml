@@ -26,21 +26,26 @@ steps:
     - prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do create']
-- id: converge disable-client-cert-local
+- id: init disable-client-cert
   waitFor:
-    - create all
+    - prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge disable-client-cert-local']
-- id: verify disable-client-cert-local
+  args: ['/bin/bash', '-c', 'cft test run TestDisableClientCert --stage init --verbose --test-dir test/integration']
+- id: apply disable-client-cert
   waitFor:
-    - converge disable-client-cert-local
+    - init disable-client-cert
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify disable-client-cert-local']
-- id: destroy disable-client-cert-local
+  args: ['/bin/bash', '-c', 'cft test run TestDisableClientCert --stage apply --verbose --test-dir test/integration']
+- id: verify disable-client-cert
   waitFor:
-    - verify disable-client-cert-local
+    - apply disable-client-cert
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy disable-client-cert-local']
+  args: ['/bin/bash', '-c', 'cft test run TestDisableClientCert --stage verify --verbose --test-dir test/integration']
+- id: teardown disable-client-cert
+  waitFor:
+    - verify disable-client-cert
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestDisableClientCert --stage teardown --verbose --test-dir test/integration']
 - id: converge shared-vpc-local
   waitFor:
     - create all
@@ -222,21 +227,26 @@ steps:
     - verify workload-metadata-config-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy workload-metadata-config-local']
-- id: converge beta-cluster-local
+- id: init beta-cluster
   waitFor:
-    - create all
+    - prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge beta-cluster-local']
-- id: verify beta-cluster-local
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage init --verbose --test-dir test/integration']
+- id: apply beta-cluster
   waitFor:
-    - converge beta-cluster-local
+    - init beta-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify beta-cluster-local']
-- id: destroy beta-cluster-local
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage apply --verbose --test-dir test/integration']
+- id: verify beta-cluster
   waitFor:
-    - verify beta-cluster-local
+    - apply beta-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy beta-cluster-local']
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage verify --verbose --test-dir test/integration']
+- id: teardown beta-cluster
+  waitFor:
+    - verify beta-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage teardown --verbose --test-dir test/integration']
 - id: converge simple-windows-node-pool-local
   waitFor:
     - create all
@@ -372,11 +382,34 @@ steps:
     - verify simple-autopilot-public-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-autopilot-public-local']
+- id: init private-zonal-with-networking
+  waitFor:
+    - prepare
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage init --verbose --test-dir test/integration']
+- id: apply private-zonal-with-networking
+  waitFor:
+    - init private-zonal-with-networking
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage apply --verbose --test-dir test/integration']
+- id: verify private-zonal-with-networking
+  waitFor:
+    - apply private-zonal-with-networking
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage verify --verbose --test-dir test/integration']
+- id: teardown private-zonal-with-networking
+  waitFor:
+    - verify private-zonal-with-networking
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage teardown --verbose --test-dir test/integration']
+
+
+
 tags:
 - 'ci'
 - 'integration'
 substitutions:
   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.5'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.8'
 options:
   machineType: 'N1_HIGHCPU_8'
