@@ -28,7 +28,7 @@ module "gke" {
   add_shadow_firewall_rules  = true
   shadow_firewall_rules_log_config = null # to save some $ on logs
 }
-``` 
+```
 
 ## Troubleshooting
 

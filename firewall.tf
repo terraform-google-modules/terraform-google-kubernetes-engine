@@ -111,8 +111,11 @@ resource "google_compute_firewall" "shadow_allow_pods" {
   allow { protocol = "esp" }
   allow { protocol = "ah" }
 
-  log_config {
-    metadata = "INCLUDE_ALL_METADATA"
+  dynamic "log_config" {
+    for_each = var.shadow_firewall_rules_log_config == null ? [] : [var.shadow_firewall_rules_log_config]
+    content {
+      metadata = log_config.value.metadata
+    }
   }
 }
 
@@ -134,8 +137,11 @@ resource "google_compute_firewall" "shadow_allow_master" {
     ports    = ["10250", "443"]
   }
 
-  log_config {
-    metadata = "INCLUDE_ALL_METADATA"
+  dynamic "log_config" {
+    for_each = var.shadow_firewall_rules_log_config == null ? [] : [var.shadow_firewall_rules_log_config]
+    content {
+      metadata = log_config.value.metadata
+    }
   }
 }
 
@@ -166,8 +172,11 @@ resource "google_compute_firewall" "shadow_allow_nodes" {
     ports    = ["1-65535"]
   }
 
-  log_config {
-    metadata = "INCLUDE_ALL_METADATA"
+  dynamic "log_config" {
+    for_each = var.shadow_firewall_rules_log_config == null ? [] : [var.shadow_firewall_rules_log_config]
+    content {
+      metadata = log_config.value.metadata
+    }
   }
 }
 
@@ -178,7 +187,7 @@ resource "google_compute_firewall" "shadow_allow_inkubelet" {
   description = "Managed by terraform GKE module: A shadow firewall rule to match the default rule allowing worker nodes & pods communication to kubelet."
   project     = local.network_project_id
   network     = var.network
-  priority    = min(998, var.shadow_firewall_rules_priority) # rule created by GKE robot have prio 999
+  priority    = var.shadow_firewall_rules_priority - 1 # rule created by GKE robot have prio 999
   direction   = "INGRESS"
 
   source_ranges = local.pod_all_ip_ranges
@@ -190,8 +199,11 @@ resource "google_compute_firewall" "shadow_allow_inkubelet" {
     ports    = ["10255"]
   }
 
-  log_config {
-    metadata = "INCLUDE_ALL_METADATA"
+  dynamic "log_config" {
+    for_each = var.shadow_firewall_rules_log_config == null ? [] : [var.shadow_firewall_rules_log_config]
+    content {
+      metadata = log_config.value.metadata
+    }
   }
 }
 
@@ -202,7 +214,7 @@ resource "google_compute_firewall" "shadow_deny_exkubelet" {
   description = "Managed by terraform GKE module: A shadow firewall rule to match the default deny rule to kubelet."
   project     = local.network_project_id
   network     = var.network
-  priority    = min(999, var.shadow_firewall_rules_priority) # rule created by GKE robot have prio 1000
+  priority    = var.shadow_firewall_rules_priority # rule created by GKE robot have prio 1000
   direction   = "INGRESS"
 
   source_ranges = ["0.0.0.0/0"]
@@ -213,7 +225,10 @@ resource "google_compute_firewall" "shadow_deny_exkubelet" {
     ports    = ["10255"]
   }
 
-  log_config {
-    metadata = "INCLUDE_ALL_METADATA"
+  dynamic "log_config" {
+    for_each = var.shadow_firewall_rules_log_config == null ? [] : [var.shadow_firewall_rules_log_config]
+    content {
+      metadata = log_config.value.metadata
+    }
   }
 }
