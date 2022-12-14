@@ -34,11 +34,6 @@ output "master_kubernetes_version" {
   value       = module.gke.master_version
 }
 
-output "ca_certificate" {
-  description = "The cluster ca certificate (base64 encoded)"
-  value       = module.gke.ca_certificate
-}
-
 output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
   value       = module.gke.service_account
@@ -62,9 +57,4 @@ output "region" {
 output "zones" {
   description = "List of zones in which the cluster resides"
   value       = module.gke.zones
-}
-
-output "project_id" {
-  description = "The project ID the cluster is in"
-  value       = var.project_id
 }

@@ -402,9 +402,26 @@ steps:
     - verify private-zonal-with-networking
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage teardown --verbose --test-dir test/integration']
-
-
-
+- id: init simple-autopilot-private-non-default-sa
+  waitFor:
+    - prepare
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivateNonDefaultSA --stage init --verbose'] 
+- id: apply simple-autopilot-private-non-default-sa
+  waitFor:
+    - init simple-autopilot-private-non-default-sa
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivateNonDefaultSA --stage apply --verbose']
+- id: verify simple-autopilot-private-non-default-sa
+  waitFor:
+    - apply simple-autopilot-private-non-default-sa
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivateNonDefaultSA --stage verify --verbose']
+- id: teardown simple-autopilot-private-non-default-sa
+  waitFor:
+    - verify simple-autopilot-private-non-default-sa
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivateNonDefaultSA --stage teardown --verbose']
 tags:
 - 'ci'
 - 'integration'

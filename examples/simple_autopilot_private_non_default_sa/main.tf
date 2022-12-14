@@ -15,7 +15,7 @@
  */
 
 locals {
-  cluster_type           = "simple-autopilot-private-non-default-sa"
+  cluster_type           = "simple-ap-private-non-default-sa"
   network_name           = "${local.cluster_type}-network"
   subnet_name            = "${local.cluster_type}-subnet"
   master_auth_subnetwork = "${local.cluster_type}-master-subnet"
@@ -38,7 +38,7 @@ module "gke" {
   project_id                      = var.project_id
   name                            = "${local.cluster_type}-cluster"
   regional                        = true
-  region                          = var.region
+  region                          = "us-central1"
   network                         = module.gcp-network.network_name
   subnetwork                      = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
   ip_range_pods                   = local.pods_range_name
@@ -48,6 +48,7 @@ module "gke" {
   enable_private_endpoint         = true
   enable_private_nodes            = true
   master_ipv4_cidr_block          = "172.16.0.0/28"
+  datapath_provider               = "ADVANCED_DATAPATH"
 
   master_authorized_networks = [
     {
