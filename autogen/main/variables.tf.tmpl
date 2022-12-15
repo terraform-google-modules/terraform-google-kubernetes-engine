@@ -181,7 +181,6 @@ variable "node_pools_metadata" {
     default-node-pool = {}
   }
 }
-{% if beta_cluster %}
 
 variable "node_pools_linux_node_configs_sysctls" {
   type        = map(map(string))
@@ -193,7 +192,6 @@ variable "node_pools_linux_node_configs_sysctls" {
     default-node-pool = {}
   }
 }
-{% endif %}
 {% endif %}
 
 variable "enable_cost_allocation" {
@@ -605,6 +603,12 @@ variable "cluster_dns_domain" {
   default     = ""
 }
 
+variable "sandbox_enabled" {
+  type        = bool
+  description = "Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
+  default     = false
+}
+
 {% endif %}
 variable "timeouts" {
   type        = map(string)
@@ -693,12 +697,6 @@ variable "enable_pod_security_policy" {
 variable "enable_l4_ilb_subsetting" {
   type        = bool
   description = "Enable L4 ILB Subsetting on the cluster"
-  default     = false
-}
-
-variable "sandbox_enabled" {
-  type        = bool
-  description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
   default     = false
 }
 

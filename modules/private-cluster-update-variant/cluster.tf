@@ -245,6 +245,13 @@ resource "google_container_cluster" "primary" {
 
       metadata = local.node_pools_metadata["all"]
 
+      dynamic "sandbox_config" {
+        for_each = tobool((lookup(var.node_pools[0], "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
+        content {
+          sandbox_type = sandbox_config.value
+        }
+      }
+
 
       shielded_instance_config {
         enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
@@ -552,6 +559,39 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    dynamic "sandbox_config" {
+      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
+      content {
+        sandbox_type = sandbox_config.value
+      }
+    }
+
+    dynamic "kubelet_config" {
+      for_each = length(setintersection(
+        keys(each.value),
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period"]
+      )) != 0 ? [1] : []
+
+      content {
+        cpu_manager_policy   = lookup(each.value, "cpu_manager_policy", "static")
+        cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
+        cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
+      }
+    }
+
+    dynamic "linux_node_config" {
+      for_each = length(merge(
+        local.node_pools_linux_node_configs_sysctls["all"],
+        local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+      )) != 0 ? [1] : []
+
+      content {
+        sysctls = merge(
+          local.node_pools_linux_node_configs_sysctls["all"],
+          local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+        )
+      }
+    }
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
@@ -704,6 +744,26 @@ resource "google_container_node_pool" "windows_pools" {
 
       content {
         mode = lookup(each.value, "node_metadata", workload_metadata_config.value.mode)
+      }
+    }
+
+    dynamic "sandbox_config" {
+      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
+      content {
+        sandbox_type = sandbox_config.value
+      }
+    }
+
+    dynamic "kubelet_config" {
+      for_each = length(setintersection(
+        keys(each.value),
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period"]
+      )) != 0 ? [1] : []
+
+      content {
+        cpu_manager_policy   = lookup(each.value, "cpu_manager_policy", "static")
+        cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
+        cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
       }
     }
 

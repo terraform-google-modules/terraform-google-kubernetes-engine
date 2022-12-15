@@ -387,7 +387,6 @@ resource "google_container_cluster" "primary" {
 
       metadata = local.node_pools_metadata["all"]
 
-      {% if beta_cluster %}
       dynamic "sandbox_config" {
         for_each = tobool((lookup(var.node_pools[0], "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
         content {
@@ -395,6 +394,7 @@ resource "google_container_cluster" "primary" {
         }
       }
 
+      {% if beta_cluster %}
       boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", "")
       {% endif %}
 
@@ -756,7 +756,6 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
-    {% if beta_cluster %}
     dynamic "sandbox_config" {
       for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
       content {
@@ -791,7 +790,6 @@ resource "google_container_node_pool" "windows_pools" {
         )
       }
     }
-    {% endif %}
     {% endif %}
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")

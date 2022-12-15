@@ -181,6 +181,17 @@ variable "node_pools_metadata" {
   }
 }
 
+variable "node_pools_linux_node_configs_sysctls" {
+  type        = map(map(string))
+  description = "Map of maps containing linux node config sysctls by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
 variable "enable_cost_allocation" {
   type        = bool
   description = "Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery"
@@ -517,6 +528,12 @@ variable "cluster_dns_domain" {
   type        = string
   description = "The suffix used for all cluster service records."
   default     = ""
+}
+
+variable "sandbox_enabled" {
+  type        = bool
+  description = "Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
+  default     = false
 }
 
 variable "timeouts" {

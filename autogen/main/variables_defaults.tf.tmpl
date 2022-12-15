@@ -90,7 +90,6 @@ locals {
     ),
     var.node_pools_oauth_scopes
   )
-  {% if beta_cluster %}
 
   node_pools_linux_node_configs_sysctls = merge(
     { all = {} },
@@ -101,6 +100,5 @@ locals {
     ),
     var.node_pools_linux_node_configs_sysctls
   )
-  {% endif %}
 }
 {% endif %}

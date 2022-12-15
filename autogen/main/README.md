@@ -187,10 +187,10 @@ The node_pools variable takes the following parameters:
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
 | auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
 | boot_disk_kms_key | The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. | " " | Optional |
-{% if beta_cluster %}
 | cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". | "static" | Optional |
 | cpu_cfs_quota | Enforces the Pod's CPU limit. Setting this value to false means that the CPU limits for Pods are ignored | null | Optional |
 | cpu_cfs_quota_period | The CPU CFS quota period value, which specifies the period of how often a cgroup's access to CPU resources should be reallocated | null | Optional |
+{% if beta_cluster %}
 | enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
 {% endif %}
 | disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100 | Optional |
@@ -225,9 +225,7 @@ The node_pools variable takes the following parameters:
 | node_metadata | Options to expose the node metadata to the workload running on the node | | Optional |
 | preemptible | A boolean that represents whether or not the underlying node VMs are preemptible | false | Optional |
 | spot | A boolean that represents whether the underlying node VMs are spot | false | Optional |
-{% if beta_cluster %}
 | sandbox_type | Sandbox to use for pods in the node pool | | Required |
-{% endif %}
 | service_account | The service account to be used by the Node VMs | " " | Optional |
 | tags | The list of instance tags applied to all nodes | | Required |
 | value | The value for the taint | | Required |

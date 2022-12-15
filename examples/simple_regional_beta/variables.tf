@@ -61,7 +61,7 @@ variable "gce_pd_csi_driver" {
 
 variable "sandbox_enabled" {
   type        = bool
-  description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` and `node_version` = `1.12.7-gke.17` or later to use it)."
+  description = "Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` and `node_version` = `1.12.7-gke.17` or later to use it)."
   default     = false
 }
 

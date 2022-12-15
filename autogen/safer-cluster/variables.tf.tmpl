@@ -364,7 +364,7 @@ variable "enable_cost_allocation" {
 
 variable "sandbox_enabled" {
   type        = bool
-  description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
+  description = "Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
   default     = false
 }
 

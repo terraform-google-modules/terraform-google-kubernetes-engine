@@ -578,6 +578,12 @@ variable "cluster_dns_domain" {
   default     = ""
 }
 
+variable "sandbox_enabled" {
+  type        = bool
+  description = "Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
+  default     = false
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -661,12 +667,6 @@ variable "enable_pod_security_policy" {
 variable "enable_l4_ilb_subsetting" {
   type        = bool
   description = "Enable L4 ILB Subsetting on the cluster"
-  default     = false
-}
-
-variable "sandbox_enabled" {
-  type        = bool
-  description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
   default     = false
 }
 
