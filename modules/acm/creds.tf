@@ -38,6 +38,6 @@ resource "kubernetes_secret_v1" "creds" {
   }
 
   data = {
-    "${local.k8sop_creds_secret_key}" = local.private_key
+    (local.k8sop_creds_secret_key) = local.private_key
   }
 }

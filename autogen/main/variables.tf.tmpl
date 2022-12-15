@@ -316,7 +316,7 @@ variable "configure_ip_masq" {
   default     = false
 }
 
-{% if beta_cluster %}
+{% if beta_cluster and autopilot_cluster != true %}
 variable "cluster_telemetry_type" {
   type        = string
   description = "Available options include ENABLED, DISABLED, and SYSTEM_ONLY"
@@ -378,11 +378,6 @@ variable "cluster_resource_labels" {
   default     = {}
 }
 
-variable "skip_provisioners" {
-  type        = bool
-  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
-  default     = false
-}
 {% if private_cluster %}
 
 variable "deploy_using_private_endpoint" {
@@ -646,6 +641,7 @@ variable "monitoring_enable_managed_prometheus" {
 
 variable "istio" {
   description = "(Beta) Enable Istio addon"
+  type        = bool
   default     = false
 }
 
@@ -675,12 +671,14 @@ variable "gke_backup_agent_config" {
 
 variable "cloudrun" {
   description = "(Beta) Enable CloudRun addon"
+  type        = bool
   default     = false
 }
 
 variable "cloudrun_load_balancer_type" {
   description = "(Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "enable_pod_security_policy" {

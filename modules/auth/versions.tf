@@ -17,6 +17,12 @@
 
 terraform {
   required_version = ">= 0.13.0"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.36.0, < 5.0"
+    }
+  }
 
   provider_meta "google" {
     module_name = "blueprints/terraform/terraform-google-kubernetes-engine:auth/v24.1.0"

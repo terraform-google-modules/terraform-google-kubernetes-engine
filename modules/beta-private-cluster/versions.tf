@@ -23,11 +23,20 @@ terraform {
       source  = "hashicorp/google-beta"
       version = ">= 4.42.0, < 5.0"
     }
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.36.0, < 5.0"
+    }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = "~> 2.10"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.4"
+    }
   }
+
   provider_meta "google-beta" {
     module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-private-cluster/v24.1.0"
   }

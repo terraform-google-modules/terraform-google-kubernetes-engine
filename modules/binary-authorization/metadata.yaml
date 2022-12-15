@@ -1,0 +1,166 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-kubernetes-engine
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  title: Binary Authorization Infrastructure
+  source:
+    repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine
+    sourceType: git
+  version: 24.1.0
+  actuationTool:
+    type: Terraform
+    version: '>= 0.13.0'
+  examples:
+  - name: deploy_service
+    location: examples/deploy_service
+  - name: disable_client_cert
+    location: examples/disable_client_cert
+  - name: node_pool
+    location: examples/node_pool
+  - name: node_pool_update_variant
+    location: examples/node_pool_update_variant
+  - name: node_pool_update_variant_beta
+    location: examples/node_pool_update_variant_beta
+  - name: node_pool_update_variant_public_beta
+    location: examples/node_pool_update_variant_public_beta
+  - name: private_zonal_with_networking
+    location: examples/private_zonal_with_networking
+  - name: regional_private_node_pool_oauth_scopes
+    location: examples/regional_private_node_pool_oauth_scopes
+  - name: safer_cluster
+    location: examples/safer_cluster
+  - name: safer_cluster_iap_bastion
+    location: examples/safer_cluster_iap_bastion
+  - name: shared_vpc
+    location: examples/shared_vpc
+  - name: simple_autopilot_private
+    location: examples/simple_autopilot_private
+  - name: simple_autopilot_public
+    location: examples/simple_autopilot_public
+  - name: simple_regional
+    location: examples/simple_regional
+  - name: simple_regional_beta
+    location: examples/simple_regional_beta
+  - name: simple_regional_private
+    location: examples/simple_regional_private
+  - name: simple_regional_private_beta
+    location: examples/simple_regional_private_beta
+  - name: simple_regional_with_kubeconfig
+    location: examples/simple_regional_with_kubeconfig
+  - name: simple_regional_with_networking
+    location: examples/simple_regional_with_networking
+  - name: simple_windows_node_pool
+    location: examples/simple_windows_node_pool
+  - name: simple_zonal_private
+    location: examples/simple_zonal_private
+  - name: simple_zonal_with_acm
+    location: examples/simple_zonal_with_acm
+  - name: simple_zonal_with_asm
+    location: examples/simple_zonal_with_asm
+  - name: simple_zonal_with_hub
+    location: examples/simple_zonal_with_hub
+  - name: simple_zonal_with_hub_kubeconfig
+    location: examples/simple_zonal_with_hub_kubeconfig
+  - name: stub_domains
+    location: examples/stub_domains
+  - name: stub_domains_private
+    location: examples/stub_domains_private
+  - name: stub_domains_upstream_nameservers
+    location: examples/stub_domains_upstream_nameservers
+  - name: terraform
+    location: examples/acm-terraform-blog-part1/terraform
+  - name: terraform
+    location: examples/acm-terraform-blog-part2/terraform
+  - name: terraform
+    location: examples/acm-terraform-blog-part3/terraform
+  - name: upstream_nameservers
+    location: examples/upstream_nameservers
+  - name: workload_identity
+    location: examples/workload_identity
+  - name: workload_metadata_config
+    location: examples/workload_metadata_config
+  variables:
+  - name: attestor-name
+    description: Name of the attestor
+    type: string
+    required: true
+  - name: crypto-algorithm
+    description: Algorithm used for the async signing keys
+    type: string
+    default: RSA_SIGN_PKCS1_4096_SHA512
+    required: false
+  - name: disable_dependent_services
+    description: Whether services that are enabled and which depend on this service should also be disabled when this service is destroyed. https://www.terraform.io/docs/providers/google/r/google_project_service.html#disable_dependent_services
+    type: bool
+    default: false
+    required: false
+  - name: disable_services_on_destroy
+    description: Whether project services will be disabled when the resources are destroyed. https://www.terraform.io/docs/providers/google/r/google_project_service.html#disable_on_destroy
+    type: bool
+    default: false
+    required: false
+  - name: keyring-id
+    description: Keyring ID to attach attestor keys
+    type: string
+    required: true
+  - name: project_id
+    description: Project ID to apply services into
+    type: string
+    required: true
+  outputs:
+  - name: attestor
+    description: Name of the built attestor
+  - name: key
+    description: Name of the Key created for the attestor
+  roles:
+  - level: Project
+    roles:
+    - roles/cloudkms.admin
+    - roles/cloudkms.cryptoKeyEncrypterDecrypter
+    - roles/compute.networkAdmin
+    - roles/compute.securityAdmin
+    - roles/container.admin
+    - roles/container.clusterAdmin
+    - roles/container.developer
+    - roles/iam.serviceAccountAdmin
+    - roles/iam.serviceAccountUser
+    - roles/compute.admin
+    - roles/resourcemanager.projectIamAdmin
+    - roles/composer.worker
+    - roles/serviceusage.serviceUsageAdmin
+    - roles/compute.osLogin
+    - roles/compute.instanceAdmin
+    - roles/iam.roleAdmin
+    - roles/iap.admin
+    - roles/gkehub.admin
+  - level: Project
+    roles:
+    - roles/editor
+    - roles/compute.admin
+    - roles/container.admin
+    - roles/resourcemanager.projectIamAdmin
+    - roles/servicemanagement.admin
+    - roles/serviceusage.serviceUsageAdmin
+    - roles/iam.serviceAccountAdmin
+    - roles/iam.serviceAccountKeyAdmin
+    - roles/meshconfig.admin
+    - roles/gkehub.admin
+    - roles/privateca.admin
+  services: []

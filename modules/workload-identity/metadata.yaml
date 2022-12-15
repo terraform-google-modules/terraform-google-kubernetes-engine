@@ -1,0 +1,222 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-kubernetes-engine
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  title: terraform-google-workload-identity
+  source:
+    repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine
+    sourceType: git
+  version: 24.1.0
+  actuationTool:
+    type: Terraform
+    version: '>= 0.13.0'
+  examples:
+  - name: deploy_service
+    location: examples/deploy_service
+  - name: disable_client_cert
+    location: examples/disable_client_cert
+  - name: node_pool
+    location: examples/node_pool
+  - name: node_pool_update_variant
+    location: examples/node_pool_update_variant
+  - name: node_pool_update_variant_beta
+    location: examples/node_pool_update_variant_beta
+  - name: node_pool_update_variant_public_beta
+    location: examples/node_pool_update_variant_public_beta
+  - name: private_zonal_with_networking
+    location: examples/private_zonal_with_networking
+  - name: regional_private_node_pool_oauth_scopes
+    location: examples/regional_private_node_pool_oauth_scopes
+  - name: safer_cluster
+    location: examples/safer_cluster
+  - name: safer_cluster_iap_bastion
+    location: examples/safer_cluster_iap_bastion
+  - name: shared_vpc
+    location: examples/shared_vpc
+  - name: simple_autopilot_private
+    location: examples/simple_autopilot_private
+  - name: simple_autopilot_public
+    location: examples/simple_autopilot_public
+  - name: simple_regional
+    location: examples/simple_regional
+  - name: simple_regional_beta
+    location: examples/simple_regional_beta
+  - name: simple_regional_private
+    location: examples/simple_regional_private
+  - name: simple_regional_private_beta
+    location: examples/simple_regional_private_beta
+  - name: simple_regional_with_kubeconfig
+    location: examples/simple_regional_with_kubeconfig
+  - name: simple_regional_with_networking
+    location: examples/simple_regional_with_networking
+  - name: simple_windows_node_pool
+    location: examples/simple_windows_node_pool
+  - name: simple_zonal_private
+    location: examples/simple_zonal_private
+  - name: simple_zonal_with_acm
+    location: examples/simple_zonal_with_acm
+  - name: simple_zonal_with_asm
+    location: examples/simple_zonal_with_asm
+  - name: simple_zonal_with_hub
+    location: examples/simple_zonal_with_hub
+  - name: simple_zonal_with_hub_kubeconfig
+    location: examples/simple_zonal_with_hub_kubeconfig
+  - name: stub_domains
+    location: examples/stub_domains
+  - name: stub_domains_private
+    location: examples/stub_domains_private
+  - name: stub_domains_upstream_nameservers
+    location: examples/stub_domains_upstream_nameservers
+  - name: terraform
+    location: examples/acm-terraform-blog-part1/terraform
+  - name: terraform
+    location: examples/acm-terraform-blog-part2/terraform
+  - name: terraform
+    location: examples/acm-terraform-blog-part3/terraform
+  - name: upstream_nameservers
+    location: examples/upstream_nameservers
+  - name: workload_identity
+    location: examples/workload_identity
+  - name: workload_metadata_config
+    location: examples/workload_metadata_config
+  variables:
+  - name: annotate_k8s_sa
+    description: Annotate the kubernetes service account with 'iam.gke.io/gcp-service-account' annotation. Valid in cases when an existing SA is used.
+    type: bool
+    default: true
+    required: false
+  - name: automount_service_account_token
+    description: Enable automatic mounting of the service account token
+    type: bool
+    default: false
+    required: false
+  - name: cluster_name
+    description: Cluster name. Required if using existing KSA.
+    type: string
+    default: ""
+    required: false
+  - name: gcp_sa_name
+    description: Name for the Google service account; overrides `var.name`.
+    type: string
+    required: false
+  - name: impersonate_service_account
+    description: An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials.
+    type: string
+    default: ""
+    required: false
+  - name: k8s_sa_name
+    description: Name for the Kubernetes service account; overrides `var.name`. `cluster_name` and `location` must be set when this input is specified.
+    type: string
+    required: false
+  - name: k8s_sa_project_id
+    description: GCP project ID of the k8s service account; overrides `var.project_id`.
+    type: string
+    required: false
+  - name: location
+    description: Cluster location (region if regional cluster, zone if zonal cluster). Required if using existing KSA.
+    type: string
+    default: ""
+    required: false
+  - name: module_depends_on
+    description: List of modules or resources to depend on before annotating KSA. If multiple, all items must be the same type.
+    type: list(any)
+    default: []
+    required: false
+  - name: name
+    description: Name for both service accounts. The GCP SA will be truncated to the first 30 chars if necessary.
+    type: string
+    required: true
+  - name: namespace
+    description: Namespace for the Kubernetes service account
+    type: string
+    default: default
+    required: false
+  - name: project_id
+    description: GCP project ID
+    type: string
+    required: true
+  - name: roles
+    description: A list of roles to be added to the created service account
+    type: list(string)
+    default: []
+    required: false
+  - name: use_existing_context
+    description: An optional flag to use local kubectl config context.
+    type: bool
+    default: false
+    required: false
+  - name: use_existing_gcp_sa
+    description: Use an existing Google service account instead of creating one
+    type: bool
+    default: false
+    required: false
+  - name: use_existing_k8s_sa
+    description: Use an existing kubernetes service account instead of creating one
+    type: bool
+    default: false
+    required: false
+  outputs:
+  - name: gcp_service_account
+    description: GCP service account.
+  - name: gcp_service_account_email
+    description: Email address of GCP service account.
+  - name: gcp_service_account_fqn
+    description: FQN of GCP service account.
+  - name: gcp_service_account_name
+    description: Name of GCP service account.
+  - name: k8s_service_account_name
+    description: Name of k8s service account.
+  - name: k8s_service_account_namespace
+    description: Namespace of k8s service account.
+  roles:
+  - level: Project
+    roles:
+    - roles/cloudkms.admin
+    - roles/cloudkms.cryptoKeyEncrypterDecrypter
+    - roles/compute.networkAdmin
+    - roles/compute.securityAdmin
+    - roles/container.admin
+    - roles/container.clusterAdmin
+    - roles/container.developer
+    - roles/iam.serviceAccountAdmin
+    - roles/iam.serviceAccountUser
+    - roles/compute.admin
+    - roles/resourcemanager.projectIamAdmin
+    - roles/composer.worker
+    - roles/serviceusage.serviceUsageAdmin
+    - roles/compute.osLogin
+    - roles/compute.instanceAdmin
+    - roles/iam.roleAdmin
+    - roles/iap.admin
+    - roles/gkehub.admin
+  - level: Project
+    roles:
+    - roles/editor
+    - roles/compute.admin
+    - roles/container.admin
+    - roles/resourcemanager.projectIamAdmin
+    - roles/servicemanagement.admin
+    - roles/serviceusage.serviceUsageAdmin
+    - roles/iam.serviceAccountAdmin
+    - roles/iam.serviceAccountKeyAdmin
+    - roles/meshconfig.admin
+    - roles/gkehub.admin
+    - roles/privateca.admin
+  services: []

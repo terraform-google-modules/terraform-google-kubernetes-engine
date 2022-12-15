@@ -18,6 +18,18 @@
 terraform {
   required_version = ">= 0.13.0"
 
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.36.0, < 5.0"
+    }
+
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = ">= 4.42.0, < 5.0"
+    }
+  }
+
   provider_meta "google" {
     module_name = "blueprints/terraform/terraform-google-kubernetes-engine:hub/v24.1.0"
   }
