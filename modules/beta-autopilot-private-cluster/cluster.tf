@@ -61,7 +61,7 @@ resource "google_container_cluster" "primary" {
   min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : null
 
   # only one of logging/monitoring_service or logging/monitoring_config can be specified
-  logging_service    = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.logging_service
+  logging_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.logging_service
   dynamic "logging_config" {
     for_each = length(var.logging_enabled_components) > 0 ? [1] : []
 
