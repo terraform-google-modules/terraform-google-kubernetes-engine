@@ -83,6 +83,7 @@ resource "google_container_cluster" "primary" {
       type = var.cluster_telemetry_type
     }
   }
+{% endif %}
   # only one of logging/monitoring_service or logging/monitoring_config can be specified
   logging_service    = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.logging_service
   dynamic "logging_config" {
@@ -97,7 +98,7 @@ resource "google_container_cluster" "primary" {
     for_each = length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus ? [1] : []
 
     content {
-      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : null
+      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
 
       dynamic "managed_prometheus" {
         for_each = var.monitoring_enable_managed_prometheus ? [1] : []
@@ -108,21 +109,6 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-{% else %}
-  logging_service    = var.logging_service
-  monitoring_service = var.monitoring_service
-  {% if beta_cluster %}
-  dynamic "monitoring_config" {
-    for_each = var.monitoring_enable_managed_prometheus ? [1] : []
-
-    content {
-      managed_prometheus {
-        enabled = var.monitoring_enable_managed_prometheus
-      }
-    }
-  }
-  {% endif %}
-{% endif %}
   {% if autopilot_cluster != true %}
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled

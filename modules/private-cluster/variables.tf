@@ -293,6 +293,12 @@ variable "configure_ip_masq" {
   default     = false
 }
 
+variable "cluster_telemetry_type" {
+  type        = string
+  description = "Available options include ENABLED, DISABLED, and SYSTEM_ONLY"
+  default     = null
+}
+
 variable "logging_service" {
   type        = string
   description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
@@ -558,3 +564,22 @@ variable "timeouts" {
     error_message = "Only create, update, delete timeouts can be specified."
   }
 }
+
+variable "monitoring_enable_managed_prometheus" {
+  type        = bool
+  description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
+  default     = false
+}
+
+variable "monitoring_enabled_components" {
+  type        = list(string)
+  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS (provider version >= 3.89.0). Empty list is default GKE configuration."
+  default     = []
+}
+
+variable "logging_enabled_components" {
+  type        = list(string)
+  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS. Empty list is default GKE configuration."
+  default     = []
+}
+
