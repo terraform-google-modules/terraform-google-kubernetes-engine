@@ -605,6 +605,11 @@ variable "cluster_dns_domain" {
   default     = ""
 }
 
+variable "gce_pd_csi_driver" {
+  type        = bool
+  description = "Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
+  default     = false
+}
 {% endif %}
 variable "timeouts" {
   type        = map(string)
@@ -711,12 +716,6 @@ variable "enable_intranode_visibility" {
 variable "enable_identity_service" {
   type        = bool
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
-  default     = false
-}
-
-variable "gce_pd_csi_driver" {
-  type        = bool
-  description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
   default     = false
 }
   {% endif %}
