@@ -57,6 +57,7 @@ locals {
   {% endif %}
 
   release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
+  gateway_api_config = var.gateway_api_channel != null ? [{ channel : var.gateway_api_channel }] : []
 
   {% if autopilot_cluster != true %}
   autoscaling_resource_limits = var.cluster_autoscaling.enabled ? concat([{
