@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [24.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v24.0.0...v24.1.0) (2022-12-14)
+
+
+### Features
+
+* Allow enabling cost management for safer_cluster module ([#1475](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1475)) ([8507e09](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8507e09b732568ef3e66a1492ea6c73835b40120))
+
 ## [24.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v23.3.0...v24.0.0) (2022-11-21)
 
 
