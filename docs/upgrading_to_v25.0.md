@@ -16,3 +16,7 @@ release.
 +   gce_pd_csi_driver  = false
 }
 ```
+
+### Minimum Google Provider versions
+
+Minimum Google Provider versions have been updated to `4.44.0`.
