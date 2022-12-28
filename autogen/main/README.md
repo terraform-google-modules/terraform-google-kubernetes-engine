@@ -254,11 +254,11 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Kubectl
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
-- [Terraform](https://www.terraform.io/downloads.html) 0.12
+- [Terraform](https://www.terraform.io/downloads.html) 0.13+
 {% if beta_cluster %}
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v3.41
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v4.47
 {% else %}
-- [Terraform Provider for GCP][terraform-provider-google] v3.41
+- [Terraform Provider for GCP][terraform-provider-google] v4.47
 {% endif %}
 #### gcloud
 Some submodules use the [terraform-google-gcloud](https://github.com/terraform-google-modules/terraform-google-gcloud) module. By default, this module assumes you already have gcloud installed in your $PATH.
