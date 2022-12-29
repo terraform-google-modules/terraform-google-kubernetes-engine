@@ -17,7 +17,7 @@
 module "example" {
   source = "../../../examples/simple_regional_with_gateway_api"
 
-  project_id                     = var.project_ids[0]
+  project_id                     = var.project_ids[2]
   cluster_name_suffix            = "-${random_string.suffix.result}"
   region                         = var.region
   network                        = google_compute_network.main.name
