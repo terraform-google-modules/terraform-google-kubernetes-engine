@@ -85,6 +85,15 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
+  cluster_autoscaling {
+    dynamic "auto_provisioning_defaults" {
+      for_each = var.create_service_account ? [1] : []
+
+      content {
+        service_account = local.service_account
+      }
+    }
+  }
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
@@ -123,7 +132,6 @@ resource "google_container_cluster" "primary" {
     horizontal_pod_autoscaling {
       disabled = !var.horizontal_pod_autoscaling
     }
-
 
   }
 
