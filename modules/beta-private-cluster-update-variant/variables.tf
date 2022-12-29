@@ -170,6 +170,16 @@ variable "node_pools_labels" {
   }
 }
 
+variable "node_pools_resource_labels" {
+  type        = map(map(string))
+  description = "Map of maps containing resource labels by node-pool name"
+
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
 variable "node_pools_metadata" {
   type        = map(map(string))
   description = "Map of maps containing node metadata by node-pool name"
@@ -592,6 +602,12 @@ variable "cluster_dns_domain" {
   default     = ""
 }
 
+variable "gce_pd_csi_driver" {
+  type        = bool
+  description = "Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
+  default     = true
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -693,11 +709,5 @@ variable "enable_intranode_visibility" {
 variable "enable_identity_service" {
   type        = bool
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
-  default     = false
-}
-
-variable "gce_pd_csi_driver" {
-  type        = bool
-  description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
   default     = false
 }

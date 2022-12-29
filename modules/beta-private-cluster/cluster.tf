@@ -187,7 +187,6 @@ resource "google_container_cluster" "primary" {
       disabled = !var.horizontal_pod_autoscaling
     }
 
-
     network_policy_config {
       disabled = !var.network_policy
     }
@@ -200,6 +199,14 @@ resource "google_container_cluster" "primary" {
       enabled = var.filestore_csi_driver
     }
 
+    dynamic "gce_persistent_disk_csi_driver_config" {
+      for_each = local.cluster_gce_pd_csi_config
+
+      content {
+        enabled = gce_persistent_disk_csi_driver_config.value.enabled
+      }
+    }
+
     istio_config {
       disabled = !var.istio
       auth     = var.istio_auth
@@ -210,14 +217,6 @@ resource "google_container_cluster" "primary" {
 
       content {
         disabled = cloudrun_config.value.disabled
-      }
-    }
-
-    dynamic "gce_persistent_disk_csi_driver_config" {
-      for_each = local.cluster_gce_pd_csi_config
-
-      content {
-        enabled = gce_persistent_disk_csi_driver_config.value.enabled
       }
     }
 
@@ -511,6 +510,10 @@ resource "google_container_node_pool" "pools" {
       local.node_pools_labels["all"],
       local.node_pools_labels[each.value["name"]],
     )
+    resource_labels = merge(
+      local.node_pools_resource_labels["all"],
+      local.node_pools_resource_labels[each.value["name"]],
+    )
     metadata = merge(
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
@@ -716,6 +719,10 @@ resource "google_container_node_pool" "windows_pools" {
       lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
       local.node_pools_labels["all"],
       local.node_pools_labels[each.value["name"]],
+    )
+    resource_labels = merge(
+      local.node_pools_resource_labels["all"],
+      local.node_pools_resource_labels[each.value["name"]],
     )
     metadata = merge(
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
