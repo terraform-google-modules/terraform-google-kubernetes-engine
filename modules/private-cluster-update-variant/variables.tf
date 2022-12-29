@@ -559,6 +559,12 @@ variable "cluster_dns_domain" {
   default     = ""
 }
 
+variable "gce_pd_csi_driver" {
+  type        = bool
+  description = "Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
+  default     = true
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."

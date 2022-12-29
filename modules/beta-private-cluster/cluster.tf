@@ -187,7 +187,6 @@ resource "google_container_cluster" "primary" {
       disabled = !var.horizontal_pod_autoscaling
     }
 
-
     network_policy_config {
       disabled = !var.network_policy
     }
@@ -200,6 +199,14 @@ resource "google_container_cluster" "primary" {
       enabled = var.filestore_csi_driver
     }
 
+    dynamic "gce_persistent_disk_csi_driver_config" {
+      for_each = local.cluster_gce_pd_csi_config
+
+      content {
+        enabled = gce_persistent_disk_csi_driver_config.value.enabled
+      }
+    }
+
     istio_config {
       disabled = !var.istio
       auth     = var.istio_auth
@@ -210,14 +217,6 @@ resource "google_container_cluster" "primary" {
 
       content {
         disabled = cloudrun_config.value.disabled
-      }
-    }
-
-    dynamic "gce_persistent_disk_csi_driver_config" {
-      for_each = local.cluster_gce_pd_csi_config
-
-      content {
-        enabled = gce_persistent_disk_csi_driver_config.value.enabled
       }
     }
 
