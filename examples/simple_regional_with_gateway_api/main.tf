@@ -15,7 +15,7 @@
  */
 
 locals {
-  cluster_type = "simple-regional"
+  cluster_type = "simple-regional-with-gateway-api"
 }
 
 data "google_client_config" "default" {}
