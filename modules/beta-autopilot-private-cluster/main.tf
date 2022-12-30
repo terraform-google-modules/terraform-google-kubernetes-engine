@@ -60,6 +60,7 @@ locals {
 
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
+  pod_all_ip_ranges         = var.add_cluster_firewall_rules ? [local.cluster_alias_ranges_cidr[var.ip_range_pods]] : []
 
   logmon_config_is_set = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus
 

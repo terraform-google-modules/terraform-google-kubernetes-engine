@@ -34,11 +34,12 @@ resource "google_compute_firewall" "intra_egress" {
   direction   = "EGRESS"
 
   target_tags = [local.cluster_network_tag]
-  destination_ranges = [
+  destination_ranges = concat([
     local.cluster_endpoint_for_nodes,
     local.cluster_subnet_cidr,
-    local.cluster_alias_ranges_cidr[var.ip_range_pods],
-  ]
+    ],
+    local.pod_all_ip_ranges
+  )
 
   # Allow all possible protocols
   allow { protocol = "tcp" }
@@ -99,7 +100,7 @@ resource "google_compute_firewall" "shadow_allow_pods" {
   priority    = var.shadow_firewall_rules_priority
   direction   = "INGRESS"
 
-  source_ranges = [local.cluster_alias_ranges_cidr[var.ip_range_pods]]
+  source_ranges = local.pod_all_ip_ranges
   target_tags   = [local.cluster_network_tag]
 
   # Allow all possible protocols
@@ -110,8 +111,11 @@ resource "google_compute_firewall" "shadow_allow_pods" {
   allow { protocol = "esp" }
   allow { protocol = "ah" }
 
-  log_config {
-    metadata = "INCLUDE_ALL_METADATA"
+  dynamic "log_config" {
+    for_each = var.shadow_firewall_rules_log_config == null ? [] : [var.shadow_firewall_rules_log_config]
+    content {
+      metadata = log_config.value.metadata
+    }
   }
 }
 
@@ -133,8 +137,11 @@ resource "google_compute_firewall" "shadow_allow_master" {
     ports    = ["10250", "443"]
   }
 
-  log_config {
-    metadata = "INCLUDE_ALL_METADATA"
+  dynamic "log_config" {
+    for_each = var.shadow_firewall_rules_log_config == null ? [] : [var.shadow_firewall_rules_log_config]
+    content {
+      metadata = log_config.value.metadata
+    }
   }
 }
 
@@ -165,7 +172,63 @@ resource "google_compute_firewall" "shadow_allow_nodes" {
     ports    = ["1-65535"]
   }
 
-  log_config {
-    metadata = "INCLUDE_ALL_METADATA"
+  dynamic "log_config" {
+    for_each = var.shadow_firewall_rules_log_config == null ? [] : [var.shadow_firewall_rules_log_config]
+    content {
+      metadata = log_config.value.metadata
+    }
+  }
+}
+
+resource "google_compute_firewall" "shadow_allow_inkubelet" {
+  count = var.add_shadow_firewall_rules ? 1 : 0
+
+  name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-inkubelet"
+  description = "Managed by terraform GKE module: A shadow firewall rule to match the default rule allowing worker nodes & pods communication to kubelet."
+  project     = local.network_project_id
+  network     = var.network
+  priority    = var.shadow_firewall_rules_priority - 1 # rule created by GKE robot have prio 999
+  direction   = "INGRESS"
+
+  source_ranges = local.pod_all_ip_ranges
+  source_tags   = [local.cluster_network_tag]
+  target_tags   = [local.cluster_network_tag]
+
+  allow {
+    protocol = "tcp"
+    ports    = ["10255"]
+  }
+
+  dynamic "log_config" {
+    for_each = var.shadow_firewall_rules_log_config == null ? [] : [var.shadow_firewall_rules_log_config]
+    content {
+      metadata = log_config.value.metadata
+    }
+  }
+}
+
+resource "google_compute_firewall" "shadow_deny_exkubelet" {
+  count = var.add_shadow_firewall_rules ? 1 : 0
+
+  name        = "gke-shadow-${substr(var.name, 0, min(25, length(var.name)))}-exkubelet"
+  description = "Managed by terraform GKE module: A shadow firewall rule to match the default deny rule to kubelet."
+  project     = local.network_project_id
+  network     = var.network
+  priority    = var.shadow_firewall_rules_priority # rule created by GKE robot have prio 1000
+  direction   = "INGRESS"
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = [local.cluster_network_tag]
+
+  deny {
+    protocol = "tcp"
+    ports    = ["10255"]
+  }
+
+  dynamic "log_config" {
+    for_each = var.shadow_firewall_rules_log_config == null ? [] : [var.shadow_firewall_rules_log_config]
+    content {
+      metadata = log_config.value.metadata
+    }
   }
 }

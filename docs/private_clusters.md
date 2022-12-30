@@ -20,6 +20,16 @@ If you are using these features with a private cluster, you will need to either:
 
 If you are going to isolate your GKE private clusters from internet access you could check [this guide](https://medium.com/google-cloud/completely-private-gke-clusters-with-no-internet-connectivity-945fffae1ccd) and the associated [repo](https://github.com/andreyk-code/no-inet-gke-cluster).
 
+## Discontiguous multi-Pod CIDR
+If you are going to use [discontiguous multi-Pod CIDR](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-pod-cidr) it can happen that GKE robot will not update `gke-[cluster-name]-[cluster-hash]-all` and other firewall rules automatically when you add a new node pool (as stated in [documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-pod-cidr#modified_firewall_rule)). You can prevent this from happening, by using a workaround with shadow firewall rules:
+```
+module "gke" {
+  ...
+  add_shadow_firewall_rules  = true
+  shadow_firewall_rules_log_config = null # to save some $ on logs
+}
+```
+
 ## Troubleshooting
 
 ### Master Authorized Network

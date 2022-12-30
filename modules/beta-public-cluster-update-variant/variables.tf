@@ -170,6 +170,16 @@ variable "node_pools_labels" {
   }
 }
 
+variable "node_pools_resource_labels" {
+  type        = map(map(string))
+  description = "Map of maps containing resource labels by node-pool name"
+
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
 variable "node_pools_metadata" {
   type        = map(map(string))
   description = "Map of maps containing node metadata by node-pool name"
@@ -430,6 +440,20 @@ variable "shadow_firewall_rules_priority" {
   type        = number
   description = "The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000."
   default     = 999
+  validation {
+    condition     = var.shadow_firewall_rules_priority < 1000
+    error_message = "The shadow firewall rule priority must be lower than auto-created one(1000)."
+  }
+}
+
+variable "shadow_firewall_rules_log_config" {
+  type = object({
+    metadata = string
+  })
+  description = "The log_config for shadow firewall rules. You can set this variable to `null` to disable logging."
+  default = {
+    metadata = "INCLUDE_ALL_METADATA"
+  }
 }
 
 variable "enable_confidential_nodes" {
