@@ -50,7 +50,8 @@ locals {
   windows_node_pool_names = [for np in toset(var.windows_node_pools) : np.name]
   windows_node_pools      = zipmap(local.windows_node_pool_names, tolist(toset(var.windows_node_pools)))
 
-  release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
+  release_channel    = var.release_channel != null ? [{ channel : var.release_channel }] : []
+  gateway_api_config = var.gateway_api_channel != null ? [{ channel : var.gateway_api_channel }] : []
 
   autoscaling_resource_limits = var.cluster_autoscaling.enabled ? concat([{
     resource_type = "cpu"
