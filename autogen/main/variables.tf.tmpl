@@ -326,11 +326,13 @@ variable "configure_ip_masq" {
   default     = false
 }
 
+{% if beta_cluster %}
 variable "cluster_telemetry_type" {
   type        = string
   description = "Available options include ENABLED, DISABLED, and SYSTEM_ONLY"
   default     = null
 }
+{% endif %}
 
 variable "logging_service" {
   type        = string
@@ -644,6 +646,7 @@ variable "timeouts" {
   }
 }
 
+{% if autopilot_cluster != true %}
 variable "monitoring_enable_managed_prometheus" {
   type        = bool
   description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
@@ -661,6 +664,7 @@ variable "logging_enabled_components" {
   description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS. Empty list is default GKE configuration."
   default     = []
 }
+{% endif %}
 
 {% if beta_cluster %}
   {% if autopilot_cluster != true %}

@@ -97,7 +97,8 @@ locals {
   ] : []
   cluster_cloudrun_enabled = var.cloudrun
   gke_backup_agent_config  = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
-  logmon_config_is_set     = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus
+
+  logmon_config_is_set = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
@@ -184,9 +185,9 @@ locals {
   cluster_pod_security_policy_enabled  = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled = local.cluster_output_intranode_visbility_enabled
   confidential_node_config             = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
+  cluster_telemetry_type_is_set        = var.cluster_telemetry_type != null
 
   # /BETA features
-  cluster_telemetry_type_is_set = var.cluster_telemetry_type != null
 
   cluster_maintenance_window_is_recurring = var.maintenance_recurrence != "" && var.maintenance_end_time != "" ? [1] : []
   cluster_maintenance_window_is_daily     = length(local.cluster_maintenance_window_is_recurring) > 0 ? [] : [1]

@@ -303,11 +303,6 @@ variable "configure_ip_masq" {
   default     = false
 }
 
-variable "cluster_telemetry_type" {
-  type        = string
-  description = "Available options include ENABLED, DISABLED, and SYSTEM_ONLY"
-  default     = null
-}
 
 variable "logging_service" {
   type        = string
