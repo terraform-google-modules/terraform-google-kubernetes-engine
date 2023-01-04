@@ -52,6 +52,8 @@ spec:
     location: examples/shared_vpc
   - name: simple_autopilot_private
     location: examples/simple_autopilot_private
+  - name: simple_autopilot_private_non_default_sa
+    location: examples/simple_autopilot_private_non_default_sa
   - name: simple_autopilot_public
     location: examples/simple_autopilot_public
   - name: simple_regional
@@ -62,6 +64,8 @@ spec:
     location: examples/simple_regional_private
   - name: simple_regional_private_beta
     location: examples/simple_regional_private_beta
+  - name: simple_regional_with_gateway_api
+    location: examples/simple_regional_with_gateway_api
   - name: simple_regional_with_kubeconfig
     location: examples/simple_regional_with_kubeconfig
   - name: simple_regional_with_networking

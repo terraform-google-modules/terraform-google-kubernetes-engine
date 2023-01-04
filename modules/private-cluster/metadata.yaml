@@ -52,6 +52,8 @@ spec:
     location: examples/shared_vpc
   - name: simple_autopilot_private
     location: examples/simple_autopilot_private
+  - name: simple_autopilot_private_non_default_sa
+    location: examples/simple_autopilot_private_non_default_sa
   - name: simple_autopilot_public
     location: examples/simple_autopilot_public
   - name: simple_regional
@@ -62,6 +64,8 @@ spec:
     location: examples/simple_regional_private
   - name: simple_regional_private_beta
     location: examples/simple_regional_private_beta
+  - name: simple_regional_with_gateway_api
+    location: examples/simple_regional_with_gateway_api
   - name: simple_regional_with_kubeconfig
     location: examples/simple_regional_with_kubeconfig
   - name: simple_regional_with_networking
@@ -269,6 +273,15 @@ spec:
     type: number
     default: 1000
     required: false
+  - name: gateway_api_channel
+    description: The gateway api channel of this cluster. Accepted values are `CHANNEL_STANDARD` and `CHANNEL_DISABLED`.
+    type: string
+    required: false
+  - name: gce_pd_csi_driver
+    description: Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver.
+    type: bool
+    default: true
+    required: false
   - name: grant_registry_access
     description: Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles.
     type: bool
@@ -423,6 +436,13 @@ spec:
       - https://www.googleapis.com/auth/cloud-platform
       default-node-pool: []
     required: false
+  - name: node_pools_resource_labels
+    description: Map of maps containing resource labels by node-pool name
+    type: map(map(string))
+    default:
+      all: {}
+      default-node-pool: {}
+    required: false
   - name: node_pools_tags
     description: Map of lists containing node network tags by node-pool name
     type: map(list(string))
@@ -492,6 +512,15 @@ spec:
     type: bool
     default: false
     required: false
+  - name: shadow_firewall_rules_log_config
+    description: The log_config for shadow firewall rules. You can set this variable to `null` to disable logging.
+    type: |-
+      object({
+          metadata = string
+        })
+    default:
+      metadata: INCLUDE_ALL_METADATA
+    required: false
   - name: shadow_firewall_rules_priority
     description: The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000.
     type: number
@@ -533,6 +562,8 @@ spec:
     description: Cluster ID
   - name: endpoint
     description: Cluster endpoint
+  - name: gateway_api_channel
+    description: The gateway api channel of this cluster.
   - name: horizontal_pod_autoscaling_enabled
     description: Whether horizontal pod autoscaling enabled
   - name: http_load_balancing_enabled
@@ -580,6 +611,19 @@ spec:
   roles:
   - level: Project
     roles:
+    - roles/editor
+    - roles/compute.admin
+    - roles/container.admin
+    - roles/resourcemanager.projectIamAdmin
+    - roles/servicemanagement.admin
+    - roles/serviceusage.serviceUsageAdmin
+    - roles/iam.serviceAccountAdmin
+    - roles/iam.serviceAccountKeyAdmin
+    - roles/meshconfig.admin
+    - roles/gkehub.admin
+    - roles/privateca.admin
+  - level: Project
+    roles:
     - roles/cloudkms.admin
     - roles/cloudkms.cryptoKeyEncrypterDecrypter
     - roles/compute.networkAdmin
@@ -598,17 +642,4 @@ spec:
     - roles/iam.roleAdmin
     - roles/iap.admin
     - roles/gkehub.admin
-  - level: Project
-    roles:
-    - roles/editor
-    - roles/compute.admin
-    - roles/container.admin
-    - roles/resourcemanager.projectIamAdmin
-    - roles/servicemanagement.admin
-    - roles/serviceusage.serviceUsageAdmin
-    - roles/iam.serviceAccountAdmin
-    - roles/iam.serviceAccountKeyAdmin
-    - roles/meshconfig.admin
-    - roles/gkehub.admin
-    - roles/privateca.admin
   services: []
