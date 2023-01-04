@@ -84,8 +84,7 @@ locals {
     provider = null
   }]
   cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
-
-  logmon_config_is_set = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus
+  logmon_config_is_set      = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group

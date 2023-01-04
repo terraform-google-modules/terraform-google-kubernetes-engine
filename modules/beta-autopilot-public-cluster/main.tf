@@ -64,7 +64,6 @@ locals {
   pod_all_ip_ranges         = var.add_cluster_firewall_rules ? [local.cluster_alias_ranges_cidr[var.ip_range_pods]] : []
 
 
-
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
   }]
