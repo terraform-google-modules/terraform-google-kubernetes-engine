@@ -47,6 +47,15 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+
+  dynamic "gateway_api_config" {
+    for_each = local.gateway_api_config
+
+    content {
+      channel = gateway_api_config.value.channel
+    }
+  }
+
   dynamic "cost_management_config" {
     for_each = var.enable_cost_allocation ? [1] : []
     content {
@@ -118,6 +127,8 @@ resource "google_container_cluster" "primary" {
       evaluation_mode = "PROJECT_SINGLETON_POLICY_ENFORCE"
     }
   }
+
+  enable_kubernetes_alpha = var.enable_kubernetes_alpha
 
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config

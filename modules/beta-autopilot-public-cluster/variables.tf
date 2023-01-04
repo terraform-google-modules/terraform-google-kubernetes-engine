@@ -293,6 +293,12 @@ variable "release_channel" {
   default     = null
 }
 
+variable "gateway_api_channel" {
+  type        = string
+  description = "The gateway api channel of this cluster. Accepted values are `CHANNEL_STANDARD` and `CHANNEL_DISABLED`."
+  default     = null
+}
+
 variable "add_cluster_firewall_rules" {
   type        = bool
   description = "Create additional firewall rules"
@@ -386,5 +392,4 @@ variable "timeouts" {
     error_message = "Only create, update, delete timeouts can be specified."
   }
 }
-
 

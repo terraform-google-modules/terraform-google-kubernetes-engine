@@ -50,7 +50,8 @@ locals {
   windows_node_pool_names = [for np in toset(var.windows_node_pools) : np.name]
   windows_node_pools      = zipmap(local.windows_node_pool_names, tolist(toset(var.windows_node_pools)))
 
-  release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
+  release_channel    = var.release_channel != null ? [{ channel : var.release_channel }] : []
+  gateway_api_config = var.gateway_api_channel != null ? [{ channel : var.gateway_api_channel }] : []
 
   autoscaling_resource_limits = var.cluster_autoscaling.enabled ? concat([{
     resource_type = "cpu"
@@ -181,10 +182,10 @@ locals {
   # BETA features
   cluster_istio_enabled                = !local.cluster_output_istio_disabled
   cluster_dns_cache_enabled            = var.dns_cache
+  cluster_telemetry_type_is_set        = var.cluster_telemetry_type != null
   cluster_pod_security_policy_enabled  = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled = local.cluster_output_intranode_visbility_enabled
   confidential_node_config             = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
-  cluster_telemetry_type_is_set        = var.cluster_telemetry_type != null
 
   # /BETA features
 

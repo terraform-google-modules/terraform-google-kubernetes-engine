@@ -80,6 +80,13 @@ suites:
       systems:
         - name: simple_regional_private
           backend: local
+  - name: "simple_regional_with_gateway_api"
+    driver:
+      root_module_directory: test/fixtures/simple_regional_with_gateway_api
+    verifier:
+      systems:
+        - name: simple_regional_with_gateway_api
+          backend: local
   - name: "simple_regional_with_kubeconfig"
     driver:
       root_module_directory: test/fixtures/simple_regional_with_kubeconfig

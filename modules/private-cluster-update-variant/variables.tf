@@ -303,7 +303,6 @@ variable "configure_ip_masq" {
   default     = false
 }
 
-
 variable "logging_service" {
   type        = string
   description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
@@ -415,6 +414,12 @@ variable "identity_namespace" {
 variable "release_channel" {
   type        = string
   description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
+  default     = null
+}
+
+variable "gateway_api_channel" {
+  type        = string
+  description = "The gateway api channel of this cluster. Accepted values are `CHANNEL_STANDARD` and `CHANNEL_DISABLED`."
   default     = null
 }
 
@@ -608,3 +613,8 @@ variable "logging_enabled_components" {
   default     = []
 }
 
+variable "enable_kubernetes_alpha" {
+  type        = bool
+  description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
+  default     = false
+}

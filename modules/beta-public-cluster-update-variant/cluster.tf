@@ -47,6 +47,15 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+
+  dynamic "gateway_api_config" {
+    for_each = local.gateway_api_config
+
+    content {
+      channel = gateway_api_config.value.channel
+    }
+  }
+
   dynamic "cost_management_config" {
     for_each = var.enable_cost_allocation ? [1] : []
     content {
@@ -133,8 +142,9 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  enable_kubernetes_alpha = var.enable_kubernetes_alpha
+
   enable_intranode_visibility = var.enable_intranode_visibility
-  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   enable_tpu                  = var.enable_tpu
 
   dynamic "pod_security_policy_config" {
