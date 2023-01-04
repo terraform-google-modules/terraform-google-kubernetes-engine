@@ -186,4 +186,7 @@ module "gke" {
   filestore_csi_driver = var.filestore_csi_driver
 
   notification_config_topic = var.notification_config_topic
+
+  enable_network_egress_export       = var.enable_network_egress_export
+  enable_resource_consumption_export = var.enable_resource_consumption_export
 }

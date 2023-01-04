@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -199,6 +199,11 @@ spec:
     type: bool
     default: false
     required: false
+  - name: enable_network_egress_export
+    description: Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic.
+    type: bool
+    default: false
+    required: false
   - name: enable_pod_security_policy
     description: enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created.
     type: bool
@@ -206,6 +211,11 @@ spec:
     required: false
   - name: enable_private_endpoint
     description: When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true
+    type: bool
+    default: true
+    required: false
+  - name: enable_resource_consumption_export
+    description: Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export.
     type: bool
     default: true
     required: false
