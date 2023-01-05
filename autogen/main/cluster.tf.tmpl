@@ -93,7 +93,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 {% endif %}
-  {% if autopilot_cluster != true %}
+{% if autopilot_cluster != true %}
   # only one of logging/monitoring_service or logging/monitoring_config can be specified
   {% if beta_cluster %}
   logging_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.logging_service
@@ -152,7 +152,7 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-  {% endif %}
+{% endif %}
   {% if autopilot_cluster == true %}
   cluster_autoscaling {
     dynamic "auto_provisioning_defaults" {
