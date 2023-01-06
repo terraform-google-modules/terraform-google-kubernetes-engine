@@ -12,11 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: beta_cluster
-depends:
-  - name: inspec-gcp
-    git: https://github.com/inspec/inspec-gcp.git
-    tag: v1.8.0
+name: simple_regional_with_gateway_api
 attributes:
   - name: project_id
     required: true
@@ -27,24 +23,9 @@ attributes:
   - name: cluster_name
     required: true
     type: string
-  - name: master_kubernetes_version
-    required: true
-    type: string
   - name: kubernetes_endpoint
     required: true
     type: string
   - name: client_token
-    required: true
-    type: string
-  - name: service_account
-    required: true
-    type: string
-  - name: service_account
-    required: true
-    type: string
-  - name: database_encryption_key_name
-    required: true
-    type: string
-  - name: identity_namespace
     required: true
     type: string

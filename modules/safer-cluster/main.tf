@@ -82,12 +82,13 @@ module "gke" {
   // If removing the default node pool, initial_node_count should be at least 1.
   initial_node_count = (var.initial_node_count == 0) ? 1 : var.initial_node_count
 
-  node_pools          = var.node_pools
-  windows_node_pools  = var.windows_node_pools
-  node_pools_labels   = var.node_pools_labels
-  node_pools_metadata = var.node_pools_metadata
-  node_pools_taints   = var.node_pools_taints
-  node_pools_tags     = var.node_pools_tags
+  node_pools                 = var.node_pools
+  windows_node_pools         = var.windows_node_pools
+  node_pools_labels          = var.node_pools_labels
+  node_pools_resource_labels = var.node_pools_resource_labels
+  node_pools_metadata        = var.node_pools_metadata
+  node_pools_taints          = var.node_pools_taints
+  node_pools_tags            = var.node_pools_tags
 
   node_pools_oauth_scopes = var.node_pools_oauth_scopes
 

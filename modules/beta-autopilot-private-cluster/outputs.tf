@@ -129,6 +129,11 @@ output "release_channel" {
   value       = var.release_channel
 }
 
+output "gateway_api_channel" {
+  description = "The gateway api channel of this cluster."
+  value       = var.gateway_api_channel
+}
+
 output "identity_namespace" {
   description = "Workload Identity pool"
   value       = length(local.cluster_workload_identity_config) > 0 ? local.cluster_workload_identity_config[0].workload_pool : null

@@ -15,11 +15,10 @@
 project_id = attribute('project_id')
 location = attribute('location')
 cluster_name = attribute('cluster_name')
-service_account = attribute('service_account')
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
-  describe command("gcloud beta --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json") do
+  describe command("gcloud --project=#{project_id} container clusters --zone=#{location} describe #{cluster_name} --format=json") do
     its(:exit_status) { should eq 0 }
     its(:stderr) { should eq '' }
 
@@ -40,10 +39,6 @@ control "gcloud" do
         expect(data['location']).to match(/^.*[1-9]$/)
       end
 
-      it "is single zoned" do
-        expect(data['locations'].size).to eq 1
-      end
-
       it "uses public nodes and master endpoint" do
         expect(data['privateClusterConfig']['enablePrivateEndpoint']).to eq nil
         expect(data['privateClusterConfig']['enablePrivateNodes']).to eq nil
@@ -56,24 +51,30 @@ control "gcloud" do
           "kubernetesDashboard" => {
             "disabled" => true,
           },
-          "kalmConfig" => {},
-          "configConnectorConfig" => {},
           "networkPolicyConfig" => {
             "disabled" => true,
           },
-          "dnsCacheConfig" => {
-            "enabled" => true,
-          },
-          "gcePersistentDiskCsiDriverConfig" => {
-            "enabled" => true,
-          }
         )
       end
 
-      it "has the expected datapathProvider config" do
+      it "has gateway api enabled" do
         expect(data['networkConfig']).to include(
-          "datapathProvider" => "ADVANCED_DATAPATH"
+          "gatewayApiConfig" => {
+            "channel" => "CHANNEL_STANDARD",
+          },
         )
+      end
+
+      it "has the expected databaseEncryption config" do
+        expect(data['databaseEncryption']).to eq({
+          "state" => 'DECRYPTED',
+        })
+      end
+
+      it "has the expected shieldedNodes config" do
+        expect(data['shieldedNodes']).to eq({
+          "enabled" => true,
+        })
       end
 
       it "has the expected binaryAuthorization config" do
@@ -81,63 +82,22 @@ control "gcloud" do
           "evaluationMode" => "PROJECT_SINGLETON_POLICY_ENFORCE",
         })
       end
-
-      it "has the expected podSecurityPolicyConfig config" do
-        expect(data['podSecurityPolicyConfig']).to eq({
-          "enabled" => true,
-        })
-      end
-
-      it "has the expected databaseEncryption config" do
-        expect(data['databaseEncryption']).to eq({
-          "state" => 'ENCRYPTED',
-          "keyName" => attribute('database_encryption_key_name'),
-        })
-      end
-
-      it "has the expected identityServiceConfig config" do
-        expect(data['identityServiceConfig']).to eq({
-          "enabled" => true,
-        })
-      end
-
-      it "has the expected logging config" do
-        expect(data['loggingConfig']['componentConfig']['enableComponents']).to match_array([
-          "SYSTEM_COMPONENTS"
-        ])
-      end
-
-      it "has the expected monitoring config" do
-        expect(data['monitoringConfig']['componentConfig']['enableComponents']).to match_array([
-          "SYSTEM_COMPONENTS"
-        ])
-      end
     end
 
     describe "default node pool" do
       let(:default_node_pool) { data['nodePools'].select { |p| p['name'] == "default-pool" }.first }
 
-      it "has no initial node count" do
-        expect(default_node_pool['initialNodeCount']).to eq nil
-      end
-
-      it "does not have autoscaling enabled" do
-        expect(default_node_pool['autoscaling']).to eq nil
+      it "exists" do
+        expect(data['nodePools']).to include(
+          including(
+            "name" => "default-pool",
+          )
+        )
       end
     end
 
     describe "node pool" do
       let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" } }
-
-      it "uses an automatically created service account" do
-        expect(node_pools).to include(
-          including(
-            "config" => including(
-              "serviceAccount" => service_account,
-            ),
-          ),
-        )
-      end
 
       it "has autoscaling enabled" do
         expect(node_pools).to include(
@@ -163,7 +123,7 @@ control "gcloud" do
         expect(node_pools).to include(
           including(
             "autoscaling" => including(
-              "maxNodeCount" => 2,
+              "maxNodeCount" => 100,
             ),
           )
         )
@@ -173,7 +133,7 @@ control "gcloud" do
         expect(node_pools).to include(
           including(
             "config" => including(
-              "machineType" => "n2-standard-2",
+              "machineType" => "e2-medium",
             ),
           )
         )
@@ -195,7 +155,7 @@ control "gcloud" do
             "config" => including(
               "labels" => including(
                 "cluster_name" => cluster_name,
-                "node_pool" => "pool-01",
+                "node_pool" => "default-node-pool",
               ),
             ),
           )
@@ -208,7 +168,7 @@ control "gcloud" do
             "config" => including(
               "tags" => match_array([
                 "gke-#{cluster_name}",
-                "gke-#{cluster_name}-pool-01",
+                "gke-#{cluster_name}-default-node-pool",
               ]),
             ),
           )
@@ -225,11 +185,11 @@ control "gcloud" do
         )
       end
 
-      it "has placement policy set to COMPACT" do
+      it "has autoupgrade enabled" do
         expect(node_pools).to include(
           including(
-            "placementPolicy" => including(
-              "type" => "COMPACT",
+            "management" => including(
+              "autoUpgrade" => true,
             ),
           )
         )

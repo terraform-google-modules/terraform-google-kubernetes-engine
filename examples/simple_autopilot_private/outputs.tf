@@ -35,6 +35,7 @@ output "master_kubernetes_version" {
 }
 
 output "ca_certificate" {
+  sensitive   = true
   description = "The cluster ca certificate (base64 encoded)"
   value       = module.gke.ca_certificate
 }

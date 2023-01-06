@@ -39,6 +39,15 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+
+  dynamic "gateway_api_config" {
+    for_each = local.gateway_api_config
+
+    content {
+      channel = gateway_api_config.value.channel
+    }
+  }
+
   dynamic "cost_management_config" {
     for_each = var.enable_cost_allocation ? [1] : []
     content {
@@ -60,14 +69,12 @@ resource "google_container_cluster" "primary" {
 
   min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : null
 
-  logging_service    = var.logging_service
-  monitoring_service = var.monitoring_service
-  dynamic "monitoring_config" {
-    for_each = var.monitoring_enable_managed_prometheus ? [1] : []
+  cluster_autoscaling {
+    dynamic "auto_provisioning_defaults" {
+      for_each = var.create_service_account ? [1] : []
 
-    content {
-      managed_prometheus {
-        enabled = var.monitoring_enable_managed_prometheus
+      content {
+        service_account = local.service_account
       }
     }
   }
@@ -109,7 +116,6 @@ resource "google_container_cluster" "primary" {
     horizontal_pod_autoscaling {
       disabled = !var.horizontal_pod_autoscaling
     }
-
 
   }
 

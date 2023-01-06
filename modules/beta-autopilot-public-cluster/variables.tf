@@ -293,6 +293,12 @@ variable "release_channel" {
   default     = null
 }
 
+variable "gateway_api_channel" {
+  type        = string
+  description = "The gateway api channel of this cluster. Accepted values are `CHANNEL_STANDARD` and `CHANNEL_DISABLED`."
+  default     = null
+}
+
 variable "add_cluster_firewall_rules" {
   type        = bool
   description = "Create additional firewall rules"
@@ -327,6 +333,20 @@ variable "shadow_firewall_rules_priority" {
   type        = number
   description = "The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000."
   default     = 999
+  validation {
+    condition     = var.shadow_firewall_rules_priority < 1000
+    error_message = "The shadow firewall rule priority must be lower than auto-created one(1000)."
+  }
+}
+
+variable "shadow_firewall_rules_log_config" {
+  type = object({
+    metadata = string
+  })
+  description = "The log_config for shadow firewall rules. You can set this variable to `null` to disable logging."
+  default = {
+    metadata = "INCLUDE_ALL_METADATA"
+  }
 }
 
 variable "enable_confidential_nodes" {
@@ -373,8 +393,3 @@ variable "timeouts" {
   }
 }
 
-variable "monitoring_enable_managed_prometheus" {
-  type        = bool
-  description = "(Beta) Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
-  default     = false
-}
