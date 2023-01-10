@@ -69,17 +69,6 @@ resource "google_container_cluster" "primary" {
 
   min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : null
 
-  logging_service    = var.logging_service
-  monitoring_service = var.monitoring_service
-  dynamic "monitoring_config" {
-    for_each = var.monitoring_enable_managed_prometheus ? [1] : []
-
-    content {
-      managed_prometheus {
-        enabled = var.monitoring_enable_managed_prometheus
-      }
-    }
-  }
   cluster_autoscaling {
     dynamic "auto_provisioning_defaults" {
       for_each = var.create_service_account ? [1] : []

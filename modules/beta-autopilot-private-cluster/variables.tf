@@ -412,8 +412,3 @@ variable "timeouts" {
   }
 }
 
-variable "monitoring_enable_managed_prometheus" {
-  type        = bool
-  description = "(Beta) Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
-  default     = false
-}

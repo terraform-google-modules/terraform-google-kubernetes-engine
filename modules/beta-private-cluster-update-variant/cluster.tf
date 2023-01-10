@@ -97,7 +97,7 @@ resource "google_container_cluster" "primary" {
     for_each = length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus ? [1] : []
 
     content {
-      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : null
+      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
 
       dynamic "managed_prometheus" {
         for_each = var.monitoring_enable_managed_prometheus ? [1] : []
@@ -142,8 +142,9 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  enable_kubernetes_alpha = var.enable_kubernetes_alpha
+
   enable_intranode_visibility = var.enable_intranode_visibility
-  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   enable_tpu                  = var.enable_tpu
 
   dynamic "pod_security_policy_config" {
@@ -577,7 +578,8 @@ resource "google_container_node_pool" "pools" {
   dynamic "network_config" {
     for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
     content {
-      pod_range = lookup(network_config.value, "pod_range", null)
+      pod_range            = lookup(network_config.value, "pod_range", null)
+      enable_private_nodes = var.enable_private_nodes
     }
   }
 
@@ -788,7 +790,8 @@ resource "google_container_node_pool" "windows_pools" {
   dynamic "network_config" {
     for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
     content {
-      pod_range = lookup(network_config.value, "pod_range", null)
+      pod_range            = lookup(network_config.value, "pod_range", null)
+      enable_private_nodes = var.enable_private_nodes
     }
   }
 
