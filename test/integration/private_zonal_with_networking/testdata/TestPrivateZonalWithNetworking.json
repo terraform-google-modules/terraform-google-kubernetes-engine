@@ -233,6 +233,7 @@
           "gke-CLUSTER_NAME",
           "gke-CLUSTER_NAME-default-node-pool"
         ],
+        "windowsNodeConfig" : {},
         "workloadMetadataConfig": {
           "mode": "GKE_METADATA"
         }
