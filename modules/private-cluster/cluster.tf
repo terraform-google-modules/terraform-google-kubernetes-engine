@@ -22,15 +22,15 @@
 resource "google_container_cluster" "primary" {
   provider = google
 
-  name            = var.name
-  description     = var.description
-  project         = var.project_id
-  resource_labels = var.cluster_resource_labels
-
-  location          = local.location
-  node_locations    = local.node_locations
-  cluster_ipv4_cidr = var.cluster_ipv4_cidr
-  network           = "projects/${local.network_project_id}/global/networks/${var.network}"
+  name               = var.name
+  description        = var.description
+  project            = var.project_id
+  resource_labels    = var.cluster_resource_labels
+  initial_node_count = length(var.node_pools) < 1 ? 1 : null
+  location           = local.location
+  node_locations     = local.node_locations
+  cluster_ipv4_cidr  = var.cluster_ipv4_cidr
+  network            = "projects/${local.network_project_id}/global/networks/${var.network}"
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
 
@@ -245,51 +245,54 @@ resource "google_container_cluster" "primary" {
     update = lookup(var.timeouts, "update", "45m")
     delete = lookup(var.timeouts, "delete", "45m")
   }
-  node_pool {
-    name               = "default-pool"
-    initial_node_count = var.initial_node_count
+  dynamic "node_pool" {
+    for_each = length(var.node_pools) > 0 ? [1] : []
+    content {
+      name               = "default-pool"
+      initial_node_count = var.initial_node_count
 
-    node_config {
-      image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
-      machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
-      min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
-      dynamic "gcfs_config" {
-        for_each = lookup(var.node_pools[0], "enable_gcfs", false) ? [true] : []
-        content {
-          enabled = gcfs_config.value
+      node_config {
+        image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
+        machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
+        min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
+        dynamic "gcfs_config" {
+          for_each = lookup(var.node_pools[0], "enable_gcfs", false) ? [true] : []
+          content {
+            enabled = gcfs_config.value
+          }
         }
-      }
 
-      dynamic "gvnic" {
-        for_each = lookup(var.node_pools[0], "enable_gvnic", false) ? [true] : []
-        content {
-          enabled = gvnic.value
+        dynamic "gvnic" {
+          for_each = lookup(var.node_pools[0], "enable_gvnic", false) ? [true] : []
+          content {
+            enabled = gvnic.value
+          }
         }
-      }
 
-      service_account = lookup(var.node_pools[0], "service_account", local.service_account)
+        service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
-      tags = concat(
-        lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
-        lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-default-pool"] : [],
-        lookup(local.node_pools_tags, "all", []),
-        lookup(local.node_pools_tags, var.node_pools[0].name, []),
-      )
+        tags = concat(
+          lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
+          lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-default-pool"] : [],
+          lookup(local.node_pools_tags, "all", []),
+          lookup(local.node_pools_tags, var.node_pools[0].name, []),
+        )
 
-      dynamic "workload_metadata_config" {
-        for_each = local.cluster_node_metadata_config
+        dynamic "workload_metadata_config" {
+          for_each = local.cluster_node_metadata_config
 
-        content {
-          mode = workload_metadata_config.value.mode
+          content {
+            mode = workload_metadata_config.value.mode
+          }
         }
-      }
 
-      metadata = local.node_pools_metadata["all"]
+        metadata = local.node_pools_metadata["all"]
 
 
-      shielded_instance_config {
-        enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
-        enable_integrity_monitoring = lookup(var.node_pools[0], "enable_integrity_monitoring", true)
+        shielded_instance_config {
+          enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
+          enable_integrity_monitoring = lookup(var.node_pools[0], "enable_integrity_monitoring", true)
+        }
       }
     }
   }
