@@ -148,7 +148,7 @@ variable "enable_referential_rules" {
 }
 
 variable "policy_bundles" {
-  description = "A space separated list of Policy Controller policy bundles urls to install on the cluster."
+  description = "A space separated list of Policy Controller policy bundles git urls (example: https://github.com/GoogleCloudPlatform/acm-policy-controller-library.git/bundles/policy-essentials-v2022) to install on the cluster."
   type        = string
   default     = null
 }

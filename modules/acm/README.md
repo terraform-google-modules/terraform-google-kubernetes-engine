@@ -78,7 +78,7 @@ data "google_client_config" "default" {}
 | https\_proxy | URL for the HTTPS proxy to be used when communicating with the Git repo. | `string` | `null` | no |
 | install\_template\_library | Whether to install the default Policy Controller template library | `bool` | `true` | no |
 | location | GCP location used to reach cluster. | `string` | n/a | yes |
-| policy\_bundles | A space separated list of Policy Controller policy bundles urls to install on the cluster. | `string` | `null` | no |
+| policy\_bundles | A space separated list of Policy Controller policy bundles git urls (example: https://github.com/GoogleCloudPlatform/acm-policy-controller-library.git/bundles/policy-essentials-v2022) to install on the cluster. | `string` | `null` | no |
 | policy\_dir | Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default. | `string` | `""` | no |
 | project\_id | GCP project\_id used to reach cluster. | `string` | n/a | yes |
 | secret\_type | git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true | `string` | `"ssh"` | no |
