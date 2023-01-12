@@ -25,4 +25,6 @@ module "acm" {
   policy_dir  = "foo-corp"
 
   secret_type = "ssh"
+
+  policy_bundles = "https://github.com/GoogleCloudPlatform/acm-policy-controller-library.git/bundles/policy-essentials-v2022"
 }

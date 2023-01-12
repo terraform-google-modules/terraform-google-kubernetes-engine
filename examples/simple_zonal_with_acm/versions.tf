@@ -21,7 +21,12 @@ terraform {
       version = "~> 4.0"
     }
     kubernetes = {
-      source = "hashicorp/kubernetes"
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.10"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 2.1"
     }
   }
   required_version = ">= 0.13"

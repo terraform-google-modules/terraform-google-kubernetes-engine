@@ -68,6 +68,7 @@ data "google_client_config" "default" {}
 | cluster\_name | GCP cluster Name used to reach cluster and which becomes the cluster name in the Config Sync kubernetes custom resource. | `string` | n/a | yes |
 | configmanagement\_version | Version of ACM. | `string` | `""` | no |
 | create\_ssh\_key | Controls whether a key will be generated for Git authentication | `bool` | `true` | no |
+| enable\_config\_sync | Whether to enable the ACM Config Sync on the cluster | `bool` | `true` | no |
 | enable\_fleet\_feature | Whether to enable the ACM feature on the fleet. | `bool` | `true` | no |
 | enable\_fleet\_registration | Whether to create a new membership. | `bool` | `true` | no |
 | enable\_log\_denies | Whether to enable logging of all denies and dryrun failures for ACM Policy Controller. | `bool` | `false` | no |
@@ -77,13 +78,14 @@ data "google_client_config" "default" {}
 | https\_proxy | URL for the HTTPS proxy to be used when communicating with the Git repo. | `string` | `null` | no |
 | install\_template\_library | Whether to install the default Policy Controller template library | `bool` | `true` | no |
 | location | GCP location used to reach cluster. | `string` | n/a | yes |
+| policy\_bundles | A space separated list of Policy Controller policy bundles urls to install on the cluster. | `string` | `null` | no |
 | policy\_dir | Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default. | `string` | `""` | no |
 | project\_id | GCP project\_id used to reach cluster. | `string` | n/a | yes |
 | secret\_type | git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true | `string` | `"ssh"` | no |
 | source\_format | Configures a non-hierarchical repo if set to 'unstructured'. Uses [ACM defaults](https://cloud.google.com/anthos-config-management/docs/how-to/installing#configuring-config-management-operator) when unset. | `string` | `""` | no |
 | ssh\_auth\_key | Key for Git authentication. Overrides 'create\_ssh\_key' variable. Can be set using 'file(path/to/file)'-function. | `string` | `null` | no |
 | sync\_branch | ACM repo Git branch. If un-set, uses Config Management default. | `string` | `""` | no |
-| sync\_repo | ACM Git repo address | `string` | n/a | yes |
+| sync\_repo | ACM Git repo address | `string` | `""` | no |
 | sync\_revision | ACM repo Git revision. If un-set, uses Config Management default. | `string` | `""` | no |
 
 ## Outputs

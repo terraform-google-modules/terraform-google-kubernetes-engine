@@ -57,6 +57,7 @@ variable "configmanagement_version" {
 variable "sync_repo" {
   description = "ACM Git repo address"
   type        = string
+  default     = ""
 }
 
 variable "sync_branch" {
@@ -108,6 +109,12 @@ variable "ssh_auth_key" {
   default     = null
 }
 
+variable "enable_config_sync" {
+  description = "Whether to enable the ACM Config Sync on the cluster"
+  type        = bool
+  default     = true
+}
+
 # Policy Controller config
 variable "enable_policy_controller" {
   description = "Whether to enable the ACM Policy Controller on the cluster"
@@ -138,4 +145,10 @@ variable "enable_referential_rules" {
   description = "Enables referential constraints which reference another object in it definition and are therefore eventually consistent."
   type        = bool
   default     = true
+}
+
+variable "policy_bundles" {
+  description = "A space separated list of Policy Controller policy bundles urls to install on the cluster."
+  type        = string
+  default     = null
 }
