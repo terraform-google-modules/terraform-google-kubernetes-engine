@@ -20,7 +20,7 @@ module "acm" {
   location     = module.gke.location
   cluster_name = module.gke.name
 
-  sync_repo   = "git@github.com:GoogleCloudPlatform/csp-config-management.git"
+  sync_repo   = "git@github.com:GoogleCloudPlatform/anthos-config-management-samples.git"
   sync_branch = "1.0.0"
   policy_dir  = "foo-corp"
 
