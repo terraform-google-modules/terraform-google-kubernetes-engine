@@ -114,6 +114,14 @@ resource "google_container_cluster" "primary" {
         maximum       = lookup(resource_limits.value, "maximum")
       }
     }
+    dynamic "management" {
+      for_each = var.cluster_autoscaling.enabled ? [1] : []
+
+      content {
+        auto_repair  = var.cluster_autoscaling.auto_repair
+        auto_upgrade = var.cluster_autoscaling.auto_upgrade
+      }
+    }
   }
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
