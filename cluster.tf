@@ -104,6 +104,12 @@ resource "google_container_cluster" "primary" {
       content {
         service_account = local.service_account
         oauth_scopes    = local.node_pools_oauth_scopes["all"]
+
+        management {
+          auto_repair  = var.cluster_autoscaling.auto_repair
+          auto_upgrade = var.cluster_autoscaling.auto_upgrade
+        }
+
       }
     }
     dynamic "resource_limits" {
@@ -112,14 +118,6 @@ resource "google_container_cluster" "primary" {
         resource_type = lookup(resource_limits.value, "resource_type")
         minimum       = lookup(resource_limits.value, "minimum")
         maximum       = lookup(resource_limits.value, "maximum")
-      }
-    }
-    dynamic "management" {
-      for_each = var.cluster_autoscaling.enabled ? [1] : []
-
-      content {
-        auto_repair  = var.cluster_autoscaling.auto_repair
-        auto_upgrade = var.cluster_autoscaling.auto_upgrade
       }
     }
   }
