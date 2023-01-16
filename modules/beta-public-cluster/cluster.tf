@@ -118,8 +118,8 @@ resource "google_container_cluster" "primary" {
         oauth_scopes    = local.node_pools_oauth_scopes["all"]
 
         management {
-          auto_repair  = var.cluster_autoscaling.auto_repair
-          auto_upgrade = var.cluster_autoscaling.auto_upgrade
+          auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
+          auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
         }
 
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
