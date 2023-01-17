@@ -396,6 +396,12 @@ variable "authenticator_security_group" {
   default     = null
 }
 
+variable "create_compute_engine_service_account" {
+  type        = bool
+  description = "Defines if service account specified to run nodes should be created."
+  default     = true
+}
+
 variable "compute_engine_service_account" {
   type        = string
   description = "Use the given service account for nodes rather than creating a new dedicated service account."

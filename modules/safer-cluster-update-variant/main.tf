@@ -111,7 +111,7 @@ module "gke" {
   //   All applications should run with an identity defined via Workload Identity anyway.
   // - Use a service account passed as a parameter to the module, in case the user
   //   wants to maintain control of their service accounts.
-  create_service_account = var.compute_engine_service_account == "" ? true : false
+  create_service_account = var.create_compute_engine_service_account
   service_account        = var.compute_engine_service_account
   registry_project_ids   = var.registry_project_ids
   grant_registry_access  = var.grant_registry_access
