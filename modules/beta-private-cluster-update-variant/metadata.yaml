@@ -457,7 +457,7 @@ spec:
     default: 10.0.0.0/28
     required: false
   - name: monitoring_enable_managed_prometheus
-    description: (Beta) Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled.
+    description: Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled.
     type: bool
     default: false
     required: false

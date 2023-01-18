@@ -333,7 +333,6 @@ variable "cluster_telemetry_type" {
   default     = null
 }
 
-{% endif %}
 variable "logging_service" {
   type        = string
   description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
@@ -345,6 +344,7 @@ variable "monitoring_service" {
   description = "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none"
   default     = "monitoring.googleapis.com/kubernetes"
 }
+{% endif %}
 
 variable "create_service_account" {
   type        = bool

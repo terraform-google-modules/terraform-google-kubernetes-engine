@@ -432,7 +432,7 @@ spec:
     default: []
     required: false
   - name: monitoring_enable_managed_prometheus
-    description: (Beta) Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled.
+    description: Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled.
     type: bool
     default: false
     required: false
@@ -699,6 +699,19 @@ spec:
   roles:
   - level: Project
     roles:
+    - roles/editor
+    - roles/compute.admin
+    - roles/container.admin
+    - roles/resourcemanager.projectIamAdmin
+    - roles/servicemanagement.admin
+    - roles/serviceusage.serviceUsageAdmin
+    - roles/iam.serviceAccountAdmin
+    - roles/iam.serviceAccountKeyAdmin
+    - roles/meshconfig.admin
+    - roles/gkehub.admin
+    - roles/privateca.admin
+  - level: Project
+    roles:
     - roles/cloudkms.admin
     - roles/cloudkms.cryptoKeyEncrypterDecrypter
     - roles/compute.networkAdmin
@@ -717,17 +730,4 @@ spec:
     - roles/iam.roleAdmin
     - roles/iap.admin
     - roles/gkehub.admin
-  - level: Project
-    roles:
-    - roles/editor
-    - roles/compute.admin
-    - roles/container.admin
-    - roles/resourcemanager.projectIamAdmin
-    - roles/servicemanagement.admin
-    - roles/serviceusage.serviceUsageAdmin
-    - roles/iam.serviceAccountAdmin
-    - roles/iam.serviceAccountKeyAdmin
-    - roles/meshconfig.admin
-    - roles/gkehub.admin
-    - roles/privateca.admin
   services: []

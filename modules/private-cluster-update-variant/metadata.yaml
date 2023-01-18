@@ -225,6 +225,11 @@ spec:
     type: bool
     default: false
     required: false
+  - name: enable_kubernetes_alpha
+    description: Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days.
+    type: bool
+    default: false
+    required: false
   - name: enable_network_egress_export
     description: Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic.
     type: bool
@@ -335,10 +340,10 @@ spec:
     type: string
     default: latest
     required: false
-  - name: logging_service
-    description: The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none
-    type: string
-    default: logging.googleapis.com/kubernetes
+  - name: logging_enabled_components
+    description: 'List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS. Empty list is default GKE configuration.'
+    type: list(string)
+    default: []
     required: false
   - name: maintenance_end_time
     description: Time window specified for recurring maintenance operations in RFC3339 format
@@ -375,10 +380,15 @@ spec:
     type: string
     default: 10.0.0.0/28
     required: false
-  - name: monitoring_service
-    description: The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none
-    type: string
-    default: monitoring.googleapis.com/kubernetes
+  - name: monitoring_enable_managed_prometheus
+    description: Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled.
+    type: bool
+    default: false
+    required: false
+  - name: monitoring_enabled_components
+    description: 'List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS (provider version >= 3.89.0). Empty list is default GKE configuration.'
+    type: list(string)
+    default: []
     required: false
   - name: name
     description: The name of the cluster (required)
@@ -611,6 +621,19 @@ spec:
   roles:
   - level: Project
     roles:
+    - roles/editor
+    - roles/compute.admin
+    - roles/container.admin
+    - roles/resourcemanager.projectIamAdmin
+    - roles/servicemanagement.admin
+    - roles/serviceusage.serviceUsageAdmin
+    - roles/iam.serviceAccountAdmin
+    - roles/iam.serviceAccountKeyAdmin
+    - roles/meshconfig.admin
+    - roles/gkehub.admin
+    - roles/privateca.admin
+  - level: Project
+    roles:
     - roles/cloudkms.admin
     - roles/cloudkms.cryptoKeyEncrypterDecrypter
     - roles/compute.networkAdmin
@@ -629,17 +652,4 @@ spec:
     - roles/iam.roleAdmin
     - roles/iap.admin
     - roles/gkehub.admin
-  - level: Project
-    roles:
-    - roles/editor
-    - roles/compute.admin
-    - roles/container.admin
-    - roles/resourcemanager.projectIamAdmin
-    - roles/servicemanagement.admin
-    - roles/serviceusage.serviceUsageAdmin
-    - roles/iam.serviceAccountAdmin
-    - roles/iam.serviceAccountKeyAdmin
-    - roles/meshconfig.admin
-    - roles/gkehub.admin
-    - roles/privateca.admin
   services: []
