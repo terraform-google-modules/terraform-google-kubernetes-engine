@@ -579,6 +579,12 @@ variable "gce_pd_csi_driver" {
   default     = true
 }
 
+variable "gke_backup_agent_config" {
+  type        = bool
+  description = "Whether Backup for GKE agent is enabled for this cluster."
+  default     = false
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -634,12 +640,6 @@ variable "kalm_config" {
 variable "config_connector" {
   type        = bool
   description = "(Beta) Whether ConfigConnector is enabled for this cluster."
-  default     = false
-}
-
-variable "gke_backup_agent_config" {
-  type        = bool
-  description = "(Beta) Whether Backup for GKE agent is enabled for this cluster."
   default     = false
 }
 

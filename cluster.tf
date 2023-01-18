@@ -184,6 +184,14 @@ resource "google_container_cluster" "primary" {
         enabled = gce_persistent_disk_csi_driver_config.value.enabled
       }
     }
+
+    dynamic "gke_backup_agent_config" {
+      for_each = local.gke_backup_agent_config
+
+      content {
+        enabled = gke_backup_agent_config.value.enabled
+      }
+    }
   }
 
   datapath_provider = var.datapath_provider

@@ -37,7 +37,8 @@ module "gke" {
   // the master upgrades.
   //
   // https://cloud.google.com/kubernetes-engine/versioning-and-upgrades
-  release_channel = var.release_channel
+  release_channel     = var.release_channel
+  gateway_api_channel = var.gateway_api_channel
 
   master_authorized_networks = var.master_authorized_networks
 
