@@ -251,6 +251,10 @@ spec:
     type: number
     default: 1000
     required: false
+  - name: gateway_api_channel
+    description: The gateway api channel of this cluster. Accepted values are `CHANNEL_STANDARD` and `CHANNEL_DISABLED`.
+    type: string
+    required: false
   - name: gce_pd_csi_driver
     description: (Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver.
     type: bool

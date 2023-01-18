@@ -324,7 +324,7 @@ spec:
     default: true
     required: false
   - name: gke_backup_agent_config
-    description: (Beta) Whether Backup for GKE agent is enabled for this cluster.
+    description: Whether Backup for GKE agent is enabled for this cluster.
     type: bool
     default: false
     required: false

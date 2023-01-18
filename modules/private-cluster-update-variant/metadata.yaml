@@ -287,6 +287,11 @@ spec:
     type: bool
     default: true
     required: false
+  - name: gke_backup_agent_config
+    description: Whether Backup for GKE agent is enabled for this cluster.
+    type: bool
+    default: false
+    required: false
   - name: grant_registry_access
     description: Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles.
     type: bool
@@ -621,19 +626,6 @@ spec:
   roles:
   - level: Project
     roles:
-    - roles/editor
-    - roles/compute.admin
-    - roles/container.admin
-    - roles/resourcemanager.projectIamAdmin
-    - roles/servicemanagement.admin
-    - roles/serviceusage.serviceUsageAdmin
-    - roles/iam.serviceAccountAdmin
-    - roles/iam.serviceAccountKeyAdmin
-    - roles/meshconfig.admin
-    - roles/gkehub.admin
-    - roles/privateca.admin
-  - level: Project
-    roles:
     - roles/cloudkms.admin
     - roles/cloudkms.cryptoKeyEncrypterDecrypter
     - roles/compute.networkAdmin
@@ -652,4 +644,17 @@ spec:
     - roles/iam.roleAdmin
     - roles/iap.admin
     - roles/gkehub.admin
+  - level: Project
+    roles:
+    - roles/editor
+    - roles/compute.admin
+    - roles/container.admin
+    - roles/resourcemanager.projectIamAdmin
+    - roles/servicemanagement.admin
+    - roles/serviceusage.serviceUsageAdmin
+    - roles/iam.serviceAccountAdmin
+    - roles/iam.serviceAccountKeyAdmin
+    - roles/meshconfig.admin
+    - roles/gkehub.admin
+    - roles/privateca.admin
   services: []

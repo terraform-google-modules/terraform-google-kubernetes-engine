@@ -287,6 +287,11 @@ spec:
     type: bool
     default: true
     required: false
+  - name: gke_backup_agent_config
+    description: Whether Backup for GKE agent is enabled for this cluster.
+    type: bool
+    default: false
+    required: false
   - name: grant_registry_access
     description: Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles.
     type: bool
