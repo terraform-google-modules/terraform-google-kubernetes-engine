@@ -1,6 +1,5 @@
-
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +20,7 @@ terraform {
     google = {
       source = "hashicorp/google"
       # Avoid v4.49.0 for https://github.com/hashicorp/terraform-provider-google/issues/13507
-      version = ">= 4.47.0, != 4.49.0, < 5.0"
+      version = "!= 4.49.0"
     }
-  }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:auth/v24.1.0"
   }
 }
