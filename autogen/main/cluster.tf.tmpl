@@ -797,6 +797,7 @@ resource "google_container_node_pool" "windows_pools" {
         cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
       }
     }
+    {% endif %}
 
     {% if i == 0 %}
     dynamic "linux_node_config" {
@@ -812,7 +813,6 @@ resource "google_container_node_pool" "windows_pools" {
         )
       }
     }
-    {% endif %}
     {% endif %}
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")

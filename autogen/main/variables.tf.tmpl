@@ -191,7 +191,6 @@ variable "node_pools_metadata" {
     default-node-pool = {}
   }
 }
-{% if beta_cluster %}
 
 variable "node_pools_linux_node_configs_sysctls" {
   type        = map(map(string))
@@ -203,7 +202,6 @@ variable "node_pools_linux_node_configs_sysctls" {
     default-node-pool = {}
   }
 }
-{% endif %}
 {% endif %}
 
 variable "enable_cost_allocation" {
