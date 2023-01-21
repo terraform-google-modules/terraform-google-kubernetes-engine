@@ -623,9 +623,7 @@ variable "node_metadata" {
     error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA, UNSPECIFIED, GKE_METADATA_SERVER or EXPOSE."
   }
 }
-{% endif %}
 
-{% if autopilot_cluster != true %}
 variable "cluster_dns_provider" {
   type        = string
   description = "Which in-cluster DNS provider should be used. PROVIDER_UNSPECIFIED (default) or PLATFORM_DEFAULT or CLOUD_DNS."
@@ -653,6 +651,12 @@ variable "gce_pd_csi_driver" {
 variable "gke_backup_agent_config" {
   type        = bool
   description = "Whether Backup for GKE agent is enabled for this cluster."
+  default     = false
+}
+
+variable "config_connector" {
+  type        = bool
+  description = "Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
 
@@ -709,12 +713,6 @@ variable "istio_auth" {
 variable "kalm_config" {
   type        = bool
   description = "(Beta) Whether KALM is enabled for this cluster."
-  default     = false
-}
-
-variable "config_connector" {
-  type        = bool
-  description = "(Beta) Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
 
