@@ -576,6 +576,12 @@ variable "gke_backup_agent_config" {
   default     = false
 }
 
+variable "config_connector" {
+  type        = bool
+  description = "Whether ConfigConnector is enabled for this cluster."
+  default     = false
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."

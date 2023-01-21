@@ -231,6 +231,11 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    config_connector_config {
+      enabled = var.config_connector
+    }
+
+
     istio_config {
       disabled = !var.istio
       auth     = var.istio_auth
@@ -246,10 +251,6 @@ resource "google_container_cluster" "primary" {
 
     kalm_config {
       enabled = var.kalm_config
-    }
-
-    config_connector_config {
-      enabled = var.config_connector
     }
   }
 

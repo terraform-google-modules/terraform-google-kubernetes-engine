@@ -387,7 +387,6 @@ variable "database_encryption" {
   }]
 }
 
-
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
