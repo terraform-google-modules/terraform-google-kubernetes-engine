@@ -26,7 +26,7 @@ terraform {
     google = {
       source = "hashicorp/google"
       # Avoid v4.49.0 for https://github.com/hashicorp/terraform-provider-google/issues/13507
-      version = ">= 4.47.0, != 4.49.0, < 5.0"
+      version = ">= 4.47.0, < 4.49.0"
     }
   }
 
