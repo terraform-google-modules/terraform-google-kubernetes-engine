@@ -25,7 +25,7 @@ resource "time_sleep" "wait_acm" {
   count      = (var.create_ssh_key == true || var.ssh_auth_key != null) ? 1 : 0
   depends_on = [google_gke_hub_feature_membership.main]
 
-  create_duration = "360s"
+  create_duration = "60s"
 }
 
 resource "kubernetes_secret_v1" "creds" {
