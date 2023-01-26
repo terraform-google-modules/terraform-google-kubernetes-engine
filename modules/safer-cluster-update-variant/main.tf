@@ -189,5 +189,16 @@ module "gke" {
   gce_pd_csi_driver    = var.gce_pd_csi_driver
   filestore_csi_driver = var.filestore_csi_driver
 
-  notification_config_topic = var.notification_config_topic
+  notification_config {
+    pubsub {
+      enabled = var.notification_config.topic != "" ? true : false
+      topic   = var.notification_config.topic
+      dynamic "filter" {
+        for_each = var.notification_config.event_filter != [] ? [1] : []
+        content {
+          event_type = var.notification_config.event_filter
+        }
+      }
+    }
+  }
 }

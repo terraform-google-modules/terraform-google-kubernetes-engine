@@ -504,10 +504,16 @@ variable "disable_default_snat" {
   default     = false
 }
 
-variable "notification_config_topic" {
-  type        = string
-  description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
-  default     = ""
+variable "notification_config" {
+  type = object({
+    topic        = string
+    event_type = []
+  })
+  description = "The desired Pub/Sub topic to which notifications will be sent by GKE and any filters to apply. Format is projects/{project}/topics/{topic}. Filters - https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#event_type Possible values - UPGRADE_AVAILABLE_EVENT, UPGRADE_EVENT, SECURITY_BULLETIN_EVENT"
+  default = {
+    topic  = ""
+    event_type = ["UPGRADE_AVAILABLE_EVENT", "UPGRADE_EVENT", "SECURITY_BULLETIN_EVENT"]
+  }
 }
 
 variable "enable_tpu" {

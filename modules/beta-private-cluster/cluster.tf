@@ -280,7 +280,9 @@ resource "google_container_cluster" "primary" {
         end_time       = maintenance_exclusion.value.end_time
 
         dynamic "exclusion_options" {
-          for_each = maintenance_exclusion.value.exclusion_scope == null ? [] : [maintenance_exclusion.value.exclusion_scope]
+          for_each = maintenance_exclusion.value.exclusion_scope == null ? [] : [
+            maintenance_exclusion.value.exclusion_scope
+          ]
           content {
             scope = exclusion_options.value
           }
@@ -333,7 +335,9 @@ resource "google_container_cluster" "primary" {
 
       tags = concat(
         lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
-        lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-default-pool"] : [],
+        lookup(local.node_pools_tags, "default_values", [true, true])[1] ? [
+          "${local.cluster_network_tag}-default-pool"
+        ] : [],
         lookup(local.node_pools_tags, "all", []),
         lookup(local.node_pools_tags, var.node_pools[0].name, []),
       )
@@ -365,11 +369,13 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "resource_usage_export_config" {
-    for_each = var.resource_usage_export_dataset_id != "" ? [{
-      enable_network_egress_metering       = var.enable_network_egress_export
-      enable_resource_consumption_metering = var.enable_resource_consumption_export
-      dataset_id                           = var.resource_usage_export_dataset_id
-    }] : []
+    for_each = var.resource_usage_export_dataset_id != "" ? [
+      {
+        enable_network_egress_metering       = var.enable_network_egress_export
+        enable_resource_consumption_metering = var.enable_resource_consumption_export
+        dataset_id                           = var.resource_usage_export_dataset_id
+      }
+    ] : []
 
     content {
       enable_network_egress_metering       = resource_usage_export_config.value.enable_network_egress_metering
@@ -381,11 +387,13 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "private_cluster_config" {
-    for_each = var.enable_private_nodes ? [{
-      enable_private_nodes    = var.enable_private_nodes,
-      enable_private_endpoint = var.enable_private_endpoint
-      master_ipv4_cidr_block  = var.master_ipv4_cidr_block
-    }] : []
+    for_each = var.enable_private_nodes ? [
+      {
+        enable_private_nodes    = var.enable_private_nodes,
+        enable_private_endpoint = var.enable_private_endpoint
+        master_ipv4_cidr_block  = var.master_ipv4_cidr_block
+      }
+    ] : []
 
     content {
       enable_private_endpoint = private_cluster_config.value.enable_private_endpoint
@@ -428,8 +436,14 @@ resource "google_container_cluster" "primary" {
 
   notification_config {
     pubsub {
-      enabled = var.notification_config_topic != "" ? true : false
-      topic   = var.notification_config_topic
+      enabled = var.notification_config.topic != "" ? true : false
+      topic   = var.notification_config.topic
+      dynamic "filter" {
+        for_each = var.notification_config.event_type != [] ? [1] : []
+        content {
+          event_type = var.notification_config.event_type
+        }
+      }
     }
   }
 }
