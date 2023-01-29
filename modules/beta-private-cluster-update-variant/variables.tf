@@ -717,3 +717,39 @@ variable "enable_identity_service" {
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
   default     = false
 }
+
+variable "strategy" {
+  type        = string
+  description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
+  default     = "SURGE"
+}
+
+variable "max_surge" {
+  type    = number
+  default = null
+}
+
+variable "max_unavailable" {
+  type    = number
+  default = null
+}
+
+variable "node_pool_soak_duration" {
+  type    = string
+  default = "3600s"
+}
+
+variable "batch_soak_duration" {
+  type    = string
+  default = "60s"
+}
+
+variable "batch_percentage" {
+  type    = string
+  default = null
+}
+
+variable "batch_node_count" {
+  type    = number
+  default = null
+}
