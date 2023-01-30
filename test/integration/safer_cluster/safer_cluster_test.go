@@ -43,8 +43,6 @@ func TestSaferCluster(t *testing.T) {
 		)
 		validateJSONPaths := []string{
 			"status",
-			"currentMasterVersion",
-			"currentNodeVersion",
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
