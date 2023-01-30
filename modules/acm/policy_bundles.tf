@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-locals {
-  policy_bundles = var.policy_bundles != null ? var.policy_bundles : ""
-}
-
 module "policy_bundles" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version = "~> 3.1"
 
+  for_each                = toset(var.policy_bundles)
   project_id              = var.project_id
   cluster_name            = var.cluster_name
   cluster_location        = var.location
-  enabled                 = (var.policy_bundles != null) && var.enable_policy_controller ? true : false
-  kubectl_create_command  = "kubectl apply -k ${local.policy_bundles}"
-  kubectl_destroy_command = "kubectl delete -k ${local.policy_bundles}"
+  kubectl_create_command  = "kubectl apply -k ${each.key}"
+  kubectl_destroy_command = "kubectl delete -k ${each.key}"
 
   module_depends_on = [time_sleep.wait_acm]
 }

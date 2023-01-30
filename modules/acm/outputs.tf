@@ -31,3 +31,8 @@ output "wait" {
     google_gke_hub_feature_membership.main
   ]
 }
+
+output "acm_metrics_writer_sa" {
+  description = "The ACM metrics writer Service Account"
+  value       = google_service_account.acm_metrics_writer_sa[0].email
+}

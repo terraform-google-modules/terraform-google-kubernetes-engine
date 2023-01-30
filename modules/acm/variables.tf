@@ -148,7 +148,19 @@ variable "enable_referential_rules" {
 }
 
 variable "policy_bundles" {
-  description = "A space separated list of Policy Controller policy bundles git urls (example: https://github.com/GoogleCloudPlatform/acm-policy-controller-library.git/bundles/policy-essentials-v2022) to install on the cluster."
+  description = "A list of Policy Controller policy bundles git urls (example: https://github.com/GoogleCloudPlatform/acm-policy-controller-library.git/bundles/policy-essentials-v2022) to install on the cluster."
+  type        = list(string)
+  default     = []
+}
+
+variable "create_metrics_gcp_sa" {
+  description = "Create a Google service account for ACM metrics writing"
+  type        = bool
+  default     = false
+}
+
+variable "metrics_gcp_sa_name" {
+  description = "The name of the Google service account for ACM metrics writing"
   type        = string
-  default     = null
+  default     = "acm-metrics-writer"
 }
