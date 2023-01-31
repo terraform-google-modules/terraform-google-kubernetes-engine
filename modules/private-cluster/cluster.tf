@@ -104,6 +104,12 @@ resource "google_container_cluster" "primary" {
       content {
         service_account = local.service_account
         oauth_scopes    = local.node_pools_oauth_scopes["all"]
+
+        management {
+          auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
+          auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
+        }
+
       }
     }
     dynamic "resource_limits" {
