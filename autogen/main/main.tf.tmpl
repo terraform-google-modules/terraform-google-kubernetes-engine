@@ -68,7 +68,7 @@ locals {
     resource_type = "memory"
     minimum       = var.cluster_autoscaling.min_memory_gb
     maximum       = var.cluster_autoscaling.max_memory_gb
-  }], var.cluster_autoscaling.gpu_resources) : []
+  }], var.cluster_autoscaling.gpu_resources) : []  
   {% endif %}
 
 
