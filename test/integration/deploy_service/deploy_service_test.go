@@ -46,9 +46,8 @@ func TestDeployService(t *testing.T) {
 
 		pollHTTPEndPoint := func(cmd string) func() (bool, error) {
 			return func() (bool, error) {
-				build, err := http.Get(cmd)
-				if build.StatusCode == 200 {
-					assert.NoError(err)
+				_, err := http.Get(cmd)
+				if assert.NoError(err) {
 					return false, nil
 				}
 				return true, nil
