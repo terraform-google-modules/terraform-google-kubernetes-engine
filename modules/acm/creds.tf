@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+locals {
+  # GCP service account ids must be <= 30 chars matching regex ^[a-z](?:[-a-z0-9]{4,28}[a-z0-9])$
+  service_account_name = trimsuffix(substr(var.metrics_gcp_sa_name, 0, 30), "-")
+}
+
 resource "tls_private_key" "k8sop_creds" {
   count     = var.create_ssh_key ? 1 : 0
   algorithm = "RSA"
@@ -22,10 +27,92 @@ resource "tls_private_key" "k8sop_creds" {
 
 # Wait for the ACM operator to create the namespace
 resource "time_sleep" "wait_acm" {
-  count      = (var.create_ssh_key == true || var.ssh_auth_key != null) ? 1 : 0
+  count      = (var.create_ssh_key == true || var.ssh_auth_key != null || var.enable_policy_controller || var.enable_config_sync) ? 1 : 0
   depends_on = [google_gke_hub_feature_membership.main]
 
-  create_duration = "60s"
+  create_duration = "300s"
+}
+
+resource "google_service_account_iam_binding" "config-management-monitoring-iam" {
+  count              = var.enable_config_sync && var.create_metrics_gcp_sa ? 1 : 0
+  service_account_id = google_service_account.acm_metrics_writer_sa[0].name
+  role               = "roles/iam.workloadIdentityUser"
+
+  members = ["serviceAccount:${var.project_id}.svc.id.goog[config-management-monitoring/default]"]
+
+  depends_on = [google_gke_hub_feature_membership.main]
+}
+
+resource "google_service_account_iam_binding" "gatekeeper-system-iam" {
+  count              = var.enable_policy_controller && var.create_metrics_gcp_sa ? 1 : 0
+  service_account_id = google_service_account.acm_metrics_writer_sa[0].name
+  role               = "roles/iam.workloadIdentityUser"
+
+  members = ["serviceAccount:${var.project_id}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"]
+
+  depends_on = [google_gke_hub_feature_membership.main]
+}
+
+module "annotate-sa-config-management-monitoring" {
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
+
+  count            = var.enable_config_sync && var.create_metrics_gcp_sa ? 1 : 0
+  skip_download    = true
+  cluster_name     = var.cluster_name
+  cluster_location = var.location
+  project_id       = var.project_id
+
+  kubectl_create_command  = "kubectl annotate --overwrite sa -n config-management-monitoring default iam.gke.io/gcp-service-account=${google_service_account.acm_metrics_writer_sa[0].email}"
+  kubectl_destroy_command = "kubectl annotate sa -n config-management-monitoring default iam.gke.io/gcp-service-account-"
+
+  module_depends_on = time_sleep.wait_acm
+}
+
+module "annotate-sa-gatekeeper-system" {
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
+
+  count            = var.enable_policy_controller && var.create_metrics_gcp_sa ? 1 : 0
+  skip_download    = true
+  cluster_name     = var.cluster_name
+  cluster_location = var.location
+  project_id       = var.project_id
+
+  kubectl_create_command  = "kubectl annotate --overwrite sa -n gatekeeper-system gatekeeper-admin iam.gke.io/gcp-service-account=${google_service_account.acm_metrics_writer_sa[0].email}"
+  kubectl_destroy_command = "kubectl annotate sa -n gatekeeper-system gatekeeper-admin iam.gke.io/gcp-service-account-"
+
+  module_depends_on = time_sleep.wait_acm
+}
+
+module "annotate-sa-gatekeeper-system-restart" {
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
+
+  count            = var.enable_policy_controller && var.create_metrics_gcp_sa ? 1 : 0
+  skip_download    = true
+  cluster_name     = var.cluster_name
+  cluster_location = var.location
+  project_id       = var.project_id
+
+  kubectl_create_command  = "kubectl rollout restart deployment gatekeeper-controller-manager -n gatekeeper-system"
+  kubectl_destroy_command = ""
+
+  module_depends_on = module.annotate-sa-gatekeeper-system
+}
+
+resource "google_service_account" "acm_metrics_writer_sa" {
+  count = var.create_metrics_gcp_sa ? 1 : 0
+
+  display_name = "ACM Metrics Writer SA"
+  account_id   = local.service_account_name
+  project      = var.project_id
+}
+
+resource "google_project_iam_member" "acm_metrics_writer_sa_role" {
+  project = var.project_id
+  role    = "roles/monitoring.metricWriter"
+  member  = "serviceAccount:${google_service_account.acm_metrics_writer_sa[0].email}"
 }
 
 resource "kubernetes_secret_v1" "creds" {
@@ -38,6 +125,6 @@ resource "kubernetes_secret_v1" "creds" {
   }
 
   data = {
-    "${local.k8sop_creds_secret_key}" = local.private_key
+    (local.k8sop_creds_secret_key) = local.private_key
   }
 }

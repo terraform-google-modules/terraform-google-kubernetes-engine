@@ -57,6 +57,7 @@ variable "configmanagement_version" {
 variable "sync_repo" {
   description = "ACM Git repo address"
   type        = string
+  default     = ""
 }
 
 variable "sync_branch" {
@@ -108,6 +109,12 @@ variable "ssh_auth_key" {
   default     = null
 }
 
+variable "enable_config_sync" {
+  description = "Whether to enable the ACM Config Sync on the cluster"
+  type        = bool
+  default     = true
+}
+
 # Policy Controller config
 variable "enable_policy_controller" {
   description = "Whether to enable the ACM Policy Controller on the cluster"
@@ -138,4 +145,22 @@ variable "enable_referential_rules" {
   description = "Enables referential constraints which reference another object in it definition and are therefore eventually consistent."
   type        = bool
   default     = true
+}
+
+variable "policy_bundles" {
+  description = "A list of Policy Controller policy bundles git urls (example: https://github.com/GoogleCloudPlatform/acm-policy-controller-library.git/bundles/policy-essentials-v2022) to install on the cluster."
+  type        = list(string)
+  default     = []
+}
+
+variable "create_metrics_gcp_sa" {
+  description = "Create a Google service account for ACM metrics writing"
+  type        = bool
+  default     = false
+}
+
+variable "metrics_gcp_sa_name" {
+  description = "The name of the Google service account for ACM metrics writing"
+  type        = string
+  default     = "acm-metrics-writer"
 }
