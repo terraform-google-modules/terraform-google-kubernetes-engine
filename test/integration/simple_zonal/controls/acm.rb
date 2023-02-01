@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2019-2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,6 +44,13 @@ control "acm" do
 
     describe "config-management-system namespace" do
       let(:namespace) { client.get_namespace("config-management-system") }
+      it "should exist" do
+        expect(namespace).not_to be nil
+      end
+    end
+
+    describe "gatekeeper-system namespace" do
+      let(:namespace) { client.get_namespace("gatekeeper-system") }
       it "should exist" do
         expect(namespace).not_to be nil
       end
