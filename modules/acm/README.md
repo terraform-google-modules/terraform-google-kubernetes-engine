@@ -3,10 +3,12 @@
 This module installs [Anthos Config Management](https://cloud.google.com/anthos-config-management/docs/) (ACM) in a Kubernetes cluster.
 
 Specifically, this module automates the following steps for [installing ACM](https://cloud.google.com/anthos-config-management/docs/how-to/installing):
-1. Enabling the ACM feature on the fleet.
+1. Enabling the ACM feature on the fleet
 2. Registering the cluster to the fleet
 3. Optionally, generating an SSH key for accessing Git and providing it to the Operator
 4. Configuring the ACM feature on your cluster
+5. Optionally, installing ACM Policy Controller [Policy Bundle(s)](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller-bundles)
+6. Optionally, create and configure a Google Cloud Service Account for writing ACM metrics to Cloud Monitoring
 
 ## Fleet feature
 Only the first cluster in a fleet should activate the ACM fleet feature.
@@ -35,6 +37,11 @@ module "acm" {
   sync_repo        = "git@github.com:GoogleCloudPlatform/anthos-config-management-samples.git"
   sync_branch      = "1.0.0"
   policy_dir       = "foo-corp"
+
+  # ACM Policy Controller Policy Essentials Policy Bundle: https://cloud.google.com/anthos-config-management/docs/how-to/using-policy-essentials-v2022
+  policy_bundles = ["https://github.com/GoogleCloudPlatform/acm-policy-controller-library/bundles/policy-essentials-v2022#e4094aacb91a35b0219f6f4cf6a31580e85b3c28"]
+
+  create_metrics_gcp_sa = true
 }
 ```
 
