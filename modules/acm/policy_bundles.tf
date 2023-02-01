@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 4.0"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.10"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = ">= 2.1"
-    }
-  }
-  required_version = ">= 0.13"
+module "policy_bundles" {
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
+
+  for_each                = toset(var.policy_bundles)
+  project_id              = var.project_id
+  cluster_name            = var.cluster_name
+  cluster_location        = var.location
+  kubectl_create_command  = "kubectl apply -k ${each.key}"
+  kubectl_destroy_command = "kubectl delete -k ${each.key}"
+
+  module_depends_on = [time_sleep.wait_acm]
 }
