@@ -14,7 +14,6 @@
 package safer_cluster
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
@@ -64,10 +63,8 @@ func TestSaferCluster(t *testing.T) {
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
-		op1 := gcloud.Runf(t, "compute firewall-rules list  --project %s", projectId)
-		assert.Contains(op1.String(), fmt.Sprintf("gke-%s-intra-cluster-egress", clusterName[:25]), "Firewall Rule Exists")
-		assert.Contains(op1.String(), fmt.Sprintf("gke-%s-webhooks", clusterName[:25]), "Firewall Rule Exists")
-
+		gcloud.Runf(t, "compute firewall-rules --project %s describe gke-%s-intra-cluster-egress", projectId, clusterName[:25])
+		gcloud.Runf(t, "compute firewall-rules --project %s describe gke-%s-webhooks", projectId, clusterName[:25])
 	})
 
 	bpt.Test()

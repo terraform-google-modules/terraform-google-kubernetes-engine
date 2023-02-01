@@ -16,10 +16,9 @@ package deploy_service
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"os"
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
@@ -40,23 +39,28 @@ func TestDeployService(t *testing.T) {
 		gcloud.Runf(t, "container clusters get-credentials %s --region %s --project %s", clusterName, location, projectId)
 		k8sOpts := k8s.KubectlOptions{}
 		listServices, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "svc", "terraform-example", "-o", "json")
-		if err != nil {
-			t.Fatalf("Unable to run kubectl to get the number of Services. Err: %s", err)
-		}
+		assert.NoError(err)
 		kubeService := utils.ParseJSONResult(t, listServices)
 		serviceIp := kubeService.Get("status.loadBalancer.ingress").Array()[0].Get("ip")
 		serviceUrl := fmt.Sprintf("http://%s:8080", serviceIp)
-		response, err := http.Get(serviceUrl)
-		if err != nil {
-			fmt.Print(err.Error())
-			os.Exit(1)
+
+		pollHTTPEndPoint := func(cmd string) func() (bool, error) {
+			return func() (bool, error) {
+				build, err := http.Get(cmd)
+				if build.StatusCode == 200 {
+					assert.NoError(err)
+					return false, nil
+				}
+				return true, nil
+			}
 		}
 
+		utils.Poll(t, pollHTTPEndPoint(serviceUrl), 20, 10*time.Second)
+		response, err := http.Get(serviceUrl)
+		assert.NoError(err)
 		responseData, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
-		assert.Contains(string(responseData[:]), "Thank you for using nginx.", "Service is Functional")
+		assert.NoError(err)
+		assert.Contains(string(responseData), "Thank you for using nginx.", "Service is Functional")
 	})
 
 	bpt.Test()
