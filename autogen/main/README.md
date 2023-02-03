@@ -256,9 +256,9 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 0.13+
 {% if beta_cluster %}
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v4.47
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v4.51
 {% else %}
-- [Terraform Provider for GCP][terraform-provider-google] v4.47
+- [Terraform Provider for GCP][terraform-provider-google] v4.51
 {% endif %}
 #### gcloud
 Some submodules use the [terraform-google-gcloud](https://github.com/terraform-google-modules/terraform-google-gcloud) module. By default, this module assumes you already have gcloud installed in your $PATH.
