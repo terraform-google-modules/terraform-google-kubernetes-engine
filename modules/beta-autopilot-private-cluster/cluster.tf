@@ -119,8 +119,6 @@ resource "google_container_cluster" "primary" {
 
   }
 
-  datapath_provider = var.datapath_provider
-
   networking_mode = "VPC_NATIVE"
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
