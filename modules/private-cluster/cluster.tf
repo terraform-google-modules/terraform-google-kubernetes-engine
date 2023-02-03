@@ -518,6 +518,20 @@ resource "google_container_node_pool" "pools" {
     }
 
 
+    dynamic "linux_node_config" {
+      for_each = length(merge(
+        local.node_pools_linux_node_configs_sysctls["all"],
+        local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+      )) != 0 ? [1] : []
+
+      content {
+        sysctls = merge(
+          local.node_pools_linux_node_configs_sysctls["all"],
+          local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+        )
+      }
+    }
+
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
     shielded_instance_config {
@@ -674,6 +688,7 @@ resource "google_container_node_pool" "windows_pools" {
         mode = lookup(each.value, "node_metadata", workload_metadata_config.value.mode)
       }
     }
+
 
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
