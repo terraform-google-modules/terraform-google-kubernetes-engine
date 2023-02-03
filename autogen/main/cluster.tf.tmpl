@@ -298,8 +298,10 @@ resource "google_container_cluster" "primary" {
     }
     {% endif %}
   }
-
+  {% if autopilot_cluster != true %}
+  
   datapath_provider = var.datapath_provider
+  {% endif %}
 
   {% if beta_cluster %}
   networking_mode = "VPC_NATIVE"
