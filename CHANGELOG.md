@@ -6,6 +6,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [25.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v24.1.0...v25.0.0) (2023-02-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* Promote node sysctl config to GA ([#1536](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1536))
+* enable auto repair and upgrade with cluster autoscaling ([#1530](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1530))
+* support for gateway api for safer cluster variants ([#1523](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1523))
+* promote gke_backup_agent_config to ga ([#1513](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1513))
+* enable private nodes with specified pod ip range ([#1514](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1514))
+* Promote managed_prometheus to GA ([#1505](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1505))
+* support for gateway api ([#1510](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1510))
+* Add option to pass `resource_labels` to NP ([#1508](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1508))
+* promote gce_pd_csi_driver to GA ([#1509](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1509))
+* Set the provided SA when creating autopilot clusters ([#1495](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1495))
+
+### Features
+
+* add all pod_ranges to cluster firewall rules and add missing shadow rules ([#1480](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1480)) ([bcd5e03](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/bcd5e03ff2514c79c906ef5c15cc793aa3c7426f))
+* Add option to pass `resource_labels` to NP ([#1508](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1508)) ([e7566c5](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e7566c592d6a73aeb56762789aeaea072d2bb6ff))
+* add support for policy bundles and metrics SA ([#1529](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1529)) ([0f63eab](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0f63eab5163a460d485346e2a37992a1b29dc082))
+* promote gce_pd_csi_driver to GA ([#1509](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1509)) ([ac062f8](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ac062f81e754c52bc785628fe0b2f0442a126599))
+* promote gke_backup_agent_config to ga ([#1513](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1513)) ([966135f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/966135f2d201d2d05032f31753c87e4f7d43b00a))
+* Promote managed_prometheus to GA ([#1505](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1505)) ([9c77c6c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9c77c6c73c7718cfe793e65b946b5a1048f04f71))
+* Promote node sysctl config to GA ([#1536](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1536)) ([754f4e3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/754f4e367bd43140f48897fc1d3bfdf9e7d4dfce))
+* Set the provided SA when creating autopilot clusters ([#1495](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1495)) ([d122a55](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d122a55f82c0625ca88ffb1055d758406d902cd1))
+* support for gateway api ([#1510](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1510)) ([4181276](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4181276635dd16d334a2787ae10e5f0bba0df253))
+* support for gateway api for safer cluster variants ([#1523](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1523)) ([912da8c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/912da8c97082d08f4fef96e82bbdf6a76dad006b))
+
+
+### Bug Fixes
+
+* auth module avoid TPG v4.49.0 ([#1535](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1535)) ([95c5c11](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/95c5c11e4f5856c408b7a1dffa00fa1acac8a5b2))
+* auth module avoid TPG v4.50.0 ([#1541](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1541)) ([c3e08ea](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c3e08eaa8418fcf9df54d61692c4c7df97ea6968))
+* avoid TGP v4.49.0 for asm ([#1537](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1537)) ([5d3d54e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5d3d54e5a2325443515041342f77c7ecdadba2a1))
+* enable auto repair and upgrade with cluster autoscaling ([#1530](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1530)) ([d59542c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d59542c8482709028fda0ec53d7bef8749e6a055))
+* enable private nodes with specified pod ip range ([#1514](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1514)) ([8190439](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8190439f33b6b525fe930b1bfcdc65762d8652ab))
+* remove datapath provider from Autopilot modules ([#1556](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1556)) ([ea012f5](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ea012f5c57a79c9de56f529dd9cc2ea9d3673838))
+* support custom service account for autopilot ([#1550](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1550)) ([52e25ab](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/52e25ab2c929777fddada40c0c0a03ac03ae75ec))
+* Update variable validation description ([#1518](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1518)) ([d985879](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d985879b4bb8d995dca04bed9cdfa541914ffa69))
+
 ## [24.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v24.0.0...v24.1.0) (2022-12-14)
 
 
