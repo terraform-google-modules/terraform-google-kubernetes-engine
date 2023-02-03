@@ -18,9 +18,8 @@ terraform {
   required_version = ">= 0.13.0"
   required_providers {
     google = {
-      source = "hashicorp/google"
-      # Avoid v4.49.0 for https://github.com/hashicorp/terraform-provider-google/issues/13507
-      version = "!= 4.49.0, != 4.50.0"
+      source  = "hashicorp/google"
+      version = ">= 4.51.0"
     }
   }
 }
