@@ -674,6 +674,12 @@ variable "enable_kubernetes_alpha" {
   default     = false
 }
 
+variable "config_connector" {
+  type        = bool
+  description = "Whether ConfigConnector is enabled for this cluster."
+  default     = false
+}
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   type        = bool
@@ -689,12 +695,6 @@ variable "istio_auth" {
 variable "kalm_config" {
   type        = bool
   description = "(Beta) Whether KALM is enabled for this cluster."
-  default     = false
-}
-
-variable "config_connector" {
-  type        = bool
-  description = "(Beta) Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
 
