@@ -605,7 +605,7 @@ resource "google_container_node_pool" "pools" {
         node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", "3600s")
 
         standard_rollout_policy {
-          batch_soak_duration = lookup(each.value, "batch_soak_duration", "60s")
+          batch_soak_duration = lookup(each.value, "batch_soak_duration", "0s")
           batch_percentage    = lookup(each.value, "batch_percentage", null)
           batch_node_count    = lookup(each.value, "batch_node_count", null)
         }
@@ -831,7 +831,7 @@ resource "google_container_node_pool" "windows_pools" {
         node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", "3600s")
 
         standard_rollout_policy {
-          batch_soak_duration = lookup(each.value, "batch_soak_duration", "60s")
+          batch_soak_duration = lookup(each.value, "batch_soak_duration", "0s")
           batch_percentage    = lookup(each.value, "batch_percentage", null)
           batch_node_count    = lookup(each.value, "batch_node_count", null)
         }
