@@ -493,7 +493,7 @@ resource "google_container_node_pool" "pools" {
         standard_rollout_policy {
           batch_soak_duration = lookup(each.value, "batch_soak_duration", "0s")
           batch_percentage    = lookup(each.value, "batch_percentage", null)
-          batch_node_count    = lookup(each.value, "batch_node_count", null)
+          batch_node_count    = lookup(each.value, "batch_node_count", 1)
         }
       }
     }
@@ -717,7 +717,7 @@ resource "google_container_node_pool" "windows_pools" {
         standard_rollout_policy {
           batch_soak_duration = lookup(each.value, "batch_soak_duration", "0s")
           batch_percentage    = lookup(each.value, "batch_percentage", null)
-          batch_node_count    = lookup(each.value, "batch_node_count", null)
+          batch_node_count    = lookup(each.value, "batch_node_count", 1)
         }
       }
     }
