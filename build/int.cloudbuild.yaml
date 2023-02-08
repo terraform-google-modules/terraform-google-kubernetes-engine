@@ -61,21 +61,26 @@ steps:
     - verify shared-vpc-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy shared-vpc-local']
-- id: converge safer-cluster-local
+- id: init safer-cluster-local
   waitFor:
     - create all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge safer-cluster-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSaferCluster --stage init --verbose']
+- id: apply safer-cluster-local
+  waitFor:
+    - init safer-cluster-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSaferCluster --stage apply --verbose']
 - id: verify safer-cluster-local
   waitFor:
-    - converge safer-cluster-local
+    - apply safer-cluster-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify safer-cluster-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSaferCluster --stage verify --verbose']
 - id: destroy safer-cluster-local
   waitFor:
     - verify safer-cluster-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy safer-cluster-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSaferCluster --stage destroy --verbose']
 - id: converge simple-regional-local
   waitFor:
     - create all
@@ -276,21 +281,26 @@ steps:
     - verify simple-windows-node-pool-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-windows-node-pool-local']
-- id: converge deploy-service-local
+- id: init deploy-service-local
   waitFor:
     - create all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge deploy-service-local']
+  args: ['/bin/bash', '-c', 'cft test run TestDeployService --stage init --verbose']
+- id: apply deploy-service-local
+  waitFor:
+    - init deploy-service-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestDeployService --stage apply --verbose']
 - id: verify deploy-service-local
   waitFor:
-    - converge deploy-service-local
+    - apply deploy-service-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify deploy-service-local']
+  args: ['/bin/bash', '-c', 'cft test run TestDeployService --stage verify --verbose']
 - id: destroy deploy-service-local
   waitFor:
     - verify deploy-service-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy deploy-service-local']
+  args: ['/bin/bash', '-c', 'cft test run TestDeployService --stage destroy --verbose']
 - id: converge node-pool-local
   waitFor:
     - create all
@@ -306,21 +316,26 @@ steps:
     - verify node-pool-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy node-pool-local']
-- id: converge sandbox-enabled-local
+- id: init sandbox-enabled-local
   waitFor:
     - create all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge sandbox-enabled-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSandboxEnabled --stage init --verbose']
+- id: apply sandbox-enabled-local
+  waitFor:
+    - init sandbox-enabled-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSandboxEnabled --stage apply --verbose']
 - id: verify sandbox-enabled-local
   waitFor:
-    - converge sandbox-enabled-local
+    - apply sandbox-enabled-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify sandbox-enabled-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSandboxEnabled --stage verify --verbose']
 - id: destroy sandbox-enabled-local
   waitFor:
     - verify sandbox-enabled-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy sandbox-enabled-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSandboxEnabled --stage destroy --verbose']
 - id: converge workload-identity-local
   waitFor:
     - create all
