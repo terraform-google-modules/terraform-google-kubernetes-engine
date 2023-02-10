@@ -23,13 +23,18 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.0"
     }
+    google = {
+      source = "hashicorp/google"
+      # Avoid v25.0.0 for https://github.com/hashicorp/terraform-provider-google/issues/13507
+      version = ">= 4.47.0, != 4.49.0, != 4.50.0, < 5.0"
+    }
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:asm/v23.2.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:asm/v25.0.0"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:asm/v23.2.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:asm/v25.0.0"
   }
 }

@@ -96,6 +96,12 @@ variable "http_load_balancing" {
   default     = true
 }
 
+variable "service_external_ips" {
+  type        = bool
+  description = "Whether external ips specified by a service will be allowed in this cluster"
+  default     = false
+}
+
 variable "datapath_provider" {
   type        = string
   description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
@@ -137,7 +143,7 @@ variable "ip_range_services" {
 }
 
 variable "node_pools" {
-  type        = list(map(string))
+  type        = list(map(any))
   description = "List of maps containing node pools"
 
   default = [
@@ -158,6 +164,16 @@ variable "node_pools_labels" {
   description = "Map of maps containing node labels by node-pool name"
 
   # Default is being set in variables_defaults.tf
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
+variable "node_pools_resource_labels" {
+  type        = map(map(string))
+  description = "Map of maps containing resource labels by node-pool name"
+
   default = {
     all               = {}
     default-node-pool = {}
@@ -186,6 +202,11 @@ variable "node_pools_linux_node_configs_sysctls" {
   }
 }
 
+variable "enable_cost_allocation" {
+  type        = bool
+  description = "Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery"
+  default     = false
+}
 variable "resource_usage_export_dataset_id" {
   type        = string
   description = "The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export."
@@ -213,6 +234,8 @@ variable "cluster_autoscaling" {
     min_memory_gb       = number
     max_memory_gb       = number
     gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair         = bool
+    auto_upgrade        = bool
   })
   default = {
     enabled             = false
@@ -222,6 +245,8 @@ variable "cluster_autoscaling" {
     max_memory_gb       = 0
     min_memory_gb       = 0
     gpu_resources       = []
+    auto_repair         = true
+    auto_upgrade        = true
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
@@ -387,9 +412,8 @@ variable "master_ipv4_cidr_block" {
 
 variable "master_global_access_enabled" {
   type        = bool
-  description = "(Beta) Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
-
-  default = true
+  description = "Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
+  default     = true
 }
 
 variable "dns_cache" {
@@ -413,6 +437,12 @@ variable "identity_namespace" {
 variable "release_channel" {
   type        = string
   description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
+  default     = null
+}
+
+variable "gateway_api_channel" {
+  type        = string
+  description = "The gateway api channel of this cluster. Accepted values are `CHANNEL_STANDARD` and `CHANNEL_DISABLED`."
   default     = null
 }
 
@@ -450,6 +480,20 @@ variable "shadow_firewall_rules_priority" {
   type        = number
   description = "The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000."
   default     = 999
+  validation {
+    condition     = var.shadow_firewall_rules_priority < 1000
+    error_message = "The shadow firewall rule priority must be lower than auto-created one(1000)."
+  }
+}
+
+variable "shadow_firewall_rules_log_config" {
+  type = object({
+    metadata = string
+  })
+  description = "The log_config for shadow firewall rules. You can set this variable to `null` to disable logging."
+  default = {
+    metadata = "INCLUDE_ALL_METADATA"
+  }
 }
 
 variable "enable_confidential_nodes" {
@@ -546,7 +590,7 @@ variable "node_metadata" {
 
   validation {
     condition     = contains(["GKE_METADATA", "GCE_METADATA", "UNSPECIFIED", "GKE_METADATA_SERVER", "EXPOSE"], var.node_metadata)
-    error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA or UNSPECIFIED."
+    error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA, UNSPECIFIED, GKE_METADATA_SERVER or EXPOSE."
   }
 }
 
@@ -568,6 +612,18 @@ variable "cluster_dns_domain" {
   default     = ""
 }
 
+variable "gce_pd_csi_driver" {
+  type        = bool
+  description = "Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
+  default     = true
+}
+
+variable "gke_backup_agent_config" {
+  type        = bool
+  description = "Whether Backup for GKE agent is enabled for this cluster."
+  default     = false
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -578,16 +634,10 @@ variable "timeouts" {
   }
 }
 
-variable "enable_kubernetes_alpha" {
+variable "monitoring_enable_managed_prometheus" {
   type        = bool
-  description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
+  description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
   default     = false
-}
-
-variable "logging_enabled_components" {
-  type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS. Empty list is default GKE configuration."
-  default     = []
 }
 
 variable "monitoring_enabled_components" {
@@ -596,9 +646,15 @@ variable "monitoring_enabled_components" {
   default     = []
 }
 
-variable "monitoring_enable_managed_prometheus" {
+variable "logging_enabled_components" {
+  type        = list(string)
+  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS. Empty list is default GKE configuration."
+  default     = []
+}
+
+variable "enable_kubernetes_alpha" {
   type        = bool
-  description = "(Beta) Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
+  description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
   default     = false
 }
 
@@ -622,12 +678,6 @@ variable "kalm_config" {
 variable "config_connector" {
   type        = bool
   description = "(Beta) Whether ConfigConnector is enabled for this cluster."
-  default     = false
-}
-
-variable "gke_backup_agent_config" {
-  type        = bool
-  description = "(Beta) Whether Backup for GKE agent is enabled for this cluster."
   default     = false
 }
 
@@ -669,11 +719,5 @@ variable "enable_intranode_visibility" {
 variable "enable_identity_service" {
   type        = bool
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
-  default     = false
-}
-
-variable "gce_pd_csi_driver" {
-  type        = bool
-  description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
   default     = false
 }

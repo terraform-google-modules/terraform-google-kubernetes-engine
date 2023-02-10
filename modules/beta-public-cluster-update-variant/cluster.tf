@@ -47,6 +47,21 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+
+  dynamic "gateway_api_config" {
+    for_each = local.gateway_api_config
+
+    content {
+      channel = gateway_api_config.value.channel
+    }
+  }
+
+  dynamic "cost_management_config" {
+    for_each = var.enable_cost_allocation ? [1] : []
+    content {
+      enabled = var.enable_cost_allocation
+    }
+  }
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
@@ -82,7 +97,7 @@ resource "google_container_cluster" "primary" {
     for_each = length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus ? [1] : []
 
     content {
-      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : null
+      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
 
       dynamic "managed_prometheus" {
         for_each = var.monitoring_enable_managed_prometheus ? [1] : []
@@ -99,8 +114,14 @@ resource "google_container_cluster" "primary" {
       for_each = var.cluster_autoscaling.enabled ? [1] : []
 
       content {
-        service_account  = local.service_account
-        oauth_scopes     = local.node_pools_oauth_scopes["all"]
+        service_account = local.service_account
+        oauth_scopes    = local.node_pools_oauth_scopes["all"]
+
+        management {
+          auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
+          auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
+        }
+
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
       }
     }
@@ -127,8 +148,9 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  enable_kubernetes_alpha = var.enable_kubernetes_alpha
+
   enable_intranode_visibility = var.enable_intranode_visibility
-  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   enable_tpu                  = var.enable_tpu
 
   dynamic "pod_security_policy_config" {
@@ -165,6 +187,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "service_external_ips_config" {
+    for_each = var.service_external_ips ? [1] : []
+    content {
+      enabled = var.service_external_ips
+    }
+  }
+
   addons_config {
     http_load_balancing {
       disabled = !var.http_load_balancing
@@ -173,7 +202,6 @@ resource "google_container_cluster" "primary" {
     horizontal_pod_autoscaling {
       disabled = !var.horizontal_pod_autoscaling
     }
-
 
     network_policy_config {
       disabled = !var.network_policy
@@ -185,6 +213,22 @@ resource "google_container_cluster" "primary" {
 
     gcp_filestore_csi_driver_config {
       enabled = var.filestore_csi_driver
+    }
+
+    dynamic "gce_persistent_disk_csi_driver_config" {
+      for_each = local.cluster_gce_pd_csi_config
+
+      content {
+        enabled = gce_persistent_disk_csi_driver_config.value.enabled
+      }
+    }
+
+    dynamic "gke_backup_agent_config" {
+      for_each = local.gke_backup_agent_config
+
+      content {
+        enabled = gke_backup_agent_config.value.enabled
+      }
     }
 
     istio_config {
@@ -200,28 +244,12 @@ resource "google_container_cluster" "primary" {
       }
     }
 
-    dynamic "gce_persistent_disk_csi_driver_config" {
-      for_each = local.cluster_gce_pd_csi_config
-
-      content {
-        enabled = gce_persistent_disk_csi_driver_config.value.enabled
-      }
-    }
-
     kalm_config {
       enabled = var.kalm_config
     }
 
     config_connector_config {
       enabled = var.config_connector
-    }
-
-    dynamic "gke_backup_agent_config" {
-      for_each = local.gke_backup_agent_config
-
-      content {
-        enabled = gke_backup_agent_config.value.enabled
-      }
     }
   }
 
@@ -405,7 +433,9 @@ locals {
     "enable_integrity_monitoring",
     "local_ssd_count",
     "machine_type",
+    "max_pods_per_node",
     "min_cpu_platform",
+    "pod_range",
     "preemptible",
     "spot",
     "service_account",
@@ -416,8 +446,9 @@ locals {
 }
 
 # This keepers list is based on the terraform google provider schemaNodeConfig
-# resources where "ForceNew" is "true". schemaNodeConfig can be found in node_config.go at
-# https://github.com/terraform-providers/terraform-provider-google/blob/master/google/node_config.go#L22
+# resources where "ForceNew" is "true". schemaNodeConfig can be found in resource_container_node_pool.go at
+# https://github.com/hashicorp/terraform-provider-google/blob/main/google/resource_container_node_pool.go and node_config.go at
+# https://github.com/terraform-providers/terraform-provider-google/blob/main/google/node_config.go
 resource "random_id" "name" {
   for_each    = merge(local.node_pools, local.windows_node_pools)
   byte_length = 2
@@ -489,7 +520,6 @@ resource "random_id" "name" {
 resource "google_container_node_pool" "pools" {
   provider = google-beta
   for_each = local.node_pools
-
   name     = { for k, v in random_id.name : k => v.hex }[each.key]
   project  = var.project_id
   location = local.location
@@ -517,8 +547,11 @@ resource "google_container_node_pool" "pools" {
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
-      min_node_count = lookup(autoscaling.value, "min_count", 1)
-      max_node_count = lookup(autoscaling.value, "max_count", 100)
+      min_node_count       = lookup(autoscaling.value, "min_count", 1)
+      max_node_count       = lookup(autoscaling.value, "max_count", 100)
+      location_policy      = lookup(autoscaling.value, "location_policy", null)
+      total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
+      total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
     }
   }
 
@@ -567,6 +600,10 @@ resource "google_container_node_pool" "pools" {
       lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
       local.node_pools_labels["all"],
       local.node_pools_labels[each.value["name"]],
+    )
+    resource_labels = merge(
+      local.node_pools_resource_labels["all"],
+      local.node_pools_resource_labels[each.value["name"]],
     )
     metadata = merge(
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
@@ -642,8 +679,6 @@ resource "google_container_node_pool" "pools" {
         sandbox_type = sandbox_config.value
       }
     }
-
-    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
     dynamic "kubelet_config" {
       for_each = length(setintersection(
@@ -672,6 +707,8 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
+
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
@@ -694,7 +731,6 @@ resource "google_container_node_pool" "pools" {
 resource "google_container_node_pool" "windows_pools" {
   provider = google-beta
   for_each = local.windows_node_pools
-
   name     = { for k, v in random_id.name : k => v.hex }[each.key]
   project  = var.project_id
   location = local.location
@@ -722,8 +758,11 @@ resource "google_container_node_pool" "windows_pools" {
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
-      min_node_count = lookup(autoscaling.value, "min_count", 1)
-      max_node_count = lookup(autoscaling.value, "max_count", 100)
+      min_node_count       = lookup(autoscaling.value, "min_count", 1)
+      max_node_count       = lookup(autoscaling.value, "max_count", 100)
+      location_policy      = lookup(autoscaling.value, "location_policy", null)
+      total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
+      total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
     }
   }
 
@@ -772,6 +811,10 @@ resource "google_container_node_pool" "windows_pools" {
       lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
       local.node_pools_labels["all"],
       local.node_pools_labels[each.value["name"]],
+    )
+    resource_labels = merge(
+      local.node_pools_resource_labels["all"],
+      local.node_pools_resource_labels[each.value["name"]],
     )
     metadata = merge(
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
@@ -848,8 +891,6 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
-    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
-
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
@@ -863,6 +904,8 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
+
+    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)

@@ -35,12 +35,12 @@ control "gcloud" do
 
     describe "cluster-autoscaling" do
       it "has the expected cluster autoscaling settings" do
-        expect(data['autoscaling']).to eq({
-            "autoprovisioningNodePoolDefaults" => {
+        expect(data['autoscaling']).to include({
+            "autoprovisioningNodePoolDefaults" => including({
                 "imageType"=>"COS_CONTAINERD",
                 "oauthScopes" => %w(https://www.googleapis.com/auth/cloud-platform),
                 "serviceAccount" => "default"
-            },
+            }),
             "autoscalingProfile" => "OPTIMIZE_UTILIZATION",
             "enableNodeAutoprovisioning" => true,
             "resourceLimits" => [

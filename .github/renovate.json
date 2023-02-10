@@ -3,7 +3,8 @@
   "extends": [
     "config:base",
     ":semanticCommits",
-    ":preserveSemverRanges"
+    ":preserveSemverRanges",
+    ":rebaseStalePrs"
   ],
   "stabilityDays":7,
   "ignorePaths": [],
@@ -14,17 +15,33 @@
      ],
      "stabilityDays":0
   },
+  "separateMajorMinor":false,
   "packageRules": [
     {
+      "matchPaths": ["examples/**", "test/**", ".github/**"],
+      "extends": [":semanticCommitTypeAll(chore)"]
+    },
+    {
+      "matchPaths": ["*", "modules/**"],
+      "extends": [":semanticCommitTypeAll(fix)"]
+    },
+    {
       "matchDepTypes": ["module"],
-      "groupName": "TF modules",
-      "separateMajorMinor":false
+      "groupName": "TF modules"
     },
     {
       "matchDepTypes": ["require"],
       "groupName": "GO modules",
-      "postUpdateOptions": ["gomodTidy"],
-      "separateMajorMinor":false
+      "postUpdateOptions": ["gomodTidy"]
+    },
+    {
+      "matchPackageNames": ["go"],
+      "allowedVersions": "<1.19.0",
+      "postUpdateOptions": ["gomodTidy"]
+    },
+    {
+      "matchPackageNames": ["google", "google-beta"],
+      "groupName": "terraform googles"
     }
   ]
 }

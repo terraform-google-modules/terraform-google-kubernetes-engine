@@ -38,15 +38,20 @@ resource "google_gke_hub_feature_membership" "main" {
   configmanagement {
     version = var.configmanagement_version
 
-    config_sync {
-      source_format = var.source_format != "" ? var.source_format : null
+    dynamic "config_sync" {
+      for_each = var.enable_config_sync ? [{ enabled = true }] : []
 
-      git {
-        sync_repo   = var.sync_repo
-        policy_dir  = var.policy_dir != "" ? var.policy_dir : null
-        sync_branch = var.sync_branch != "" ? var.sync_branch : null
-        sync_rev    = var.sync_revision != "" ? var.sync_revision : null
-        secret_type = var.secret_type
+      content {
+        source_format = var.source_format != "" ? var.source_format : null
+
+        git {
+          sync_repo   = var.sync_repo
+          policy_dir  = var.policy_dir != "" ? var.policy_dir : null
+          sync_branch = var.sync_branch != "" ? var.sync_branch : null
+          sync_rev    = var.sync_revision != "" ? var.sync_revision : null
+          secret_type = var.secret_type
+          https_proxy = var.https_proxy
+        }
       }
     }
 

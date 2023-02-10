@@ -77,6 +77,12 @@ variable "release_channel" {
   default     = "REGULAR"
 }
 
+variable "gateway_api_channel" {
+  type        = string
+  description = "The gateway api channel of this cluster. Accepted values are `CHANNEL_STANDARD` and `CHANNEL_DISABLED`."
+  default     = null
+}
+
 variable "master_authorized_networks" {
   type        = list(object({ cidr_block = string, display_name = string }))
   description = "List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
@@ -168,6 +174,16 @@ variable "node_pools_labels" {
   }
 }
 
+variable "node_pools_resource_labels" {
+  type        = map(map(string))
+  description = "Map of maps containing resource labels by node-pool name"
+
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
 variable "node_pools_metadata" {
   type        = map(map(string))
   description = "Map of maps containing node metadata by node-pool name"
@@ -217,6 +233,8 @@ variable "cluster_autoscaling" {
     min_memory_gb       = number
     max_memory_gb       = number
     gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair         = bool
+    auto_upgrade        = bool
   })
   default = {
     enabled             = false
@@ -226,6 +244,8 @@ variable "cluster_autoscaling" {
     max_memory_gb       = 0
     min_memory_gb       = 0
     gpu_resources       = []
+    auto_repair         = true
+    auto_upgrade        = true
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
@@ -354,6 +374,12 @@ variable "enable_resource_consumption_export" {
   type        = bool
   description = "Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export."
   default     = true
+}
+
+variable "enable_cost_allocation" {
+  type        = bool
+  description = "Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery"
+  default     = false
 }
 
 variable "sandbox_enabled" {

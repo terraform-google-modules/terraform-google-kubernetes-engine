@@ -50,7 +50,8 @@ locals {
   windows_node_pool_names = [for np in toset(var.windows_node_pools) : np.name]
   windows_node_pools      = zipmap(local.windows_node_pool_names, tolist(toset(var.windows_node_pools)))
 
-  release_channel = var.release_channel != null ? [{ channel : var.release_channel }] : []
+  release_channel    = var.release_channel != null ? [{ channel : var.release_channel }] : []
+  gateway_api_config = var.gateway_api_channel != null ? [{ channel : var.gateway_api_channel }] : []
 
   autoscaling_resource_limits = var.cluster_autoscaling.enabled ? concat([{
     resource_type = "cpu"
@@ -74,6 +75,7 @@ locals {
 
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
+  pod_all_ip_ranges         = var.add_cluster_firewall_rules ? compact(concat([local.cluster_alias_ranges_cidr[var.ip_range_pods]], [for k, v in merge(local.node_pools, local.windows_node_pools) : local.cluster_alias_ranges_cidr[v.pod_range] if length(lookup(v, "pod_range", "")) > 0])) : []
 
   cluster_network_policy = var.network_policy ? [{
     enabled  = true
@@ -82,6 +84,9 @@ locals {
     enabled  = false
     provider = null
   }]
+  cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
+  logmon_config_is_set      = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus
+  gke_backup_agent_config   = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
   cluster_cloudrun_config_load_balancer_config = (var.cloudrun && var.cloudrun_load_balancer_type != "") ? {
     load_balancer_type = var.cloudrun_load_balancer_type
   } : {}
@@ -93,10 +98,7 @@ locals {
       local.cluster_cloudrun_config_load_balancer_config
     )
   ] : []
-  cluster_cloudrun_enabled  = var.cloudrun
-  cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
-  gke_backup_agent_config   = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
-  logmon_config_is_set      = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus
+  cluster_cloudrun_enabled = var.cloudrun
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group

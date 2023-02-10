@@ -39,6 +39,21 @@ resource "google_container_cluster" "primary" {
       channel = release_channel.value.channel
     }
   }
+
+  dynamic "gateway_api_config" {
+    for_each = local.gateway_api_config
+
+    content {
+      channel = gateway_api_config.value.channel
+    }
+  }
+
+  dynamic "cost_management_config" {
+    for_each = var.enable_cost_allocation ? [1] : []
+    content {
+      enabled = var.enable_cost_allocation
+    }
+  }
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
@@ -54,14 +69,12 @@ resource "google_container_cluster" "primary" {
 
   min_master_version = local.master_version
 
-  logging_service    = var.logging_service
-  monitoring_service = var.monitoring_service
-  dynamic "monitoring_config" {
-    for_each = var.monitoring_enable_managed_prometheus ? [1] : []
+  cluster_autoscaling {
+    dynamic "auto_provisioning_defaults" {
+      for_each = (var.create_service_account || var.service_account != "") ? [1] : []
 
-    content {
-      managed_prometheus {
-        enabled = var.monitoring_enable_managed_prometheus
+      content {
+        service_account = local.service_account
       }
     }
   }
@@ -88,6 +101,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "service_external_ips_config" {
+    for_each = var.service_external_ips ? [1] : []
+    content {
+      enabled = var.service_external_ips
+    }
+  }
+
   addons_config {
     http_load_balancing {
       disabled = !var.http_load_balancing
@@ -97,10 +117,7 @@ resource "google_container_cluster" "primary" {
       disabled = !var.horizontal_pod_autoscaling
     }
 
-
   }
-
-  datapath_provider = var.datapath_provider
 
   networking_mode = "VPC_NATIVE"
   ip_allocation_policy {

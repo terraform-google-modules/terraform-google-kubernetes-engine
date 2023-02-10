@@ -34,6 +34,20 @@ locals {
     var.node_pools_labels
   )
 
+  node_pools_resource_labels = merge(
+    { all = {} },
+    { default-node-pool = {} },
+    zipmap(
+      [for node_pool in var.node_pools : node_pool["name"]],
+      [for node_pool in var.node_pools : {}]
+    ),
+    zipmap(
+      [for node_pool in var.windows_node_pools : node_pool["name"]],
+      [for node_pool in var.windows_node_pools : {}]
+    ),
+    var.node_pools_resource_labels
+  )
+
   node_pools_metadata = merge(
     { all = {} },
     { default-node-pool = {} },
@@ -88,5 +102,15 @@ locals {
       [for node_pool in var.windows_node_pools : []]
     ),
     var.node_pools_oauth_scopes
+  )
+
+  node_pools_linux_node_configs_sysctls = merge(
+    { all = {} },
+    { default-node-pool = {} },
+    zipmap(
+      [for node_pool in var.node_pools : node_pool["name"]],
+      [for node_pool in var.node_pools : {}]
+    ),
+    var.node_pools_linux_node_configs_sysctls
   )
 }

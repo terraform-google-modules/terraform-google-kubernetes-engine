@@ -96,6 +96,12 @@ variable "http_load_balancing" {
   default     = true
 }
 
+variable "service_external_ips" {
+  type        = bool
+  description = "Whether external ips specified by a service will be allowed in this cluster"
+  default     = false
+}
+
 variable "datapath_provider" {
   type        = string
   description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
@@ -137,6 +143,11 @@ variable "ip_range_services" {
 }
 
 
+variable "enable_cost_allocation" {
+  type        = bool
+  description = "Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery"
+  default     = false
+}
 variable "resource_usage_export_dataset_id" {
   type        = string
   description = "The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export."
@@ -284,9 +295,8 @@ variable "master_ipv4_cidr_block" {
 
 variable "master_global_access_enabled" {
   type        = bool
-  description = "(Beta) Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
-
-  default = true
+  description = "Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
+  default     = true
 }
 
 variable "dns_cache" {
@@ -310,6 +320,12 @@ variable "identity_namespace" {
 variable "release_channel" {
   type        = string
   description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
+  default     = null
+}
+
+variable "gateway_api_channel" {
+  type        = string
+  description = "The gateway api channel of this cluster. Accepted values are `CHANNEL_STANDARD` and `CHANNEL_DISABLED`."
   default     = null
 }
 
@@ -347,6 +363,20 @@ variable "shadow_firewall_rules_priority" {
   type        = number
   description = "The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000."
   default     = 999
+  validation {
+    condition     = var.shadow_firewall_rules_priority < 1000
+    error_message = "The shadow firewall rule priority must be lower than auto-created one(1000)."
+  }
+}
+
+variable "shadow_firewall_rules_log_config" {
+  type = object({
+    metadata = string
+  })
+  description = "The log_config for shadow firewall rules. You can set this variable to `null` to disable logging."
+  default = {
+    metadata = "INCLUDE_ALL_METADATA"
+  }
 }
 
 variable "enable_confidential_nodes" {
@@ -393,8 +423,3 @@ variable "timeouts" {
   }
 }
 
-variable "monitoring_enable_managed_prometheus" {
-  type        = bool
-  description = "(Beta) Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
-  default     = false
-}
