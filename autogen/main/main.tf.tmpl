@@ -126,7 +126,7 @@ locals {
 
   {% if autopilot_cluster != true %}
   // legacy mappings https://github.com/hashicorp/terraform-provider-google/pull/10238
-  old_node_metadata_config_mapping = { GKE_METADATA_SERVER = "GKE_METADATA", GCE_METADATA = "EXPOSE" }
+  old_node_metadata_config_mapping = { GKE_METADATA_SERVER = "GKE_METADATA", EXPOSE = "GCE_METADATA" }
 
   cluster_node_metadata_config = var.node_metadata == "UNSPECIFIED" ? [] : [{
     mode = lookup(local.old_node_metadata_config_mapping, var.node_metadata, var.node_metadata)
