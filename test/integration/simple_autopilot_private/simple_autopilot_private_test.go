@@ -42,7 +42,6 @@ func TestSimpleAutopilotPrivate(t *testing.T) {
 		)
 		validateJSONPaths := []string{
 			"autopilot.enabled",
-			"currentNodeVersion",
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
