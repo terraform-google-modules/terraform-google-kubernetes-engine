@@ -28,6 +28,10 @@ locals {
 
   k8s_sa_project_id       = var.k8s_sa_project_id != null ? var.k8s_sa_project_id : var.project_id
   k8s_sa_gcp_derived_name = "serviceAccount:${local.k8s_sa_project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
+
+  # Validation checks for required variables
+  validate_cluster = (var.use_existing_k8s_sa && var.cluster_name == "") ? tobool("Variable 'cluster_name' is required when using existing KSA") : true
+  validate_location = (var.use_existing_k8s_sa && var.location == "") ? tobool("Variable 'location' is required when using existing KSA") : true
 }
 
 data "google_service_account" "cluster_service_account" {
