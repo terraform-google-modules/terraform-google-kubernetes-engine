@@ -104,6 +104,12 @@ resource "google_container_cluster" "primary" {
       content {
         service_account = local.service_account
         oauth_scopes    = local.node_pools_oauth_scopes["all"]
+
+        management {
+          auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
+          auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
+        }
+
       }
     }
     dynamic "resource_limits" {
@@ -498,8 +504,8 @@ resource "google_container_node_pool" "pools" {
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
-      min_node_count       = lookup(autoscaling.value, "min_count", 1)
-      max_node_count       = lookup(autoscaling.value, "max_count", 100)
+      min_node_count       = contains(keys(autoscaling.value), "total_min_count") ? null : lookup(autoscaling.value, "min_count", 1)
+      max_node_count       = contains(keys(autoscaling.value), "total_max_count") ? null : lookup(autoscaling.value, "max_count", 100)
       location_policy      = lookup(autoscaling.value, "location_policy", null)
       total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
       total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
@@ -605,6 +611,20 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+
+    dynamic "linux_node_config" {
+      for_each = length(merge(
+        local.node_pools_linux_node_configs_sysctls["all"],
+        local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+      )) != 0 ? [1] : []
+
+      content {
+        sysctls = merge(
+          local.node_pools_linux_node_configs_sysctls["all"],
+          local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+        )
+      }
+    }
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
 
@@ -657,8 +677,8 @@ resource "google_container_node_pool" "windows_pools" {
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
-      min_node_count       = lookup(autoscaling.value, "min_count", 1)
-      max_node_count       = lookup(autoscaling.value, "max_count", 100)
+      min_node_count       = contains(keys(autoscaling.value), "total_min_count") ? null : lookup(autoscaling.value, "min_count", 1)
+      max_node_count       = contains(keys(autoscaling.value), "total_max_count") ? null : lookup(autoscaling.value, "max_count", 100)
       location_policy      = lookup(autoscaling.value, "location_policy", null)
       total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
       total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
@@ -763,6 +783,7 @@ resource "google_container_node_pool" "windows_pools" {
         mode = lookup(each.value, "node_metadata", workload_metadata_config.value.mode)
       }
     }
+
 
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")

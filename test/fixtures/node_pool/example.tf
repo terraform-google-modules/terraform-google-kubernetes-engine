@@ -35,6 +35,8 @@ module "example" {
     max_memory_gb       = 30
     min_memory_gb       = 10
     gpu_resources       = []
+    auto_repair         = true
+    auto_upgrade        = true
   }
 }
 

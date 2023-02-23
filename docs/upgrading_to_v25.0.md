@@ -39,4 +39,4 @@ To opt out, set `create_service_account` to `false`
 
 ### Minimum Google Provider versions
 
-Minimum Google Provider versions have been updated to `4.44.0`.
+Minimum Google Provider versions have been updated to `4.51.0`.

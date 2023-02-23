@@ -1,6 +1,6 @@
 # Simple Zonal Cluster
 
-This example illustrates how to create a simple cluster and install [Anthos Config Management](https://cloud.google.com/anthos-config-management/docs/).
+This example illustrates how to create a simple cluster and install [Anthos Config Management](https://cloud.google.com/anthos-config-management/docs/)'s [Config Sync](https://cloud.google.com/anthos-config-management/docs/config-sync-overview) and [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) with the [Policy Essentials v2022 policy bundle](https://cloud.google.com/anthos-config-management/docs/how-to/using-policy-essentials-v2022).
 
 It incorporates the standard cluster module and the [ACM install module](../../modules/acm).
 
@@ -27,13 +27,19 @@ After applying the Terraform configuration, you can run the following commands t
     kubectl describe ns shipping-dev
     ```
 
+4. You can also use `kubectl` to view any policy violations on the cluster:
+
+    ```
+    kubectl get constraint -l policycontroller.gke.io/bundleName=policy-essentials-v2022 -o json | jq -cC '.items[]| [.metadata.name,.status.totalViolations]'
+    ```
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
-| project\_id | The project ID to host the cluster in | `any` | n/a | yes |
+| project\_id | The project ID to host the cluster in | `string` | n/a | yes |
 | region | The region to host the cluster in | `string` | `"us-central1"` | no |
 | zone | The zone to host the cluster in | `string` | `"us-central1-a"` | no |
 

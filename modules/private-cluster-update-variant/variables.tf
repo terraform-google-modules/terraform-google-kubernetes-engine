@@ -191,6 +191,17 @@ variable "node_pools_metadata" {
   }
 }
 
+variable "node_pools_linux_node_configs_sysctls" {
+  type        = map(map(string))
+  description = "Map of maps containing linux node config sysctls by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
 variable "enable_cost_allocation" {
   type        = bool
   description = "Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery"
@@ -222,6 +233,8 @@ variable "cluster_autoscaling" {
     min_memory_gb = number
     max_memory_gb = number
     gpu_resources = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair   = bool
+    auto_upgrade  = bool
   })
   default = {
     enabled       = false
@@ -230,6 +243,8 @@ variable "cluster_autoscaling" {
     max_memory_gb = 0
     min_memory_gb = 0
     gpu_resources = []
+    auto_repair   = true
+    auto_upgrade  = true
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }

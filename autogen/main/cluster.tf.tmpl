@@ -135,6 +135,12 @@ resource "google_container_cluster" "primary" {
       content {
         service_account = local.service_account
         oauth_scopes = local.node_pools_oauth_scopes["all"]
+        
+        management {
+            auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
+            auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade",true)
+        }
+        
         {% if beta_cluster %}
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
         {% endif %}
@@ -156,7 +162,7 @@ resource "google_container_cluster" "primary" {
   {% if autopilot_cluster == true %}
   cluster_autoscaling {
     dynamic "auto_provisioning_defaults" {
-      for_each = var.create_service_account ? [1] : []
+      for_each = (var.create_service_account || var.service_account != "") ? [1] : []
 
       content {
         service_account = local.service_account
@@ -292,8 +298,10 @@ resource "google_container_cluster" "primary" {
     }
     {% endif %}
   }
-
+  {% if autopilot_cluster != true %}
+  
   datapath_provider = var.datapath_provider
+  {% endif %}
 
   {% if beta_cluster %}
   networking_mode = "VPC_NATIVE"
@@ -644,8 +652,8 @@ resource "google_container_node_pool" "windows_pools" {
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
-      min_node_count = lookup(autoscaling.value, "min_count", 1)
-      max_node_count = lookup(autoscaling.value, "max_count", 100)
+      min_node_count = contains(keys(autoscaling.value), "total_min_count") ? null : lookup(autoscaling.value, "min_count", 1)
+      max_node_count = contains(keys(autoscaling.value), "total_max_count") ? null : lookup(autoscaling.value, "max_count", 100)
       location_policy = lookup(autoscaling.value, "location_policy", null)
       total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
       total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
@@ -797,6 +805,7 @@ resource "google_container_node_pool" "windows_pools" {
         cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
       }
     }
+    {% endif %}
 
     {% if i == 0 %}
     dynamic "linux_node_config" {
@@ -812,7 +821,6 @@ resource "google_container_node_pool" "windows_pools" {
         )
       }
     }
-    {% endif %}
     {% endif %}
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
