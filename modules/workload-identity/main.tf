@@ -85,7 +85,7 @@ resource "google_service_account_iam_member" "main" {
 resource "google_project_iam_member" "workload_identity_sa_bindings" {
   for_each = toset(var.roles)
 
-  project = var.project_id
-  role    = each.value
+  project = element(split("=>", each.value), 0)
+  role    = element(split("=>", each.value), 1)
   member  = local.gcp_sa_fqn
 }

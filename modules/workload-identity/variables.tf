@@ -85,7 +85,7 @@ variable "automount_service_account_token" {
 }
 
 variable "roles" {
-  description = "A list of roles to be added to the created service account"
+  description = "A list of roles to be added to the created service account for specific projects"
   type        = list(string)
   default     = []
 }

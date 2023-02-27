@@ -24,7 +24,7 @@ module "my-app-workload-identity" {
   name       = "my-application-name"
   namespace  = "default"
   project_id = "my-gcp-project-name"
-  roles      = ["roles/storage.admin", "roles/compute.admin"]
+  roles      = ["my-gcp-project-name-1=>roles/storage.admin", "my-gcp-project-name-2=>roles/compute.admin"]
 }
 ```
 
@@ -109,7 +109,7 @@ already bear the `"iam.gke.io/gcp-service-account"` annotation.
 | name | Name for both service accounts. The GCP SA will be truncated to the first 30 chars if necessary. | `string` | n/a | yes |
 | namespace | Namespace for the Kubernetes service account | `string` | `"default"` | no |
 | project\_id | GCP project ID | `string` | n/a | yes |
-| roles | A list of roles to be added to the created service account | `list(string)` | `[]` | no |
+| roles | A list of roles to be added to the created service account for specific projects | `list(string)` | `[]` | no |
 | use\_existing\_context | An optional flag to use local kubectl config context. | `bool` | `false` | no |
 | use\_existing\_gcp\_sa | Use an existing Google service account instead of creating one | `bool` | `false` | no |
 | use\_existing\_k8s\_sa | Use an existing kubernetes service account instead of creating one | `bool` | `false` | no |
