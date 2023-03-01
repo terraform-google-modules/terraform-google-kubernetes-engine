@@ -54,6 +54,7 @@ func TestSimpleAutopilotPrivate(t *testing.T) {
 			g.JSONEq(assert, op, pth)
 		}
 		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
+		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), "simple-autopilot-private")
 	})
 
 	bpt.Test()

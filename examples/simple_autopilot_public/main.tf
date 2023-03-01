@@ -44,4 +44,5 @@ module "gke" {
   ip_range_services               = local.svc_range_name
   release_channel                 = "REGULAR"
   enable_vertical_pod_autoscaling = true
+  network_tags                    = [local.cluster_type]
 }
