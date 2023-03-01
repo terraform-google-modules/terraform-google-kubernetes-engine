@@ -639,3 +639,4 @@ variable "enable_kubernetes_alpha" {
   description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
   default     = false
 }
+

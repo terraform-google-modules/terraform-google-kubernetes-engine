@@ -122,7 +122,8 @@ resource "google_container_cluster" "primary" {
           auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
         }
 
-        min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
+        min_cpu_platform  = lookup(var.node_pools[0], "min_cpu_platform", "")
+        boot_disk_kms_key = var.node_autoprovisioning_boot_disk_kms_key
       }
     }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"

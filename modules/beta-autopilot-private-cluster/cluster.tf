@@ -75,6 +75,7 @@ resource "google_container_cluster" "primary" {
 
       content {
         service_account = local.service_account
+        boot_disk_kms_key  = var.node_autoprovisioning_boot_disk_kms_key
       }
     }
   }
