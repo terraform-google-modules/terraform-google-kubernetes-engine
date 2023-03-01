@@ -166,8 +166,8 @@ resource "google_container_cluster" "primary" {
       for_each = (var.create_service_account || var.service_account != "") ? [1] : []
 
       content {
-        service_account = local.service_account
-        boot_disk_kms_key  = var.node_autoprovisioning_boot_disk_kms_key
+        service_account   = local.service_account
+        boot_disk_kms_key = var.node_autoprovisioning_boot_disk_kms_key
       }
     }
   }

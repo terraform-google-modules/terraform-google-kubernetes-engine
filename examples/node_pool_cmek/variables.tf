@@ -83,7 +83,7 @@ variable "cluster_autoscaling" {
 }
 
 variable "boot_disk_kms_key" {
-  type = string
+  type        = string
   description = "The Customer Managed Encryption Key used to encrypt the boot disks of the nodes. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]"
 }
 

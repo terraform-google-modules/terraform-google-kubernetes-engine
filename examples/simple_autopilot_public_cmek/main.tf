@@ -33,16 +33,16 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                          = "../../modules/beta-autopilot-public-cluster/"
-  project_id                      = var.project_id
-  name                            = "${local.cluster_type}-cluster"
-  regional                        = true
-  region                          = var.region
-  network                         = module.gcp-network.network_name
-  subnetwork                      = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
-  ip_range_pods                   = local.pods_range_name
-  ip_range_services               = local.svc_range_name
-  release_channel                 = "REGULAR"
-  enable_vertical_pod_autoscaling = true
+  source                                  = "../../modules/beta-autopilot-public-cluster/"
+  project_id                              = var.project_id
+  name                                    = "${local.cluster_type}-cluster"
+  regional                                = true
+  region                                  = var.region
+  network                                 = module.gcp-network.network_name
+  subnetwork                              = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
+  ip_range_pods                           = local.pods_range_name
+  ip_range_services                       = local.svc_range_name
+  release_channel                         = "REGULAR"
+  enable_vertical_pod_autoscaling         = true
   node_autoprovisioning_boot_disk_kms_key = var.boot_disk_kms_key
 }

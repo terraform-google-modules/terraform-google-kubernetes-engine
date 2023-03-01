@@ -27,28 +27,28 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                            = "../../modules/beta-public-cluster/"
-  project_id                        = var.project_id
-  name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  region                            = var.region
-  zones                             = var.zones
-  network                           = var.network
-  subnetwork                        = var.subnetwork
-  ip_range_pods                     = var.ip_range_pods
-  ip_range_services                 = var.ip_range_services
-  create_service_account            = false
-  remove_default_node_pool          = false
-  disable_legacy_metadata_endpoints = false
-  cluster_autoscaling               = var.cluster_autoscaling
+  source                                  = "../../modules/beta-public-cluster/"
+  project_id                              = var.project_id
+  name                                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  region                                  = var.region
+  zones                                   = var.zones
+  network                                 = var.network
+  subnetwork                              = var.subnetwork
+  ip_range_pods                           = var.ip_range_pods
+  ip_range_services                       = var.ip_range_services
+  create_service_account                  = false
+  remove_default_node_pool                = false
+  disable_legacy_metadata_endpoints       = false
+  cluster_autoscaling                     = var.cluster_autoscaling
   node_autoprovisioning_boot_disk_kms_key = var.boot_disk_kms_key
 
   node_pools = [
     {
-      name            = "pool-01"
-      min_count       = 1
-      max_count       = 2
-      service_account = var.compute_engine_service_account
-      auto_upgrade    = true
+      name              = "pool-01"
+      min_count         = 1
+      max_count         = 2
+      service_account   = var.compute_engine_service_account
+      auto_upgrade      = true
       boot_disk_kms_key = var.boot_disk_kms_key
     },
   ]
