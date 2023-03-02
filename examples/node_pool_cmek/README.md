@@ -1,6 +1,6 @@
 # Node Pool Cluster
 
-This example illustrates how to create a cluster with multiple custom node-pool configurations with node labels, taints, and network tags.
+This example illustrates how to create a cluster with custom node-pool configurations encrypted with customer managed encryption key.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
