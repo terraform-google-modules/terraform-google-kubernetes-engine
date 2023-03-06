@@ -35,7 +35,6 @@ func TestSimpleZonalWithASM(t *testing.T) {
 		projectNumber := bpt.GetStringOutput("project_number")
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")
-		// serviceAccount := bpt.GetStringOutput("service_account")
 
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		assert.Contains(op.Get("resourceLabels.mesh_id").String(), fmt.Sprintf("proj-%s", projectNumber), "Mesh ID's exists")
