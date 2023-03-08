@@ -328,6 +328,8 @@ resource "google_container_cluster" "primary" {
         }
       }
 
+      logging_variant = var.logging_variant
+
       dynamic "gvnic" {
         for_each = lookup(var.node_pools[0], "enable_gvnic", false) ? [true] : []
         content {
@@ -655,6 +657,8 @@ resource "google_container_node_pool" "pools" {
     local_ssd_count = lookup(each.value, "local_ssd_count", 0)
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
+
+    logging_variant = lookup(each.value, "logging_variant", "DEFAULT")
 
     dynamic "ephemeral_storage_config" {
       for_each = lookup(each.value, "local_ssd_ephemeral_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []

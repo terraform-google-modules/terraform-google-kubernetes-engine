@@ -652,6 +652,12 @@ variable "logging_enabled_components" {
   default     = []
 }
 
+variable "logging_variant" {
+  type        = string
+  description = "Parameter for specifying the type of logging agent used in a node pool."
+  default     = "DEFAULT"
+}
+
 variable "enable_kubernetes_alpha" {
   type        = bool
   description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
