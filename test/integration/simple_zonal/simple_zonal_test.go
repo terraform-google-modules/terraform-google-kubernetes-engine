@@ -11,18 +11,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package simple_autopilot_private
+package simple_zonal
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
+	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSimpleAutopilotPrivate(t *testing.T) {
+func TestSimpleZonal(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
@@ -41,20 +44,42 @@ func TestSimpleAutopilotPrivate(t *testing.T) {
 			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
 		)
 		validateJSONPaths := []string{
-			"autopilot.enabled",
+			"status",
 			"location",
+			"locations",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
 			"addonsConfig.horizontalPodAutoscaling",
 			"addonsConfig.httpLoadBalancing",
 			"addonsConfig.kubernetesDashboard.disabled",
 			"addonsConfig.networkPolicyConfig.disabled",
+			"nodePools.name",
+			"nodePools.initialNodeCount",
+			"nodePools.autoscaling",
+			"nodePools.config.serviceAccount",
+			"nodePools.config.machineType",
+			"nodePools.config.diskSizeGb",
+			"nodePools.config.labels",
+			"nodePools.config.tags",
+			"nodePools.management.autoRepair",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
-		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
-		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), "simple-autopilot-private")
+
+		op1 := gcloud.Runf(t, "iam service-accounts describe %s --project %s ", serviceAccount, projectId)
+		assert.Contains(op1.Get("displayName").String(), fmt.Sprintf("Terraform-managed service account for cluster %s", clusterName), "Custom Terraform Created")
+
+		gcloud.Runf(t, "container clusters get-credentials %s --region %s --project %s", clusterName, location, projectId)
+		k8sOpts := k8s.KubectlOptions{}
+		configNameSpace, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "ns", "config-management-system", "-o", "json")
+		assert.NoError(err)
+		configkubeNS := utils.ParseJSONResult(t, configNameSpace)
+		assert.Contains(configkubeNS.Get("metadata.name").String(), "config-management-system", "Namespace is Functional")
+		gateKeeperNameSpace, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "ns", "gatekeeper-system", "-o", "json")
+		assert.NoError(err)
+		gateKeeperkubeNS := utils.ParseJSONResult(t, gateKeeperNameSpace)
+		assert.Contains(gateKeeperkubeNS.Get("metadata.name").String(), "gatekeeper-system", "Namespace is Functional")
 	})
 
 	bpt.Test()

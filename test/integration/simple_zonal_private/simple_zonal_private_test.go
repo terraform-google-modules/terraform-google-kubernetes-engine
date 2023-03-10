@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package simple_autopilot_private
+package simple_zonal_private
 
 import (
 	"testing"
@@ -22,7 +22,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSimpleAutopilotPrivate(t *testing.T) {
+func TestSimpleZonalPrivate(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
@@ -41,20 +41,30 @@ func TestSimpleAutopilotPrivate(t *testing.T) {
 			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
 		)
 		validateJSONPaths := []string{
-			"autopilot.enabled",
+			"status",
 			"location",
+			"locations",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
 			"addonsConfig.horizontalPodAutoscaling",
 			"addonsConfig.httpLoadBalancing",
 			"addonsConfig.kubernetesDashboard.disabled",
 			"addonsConfig.networkPolicyConfig.disabled",
+			"nodePools.name",
+			"nodePools.initialNodeCount",
+			"nodePools.autoscaling.enabled",
+			"nodePools.autoscaling.minNodeCount",
+			"nodePools.autoscaling.maxNodeCount",
+			"nodePools.config.machineType",
+			"nodePools.config.diskSizeGb",
+			"nodePools.config.labels",
+			"nodePools.config.tags",
+			"nodePools.management.autoRepair",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
-		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
-		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), "simple-autopilot-private")
+
 	})
 
 	bpt.Test()
