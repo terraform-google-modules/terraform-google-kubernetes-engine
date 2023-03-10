@@ -102,8 +102,9 @@ resource "google_container_cluster" "primary" {
       for_each = var.cluster_autoscaling.enabled ? [1] : []
 
       content {
-        service_account = local.service_account
-        oauth_scopes    = local.node_pools_oauth_scopes["all"]
+        service_account   = local.service_account
+        oauth_scopes      = local.node_pools_oauth_scopes["all"]
+        boot_disk_kms_key = var.node_autoprovisioning_boot_disk_kms_key
 
         management {
           auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
@@ -264,9 +265,10 @@ resource "google_container_cluster" "primary" {
     initial_node_count = var.initial_node_count
 
     node_config {
-      image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
-      machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
-      min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
+      image_type        = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
+      machine_type      = lookup(var.node_pools[0], "machine_type", "e2-medium")
+      min_cpu_platform  = lookup(var.node_pools[0], "min_cpu_platform", "")
+      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", "")
       dynamic "gcfs_config" {
         for_each = lookup(var.node_pools[0], "enable_gcfs", false) ? [true] : []
         content {

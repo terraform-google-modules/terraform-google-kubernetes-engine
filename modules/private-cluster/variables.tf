@@ -640,3 +640,8 @@ variable "enable_kubernetes_alpha" {
   default     = false
 }
 
+variable "node_autoprovisioning_boot_disk_kms_key" {
+  type        = string
+  description = "The Customer Managed Encryption Key used to encrypt the boot disks of the node autoprovisioned by the cluster. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]"
+  default     = null
+}
