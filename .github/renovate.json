@@ -43,5 +43,21 @@
       "matchPackageNames": ["google", "google-beta"],
       "groupName": "terraform googles"
     }
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": ["(^|/)Makefile$"],
+      "matchStrings": ["DOCKER_TAG_VERSION_DEVELOPER_TOOLS := (?<currentValue>.*?)\\n"],
+      "datasourceTemplate": "docker",
+      "registryUrlTemplate": "https://gcr.io/cloud-foundation-cicd",
+      "depNameTemplate": "cft/developer-tools"
+    },
+    {
+      "fileMatch": ["(^|/)build/(int|lint)\\.cloudbuild\\.yaml$"],
+      "matchStrings": ["  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '(?<currentValue>.*?)'\\n"],
+      "datasourceTemplate": "docker",
+      "registryUrlTemplate": "https://gcr.io/cloud-foundation-cicd",
+      "depNameTemplate": "cft/developer-tools"
+    }
   ]
 }
