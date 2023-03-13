@@ -17,6 +17,11 @@
 locals {
   # GCP service account ids must be <= 30 chars matching regex ^[a-z](?:[-a-z0-9]{4,28}[a-z0-9])$
   service_account_name = trimsuffix(substr(var.metrics_gcp_sa_name, 0, 30), "-")
+
+  iam_ksa_binding_members = var.create_metrics_gcp_sa ? [
+    var.enable_config_sync ? "config-management-monitoring/default" : null,
+    var.enable_policy_controller ? "gatekeeper-system/gatekeeper-admin" : null,
+  ] : []
 }
 
 resource "tls_private_key" "k8sop_creds" {
@@ -33,22 +38,14 @@ resource "time_sleep" "wait_acm" {
   create_duration = "300s"
 }
 
-resource "google_service_account_iam_binding" "config-management-monitoring-iam" {
-  count              = var.enable_config_sync && var.create_metrics_gcp_sa ? 1 : 0
+resource "google_service_account_iam_binding" "ksa_iam" {
+  count              = length(local.iam_ksa_binding_members) > 0 ? 1 : 0
   service_account_id = google_service_account.acm_metrics_writer_sa[0].name
   role               = "roles/iam.workloadIdentityUser"
 
-  members = ["serviceAccount:${var.project_id}.svc.id.goog[config-management-monitoring/default]"]
-
-  depends_on = [google_gke_hub_feature_membership.main]
-}
-
-resource "google_service_account_iam_binding" "gatekeeper-system-iam" {
-  count              = var.enable_policy_controller && var.create_metrics_gcp_sa ? 1 : 0
-  service_account_id = google_service_account.acm_metrics_writer_sa[0].name
-  role               = "roles/iam.workloadIdentityUser"
-
-  members = ["serviceAccount:${var.project_id}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"]
+  members = [
+    for ksa in local.iam_ksa_binding_members : "serviceAccount:${var.project_id}.svc.id.goog[${ksa}]"
+  ]
 
   depends_on = [google_gke_hub_feature_membership.main]
 }
