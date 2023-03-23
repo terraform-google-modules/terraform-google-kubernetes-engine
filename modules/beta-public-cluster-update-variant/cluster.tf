@@ -429,6 +429,8 @@ locals {
     "disk_type",
     "accelerator_count",
     "accelerator_type",
+    "gpu_partition_size",
+    "gpu_sharing_config",
     "enable_secure_boot",
     "enable_integrity_monitoring",
     "local_ssd_count",
@@ -662,6 +664,10 @@ resource "google_container_node_pool" "pools" {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
+        gpu_sharing_config = lookup(each.value, "gpu_sharing_config", null) == null ? null : {
+          gpu_sharing_strategy       = lookup(each.value.gpu_sharing_config, "gpu_sharing_strategy", "TIME_SHARING")
+          max_shared_clients_per_gpu = lookup(each.value.gpu_sharing_config, "max_shared_clients_per_gpu", 2)
+        }
       }
     }
 
@@ -873,6 +879,10 @@ resource "google_container_node_pool" "windows_pools" {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
+        gpu_sharing_config = lookup(each.value, "gpu_sharing_config", null) == null ? null : {
+          gpu_sharing_strategy       = lookup(each.value.gpu_sharing_config, "gpu_sharing_strategy", "TIME_SHARING")
+          max_shared_clients_per_gpu = lookup(each.value.gpu_sharing_config, "max_shared_clients_per_gpu", 2)
+        }
       }
     }
 
