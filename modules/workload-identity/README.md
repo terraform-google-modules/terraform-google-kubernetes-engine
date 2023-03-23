@@ -83,6 +83,8 @@ resource "kubernetes_service_account" "preexisting" {
 module "my-app-workload-identity" {
   source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   use_existing_k8s_sa = true
+  cluster             = "my-k8s-cluster-name"
+  location            = "my-k8s-cluster-location"
   name                = kubernetes_service_account.preexisting.metadata[0].name
   namespace           = kubernetes_service_account.preexisting.metadata[0].namespace
   project_id          = var.project_id
