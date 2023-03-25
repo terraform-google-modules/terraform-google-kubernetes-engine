@@ -85,7 +85,7 @@ variable "automount_service_account_token" {
 }
 
 variable "roles" {
-  description = "A list of roles to be added to the created service account for specific projects"
+  description = "A list of roles to be added to the created service account"
   type        = list(string)
   default     = []
 }
@@ -106,4 +106,10 @@ variable "module_depends_on" {
   description = "List of modules or resources to depend on before annotating KSA. If multiple, all items must be the same type."
   type        = list(any)
   default     = []
+}
+
+variable "additional_projects" {
+  description = "A list of roles to be added to the created service account for additional projects"
+  type        = map(list(string))
+  default     = {}
 }

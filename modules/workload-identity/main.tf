@@ -85,6 +85,14 @@ resource "google_service_account_iam_member" "main" {
 resource "google_project_iam_member" "workload_identity_sa_bindings" {
   for_each = toset(var.roles)
 
+  project = var.project_id
+  role    = each.value
+  member  = local.gcp_sa_fqn
+}
+
+resource "google_project_iam_member" "workload_identity_sa_bindings_additional_projects" {
+  for_each = toset(distinct(flatten([for project, roles in var.additional_projects : [for role in roles : join("=>", [project, role])]])))
+
   project = element(split("=>", each.value), 0)
   role    = element(split("=>", each.value), 1)
   member  = local.gcp_sa_fqn
