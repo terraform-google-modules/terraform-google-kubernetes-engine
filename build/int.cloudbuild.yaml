@@ -181,36 +181,46 @@ steps:
     - verify simple-regional-with-networking-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalWithNetworking --stage teardown --verbose']
-- id: converge simple-zonal-local
+- id: init simple-zonal-local
   waitFor:
     - create all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge simple-zonal-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonal --stage init --verbose']
+- id: apply simple-zonal-local
+  waitFor:
+    - init simple-zonal-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonal --stage apply --verbose']
 - id: verify simple-zonal-local
   waitFor:
-    - converge simple-zonal-local
+    - apply simple-zonal-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify simple-zonal-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonal --stage verify --verbose']
 - id: destroy simple-zonal-local
   waitFor:
     - verify simple-zonal-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-zonal-local']
-- id: converge simple-zonal-private-local
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonal --stage teardown --verbose']
+- id: init simple-zonal-private-local
   waitFor:
     - create all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge simple-zonal-private-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalPrivate --stage init --verbose']
+- id: apply simple-zonal-private-local
+  waitFor:
+    - init simple-zonal-private-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalPrivate --stage apply --verbose']
 - id: verify simple-zonal-private-local
   waitFor:
-    - converge simple-zonal-private-local
+    - apply simple-zonal-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify simple-zonal-private-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalPrivate --stage verify --verbose']
 - id: destroy simple-zonal-private-local
   waitFor:
     - verify simple-zonal-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-zonal-private-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalPrivate --stage teardown --verbose']
 - id: converge stub-domains-local
   waitFor:
     - create all
@@ -396,21 +406,26 @@ steps:
     - verify safer-cluster-iap-bastion-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy safer-cluster-iap-bastion-local']
-- id: converge simple-zonal-with-asm-local
+- id: init simple-zonal-with-asm-local
   waitFor:
     - create all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge simple-zonal-with-asm-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalWithASM --stage init --verbose']
+- id: apply simple-zonal-with-asm-local
+  waitFor:
+    - init simple-zonal-with-asm-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalWithASM --stage apply --verbose']
 - id: verify simple-zonal-with-asm-local
   waitFor:
-    - converge simple-zonal-with-asm-local
+    - apply simple-zonal-with-asm-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify simple-zonal-with-asm-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalWithASM --stage verify --verbose']
 - id: destroy simple-zonal-with-asm-local
   waitFor:
     - verify simple-zonal-with-asm-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-zonal-with-asm-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalWithASM --stage teardown --verbose']
 - id: init simple-autopilot-private-local
   waitFor:
     - create all
