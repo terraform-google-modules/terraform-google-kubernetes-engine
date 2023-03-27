@@ -184,8 +184,6 @@ module "gke" {
 
   enable_shielded_nodes = var.enable_shielded_nodes
 
-  skip_provisioners = var.skip_provisioners
-
   gce_pd_csi_driver    = var.gce_pd_csi_driver
   filestore_csi_driver = var.filestore_csi_driver
 
