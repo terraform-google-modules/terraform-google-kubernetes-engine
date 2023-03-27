@@ -38,8 +38,6 @@ module "gke" {
   remove_default_node_pool = true
   service_account          = "create"
   node_metadata            = "GKE_METADATA"
-  # https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1313
-  kubernetes_version = "1.23"
   node_pools = [
     {
       name         = "wi-pool"
