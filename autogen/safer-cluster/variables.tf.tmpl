@@ -26,6 +26,12 @@ variable "name" {
   description = "The name of the cluster"
 }
 
+variable "description" {
+  type        = string
+  description = "The description of the cluster"
+  default     = ""
+}
+
 variable "regional" {
   type        = bool
   description = "Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!)"

@@ -22,6 +22,7 @@ module "gke" {
   source             = "../beta-private-cluster-update-variant/"
   project_id         = var.project_id
   name               = var.name
+  description        = var.description
   regional           = var.regional
   region             = var.region
   zones              = var.zones
