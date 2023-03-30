@@ -22,6 +22,7 @@ module "gke" {
   source             = "../beta-private-cluster/"
   project_id         = var.project_id
   name               = var.name
+  description        = var.description
   regional           = var.regional
   region             = var.region
   zones              = var.zones
@@ -183,8 +184,6 @@ module "gke" {
   authenticator_security_group = var.authenticator_security_group
 
   enable_shielded_nodes = var.enable_shielded_nodes
-
-  skip_provisioners = var.skip_provisioners
 
   gce_pd_csi_driver    = var.gce_pd_csi_driver
   filestore_csi_driver = var.filestore_csi_driver
