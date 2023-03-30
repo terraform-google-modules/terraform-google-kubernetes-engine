@@ -7,7 +7,6 @@ This example illustrates how to create a simple zonal cluster with ASM.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
 | ip\_range\_pods | The secondary ip range to use for pods | `any` | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for services | `any` | n/a | yes |
 | network | The VPC network to host the cluster in | `any` | n/a | yes |
