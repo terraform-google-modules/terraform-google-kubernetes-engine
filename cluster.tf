@@ -413,12 +413,12 @@ resource "google_container_node_pool" "pools" {
     dynamic "blue_green_settings" {
       for_each = lookup(each.value, "strategy", "SURGE") == "BLUE_GREEN" ? [1] : []
       content {
-        node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", "3600s")
+        node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", null)
 
         standard_rollout_policy {
-          batch_soak_duration = lookup(each.value, "batch_soak_duration", "0s")
+          batch_soak_duration = lookup(each.value, "batch_soak_duration", null)
           batch_percentage    = lookup(each.value, "batch_percentage", null)
-          batch_node_count    = lookup(each.value, "batch_node_count", 1)
+          batch_node_count    = lookup(each.value, "batch_node_count", null)
         }
       }
     }
@@ -599,12 +599,12 @@ resource "google_container_node_pool" "windows_pools" {
     dynamic "blue_green_settings" {
       for_each = lookup(each.value, "strategy", "SURGE") == "BLUE_GREEN" ? [1] : []
       content {
-        node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", "3600s")
+        node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", null)
 
         standard_rollout_policy {
-          batch_soak_duration = lookup(each.value, "batch_soak_duration", "0s")
+          batch_soak_duration = lookup(each.value, "batch_soak_duration", null)
           batch_percentage    = lookup(each.value, "batch_percentage", null)
-          batch_node_count    = lookup(each.value, "batch_node_count", 1)
+          batch_node_count    = lookup(each.value, "batch_node_count", null)
         }
       }
     }
