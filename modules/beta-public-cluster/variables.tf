@@ -665,7 +665,6 @@ variable "enable_pod_security_policy" {
   default     = false
 }
 
-
 variable "enable_l4_ilb_subsetting" {
   type        = bool
   description = "Enable L4 ILB Subsetting on the cluster"
@@ -688,4 +687,46 @@ variable "enable_identity_service" {
   type        = bool
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
   default     = false
+}
+
+variable "strategy" {
+  type        = string
+  description = "The upgrade stragey to be used for upgrading the nodes. Valid values of state are: `SURGE`; `BLUE_GREEN`. By default strategy is `SURGE` (Optional)"
+  default     = "SURGE"
+}
+
+variable "max_surge" {
+  type        = number
+  description = "The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater (Optional)"
+  default     = null
+}
+
+variable "max_unavailable" {
+  type        = number
+  description = "The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater (Optional)"
+  default     = null
+}
+
+variable "node_pool_soak_duration" {
+  type        = string
+  description = "Time needed after draining the entire blue pool. After this period, the blue pool will be cleaned up (Optional)"
+  default     = "3600s"
+}
+
+variable "batch_soak_duration" {
+  type        = string
+  description = "Soak time after each batch gets drained (Optionial)"
+  default     = "0s"
+}
+
+variable "batch_percentage" {
+  type        = string
+  description = "Percentage of the blue pool nodes to drain in a batch (Optional)"
+  default     = null
+}
+
+variable "batch_node_count" {
+  type        = number
+  description = "The number of blue nodes to drain in a batch (Optional)"
+  default     = null
 }

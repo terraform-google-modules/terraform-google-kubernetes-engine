@@ -500,9 +500,30 @@ resource "google_container_node_pool" "pools" {
     auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
   }
 
-  upgrade_settings {
-    max_surge       = lookup(each.value, "max_surge", 1)
-    max_unavailable = lookup(each.value, "max_unavailable", 0)
+  dynamic "upgrade_settings" {
+    for_each = lookup(each.value, "strategy", var.strategy) == "SURGE" ? [each.value] : []
+    content {
+      strategy        = lookup(each.value, "strategy", "SURGE")
+      max_surge       = lookup(each.value, "max_surge", 1)
+      max_unavailable = lookup(each.value, "max_unavailable", 0)
+    }
+  }
+
+  dynamic "upgrade_settings" {
+    for_each = lookup(each.value, "strategy", var.strategy) == "BLUE_GREEN" ? [each.value] : []
+    content {
+      strategy = lookup(each.value, "strategy", "BLUE_GREEN")
+
+      blue_green_settings {
+        node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", "3600s")
+
+        standard_rollout_policy {
+          batch_soak_duration = lookup(each.value, "batch_soak_duration", "60s")
+          batch_percentage    = lookup(each.value, "batch_percentage", null)
+          batch_node_count    = lookup(each.value, "batch_node_count", null)
+        }
+      }
+    }
   }
 
   node_config {
@@ -711,9 +732,30 @@ resource "google_container_node_pool" "windows_pools" {
     auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
   }
 
-  upgrade_settings {
-    max_surge       = lookup(each.value, "max_surge", 1)
-    max_unavailable = lookup(each.value, "max_unavailable", 0)
+  dynamic "upgrade_settings" {
+    for_each = lookup(each.value, "strategy", var.strategy) == "SURGE" ? [each.value] : []
+    content {
+      strategy        = lookup(each.value, "strategy", "SURGE")
+      max_surge       = lookup(each.value, "max_surge", 1)
+      max_unavailable = lookup(each.value, "max_unavailable", 0)
+    }
+  }
+
+  dynamic "upgrade_settings" {
+    for_each = lookup(each.value, "strategy", var.strategy) == "BLUE_GREEN" ? [each.value] : []
+    content {
+      strategy = lookup(each.value, "strategy", "BLUE_GREEN")
+
+      blue_green_settings {
+        node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", "3600s")
+
+        standard_rollout_policy {
+          batch_soak_duration = lookup(each.value, "batch_soak_duration", "60s")
+          batch_percentage    = lookup(each.value, "batch_percentage", null)
+          batch_node_count    = lookup(each.value, "batch_node_count", null)
+        }
+      }
+    }
   }
 
   node_config {
