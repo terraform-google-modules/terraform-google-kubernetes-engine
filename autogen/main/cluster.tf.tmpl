@@ -135,12 +135,12 @@ resource "google_container_cluster" "primary" {
       content {
         service_account = local.service_account
         oauth_scopes = local.node_pools_oauth_scopes["all"]
-        
+
         management {
             auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
             auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade",true)
         }
-        
+
         {% if beta_cluster %}
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
         {% endif %}
@@ -309,7 +309,7 @@ resource "google_container_cluster" "primary" {
     {% endif %}
   }
   {% if autopilot_cluster != true %}
-  
+
   datapath_provider = var.datapath_provider
   {% endif %}
 

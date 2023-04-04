@@ -14,8 +14,6 @@ The `terraform-google-workload-identity` can create service accounts for you,
 or you can use existing accounts; this applies for both the Google and
 Kubernetes accounts.
 
-Note: This module currently supports Kubernetes <= 1.23.
-
 ### Creating a Workload Identity
 
 ```hcl

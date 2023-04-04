@@ -113,9 +113,3 @@ variable "regional" {
   description = "Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!)"
   default     = true
 }
-
-variable "datapath_provider" {
-  type        = string
-  description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
-  default     = "DATAPATH_PROVIDER_UNSPECIFIED"
-}

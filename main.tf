@@ -98,9 +98,7 @@ locals {
     mode = lookup(local.old_node_metadata_config_mapping, var.node_metadata, var.node_metadata)
   }]
 
-  cluster_output_name           = google_container_cluster.primary.name
   cluster_output_regional_zones = google_container_cluster.primary.node_locations
-  cluster_output_zonal_zones    = local.zone_count > 1 ? slice(var.zones, 1, local.zone_count) : []
   cluster_output_zones          = local.cluster_output_regional_zones
 
   cluster_endpoint           = google_container_cluster.primary.endpoint
@@ -111,10 +109,10 @@ locals {
   cluster_output_min_master_version                 = google_container_cluster.primary.min_master_version
   cluster_output_logging_service                    = google_container_cluster.primary.logging_service
   cluster_output_monitoring_service                 = google_container_cluster.primary.monitoring_service
-  cluster_output_network_policy_enabled             = google_container_cluster.primary.addons_config.0.network_policy_config.0.disabled
-  cluster_output_http_load_balancing_enabled        = google_container_cluster.primary.addons_config.0.http_load_balancing.0.disabled
-  cluster_output_horizontal_pod_autoscaling_enabled = google_container_cluster.primary.addons_config.0.horizontal_pod_autoscaling.0.disabled
-  cluster_output_vertical_pod_autoscaling_enabled   = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling.0.enabled : false
+  cluster_output_network_policy_enabled             = google_container_cluster.primary.addons_config[0].network_policy_config[0].disabled
+  cluster_output_http_load_balancing_enabled        = google_container_cluster.primary.addons_config[0].http_load_balancing[0].disabled
+  cluster_output_horizontal_pod_autoscaling_enabled = google_container_cluster.primary.addons_config[0].horizontal_pod_autoscaling[0].disabled
+  cluster_output_vertical_pod_autoscaling_enabled   = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling[0].enabled : false
 
 
   master_authorized_networks_config = length(var.master_authorized_networks) == 0 ? [] : [{

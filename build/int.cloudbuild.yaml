@@ -511,6 +511,6 @@ tags:
 - 'integration'
 substitutions:
   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.8'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.10'
 options:
   machineType: 'N1_HIGHCPU_8'
