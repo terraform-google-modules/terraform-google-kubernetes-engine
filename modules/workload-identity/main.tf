@@ -28,6 +28,8 @@ locals {
 
   k8s_sa_project_id       = var.k8s_sa_project_id != null ? var.k8s_sa_project_id : var.project_id
   k8s_sa_gcp_derived_name = "serviceAccount:${local.k8s_sa_project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
+
+  sa_binding_additional_project = distinct(flatten([for project, roles in var.additional_projects : [for role in roles : { project_id = project, role_name = role }]]))
 }
 
 data "google_service_account" "cluster_service_account" {
@@ -91,9 +93,9 @@ resource "google_project_iam_member" "workload_identity_sa_bindings" {
 }
 
 resource "google_project_iam_member" "workload_identity_sa_bindings_additional_projects" {
-  for_each = toset(distinct(flatten([for project, roles in var.additional_projects : [for role in roles : join("=>", [project, role])]])))
+  for_each = { for entry in local.sa_binding_additional_project : "${entry.project_id}.${entry.role_name}" => entry }
 
-  project = element(split("=>", each.value), 0)
-  role    = element(split("=>", each.value), 1)
+  project = each.value.project_id
+  role    = each.value.role_name
   member  = local.gcp_sa_fqn
 }
