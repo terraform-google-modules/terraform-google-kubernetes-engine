@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-locals {
-  cluster_type = "simple-zonal-asm"
-}
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {

@@ -81,7 +81,7 @@ variable "master_authorized_networks" {
 variable "enable_vertical_pod_autoscaling" {
   type        = bool
   description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
-  default     = false
+  default     = true
 }
 
 variable "horizontal_pod_autoscaling" {
@@ -100,12 +100,6 @@ variable "service_external_ips" {
   type        = bool
   description = "Whether external ips specified by a service will be allowed in this cluster"
   default     = false
-}
-
-variable "datapath_provider" {
-  type        = string
-  description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
-  default     = "DATAPATH_PROVIDER_UNSPECIFIED"
 }
 
 variable "maintenance_start_time" {
@@ -167,6 +161,11 @@ variable "enable_resource_consumption_export" {
 }
 
 
+variable "network_tags" {
+  description = "(Optional, Beta) - List of network tags applied to auto-provisioned node pools."
+  type        = list(string)
+  default     = []
+}
 variable "stub_domains" {
   type        = map(list(string))
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"
@@ -201,24 +200,6 @@ variable "configure_ip_masq" {
   type        = bool
   description = "Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server."
   default     = false
-}
-
-variable "cluster_telemetry_type" {
-  type        = string
-  description = "Available options include ENABLED, DISABLED, and SYSTEM_ONLY"
-  default     = null
-}
-
-variable "logging_service" {
-  type        = string
-  description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
-  default     = "logging.googleapis.com/kubernetes"
-}
-
-variable "monitoring_service" {
-  type        = string
-  description = "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none"
-  default     = "monitoring.googleapis.com/kubernetes"
 }
 
 variable "create_service_account" {
@@ -263,11 +244,6 @@ variable "cluster_resource_labels" {
   default     = {}
 }
 
-variable "skip_provisioners" {
-  type        = bool
-  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
-  default     = false
-}
 
 variable "dns_cache" {
   type        = bool

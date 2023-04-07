@@ -380,11 +380,6 @@ variable "cluster_resource_labels" {
   default     = {}
 }
 
-variable "skip_provisioners" {
-  type        = bool
-  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
-  default     = false
-}
 
 variable "dns_cache" {
   type        = bool
@@ -630,6 +625,7 @@ variable "enable_kubernetes_alpha" {
 
 variable "istio" {
   description = "(Beta) Enable Istio addon"
+  type        = bool
   default     = false
 }
 
@@ -653,11 +649,13 @@ variable "config_connector" {
 
 variable "cloudrun" {
   description = "(Beta) Enable CloudRun addon"
+  type        = bool
   default     = false
 }
 
 variable "cloudrun_load_balancer_type" {
   description = "(Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
+  type        = string
   default     = ""
 }
 

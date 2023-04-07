@@ -48,6 +48,7 @@ module "gke" {
   enable_private_endpoint         = true
   enable_private_nodes            = true
   master_ipv4_cidr_block          = "172.16.0.0/28"
+  network_tags                    = [local.cluster_type]
 
   master_authorized_networks = [
     {

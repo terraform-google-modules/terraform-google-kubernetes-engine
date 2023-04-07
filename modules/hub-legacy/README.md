@@ -37,7 +37,6 @@ To deploy this config:
 |------|-------------|------|---------|:--------:|
 | cluster\_endpoint | The GKE cluster endpoint. | `string` | n/a | yes |
 | cluster\_name | The unique name to identify the cluster in ASM. | `string` | n/a | yes |
-| enable\_gke\_hub\_registration | Enables GKE Hub Registration when set to true | `bool` | `true` | no |
 | gcloud\_sdk\_version | The gcloud sdk version to use. Minimum required version is 293.0.0 | `string` | `"296.0.1"` | no |
 | gke\_hub\_membership\_name | Membership name that uniquely represents the cluster being registered on the Hub | `string` | `"gke-hub-membership"` | no |
 | gke\_hub\_sa\_name | Name for the GKE Hub SA stored as a secret `creds-gcp` in the `gke-connect` namespace. | `string` | `"gke-hub-sa"` | no |
