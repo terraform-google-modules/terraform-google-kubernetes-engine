@@ -686,6 +686,8 @@ resource "google_container_node_pool" "windows_pools" {
       pod_range            = lookup(network_config.value, "pod_range", null)
       {% if private_cluster %}
       enable_private_nodes = var.enable_private_nodes
+      {% else %}
+      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
       {% endif %}
     }
   }
