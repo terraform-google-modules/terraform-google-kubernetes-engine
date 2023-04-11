@@ -107,3 +107,9 @@ variable "module_depends_on" {
   type        = list(any)
   default     = []
 }
+
+variable "additional_projects" {
+  description = "A list of roles to be added to the created service account for additional projects"
+  type        = map(list(string))
+  default     = {}
+}

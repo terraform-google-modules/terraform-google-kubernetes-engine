@@ -102,12 +102,14 @@ variable "service_external_ips" {
   default     = false
 }
 
+{% if autopilot_cluster != true %}
 variable "datapath_provider" {
   type        = string
   description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
   default     = "DATAPATH_PROVIDER_UNSPECIFIED"
 }
 
+{% endif %}
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
@@ -335,7 +337,7 @@ variable "configure_ip_masq" {
   default     = false
 }
 
-{% if beta_cluster %}
+{% if beta_cluster and autopilot_cluster != true%}
 variable "cluster_telemetry_type" {
   type        = string
   description = "Available options include ENABLED, DISABLED, and SYSTEM_ONLY"
@@ -343,6 +345,7 @@ variable "cluster_telemetry_type" {
 }
 
 {% endif %}
+{% if autopilot_cluster != true%}
 variable "logging_service" {
   type        = string
   description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
@@ -355,6 +358,7 @@ variable "monitoring_service" {
   default     = "monitoring.googleapis.com/kubernetes"
 }
 
+{% endif %}
 variable "create_service_account" {
   type        = bool
   description = "Defines if service account specified to run nodes should be created."
@@ -397,11 +401,6 @@ variable "cluster_resource_labels" {
   default     = {}
 }
 
-variable "skip_provisioners" {
-  type        = bool
-  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
-  default     = false
-}
 {% if private_cluster %}
 
 variable "deploy_using_private_endpoint" {
@@ -697,6 +696,7 @@ variable "enable_kubernetes_alpha" {
 
 variable "istio" {
   description = "(Beta) Enable Istio addon"
+  type        = bool
   default     = false
 }
 
@@ -720,12 +720,14 @@ variable "config_connector" {
 
 variable "cloudrun" {
   description = "(Beta) Enable CloudRun addon"
+  type        = bool
   default     = false
 }
 
 variable "cloudrun_load_balancer_type" {
   description = "(Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "enable_pod_security_policy" {

@@ -102,12 +102,6 @@ variable "service_external_ips" {
   default     = false
 }
 
-variable "datapath_provider" {
-  type        = string
-  description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
-  default     = "DATAPATH_PROVIDER_UNSPECIFIED"
-}
-
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
@@ -208,24 +202,6 @@ variable "configure_ip_masq" {
   default     = false
 }
 
-variable "cluster_telemetry_type" {
-  type        = string
-  description = "Available options include ENABLED, DISABLED, and SYSTEM_ONLY"
-  default     = null
-}
-
-variable "logging_service" {
-  type        = string
-  description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
-  default     = "logging.googleapis.com/kubernetes"
-}
-
-variable "monitoring_service" {
-  type        = string
-  description = "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none"
-  default     = "monitoring.googleapis.com/kubernetes"
-}
-
 variable "create_service_account" {
   type        = bool
   description = "Defines if service account specified to run nodes should be created."
@@ -268,11 +244,6 @@ variable "cluster_resource_labels" {
   default     = {}
 }
 
-variable "skip_provisioners" {
-  type        = bool
-  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
-  default     = false
-}
 
 variable "deploy_using_private_endpoint" {
   type        = bool

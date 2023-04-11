@@ -141,7 +141,7 @@ resource "google_container_cluster" "primary" {
             auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
             auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade",true)
         }
-        
+
         {% if beta_cluster %}
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
         {% endif %}
@@ -311,7 +311,7 @@ resource "google_container_cluster" "primary" {
     {% endif %}
   }
   {% if autopilot_cluster != true %}
-  
+
   datapath_provider = var.datapath_provider
   {% endif %}
 
@@ -686,6 +686,8 @@ resource "google_container_node_pool" "windows_pools" {
       pod_range            = lookup(network_config.value, "pod_range", null)
       {% if private_cluster %}
       enable_private_nodes = var.enable_private_nodes
+      {% else %}
+      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
       {% endif %}
     }
   }
