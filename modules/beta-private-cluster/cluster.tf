@@ -322,7 +322,7 @@ resource "google_container_cluster" "primary" {
       image_type        = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
       machine_type      = lookup(var.node_pools[0], "machine_type", "e2-medium")
       min_cpu_platform  = lookup(var.node_pools[0], "min_cpu_platform", "")
-      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", "")
+      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", var.node_autoprovisioning_boot_disk_kms_key)
       dynamic "gcfs_config" {
         for_each = lookup(var.node_pools[0], "enable_gcfs", false) ? [true] : []
         content {
@@ -634,7 +634,7 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
-    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
+    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", var.node_autoprovisioning_boot_disk_kms_key)
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
@@ -832,7 +832,7 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
 
-    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
+    boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", var.node_autoprovisioning_boot_disk_kms_key)
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
