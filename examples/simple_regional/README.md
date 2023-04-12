@@ -7,6 +7,7 @@ This example illustrates how to create a simple cluster.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| boot\_disk\_kms\_key | The Customer Managed Encryption Key used to encrypt the boot disks of the nodes. This should be of the form projects/[KEY\_PROJECT\_ID]/locations/[LOCATION]/keyRings/[RING\_NAME]/cryptoKeys/[KEY\_NAME] | `any` | `null` | no |
 | cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | `any` | n/a | yes |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |

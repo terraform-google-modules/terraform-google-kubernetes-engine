@@ -27,17 +27,18 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                      = "../../"
-  project_id                  = var.project_id
-  name                        = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                    = true
-  region                      = var.region
-  network                     = var.network
-  subnetwork                  = var.subnetwork
-  ip_range_pods               = var.ip_range_pods
-  ip_range_services           = var.ip_range_services
-  create_service_account      = false
-  service_account             = var.compute_engine_service_account
-  enable_cost_allocation      = true
-  enable_binary_authorization = var.enable_binary_authorization
+  source                                  = "../../"
+  project_id                              = var.project_id
+  name                                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  regional                                = true
+  region                                  = var.region
+  network                                 = var.network
+  subnetwork                              = var.subnetwork
+  ip_range_pods                           = var.ip_range_pods
+  ip_range_services                       = var.ip_range_services
+  create_service_account                  = false
+  service_account                         = var.compute_engine_service_account
+  enable_cost_allocation                  = true
+  enable_binary_authorization             = var.enable_binary_authorization
+  node_autoprovisioning_boot_disk_kms_key = var.boot_disk_kms_key
 }
