@@ -125,6 +125,9 @@ resource "google_container_cluster" "primary" {
       disabled = !var.horizontal_pod_autoscaling
     }
 
+    config_connector_config {
+      enabled = var.enable_config_connector
+    }
   }
 
   networking_mode = "VPC_NATIVE"

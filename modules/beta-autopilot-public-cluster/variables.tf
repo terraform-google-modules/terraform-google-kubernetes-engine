@@ -90,6 +90,12 @@ variable "horizontal_pod_autoscaling" {
   default     = true
 }
 
+variable "enable_config_connector " {
+  type        = bool
+  description = "Enable Config Connector addon (CRDs)"
+  default     = false
+}
+
 variable "http_load_balancing" {
   type        = bool
   description = "Enable httpload balancer addon"
