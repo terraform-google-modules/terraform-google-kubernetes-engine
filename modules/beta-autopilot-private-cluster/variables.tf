@@ -222,13 +222,13 @@ variable "registry_project_ids" {
 
 variable "service_account" {
   type        = string
-  description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
+  description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created. This service account should already exists and it will be used by the node pools. If you wish to only override the service account name, you can use service_account_name variable."
   default     = ""
 }
 
 variable "service_account_name" {
   type        = string
-  description = "The name of the service account that will be created if create_service_account is true."
+  description = "The name of the service account that will be created if create_service_account is true. If you wish to use an existing service account, use service_account variable."
   default     = ""
 }
 
