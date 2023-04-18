@@ -226,6 +226,12 @@ variable "service_account" {
   default     = ""
 }
 
+variable "service_account_name" {
+  type        = string
+  description = "The name of the service account that will be created if create_service_account is true."
+  default     = ""
+}
+
 variable "issue_client_certificate" {
   type        = bool
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
