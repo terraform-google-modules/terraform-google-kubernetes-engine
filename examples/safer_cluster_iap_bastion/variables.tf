@@ -73,11 +73,11 @@ variable "bastion_members" {
 variable "keyring" {
   description = "Keyring name."
   type        = string
-  default     = "gke-key"
+  default     = "gke-keyring"
 }
 
 variable "keys" {
   description = "Key names."
   type        = list(string)
-  default     = []
+  default     = ["gke-key"]
 }
