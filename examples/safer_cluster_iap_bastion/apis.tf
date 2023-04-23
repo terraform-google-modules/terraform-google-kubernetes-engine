@@ -32,5 +32,6 @@ module "enabled_google_apis" {
     "binaryauthorization.googleapis.com",
     "stackdriver.googleapis.com",
     "iap.googleapis.com",
+    "cloudkms.googleapis.com",
   ]
 }

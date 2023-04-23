@@ -29,6 +29,12 @@ module "gke" {
     cidr_block   = "${module.bastion.ip_address}/32"
     display_name = "Bastion Host"
   }]
+  database_encryption = [
+    {
+      "key_name" : module.kms.keys[var.keys[0]],
+      "state" : "ENCRYPTED"
+    }
+  ]
   grant_registry_access = true
   node_pools = [
     {
