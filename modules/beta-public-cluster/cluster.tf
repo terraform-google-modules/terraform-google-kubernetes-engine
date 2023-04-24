@@ -344,6 +344,8 @@ resource "google_container_cluster" "primary" {
         lookup(local.node_pools_tags, var.node_pools[0].name, []),
       )
 
+      logging_variant = lookup(var.node_pools[0], "logging_variant", "DEFAULT")
+
       dynamic "workload_metadata_config" {
         for_each = local.cluster_node_metadata_config
 
