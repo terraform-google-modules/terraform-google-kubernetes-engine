@@ -725,3 +725,21 @@ variable "enable_identity_service" {
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
   default     = false
 }
+
+variable "protect_config" {
+  description = "(beta) Enable/Disable Protect API features for the cluster."
+  type = object({
+    workload_vulnerability_mode = string,
+    workload_config = object({
+      audit_mode = string
+    })
+    }
+  )
+
+  default = {
+    workload_vulnerability_mode = ""
+    workload_config = {
+      audit_mode = "MODE_UNSPECIFIED"
+    }
+  }
+}
