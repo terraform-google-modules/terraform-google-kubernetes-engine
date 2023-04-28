@@ -66,8 +66,6 @@ module "this" {
   gce_pd_csi_driver = true
 
   enable_binary_authorization = true
-
-  enable_pod_security_policy = true
 }
 
 data "google_client_config" "default" {
