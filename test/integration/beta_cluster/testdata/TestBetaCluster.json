@@ -277,9 +277,6 @@
   "notificationConfig": {
     "pubsub": {}
   },
-  "podSecurityPolicyConfig": {
-    "enabled": true
-  },
   "privateCluster": true,
   "privateClusterConfig": {
     "privateEndpoint": "10.0.0.2",
