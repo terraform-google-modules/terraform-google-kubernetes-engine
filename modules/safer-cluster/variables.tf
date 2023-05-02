@@ -73,7 +73,7 @@ variable "kubernetes_version" {
 
 variable "release_channel" {
   type        = string
-  description = "(Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`."
+  description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`."
   default     = "REGULAR"
 }
 

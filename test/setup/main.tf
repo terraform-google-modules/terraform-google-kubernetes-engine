@@ -30,7 +30,6 @@ locals {
     "anthosconfigmanagement.googleapis.com",
     "logging.googleapis.com",
     "meshca.googleapis.com",
-    "meshtelemetry.googleapis.com",
     "meshconfig.googleapis.com",
     "cloudresourcemanager.googleapis.com",
     "monitoring.googleapis.com",
