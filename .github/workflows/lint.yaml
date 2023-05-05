@@ -31,13 +31,13 @@ jobs:
       - uses: 'actions/checkout@v3'
       - id: variables
         run: |
-          FILE=$(find . -name Makefile -print -quit)
-          if [ ! -f $FILE ]; then
+          MAKEFILE=$(find . -name Makefile -print -quit)
+          if [ ! -f $MAKEFILE ]; then
             echo dev-tools=gcr.io/cloud-foundation-cicd/cft/developer-tools:1 >> "$GITHUB_OUTPUT"
           else
-            VERSION=$(grep "DOCKER_TAG_VERSION_DEVELOPER_TOOLS := " $FILE | cut -d\  -f3)
-            IMAGE=$(grep "DOCKER_IMAGE_DEVELOPER_TOOLS := " $FILE | cut -d\  -f3)
-            REGISTRY=$(grep "REGISTRY_URL := " $FILE | cut -d\  -f3)
+            VERSION=$(grep "DOCKER_TAG_VERSION_DEVELOPER_TOOLS := " $MAKEFILE | cut -d\  -f3)
+            IMAGE=$(grep "DOCKER_IMAGE_DEVELOPER_TOOLS := " $MAKEFILE | cut -d\  -f3)
+            REGISTRY=$(grep "REGISTRY_URL := " $MAKEFILE | cut -d\  -f3)
             echo dev-tools=${REGISTRY}/${IMAGE}:${VERSION} >> "$GITHUB_OUTPUT"
           fi
       - run: docker run --rm -v ${{ github.workspace }}:/workspace ${{ steps.variables.outputs.dev-tools }} /usr/local/bin/test_lint.sh
