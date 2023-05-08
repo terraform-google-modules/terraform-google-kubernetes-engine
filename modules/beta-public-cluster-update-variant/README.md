@@ -236,7 +236,6 @@ Then perform the following commands on the root folder:
 | non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | `list(string)` | <pre>[<br>  "10.0.0.0/8",<br>  "172.16.0.0/12",<br>  "192.168.0.0/16"<br>]</pre> | no |
 | notification\_config\_topic | The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}. | `string` | `""` | no |
 | project\_id | The project ID to host the cluster in (required) | `string` | n/a | yes |
-| protect\_config | (beta) Enable/Disable Protect API features for the cluster. | <pre>object({<br>    workload_vulnerability_mode = string,<br>    workload_config = object({<br>      audit_mode = string<br>    })<br>    }<br>  )</pre> | <pre>{<br>  "workload_config": {<br>    "audit_mode": "MODE_UNSPECIFIED"<br>  },<br>  "workload_vulnerability_mode": ""<br>}</pre> | no |
 | region | The region to host the cluster in (optional if zonal cluster / required if regional) | `string` | `null` | no |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | `bool` | `true` | no |
 | registry\_project\_ids | Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` and `artifactregsitry.reader` roles are assigned on these projects. | `list(string)` | `[]` | no |
@@ -254,6 +253,8 @@ Then perform the following commands on the root folder:
 | timeouts | Timeout for cluster operations. | `map(string)` | `{}` | no |
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | `list(string)` | `[]` | no |
 | windows\_node\_pools | List of maps containing Windows node pools | `list(map(string))` | `[]` | no |
+| workload\_config\_audit\_mode | (beta) Worload config audit mode. | `string` | `"DISABLED"` | no |
+| workload\_vulnerability\_mode | (beta) Vulnerability mode. | `string` | `""` | no |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | `list(string)` | `[]` | no |
 
 ## Outputs

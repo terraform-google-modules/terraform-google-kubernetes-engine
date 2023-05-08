@@ -726,20 +726,14 @@ variable "enable_identity_service" {
   default     = false
 }
 
-variable "protect_config" {
-  description = "(beta) Enable/Disable Protect API features for the cluster."
-  type = object({
-    workload_vulnerability_mode = string,
-    workload_config = object({
-      audit_mode = string
-    })
-    }
-  )
+variable "workload_vulnerability_mode" {
+  description = "(beta) Vulnerability mode."
+  type        = string
+  default     = ""
+}
 
-  default = {
-    workload_vulnerability_mode = ""
-    workload_config = {
-      audit_mode = "MODE_UNSPECIFIED"
-    }
-  }
+variable "workload_config_audit_mode" {
+  description = "(beta) Worload config audit mode."
+  type        = string
+  default     = "DISABLED"
 }
