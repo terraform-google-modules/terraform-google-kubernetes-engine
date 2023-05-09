@@ -14,17 +14,17 @@ The `terraform-google-workload-identity` can create service accounts for you,
 or you can use existing accounts; this applies for both the Google and
 Kubernetes accounts.
 
-Note: This module currently supports Kubernetes <= 1.23.
-
 ### Creating a Workload Identity
 
 ```hcl
 module "my-app-workload-identity" {
-  source     = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  name       = "my-application-name"
-  namespace  = "default"
-  project_id = "my-gcp-project-name"
-  roles      = ["roles/storage.admin", "roles/compute.admin"]
+  source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
+  name                = "my-application-name"
+  namespace           = "default"
+  project_id          = "my-gcp-project-name"
+  roles               = ["roles/storage.admin", "roles/compute.admin"]
+  additional_projects = {"my-gcp-project-name1" : ["roles/storage.admin", "roles/compute.admin"],
+                         "my-gcp-project-name2" : ["roles/storage.admin", "roles/compute.admin"]}
 }
 ```
 
@@ -99,6 +99,7 @@ already bear the `"iam.gke.io/gcp-service-account"` annotation.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| additional\_projects | A list of roles to be added to the created service account for additional projects | `map(list(string))` | `{}` | no |
 | annotate\_k8s\_sa | Annotate the kubernetes service account with 'iam.gke.io/gcp-service-account' annotation. Valid in cases when an existing SA is used. | `bool` | `true` | no |
 | automount\_service\_account\_token | Enable automatic mounting of the service account token | `bool` | `false` | no |
 | cluster\_name | Cluster name. Required if using existing KSA. | `string` | `""` | no |

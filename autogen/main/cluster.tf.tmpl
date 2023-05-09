@@ -135,12 +135,12 @@ resource "google_container_cluster" "primary" {
       content {
         service_account = local.service_account
         oauth_scopes = local.node_pools_oauth_scopes["all"]
-        
+
         management {
             auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
             auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade",true)
         }
-        
+
         {% if beta_cluster %}
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
         {% endif %}
@@ -309,7 +309,7 @@ resource "google_container_cluster" "primary" {
     {% endif %}
   }
   {% if autopilot_cluster != true %}
-  
+
   datapath_provider = var.datapath_provider
   {% endif %}
 
@@ -684,6 +684,8 @@ resource "google_container_node_pool" "windows_pools" {
       pod_range            = lookup(network_config.value, "pod_range", null)
       {% if private_cluster %}
       enable_private_nodes = var.enable_private_nodes
+      {% else %}
+      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
       {% endif %}
     }
   }
@@ -695,8 +697,22 @@ resource "google_container_node_pool" "windows_pools" {
   }
 
   upgrade_settings {
-    max_surge       = lookup(each.value, "max_surge", 1)
-    max_unavailable = lookup(each.value, "max_unavailable", 0)
+    strategy        = lookup(each.value, "strategy", "SURGE")
+    max_surge       = lookup(each.value, "strategy", "SURGE") == "SURGE" ? lookup(each.value, "max_surge", 1) : null
+    max_unavailable = lookup(each.value, "strategy", "SURGE") == "SURGE" ? lookup(each.value, "max_unavailable", 0) : null
+
+    dynamic "blue_green_settings" {
+      for_each = lookup(each.value, "strategy", "SURGE") == "BLUE_GREEN" ? [1] : []
+      content {
+        node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", null)
+
+        standard_rollout_policy {
+          batch_soak_duration = lookup(each.value, "batch_soak_duration", null)
+          batch_percentage    = lookup(each.value, "batch_percentage", null)
+          batch_node_count    = lookup(each.value, "batch_node_count", null)
+        }
+      }
+    }
   }
 
   node_config {

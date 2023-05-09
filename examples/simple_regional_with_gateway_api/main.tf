@@ -40,6 +40,5 @@ module "gke" {
   service_account             = var.compute_engine_service_account
   enable_cost_allocation      = true
   enable_binary_authorization = var.enable_binary_authorization
-  skip_provisioners           = var.skip_provisioners
   gateway_api_channel         = var.gateway_api_channel
 }

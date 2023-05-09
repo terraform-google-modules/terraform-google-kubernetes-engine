@@ -73,7 +73,7 @@ variable "kubernetes_version" {
 
 variable "release_channel" {
   type        = string
-  description = "(Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`."
+  description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`."
   default     = "REGULAR"
 }
 
@@ -306,6 +306,7 @@ variable "master_ipv4_cidr_block" {
 
 variable "istio" {
   description = "(Beta) Enable Istio addon"
+  type        = bool
   default     = false
 }
 
@@ -341,6 +342,7 @@ variable "cluster_dns_domain" {
 
 variable "default_max_pods_per_node" {
   description = "The maximum number of pods to schedule per node"
+  type        = number
   default     = 110
 }
 
@@ -355,6 +357,7 @@ variable "database_encryption" {
 
 variable "cloudrun" {
   description = "(Beta) Enable CloudRun addon"
+  type        = bool
   default     = false
 }
 
@@ -362,18 +365,6 @@ variable "resource_usage_export_dataset_id" {
   type        = string
   description = "The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic."
   default     = ""
-}
-
-variable "enable_network_egress_export" {
-  type        = bool
-  description = "Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic."
-  default     = false
-}
-
-variable "enable_resource_consumption_export" {
-  type        = bool
-  description = "Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export."
-  default     = true
 }
 
 variable "enable_cost_allocation" {
@@ -422,12 +413,6 @@ variable "enable_private_endpoint" {
   type        = bool
   description = "When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true"
   default     = true
-}
-
-variable "skip_provisioners" {
-  type        = bool
-  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
-  default     = false
 }
 
 variable "enable_pod_security_policy" {

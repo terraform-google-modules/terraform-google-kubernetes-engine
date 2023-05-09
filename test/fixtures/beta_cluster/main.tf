@@ -66,11 +66,6 @@ module "this" {
   gce_pd_csi_driver = true
 
   enable_binary_authorization = true
-
-  enable_pod_security_policy = true
-
-  // Dataplane-V2 Feature
-  datapath_provider = "ADVANCED_DATAPATH"
 }
 
 data "google_client_config" "default" {

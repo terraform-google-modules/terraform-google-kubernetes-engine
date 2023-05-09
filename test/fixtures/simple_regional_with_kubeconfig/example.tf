@@ -25,6 +25,5 @@ module "example" {
   ip_range_pods                  = google_compute_subnetwork.main.secondary_ip_range[0].range_name
   ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   compute_engine_service_account = var.compute_engine_service_accounts[0]
-  skip_provisioners              = true
 }
 
