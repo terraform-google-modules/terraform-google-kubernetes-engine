@@ -19,6 +19,6 @@ terraform {
   required_version = ">= 0.13.0"
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:services/v25.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:services/v26.0.0"
   }
 }
