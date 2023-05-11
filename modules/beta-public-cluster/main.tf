@@ -70,8 +70,8 @@ locals {
   zone_count                  = length(var.zones)
   cluster_type                = var.regional ? "regional" : "zonal"
   // auto upgrade by defaults only for regional cluster as long it has multiple masters versus zonal clusters have only have a single master so upgrades are more dangerous.
-  // When a release channel is used, node auto-upgrade are enabled and cannot be disabled.
-  default_auto_upgrade = var.regional || var.release_channel != null ? true : false
+  // When a release channel is used, node auto-upgrade is enabled and cannot be disabled.
+  default_auto_upgrade = var.regional || var.release_channel != "UNSPECIFIED" ? true : false
 
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
