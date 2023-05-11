@@ -474,3 +474,13 @@ variable "notification_config_topic" {
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
   default     = ""
 }
+
+variable "timeouts" {
+  type        = map(string)
+  description = "Timeout for cluster operations."
+  default     = {}
+  validation {
+    condition     = !contains([for t in keys(var.timeouts) : contains(["create", "update", "delete"], t)], false)
+    error_message = "Only create, update, delete timeouts can be specified."
+  }
+}
