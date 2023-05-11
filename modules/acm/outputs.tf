@@ -33,7 +33,6 @@ output "wait" {
 }
 
 output "acm_metrics_writer_sa" {
-  count       = var.create_metrics_gcp_sa ? 1 : 0
   description = "The ACM metrics writer Service Account"
-  value       = google_service_account.acm_metrics_writer_sa[0].email
+  value       = var.create_metrics_gcp_sa ? google_service_account.acm_metrics_writer_sa[0].email : null
 }
