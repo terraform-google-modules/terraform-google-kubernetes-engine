@@ -472,6 +472,17 @@ variable "enable_confidential_nodes" {
   description = "An optional flag to enable confidential node config."
   default     = false
 }
+variable "workload_vulnerability_mode" {
+  description = "(beta) Vulnerability mode."
+  type        = string
+  default     = ""
+}
+
+variable "workload_config_audit_mode" {
+  description = "(beta) Worload config audit mode."
+  type        = string
+  default     = "DISABLED"
+}
 
 variable "disable_default_snat" {
   type        = bool
@@ -694,16 +705,4 @@ variable "enable_identity_service" {
   type        = bool
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
   default     = false
-}
-
-variable "workload_vulnerability_mode" {
-  description = "(beta) Vulnerability mode."
-  type        = string
-  default     = ""
-}
-
-variable "workload_config_audit_mode" {
-  description = "(beta) Worload config audit mode."
-  type        = string
-  default     = "DISABLED"
 }
