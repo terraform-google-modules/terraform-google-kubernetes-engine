@@ -15,11 +15,11 @@
  */
 
 module "example" {
-  source = "../../../examples/simple_regional_private"
+  source = "../../../examples/simple_regional_private_with_cluster_version"
 
   project_id                     = var.project_ids[1]
   cluster_name_suffix            = "-${random_string.suffix.result}"
-  cluster_version                = var.kubernetes_version
+  kubernetes_version             = var.kubernetes_version
   region                         = var.region
   network                        = google_compute_network.main.name
   subnetwork                     = google_compute_subnetwork.main.name
