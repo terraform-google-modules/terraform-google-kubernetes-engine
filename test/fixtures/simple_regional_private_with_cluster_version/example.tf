@@ -15,7 +15,7 @@
  */
 
 module "example" {
-  source = "../../../examples/simple_regional_private_with_cluster_version"
+  source = "../../../examples/simple_regional_private"
 
   project_id                     = var.project_ids[1]
   cluster_name_suffix            = "-${random_string.suffix.result}"
