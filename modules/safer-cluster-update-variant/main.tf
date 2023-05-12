@@ -189,4 +189,6 @@ module "gke" {
   filestore_csi_driver = var.filestore_csi_driver
 
   notification_config_topic = var.notification_config_topic
+
+  timeouts = var.timeouts
 }
