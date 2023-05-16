@@ -37,6 +37,7 @@ resource "google_compute_firewall" "intra_egress" {
   destination_ranges = concat([
     local.cluster_endpoint_for_nodes,
     local.cluster_subnet_cidr,
+    var.ip_range_services,
     ],
     local.pod_all_ip_ranges
   )
