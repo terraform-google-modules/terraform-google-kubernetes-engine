@@ -59,6 +59,8 @@ locals {
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
   pod_all_ip_ranges         = var.add_cluster_firewall_rules ? [local.cluster_alias_ranges_cidr[var.ip_range_pods]] : []
+  svc_all_ip_ranges         = var.add_cluster_firewall_rules ? [local.cluster_alias_ranges_cidr[var.ip_range_services]] : []
+
 
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
