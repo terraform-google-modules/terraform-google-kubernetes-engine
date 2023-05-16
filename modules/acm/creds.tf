@@ -107,6 +107,7 @@ resource "google_service_account" "acm_metrics_writer_sa" {
 }
 
 resource "google_project_iam_member" "acm_metrics_writer_sa_role" {
+  count   = var.create_metrics_gcp_sa ? 1 : 0
   project = var.project_id
   role    = "roles/monitoring.metricWriter"
   member  = "serviceAccount:${google_service_account.acm_metrics_writer_sa[0].email}"
