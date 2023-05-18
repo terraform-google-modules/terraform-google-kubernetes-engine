@@ -38,8 +38,6 @@ module "gke" {
   remove_default_node_pool = true
   service_account          = "create"
   node_metadata            = "GKE_METADATA"
-  # https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1313
-  kubernetes_version = "1.23"
   node_pools = [
     {
       name         = "wi-pool"
@@ -77,7 +75,7 @@ module "workload_identity_existing_ksa" {
   location            = module.gke.location
   namespace           = "default"
   use_existing_k8s_sa = true
-  k8s_sa_name         = kubernetes_service_account.test.metadata.0.name
+  k8s_sa_name         = kubernetes_service_account.test.metadata[0].name
 }
 
 # example with existing GSA

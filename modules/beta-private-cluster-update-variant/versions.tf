@@ -19,16 +19,24 @@ terraform {
   required_version = ">=0.13"
 
   required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.51.0, < 4.65.0, !=4.65.0, !=4.65.1"
+    }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 4.51.0, < 5.0"
+      version = ">= 4.51.0, < 4.65.0, !=4.65.0, !=4.65.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = "~> 2.10"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 2.1"
+    }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-private-cluster-update-variant/v25.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-private-cluster-update-variant/v26.0.0"
   }
 }

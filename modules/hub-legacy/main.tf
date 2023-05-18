@@ -27,9 +27,6 @@ locals {
   destroy_gke_body          = "${local.is_gke_flag} ${var.gke_hub_membership_name} ${local.cluster_uri} ${local.hub_project}"
 }
 
-data "google_client_config" "default" {
-}
-
 resource "google_service_account" "gke_hub_sa" {
   count        = var.use_existing_sa ? 0 : 1
   account_id   = var.gke_hub_sa_name

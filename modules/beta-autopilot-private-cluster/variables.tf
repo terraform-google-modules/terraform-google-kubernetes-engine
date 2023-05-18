@@ -102,12 +102,6 @@ variable "service_external_ips" {
   default     = false
 }
 
-variable "datapath_provider" {
-  type        = string
-  description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
-  default     = "DATAPATH_PROVIDER_UNSPECIFIED"
-}
-
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
@@ -208,24 +202,6 @@ variable "configure_ip_masq" {
   default     = false
 }
 
-variable "cluster_telemetry_type" {
-  type        = string
-  description = "Available options include ENABLED, DISABLED, and SYSTEM_ONLY"
-  default     = null
-}
-
-variable "logging_service" {
-  type        = string
-  description = "The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none"
-  default     = "logging.googleapis.com/kubernetes"
-}
-
-variable "monitoring_service" {
-  type        = string
-  description = "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none"
-  default     = "monitoring.googleapis.com/kubernetes"
-}
-
 variable "create_service_account" {
   type        = bool
   description = "Defines if service account specified to run nodes should be created."
@@ -246,7 +222,13 @@ variable "registry_project_ids" {
 
 variable "service_account" {
   type        = string
-  description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
+  description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created. This service account should already exists and it will be used by the node pools. If you wish to only override the service account name, you can use service_account_name variable."
+  default     = ""
+}
+
+variable "service_account_name" {
+  type        = string
+  description = "The name of the service account that will be created if create_service_account is true. If you wish to use an existing service account, use service_account variable."
   default     = ""
 }
 
@@ -268,11 +250,6 @@ variable "cluster_resource_labels" {
   default     = {}
 }
 
-variable "skip_provisioners" {
-  type        = bool
-  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
-  default     = false
-}
 
 variable "deploy_using_private_endpoint" {
   type        = bool
@@ -324,8 +301,8 @@ variable "identity_namespace" {
 
 variable "release_channel" {
   type        = string
-  description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
-  default     = null
+  description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`."
+  default     = "REGULAR"
 }
 
 variable "gateway_api_channel" {

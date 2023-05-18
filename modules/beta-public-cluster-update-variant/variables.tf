@@ -358,7 +358,13 @@ variable "registry_project_ids" {
 
 variable "service_account" {
   type        = string
-  description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
+  description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created. This service account should already exists and it will be used by the node pools. If you wish to only override the service account name, you can use service_account_name variable."
+  default     = ""
+}
+
+variable "service_account_name" {
+  type        = string
+  description = "The name of the service account that will be created if create_service_account is true. If you wish to use an existing service account, use service_account variable."
   default     = ""
 }
 
@@ -380,11 +386,6 @@ variable "cluster_resource_labels" {
   default     = {}
 }
 
-variable "skip_provisioners" {
-  type        = bool
-  description = "Flag to skip all local-exec provisioners. It breaks `stub_domains` and `upstream_nameservers` variables functionality."
-  default     = false
-}
 
 variable "dns_cache" {
   type        = bool
@@ -406,8 +407,8 @@ variable "identity_namespace" {
 
 variable "release_channel" {
   type        = string
-  description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
-  default     = null
+  description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`."
+  default     = "REGULAR"
 }
 
 variable "gateway_api_channel" {
@@ -636,6 +637,7 @@ variable "config_connector" {
 
 variable "istio" {
   description = "(Beta) Enable Istio addon"
+  type        = bool
   default     = false
 }
 
@@ -653,17 +655,19 @@ variable "kalm_config" {
 
 variable "cloudrun" {
   description = "(Beta) Enable CloudRun addon"
+  type        = bool
   default     = false
 }
 
 variable "cloudrun_load_balancer_type" {
   description = "(Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
+  type        = string
   default     = ""
 }
 
 variable "enable_pod_security_policy" {
   type        = bool
-  description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
+  description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. Pod Security Policy was removed from GKE clusters with version >= 1.25.0."
   default     = false
 }
 

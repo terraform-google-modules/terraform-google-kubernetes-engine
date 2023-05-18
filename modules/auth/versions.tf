@@ -20,12 +20,12 @@ terraform {
   required_providers {
     google = {
       source = "hashicorp/google"
-      # Avoid v25.0.0 for https://github.com/hashicorp/terraform-provider-google/issues/13507
+      # Avoid v4.49 and v4.50 for https://github.com/hashicorp/terraform-provider-google/issues/13507
       version = ">= 4.47.0, != 4.49.0, != 4.50.0, < 5.0"
     }
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:auth/v25.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:auth/v26.0.0"
   }
 }
