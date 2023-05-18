@@ -358,7 +358,13 @@ variable "registry_project_ids" {
 
 variable "service_account" {
   type        = string
-  description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
+  description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created. This service account should already exists and it will be used by the node pools. If you wish to only override the service account name, you can use service_account_name variable."
+  default     = ""
+}
+
+variable "service_account_name" {
+  type        = string
+  description = "The name of the service account that will be created if create_service_account is true. If you wish to use an existing service account, use service_account variable."
   default     = ""
 }
 
@@ -401,8 +407,8 @@ variable "identity_namespace" {
 
 variable "release_channel" {
   type        = string
-  description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `UNSPECIFIED`."
-  default     = null
+  description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`."
+  default     = "REGULAR"
 }
 
 variable "gateway_api_channel" {
@@ -661,7 +667,7 @@ variable "cloudrun_load_balancer_type" {
 
 variable "enable_pod_security_policy" {
   type        = bool
-  description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
+  description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. Pod Security Policy was removed from GKE clusters with version >= 1.25.0."
   default     = false
 }
 

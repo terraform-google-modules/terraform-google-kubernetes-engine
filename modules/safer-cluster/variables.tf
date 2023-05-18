@@ -73,7 +73,7 @@ variable "kubernetes_version" {
 
 variable "release_channel" {
   type        = string
-  description = "(Beta) The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`."
+  description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`."
   default     = "REGULAR"
 }
 
@@ -473,4 +473,14 @@ variable "notification_config_topic" {
   type        = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
   default     = ""
+}
+
+variable "timeouts" {
+  type        = map(string)
+  description = "Timeout for cluster operations."
+  default     = {}
+  validation {
+    condition     = !contains([for t in keys(var.timeouts) : contains(["create", "update", "delete"], t)], false)
+    error_message = "Only create, update, delete timeouts can be specified."
+  }
 }
