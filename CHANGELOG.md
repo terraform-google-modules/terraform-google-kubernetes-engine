@@ -6,6 +6,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [26.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v25.0.0...v26.0.0) (2023-05-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* set release_channel and auto_upgrade, drop meshtelemetry ([#1618](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1618))
+* **kubernetes ~> 2.13:** Remove 1.23 restriction on workload identity module ([#1595](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1595))
+* **acm:** prevent conflicts in IAM binding ([#1576](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1576))
+
+### Features
+
+* add blue/green upgrade strategy settings ([#1551](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1551)) ([db51271](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/db5127141d12616eff8b816890c542a8c51605cf))
+* add enable_private_nodes options to node_pool network_config ([#1604](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1604)) ([48d7590](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/48d7590c2e09f6cd178966f9f764c6bd04bfb73f))
+* allow setting network tags on autopilot clusters ([#1572](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1572)) ([23e9c96](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/23e9c96e0b8b50eecb40b3948804e01df6f05e92))
+* Workload Identity module, to bind roles in various projects for the service account created ([#1574](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1574)) ([53f0f58](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/53f0f58d5f0b2dbdcf429b101e5c577781cb3c39))
+
+
+### Bug Fixes
+
+* **acm:** prevent conflicts in IAM binding ([#1576](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1576)) ([a7cfe92](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a7cfe92af494abaf2960b0819a3ac6023d2a78dd))
+* Autopilot vertical pod autoscaling ([#1564](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1564)) ([6853c61](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6853c617614f332d6e051d2c9c2a7acca84253f5))
+* fixes for tflint and dev-tools 1.10 ([#1598](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1598)) ([d012313](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d01231355689ab13c779b70b1656758d468fb944))
+* **kubernetes ~> 2.13:** Remove 1.23 restriction on workload identity module ([#1595](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1595)) ([b23bc86](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b23bc860bbae21a92e7f008856deec62c408518b))
+* node_metadata mapping for GCE_METADATA ([#1542](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1542)) ([#1543](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1543)) ([b03ea84](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b03ea84a1f5bbbc7bd56098cbe1c6905dd581259))
+* nodepool autoscaling vars avail in GKE 1.24.1 result in conflicts. Preserve default behavior ([#1562](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1562)) ([98e8dc3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/98e8dc3f9aaa897da477cc3bca959c7c95473983))
+* PSP removed in GKE &gt;= 1.25.0 ([#1622](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1622)) ([530f16b](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/530f16b8f52abd14540d8bd69c662bd64d04ae19))
+* set release_channel and auto_upgrade, drop meshtelemetry ([#1618](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1618)) ([3c8dd3a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3c8dd3afcd8c3d6c7ccd034f732cf82738a14eab))
+* use provided service_account_name if available ([#1610](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1610)) ([a42ed88](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a42ed88a347a06490db2c05e45564e4092c1ada7))
+
 ## [25.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v24.1.0...v25.0.0) (2023-02-03)
 
 

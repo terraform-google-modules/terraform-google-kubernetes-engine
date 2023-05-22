@@ -23,6 +23,8 @@ locals {
       ["dummy"],
     ),
   )
+  service_account_default_name = "tf-gke-${substr(var.name, 0, min(15, length(var.name)))}-${random_string.cluster_service_account_suffix.result}"
+
   // if user set var.service_account it will be used even if var.create_service_account==true, so service account will be created but not used
   service_account = (var.service_account == "" || var.service_account == "create") && var.create_service_account ? local.service_account_list[0] : var.service_account
 
@@ -39,7 +41,7 @@ resource "random_string" "cluster_service_account_suffix" {
 resource "google_service_account" "cluster_service_account" {
   count        = var.create_service_account ? 1 : 0
   project      = var.project_id
-  account_id   = "tf-gke-${substr(var.name, 0, min(15, length(var.name)))}-${random_string.cluster_service_account_suffix.result}"
+  account_id   = var.service_account_name == "" ? local.service_account_default_name : var.service_account_name
   display_name = "Terraform-managed service account for cluster ${var.name}"
 }
 
