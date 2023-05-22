@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-data "google_project" "project" {}
-
-locals {
-  gke_sa = "serviceAccount:service-${data.google_project.project.number}@container-engine-robot.iam.gserviceaccount.com"
-}
-
 module "kms" {
   source             = "terraform-google-modules/kms/google"
   version            = "~> 2.2.1"
