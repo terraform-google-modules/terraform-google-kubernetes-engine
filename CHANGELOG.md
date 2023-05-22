@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [26.1.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v26.1.0...v26.1.1) (2023-05-22)
+
+
+### Bug Fixes
+
+* correct TPG version constraint ([#1637](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1637)) ([#1640](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1640)) ([14eac9f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/14eac9f91a90245d3e00d05a8653f334eb8966ec))
+
 ## [26.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v26.0.0...v26.1.0) (2023-05-16)
 
 
