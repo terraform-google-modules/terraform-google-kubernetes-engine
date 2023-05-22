@@ -43,8 +43,6 @@ To deploy this example:
 | cluster\_name | The name of the cluster | `string` | `"safer-cluster-iap-bastion"` | no |
 | ip\_range\_pods\_name | The secondary ip range to use for pods | `string` | `"ip-range-pods"` | no |
 | ip\_range\_services\_name | The secondary ip range to use for pods | `string` | `"ip-range-svc"` | no |
-| keyring | Keyring name. | `string` | `"gke-keyring"` | no |
-| keys | Key names. | `list(string)` | <pre>[<br>  "gke-key"<br>]</pre> | no |
 | network\_name | The name of the network being created to host the cluster in | `string` | `"safer-cluster-network"` | no |
 | project\_id | The project ID to host the cluster in | `string` | n/a | yes |
 | region | The region to host the cluster in | `string` | `"us-central1"` | no |
