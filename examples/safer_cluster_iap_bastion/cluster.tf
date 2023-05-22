@@ -31,7 +31,7 @@ module "gke" {
   }]
   database_encryption = [
     {
-      "key_name" : module.kms.keys[var.keys[0]],
+      "key_name" : module.kms.keys["gke-key"],
       "state" : "ENCRYPTED"
     }
   ]

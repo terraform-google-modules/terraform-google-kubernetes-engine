@@ -69,15 +69,3 @@ variable "bastion_members" {
   description = "List of users, groups, SAs who need access to the bastion host"
   default     = []
 }
-
-variable "keyring" {
-  description = "Keyring name."
-  type        = string
-  default     = "gke-keyring"
-}
-
-variable "keys" {
-  description = "Key names."
-  type        = list(string)
-  default     = ["gke-key"]
-}

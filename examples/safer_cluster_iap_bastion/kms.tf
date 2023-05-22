@@ -25,15 +25,7 @@ module "kms" {
   version            = "~> 2.2.1"
   project_id         = var.project_id
   location           = var.region
-  keyring            = var.keyring
-  keys               = var.keys
+  keyring            = "gke-keyring"
+  keys               = ["gke-key"]
   prevent_destroy    = false
-  set_decrypters_for = var.keys
-  set_encrypters_for = var.keys
-  encrypters = [
-    local.gke_sa,
-  ]
-  decrypters = [
-    local.gke_sa,
-  ]
 }
