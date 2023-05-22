@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [26.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v26.0.0...v26.1.0) (2023-05-16)
+
+
+### Features
+
+* Add timeouts variable for safer cluster module ([#1613](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1613)) ([146b2e7](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/146b2e7b0a3385a5f0864a003abd8bee8bec2bc7))
+
+
+### Bug Fixes
+
+* allow ACM module to work w/o metrics sa ([#1634](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1634)) ([83a8be2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/83a8be24ee1bf84371714f49f8c904d3d94492d6))
+* avoid TPG 4.65.0 and 4.65.1 ([#1637](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1637)) ([ea3e374](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ea3e374bbf99c86189b5ca428d6c2a2f07bd1e16))
+
 ## [26.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v25.0.0...v26.0.0) (2023-05-10)
 
 
