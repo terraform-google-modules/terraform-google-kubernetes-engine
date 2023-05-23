@@ -19,7 +19,23 @@ output "key" {
   description = "Name of the Key created for the attestor"
 }
 
+output "key_id" {
+  value       = google_kms_crypto_key.crypto-key.id
+  description = "ID of the Key created for the attestor"
+}
+
+
 output "attestor" {
   value       = google_binary_authorization_attestor.attestor.name
   description = "Name of the built attestor"
+}
+
+output "attestor_id" {
+  value       = google_binary_authorization_attestor.attestor.id
+  description = "ID of the built attestor"
+}
+
+output "note_id" {
+  value       = google_container_analysis_note.build-note.id
+  description = "ID of the created Container Analysis note"
 }

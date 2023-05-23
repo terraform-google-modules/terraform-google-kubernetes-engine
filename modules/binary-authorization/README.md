@@ -46,7 +46,10 @@ module "quality-attestor" {
 | Name | Description |
 |------|-------------|
 | attestor | Name of the built attestor |
+| attestor\_id | ID of the built attestor |
 | key | Name of the Key created for the attestor |
+| key\_id | ID of the Key created for the attestor |
+| note\_id | ID of the created Container Analysis note |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
