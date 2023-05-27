@@ -6,9 +6,6 @@ The Connect Gateway makes it easy to connect, authenticate and authorize to the 
 
 This example deploys a Autopilot GKE cluster and register the cluster to a [Fleet](https://cloud.google.com/anthos/multicluster-management/fleet-overview). 
 
-GKE Autopilot clusters are deployed with Application-layer Secrets Encryption that protects your secrets in etcd with a key you manage in [Cloud KMS](https://github.com/terraform-google-modules/terraform-google-kms/blob/master/README.md).
-
-
 ## Setup
 
 To deploy this example:
