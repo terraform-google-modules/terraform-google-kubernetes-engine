@@ -91,10 +91,10 @@ variable "user_permissions" {
     rbac_role = string
   }))
   default = [{
-    user      = "user:avinashjha@google.com"
+    user      = "user:exampleuser@example.com"
     rbac_role = "cluster-admin"
     }, {
-    user      = "serviceAccount:terraform-svc-act@rxo-service1.iam.gserviceaccount.com"
+    user      = "serviceAccount:EXAMPLE_SA@GCP_PROJECT_ID.iam.gserviceaccount.com"
     rbac_role = "cluster-viewer"
   }]
 
