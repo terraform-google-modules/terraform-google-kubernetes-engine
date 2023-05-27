@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-resource "random_string" "random_suffix" {
-  length  = 6
-  special = false
-}
-
 resource "kubernetes_cluster_role_binding" "gateway_cluster_admin" {
   for_each = { for perm in var.user_permissions : "${element(split(":", perm.user), 1)}" => perm }
   metadata {
