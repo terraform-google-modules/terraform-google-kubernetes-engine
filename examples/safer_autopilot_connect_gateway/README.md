@@ -2,9 +2,9 @@
 
 This end to end example aims to showcase accessing a Private GKE Cluster outside of the VPC via [Connect Gateway](https://cloud.google.com/anthos/multicluster-management/gateway).
 
-The Connect Gateway makes it easy to connect, authenticate and authorize to the cluster 
+The Connect Gateway makes it easy to connect, authenticate and authorize to the cluster.
 
-This example deploys a Autopilot GKE cluster and register the cluster to a [Fleet](https://cloud.google.com/anthos/multicluster-management/fleet-overview). 
+This example deploys a Autopilot GKE cluster and register the cluster to a [Fleet](https://cloud.google.com/anthos/multicluster-management/fleet-overview).
 
 ## Setup
 
@@ -16,20 +16,17 @@ To deploy this example:
 
 3. Run `terraform apply`.
 
-4. After apply is complete, connect to the GKE cluster via gcloud command. Run the 
- command  `terraform output cluster_membership_id` to get the membership name for the GKE cluster .Alternatively the membership ID can be accessed via the below gcloud command as well
+4. After apply is complete, connect to the GKE cluster via gcloud command. Run the command `terraform output cluster_membership_id` to get the membership name for the GKE cluster .Alternatively the membership ID can be accessed via the below gcloud command as well.
 
  ```sh
 gcloud container fleet memberships list
  ```
 
 5. Use the following command to get the kubeconfig you need to interact with your specified cluster, replacing MEMBERSHIP_NAME with your cluster's fleet membership name. This command returns a special Connect gateway-specific kubeconfig that lets you connect to the cluster through the gateway.
-   
    ```sh
    gcloud container fleet memberships get-credentials MEMBERSHIP_NAME
    ```
-
-6. You can now run `kubectl` commands .
+6. You can now run `kubectl` commands.
 
    ```sh
     kubectl get pods --all-namespaces
