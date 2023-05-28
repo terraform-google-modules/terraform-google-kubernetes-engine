@@ -41,8 +41,6 @@ gcloud container fleet memberships list
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | cluster\_name | The name of the cluster (required) | `string` | `"gke-autopilot-private-1"` | no |
-| keyring | Keyring name. | `string` | n/a | yes |
-| keys | Key names. | `list(string)` | `[]` | no |
 | maintenance\_end\_time | Time window specified for recurring maintenance operations in RFC3339 format | `string` | `"2023-02-08T05:00:00Z"` | no |
 | maintenance\_recurrence | Frequency of the recurring maintenance window in RFC5545 format | `string` | `"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH"` | no |
 | maintenance\_start\_time | Time window specified for daily or recurring maintenance operations in RFC3339 format | `string` | `"2023-02-08T00:00:00Z"` | no |
@@ -54,7 +52,7 @@ gcloud container fleet memberships list
 | region | The region the cluster in | `string` | `"us-central1"` | no |
 | subnet\_name | The subnetwork to host the cluster in (required) | `string` | `""` | no |
 | svc\_range\_name | The name of the secondary subnet range to use for services | `string` | n/a | yes |
-| user\_permissions | Configure RBAC role for the user | <pre>list(object({<br>    user      = string<br>    rbac_role = string<br>  }))</pre> | <pre>[<br>  {<br>    "rbac_role": "cluster-admin",<br>    "user": "user:exampleuser@google.com"<br>  },<br>  {<br>    "rbac_role": "cluster-viewer",<br>    "user": "serviceaccount:EXAMPLE_SA@GCP_PROJECT_ID.iam.gserviceaccount.com"<br>  }<br>]</pre> | no |
+| user\_permissions | Configure RBAC role for the user | <pre>list(object({<br>    user      = string<br>    rbac_role = string<br>  }))</pre> | <pre>[<br>  {<br>    "rbac_role": "cluster-admin",<br>    "user": "user:exampleuser@example.com"<br>  },<br>  {<br>    "rbac_role": "cluster-viewer",<br>    "user": "serviceAccount:EXAMPLE_SA@GCP_PROJECT_ID.iam.gserviceaccount.com"<br>  }<br>]</pre> | no |
 
 ## Outputs
 

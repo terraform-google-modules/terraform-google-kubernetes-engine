@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// Enable the service accounts required 
+// Enable the service accounts required
 module "enabled_google_apis" {
   source  = "terraform-google-modules/project-factory/google//modules/project_services"
   version = "~> 14.0"
