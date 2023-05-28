@@ -15,7 +15,7 @@
  */
 
 resource "kubernetes_cluster_role_binding" "gateway_cluster_admin" {
-  for_each = { for perm in var.user_permissions : "${element(split(":", perm.user), 1)}" => perm }
+  for_each = { for perm in var.user_permissions : element(split(":", perm.user), 1) => perm }
   metadata {
     name = "gateway-cluster-admin-${element(split("@", each.key), 0)}"
   }

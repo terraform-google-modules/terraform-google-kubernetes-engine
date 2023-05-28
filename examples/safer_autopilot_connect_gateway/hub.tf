@@ -15,8 +15,8 @@
  */
 
 module "hub" {
-  source = "terraform-google-modules/kubernetes-engine/google//modules/fleet-membership"
-
+  source       = "terraform-google-modules/kubernetes-engine/google//modules/fleet-membership"
+  version      = "~> 26.1.1"
   project_id   = var.project_id
   cluster_name = var.cluster_name
   depends_on   = [module.gke]
