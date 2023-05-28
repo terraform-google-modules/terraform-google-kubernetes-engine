@@ -59,8 +59,6 @@ locals {
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
   pod_all_ip_ranges         = var.add_cluster_firewall_rules ? [local.cluster_alias_ranges_cidr[var.ip_range_pods]] : []
-  svc_all_ip_ranges         = var.add_cluster_firewall_rules ? [local.cluster_alias_ranges_cidr[var.ip_range_services]] : []
-
 
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
@@ -106,8 +104,7 @@ locals {
 
   // cluster ID is in the form project/location/name
   cluster_name_computed                      = element(split("/", local.cluster_id), length(split("/", local.cluster_id)) - 1)
-  cluster_network_tag = var.network_tags[0]
-
+  cluster_network_tag                        = "gke-${var.name}"
   cluster_ca_certificate                     = local.cluster_master_auth_map["cluster_ca_certificate"]
   cluster_master_version                     = local.cluster_output_master_version
   cluster_min_master_version                 = local.cluster_output_min_master_version
