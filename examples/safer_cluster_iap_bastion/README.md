@@ -4,6 +4,8 @@ This end to end example aims to showcase access patterns to a [Safer Cluster](..
 
 Additionally we deploy a [tinyproxy](https://tinyproxy.github.io/) daemon which allows `kubectl` commands to be piped through the bastion host allowing ease of development from a local machine with the security of GKE Private Clusters.
 
+GKE Autopilot clusters are deployed with Application-layer Secrets Encryption that protects your secrets in etcd with a key you manage in [Cloud KMS](https://github.com/terraform-google-modules/terraform-google-kms/blob/master/README.md).
+
 ## Setup
 
 To deploy this example:
@@ -59,6 +61,9 @@ To deploy this example:
 | cluster\_name | Cluster name |
 | endpoint | Cluster endpoint |
 | get\_credentials\_command | gcloud get-credentials command to generate kubeconfig for the private cluster |
+| keyring | The name of the keyring. |
+| keyring\_resource | The location of the keyring. |
+| keys | Map of key name => key self link. |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |
 | master\_authorized\_networks\_config | Networks from which access to master is permitted |
 | network\_name | The name of the VPC being created |
