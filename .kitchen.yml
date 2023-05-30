@@ -240,3 +240,10 @@ suites:
       systems:
         - name: simple_autopilot_public
           backend: local
+  - name: "autopilot_private_firewalls"
+    driver:
+      root_module_directory: test/fixtures/autopilot_private_firewalls
+    verifier:
+      systems:
+        - name: autopilot_private_firewalls
+          backend: local
