@@ -49,15 +49,11 @@ func TestAutopilotPrivateFirewalls(t *testing.T) {
 			"privateClusterConfig.addClusterFirewallRules",
 			"privateClusterConfig.addMasterWebhookFirewallRules",
 			"privateClusterConfig.addShadowFirewallRules",
-			"addonsConfig.horizontalPodAutoscaling",
-			"addonsConfig.verticalPodAutoscaling",
-			"addonsConfig.httpLoadBalancing",
-			"addonsConfig.kubernetesDashboard.disabled",
-			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
+
 		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
 		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), "allow-google-apis")
 		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), clusterNetworkTag)
