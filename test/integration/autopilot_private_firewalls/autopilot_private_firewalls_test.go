@@ -33,6 +33,7 @@ func TestAutopilotPrivateFirewalls(t *testing.T) {
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")
 		serviceAccount := bpt.GetStringOutput("service_account")
+		clusterNetworkTag := "gke-" + clusterName
 
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		g := golden.NewOrUpdate(t, op.String(),
@@ -59,10 +60,9 @@ func TestAutopilotPrivateFirewalls(t *testing.T) {
 		}
 		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
 		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), "allow-google-apis")
-		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), "gke-%s", clusterName)
-
+		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), clusterNetworkTag)
 		fw := gcloud.Runf(t, "compute firewall-rules --project %s describe gke-%s-intra-cluster-egress", projectId, clusterName[:25])
-		assert.Contains(fw.Get("targetTags").String(), "gke-%s", clusterName)
+		assert.Contains(fw.Get("targetTags").String(), clusterNetworkTag)
 	})
 
 	bpt.Test()
