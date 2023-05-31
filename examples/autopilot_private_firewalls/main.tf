@@ -15,7 +15,7 @@
  */
 
 locals {
-  cluster_type = "autopilot-private-firewalls"
+  cluster_type           = "autopilot-private-firewalls"
   network_name           = "${local.cluster_type}-network"
   subnet_name            = "${local.cluster_type}-subnet"
   master_auth_subnetwork = "${local.cluster_type}-master-subnet"
@@ -33,20 +33,20 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                          = "../../modules/beta-autopilot-private-cluster/"
-  project_id                      = var.project_id
-  name                            = "${local.cluster_type}-cluster"
-  regional                        = true
-  region                          = var.region
-  network                         = module.gcp-network.network_name
-  subnetwork                      = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
-  ip_range_pods                   = local.pods_range_name
-  ip_range_services               = local.svc_range_name
-  release_channel                 = "REGULAR"
-  enable_vertical_pod_autoscaling = true
-  enable_private_endpoint         = true
-  enable_private_nodes            = true
-  master_ipv4_cidr_block          = "172.16.0.0/28"
+  source                            = "../../modules/beta-autopilot-private-cluster/"
+  project_id                        = var.project_id
+  name                              = "${local.cluster_type}-cluster"
+  regional                          = true
+  region                            = var.region
+  network                           = module.gcp-network.network_name
+  subnetwork                        = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
+  ip_range_pods                     = local.pods_range_name
+  ip_range_services                 = local.svc_range_name
+  release_channel                   = "REGULAR"
+  enable_vertical_pod_autoscaling   = true
+  enable_private_endpoint           = true
+  enable_private_nodes              = true
+  master_ipv4_cidr_block            = "172.16.0.0/28"
   add_cluster_firewall_rules        = true
   add_master_webhook_firewall_rules = true
   add_shadow_firewall_rules         = true
