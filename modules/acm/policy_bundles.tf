@@ -22,6 +22,9 @@ module "policy_bundles" {
   project_id              = var.project_id
   cluster_name            = var.cluster_name
   cluster_location        = var.location
+
+  use_existing_context = var.use_existing_k8s_context
+
   kubectl_create_command  = "kubectl apply -k ${each.key}"
   kubectl_destroy_command = "kubectl delete -k ${each.key}"
 

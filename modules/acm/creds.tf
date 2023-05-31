@@ -60,6 +60,8 @@ module "annotate-sa-config-management-monitoring" {
   cluster_location = var.location
   project_id       = var.project_id
 
+  use_existing_context = var.use_existing_k8s_context
+
   kubectl_create_command  = "kubectl annotate --overwrite sa -n config-management-monitoring default iam.gke.io/gcp-service-account=${google_service_account.acm_metrics_writer_sa[0].email}"
   kubectl_destroy_command = "kubectl annotate sa -n config-management-monitoring default iam.gke.io/gcp-service-account-"
 
@@ -76,6 +78,8 @@ module "annotate-sa-gatekeeper-system" {
   cluster_location = var.location
   project_id       = var.project_id
 
+  use_existing_context = var.use_existing_k8s_context
+
   kubectl_create_command  = "kubectl annotate --overwrite sa -n gatekeeper-system gatekeeper-admin iam.gke.io/gcp-service-account=${google_service_account.acm_metrics_writer_sa[0].email}"
   kubectl_destroy_command = "kubectl annotate sa -n gatekeeper-system gatekeeper-admin iam.gke.io/gcp-service-account-"
 
@@ -91,6 +95,8 @@ module "annotate-sa-gatekeeper-system-restart" {
   cluster_name     = var.cluster_name
   cluster_location = var.location
   project_id       = var.project_id
+
+  use_existing_context = var.use_existing_k8s_context
 
   kubectl_create_command  = "kubectl rollout restart deployment gatekeeper-controller-manager -n gatekeeper-system"
   kubectl_destroy_command = ""
