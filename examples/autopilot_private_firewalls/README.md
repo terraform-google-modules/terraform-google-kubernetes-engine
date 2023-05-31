@@ -1,12 +1,13 @@
 # Private Regional Autopilot Cluster With Firewall Rules
 
-This example illustrates how to create a autopilot cluster with beta features.
+This example creates a regional autopilot cluster with beta features
 
 It will:
 - Create a private autopilot cluster
-- Additional firewall variables ```add_cluster_firewall_rules```,```add_master_webhook_firewall_rules``` and ```add_shadow_firewal_rules``` are toggled on. In a environment with stringent firewall rules, these cluster firewall rules may be required to allow intra cluster communication 
+- Variables ```add_cluster_firewall_rules```, ```add_master_webhook_firewall_rules``` and ```add_shadow_firewal_rules``` are toggled on. In a environment with stringent firewall rules, these cluster firewall rules may be required to allow intra cluster communication 
+- Adds an example network tag. This example network tag aligns with a firewall rule target tag from the [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation) configuration to allow google api access
 
->note: this example does not create a stringent firewall network. This example shows what cluster firewall and network tag configuration may be required for a networking configuration comparable to the [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation) Which creates hierarchical firewalls to deny 0.0.0.0/0 egress and creates firewall rules to allow private google api access which targets tags "allow-google-apis". By toggling on the firewall rules variables and adding the appropriate target tag a cluster can come up healthy with no internet egress. 
+>note: this example does **not** create a network with stringent firewall rules. This example shows what cluster firewall and network tag configuration may be required for a networking configuration comparable to the [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation), which creates hierarchical firewalls to deny 0.0.0.0/0 egress and creates firewall rules to allow private google api access which targets tags "allow-google-apis". By toggling on the firewall rules variables and adding network_tags to allow private google api access a private cluster can come up healthy with no internet egress.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
