@@ -164,3 +164,9 @@ variable "metrics_gcp_sa_name" {
   type        = string
   default     = "acm-metrics-writer"
 }
+
+variable "use_existing_k8s_context" {
+  description = "Use existing kubecontext to auth kube-api."
+  type        = bool
+  default     = false
+}
