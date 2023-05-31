@@ -85,3 +85,18 @@ output "bastion_kubectl_command" {
   description = "kubectl command using the local proxy once the bastion_ssh command is running"
   value       = "HTTPS_PROXY=localhost:8888 kubectl get pods --all-namespaces"
 }
+
+output "keyring" {
+  description = "The name of the keyring."
+  value       = module.kms.keyring
+}
+
+output "keyring_resource" {
+  description = "The location of the keyring."
+  value       = module.kms.keyring_resource
+}
+
+output "keys" {
+  description = "Map of key name => key self link."
+  value       = module.kms.keys
+}
