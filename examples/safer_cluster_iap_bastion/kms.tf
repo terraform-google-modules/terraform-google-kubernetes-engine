@@ -1,6 +1,5 @@
-
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +14,12 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 0.13.0"
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "< 5.0"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "< 5.0"
-    }
-  }
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:hub/v26.1.1"
-  }
+module "kms" {
+  source          = "terraform-google-modules/kms/google"
+  version         = "~> 2.2.1"
+  project_id      = var.project_id
+  location        = var.region
+  keyring         = "gke-keyring"
+  keys            = ["gke-key"]
+  prevent_destroy = false
 }
