@@ -4,9 +4,9 @@ This example illustrates how to create a autopilot cluster with beta features.
 
 It will:
 - Create a private autopilot cluster
-- All additional firewall variables are toggled on. In a environment with stringent firewall rules, these firewall rules allow intra cluster communication 
+- Additional firewall variables ```add_cluster_firewall_rules```,```add_master_webhook_firewall_rules``` and ```add_shadow_firewal_rules``` are toggled on. In a environment with stringent firewall rules, these cluster firewall rules may be required to allow intra cluster communication 
 
->note: this example does not create a stringent firewall network. This example shows what cluster firewall and network tag configuration may be required for a configuration comparable to the [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation) Which creates hierarchical firewalls to deny 0.0.0.0/0 egress and creates firewall rules to allow private google api access which targets tags "allow-google-apis". By toggling on the firewall rules variables and adding the appropriate target tag a cluster can come up healthy with no outbound internet access. 
+>note: this example does not create a stringent firewall network. This example shows what cluster firewall and network tag configuration may be required for a networking configuration comparable to the [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation) Which creates hierarchical firewalls to deny 0.0.0.0/0 egress and creates firewall rules to allow private google api access which targets tags "allow-google-apis". By toggling on the firewall rules variables and adding the appropriate target tag a cluster can come up healthy with no internet egress. 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
