@@ -6,7 +6,7 @@ It will:
 - Create a private autopilot cluster
 - All additional firewall variables are toggled on. In a environment with stringent firewall rules, these firewall rules allow intra cluster communication 
 
->note this example does not create a stringent firewall network. This example shows what cluster firewall and network tag configuration may be required for a configuration comparable to the [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation) Which creates hierarchical firewalls to deny 0.0.0.0/0 egress and creates firewall rules to allow private google api access which targets tags "allow-google-apis". By toggling on the firewall rules variables and adding the appropriate target tag a cluster can come up healthy with no outbound internet access. 
+>note: this example does not create a stringent firewall network. This example shows what cluster firewall and network tag configuration may be required for a configuration comparable to the [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation) Which creates hierarchical firewalls to deny 0.0.0.0/0 egress and creates firewall rules to allow private google api access which targets tags "allow-google-apis". By toggling on the firewall rules variables and adding the appropriate target tag a cluster can come up healthy with no outbound internet access. 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
