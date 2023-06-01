@@ -36,3 +36,9 @@ variable "zone" {
   description = "The zone to host the cluster in"
   default     = "us-central1-a"
 }
+
+variable "enable_fleet_feature" {
+  description = "Whether to enable the ACM feature on the fleet."
+  type        = bool
+  default     = true
+}

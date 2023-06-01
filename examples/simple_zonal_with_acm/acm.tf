@@ -24,6 +24,8 @@ module "acm" {
   sync_branch = "1.0.0"
   policy_dir  = "foo-corp"
 
+  enable_fleet_feature = var.enable_fleet_feature
+
   secret_type = "ssh"
 
   policy_bundles = ["https://github.com/GoogleCloudPlatform/acm-policy-controller-library/bundles/policy-essentials-v2022#e4094aacb91a35b0219f6f4cf6a31580e85b3c28"]
