@@ -39,6 +39,7 @@ After applying the Terraform configuration, you can run the following commands t
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
+| enable\_fleet\_feature | Whether to enable the ACM feature on the fleet. | `bool` | `true` | no |
 | project\_id | The project ID to host the cluster in | `string` | n/a | yes |
 | region | The region to host the cluster in | `string` | `"us-central1"` | no |
 | zone | The zone to host the cluster in | `string` | `"us-central1-a"` | no |
