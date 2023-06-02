@@ -18,13 +18,12 @@ module "policy_bundles" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version = "~> 3.1"
 
-  # Use index as name to avoid long url or special filesystem chars
-  for_each                = { for i, v in var.policy_bundles : i => v }
+  for_each                = toset(var.policy_bundles)
   project_id              = var.project_id
   cluster_name            = var.cluster_name
   cluster_location        = var.location
-  kubectl_create_command  = "kubectl apply -k ${each.value}"
-  kubectl_destroy_command = "kubectl delete -k ${each.value}"
+  kubectl_create_command  = "kubectl apply -k ${each.key}"
+  kubectl_destroy_command = "kubectl delete -k ${each.key}"
 
   module_depends_on = [time_sleep.wait_acm]
 }
