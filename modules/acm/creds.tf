@@ -30,12 +30,12 @@ resource "tls_private_key" "k8sop_creds" {
   rsa_bits  = 4096
 }
 
-# Wait for the ACM operator to create the namespace
+# Wait for ACM
 resource "time_sleep" "wait_acm" {
   count      = (var.create_ssh_key == true || var.ssh_auth_key != null || var.enable_policy_controller || var.enable_config_sync) ? 1 : 0
   depends_on = [google_gke_hub_feature_membership.main]
 
-  create_duration = "300s"
+  create_duration = (length(var.policy_bundles) > 0) ? "600s" : "300s"
 }
 
 resource "google_service_account_iam_binding" "ksa_iam" {
