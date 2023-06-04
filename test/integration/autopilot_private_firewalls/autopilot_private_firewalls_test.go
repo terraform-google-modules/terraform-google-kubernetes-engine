@@ -14,6 +14,7 @@
 package autopilot_private_firewalls
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
@@ -24,17 +25,20 @@ import (
 
 func TestAutopilotPrivateFirewalls(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t)
-
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
 		// bpt.DefaultVerify(assert)
-
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")
 		serviceAccount := bpt.GetStringOutput("service_account")
 		clusterNetworkTag := "gke-" + clusterName
-
+		firewallRules := []string{"gke-%s-intra-cluster-egress", "gke-%s-webhooks", "gke-shadow-%s-all", "gke-shadow-%s-master", "gke-shadow-%s-vms", "gke-shadow-%s-inkubelet", "gke-shadow-%s-exkubelet"}
+		var fws []string
+		for _, fw := range firewallRules {
+			n := fmt.Sprintf(fw, clusterName[:25])
+			fws = append(fws, n)
+		}
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		g := golden.NewOrUpdate(t, op.String(),
 			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
@@ -50,16 +54,19 @@ func TestAutopilotPrivateFirewalls(t *testing.T) {
 			"privateClusterConfig.addMasterWebhookFirewallRules",
 			"privateClusterConfig.addShadowFirewallRules",
 		}
+
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
 
-		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
-		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), "allow-google-apis")
-		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), clusterNetworkTag)
-		fw := gcloud.Runf(t, "compute firewall-rules --project %s describe gke-%s-intra-cluster-egress", projectId, clusterName[:25])
-		assert.Contains(fw.Get("targetTags").String(), clusterNetworkTag)
-	})
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())               // comes up healthy
+		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), "allow-google-apis") // example network_tag attached
+		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), clusterNetworkTag)   // the cluster_network_tag attached
 
+		for _, n := range fws {
+			fw := gcloud.Runf(t, "compute firewall-rules --project %s describe %s", projectId, n)
+			assert.Contains(fw.Get("targetTags").String(), clusterNetworkTag) // firewall target tag is the cluster_network_tag
+		}
+	})
 	bpt.Test()
 }
