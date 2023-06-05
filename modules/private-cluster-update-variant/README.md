@@ -275,7 +275,7 @@ Then perform the following commands on the root folder:
 | region | Cluster region |
 | release\_channel | The release channel of this cluster |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
-| subnetwork | The subnetwork to host the cluster in |
+| subnetwork | The subnetwork hosting the cluster |
 | type | Cluster type (regional / zonal) |
 | vertical\_pod\_autoscaling\_enabled | Whether vertical pod autoscaling enabled |
 | zones | List of zones in which the cluster resides |

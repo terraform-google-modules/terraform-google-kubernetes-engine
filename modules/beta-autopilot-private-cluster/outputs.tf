@@ -124,7 +124,7 @@ output "service_account" {
 }
 
 output "subnetwork" {
-  description = "The subnetwork to host the cluster in"
+  description = "The subnetwork hosting the cluster"
   value       = data.google_compute_subnetwork.gke_subnetwork
 }
 
