@@ -21,19 +21,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-<<<<<<< HEAD
       version = ">= 4.51.0, < 5.0, !=4.65.0, !=4.65.1"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
       version = ">= 4.51.0, < 5.0, !=4.65.0, !=4.65.1"
-=======
-      version = ">= 4.63.0, < 5.0"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 4.63.0, < 5.0"
->>>>>>> c27c19db (feat: Add protect_config to beta clusters)
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
