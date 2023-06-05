@@ -138,9 +138,9 @@ output "service_account" {
   value       = local.service_account
 }
 
-output "netowrk" {
+output "subnetwork" {
   description = "The subnetwork to host the cluster in"
-  value       = data.google_compute_network.network
+  value       = data.google_compute_subnetwork.gke_subnetwork
 }
 
 output "instance_group_urls" {

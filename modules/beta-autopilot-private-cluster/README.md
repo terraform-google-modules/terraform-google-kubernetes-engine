@@ -155,12 +155,12 @@ Then perform the following commands on the root folder:
 | min\_master\_version | Minimum master kubernetes version |
 | monitoring\_service | Monitoring service used |
 | name | Cluster name |
-| netowrk | The subnetwork to host the cluster in |
 | peering\_name | The name of the peering between this cluster and the Google owned VPC. |
 | pod\_security\_policy\_enabled | Whether pod security policy is enabled |
 | region | Cluster region |
 | release\_channel | The release channel of this cluster |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
+| subnetwork | The subnetwork to host the cluster in |
 | tpu\_ipv4\_cidr\_block | The IP range in CIDR notation used for the TPUs |
 | type | Cluster type (regional / zonal) |
 | vertical\_pod\_autoscaling\_enabled | Whether vertical pod autoscaling enabled |
