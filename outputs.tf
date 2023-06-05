@@ -138,6 +138,11 @@ output "service_account" {
   value       = local.service_account
 }
 
+output "netowrk" {
+  description = "The subnetwork to host the cluster in"
+  value       = data.google_compute_network.network
+}
+
 output "instance_group_urls" {
   description = "List of GKE generated instance groups"
   value       = distinct(flatten([for np in google_container_node_pool.pools : np.managed_instance_group_urls]))

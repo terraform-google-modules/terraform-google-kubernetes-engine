@@ -146,6 +146,11 @@ output "service_account" {
   value       = local.service_account
 }
 
+output "netowrk" {
+  description = "The subnetwork to host the cluster in"
+  value       = data.google_compute_network.network
+}
+
 {% if autopilot_cluster != true %}
 output "instance_group_urls" {
   description = "List of GKE generated instance groups"

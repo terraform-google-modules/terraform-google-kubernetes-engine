@@ -123,6 +123,11 @@ output "service_account" {
   value       = local.service_account
 }
 
+output "netowrk" {
+  description = "The subnetwork to host the cluster in"
+  value       = data.google_compute_network.network
+}
+
 
 output "release_channel" {
   description = "The release channel of this cluster"
