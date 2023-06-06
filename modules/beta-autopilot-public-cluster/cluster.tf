@@ -128,6 +128,13 @@ resource "google_container_cluster" "primary" {
   }
 
   networking_mode = "VPC_NATIVE"
+
+  protect_config {
+    workload_config {
+      audit_mode = var.workload_config_audit_mode
+    }
+    workload_vulnerability_mode = var.workload_vulnerability_mode
+  }
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services

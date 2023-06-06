@@ -315,6 +315,13 @@ resource "google_container_cluster" "primary" {
 
   {% if beta_cluster %}
   networking_mode = "VPC_NATIVE"
+
+  protect_config {
+    workload_config {
+      audit_mode = var.workload_config_audit_mode
+    }
+    workload_vulnerability_mode = var.workload_vulnerability_mode
+  }
   {% endif %}
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
