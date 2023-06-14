@@ -52,11 +52,6 @@ output "ip_range_services" {
   value       = var.ip_range_services
 }
 
-output "stack_type" {
-  description = "The stack type"
-  value       = var.stack_type
-}
-
 output "zones" {
   description = "List of zones in which the cluster resides"
   value       = module.gke.zones
