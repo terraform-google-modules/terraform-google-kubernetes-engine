@@ -205,6 +205,7 @@ resource "google_container_cluster" "primary" {
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services
+    stack_type                    = var.stack_type
   }
 
   maintenance_policy {

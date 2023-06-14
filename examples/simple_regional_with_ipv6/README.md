@@ -1,6 +1,6 @@
-# Simple Zonal Cluster
+# Simple Regional Cluster
 
-This example illustrates how to create a simple private cluster in a single zone.
+This example illustrates how to create a simple cluster.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -14,8 +14,8 @@ This example illustrates how to create a simple private cluster in a single zone
 | network | The VPC network to host the cluster in | `any` | n/a | yes |
 | project\_id | The project ID to host the cluster in | `any` | n/a | yes |
 | region | The region to host the cluster in | `any` | n/a | yes |
+| stack\_type | The stack type | `any` | n/a | yes |
 | subnetwork | The subnetwork to host the cluster in | `any` | n/a | yes |
-| zones | The zone to host the cluster in (required if is a zonal cluster) | `list(string)` | n/a | yes |
 
 ## Outputs
 

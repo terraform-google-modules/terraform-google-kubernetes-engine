@@ -32,6 +32,7 @@ This example illustrates how to create a simple private cluster.
 | project\_id | n/a |
 | region | n/a |
 | service\_account | The default service account used for running nodes. |
+| stack\_type | The stack type |
 | subnetwork | n/a |
 | zones | List of zones in which the cluster resides |
 
