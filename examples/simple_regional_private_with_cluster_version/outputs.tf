@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-module "acm" {
-  source       = "../../modules/acm"
-  project_id   = var.project_id
-  location     = module.gke.location
-  cluster_name = module.gke.name
-
-  sync_repo   = "git@github.com:GoogleCloudPlatform/anthos-config-management-samples.git"
-  sync_branch = "1.0.0"
-  policy_dir  = "foo-corp"
-
-  enable_fleet_feature = var.enable_fleet_feature
-
-  secret_type = "ssh"
-
-  policy_bundles = ["https://github.com/GoogleCloudPlatform/acm-policy-controller-library/bundles/policy-essentials-v2022?ref=59f4695394285078f7c2029ec7d0f9ed1d6d700a"]
-
-  create_metrics_gcp_sa = true
+output "kubernetes_endpoint" {
+  sensitive = true
+  value     = module.gke.endpoint
 }
+
+output "client_token" {
+  sensitive = true
+  value     = base64encode(data.google_client_config.default.access_token)
+}
+
+output "ca_certificate" {
+  value = module.gke.ca_certificate
+}
+
+output "service_account" {
+  description = "The default service account used for running nodes."
+  value       = module.gke.service_account
+}
+

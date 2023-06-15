@@ -39,3 +39,9 @@ variable "registry_project_ids" {
   description = "Projects to use for granting access to GCR registries, if requested"
   type        = list(string)
 }
+
+variable "kubernetes_version" {
+  type        = string
+  description = "The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region."
+  default     = "latest"
+}
