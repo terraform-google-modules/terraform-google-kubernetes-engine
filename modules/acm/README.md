@@ -3,6 +3,7 @@
 This module installs [Anthos Config Management](https://cloud.google.com/anthos-config-management/docs/) (ACM) in a Kubernetes cluster.
 
 Specifically, this module automates the following steps for [installing ACM](https://cloud.google.com/anthos-config-management/docs/how-to/installing):
+
 1. Enabling the ACM feature on the fleet
 2. Registering the cluster to the fleet
 3. Optionally, generating an SSH key for accessing Git and providing it to the Operator
@@ -11,6 +12,7 @@ Specifically, this module automates the following steps for [installing ACM](htt
 6. Optionally, create and configure a Google Cloud Service Account for writing ACM metrics to Cloud Monitoring
 
 ## Fleet feature
+
 Only the first cluster in a fleet should activate the ACM fleet feature.
 
 Other clusters should disable feature activation by setting `enable_fleet_feature = false`.
@@ -46,9 +48,10 @@ module "acm" {
 ```
 
 To deploy this config:
+
 1. Configure the [Kubernetes Provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs) for the target cluster, for example:
 
-```
+```tf
 provider "kubernetes" {
   host                   = "https://${module.gke.endpoint}"
   token                  = data.google_client_config.default.access_token
@@ -58,13 +61,13 @@ provider "kubernetes" {
 data "google_client_config" "default" {}
 ```
 
-2. Run `terraform apply`
-3. Inspect the `git_creds_public` [output](#outputs) to retrieve the public key used for accessing Git. Whitelist this key for access to your Git repo. Instructions for some popular Git hosting providers are included for convenience:
+1. Run `terraform apply`
+1. Inspect the `git_creds_public` [output](#outputs) to retrieve the public key used for accessing Git. Whitelist this key for access to your Git repo. Instructions for some popular Git hosting providers are included for convenience:
 
-  * [Cloud Souce Repositories](https://cloud.google.com/source-repositories/docs/authentication#ssh)
-  * [Bitbucket](https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html)
-  * [GitHub](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/)
-  * [Gitlab](https://docs.gitlab.com/ee/ssh/)
+* [Cloud Souce Repositories](https://cloud.google.com/source-repositories/docs/authentication#ssh)
+* [Bitbucket](https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html)
+* [GitHub](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/)
+* [Gitlab](https://docs.gitlab.com/ee/ssh/)
 
  <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -80,6 +83,7 @@ data "google_client_config" "default" {}
 | enable\_fleet\_feature | Whether to enable the ACM feature on the fleet. | `bool` | `true` | no |
 | enable\_fleet\_registration | Whether to create a new membership. | `bool` | `true` | no |
 | enable\_log\_denies | Whether to enable logging of all denies and dryrun failures for ACM Policy Controller. | `bool` | `false` | no |
+| enable\_mutation | Whether to enable mutations for ACM Policy Controller. | `bool` | `false` | no |
 | enable\_policy\_controller | Whether to enable the ACM Policy Controller on the cluster | `bool` | `true` | no |
 | enable\_referential\_rules | Enables referential constraints which reference another object in it definition and are therefore eventually consistent. | `bool` | `true` | no |
 | hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/anthos-config-management/docs/how-to/installing-hierarchy-controller) for more details | `map(any)` | `null` | no |
@@ -87,7 +91,7 @@ data "google_client_config" "default" {}
 | install\_template\_library | Whether to install the default Policy Controller template library | `bool` | `true` | no |
 | location | GCP location used to reach cluster. | `string` | n/a | yes |
 | metrics\_gcp\_sa\_name | The name of the Google service account for ACM metrics writing | `string` | `"acm-metrics-writer"` | no |
-| policy\_bundles | A list of Policy Controller policy bundles git urls (example: https://github.com/GoogleCloudPlatform/acm-policy-controller-library.git/bundles/policy-essentials-v2022) to install on the cluster. | `list(string)` | `[]` | no |
+| policy\_bundles | A list of Policy Controller policy bundles git urls (example: <https://github.com/GoogleCloudPlatform/acm-policy-controller-library.git/bundles/policy-essentials-v2022>) to install on the cluster. | `list(string)` | `[]` | no |
 | policy\_dir | Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default. | `string` | `""` | no |
 | project\_id | GCP project\_id used to reach cluster. | `string` | n/a | yes |
 | secret\_type | git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true | `string` | `"ssh"` | no |

@@ -134,6 +134,12 @@ variable "enable_log_denies" {
   default     = false
 }
 
+variable "enable_mutation" {
+  description = "Whether to enable mutations for ACM Policy Controller."
+  type        = bool
+  default     = false
+}
+
 # Hierarchy Controller config
 variable "hierarchy_controller" {
   description = "Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/anthos-config-management/docs/how-to/installing-hierarchy-controller) for more details"
