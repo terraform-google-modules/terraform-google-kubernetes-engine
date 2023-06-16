@@ -439,6 +439,12 @@ variable "add_cluster_firewall_rules" {
   default     = false
 }
 
+variable "add_master_webhook_firewall_rules" {
+  type        = bool
+  description = "Create master_webhook firewall rules for ports defined in `firewall_inbound_ports`"
+  default     = false
+}
+
 variable "firewall_priority" {
   type        = number
   description = "Priority rule for firewall rules"

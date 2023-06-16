@@ -51,20 +51,21 @@ resource "random_shuffle" "version" {
 }
 
 module "gke" {
-  source                     = "../../modules/safer-cluster/"
-  project_id                 = var.project_id
-  name                       = "${local.cluster_type}-cluster-${random_string.suffix.result}"
-  regional                   = true
-  region                     = var.region
-  network                    = module.gcp-network.network_name
-  subnetwork                 = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
-  ip_range_pods              = local.pods_range_name
-  ip_range_services          = local.svc_range_name
-  master_ipv4_cidr_block     = "172.16.0.0/28"
-  add_cluster_firewall_rules = true
-  firewall_inbound_ports     = ["9443", "15017"]
-  kubernetes_version         = random_shuffle.version.result[0]
-  release_channel            = "UNSPECIFIED"
+  source                            = "../../modules/safer-cluster/"
+  project_id                        = var.project_id
+  name                              = "${local.cluster_type}-cluster-${random_string.suffix.result}"
+  regional                          = true
+  region                            = var.region
+  network                           = module.gcp-network.network_name
+  subnetwork                        = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
+  ip_range_pods                     = local.pods_range_name
+  ip_range_services                 = local.svc_range_name
+  master_ipv4_cidr_block            = "172.16.0.0/28"
+  add_cluster_firewall_rules        = true
+  add_master_webhook_firewall_rules = true
+  firewall_inbound_ports            = ["9443", "15017"]
+  kubernetes_version                = random_shuffle.version.result[0]
+  release_channel                   = "UNSPECIFIED"
 
   master_authorized_networks = [
     {

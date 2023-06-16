@@ -49,9 +49,10 @@ module "gke" {
 
   disable_default_snat = var.disable_default_snat
 
-  add_cluster_firewall_rules = var.add_cluster_firewall_rules
-  firewall_priority          = var.firewall_priority
-  firewall_inbound_ports     = var.firewall_inbound_ports
+  add_cluster_firewall_rules        = var.add_cluster_firewall_rules
+  add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
+  firewall_priority                 = var.firewall_priority
+  firewall_inbound_ports            = var.firewall_inbound_ports
 
   horizontal_pod_autoscaling = var.horizontal_pod_autoscaling
   http_load_balancing        = var.http_load_balancing
