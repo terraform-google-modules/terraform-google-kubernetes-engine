@@ -17,7 +17,7 @@
   },
   "separateMajorMinor":false,
   "constraints": {
-    "go": "1.18"
+    "go": "1.20"
   },
   "packageRules": [
     {
@@ -40,7 +40,7 @@
     {
       "matchDatasources": ["golang-version"],
       "rangeStrategy": "bump",
-      "allowedVersions": "<1.19.0",
+      "allowedVersions": "<1.21.0",
       "postUpdateOptions": ["gomodTidy"]
     },
     {

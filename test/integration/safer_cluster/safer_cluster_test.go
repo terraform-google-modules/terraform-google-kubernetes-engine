@@ -63,8 +63,8 @@ func TestSaferCluster(t *testing.T) {
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
-		gcloud.Runf(t, "compute firewall-rules --project %s describe gke-%s-intra-cluster-egress", projectId, clusterName[:25])
-		gcloud.Runf(t, "compute firewall-rules --project %s describe gke-%s-webhooks", projectId, clusterName[:25])
+		gcloud.Runf(t, "compute firewall-rules --project %s describe gke-%s-intra-cluster-egress", projectId, clusterName)
+		gcloud.Runf(t, "compute firewall-rules --project %s describe gke-%s-webhooks", projectId, clusterName)
 	})
 
 	bpt.Test()
