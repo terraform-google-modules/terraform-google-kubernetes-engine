@@ -69,3 +69,8 @@ output "project_id" {
   description = "The project ID the cluster is in"
   value       = var.project_id
 }
+
+output "cluster_membership_id" {
+  description = "The ID of the hub membership"
+  value       = module.hub.cluster_membership_id
+}

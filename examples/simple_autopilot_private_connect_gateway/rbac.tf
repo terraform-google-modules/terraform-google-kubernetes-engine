@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The project ID to host the cluster in"
-}
-
-variable "region" {
-  description = "The region the cluster in"
-  default     = "us-central1"
+resource "kubernetes_cluster_role_binding" "gateway_cluster_admin" {
+  for_each = { for perm in var.user_permissions : element(split(":", perm.user), 1) => perm }
+  metadata {
+    name = "gateway-cluster-admin-${element(split("@", each.key), 0)}"
+  }
+  subject {
+    kind      = "User"
+    name      = element(split(":", each.value.user), 1)
+    api_group = "rbac.authorization.k8s.io"
+  }
+  role_ref {
+    kind      = "ClusterRole"
+    name      = each.value.rbac_role
+    api_group = "rbac.authorization.k8s.io"
+  }
+  depends_on = [module.hub]
 }
