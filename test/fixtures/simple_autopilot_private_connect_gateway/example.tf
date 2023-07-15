@@ -15,7 +15,7 @@
  */
 
 module "example" {
-  source = "../../../examples/simple_autopilot_private"
+  source = "../../../examples/simple_autopilot_private_connect_gateway"
 
   project_id = var.project_ids[0]
   region     = var.region
