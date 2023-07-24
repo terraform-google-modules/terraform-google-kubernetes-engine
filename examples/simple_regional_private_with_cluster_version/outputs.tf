@@ -1,6 +1,5 @@
-
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2018 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +14,22 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 0.13.0"
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "< 5.0"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "< 5.0"
-    }
-  }
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:hub/v27.0.0"
-  }
+output "kubernetes_endpoint" {
+  sensitive = true
+  value     = module.gke.endpoint
 }
+
+output "client_token" {
+  sensitive = true
+  value     = base64encode(data.google_client_config.default.access_token)
+}
+
+output "ca_certificate" {
+  value = module.gke.ca_certificate
+}
+
+output "service_account" {
+  description = "The default service account used for running nodes."
+  value       = module.gke.service_account
+}
+

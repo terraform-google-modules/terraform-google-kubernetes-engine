@@ -69,7 +69,7 @@ resource "google_container_cluster" "primary" {
     disabled = var.disable_default_snat
   }
 
-  min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : null
+  min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : var.kubernetes_version == "latest" ? null : var.kubernetes_version
 
   # only one of logging/monitoring_service or logging/monitoring_config can be specified
   logging_service = local.logmon_config_is_set ? null : var.logging_service

@@ -83,7 +83,7 @@ resource "google_container_cluster" "primary" {
     disabled = var.disable_default_snat
   }
 
-  min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : null
+  min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : var.kubernetes_version == "latest" ? null : var.kubernetes_version
 
 {% if beta_cluster and autopilot_cluster != true %}
   dynamic "cluster_telemetry" {
@@ -315,6 +315,13 @@ resource "google_container_cluster" "primary" {
 
   {% if beta_cluster %}
   networking_mode = "VPC_NATIVE"
+
+  protect_config {
+    workload_config {
+      audit_mode = var.workload_config_audit_mode
+    }
+    workload_vulnerability_mode = var.workload_vulnerability_mode
+  }
   {% endif %}
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods

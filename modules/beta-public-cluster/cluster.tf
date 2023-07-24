@@ -75,7 +75,7 @@ resource "google_container_cluster" "primary" {
     disabled = var.disable_default_snat
   }
 
-  min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : null
+  min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : var.kubernetes_version == "latest" ? null : var.kubernetes_version
 
   dynamic "cluster_telemetry" {
     for_each = local.cluster_telemetry_type_is_set ? [1] : []
@@ -256,6 +256,13 @@ resource "google_container_cluster" "primary" {
   datapath_provider = var.datapath_provider
 
   networking_mode = "VPC_NATIVE"
+
+  protect_config {
+    workload_config {
+      audit_mode = var.workload_config_audit_mode
+    }
+    workload_vulnerability_mode = var.workload_vulnerability_mode
+  }
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services

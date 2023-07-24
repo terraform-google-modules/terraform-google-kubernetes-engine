@@ -16,6 +16,9 @@
      "stabilityDays":0
   },
   "separateMajorMinor":false,
+  "constraints": {
+    "go": "1.20"
+  },
   "packageRules": [
     {
       "matchPaths": ["examples/**", "test/**", ".github/**"],
@@ -35,8 +38,9 @@
       "postUpdateOptions": ["gomodTidy"]
     },
     {
-      "matchPackageNames": ["go"],
-      "allowedVersions": "<1.19.0",
+      "matchDatasources": ["golang-version"],
+      "rangeStrategy": "bump",
+      "allowedVersions": "<1.21.0",
       "postUpdateOptions": ["gomodTidy"]
     },
     {

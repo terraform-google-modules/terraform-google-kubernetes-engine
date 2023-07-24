@@ -60,6 +60,7 @@ resource "google_gke_hub_feature_membership" "main" {
 
       content {
         enabled                    = true
+        mutation_enabled           = var.enable_mutation
         referential_rules_enabled  = var.enable_referential_rules
         template_library_installed = var.install_template_library
         log_denies_enabled         = var.enable_log_denies
