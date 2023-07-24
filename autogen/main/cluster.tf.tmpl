@@ -587,8 +587,8 @@ locals {
 
 # This keepers list is based on the terraform google provider schemaNodeConfig
 # resources where "ForceNew" is "true". schemaNodeConfig can be found in resource_container_node_pool.go at
-# https://github.com/hashicorp/terraform-provider-google/blob/main/google/resource_container_node_pool.go and node_config.go at
-# https://github.com/terraform-providers/terraform-provider-google/blob/main/google/node_config.go
+# https://github.com/hashicorp/terraform-provider-google/blob/main/google/services/container/resource_container_node_pool.go and node_config.go at
+# https://github.com/hashicorp/terraform-provider-google/blob/main/google/services/container/node_config.go
 resource "random_id" "name" {
   for_each    = merge(local.node_pools, local.windows_node_pools)
   byte_length = 2
