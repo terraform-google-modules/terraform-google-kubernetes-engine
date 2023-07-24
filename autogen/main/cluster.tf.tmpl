@@ -569,10 +569,12 @@ locals {
     "disk_type",
     "accelerator_count",
     "accelerator_type",
+    "gpu_partition_size",
     "enable_secure_boot",
     "enable_integrity_monitoring",
     "local_ssd_count",
     "machine_type",
+    "placement_policy",
     "max_pods_per_node",
     "min_cpu_platform",
     "pod_range",
@@ -582,6 +584,7 @@ locals {
     "enable_gcfs",
     "enable_gvnic",
     "enable_secure_boot",
+    "boot_disk_kms_key",
   ]
 }
 
@@ -598,18 +601,6 @@ resource "random_id" "name" {
       local.force_node_pool_recreation_resources,
       [for keeper in local.force_node_pool_recreation_resources : lookup(each.value, keeper, "")]
     ),
-    {
-      labels = join(",",
-        sort(
-          concat(
-            keys(local.node_pools_labels["all"]),
-            values(local.node_pools_labels["all"]),
-            keys(local.node_pools_labels[each.value["name"]]),
-            values(local.node_pools_labels[each.value["name"]])
-          )
-        )
-      )
-    },
     {
       taints = join(",",
         sort(
@@ -640,16 +631,6 @@ resource "random_id" "name" {
           concat(
             local.node_pools_oauth_scopes["all"],
             local.node_pools_oauth_scopes[each.value["name"]]
-          )
-        )
-      )
-    },
-    {
-      tags = join(",",
-        sort(
-          concat(
-            local.node_pools_tags["all"],
-            local.node_pools_tags[each.value["name"]]
           )
         )
       )
