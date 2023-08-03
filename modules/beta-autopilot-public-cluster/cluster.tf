@@ -135,6 +135,13 @@ resource "google_container_cluster" "primary" {
     }
     workload_vulnerability_mode = var.workload_vulnerability_mode
   }
+
+  dns_config {
+    cluster_dns        = var.cluster_dns_provider
+    cluster_dns_domain = var.cluster_dns_domain
+    cluster_dns_scope  = var.cluster_dns_scope
+  }
+
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services

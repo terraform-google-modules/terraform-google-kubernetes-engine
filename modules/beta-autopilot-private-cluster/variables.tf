@@ -405,6 +405,23 @@ variable "database_encryption" {
   }]
 }
 
+variable "cluster_dns_provider" {
+  type        = string
+  description = "Which in-cluster DNS provider should be used. PROVIDER_UNSPECIFIED or PLATFORM_DEFAULT or CLOUD_DNS (default)."
+  default     = "CLOUD_DNS"
+}
+
+variable "cluster_dns_scope" {
+  type        = string
+  description = "The scope of access to cluster DNS records. DNS_SCOPE_UNSPECIFIED or CLUSTER_SCOPE (default) or VPC_SCOPE."
+  default     = "CLUSTER_SCOPE"
+}
+
+variable "cluster_dns_domain" {
+  type        = string
+  description = "The suffix used for all cluster service records. Defaults to `cluster.local`."
+  default     = "cluster.local"
+}
 
 variable "timeouts" {
   type        = map(string)
@@ -415,4 +432,3 @@ variable "timeouts" {
     error_message = "Only create, update, delete timeouts can be specified."
   }
 }
-
