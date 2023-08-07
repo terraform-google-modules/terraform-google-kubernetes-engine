@@ -242,6 +242,8 @@ variable "cluster_autoscaling" {
     gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))
     auto_repair         = bool
     auto_upgrade        = bool
+    disk_size           = optional(number)
+    disk_type           = optional(string)
   })
   default = {
     enabled             = false
@@ -253,6 +255,8 @@ variable "cluster_autoscaling" {
     gpu_resources       = []
     auto_repair         = true
     auto_upgrade        = true
+    disk_size           = 100
+    disk_type           = "pd-standard"
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }

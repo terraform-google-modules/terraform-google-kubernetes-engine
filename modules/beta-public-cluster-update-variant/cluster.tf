@@ -122,6 +122,9 @@ resource "google_container_cluster" "primary" {
           auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
         }
 
+        disk_size = lookup(var.cluster_autoscaling, "disk_size", 100)
+        disk_type = lookup(var.cluster_autoscaling, "disk_type", "pd-standard")
+
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
       }
     }
