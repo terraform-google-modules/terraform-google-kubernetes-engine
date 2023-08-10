@@ -29,6 +29,9 @@ data "google_compute_zones" "available" {
 resource "random_shuffle" "available_zones" {
   input        = data.google_compute_zones.available.names
   result_count = 3
+  keepers = {
+    zone_names = data.google_compute_zones.available.names
+  }
 }
 
 locals {
