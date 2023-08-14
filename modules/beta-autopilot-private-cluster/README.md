@@ -15,10 +15,14 @@ For details on configuring private clusters with this module, check the [trouble
 
 ## Compatibility
 
-This module is meant for use with Terraform 0.13+ and tested using Terraform 1.0+.
-If you find incompatibilities using Terraform `>=0.13`, please open an issue.
+This module is meant for use with Terraform 1.3+ and tested using Terraform 1.0+.
+If you find incompatibilities using Terraform `>=1.3`, please open an issue.
 
-If you haven't [upgraded][terraform-0.13-upgrade] and need a Terraform
+If you haven't [upgraded to 1.3][terraform-1.3-upgrade] and need a Terraform
+0.13.x-compatible version of this module, the last released version
+intended for Terraform 0.13.x is [27.0.0].
+
+If you haven't [upgraded to 0.13][terraform-0.13-upgrade] and need a Terraform
 0.12.x-compatible version of this module, the last released version
 intended for Terraform 0.12.x is [12.3.0].
 
@@ -185,7 +189,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Kubectl
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
-- [Terraform](https://www.terraform.io/downloads.html) 0.13+
+- [Terraform](https://www.terraform.io/downloads.html) 1.3+
 - [Terraform Provider for GCP Beta][terraform-provider-google-beta] v4.51
 #### gcloud
 Some submodules use the [terraform-google-gcloud](https://github.com/terraform-google-modules/terraform-google-gcloud) module. By default, this module assumes you already have gcloud installed in your $PATH.
@@ -214,3 +218,4 @@ In order to operate with the Service Account you must activate the following API
 [terraform-provider-google-beta]: https://github.com/terraform-providers/terraform-provider-google-beta
 [12.3.0]: https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/12.3.0
 [terraform-0.13-upgrade]: https://www.terraform.io/upgrade-guides/0-13.html
+[terraform-1.3-upgrade]: https://developer.hashicorp.com/terraform/language/v1.3.x/upgrade-guides
