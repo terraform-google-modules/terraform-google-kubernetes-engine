@@ -6,6 +6,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [27.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v26.1.1...v27.0.0) (2023-06-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=4.32.0:** Support enabling Policy Controller mutations ([#1665](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1665))
+
+### Features
+
+* Add protect_config beta feature ([#1617](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1617)) ([d252579](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d252579613ca44e11ad28a59f930cdb42dea2c29))
+* **cluster.tf:** add support to set initial release channel version ([#1625](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1625)) ([e522073](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e522073f24067359f8af1bd2ddc9092b594fb945))
+* **TPG>=4.32.0:** Support enabling Policy Controller mutations ([#1665](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1665)) ([1173518](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/11735188d5f8890363344924992d2d0dd97642e1))
+
+
+### Bug Fixes
+
+* extend acm wait when policy bundles are present ([#1657](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1657)) ([e51804e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e51804ed4849fa85748a95ca169b92445d258d91))
+* set max firewall name to 36 ([#1645](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1645)) ([29d9259](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/29d925997ec0fd5ecbd6dd5792f220fc48a5725b))
+* update policy-essentials hash 59f4695 using ref ([#1659](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1659)) ([2fe1715](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2fe171500c3496eb88b9fdf83318b0927d225e4b))
+
 ## [26.1.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v26.1.0...v26.1.1) (2023-05-22)
 
 
