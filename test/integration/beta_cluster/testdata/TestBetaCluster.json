@@ -79,9 +79,6 @@
       "enableComponents": [
         "SYSTEM_COMPONENTS"
       ]
-    },
-    "managedPrometheusConfig": {
-      "enabled": true
     }
   },
   "loggingService": "logging.googleapis.com/kubernetes",
@@ -109,6 +106,9 @@
       "enableComponents": [
         "SYSTEM_COMPONENTS"
       ]
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
     }
   },
   "monitoringService": "monitoring.googleapis.com/kubernetes",
