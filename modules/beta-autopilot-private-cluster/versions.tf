@@ -16,7 +16,7 @@
 
 
 terraform {
-  required_version = ">=0.13"
+  required_version = ">=1.3"
 
   required_providers {
     google = {
@@ -37,6 +37,6 @@ terraform {
     }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-autopilot-private-cluster/v26.1.1"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-autopilot-private-cluster/v27.0.0"
   }
 }

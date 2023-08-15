@@ -16,7 +16,7 @@
 
 
 terraform {
-  required_version = ">=0.13"
+  required_version = ">=1.3"
 
   required_providers {
     google = {
@@ -33,6 +33,6 @@ terraform {
     }
   }
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine/v26.1.1"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine/v27.0.0"
   }
 }
