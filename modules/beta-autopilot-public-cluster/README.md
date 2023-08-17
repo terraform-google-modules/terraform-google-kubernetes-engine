@@ -146,6 +146,7 @@ Then perform the following commands on the root folder:
 | logging\_service | Logging service used |
 | master\_authorized\_networks\_config | Networks from which access to master is permitted |
 | master\_version | Current master kubernetes version |
+| mesh\_certificates\_config | Mesh certificates configuration |
 | min\_master\_version | Minimum master kubernetes version |
 | monitoring\_service | Monitoring service used |
 | name | Cluster name |

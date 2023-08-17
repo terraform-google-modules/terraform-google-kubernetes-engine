@@ -160,3 +160,11 @@ output "identity_namespace" {
     google_container_cluster.primary
   ]
 }
+
+output "mesh_certificates_config" {
+  description = "Mesh certificates configuration"
+  value       = local.cluster_mesh_certificates_config
+  depends_on = [
+    google_container_cluster.primary
+  ]
+}
