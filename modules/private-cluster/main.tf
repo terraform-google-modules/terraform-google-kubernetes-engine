@@ -20,6 +20,8 @@
   Get available zones in region
  *****************************************/
 data "google_compute_zones" "available" {
+  count = local.zone_count == 0 ? 1 : 0
+
   provider = google
 
   project = var.project_id
@@ -27,7 +29,9 @@ data "google_compute_zones" "available" {
 }
 
 resource "random_shuffle" "available_zones" {
-  input        = data.google_compute_zones.available.names
+  count = local.zone_count == 0 ? 1 : 0
+
+  input        = data.google_compute_zones.available[0].names
   result_count = 3
 }
 
@@ -39,7 +43,7 @@ locals {
   location = var.regional ? var.region : var.zones[0]
   region   = var.regional ? var.region : join("-", slice(split("-", var.zones[0]), 0, 2))
   // for regional cluster - use var.zones if provided, use available otherwise, for zonal cluster use var.zones with first element extracted
-  node_locations = var.regional ? coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result)) : slice(var.zones, 1, length(var.zones))
+  node_locations = var.regional ? coalescelist(compact(var.zones), try(sort(random_shuffle.available_zones[0].result), [])) : slice(var.zones, 1, length(var.zones))
   // Kubernetes version
   master_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version
   master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
@@ -176,6 +180,6 @@ data "google_container_engine_versions" "zone" {
   //
   //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
   //
-  location = local.zone_count == 0 ? data.google_compute_zones.available.names[0] : var.zones[0]
+  location = local.zone_count == 0 ? data.google_compute_zones.available[0].names[0] : var.zones[0]
   project  = var.project_id
 }
