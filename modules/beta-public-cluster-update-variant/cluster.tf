@@ -93,13 +93,24 @@ resource "google_container_cluster" "primary" {
     }
   }
   monitoring_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.monitoring_service
-  monitoring_config {
-    enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
-    managed_prometheus {
-      enabled = var.monitoring_enable_managed_prometheus
+  dynamic "monitoring_config" {
+    for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
+    content {
+      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
+      dynamic "managed_prometheus" {
+        for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
+        content {
+          enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
+          dynamic "managed_prometheus" {
+            for_each = var.monitoring_enable_managed_prometheus ? [1] : []
+            content {
+              enabled = var.monitoring_enable_managed_prometheus
+            }
+          }
+        }
+      }
     }
   }
-
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
     dynamic "auto_provisioning_defaults" {
