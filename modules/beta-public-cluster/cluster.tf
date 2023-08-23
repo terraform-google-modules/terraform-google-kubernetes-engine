@@ -96,18 +96,9 @@ resource "google_container_cluster" "primary" {
   dynamic "monitoring_config" {
     for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
     content {
-      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
-      dynamic "managed_prometheus" {
-        for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
-        content {
-          enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
-          dynamic "managed_prometheus" {
-            for_each = var.monitoring_enable_managed_prometheus ? [1] : []
-            content {
-              enabled = var.monitoring_enable_managed_prometheus
-            }
-          }
-        }
+      enable_components = var.monitoring_enabled_components
+      managed_prometheus {
+        enabled = var.monitoring_enable_managed_prometheus
       }
     }
   }
@@ -237,6 +228,10 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    config_connector_config {
+      enabled = var.config_connector
+    }
+
     istio_config {
       disabled = !var.istio
       auth     = var.istio_auth
@@ -252,10 +247,6 @@ resource "google_container_cluster" "primary" {
 
     kalm_config {
       enabled = var.kalm_config
-    }
-
-    config_connector_config {
-      enabled = var.config_connector
     }
   }
 

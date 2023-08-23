@@ -109,45 +109,22 @@ resource "google_container_cluster" "primary" {
   }
   {% if beta_cluster %}
   monitoring_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.monitoring_service
-  dynamic "monitoring_config" {
-    for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
-    content{
-      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
-      dynamic "managed_prometheus" {
-        for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
-        content {
-          enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
-          dynamic "managed_prometheus" {
-            for_each = var.monitoring_enable_managed_prometheus ? [1] : []
-            content {
-              enabled = var.monitoring_enable_managed_prometheus
-            }
-          }
-        }
-      }
-    }
-  }
   {% else %}
   monitoring_service = local.logmon_config_is_set ? null : var.monitoring_service
+  {% endif %}
   dynamic "monitoring_config" {
+    {% if beta_cluster %}
+    for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
+    {% else %}
     for_each = local.logmon_config_is_set || local.logmon_config_is_set ? [1] : []
+    {% endif %}
     content{
-      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
-      dynamic "managed_prometheus" {
-        for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
-        content {
-          enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
-          dynamic "managed_prometheus" {
-            for_each = var.monitoring_enable_managed_prometheus ? [1] : []
-            content {
-              enabled = var.monitoring_enable_managed_prometheus
-            }
-          }
-        }
+      enable_components = var.monitoring_enabled_components
+      managed_prometheus {
+        enabled = var.monitoring_enable_managed_prometheus
       }
     }
   }
-  {% endif %}
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
     dynamic "auto_provisioning_defaults" {
@@ -307,6 +284,10 @@ resource "google_container_cluster" "primary" {
         enabled = gke_backup_agent_config.value.enabled
       }
     }
+
+    config_connector_config {
+      enabled = var.config_connector
+    }
     {% endif %}
     {% if beta_cluster and autopilot_cluster != true %}
 
@@ -325,10 +306,6 @@ resource "google_container_cluster" "primary" {
 
     kalm_config {
       enabled = var.kalm_config
-    }
-
-    config_connector_config {
-      enabled = var.config_connector
     }
     {% endif %}
   }
