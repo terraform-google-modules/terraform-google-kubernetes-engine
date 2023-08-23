@@ -286,6 +286,10 @@ resource "google_container_cluster" "primary" {
         enabled = gke_backup_agent_config.value.enabled
       }
     }
+
+    config_connector_config {
+      enabled = var.config_connector
+    }
     {% endif %}
     {% if beta_cluster and autopilot_cluster != true %}
 
@@ -304,10 +308,6 @@ resource "google_container_cluster" "primary" {
 
     kalm_config {
       enabled = var.kalm_config
-    }
-
-    config_connector_config {
-      enabled = var.config_connector
     }
     {% endif %}
   }
