@@ -453,7 +453,7 @@ variable "firewall_inbound_ports" {
 
 variable "config_connector" {
   type        = bool
-  description = "(Beta) Whether ConfigConnector is enabled for this cluster."
+  description = "Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
 
