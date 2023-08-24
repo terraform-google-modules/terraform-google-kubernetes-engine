@@ -572,6 +572,15 @@ resource "google_container_node_pool" "pools" {
     delete = lookup(var.timeouts, "delete", "45m")
   }
 
+  dynamic "network_config" {
+    for_each = lookup(each.value, "create_pod_range", false) || lookup(each.value, "pod_ipv4_cidr_block", null) != null ? [each.value] : []
+
+    content {
+      create_pod_range = lookup(network_config.value, "create_pod_range", false)
+      pod_ipv4_cidr_block = lookup(network_config.value, "pod_ipv4_cidr_block", "")
+    }
+  }
+
 }
 resource "google_container_node_pool" "windows_pools" {
   provider = google
