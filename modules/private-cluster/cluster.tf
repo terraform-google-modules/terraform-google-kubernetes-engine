@@ -578,6 +578,7 @@ resource "google_container_node_pool" "pools" {
     content {
       create_pod_range = lookup(network_config.value, "create_pod_range", false)
       pod_ipv4_cidr_block = lookup(network_config.value, "pod_ipv4_cidr_block", "")
+      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", false)
     }
   }
 
