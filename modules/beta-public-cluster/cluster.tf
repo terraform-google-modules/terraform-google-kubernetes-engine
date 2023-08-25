@@ -496,7 +496,7 @@ resource "google_container_node_pool" "pools" {
 
   network_config {
     dynamic "additional_node_network_configs" {
-      for_each = local.node_pools_labels[each.value["name"]]
+      for_each = local.node_pools_additional_networks[each.value["name"]]
       iterator = additional_network
       content {
         network    = additional_network.value.network_name
