@@ -138,7 +138,6 @@
         ]
       },
       "managedPrometheusConfig": {
-        "enabled": false
       }
     },
     "monitoringService": "monitoring.googleapis.com/kubernetes",
