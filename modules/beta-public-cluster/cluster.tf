@@ -296,7 +296,9 @@ resource "google_container_cluster" "primary" {
         end_time       = maintenance_exclusion.value.end_time
 
         dynamic "exclusion_options" {
-          for_each = maintenance_exclusion.value.exclusion_scope == null ? [] : [maintenance_exclusion.value.exclusion_scope]
+          for_each = maintenance_exclusion.value.exclusion_scope == null ? [] : [
+            maintenance_exclusion.value.exclusion_scope
+          ]
           content {
             scope = exclusion_options.value
           }
@@ -349,7 +351,9 @@ resource "google_container_cluster" "primary" {
 
       tags = concat(
         lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
-        lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-default-pool"] : [],
+        lookup(local.node_pools_tags, "default_values", [true, true])[1] ? [
+          "${local.cluster_network_tag}-default-pool"
+        ] : [],
         lookup(local.node_pools_tags, "all", []),
         lookup(local.node_pools_tags, var.node_pools[0].name, []),
       )
@@ -381,11 +385,13 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "resource_usage_export_config" {
-    for_each = var.resource_usage_export_dataset_id != "" ? [{
-      enable_network_egress_metering       = var.enable_network_egress_export
-      enable_resource_consumption_metering = var.enable_resource_consumption_export
-      dataset_id                           = var.resource_usage_export_dataset_id
-    }] : []
+    for_each = var.resource_usage_export_dataset_id != "" ? [
+      {
+        enable_network_egress_metering       = var.enable_network_egress_export
+        enable_resource_consumption_metering = var.enable_resource_consumption_export
+        dataset_id                           = var.resource_usage_export_dataset_id
+      }
+    ] : []
 
     content {
       enable_network_egress_metering       = resource_usage_export_config.value.enable_network_egress_metering
@@ -434,11 +440,11 @@ resource "google_container_cluster" "primary" {
   Create Container Cluster node pools
  *****************************************/
 resource "google_container_node_pool" "pools" {
-  provider = google-beta
-  for_each = local.node_pools
-  name     = each.key
-  project  = var.project_id
-  location = local.location
+  provider       = google-beta
+  for_each       = local.node_pools
+  name           = each.key
+  project        = var.project_id
+  location       = local.location
   // use node_locations if provided, defaults to cluster level node_locations if not specified
   node_locations = lookup(each.value, "node_locations", "") != "" ? split(",", each.value["node_locations"]) : null
 
@@ -486,6 +492,17 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
+  network_config {
+    dynamic "additional_node_network_configs" {
+      for_each = lookup(each.value, "additional_node_networks", [])
+      iterator = additional_network
+      content {
+        network    = additional_network.value.network_name
+        subnetwork = additional_network.value.subnetwork_name
+      }
+    }
+  }
+
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
     auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
@@ -527,8 +544,12 @@ resource "google_container_node_pool" "pools" {
       }
     }
     labels = merge(
-      lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
-      lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
+      lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? {
+        "cluster_name" = var.name
+      } : {},
+      lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? {
+        "node_pool" = each.value["name"]
+      } : {},
       local.node_pools_labels["all"],
       local.node_pools_labels[each.value["name"]],
     )
@@ -537,8 +558,12 @@ resource "google_container_node_pool" "pools" {
       local.node_pools_resource_labels[each.value["name"]],
     )
     metadata = merge(
-      lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
-      lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
+      lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? {
+        "cluster_name" = var.name
+      } : {},
+      lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", true) ? {
+        "node_pool" = each.value["name"]
+      } : {},
       local.node_pools_metadata["all"],
       local.node_pools_metadata[each.value["name"]],
       {
@@ -558,7 +583,9 @@ resource "google_container_node_pool" "pools" {
     }
     tags = concat(
       lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
-      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-${each.value["name"]}"] : [],
+      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? [
+        "${local.cluster_network_tag}-${each.value["name"]}"
+      ] : [],
       local.node_pools_tags["all"],
       local.node_pools_tags[each.value["name"]],
     )
@@ -659,11 +686,11 @@ resource "google_container_node_pool" "pools" {
 
 }
 resource "google_container_node_pool" "windows_pools" {
-  provider = google-beta
-  for_each = local.windows_node_pools
-  name     = each.key
-  project  = var.project_id
-  location = local.location
+  provider       = google-beta
+  for_each       = local.windows_node_pools
+  name           = each.key
+  project        = var.project_id
+  location       = local.location
   // use node_locations if provided, defaults to cluster level node_locations if not specified
   node_locations = lookup(each.value, "node_locations", "") != "" ? split(",", each.value["node_locations"]) : null
 
@@ -752,8 +779,12 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
     labels = merge(
-      lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
-      lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
+      lookup(lookup(local.node_pools_labels, "default_values", {}), "cluster_name", true) ? {
+        "cluster_name" = var.name
+      } : {},
+      lookup(lookup(local.node_pools_labels, "default_values", {}), "node_pool", true) ? {
+        "node_pool" = each.value["name"]
+      } : {},
       local.node_pools_labels["all"],
       local.node_pools_labels[each.value["name"]],
     )
@@ -762,8 +793,12 @@ resource "google_container_node_pool" "windows_pools" {
       local.node_pools_resource_labels[each.value["name"]],
     )
     metadata = merge(
-      lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
-      lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
+      lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? {
+        "cluster_name" = var.name
+      } : {},
+      lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", true) ? {
+        "node_pool" = each.value["name"]
+      } : {},
       local.node_pools_metadata["all"],
       local.node_pools_metadata[each.value["name"]],
       {
@@ -783,7 +818,9 @@ resource "google_container_node_pool" "windows_pools" {
     }
     tags = concat(
       lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
-      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-${each.value["name"]}"] : [],
+      lookup(local.node_pools_tags, "default_values", [true, true])[1] ? [
+        "${local.cluster_network_tag}-${each.value["name"]}"
+      ] : [],
       local.node_pools_tags["all"],
       local.node_pools_tags[each.value["name"]],
     )
