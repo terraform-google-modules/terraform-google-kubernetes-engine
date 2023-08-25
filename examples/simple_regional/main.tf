@@ -40,5 +40,5 @@ module "gke" {
   service_account             = var.compute_engine_service_account
   enable_cost_allocation      = true
   enable_binary_authorization = var.enable_binary_authorization
-    gcs_fuse_csi_driver       = true
+  gcs_fuse_csi_driver         = true
 }
