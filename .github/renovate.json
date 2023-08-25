@@ -1,37 +1,34 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
+    "config:recommended",
     ":semanticCommits",
     ":preserveSemverRanges",
     ":rebaseStalePrs"
   ],
-  "stabilityDays":7,
+  "minimumReleaseAge": "7 days",
   "ignorePaths": [],
   "labels": ["dependencies"],
-    "vulnerabilityAlerts":{
-     "labels":[
-       "type:security"
-     ],
-     "stabilityDays":0
+  "vulnerabilityAlerts": {
+    "labels": ["type:security"],
+    "minimumReleaseAge": null
   },
-  "separateMajorMinor":false,
-  "constraints": {
-    "go": "1.20"
-  },
+  "constraints": {"go": "1.20"},
   "packageRules": [
     {
-      "matchPaths": ["examples/**", "test/**", ".github/**"],
+      "matchFileNames": ["examples/**", "test/**", ".github/**"],
       "extends": [":semanticCommitTypeAll(chore)"]
     },
     {
-      "matchPaths": ["*", "modules/**"],
+      "matchFileNames": ["*", "modules/**"],
       "extends": [":semanticCommitTypeAll(fix)"]
     },
     {
-      "matchDepTypes": ["module"],
-      "groupName": "TF modules"
+      "matchFileNames": ["*", "modules/**"],
+      "matchUpdateTypes": "major",
+      "commitMessagePrefix": "fix(deps)!:"
     },
+    {"matchDepTypes": ["module"], "groupName": "TF modules"},
     {
       "matchDepTypes": ["require"],
       "groupName": "GO modules",
@@ -45,20 +42,24 @@
     },
     {
       "matchPackageNames": ["google", "google-beta"],
-      "groupName": "terraform googles"
+      "groupName": "Terraform Google Provider"
     }
   ],
   "regexManagers": [
     {
       "fileMatch": ["(^|/)Makefile$"],
-      "matchStrings": ["DOCKER_TAG_VERSION_DEVELOPER_TOOLS := (?<currentValue>.*?)\\n"],
+      "matchStrings": [
+        "DOCKER_TAG_VERSION_DEVELOPER_TOOLS := (?<currentValue>.*?)\\n"
+      ],
       "datasourceTemplate": "docker",
       "registryUrlTemplate": "https://gcr.io/cloud-foundation-cicd",
       "depNameTemplate": "cft/developer-tools"
     },
     {
       "fileMatch": ["(^|/)build/(int|lint)\\.cloudbuild\\.yaml$"],
-      "matchStrings": ["  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '(?<currentValue>.*?)'\\n"],
+      "matchStrings": [
+        "  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '(?<currentValue>.*?)'\\n"
+      ],
       "datasourceTemplate": "docker",
       "registryUrlTemplate": "https://gcr.io/cloud-foundation-cicd",
       "depNameTemplate": "cft/developer-tools"
