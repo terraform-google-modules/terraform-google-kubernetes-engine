@@ -170,6 +170,17 @@ variable "node_pools_labels" {
   }
 }
 
+variable "node_pools_additional_networks" {
+  type        = map(list(any))
+  description = "Map of maps containing additional networks by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = []
+    default-node-pool = []
+  }
+}
+
 variable "node_pools_resource_labels" {
   type        = map(map(string))
   description = "Map of maps containing resource labels by node-pool name"

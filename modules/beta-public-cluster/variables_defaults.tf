@@ -19,6 +19,7 @@
 # Setup dynamic default values for variables which can't be setup using
 # the standard terraform "variable default" functionality
 
+
 locals {
   node_pools_labels = merge(
     { all = {} },
@@ -32,6 +33,19 @@ locals {
       [for node_pool in var.windows_node_pools : {}]
     ),
     var.node_pools_labels
+  )
+  node_pools_additional_networks = merge(
+    { all = [] },
+    { default-node-pool = [] },
+    zipmap(
+      [for node_pool in var.node_pools : node_pool["name"]],
+      [for node_pool in var.node_pools : []]
+    ),
+    zipmap(
+      [for node_pool in var.windows_node_pools : node_pool["name"]],
+      [for node_pool in var.windows_node_pools : []]
+    ),
+    var.node_pools_additional_networks
   )
 
   node_pools_resource_labels = merge(
