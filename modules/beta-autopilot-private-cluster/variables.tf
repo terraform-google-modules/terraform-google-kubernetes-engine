@@ -416,3 +416,9 @@ variable "timeouts" {
   }
 }
 
+variable "enable_multi_networking" {
+  default     = false
+  type        = bool
+  description = "Enable multi NIC support."
+}
+

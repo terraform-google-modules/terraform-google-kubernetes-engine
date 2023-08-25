@@ -466,7 +466,7 @@ variable "shadow_firewall_rules_log_config" {
     metadata = string
   })
   description = "The log_config for shadow firewall rules. You can set this variable to `null` to disable logging."
-  default = {
+  default     = {
     metadata = "INCLUDE_ALL_METADATA"
   }
 }
@@ -551,10 +551,12 @@ variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
   type        = list(object({ state = string, key_name = string }))
 
-  default = [{
-    state    = "DECRYPTED"
-    key_name = ""
-  }]
+  default = [
+    {
+      state    = "DECRYPTED"
+      key_name = ""
+    }
+  ]
 }
 
 variable "enable_shielded_nodes" {
@@ -575,7 +577,9 @@ variable "node_metadata" {
   type        = string
 
   validation {
-    condition     = contains(["GKE_METADATA", "GCE_METADATA", "UNSPECIFIED", "GKE_METADATA_SERVER", "EXPOSE"], var.node_metadata)
+    condition = contains([
+      "GKE_METADATA", "GCE_METADATA", "UNSPECIFIED", "GKE_METADATA_SERVER", "EXPOSE"
+    ], var.node_metadata)
     error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA, UNSPECIFIED, GKE_METADATA_SERVER or EXPOSE."
   }
 }
@@ -709,4 +713,10 @@ variable "enable_identity_service" {
   type        = bool
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
   default     = false
+}
+
+variable "enable_multi_networking" {
+  default     = false
+  type        = bool
+  description = "Enable multi NIC support."
 }

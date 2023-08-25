@@ -129,6 +129,9 @@ resource "google_container_cluster" "primary" {
 
   networking_mode = "VPC_NATIVE"
 
+  enable_multi_networking = var.enable_multi_networking
+
+
   protect_config {
     workload_config {
       audit_mode = var.workload_config_audit_mode
