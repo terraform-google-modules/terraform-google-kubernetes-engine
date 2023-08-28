@@ -6,6 +6,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [27.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v26.1.1...v27.0.0) (2023-06-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=4.32.0:** Support enabling Policy Controller mutations ([#1665](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1665))
+
+### Features
+
+* Add protect_config beta feature ([#1617](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1617)) ([d252579](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d252579613ca44e11ad28a59f930cdb42dea2c29))
+* **cluster.tf:** add support to set initial release channel version ([#1625](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1625)) ([e522073](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e522073f24067359f8af1bd2ddc9092b594fb945))
+* **TPG>=4.32.0:** Support enabling Policy Controller mutations ([#1665](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1665)) ([1173518](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/11735188d5f8890363344924992d2d0dd97642e1))
+
+
+### Bug Fixes
+
+* extend acm wait when policy bundles are present ([#1657](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1657)) ([e51804e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e51804ed4849fa85748a95ca169b92445d258d91))
+* set max firewall name to 36 ([#1645](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1645)) ([29d9259](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/29d925997ec0fd5ecbd6dd5792f220fc48a5725b))
+* update policy-essentials hash 59f4695 using ref ([#1659](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1659)) ([2fe1715](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2fe171500c3496eb88b9fdf83318b0927d225e4b))
+
+## [26.1.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v26.1.0...v26.1.1) (2023-05-22)
+
+
+### Bug Fixes
+
+* correct TPG version constraint ([#1637](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1637)) ([#1640](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1640)) ([14eac9f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/14eac9f91a90245d3e00d05a8653f334eb8966ec))
+
+## [26.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v26.0.0...v26.1.0) (2023-05-16)
+
+
+### Features
+
+* Add timeouts variable for safer cluster module ([#1613](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1613)) ([146b2e7](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/146b2e7b0a3385a5f0864a003abd8bee8bec2bc7))
+
+
+### Bug Fixes
+
+* allow ACM module to work w/o metrics sa ([#1634](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1634)) ([83a8be2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/83a8be24ee1bf84371714f49f8c904d3d94492d6))
+* avoid TPG 4.65.0 and 4.65.1 ([#1637](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1637)) ([ea3e374](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ea3e374bbf99c86189b5ca428d6c2a2f07bd1e16))
+
 ## [26.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v25.0.0...v26.0.0) (2023-05-10)
 
 

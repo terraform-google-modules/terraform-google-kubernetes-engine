@@ -236,6 +236,8 @@ variable "cluster_autoscaling" {
     gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))
     auto_repair         = bool
     auto_upgrade        = bool
+    disk_size           = optional(number)
+    disk_type           = optional(string)
   })
   default = {
     enabled             = false
@@ -247,6 +249,8 @@ variable "cluster_autoscaling" {
     gpu_resources       = []
     auto_repair         = true
     auto_upgrade        = true
+    disk_size           = 100
+    disk_type           = "pd-standard"
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
@@ -472,6 +476,17 @@ variable "enable_confidential_nodes" {
   description = "An optional flag to enable confidential node config."
   default     = false
 }
+variable "workload_vulnerability_mode" {
+  description = "(beta) Vulnerability mode."
+  type        = string
+  default     = ""
+}
+
+variable "workload_config_audit_mode" {
+  description = "(beta) Worload config audit mode."
+  type        = string
+  default     = "DISABLED"
+}
 
 variable "disable_default_snat" {
   type        = bool
@@ -595,6 +610,12 @@ variable "gke_backup_agent_config" {
   default     = false
 }
 
+variable "gcs_fuse_csi_driver" {
+  type        = bool
+  description = "Whether GCE FUSE CSI driver is enabled for this cluster."
+  default     = false
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -629,6 +650,12 @@ variable "enable_kubernetes_alpha" {
   default     = false
 }
 
+variable "config_connector" {
+  type        = bool
+  description = "Whether ConfigConnector is enabled for this cluster."
+  default     = false
+}
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   type        = bool
@@ -644,12 +671,6 @@ variable "istio_auth" {
 variable "kalm_config" {
   type        = bool
   description = "(Beta) Whether KALM is enabled for this cluster."
-  default     = false
-}
-
-variable "config_connector" {
-  type        = bool
-  description = "(Beta) Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
 

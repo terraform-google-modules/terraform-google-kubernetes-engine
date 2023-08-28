@@ -69,7 +69,7 @@ resource "google_container_cluster" "primary" {
     disabled = var.disable_default_snat
   }
 
-  min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : null
+  min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : var.kubernetes_version == "latest" ? null : var.kubernetes_version
 
   # only one of logging/monitoring_service or logging/monitoring_config can be specified
   logging_service = local.logmon_config_is_set ? null : var.logging_service
@@ -109,6 +109,9 @@ resource "google_container_cluster" "primary" {
           auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
           auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
         }
+
+        disk_size = lookup(var.cluster_autoscaling, "disk_size", 100)
+        disk_type = lookup(var.cluster_autoscaling, "disk_type", "pd-standard")
 
       }
     }
@@ -197,6 +200,18 @@ resource "google_container_cluster" "primary" {
       content {
         enabled = gke_backup_agent_config.value.enabled
       }
+    }
+
+    dynamic "gcs_fuse_csi_driver_config" {
+      for_each = local.gcs_fuse_csi_driver_config
+
+      content {
+        enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
+
+    config_connector_config {
+      enabled = var.config_connector
     }
   }
 

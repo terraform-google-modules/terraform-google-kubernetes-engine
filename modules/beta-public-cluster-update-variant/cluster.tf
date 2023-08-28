@@ -75,7 +75,7 @@ resource "google_container_cluster" "primary" {
     disabled = var.disable_default_snat
   }
 
-  min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : null
+  min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : var.kubernetes_version == "latest" ? null : var.kubernetes_version
 
   dynamic "cluster_telemetry" {
     for_each = local.cluster_telemetry_type_is_set ? [1] : []
@@ -121,6 +121,9 @@ resource "google_container_cluster" "primary" {
           auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
           auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
         }
+
+        disk_size = lookup(var.cluster_autoscaling, "disk_size", 100)
+        disk_type = lookup(var.cluster_autoscaling, "disk_type", "pd-standard")
 
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
       }
@@ -231,6 +234,18 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    dynamic "gcs_fuse_csi_driver_config" {
+      for_each = local.gcs_fuse_csi_driver_config
+
+      content {
+        enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
+
+    config_connector_config {
+      enabled = var.config_connector
+    }
+
     istio_config {
       disabled = !var.istio
       auth     = var.istio_auth
@@ -247,15 +262,18 @@ resource "google_container_cluster" "primary" {
     kalm_config {
       enabled = var.kalm_config
     }
-
-    config_connector_config {
-      enabled = var.config_connector
-    }
   }
 
   datapath_provider = var.datapath_provider
 
   networking_mode = "VPC_NATIVE"
+
+  protect_config {
+    workload_config {
+      audit_mode = var.workload_config_audit_mode
+    }
+    workload_vulnerability_mode = var.workload_vulnerability_mode
+  }
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services

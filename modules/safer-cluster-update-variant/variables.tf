@@ -453,7 +453,7 @@ variable "firewall_inbound_ports" {
 
 variable "config_connector" {
   type        = bool
-  description = "(Beta) Whether ConfigConnector is enabled for this cluster."
+  description = "Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
 
@@ -473,4 +473,14 @@ variable "notification_config_topic" {
   type        = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
   default     = ""
+}
+
+variable "timeouts" {
+  type        = map(string)
+  description = "Timeout for cluster operations."
+  default     = {}
+  validation {
+    condition     = !contains([for t in keys(var.timeouts) : contains(["create", "update", "delete"], t)], false)
+    error_message = "Only create, update, delete timeouts can be specified."
+  }
 }
