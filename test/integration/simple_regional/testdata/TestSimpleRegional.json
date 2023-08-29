@@ -97,8 +97,7 @@
         "SYSTEM_COMPONENTS"
       ]
     },
-    "managedPrometheusConfig": {
-    }
+    "managedPrometheusConfig": {}
   },
   "monitoringService": "monitoring.googleapis.com/kubernetes",
   "name": "CLUSTER_NAME",
