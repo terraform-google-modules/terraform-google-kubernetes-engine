@@ -171,7 +171,10 @@ variable "node_pools_labels" {
 }
 
 variable "node_pools_additional_networks" {
-  type        = map(list(any))
+  type = map(list(object({
+    network_name    = string
+    subnetwork_name = string
+  })))
   description = "Map of maps containing additional networks by node-pool name"
 
   # Default is being set in variables_defaults.tf
