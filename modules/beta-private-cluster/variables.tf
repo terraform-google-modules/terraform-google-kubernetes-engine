@@ -170,6 +170,20 @@ variable "node_pools_labels" {
   }
 }
 
+variable "node_pools_additional_networks" {
+  type = map(list(object({
+    network_name    = string
+    subnetwork_name = string
+  })))
+  description = "Map of maps containing additional networks by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = []
+    default-node-pool = []
+  }
+}
+
 variable "node_pools_resource_labels" {
   type        = map(map(string))
   description = "Map of maps containing resource labels by node-pool name"
@@ -607,7 +621,7 @@ variable "node_metadata" {
   type        = string
 
   validation {
-    condition     = contains([
+    condition = contains([
       "GKE_METADATA", "GCE_METADATA", "UNSPECIFIED", "GKE_METADATA_SERVER", "EXPOSE"
     ], var.node_metadata)
     error_message = "The node_metadata value must be one of GKE_METADATA, GCE_METADATA, UNSPECIFIED, GKE_METADATA_SERVER or EXPOSE."
@@ -725,7 +739,6 @@ variable "enable_pod_security_policy" {
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. Pod Security Policy was removed from GKE clusters with version >= 1.25.0."
   default     = false
 }
-
 
 variable "enable_l4_ilb_subsetting" {
   type        = bool

@@ -503,7 +503,8 @@ resource "google_container_node_pool" "pools" {
   dynamic "placement_policy" {
     for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
     content {
-      type = lookup(placement_policy.value, "placement_policy", null)
+      type        = lookup(placement_policy.value, "placement_policy", null)
+      policy_name = lookup(placement_policy.value, "placement_policy_resource_policy_name", null)
     }
   }
 
@@ -511,7 +512,18 @@ resource "google_container_node_pool" "pools" {
     for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
-      enable_private_nodes = var.enable_private_nodes
+      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+    }
+  }
+
+  network_config {
+    dynamic "additional_node_network_configs" {
+      for_each = {for idx, x in lookup(var.node_pools_additional_networks, each.value["name"], []) : idx => x}
+      iterator = additional_network
+      content {
+        network    = additional_network.value.network_name
+        subnetwork = additional_network.value.subnetwork_name
+      }
     }
   }
 
@@ -736,7 +748,7 @@ resource "google_container_node_pool" "windows_pools" {
     for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
-      enable_private_nodes = var.enable_private_nodes
+      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
     }
   }
 
