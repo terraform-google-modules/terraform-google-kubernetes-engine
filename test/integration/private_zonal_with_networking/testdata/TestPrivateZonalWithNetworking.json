@@ -1,5 +1,6 @@
 {
   "addonsConfig": {
+    "configConnectorConfig": {},
     "dnsCacheConfig": {},
     "gcePersistentDiskCsiDriverConfig": {
       "enabled": true
