@@ -617,6 +617,12 @@ variable "gke_backup_agent_config" {
   default     = false
 }
 
+variable "gcs_fuse_csi_driver" {
+  type        = bool
+  description = "Whether GCE FUSE CSI driver is enabled for this cluster."
+  default     = false
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -648,5 +654,11 @@ variable "logging_enabled_components" {
 variable "enable_kubernetes_alpha" {
   type        = bool
   description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
+  default     = false
+}
+
+variable "config_connector" {
+  type        = bool
+  description = "Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
