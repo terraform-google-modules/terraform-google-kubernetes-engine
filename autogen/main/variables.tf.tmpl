@@ -559,6 +559,12 @@ variable "workload_config_audit_mode" {
   type        = string
   default     = "DISABLED"
 }
+
+variable "enable_fqdn_network_policy" {
+  type        = bool
+  description = "Enable FQDN Network Policies on the cluster"
+  default     = false
+}
 {% endif %}
 
 variable "disable_default_snat" {

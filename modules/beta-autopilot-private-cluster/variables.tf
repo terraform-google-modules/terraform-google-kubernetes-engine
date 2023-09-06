@@ -385,6 +385,12 @@ variable "workload_config_audit_mode" {
   default     = "DISABLED"
 }
 
+variable "enable_fqdn_network_policy" {
+  type        = bool
+  description = "Enable FQDN Network Policies on the cluster"
+  default     = false
+}
+
 variable "disable_default_snat" {
   type        = bool
   description = "Whether to disable the default SNAT to support the private use of public IP addresses"
