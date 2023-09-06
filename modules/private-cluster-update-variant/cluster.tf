@@ -201,6 +201,18 @@ resource "google_container_cluster" "primary" {
         enabled = gke_backup_agent_config.value.enabled
       }
     }
+
+    dynamic "gcs_fuse_csi_driver_config" {
+      for_each = local.gcs_fuse_csi_driver_config
+
+      content {
+        enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
+
+    config_connector_config {
+      enabled = var.config_connector
+    }
   }
 
   datapath_provider = var.datapath_provider

@@ -640,6 +640,12 @@ variable "gke_backup_agent_config" {
   default     = false
 }
 
+variable "gcs_fuse_csi_driver" {
+  type        = bool
+  description = "Whether GCE FUSE CSI driver is enabled for this cluster."
+  default     = false
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -674,6 +680,12 @@ variable "enable_kubernetes_alpha" {
   default     = false
 }
 
+variable "config_connector" {
+  type        = bool
+  description = "Whether ConfigConnector is enabled for this cluster."
+  default     = false
+}
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   type        = bool
@@ -689,12 +701,6 @@ variable "istio_auth" {
 variable "kalm_config" {
   type        = bool
   description = "(Beta) Whether KALM is enabled for this cluster."
-  default     = false
-}
-
-variable "config_connector" {
-  type        = bool
-  description = "(Beta) Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
 
