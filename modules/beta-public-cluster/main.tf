@@ -180,6 +180,10 @@ locals {
   cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
     workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
+  cluster_mesh_certificates_config = local.workload_identity_enabled ? [{
+    enable_certificates = var.enable_mesh_certificates
+  }] : []
+
   # BETA features
   cluster_istio_enabled                = !local.cluster_output_istio_disabled
   cluster_dns_cache_enabled            = var.dns_cache
