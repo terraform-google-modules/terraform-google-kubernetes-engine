@@ -353,6 +353,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "mesh_certificates" {
+    for_each = local.cluster_mesh_certificates_config
+
+    content {
+      enable_certificates = mesh_certificates.value.enable_certificates
+    }
+  }
+
   dynamic "authenticator_groups_config" {
     for_each = local.cluster_authenticator_security_group
     content {
