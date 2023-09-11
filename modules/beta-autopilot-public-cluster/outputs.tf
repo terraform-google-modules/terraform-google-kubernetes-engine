@@ -142,6 +142,8 @@ output "identity_namespace" {
   ]
 }
 
+
+
 output "cloudrun_enabled" {
   description = "Whether CloudRun enabled"
   value       = false
