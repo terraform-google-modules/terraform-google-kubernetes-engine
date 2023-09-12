@@ -14,7 +14,6 @@
 package simple_regional_with_networking
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
@@ -33,7 +32,7 @@ func TestSimpleRegionalWithNetworking(t *testing.T) {
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")
-		serviceAccount := strings.ReplaceAll(bpt.GetStringOutput("service_account"), projectId, "PROJECT_ID")
+		serviceAccount := bpt.GetStringOutput("service_account")
 		region := bpt.GetStringOutput("region")
 		subnetName := bpt.GetStringOutput("subnet_name")
 		ipRangeServicesName := bpt.GetStringOutput("ip_range_services_name")
@@ -41,8 +40,8 @@ func TestSimpleRegionalWithNetworking(t *testing.T) {
 
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		g := golden.NewOrUpdate(t, op.String(),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
 			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
+			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
 			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
 		)
 		validateJSONPaths := []string{
