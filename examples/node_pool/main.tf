@@ -59,7 +59,6 @@ module "gke" {
       disk_type         = "pd-standard"
       accelerator_count = 1
       accelerator_type  = "nvidia-tesla-p4"
-      image_type        = "COS"
       auto_repair       = false
       service_account   = var.compute_engine_service_account
     },
