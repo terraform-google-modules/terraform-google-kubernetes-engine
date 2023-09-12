@@ -191,4 +191,7 @@ module "gke" {
   notification_config_topic = var.notification_config_topic
 
   timeouts = var.timeouts
+
+  workload_vulnerability_mode = var.workload_vulnerability_mode
+  workload_config_audit_mode  = var.workload_config_audit_mode
 }
