@@ -92,7 +92,7 @@ data "google_client_config" "default" {}
 | install\_template\_library | Whether to install the default Policy Controller template library | `bool` | `true` | no |
 | location | GCP location used to reach cluster. | `string` | n/a | yes |
 | metrics\_gcp\_sa\_name | The name of the Google service account for ACM metrics writing | `string` | `"acm-metrics-writer"` | no |
-| policy\_bundles | A list of Policy Controller policy bundles git urls (example: <https://github.com/GoogleCloudPlatform/acm-policy-controller-library.git/bundles/policy-essentials-v2022>) to install on the cluster. | `list(string)` | `[]` | no |
+| policy\_bundles | A list of Policy Controller policy bundles git urls (example: https://github.com/GoogleCloudPlatform/acm-policy-controller-library.git/bundles/policy-essentials-v2022) to install on the cluster. | `list(string)` | `[]` | no |
 | policy\_dir | Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default. | `string` | `""` | no |
 | project\_id | GCP project\_id used to reach cluster. | `string` | n/a | yes |
 | secret\_type | git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true | `string` | `"ssh"` | no |

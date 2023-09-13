@@ -90,6 +90,9 @@
     ],
     "enabled": true
   },
+  "meshCertificates": {
+    "enableCertificates": false
+  },
   "monitoringConfig": {
     "componentConfig": {
       "enableComponents": [

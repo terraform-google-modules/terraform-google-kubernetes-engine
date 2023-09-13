@@ -122,6 +122,9 @@ resource "google_container_cluster" "primary" {
           auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
         }
 
+        disk_size = lookup(var.cluster_autoscaling, "disk_size", 100)
+        disk_type = lookup(var.cluster_autoscaling, "disk_type", "pd-standard")
+
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
       }
     }
@@ -231,6 +234,18 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    dynamic "gcs_fuse_csi_driver_config" {
+      for_each = local.gcs_fuse_csi_driver_config
+
+      content {
+        enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
+
+    config_connector_config {
+      enabled = var.config_connector
+    }
+
     istio_config {
       disabled = !var.istio
       auth     = var.istio_auth
@@ -246,10 +261,6 @@ resource "google_container_cluster" "primary" {
 
     kalm_config {
       enabled = var.kalm_config
-    }
-
-    config_connector_config {
-      enabled = var.config_connector
     }
   }
 
@@ -351,6 +362,8 @@ resource "google_container_cluster" "primary" {
         lookup(local.node_pools_tags, var.node_pools[0].name, []),
       )
 
+      logging_variant = lookup(var.node_pools[0], "logging_variant", "DEFAULT")
+
       dynamic "workload_metadata_config" {
         for_each = local.cluster_node_metadata_config
 
@@ -410,6 +423,14 @@ resource "google_container_cluster" "primary" {
 
     content {
       workload_pool = workload_identity_config.value.workload_pool
+    }
+  }
+
+  dynamic "mesh_certificates" {
+    for_each = local.cluster_mesh_certificates_config
+
+    content {
+      enable_certificates = mesh_certificates.value.enable_certificates
     }
   }
 
@@ -654,6 +675,8 @@ resource "google_container_node_pool" "pools" {
       local.node_pools_tags[each.value["name"]],
     )
 
+    logging_variant = lookup(each.value, "logging_variant", "DEFAULT")
+
     local_ssd_count = lookup(each.value, "local_ssd_count", 0)
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
@@ -879,6 +902,8 @@ resource "google_container_node_pool" "windows_pools" {
       local.node_pools_tags["all"],
       local.node_pools_tags[each.value["name"]],
     )
+
+    logging_variant = lookup(each.value, "logging_variant", "DEFAULT")
 
     local_ssd_count = lookup(each.value, "local_ssd_count", 0)
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
