@@ -57,7 +57,7 @@ resource "kubernetes_config_map" "asm_options" {
 
 module "cpr" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "~> 3.1"
+  version = "~> 3.1.0"
 
   project_id       = var.project_id
   cluster_name     = var.cluster_name
