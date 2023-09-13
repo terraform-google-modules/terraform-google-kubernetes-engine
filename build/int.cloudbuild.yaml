@@ -103,7 +103,7 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegional --stage verify --verbose']
 - id: destroy simple-regional-local
   waitFor:
-    - apply simple-regional-local
+    - verify simple-regional-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegional --stage teardown --verbose']
 - id: init simple-regional-private-local
@@ -443,7 +443,7 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivate --stage verify --verbose']
 - id: destroy simple-autopilot-private-local
   waitFor:
-    - apply simple-autopilot-private-local
+    - verify simple-autopilot-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivate --stage teardown --verbose']
 - id: init simple-autopilot-public-local
