@@ -39,4 +39,4 @@ To deploy this config:
 | cluster\_membership\_id | The ID of the hub membership |
 | wait | An output to use when you want to depend on registration finishing |
 
- <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

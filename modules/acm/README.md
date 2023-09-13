@@ -111,4 +111,4 @@ data "google_client_config" "default" {}
 | git\_creds\_public | Public key of SSH keypair to allow the Anthos Config Management Operator to authenticate to your Git repository. |
 | wait | An output to use when you want to depend on cmd finishing |
 
- <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

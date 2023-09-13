@@ -56,4 +56,4 @@ To deploy this config:
 |------|-------------|
 | wait | An output to use when you want to depend on registration finishing |
 
- <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
