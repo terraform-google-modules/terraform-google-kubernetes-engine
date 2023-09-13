@@ -2,7 +2,9 @@
     "addonsConfig": {
       "configConnectorConfig": {},
       "dnsCacheConfig": {},
-      "gcePersistentDiskCsiDriverConfig": {},
+      "gcePersistentDiskCsiDriverConfig": {
+        "enable": true
+      },
       "gcpFilestoreCsiDriverConfig": {},
       "gkeBackupAgentConfig": {},
       "horizontalPodAutoscaling": {},

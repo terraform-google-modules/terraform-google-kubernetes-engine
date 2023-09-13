@@ -20,6 +20,8 @@
   Get available zones in region
  *****************************************/
 data "google_compute_zones" "available" {
+  count = local.zone_count == 0 ? 1 : 0
+
   provider = google
 
   project = var.project_id
@@ -27,7 +29,9 @@ data "google_compute_zones" "available" {
 }
 
 resource "random_shuffle" "available_zones" {
-  input        = data.google_compute_zones.available.names
+  count = local.zone_count == 0 ? 1 : 0
+
+  input        = data.google_compute_zones.available[0].names
   result_count = 3
 }
 
@@ -39,7 +43,7 @@ locals {
   location = var.regional ? var.region : var.zones[0]
   region   = var.regional ? var.region : join("-", slice(split("-", var.zones[0]), 0, 2))
   // for regional cluster - use var.zones if provided, use available otherwise, for zonal cluster use var.zones with first element extracted
-  node_locations = var.regional ? coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result)) : slice(var.zones, 1, length(var.zones))
+  node_locations = var.regional ? coalescelist(compact(var.zones), try(sort(random_shuffle.available_zones[0].result), [])) : slice(var.zones, 1, length(var.zones))
   // Kubernetes version
   master_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version
   master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
@@ -84,9 +88,10 @@ locals {
     enabled  = false
     provider = null
   }]
-  cluster_gce_pd_csi_config = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
-  logmon_config_is_set      = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus
-  gke_backup_agent_config   = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
+  cluster_gce_pd_csi_config  = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
+  logmon_config_is_set       = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus
+  gke_backup_agent_config    = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
+  gcs_fuse_csi_driver_config = var.gcs_fuse_csi_driver ? [{ enabled = true }] : []
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
@@ -157,6 +162,10 @@ locals {
   cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
     workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
+  cluster_mesh_certificates_config = local.workload_identity_enabled ? [{
+    enable_certificates = var.enable_mesh_certificates
+  }] : []
+
 
   cluster_maintenance_window_is_recurring = var.maintenance_recurrence != "" && var.maintenance_end_time != "" ? [1] : []
   cluster_maintenance_window_is_daily     = length(local.cluster_maintenance_window_is_recurring) > 0 ? [] : [1]
@@ -175,6 +184,6 @@ data "google_container_engine_versions" "zone" {
   //
   //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
   //
-  location = local.zone_count == 0 ? data.google_compute_zones.available.names[0] : var.zones[0]
+  location = local.zone_count == 0 ? data.google_compute_zones.available[0].names[0] : var.zones[0]
   project  = var.project_id
 }
