@@ -76,7 +76,7 @@ locals {
   cluster_endpoint           = google_container_cluster.primary.endpoint
   cluster_endpoint_for_nodes = "${google_container_cluster.primary.endpoint}/32"
 
-  cluster_output_master_auth                        = concat(google_container_cluster.primary.*.master_auth, [])
+  cluster_output_master_auth                        = concat(google_container_cluster.primary[*].master_auth, [])
   cluster_output_master_version                     = google_container_cluster.primary.master_version
   cluster_output_min_master_version                 = google_container_cluster.primary.min_master_version
   cluster_output_logging_service                    = google_container_cluster.primary.logging_service

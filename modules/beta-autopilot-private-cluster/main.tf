@@ -77,7 +77,7 @@ locals {
   cluster_peering_name       = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? google_container_cluster.primary.private_cluster_config[0].peering_name : null
   cluster_endpoint_for_nodes = var.master_ipv4_cidr_block
 
-  cluster_output_master_auth                        = concat(google_container_cluster.primary.*.master_auth, [])
+  cluster_output_master_auth                        = concat(google_container_cluster.primary[*].master_auth, [])
   cluster_output_master_version                     = google_container_cluster.primary.master_version
   cluster_output_min_master_version                 = google_container_cluster.primary.min_master_version
   cluster_output_logging_service                    = google_container_cluster.primary.logging_service
