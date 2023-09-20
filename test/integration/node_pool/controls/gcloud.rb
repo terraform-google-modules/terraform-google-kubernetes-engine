@@ -17,7 +17,7 @@ location = attribute('location')
 cluster_name = attribute('cluster_name')
 
 expected_accelerators_count = "1"
-expected_accelerators_type = "nvidia-tesla-a100"
+expected_accelerators_type = "nvidia-tesla-p4"
 
 control "gcloud" do
   title "Google Compute Engine GKE configuration"
@@ -218,7 +218,7 @@ control "gcloud" do
             including(
               "name" => "pool-02",
               "config" => including(
-                "machineType" => "a2-highgpu-1g",
+                "machineType" => "n1-standard-2",
               ),
             )
           )
@@ -263,8 +263,7 @@ control "gcloud" do
               "name" => "pool-02",
               "config" => including(
                 "accelerators" => [{"acceleratorCount" => expected_accelerators_count,
-                                    "acceleratorType" => expected_accelerators_type,
-                                    "gpuPartitionSize" => "1g.5gb"}],
+                                    "acceleratorType" => expected_accelerators_type}],
               ),
             )
           )
