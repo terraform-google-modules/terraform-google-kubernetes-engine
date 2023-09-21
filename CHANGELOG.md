@@ -6,6 +6,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [28.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v27.0.0...v28.0.0) (2023-09-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* support gcs fuse addon ([#1722](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1722))
+* Add support for disk_size and disk_type for cluster_autoscaling. ([#1693](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1693))
+
+### Features
+
+* add project and location output to fleet-membership ([#1740](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1740)) ([825bda6](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/825bda616c6bb28cf56a0b59f5833e3fecdd9eb5))
+* Add support for disk_size and disk_type for cluster_autoscaling. ([#1693](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1693)) ([fd233e5](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/fd233e5cddd9098b6e6520b0671eb16f77a5c187))
+* Add support for Logging Variant to enable max throughput option ([#1616](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1616)) ([acd2d41](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/acd2d410c550a3fbca0cac400d1d07e2d3dc5cd8))
+* mesh_certificates support ([#1712](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1712)) ([8913ef2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8913ef27d6c97ae2c57d747ff29ca175a15833e7))
+* promote config_connector_config to ga ([#1559](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1559)) ([ae63848](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ae6384899909cea52f1f50a140d7c85b335b64eb))
+* support configuring ACM git service account email ([#1685](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1685)) ([426f06f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/426f06f4ecbc4816cac5cad4e2a0b35a58d426b3))
+* support gcs fuse addon ([#1722](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1722)) ([2f5a276](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2f5a2769fada01333b178d0bc9ec1e8192535043))
+
+
+### Bug Fixes
+
+* random zones only when zones are not provided ([#1709](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1709)) ([50ea965](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/50ea96505135c390e64482e4af053ee1191697a7))
+* regenerate docs ([#1733](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1733)) ([6b927e5](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6b927e5a918efc681e4ca8705360ed3a05577f96))
+
 ## [27.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v26.1.1...v27.0.0) (2023-06-29)
 
 
