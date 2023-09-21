@@ -7,7 +7,7 @@
     ":rebaseStalePrs"
   ],
   "minimumReleaseAge": "7 days",
-  "ignorePaths": [],
+  "ignorePaths": [".github/workflows/lint.yaml", ".github/workflows/stale.yml"],
   "labels": ["dependencies"],
   "vulnerabilityAlerts": {
     "labels": ["type:security"],
@@ -17,11 +17,11 @@
   "packageRules": [
     {
       "matchFileNames": ["examples/**", "test/**", ".github/**"],
-      "extends": [":semanticCommitTypeAll(chore)"]
+      "commitMessagePrefix": "chore(deps):"
     },
     {
       "matchFileNames": ["*", "modules/**"],
-      "extends": [":semanticCommitTypeAll(fix)"]
+      "commitMessagePrefix": "fix(deps):"
     },
     {
       "matchFileNames": ["*", "modules/**"],
@@ -41,7 +41,7 @@
       "postUpdateOptions": ["gomodTidy"]
     },
     {
-      "matchPackageNames": ["google", "google-beta"],
+      "matchDepNames": ["google", "google-beta"],
       "groupName": "Terraform Google Provider"
     }
   ],

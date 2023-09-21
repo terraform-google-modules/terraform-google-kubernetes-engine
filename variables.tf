@@ -407,6 +407,12 @@ variable "identity_namespace" {
   default     = "enabled"
 }
 
+variable "enable_mesh_certificates" {
+  type        = bool
+  default     = false
+  description = "Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity."
+}
+
 variable "release_channel" {
   type        = string
   description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`."

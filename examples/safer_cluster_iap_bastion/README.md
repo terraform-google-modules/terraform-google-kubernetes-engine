@@ -71,4 +71,4 @@ To deploy this example:
 | router\_name | Name of the router that was created |
 | subnet\_name | The name of the VPC subnet being created |
 
- <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -52,6 +52,7 @@ func TestSaferCluster(t *testing.T) {
 			"networkConfig.datapathProvider",
 			"binaryAuthorization.evaluationMode",
 			"legacyAbac",
+			"meshCertificates.enableCertificates",
 			"nodePools.autoscaling",
 			"nodePools.config.machineType",
 			"nodePools.config.diskSizeGb",
