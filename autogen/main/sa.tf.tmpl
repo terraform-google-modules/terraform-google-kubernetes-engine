@@ -19,7 +19,7 @@
 locals {
   service_account_list = compact(
     concat(
-      google_service_account.cluster_service_account.*.email,
+      google_service_account.cluster_service_account[*].email,
       ["dummy"],
     ),
   )
