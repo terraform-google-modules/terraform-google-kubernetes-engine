@@ -161,6 +161,7 @@ Then perform the following commands on the root folder:
 | add\_cluster\_firewall\_rules | Create additional firewall rules | `bool` | `false` | no |
 | add\_master\_webhook\_firewall\_rules | Create master\_webhook firewall rules for ports defined in `firewall_inbound_ports` | `bool` | `false` | no |
 | add\_shadow\_firewall\_rules | Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled). | `bool` | `false` | no |
+| additional\_ip\_range\_pods | List of _names_ of the additional secondary subnet ip ranges to use for pods | `list(string)` | `[]` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
 | cloudrun | (Beta) Enable CloudRun addon | `bool` | `false` | no |
 | cloudrun\_load\_balancer\_type | (Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer. | `string` | `""` | no |
