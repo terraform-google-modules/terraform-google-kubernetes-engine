@@ -45,12 +45,12 @@
   "id": "8e4011253bcb4fbc943f88ae797f124f0f001ed95cc94b229231d68b8a44e20b",
   "initialClusterVersion": "1.27.3-gke.100",
   "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-central1-a/instanceGroupManagers/gke-simple-regional-clus-default-pool-209983a6-grp",
-    "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-central1-c/instanceGroupManagers/gke-simple-regional-clus-default-pool-6094c28c-grp",
-    "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-central1-f/instanceGroupManagers/gke-simple-regional-clus-default-pool-a9225012-grp",
-    "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-central1-a/instanceGroupManagers/gke-simple-regional--default-node-poo-8fb4fd0f-grp",
-    "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-central1-c/instanceGroupManagers/gke-simple-regional--default-node-poo-24ffed9f-grp",
-    "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-central1-f/instanceGroupManagers/gke-simple-regional--default-node-poo-1d2dc357-grp"
+    "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-west1-a/instanceGroupManagers/gke-simple-regional-clus-default-pool-209983a6-grp",
+    "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-west1-c/instanceGroupManagers/gke-simple-regional-clus-default-pool-6094c28c-grp",
+    "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-west1-f/instanceGroupManagers/gke-simple-regional-clus-default-pool-a9225012-grp",
+    "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-west1-a/instanceGroupManagers/gke-simple-regional--default-node-poo-8fb4fd0f-grp",
+    "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-west1-c/instanceGroupManagers/gke-simple-regional--default-node-poo-24ffed9f-grp",
+    "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-west1-f/instanceGroupManagers/gke-simple-regional--default-node-poo-1d2dc357-grp"
   ],
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "192.168.0.0/18",
@@ -66,11 +66,11 @@
   },
   "labelFingerprint": "a9dc16a7",
   "legacyAbac": {},
-  "location": "us-central1",
+  "location": "us-west1",
   "locations": [
-    "us-central1-a",
-    "us-central1-c",
-    "us-central1-f"
+    "us-west1-a",
+    "us-west1-c",
+    "us-west1-f"
   ],
   "loggingConfig": {
     "componentConfig": {
@@ -114,7 +114,7 @@
     "defaultSnatStatus": {},
     "network": "projects/PROJECT_ID/global/networks/cft-gke-test-44kc",
     "serviceExternalIpsConfig": {},
-    "subnetwork": "projects/PROJECT_ID/regions/us-central1/subnetworks/cft-gke-test-44kc"
+    "subnetwork": "projects/PROJECT_ID/regions/us-west1/subnetworks/cft-gke-test-44kc"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
@@ -190,14 +190,14 @@
       },
       "etag": "3bb00743-9dbf-4e92-9512-1e64fb8f1b8a",
       "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-central1-a/instanceGroupManagers/gke-simple-regional-clus-default-pool-209983a6-grp",
-        "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-central1-c/instanceGroupManagers/gke-simple-regional-clus-default-pool-6094c28c-grp",
-        "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-central1-f/instanceGroupManagers/gke-simple-regional-clus-default-pool-a9225012-grp"
+        "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-west1-a/instanceGroupManagers/gke-simple-regional-clus-default-pool-209983a6-grp",
+        "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-west1-c/instanceGroupManagers/gke-simple-regional-clus-default-pool-6094c28c-grp",
+        "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-west1-f/instanceGroupManagers/gke-simple-regional-clus-default-pool-a9225012-grp"
       ],
       "locations": [
-        "us-central1-a",
-        "us-central1-c",
-        "us-central1-f"
+        "us-west1-a",
+        "us-west1-c",
+        "us-west1-f"
       ],
       "management": {
         "autoRepair": true,
@@ -214,7 +214,7 @@
         "podRange": "cft-gke-test-pods-44kc"
       },
       "podIpv4CidrSize": 24,
-      "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/us-central1/clusters/CLUSTER_NAME/nodePools/default-pool",
+      "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/us-west1/clusters/CLUSTER_NAME/nodePools/default-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -267,14 +267,14 @@
       "etag": "c1cb03bd-8b4e-4a06-9c4e-213b87aa86a3",
       "initialNodeCount": 1,
       "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-central1-a/instanceGroupManagers/gke-simple-regional--default-node-poo-8fb4fd0f-grp",
-        "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-central1-c/instanceGroupManagers/gke-simple-regional--default-node-poo-24ffed9f-grp",
-        "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-central1-f/instanceGroupManagers/gke-simple-regional--default-node-poo-1d2dc357-grp"
+        "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-west1-a/instanceGroupManagers/gke-simple-regional--default-node-poo-8fb4fd0f-grp",
+        "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-west1-c/instanceGroupManagers/gke-simple-regional--default-node-poo-24ffed9f-grp",
+        "https://www.googleapis.com/compute/v1/projects/PROJECT_ID/zones/us-west1-f/instanceGroupManagers/gke-simple-regional--default-node-poo-1d2dc357-grp"
       ],
       "locations": [
-        "us-central1-a",
-        "us-central1-c",
-        "us-central1-f"
+        "us-west1-a",
+        "us-west1-c",
+        "us-west1-f"
       ],
       "management": {
         "autoRepair": true,
@@ -291,7 +291,7 @@
         "podRange": "cft-gke-test-pods-44kc"
       },
       "podIpv4CidrSize": 24,
-      "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/us-central1/clusters/CLUSTER_NAME/nodePools/default-node-pool",
+      "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/us-west1/clusters/CLUSTER_NAME/nodePools/default-node-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -314,7 +314,7 @@
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
-  "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/us-central1/clusters/CLUSTER_NAME",
+  "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/us-west1/clusters/CLUSTER_NAME",
   "servicesIpv4Cidr": "192.168.64.0/18",
   "shieldedNodes": {
     "enabled": true
@@ -325,5 +325,5 @@
   "workloadIdentityConfig": {
     "workloadPool": "PROJECT_ID.svc.id.goog"
   },
-  "zone": "us-central1"
+  "zone": "us-west1"
 }
