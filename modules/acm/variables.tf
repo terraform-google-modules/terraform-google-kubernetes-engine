@@ -109,6 +109,12 @@ variable "ssh_auth_key" {
   default     = null
 }
 
+variable "gcp_service_account_email" {
+  description = "The service account email for authentication when `secret_type` is `gcpServiceAccount`."
+  type        = string
+  default     = null
+}
+
 variable "enable_config_sync" {
   description = "Whether to enable the ACM Config Sync on the cluster"
   type        = bool

@@ -141,6 +141,12 @@ resource "google_container_cluster" "primary" {
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services
+    dynamic "additional_pod_ranges_config" {
+      for_each = length(var.additional_ip_range_pods) != 0 ? [1] : []
+      content {
+        pod_range_names = var.additional_ip_range_pods
+      }
+    }
   }
 
   maintenance_policy {
@@ -210,6 +216,7 @@ resource "google_container_cluster" "primary" {
       state    = database_encryption.value.state
     }
   }
+
 
 
   dynamic "authenticator_groups_config" {
