@@ -86,12 +86,13 @@ data "google_client_config" "default" {}
 | enable\_mutation | Whether to enable mutations for ACM Policy Controller. | `bool` | `false` | no |
 | enable\_policy\_controller | Whether to enable the ACM Policy Controller on the cluster | `bool` | `true` | no |
 | enable\_referential\_rules | Enables referential constraints which reference another object in it definition and are therefore eventually consistent. | `bool` | `true` | no |
+| gcp\_service\_account\_email | The service account email for authentication when `secret_type` is `gcpServiceAccount`. | `string` | `null` | no |
 | hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/anthos-config-management/docs/how-to/installing-hierarchy-controller) for more details | `map(any)` | `null` | no |
 | https\_proxy | URL for the HTTPS proxy to be used when communicating with the Git repo. | `string` | `null` | no |
 | install\_template\_library | Whether to install the default Policy Controller template library | `bool` | `true` | no |
 | location | GCP location used to reach cluster. | `string` | n/a | yes |
 | metrics\_gcp\_sa\_name | The name of the Google service account for ACM metrics writing | `string` | `"acm-metrics-writer"` | no |
-| policy\_bundles | A list of Policy Controller policy bundles git urls (example: <https://github.com/GoogleCloudPlatform/acm-policy-controller-library.git/bundles/policy-essentials-v2022>) to install on the cluster. | `list(string)` | `[]` | no |
+| policy\_bundles | A list of Policy Controller policy bundles git urls (example: https://github.com/GoogleCloudPlatform/acm-policy-controller-library.git/bundles/policy-essentials-v2022) to install on the cluster. | `list(string)` | `[]` | no |
 | policy\_dir | Subfolder containing configs in ACM Git repo. If un-set, uses Config Management default. | `string` | `""` | no |
 | project\_id | GCP project\_id used to reach cluster. | `string` | n/a | yes |
 | secret\_type | git authentication secret type, is passed through to ConfigManagement spec.git.secretType. Overriden to value 'ssh' if `create_ssh_key` is true | `string` | `"ssh"` | no |
@@ -110,4 +111,4 @@ data "google_client_config" "default" {}
 | git\_creds\_public | Public key of SSH keypair to allow the Anthos Config Management Operator to authenticate to your Git repository. |
 | wait | An output to use when you want to depend on cmd finishing |
 
- <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

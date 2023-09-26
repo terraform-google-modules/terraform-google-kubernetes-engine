@@ -2,7 +2,9 @@
     "addonsConfig": {
       "configConnectorConfig": {},
       "dnsCacheConfig": {},
-      "gcePersistentDiskCsiDriverConfig": {},
+      "gcePersistentDiskCsiDriverConfig": {
+        "enable": true
+      },
       "gcpFilestoreCsiDriverConfig": {},
       "gkeBackupAgentConfig": {},
       "horizontalPodAutoscaling": {},
@@ -92,6 +94,8 @@
         "enableComponents": [
           "SYSTEM_COMPONENTS"
         ]
+      },
+      "managedPrometheusConfig": {
       }
     },
     "monitoringService": "monitoring.googleapis.com/kubernetes",
