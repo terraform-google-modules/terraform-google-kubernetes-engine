@@ -62,7 +62,7 @@ locals {
 
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
-  pod_all_ip_ranges         = var.add_cluster_firewall_rules ? [local.cluster_alias_ranges_cidr[var.ip_range_pods]] : []
+  pod_all_ip_ranges         = var.add_cluster_firewall_rules ? compact(concat([local.cluster_alias_ranges_cidr[var.ip_range_pods]], [for range in var.additional_ip_range_pods : local.cluster_alias_ranges_cidr[range] if length(range) > 0])) : []
 
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
@@ -76,7 +76,7 @@ locals {
   cluster_endpoint           = google_container_cluster.primary.endpoint
   cluster_endpoint_for_nodes = "${google_container_cluster.primary.endpoint}/32"
 
-  cluster_output_master_auth                        = concat(google_container_cluster.primary.*.master_auth, [])
+  cluster_output_master_auth                        = concat(google_container_cluster.primary[*].master_auth, [])
   cluster_output_master_version                     = google_container_cluster.primary.master_version
   cluster_output_min_master_version                 = google_container_cluster.primary.min_master_version
   cluster_output_logging_service                    = google_container_cluster.primary.logging_service

@@ -37,6 +37,8 @@ To deploy this config:
 | Name | Description |
 |------|-------------|
 | cluster\_membership\_id | The ID of the hub membership |
+| location | The location of the hub membership. |
+| project\_id | The project of the hub membership. |
 | wait | An output to use when you want to depend on registration finishing |
 
- <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

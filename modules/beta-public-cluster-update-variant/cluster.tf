@@ -94,17 +94,11 @@ resource "google_container_cluster" "primary" {
   }
   monitoring_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.monitoring_service
   dynamic "monitoring_config" {
-    for_each = length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus ? [1] : []
-
+    for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
     content {
-      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
-
-      dynamic "managed_prometheus" {
-        for_each = var.monitoring_enable_managed_prometheus ? [1] : []
-
-        content {
-          enabled = var.monitoring_enable_managed_prometheus
-        }
+      enable_components = var.monitoring_enabled_components
+      managed_prometheus {
+        enabled = var.monitoring_enable_managed_prometheus
       }
     }
   }
@@ -277,6 +271,12 @@ resource "google_container_cluster" "primary" {
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services
+    dynamic "additional_pod_ranges_config" {
+      for_each = length(var.additional_ip_range_pods) != 0 ? [1] : []
+      content {
+        pod_range_names = var.additional_ip_range_pods
+      }
+    }
   }
 
   maintenance_policy {
