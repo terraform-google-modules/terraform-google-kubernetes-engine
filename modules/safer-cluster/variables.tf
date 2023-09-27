@@ -485,6 +485,12 @@ variable "timeouts" {
   }
 }
 
+variable "enable_gcfs" {
+  type        = bool
+  description = "Enable image streaming on cluster level."
+  default     = false
+}
+
 variable "enable_mesh_certificates" {
   type        = bool
   default     = false

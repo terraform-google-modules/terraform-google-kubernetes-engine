@@ -447,6 +447,14 @@ resource "google_container_cluster" "primary" {
       topic   = var.notification_config_topic
     }
   }
+
+  node_pool_defaults {
+    node_config_defaults {
+      gcfs_config {
+        enabled = var.enable_gcfs
+      }
+    }
+  }
 }
 /******************************************
   Create Container Cluster node pools
