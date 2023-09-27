@@ -504,7 +504,7 @@ variable "workload_vulnerability_mode" {
 }
 
 variable "workload_config_audit_mode" {
-  description = "(beta) Worload config audit mode."
+  description = "(beta) Workload config audit mode."
   type        = string
   default     = "DISABLED"
 }
