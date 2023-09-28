@@ -273,7 +273,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | `list(string)` | `[]` | no |
 | windows\_node\_pools | List of maps containing node pools | `list(map(string))` | `[]` | no |
 | workload\_config\_audit\_mode | (beta) Workload config audit mode. | `string` | `"DISABLED"` | no |
-| workload\_vulnerability\_mode | (beta) Vulnerability mode. | `string` | `""` | no |
+| workload\_vulnerability\_mode | (beta) Vulnerability mode. | `string` | `null` | no |
 | zones | The zones to host the cluster in | `list(string)` | `[]` | no |
 
 ## Outputs

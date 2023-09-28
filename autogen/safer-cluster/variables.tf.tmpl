@@ -500,7 +500,7 @@ variable "enable_mesh_certificates" {
 variable "workload_vulnerability_mode" {
   description = "(beta) Vulnerability mode."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "workload_config_audit_mode" {
