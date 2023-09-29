@@ -52,7 +52,7 @@ variable "channel" {
 
 variable "mesh_management" {
   default     = ""
-  description = "ASM Management mode."
+  description = "ASM Management mode. For more information, see the [gke_hub_feature_membership resource documentation](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature_membership#nested_mesh)"
   type        = string
   validation {
     condition = anytrue([
@@ -84,7 +84,7 @@ variable "enable_cni" {
 }
 
 variable "enable_vpc_sc" {
-  description = "Determines whether to enable VPC-SC for this ASM installation. For more information read https://cloud.google.com/service-mesh/docs/managed/vpc-sc"
+  description = "Determines whether to enable VPC-SC for this ASM installation. For more information read [VPC Service Controls for Managed Anthos Service Mesh](https://cloud.google.com/service-mesh/docs/managed/vpc-sc)"
   type        = bool
   default     = false
 }

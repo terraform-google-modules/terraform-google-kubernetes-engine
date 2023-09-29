@@ -34,7 +34,7 @@ data "google_container_cluster" "asm" {
 }
 
 resource "kubernetes_namespace" "system" {
-  count = var.create_system_namespace ? 1 : 0
+  count = var.create_system_namespace && var.mesh_management != "MANAGEMENT_AUTOMATIC" ? 1 : 0
 
   metadata {
     name = "istio-system"
@@ -42,6 +42,8 @@ resource "kubernetes_namespace" "system" {
 }
 
 resource "kubernetes_config_map" "asm_options" {
+  count = var.mesh_management != "MANAGEMENT_AUTOMATIC" ? 1 : 0
+
   metadata {
     name      = "asm-options"
     namespace = try(kubernetes_namespace.system[0].metadata[0].name, "istio-system")
@@ -56,6 +58,8 @@ resource "kubernetes_config_map" "asm_options" {
 }
 
 module "cpr" {
+  count = var.mesh_management != "MANAGEMENT_AUTOMATIC" ? 1 : 0
+
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version = "~> 3.1"
 
