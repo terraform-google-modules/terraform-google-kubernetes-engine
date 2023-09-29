@@ -18,10 +18,10 @@ locals {
   # GCP service account ids must be <= 30 chars matching regex ^[a-z](?:[-a-z0-9]{4,28}[a-z0-9])$
   service_account_name = trimsuffix(substr(var.metrics_gcp_sa_name, 0, 30), "-")
 
-  iam_ksa_binding_members = var.create_metrics_gcp_sa ? [
-    var.enable_config_sync ? "config-management-monitoring/default" : null,
-    var.enable_policy_controller ? "gatekeeper-system/gatekeeper-admin" : null,
-  ] : []
+  iam_ksa_binding_members = var.create_metrics_gcp_sa ? concat(
+    var.enable_config_sync ? ["config-management-monitoring/default"] : [],
+    var.enable_policy_controller ? ["gatekeeper-system/gatekeeper-admin"] : [],
+  ) : []
 }
 
 resource "tls_private_key" "k8sop_creds" {

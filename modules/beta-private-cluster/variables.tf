@@ -757,3 +757,9 @@ variable "enable_identity_service" {
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
   default     = false
 }
+
+variable "enable_gcfs" {
+  type        = bool
+  description = "Enable image streaming on cluster level."
+  default     = false
+}
