@@ -497,7 +497,7 @@ locals {
     "enable_gcfs",
     "enable_gvnic",
     "enable_secure_boot",
-    "confidential_nodes"
+    "enable_confidential_nodes"
   ]
 }
 
