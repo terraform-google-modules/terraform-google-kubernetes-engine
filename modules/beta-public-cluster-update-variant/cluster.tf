@@ -478,6 +478,7 @@ locals {
     "enable_gcfs",
     "enable_gvnic",
     "enable_secure_boot",
+    "confidential_nodes"
   ]
 }
 
@@ -644,6 +645,12 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
       content {
         enabled = gvnic.value
+      }
+    }
+    dynamic "confidential_nodes" {
+      for_each = lookup(each.value, "enable_confidential_nodes", false) ? [true] : []
+      content {
+        enabled = confidential_nodes.value
       }
     }
     labels = merge(
@@ -872,6 +879,12 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
       content {
         enabled = gvnic.value
+      }
+    }
+    dynamic "confidential_nodes" {
+      for_each = lookup(each.value, "enable_confidential_nodes", false) ? [true] : []
+      content {
+        enabled = confidential_nodes.value
       }
     }
     labels = merge(
