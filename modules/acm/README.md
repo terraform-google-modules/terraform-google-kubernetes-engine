@@ -86,6 +86,7 @@ data "google_client_config" "default" {}
 | enable\_mutation | Whether to enable mutations for ACM Policy Controller. | `bool` | `false` | no |
 | enable\_policy\_controller | Whether to enable the ACM Policy Controller on the cluster | `bool` | `true` | no |
 | enable\_referential\_rules | Enables referential constraints which reference another object in it definition and are therefore eventually consistent. | `bool` | `true` | no |
+| gcp\_service\_account\_email | The service account email for authentication when `secret_type` is `gcpServiceAccount`. | `string` | `null` | no |
 | hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/anthos-config-management/docs/how-to/installing-hierarchy-controller) for more details | `map(any)` | `null` | no |
 | https\_proxy | URL for the HTTPS proxy to be used when communicating with the Git repo. | `string` | `null` | no |
 | install\_template\_library | Whether to install the default Policy Controller template library | `bool` | `true` | no |
@@ -110,4 +111,4 @@ data "google_client_config" "default" {}
 | git\_creds\_public | Public key of SSH keypair to allow the Anthos Config Management Operator to authenticate to your Git repository. |
 | wait | An output to use when you want to depend on cmd finishing |
 
- <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

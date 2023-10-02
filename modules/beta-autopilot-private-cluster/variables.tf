@@ -131,6 +131,12 @@ variable "ip_range_pods" {
   description = "The _name_ of the secondary subnet ip range to use for pods"
 }
 
+variable "additional_ip_range_pods" {
+  type        = list(string)
+  description = "List of _names_ of the additional secondary subnet ip ranges to use for pods"
+  default     = []
+}
+
 variable "ip_range_services" {
   type        = string
   description = "The _name_ of the secondary subnet range to use for services"
@@ -298,6 +304,7 @@ variable "identity_namespace" {
   type        = string
   default     = "enabled"
 }
+
 
 variable "release_channel" {
   type        = string

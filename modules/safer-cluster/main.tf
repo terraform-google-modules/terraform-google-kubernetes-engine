@@ -181,6 +181,9 @@ module "gke" {
   // We enable Workload Identity by default.
   identity_namespace = "${var.project_id}.svc.id.goog"
 
+  // Enabling mesh certificates requires Workload Identity
+  enable_mesh_certificates = var.enable_mesh_certificates
+
   authenticator_security_group = var.authenticator_security_group
 
   enable_shielded_nodes = var.enable_shielded_nodes
@@ -191,4 +194,6 @@ module "gke" {
   notification_config_topic = var.notification_config_topic
 
   timeouts = var.timeouts
+
+  enable_gcfs = var.enable_gcfs
 }
