@@ -168,6 +168,14 @@ resource "google_container_cluster" "primary" {
       disabled = !var.horizontal_pod_autoscaling
     }
 
+    dynamic "gke_backup_agent_config" {
+      for_each = local.gke_backup_agent_config
+
+      content {
+        enabled = gke_backup_agent_config.value.enabled
+      }
+    }
+
     network_policy_config {
       disabled = !var.network_policy
     }
@@ -185,14 +193,6 @@ resource "google_container_cluster" "primary" {
 
       content {
         enabled = gce_persistent_disk_csi_driver_config.value.enabled
-      }
-    }
-
-    dynamic "gke_backup_agent_config" {
-      for_each = local.gke_backup_agent_config
-
-      content {
-        enabled = gke_backup_agent_config.value.enabled
       }
     }
 

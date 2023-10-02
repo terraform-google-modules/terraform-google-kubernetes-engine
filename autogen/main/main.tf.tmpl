@@ -95,6 +95,8 @@ locals {
   pod_all_ip_ranges         = var.add_cluster_firewall_rules ? compact(concat([local.cluster_alias_ranges_cidr[var.ip_range_pods]], [for range in var.additional_ip_range_pods : local.cluster_alias_ranges_cidr[range] if length(range) > 0])) : []
 {% endif %}
 
+  gke_backup_agent_config      = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
+
 {% if autopilot_cluster != true %}
   cluster_network_policy = var.network_policy ? [{
     enabled  = true
@@ -105,7 +107,6 @@ locals {
   }]
   cluster_gce_pd_csi_config    = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
   logmon_config_is_set         = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus
-  gke_backup_agent_config      = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
   gcs_fuse_csi_driver_config   = var.gcs_fuse_csi_driver ? [{ enabled = true }] : []
 {% endif %}
 {% if beta_cluster and autopilot_cluster != true %}

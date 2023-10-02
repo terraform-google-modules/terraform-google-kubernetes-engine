@@ -646,15 +646,15 @@ variable "gce_pd_csi_driver" {
   default     = true
 }
 
-variable "gke_backup_agent_config" {
-  type        = bool
-  description = "Whether Backup for GKE agent is enabled for this cluster."
-  default     = false
-}
-
 variable "gcs_fuse_csi_driver" {
   type        = bool
   description = "Whether GCE FUSE CSI driver is enabled for this cluster."
+  default     = false
+}
+
+variable "gke_backup_agent_config" {
+  type        = bool
+  description = "Whether Backup for GKE agent is enabled for this cluster."
   default     = false
 }
 
