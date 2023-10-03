@@ -109,6 +109,6 @@ module "kubectl_asm_wait_for_controlplanerevision" {
   kubectl_destroy_command = ""
 
   module_depends_on = [
-    module.kubectl_asm_wait_for_controlplanerevision_custom_resource_definition.wait
+    module.kubectl_asm_wait_for_controlplanerevision_custom_resource_definition[0].wait
   ]
 }
