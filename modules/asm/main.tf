@@ -89,7 +89,7 @@ module "kubectl_asm_wait_for_controlplanerevision_custom_resource_definition" {
   kubectl_destroy_command = ""
 
   module_depends_on = [
-    google_gke_hub_feature_membership.membership
+    google_gke_hub_feature_membership.mesh_feature_membership
   ]
 }
 
