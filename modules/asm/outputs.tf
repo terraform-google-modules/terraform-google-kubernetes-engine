@@ -20,6 +20,6 @@ output "revision_name" {
 }
 
 output "wait" {
-  value       = var.mesh_management != "MANAGEMENT_AUTOMATIC" ? module.cpr[0].wait : null
-  description = "An output to use when depending on the ASM installation finishing when NOT using automated ASM management modes."
+  value       = var.mesh_management == "MANAGEMENT_AUTOMATIC" ? module.kubectl_asm_wait_for_controlplanerevision[0].wait : module.cpr[0].wait
+  description = "An output to use when depending on the ASM installation finishing."
 }
