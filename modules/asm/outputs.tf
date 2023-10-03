@@ -20,6 +20,6 @@ output "revision_name" {
 }
 
 output "wait" {
-  value       = module.cpr.wait
-  description = "An output to use when depending on the ASM installation finishing."
+  value       = var.mesh_management != "MANAGEMENT_AUTOMATIC" ? module.cpr[0].wait : null
+  description = "An output to use when depending on the ASM installation finishing when NOT using automated ASM management modes."
 }
