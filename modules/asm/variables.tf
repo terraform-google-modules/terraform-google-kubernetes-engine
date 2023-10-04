@@ -56,11 +56,12 @@ variable "mesh_management" {
   type        = string
   validation {
     condition = anytrue([
+      var.mesh_management == null,
       var.mesh_management == "",
       var.mesh_management == "MANAGEMENT_AUTOMATIC",
       var.mesh_management == "MANAGEMENT_MANUAL",
     ])
-    error_message = "Must be empty, or one of MANAGEMENT_AUTOMATIC or MANAGEMENT_MANUAL."
+    error_message = "Must be null, empty, or one of MANAGEMENT_AUTOMATIC or MANAGEMENT_MANUAL."
   }
 }
 
