@@ -158,7 +158,7 @@ module "gke" {
   database_encryption = var.database_encryption
 
   // We suggest to define policies about  which images can run on a cluster.
-  enable_binary_authorization = true
+  enable_binary_authorization = var.enable_binary_authorization
 
   // Enable cost allocation support
   enable_cost_allocation = var.enable_cost_allocation

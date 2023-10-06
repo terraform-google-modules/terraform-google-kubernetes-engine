@@ -496,3 +496,9 @@ variable "enable_mesh_certificates" {
   default     = false
   description = "Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity."
 }
+
+variable "enable_binary_authorization" {
+  type        = bool
+  default     = true
+  description = "Controls Binary Authorization feature which helps in defining what images can be deployed in the cluster."
+}
