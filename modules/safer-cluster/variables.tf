@@ -496,3 +496,15 @@ variable "enable_mesh_certificates" {
   default     = false
   description = "Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity."
 }
+
+variable "workload_vulnerability_mode" {
+  description = "(beta) Vulnerability mode."
+  type        = string
+  default     = ""
+}
+
+variable "workload_config_audit_mode" {
+  description = "(beta) Workload config audit mode."
+  type        = string
+  default     = "DISABLED"
+}
