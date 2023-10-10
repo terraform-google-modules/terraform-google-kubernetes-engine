@@ -358,7 +358,7 @@ variable "workload_config_audit_mode" {
 variable "enable_fqdn_network_policy" {
   type        = bool
   description = "Enable FQDN Network Policies on the cluster"
-  default     = false
+  default     = null
 }
 
 variable "disable_default_snat" {
