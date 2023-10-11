@@ -258,6 +258,8 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+
+
   datapath_provider = var.datapath_provider
 
   networking_mode = "VPC_NATIVE"

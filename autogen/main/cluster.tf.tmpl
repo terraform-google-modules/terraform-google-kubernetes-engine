@@ -317,6 +317,11 @@ resource "google_container_cluster" "primary" {
     }
     {% endif %}
   }
+
+  {% if autopilot_cluster %}
+  allow_net_admin = var.allow_net_admin
+  {% endif %}
+
   {% if autopilot_cluster != true %}
 
   datapath_provider = var.datapath_provider

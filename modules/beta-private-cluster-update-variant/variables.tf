@@ -764,3 +764,4 @@ variable "enable_gcfs" {
   description = "Enable image streaming on cluster level."
   default     = false
 }
+
