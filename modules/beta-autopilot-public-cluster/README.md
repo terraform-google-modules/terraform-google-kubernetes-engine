@@ -91,6 +91,7 @@ Then perform the following commands on the root folder:
 | firewall\_priority | Priority rule for firewall rules | `number` | `1000` | no |
 | fleet\_project | (Optional) Register the cluster with the fleet in this project. | `string` | `null` | no |
 | gateway\_api\_channel | The gateway api channel of this cluster. Accepted values are `CHANNEL_STANDARD` and `CHANNEL_DISABLED`. | `string` | `null` | no |
+| gcp\_public\_cidrs\_access | Whether access from Google Cloud public IPs is allowed | `bool` | `true` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles. | `bool` | `false` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | `bool` | `true` | no |
 | http\_load\_balancing | Enable httpload balancer addon | `bool` | `true` | no |

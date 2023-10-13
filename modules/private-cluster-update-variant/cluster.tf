@@ -147,15 +147,13 @@ resource "google_container_cluster" "primary" {
 
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
   enable_tpu              = var.enable_tpu
-  dynamic "master_authorized_networks_config" {
-    for_each = local.master_authorized_networks_config
-    content {
-      dynamic "cidr_blocks" {
-        for_each = master_authorized_networks_config.value.cidr_blocks
-        content {
-          cidr_block   = lookup(cidr_blocks.value, "cidr_block", "")
-          display_name = lookup(cidr_blocks.value, "display_name", "")
-        }
+  master_authorized_networks_config {
+    gcp_public_cidrs_access_enabled = local.master_authorized_networks_config.gcp_public_cidrs_access
+    dynamic "cidr_blocks" {
+      for_each = local.master_authorized_networks_config.cidr_blocks
+      content {
+        cidr_block   = lookup(cidr_blocks.value, "cidr_block", "")
+        display_name = lookup(cidr_blocks.value, "display_name", "")
       }
     }
   }
