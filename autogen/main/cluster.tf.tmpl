@@ -208,6 +208,9 @@ resource "google_container_cluster" "primary" {
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
   {% endif %}
   {% endif %}
+{% if beta_cluster %}
+  enable_fqdn_network_policy = var.enable_fqdn_network_policy
+{% endif %}
 {% if autopilot_cluster %}
   enable_autopilot = true
 {% endif %}
