@@ -163,6 +163,7 @@ Then perform the following commands on the root folder:
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
 | enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
 | enable\_cost\_allocation | Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery | `bool` | `false` | no |
+| enable\_fqdn\_network\_policy | Enable FQDN Network Policies on the cluster | `bool` | `null` | no |
 | enable\_gcfs | Enable image streaming on cluster level. | `bool` | `false` | no |
 | enable\_identity\_service | Enable the Identity Service component, which allows customers to use external identity providers with the K8S API. | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
@@ -240,7 +241,7 @@ Then perform the following commands on the root folder:
 | timeouts | Timeout for cluster operations. | `map(string)` | `{}` | no |
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | `list(string)` | `[]` | no |
 | windows\_node\_pools | List of maps containing Windows node pools | `list(map(string))` | `[]` | no |
-| workload\_config\_audit\_mode | (beta) Worload config audit mode. | `string` | `"DISABLED"` | no |
+| workload\_config\_audit\_mode | (beta) Workload config audit mode. | `string` | `"DISABLED"` | no |
 | workload\_vulnerability\_mode | (beta) Vulnerability mode. | `string` | `""` | no |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | `list(string)` | `[]` | no |
 
