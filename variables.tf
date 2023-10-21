@@ -19,11 +19,13 @@
 variable "project_id" {
   type        = string
   description = "The project ID to host the cluster in (required)"
+  default = "goog-cloud-infrastructure"
 }
 
 variable "name" {
   type        = string
   description = "The name of the cluster (required)"
+  default     = "patrick-cluster"
 }
 
 variable "description" {
@@ -41,7 +43,7 @@ variable "regional" {
 variable "region" {
   type        = string
   description = "The region to host the cluster in (optional if zonal cluster / required if regional)"
-  default     = null
+  default     = "us-central1"
 }
 
 variable "zones" {
@@ -53,6 +55,7 @@ variable "zones" {
 variable "network" {
   type        = string
   description = "The VPC network to host the cluster in (required)"
+  default     = "gci-gke-vpc"
 }
 
 variable "network_project_id" {
@@ -64,6 +67,7 @@ variable "network_project_id" {
 variable "subnetwork" {
   type        = string
   description = "The subnetwork to host the cluster in (required)"
+  default     = "my-pods-range"
 }
 
 variable "kubernetes_version" {
@@ -135,6 +139,7 @@ variable "maintenance_recurrence" {
 variable "ip_range_pods" {
   type        = string
   description = "The _name_ of the secondary subnet ip range to use for pods"
+  default     = "my-services-range"
 }
 
 variable "additional_ip_range_pods" {
@@ -146,6 +151,7 @@ variable "additional_ip_range_pods" {
 variable "ip_range_services" {
   type        = string
   description = "The _name_ of the secondary subnet range to use for services"
+  default     = "services-range"
 }
 
 variable "node_pools" {
