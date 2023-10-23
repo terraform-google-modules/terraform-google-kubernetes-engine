@@ -36,7 +36,7 @@ After `terraform apply` runs successfully, you can see the following in GCP:
 ![GKE-cluster1](image-6.png)
 ![GKE-cluster2](image-7.png)
 
-## deploy hello-world container to the cluster:
+## deploy hello-world container to a standard cluster:
 cd into the `hello-world` directory, do the following cmd's
 
 1. Build the Docker Image for the Application
@@ -69,7 +69,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID --member=serviceAccount:$SERV
 4. Get Credentials for the GKE Cluster
 This command configures kubectl to use the credentials for the specified GKE cluster.
 ```hcl
-gcloud container clusters get-credentials patrick-cluster --region us-central1
+gcloud container clusters get-credentials $CLUSTER_NAME --region $REGION
 ```
 
 5. Deploy the Application to GKE
@@ -110,6 +110,25 @@ After creating a LoadBalancer service, it might take a few minutes for the exter
 ```hcl
 kubectl get svc
 ```
+
+## deploy hello-world container to a autopilot cluster:
+Same Steps as 1 & 2 above
+
+3. Configure IAM Permissions Before the GKE cluster can pull the image from GCR
+```hcl
+export CLUSTER_NAME="simple-autopilot-public-cluster-patrick"
+export CLUSTER_REGION="us-central1"
+export PROJECT_ID="goog-cloud-infrastructure"
+
+# Get the GKE Autopilot Google-managed service account using the environment variable
+SERVICE_ACCOUNT=$(gcloud container clusters describe $CLUSTER_NAME --region $CLUSTER_REGION --format="value(nodeConfig.serviceAccount)")
+
+# Grant the storage.objectViewer role using the environment variable
+gsutil iam ch serviceAccount:${SERVICE_ACCOUNT}:roles/storage.objectViewer gs://artifacts.${PROJECT_ID}.appspot.com/
+```
+
+Then follow Step 4 & 5 above
+Then follow Step 8 & 9 & 10 above
 
 ## make changes to the hello-world page, and roll out the updates
 1. Update the Website Locally:
