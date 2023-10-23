@@ -200,4 +200,8 @@ module "gke" {
   timeouts = var.timeouts
 
   enable_gcfs = var.enable_gcfs
+
+  // Enabling vulnerability and audit for workloads
+  workload_vulnerability_mode = var.workload_vulnerability_mode
+  workload_config_audit_mode  = var.workload_config_audit_mode
 }

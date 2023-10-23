@@ -373,6 +373,7 @@ variable "enable_confidential_nodes" {
   description = "An optional flag to enable confidential node config."
   default     = false
 }
+
 variable "workload_vulnerability_mode" {
   description = "(beta) Vulnerability mode."
   type        = string
@@ -380,9 +381,15 @@ variable "workload_vulnerability_mode" {
 }
 
 variable "workload_config_audit_mode" {
-  description = "(beta) Worload config audit mode."
+  description = "(beta) Workload config audit mode."
   type        = string
   default     = "DISABLED"
+}
+
+variable "enable_fqdn_network_policy" {
+  type        = bool
+  description = "Enable FQDN Network Policies on the cluster"
+  default     = null
 }
 
 variable "disable_default_snat" {
