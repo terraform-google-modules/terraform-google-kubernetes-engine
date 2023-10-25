@@ -528,11 +528,11 @@ resource "google_container_node_pool" "pools" {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
-        
+
         dynamic "gpu_driver_installation_config" {
           for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
           content {
-            gpu_driver_version   = lookup(each.value, "gpu_driver_version", "")
+            gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
           }
         }
       }
@@ -727,7 +727,7 @@ resource "google_container_node_pool" "windows_pools" {
         dynamic "gpu_driver_installation_config" {
           for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
           content {
-            gpu_driver_version   = lookup(each.value, "gpu_driver_version", "")
+            gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
           }
         }
       }
