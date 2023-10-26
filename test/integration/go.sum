@@ -187,8 +187,8 @@ cloud.google.com/go/workflows v1.7.0/go.mod h1:JhSrZuVZWuiDfKEFxU0/F1PQjmpnpcoIS
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.9.0 h1:ebMd3XxPg0fufE8E32cGIT4ymbJDT8+AmguE1aNmcxw=
-github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.9.0/go.mod h1:MKce59reXZa9rwYplsr7DBbDIw444JNZvH5hmGEMJTg=
+github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.9.1 h1:GgBjJ6MwjDOS+A14d4neKrhraeGW32EefyzkfrKheXI=
+github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.9.1/go.mod h1:ZWmQ7t9ySG4GNn5CXKWQS8+UX7qkWmQUxSN2iAFEhvE=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/agext/levenshtein v1.2.3 h1:YB2fHEn0UJagG8T1rrWknE3ZQzWM06O8AMAatNn7lmo=
 github.com/agext/levenshtein v1.2.3/go.mod h1:JEDfjyjHDjOF/1e4FlBE/PkbqA9OfWu2ki2W0IB5558=
@@ -370,8 +370,8 @@ github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/ad
 github.com/grpc-ecosystem/grpc-gateway v1.16.0/go.mod h1:BDjrQk3hbvj6Nolgz8mAMFbcEtjT1g+wF4CSlocrBnw=
 github.com/gruntwork-io/go-commons v0.17.1 h1:2KS9wAqrgeOTWj33DSHzDNJ1FCprptWdLFqej+wB8x0=
 github.com/gruntwork-io/go-commons v0.17.1/go.mod h1:S98JcR7irPD1bcruSvnqupg+WSJEJ6xaM89fpUZVISk=
-github.com/gruntwork-io/terratest v0.45.0 h1:02VuyLRmqOO45TaTH4P4mc44S18er5Rn4CooTUY0uek=
-github.com/gruntwork-io/terratest v0.45.0/go.mod h1:4TWB5SYgATxJFfg+RNpE0gwiUWxtfMLGOXo5gwcGgMs=
+github.com/gruntwork-io/terratest v0.46.0 h1:ezeJ045eOniWO+0T78SFQrVo6tIJ2or/DBtYvJnweOs=
+github.com/gruntwork-io/terratest v0.46.0/go.mod h1:4TWB5SYgATxJFfg+RNpE0gwiUWxtfMLGOXo5gwcGgMs=
 github.com/hashicorp/errwrap v1.0.0/go.mod h1:YH+1FKiLXxHSkmPseP+kNlulaMuP3n2brvKWEqk/Jc4=
 github.com/hashicorp/errwrap v1.1.0 h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY2I=
 github.com/hashicorp/errwrap v1.1.0/go.mod h1:YH+1FKiLXxHSkmPseP+kNlulaMuP3n2brvKWEqk/Jc4=
