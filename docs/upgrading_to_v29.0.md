@@ -47,3 +47,8 @@ To avoid this, it is possible to edit the remote state of the `random_id` resour
 1. Bump the serial number at the top
 2. Push the modified state to the remote `terraform state push default.tfstate`
 3. Confirm the `random_id` resource(s) no longer changes (or the corresponding `nodepool`) in a `terraform plan`
+
+### Default cluster service account permissions modified
+
+When `create_service_account` is `true`, the service account will now be created with `Kubernetes Engine Node Service Account` role instead of `Logs Writer`, `Monitoring Metric Writer`, `Monitoring Viewer` and `Stackdriver Resource Metadata Writer` roles.
+This is the Google recommended least privileged role to be used for the service account attached to the GKE Nodes.
