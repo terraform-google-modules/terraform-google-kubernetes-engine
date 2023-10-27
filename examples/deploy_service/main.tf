@@ -38,6 +38,7 @@ module "gke" {
   ip_range_services      = var.ip_range_services
   create_service_account = false
   service_account        = var.compute_engine_service_account
+  deletion_protection    = false
 }
 
 resource "kubernetes_pod" "nginx-example" {

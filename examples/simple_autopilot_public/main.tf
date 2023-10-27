@@ -45,4 +45,5 @@ module "gke" {
   release_channel                 = "REGULAR"
   enable_vertical_pod_autoscaling = true
   network_tags                    = [local.cluster_type]
+  deletion_protection             = false
 }

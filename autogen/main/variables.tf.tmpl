@@ -592,6 +592,12 @@ variable "notification_config_topic" {
   default = ""
 }
 
+variable "deletion_protection" {
+  type        = bool
+  description = "Whether or not to allow Terraform to destroy the cluster."
+  default     = true
+}
+
 {% if beta_cluster %}
 variable "enable_tpu" {
   type        = bool
