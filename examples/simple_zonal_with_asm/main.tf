@@ -62,5 +62,5 @@ module "asm" {
   enable_cni                = true
   enable_fleet_registration = true
   enable_mesh_feature       = true
-  
+
 }
