@@ -200,4 +200,8 @@ module "gke" {
   // Enabling vulnerability and audit for workloads
   workload_vulnerability_mode = var.workload_vulnerability_mode
   workload_config_audit_mode  = var.workload_config_audit_mode
+
+  // Enabling security posture
+  security_posture_mode               = var.security_posture_mode
+  security_posture_vulnerability_mode = var.security_posture_vulnerability_mode
 }
