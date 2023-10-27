@@ -269,6 +269,12 @@ resource "google_container_cluster" "primary" {
     }
     workload_vulnerability_mode = var.workload_vulnerability_mode
   }
+
+  security_posture_config {
+    mode               = var.security_posture_mode
+    vulnerability_mode = var.security_posture_vulnerability_mode
+  }
+
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services
