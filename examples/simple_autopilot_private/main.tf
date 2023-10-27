@@ -36,7 +36,7 @@ provider "kubernetes" {
 module "gke" {
   source                          = "../../modules/beta-autopilot-private-cluster/"
   project_id                      = var.project_id
-  name                            = "${local.cluster_type}-cluster"
+  name                            = "${local.cluster_type}-cluster-patrick"
   regional                        = true
   region                          = var.region
   network                         = module.gcp-network.network_name

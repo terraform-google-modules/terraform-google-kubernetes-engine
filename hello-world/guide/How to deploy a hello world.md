@@ -69,7 +69,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID --member=serviceAccount:$SERV
 4. Get Credentials for the GKE Cluster
 This command configures kubectl to use the credentials for the specified GKE cluster.
 ```hcl
-gcloud container clusters get-credentials $CLUSTER_NAME --region $REGION
+gcloud container clusters get-credentials $CLUSTER_NAME --region $CLUSTER_REGION
 ```
 
 5. Deploy the Application to GKE

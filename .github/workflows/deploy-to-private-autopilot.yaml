@@ -1,0 +1,52 @@
+name: Deploy to Private Autopilot
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      CLUSTER_NAME: simple-autopilot-public-cluster-patrick
+      CLUSTER_REGION: ${{ secrets.GCP_REGION }}
+      PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Google Cloud CLI
+      uses: google-github-actions/setup-gcloud@v0.3.0
+      with:
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: ${{ env.PROJECT_ID }}
+        export_default_credentials: true
+
+    - name: Configure kubectl context
+      run: |
+        gcloud container clusters get-credentials $CLUSTER_NAME --region $CLUSTER_REGION
+
+    - name: Get GKE Service Account
+      run: |
+        SERVICE_ACCOUNT=$(gcloud container clusters describe $CLUSTER_NAME --region $CLUSTER_REGION --format="value(nodeConfig.serviceAccount)")
+        echo "SERVICE_ACCOUNT=$SERVICE_ACCOUNT" >> $GITHUB_ENV
+
+    - name: Grant GKE Service Account permissions to GCR
+      run: |
+        gsutil iam ch serviceAccount:${{ env.SERVICE_ACCOUNT }}:roles/storage.objectViewer gs://artifacts.${{ env.PROJECT_ID }}.appspot.com/
+
+    - name: Deploy to GKE
+      run: |
+        kubectl apply -f hello-world-deployment.yaml
+
+    - name: Expose Deployment
+      run: |
+        kubectl expose deployment hello-world-deployment --type=LoadBalancer --port=80
+
+    - name: Get Service Details
+      run: |
+        sleep 30  # Giving it some time for the LoadBalancer to provision
+        kubectl get svc hello-world-deployment
