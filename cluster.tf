@@ -215,6 +215,12 @@ resource "google_container_cluster" "primary" {
 
   datapath_provider = var.datapath_provider
 
+
+  security_posture_config {
+    mode               = var.security_posture_mode
+    vulnerability_mode = var.security_posture_vulnerability_mode
+  }
+
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services
@@ -532,6 +538,13 @@ resource "google_container_node_pool" "pools" {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
+
+        dynamic "gpu_driver_installation_config" {
+          for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
+          content {
+            gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
+          }
+        }
       }
     }
 
@@ -720,6 +733,13 @@ resource "google_container_node_pool" "windows_pools" {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
+
+        dynamic "gpu_driver_installation_config" {
+          for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
+          content {
+            gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
+          }
+        }
       }
     }
 
