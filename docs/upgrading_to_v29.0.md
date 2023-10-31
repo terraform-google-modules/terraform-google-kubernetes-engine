@@ -37,24 +37,6 @@ The Terraform Kubernetes Engine Module now includes the `deletion_protection` op
 }
 ```
 
-```diff
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
--      version = "~> 4.0"
-+      version = "~> 5.0"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
--      version = "~> 4.0"
-+      version = "~> 5.0"
-    }
-
-  }
-}
-```
-
 ### Update variant random ID keepers updated
 
 The v29.0 release updates the keepers for the update variant modules. This will force a recreation of the nodepools.
