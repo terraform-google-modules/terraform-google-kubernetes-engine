@@ -65,6 +65,7 @@ module "gke" {
   firewall_inbound_ports     = ["9443", "15017"]
   kubernetes_version         = random_shuffle.version.result[0]
   release_channel            = "UNSPECIFIED"
+  deletion_protection        = false
 
   master_authorized_networks = [
     {
