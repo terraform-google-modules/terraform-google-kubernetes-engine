@@ -3,8 +3,39 @@ The v29.0 release of *kubernetes-engine* is a backwards incompatible
 release.
 
 ### Google Cloud Platform Provider upgrade
-The Terraform Kubernetes Engine Module now requires version 5.0 or higher of
-the Google Cloud Platform Providers.
+The Terraform Kubernetes Engine Module now requires version 5.0 or higher of the Google Cloud Platform Providers.
+
+```diff
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+-      version = "~> 4.0"
++      version = "~> 5.0"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+-      version = "~> 4.0"
++      version = "~> 5.0"
+    }
+
+  }
+}
+```
+
+### Deletion Protection
+The Terraform Kubernetes Engine Module now includes the `deletion_protection` option which defaults to `false`.  To enable deletion protection for your cluster you should specify it explicitly:
+
+```diff
+  module "gke" {
+-   source  = "terraform-google-modules/kubernetes-engine/google"
+-   version = "~> 28.0"
++   source  = "terraform-google-modules/kubernetes-engine/google"
++   version = "~> 29.0"
+...
++   deletion_protection = true
+}
+```
 
 ```diff
 terraform {
