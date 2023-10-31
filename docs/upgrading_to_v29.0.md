@@ -24,7 +24,7 @@ terraform {
 ```
 
 ### Deletion Protection
-The Terraform Kubernetes Engine Module now includes the `deletion_protection` option which defaults to `false`.  To enable deletion protection for your cluster you should specify it explicitly:
+The Terraform Kubernetes Engine Module now includes the `deletion_protection` option which defaults to `true`.  To delete your cluster you should specify it explicitly to `false`:
 
 ```diff
   module "gke" {
@@ -33,7 +33,7 @@ The Terraform Kubernetes Engine Module now includes the `deletion_protection` op
 +   source  = "terraform-google-modules/kubernetes-engine/google"
 +   version = "~> 29.0"
 ...
-+   deletion_protection = true
++   deletion_protection = false
 }
 ```
 
