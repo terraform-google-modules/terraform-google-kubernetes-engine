@@ -41,4 +41,5 @@ module "gke" {
   enable_cost_allocation      = true
   enable_binary_authorization = var.enable_binary_authorization
   gcs_fuse_csi_driver         = true
+  deletion_protection         = false
 }

@@ -42,6 +42,7 @@ module "gke" {
   deploy_using_private_endpoint = true
   enable_private_endpoint       = false
   enable_private_nodes          = true
+  deletion_protection           = false
 
   master_authorized_networks = [
     {
