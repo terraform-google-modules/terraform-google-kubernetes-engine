@@ -117,7 +117,11 @@ resource "google_container_cluster" "primary" {
           auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
           auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
         }
-
+        shielded_instance_config {
+          enable_secure_boot = lookup(var.cluster_autoscaling, "enable_secure_boot", false)
+          enable_integrity_monitoring = lookup(var.cluster_autoscaling, "enable_integrity_monitoring", false)
+        }
+        
         disk_size = lookup(var.cluster_autoscaling, "disk_size", 100)
         disk_type = lookup(var.cluster_autoscaling, "disk_type", "pd-standard")
 

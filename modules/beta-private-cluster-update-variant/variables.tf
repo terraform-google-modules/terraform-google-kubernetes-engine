@@ -244,6 +244,8 @@ variable "cluster_autoscaling" {
     auto_upgrade        = bool
     disk_size           = optional(number)
     disk_type           = optional(string)
+    enable_secure_boot  = optional(bool)
+    enable_integrity_monitoring = optional(bool)
   })
   default = {
     enabled             = false
@@ -257,6 +259,8 @@ variable "cluster_autoscaling" {
     auto_upgrade        = true
     disk_size           = 100
     disk_type           = "pd-standard"
+    enable_secure_boot  = false
+    enable_integrity_monitoring = false
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
