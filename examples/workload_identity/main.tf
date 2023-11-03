@@ -38,6 +38,7 @@ module "gke" {
   remove_default_node_pool = true
   service_account          = "create"
   node_metadata            = "GKE_METADATA"
+  deletion_protection      = false
   node_pools = [
     {
       name         = "wi-pool"
