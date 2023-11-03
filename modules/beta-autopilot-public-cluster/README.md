@@ -75,6 +75,7 @@ Then perform the following commands on the root folder:
 | configure\_ip\_masq | Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server. | `bool` | `false` | no |
 | create\_service\_account | Defines if service account specified to run nodes should be created. | `bool` | `true` | no |
 | database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key\_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key\_name is the name of a CloudKMS key. | `list(object({ state = string, key_name = string }))` | <pre>[<br>  {<br>    "key_name": "",<br>    "state": "DECRYPTED"<br>  }<br>]</pre> | no |
+| deletion\_protection | Whether or not to allow Terraform to destroy the cluster. | `bool` | `true` | no |
 | description | The description of the cluster | `string` | `""` | no |
 | disable\_default\_snat | Whether to disable the default SNAT to support the private use of public IP addresses | `bool` | `false` | no |
 | dns\_cache | The status of the NodeLocal DNSCache addon. | `bool` | `true` | no |
@@ -181,7 +182,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v4.51
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v5
 #### gcloud
 Some submodules use the [terraform-google-gcloud](https://github.com/terraform-google-modules/terraform-google-gcloud) module. By default, this module assumes you already have gcloud installed in your $PATH.
 See the [module](https://github.com/terraform-google-modules/terraform-google-gcloud#downloading) documentation for more information.

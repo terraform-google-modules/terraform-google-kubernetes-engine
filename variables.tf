@@ -500,6 +500,12 @@ variable "notification_config_topic" {
   default     = ""
 }
 
+variable "deletion_protection" {
+  type        = bool
+  description = "Whether or not to allow Terraform to destroy the cluster."
+  default     = true
+}
+
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
