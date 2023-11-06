@@ -739,6 +739,22 @@ variable "monitoring_enable_managed_prometheus" {
   default     = false
 }
 
+variable "monitoring_enable_observability_metrics" {
+  type        = bool
+  description = "Whether or not the advanced datapath metrics are enabled."
+  default     = false
+}
+
+variable "monitoring_observability_metrics_relay_mode" {
+  type        = string
+  description = "Mode used to make advanced datapath metrics relay available."
+  default     = null
+  validation {
+    condition     = var.monitoring_observability_metrics_relay_mode == null ? true : contains(["DISABLED", "INTERNAL_VPC_LB", "EXTERNAL_LB"], var.monitoring_observability_metrics_relay_mode)
+    error_message = "The advanced datapath metrics relay value must be one of DISABLED, INTERNAL_VPC_LB, EXTERNAL_LB."
+  }
+}
+
 variable "monitoring_enabled_components" {
   type        = list(string)
   description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS (provider version >= 3.89.0). Empty list is default GKE configuration."
