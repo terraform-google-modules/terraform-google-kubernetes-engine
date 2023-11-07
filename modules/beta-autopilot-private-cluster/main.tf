@@ -45,8 +45,8 @@ locals {
   // for regional cluster - use var.zones if provided, use available otherwise, for zonal cluster use var.zones with first element extracted
   node_locations = var.regional ? coalescelist(compact(var.zones), try(sort(random_shuffle.available_zones[0].result), [])) : slice(var.zones, 1, length(var.zones))
   // Kubernetes version
-  master_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version
-  master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
+  master_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region[0].latest_master_version
+  master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone[0].latest_master_version
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
 
   fleet_membership = var.fleet_project != null ? google_container_cluster.primary.fleet[0].membership : null
@@ -149,11 +149,15 @@ locals {
   Get available container engine versions
  *****************************************/
 data "google_container_engine_versions" "region" {
+  count = var.kubernetes_version != "latest" ? 0 : 1
+
   location = local.location
   project  = var.project_id
 }
 
 data "google_container_engine_versions" "zone" {
+  count = var.kubernetes_version != "latest" ? 0 : 1
+
   // Work around to prevent a lack of zone declaration from causing regional cluster creation from erroring out due to error
   //
   //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
