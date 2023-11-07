@@ -290,6 +290,11 @@ resource "google_container_cluster" "primary" {
     name               = "default-pool"
     initial_node_count = var.initial_node_count
 
+    management {
+      auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
+      auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
+    }
+
     node_config {
       image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
       machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
