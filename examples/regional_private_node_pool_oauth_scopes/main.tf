@@ -32,6 +32,7 @@ module "gke" {
   service_account                   = "create"
   remove_default_node_pool          = true
   disable_legacy_metadata_endpoints = true
+  deletion_protection               = false
 
   master_authorized_networks = [
     {

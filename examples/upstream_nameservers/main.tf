@@ -40,4 +40,5 @@ module "gke" {
 
   configure_ip_masq    = true
   upstream_nameservers = ["8.8.8.8", "8.8.4.4"]
+  deletion_protection  = false
 }

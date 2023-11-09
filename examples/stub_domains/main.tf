@@ -37,6 +37,7 @@ module "gke" {
   ip_range_services      = var.ip_range_services
   service_account        = var.compute_engine_service_account
   create_service_account = false
+  deletion_protection    = false
 
   configure_ip_masq = true
 

@@ -49,6 +49,7 @@ module "gke" {
   master_ipv4_cidr_block    = "172.16.0.0/28"
   default_max_pods_per_node = 20
   remove_default_node_pool  = true
+  deletion_protection       = false
 
   node_pools = [
     {
