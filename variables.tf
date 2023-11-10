@@ -500,6 +500,12 @@ variable "notification_config_topic" {
   default     = ""
 }
 
+variable "deletion_protection" {
+  type        = bool
+  description = "Whether or not to allow Terraform to destroy the cluster."
+  default     = true
+}
+
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
@@ -625,6 +631,22 @@ variable "monitoring_enable_managed_prometheus" {
   type        = bool
   description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
   default     = false
+}
+
+variable "monitoring_enable_observability_metrics" {
+  type        = bool
+  description = "Whether or not the advanced datapath metrics are enabled."
+  default     = false
+}
+
+variable "monitoring_observability_metrics_relay_mode" {
+  type        = string
+  description = "Mode used to make advanced datapath metrics relay available."
+  default     = null
+  validation {
+    condition     = var.monitoring_observability_metrics_relay_mode == null ? true : contains(["DISABLED", "INTERNAL_VPC_LB", "EXTERNAL_LB"], var.monitoring_observability_metrics_relay_mode)
+    error_message = "The advanced datapath metrics relay value must be one of DISABLED, INTERNAL_VPC_LB, EXTERNAL_LB."
+  }
 }
 
 variable "monitoring_enabled_components" {

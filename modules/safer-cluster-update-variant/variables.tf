@@ -520,3 +520,9 @@ variable "workload_config_audit_mode" {
   type        = string
   default     = "DISABLED"
 }
+
+variable "deletion_protection" {
+  type        = bool
+  description = "Whether or not to allow Terraform to destroy the cluster."
+  default     = true
+}

@@ -27,10 +27,12 @@ resource "google_container_cluster" "primary" {
   project         = var.project_id
   resource_labels = var.cluster_resource_labels
 
-  location          = local.location
-  node_locations    = local.node_locations
-  cluster_ipv4_cidr = var.cluster_ipv4_cidr
-  network           = "projects/${local.network_project_id}/global/networks/${var.network}"
+  location            = local.location
+  node_locations      = local.node_locations
+  cluster_ipv4_cidr   = var.cluster_ipv4_cidr
+  network             = "projects/${local.network_project_id}/global/networks/${var.network}"
+  deletion_protection = var.deletion_protection
+
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
 
@@ -99,6 +101,10 @@ resource "google_container_cluster" "primary" {
       enable_components = var.monitoring_enabled_components
       managed_prometheus {
         enabled = var.monitoring_enable_managed_prometheus
+      }
+      advanced_datapath_observability_config {
+        enable_metrics = var.monitoring_enable_observability_metrics
+        relay_mode     = var.monitoring_observability_metrics_relay_mode
       }
     }
   }

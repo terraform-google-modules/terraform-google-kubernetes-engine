@@ -19,15 +19,16 @@
 // The safer-cluster module is based on a private cluster, with a several
 // settings set to recommended values by default.
 module "gke" {
-  source             = "../beta-private-cluster/"
-  project_id         = var.project_id
-  name               = var.name
-  description        = var.description
-  regional           = var.regional
-  region             = var.region
-  zones              = var.zones
-  network            = var.network
-  network_project_id = var.network_project_id
+  source              = "../beta-private-cluster/"
+  project_id          = var.project_id
+  name                = var.name
+  description         = var.description
+  regional            = var.regional
+  region              = var.region
+  zones               = var.zones
+  network             = var.network
+  network_project_id  = var.network_project_id
+  deletion_protection = var.deletion_protection
 
   // We need to enforce a minimum Kubernetes Version to ensure
   // that the necessary security features are enabled.

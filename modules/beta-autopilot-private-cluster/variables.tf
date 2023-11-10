@@ -416,6 +416,12 @@ variable "notification_config_topic" {
   default     = ""
 }
 
+variable "deletion_protection" {
+  type        = bool
+  description = "Whether or not to allow Terraform to destroy the cluster."
+  default     = true
+}
+
 variable "enable_tpu" {
   type        = bool
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"

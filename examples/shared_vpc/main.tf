@@ -40,4 +40,5 @@ module "gke" {
   service_account            = var.compute_engine_service_account
   add_cluster_firewall_rules = true
   firewall_inbound_ports     = ["9443", "15017"]
+  deletion_protection        = false
 }

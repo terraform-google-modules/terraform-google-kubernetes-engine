@@ -51,6 +51,7 @@ module "gke" {
   release_channel               = "REGULAR"
   logging_enabled_components    = ["SYSTEM_COMPONENTS"]
   monitoring_enabled_components = ["SYSTEM_COMPONENTS"]
+  deletion_protection           = false
 
   # Disable workload identity
   identity_namespace = null
