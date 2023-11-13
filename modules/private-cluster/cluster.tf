@@ -90,6 +90,10 @@ resource "google_container_cluster" "primary" {
       managed_prometheus {
         enabled = var.monitoring_enable_managed_prometheus
       }
+      advanced_datapath_observability_config {
+        enable_metrics = var.monitoring_enable_observability_metrics
+        relay_mode     = var.monitoring_observability_metrics_relay_mode
+      }
     }
   }
   cluster_autoscaling {
