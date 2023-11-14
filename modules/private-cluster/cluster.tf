@@ -215,7 +215,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-
   datapath_provider = var.datapath_provider
 
 
