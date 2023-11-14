@@ -702,4 +702,3 @@ variable "config_connector" {
   description = "Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
-
