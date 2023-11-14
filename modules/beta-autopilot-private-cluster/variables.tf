@@ -448,7 +448,6 @@ variable "timeouts" {
   }
 }
 
-
 variable "allow_net_admin" {
   description = "(Optional) Enable NET_ADMIN for the cluster."
   type        = bool
