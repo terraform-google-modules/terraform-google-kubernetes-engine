@@ -714,7 +714,6 @@ resource "google_container_node_pool" "windows_pools" {
     }
   }
 
-  {% if beta_cluster %}
   dynamic "placement_policy" {
     for_each = length(lookup(each.value, "placement_policy", "")) > 0  ? [each.value] : []
     content {
@@ -733,7 +732,6 @@ resource "google_container_node_pool" "windows_pools" {
       {% endif %}
     }
   }
-  {% endif %}
 
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
