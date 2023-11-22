@@ -455,6 +455,20 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
+  dynamic "placement_policy" {
+    for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
+    content {
+      type = lookup(placement_policy.value, "placement_policy", null)
+    }
+  }
+
+  dynamic "network_config" {
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
+    content {
+      pod_range            = lookup(network_config.value, "pod_range", null)
+      enable_private_nodes = var.enable_private_nodes
+    }
+  }
 
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
@@ -650,6 +664,20 @@ resource "google_container_node_pool" "windows_pools" {
     }
   }
 
+  dynamic "placement_policy" {
+    for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
+    content {
+      type = lookup(placement_policy.value, "placement_policy", null)
+    }
+  }
+
+  dynamic "network_config" {
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
+    content {
+      pod_range            = lookup(network_config.value, "pod_range", null)
+      enable_private_nodes = var.enable_private_nodes
+    }
+  }
 
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
