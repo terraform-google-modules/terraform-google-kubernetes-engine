@@ -139,6 +139,11 @@ resource "google_container_cluster" "primary" {
           }
         }
 
+        shielded_instance_config {
+          enable_secure_boot          = lookup(var.cluster_autoscaling, "enable_secure_boot", false)
+          enable_integrity_monitoring = lookup(var.cluster_autoscaling, "enable_integrity_monitoring", true)
+        }
+
 
         image_type = lookup(var.cluster_autoscaling, "image_type", "COS_CONTAINERD")
       }
