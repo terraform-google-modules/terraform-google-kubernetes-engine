@@ -90,6 +90,10 @@ resource "google_container_cluster" "primary" {
       managed_prometheus {
         enabled = var.monitoring_enable_managed_prometheus
       }
+      advanced_datapath_observability_config {
+        enable_metrics = var.monitoring_enable_observability_metrics
+        relay_mode     = var.monitoring_observability_metrics_relay_mode
+      }
     }
   }
   cluster_autoscaling {
@@ -432,6 +436,20 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
+  dynamic "placement_policy" {
+    for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
+    content {
+      type = lookup(placement_policy.value, "placement_policy", null)
+    }
+  }
+
+  dynamic "network_config" {
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
+    content {
+      pod_range            = lookup(network_config.value, "pod_range", null)
+      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+    }
+  }
 
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
@@ -627,6 +645,20 @@ resource "google_container_node_pool" "windows_pools" {
     }
   }
 
+  dynamic "placement_policy" {
+    for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
+    content {
+      type = lookup(placement_policy.value, "placement_policy", null)
+    }
+  }
+
+  dynamic "network_config" {
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
+    content {
+      pod_range            = lookup(network_config.value, "pod_range", null)
+      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+    }
+  }
 
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)

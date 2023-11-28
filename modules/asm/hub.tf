@@ -33,3 +33,15 @@ resource "google_gke_hub_feature" "mesh" {
   location = "global"
   provider = google-beta
 }
+
+resource "google_gke_hub_feature_membership" "mesh_feature_membership" {
+  count = var.enable_fleet_registration && var.enable_mesh_feature && var.mesh_management != "" ? 1 : 0
+
+  location   = "global"
+  feature    = google_gke_hub_feature.mesh[0].name
+  membership = google_gke_hub_membership.membership[0].membership_id
+  mesh {
+    management = var.mesh_management
+  }
+  provider = google-beta
+}

@@ -125,6 +125,10 @@ resource "google_container_cluster" "primary" {
       managed_prometheus {
         enabled = var.monitoring_enable_managed_prometheus
       }
+      advanced_datapath_observability_config {
+        enable_metrics = var.monitoring_enable_observability_metrics
+        relay_mode     = var.monitoring_observability_metrics_relay_mode
+      }
     }
   }
   cluster_autoscaling {
@@ -322,6 +326,10 @@ resource "google_container_cluster" "primary" {
     }
     {% endif %}
   }
+  {% if autopilot_cluster %}
+
+  allow_net_admin = var.allow_net_admin
+  {% endif %}
   {% if autopilot_cluster != true %}
 
   datapath_provider = var.datapath_provider
@@ -706,7 +714,6 @@ resource "google_container_node_pool" "windows_pools" {
     }
   }
 
-  {% if beta_cluster %}
   dynamic "placement_policy" {
     for_each = length(lookup(each.value, "placement_policy", "")) > 0  ? [each.value] : []
     content {
@@ -725,7 +732,6 @@ resource "google_container_node_pool" "windows_pools" {
       {% endif %}
     }
   }
-  {% endif %}
 
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
