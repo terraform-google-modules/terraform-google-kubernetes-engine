@@ -265,7 +265,8 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  datapath_provider = var.datapath_provider
+  datapath_provider       = var.datapath_provider
+  enable_multi_networking = var.enable_multi_networking
 
   networking_mode = "VPC_NATIVE"
 
@@ -517,11 +518,29 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
-  dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
-    content {
-      pod_range            = lookup(network_config.value, "pod_range", null)
-      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+  network_config {
+    pod_range            = lookup(network_config.value, "pod_range", null)
+    enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+    dynamic "additional_node_network_configs" {
+      for_each = concat(
+        local.node_pools_additional_node_network_configs["all"],
+        local.node_pools_additional_node_network_configs[each.value["name"]]
+      )
+      content {
+        network    = additional_node_network_configs.value.network
+        subnetwork = additional_node_network_configs.value.subnetwork
+      }
+    }
+    dynamic "additional_pod_network_configs" {
+      for_each = concat(
+        local.node_pools_additional_pod_network_configs["all"],
+        local.node_pools_additional_pod_network_configs[each.value["name"]]
+      )
+      content {
+        subnetwork          = additional_pod_network_configs.value.subnetwork
+        secondary_pod_range = additional_pod_network_configs.value.secondary_pod_range
+        max_pods_per_node   = additional_pod_network_configs.value.max_pods_per_node
+      }
     }
   }
 
@@ -751,11 +770,29 @@ resource "google_container_node_pool" "windows_pools" {
     }
   }
 
-  dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
-    content {
-      pod_range            = lookup(network_config.value, "pod_range", null)
-      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+  network_config {
+    pod_range            = lookup(network_config.value, "pod_range", null)
+    enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+    dynamic "additional_node_network_configs" {
+      for_each = concat(
+        local.node_pools_additional_node_network_configs["all"],
+        local.node_pools_additional_node_network_configs[each.value["name"]]
+      )
+      content {
+        network    = additional_node_network_configs.value.network
+        subnetwork = additional_node_network_configs.value.subnetwork
+      }
+    }
+    dynamic "additional_pod_network_configs" {
+      for_each = concat(
+        local.node_pools_additional_pod_network_configs["all"],
+        local.node_pools_additional_pod_network_configs[each.value["name"]]
+      )
+      content {
+        subnetwork          = additional_pod_network_configs.value.subnetwork
+        secondary_pod_range = additional_pod_network_configs.value.secondary_pod_range
+        max_pods_per_node   = additional_pod_network_configs.value.max_pods_per_node
+      }
     }
   }
 

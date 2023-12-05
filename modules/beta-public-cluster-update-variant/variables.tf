@@ -108,6 +108,12 @@ variable "datapath_provider" {
   default     = "DATAPATH_PROVIDER_UNSPECIFIED"
 }
 
+variable "enable_multi_networking" {
+  type        = bool
+  description = "Whether multi-networking is enabled for this cluster."
+  default     = false
+}
+
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
@@ -205,6 +211,26 @@ variable "node_pools_linux_node_configs_sysctls" {
   default = {
     all               = {}
     default-node-pool = {}
+  }
+}
+
+variable "node_pools_additional_node_network_configs" {
+  type        = map(list(object({ network = string, subnetwork = string })))
+  description = "Map of maps containing additional node network configs by node-pool name"
+
+  default = {
+    all               = []
+    default-node-pool = []
+  }
+}
+
+variable "node_pools_additional_pod_network_configs" {
+  type        = map(list(object({ subnetwork = string, secondary_pod_range = string, max_pods_per_node = number })))
+  description = "Map of maps containing additional pod network configs by node-pool name"
+
+  default = {
+    all               = []
+    default-node-pool = []
   }
 }
 

@@ -108,6 +108,14 @@ variable "datapath_provider" {
   description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
   default     = "DATAPATH_PROVIDER_UNSPECIFIED"
 }
+{% if beta_cluster %}
+
+variable "enable_multi_networking" {
+  type        = bool
+  description = "Whether multi-networking is enabled for this cluster."
+  default     = false
+}
+{% endif %}
 
 {% endif %}
 variable "maintenance_start_time" {
@@ -210,6 +218,28 @@ variable "node_pools_linux_node_configs_sysctls" {
     default-node-pool = {}
   }
 }
+{% if beta_cluster %}
+
+variable "node_pools_additional_node_network_configs" {
+  type = map(list(object({ network = string, subnetwork = string })))
+  description = "Map of maps containing additional node network configs by node-pool name"
+
+  default = {
+    all = []
+    default-node-pool = []
+  }
+}
+
+variable "node_pools_additional_pod_network_configs" {
+  type = map(list(object({ subnetwork = string, secondary_pod_range = string, max_pods_per_node = number })))
+  description = "Map of maps containing additional pod network configs by node-pool name"
+
+  default = {
+    all = []
+    default-node-pool = []
+  }
+}
+{% endif %}
 {% endif %}
 
 variable "enable_cost_allocation" {
