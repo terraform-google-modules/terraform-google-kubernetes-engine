@@ -20,6 +20,8 @@
   Get available zones in region
  *****************************************/
 data "google_compute_zones" "available" {
+  count = local.zone_count == 0 ? 1 : 0
+
   provider = google-beta
 
   project = var.project_id
@@ -27,7 +29,9 @@ data "google_compute_zones" "available" {
 }
 
 resource "random_shuffle" "available_zones" {
-  input        = data.google_compute_zones.available.names
+  count = local.zone_count == 0 ? 1 : 0
+
+  input        = data.google_compute_zones.available[0].names
   result_count = 3
 }
 
@@ -39,7 +43,7 @@ locals {
   location = var.regional ? var.region : var.zones[0]
   region   = var.regional ? var.region : join("-", slice(split("-", var.zones[0]), 0, 2))
   // for regional cluster - use var.zones if provided, use available otherwise, for zonal cluster use var.zones with first element extracted
-  node_locations = var.regional ? coalescelist(compact(var.zones), sort(random_shuffle.available_zones.result)) : slice(var.zones, 1, length(var.zones))
+  node_locations = var.regional ? coalescelist(compact(var.zones), try(sort(random_shuffle.available_zones[0].result), [])) : slice(var.zones, 1, length(var.zones))
   // Kubernetes version
   master_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version
   master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
@@ -58,7 +62,7 @@ locals {
 
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
-  pod_all_ip_ranges         = var.add_cluster_firewall_rules ? [local.cluster_alias_ranges_cidr[var.ip_range_pods]] : []
+  pod_all_ip_ranges         = var.add_cluster_firewall_rules ? compact(concat([local.cluster_alias_ranges_cidr[var.ip_range_pods]], [for range in var.additional_ip_range_pods : local.cluster_alias_ranges_cidr[range] if length(range) > 0])) : []
 
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
@@ -73,7 +77,7 @@ locals {
   cluster_peering_name       = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? google_container_cluster.primary.private_cluster_config[0].peering_name : null
   cluster_endpoint_for_nodes = var.master_ipv4_cidr_block
 
-  cluster_output_master_auth                        = concat(google_container_cluster.primary.*.master_auth, [])
+  cluster_output_master_auth                        = concat(google_container_cluster.primary[*].master_auth, [])
   cluster_output_master_version                     = google_container_cluster.primary.master_version
   cluster_output_min_master_version                 = google_container_cluster.primary.min_master_version
   cluster_output_logging_service                    = google_container_cluster.primary.logging_service
@@ -117,6 +121,7 @@ locals {
   cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
     workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
+
   # BETA features
   cluster_istio_enabled                = !local.cluster_output_istio_disabled
   cluster_dns_cache_enabled            = var.dns_cache
@@ -143,6 +148,6 @@ data "google_container_engine_versions" "zone" {
   //
   //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
   //
-  location = local.zone_count == 0 ? data.google_compute_zones.available.names[0] : var.zones[0]
+  location = local.zone_count == 0 ? data.google_compute_zones.available[0].names[0] : var.zones[0]
   project  = var.project_id
 }

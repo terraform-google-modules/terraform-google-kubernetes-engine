@@ -19,7 +19,7 @@
 locals {
   service_account_list = compact(
     concat(
-      google_service_account.cluster_service_account.*.email,
+      google_service_account.cluster_service_account[*].email,
       ["dummy"],
     ),
   )
@@ -45,31 +45,10 @@ resource "google_service_account" "cluster_service_account" {
   display_name = "Terraform-managed service account for cluster ${var.name}"
 }
 
-resource "google_project_iam_member" "cluster_service_account-log_writer" {
+resource "google_project_iam_member" "cluster_service_account-nodeService_account" {
   count   = var.create_service_account ? 1 : 0
   project = google_service_account.cluster_service_account[0].project
-  role    = "roles/logging.logWriter"
-  member  = google_service_account.cluster_service_account[0].member
-}
-
-resource "google_project_iam_member" "cluster_service_account-metric_writer" {
-  count   = var.create_service_account ? 1 : 0
-  project = google_project_iam_member.cluster_service_account-log_writer[0].project
-  role    = "roles/monitoring.metricWriter"
-  member  = google_service_account.cluster_service_account[0].member
-}
-
-resource "google_project_iam_member" "cluster_service_account-monitoring_viewer" {
-  count   = var.create_service_account ? 1 : 0
-  project = google_project_iam_member.cluster_service_account-metric_writer[0].project
-  role    = "roles/monitoring.viewer"
-  member  = google_service_account.cluster_service_account[0].member
-}
-
-resource "google_project_iam_member" "cluster_service_account-resourceMetadata-writer" {
-  count   = var.create_service_account ? 1 : 0
-  project = google_project_iam_member.cluster_service_account-monitoring_viewer[0].project
-  role    = "roles/stackdriver.resourceMetadata.writer"
+  role    = "roles/container.nodeServiceAccount"
   member  = google_service_account.cluster_service_account[0].member
 }
 

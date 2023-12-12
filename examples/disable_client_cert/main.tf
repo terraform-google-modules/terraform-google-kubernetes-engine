@@ -40,4 +40,5 @@ module "gke" {
   create_service_account   = false
   service_account          = var.compute_engine_service_account
   issue_client_certificate = false
+  deletion_protection      = false
 }

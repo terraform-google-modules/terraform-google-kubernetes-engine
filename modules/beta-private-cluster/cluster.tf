@@ -27,10 +27,12 @@ resource "google_container_cluster" "primary" {
   project         = var.project_id
   resource_labels = var.cluster_resource_labels
 
-  location          = local.location
-  node_locations    = local.node_locations
-  cluster_ipv4_cidr = var.cluster_ipv4_cidr
-  network           = "projects/${local.network_project_id}/global/networks/${var.network}"
+  location            = local.location
+  node_locations      = local.node_locations
+  cluster_ipv4_cidr   = var.cluster_ipv4_cidr
+  network             = "projects/${local.network_project_id}/global/networks/${var.network}"
+  deletion_protection = var.deletion_protection
+
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
 
@@ -94,17 +96,15 @@ resource "google_container_cluster" "primary" {
   }
   monitoring_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.monitoring_service
   dynamic "monitoring_config" {
-    for_each = length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus ? [1] : []
-
+    for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
     content {
-      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
-
-      dynamic "managed_prometheus" {
-        for_each = var.monitoring_enable_managed_prometheus ? [1] : []
-
-        content {
-          enabled = var.monitoring_enable_managed_prometheus
-        }
+      enable_components = var.monitoring_enabled_components
+      managed_prometheus {
+        enabled = var.monitoring_enable_managed_prometheus
+      }
+      advanced_datapath_observability_config {
+        enable_metrics = var.monitoring_enable_observability_metrics
+        relay_mode     = var.monitoring_observability_metrics_relay_mode
       }
     }
   }
@@ -121,6 +121,9 @@ resource "google_container_cluster" "primary" {
           auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
           auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
         }
+
+        disk_size = lookup(var.cluster_autoscaling, "disk_size", 100)
+        disk_type = lookup(var.cluster_autoscaling, "disk_type", "pd-standard")
 
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
       }
@@ -167,7 +170,8 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
+  enable_l4_ilb_subsetting   = var.enable_l4_ilb_subsetting
+  enable_fqdn_network_policy = var.enable_fqdn_network_policy
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -231,6 +235,18 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    dynamic "gcs_fuse_csi_driver_config" {
+      for_each = local.gcs_fuse_csi_driver_config
+
+      content {
+        enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
+
+    config_connector_config {
+      enabled = var.config_connector
+    }
+
     istio_config {
       disabled = !var.istio
       auth     = var.istio_auth
@@ -247,10 +263,6 @@ resource "google_container_cluster" "primary" {
     kalm_config {
       enabled = var.kalm_config
     }
-
-    config_connector_config {
-      enabled = var.config_connector
-    }
   }
 
   datapath_provider = var.datapath_provider
@@ -263,9 +275,21 @@ resource "google_container_cluster" "primary" {
     }
     workload_vulnerability_mode = var.workload_vulnerability_mode
   }
+
+  security_posture_config {
+    mode               = var.security_posture_mode
+    vulnerability_mode = var.security_posture_vulnerability_mode
+  }
+
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services
+    dynamic "additional_pod_ranges_config" {
+      for_each = length(var.additional_ip_range_pods) != 0 ? [1] : []
+      content {
+        pod_range_names = var.additional_ip_range_pods
+      }
+    }
   }
 
   maintenance_policy {
@@ -351,6 +375,8 @@ resource "google_container_cluster" "primary" {
         lookup(local.node_pools_tags, var.node_pools[0].name, []),
       )
 
+      logging_variant = lookup(var.node_pools[0], "logging_variant", "DEFAULT")
+
       dynamic "workload_metadata_config" {
         for_each = local.cluster_node_metadata_config
 
@@ -432,6 +458,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "mesh_certificates" {
+    for_each = local.cluster_mesh_certificates_config
+
+    content {
+      enable_certificates = mesh_certificates.value.enable_certificates
+    }
+  }
+
   dynamic "authenticator_groups_config" {
     for_each = local.cluster_authenticator_security_group
     content {
@@ -443,6 +477,14 @@ resource "google_container_cluster" "primary" {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
       topic   = var.notification_config_topic
+    }
+  }
+
+  node_pool_defaults {
+    node_config_defaults {
+      gcfs_config {
+        enabled = var.enable_gcfs
+      }
     }
   }
 }
@@ -579,6 +621,8 @@ resource "google_container_node_pool" "pools" {
       local.node_pools_tags[each.value["name"]],
     )
 
+    logging_variant = lookup(each.value, "logging_variant", "DEFAULT")
+
     local_ssd_count = lookup(each.value, "local_ssd_count", 0)
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
@@ -616,6 +660,13 @@ resource "google_container_node_pool" "pools" {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
+
+        dynamic "gpu_driver_installation_config" {
+          for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
+          content {
+            gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
+          }
+        }
       }
     }
 
@@ -811,6 +862,8 @@ resource "google_container_node_pool" "windows_pools" {
       local.node_pools_tags[each.value["name"]],
     )
 
+    logging_variant = lookup(each.value, "logging_variant", "DEFAULT")
+
     local_ssd_count = lookup(each.value, "local_ssd_count", 0)
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
@@ -848,6 +901,13 @@ resource "google_container_node_pool" "windows_pools" {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
+
+        dynamic "gpu_driver_installation_config" {
+          for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
+          content {
+            gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
+          }
+        }
       }
     }
 

@@ -16,16 +16,16 @@
 
 
 terraform {
-  required_version = ">=0.13"
+  required_version = ">=1.3"
 
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 4.51.0, < 5.0, !=4.65.0, !=4.65.1"
+      version = ">= 5.0.0, < 6"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 4.51.0, < 5.0, !=4.65.0, !=4.65.1"
+      version = ">= 5.0.0, < 6"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -37,6 +37,6 @@ terraform {
     }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-private-cluster/v27.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-private-cluster/v29.0.0"
   }
 }

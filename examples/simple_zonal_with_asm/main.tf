@@ -41,6 +41,7 @@ module "gke" {
   network_policy          = false
   cluster_resource_labels = { "mesh_id" : "proj-${data.google_project.project.number}" }
   identity_namespace      = "${var.project_id}.svc.id.goog"
+  deletion_protection     = false
   node_pools = [
     {
       name         = "asm-node-pool"
@@ -61,4 +62,5 @@ module "asm" {
   enable_cni                = true
   enable_fleet_registration = true
   enable_mesh_feature       = true
+
 }

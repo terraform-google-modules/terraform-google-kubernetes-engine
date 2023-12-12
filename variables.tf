@@ -137,6 +137,12 @@ variable "ip_range_pods" {
   description = "The _name_ of the secondary subnet ip range to use for pods"
 }
 
+variable "additional_ip_range_pods" {
+  type        = list(string)
+  description = "List of _names_ of the additional secondary subnet ip ranges to use for pods"
+  default     = []
+}
+
 variable "ip_range_services" {
   type        = string
   description = "The _name_ of the secondary subnet range to use for services"
@@ -235,6 +241,8 @@ variable "cluster_autoscaling" {
     gpu_resources = list(object({ resource_type = string, minimum = number, maximum = number }))
     auto_repair   = bool
     auto_upgrade  = bool
+    disk_size     = optional(number)
+    disk_type     = optional(string)
   })
   default = {
     enabled       = false
@@ -245,6 +253,8 @@ variable "cluster_autoscaling" {
     gpu_resources = []
     auto_repair   = true
     auto_upgrade  = true
+    disk_size     = 100
+    disk_type     = "pd-standard"
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
@@ -397,6 +407,12 @@ variable "identity_namespace" {
   default     = "enabled"
 }
 
+variable "enable_mesh_certificates" {
+  type        = bool
+  default     = false
+  description = "Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity."
+}
+
 variable "release_channel" {
   type        = string
   description = "The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`."
@@ -460,6 +476,18 @@ variable "shadow_firewall_rules_log_config" {
 }
 
 
+variable "security_posture_mode" {
+  description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
+  type        = string
+  default     = "DISABLED"
+}
+
+variable "security_posture_vulnerability_mode" {
+  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED` and `VULNERABILITY_BASIC`. Defaults to `VULNERABILITY_DISABLED`."
+  type        = string
+  default     = "VULNERABILITY_DISABLED"
+}
+
 variable "disable_default_snat" {
   type        = bool
   description = "Whether to disable the default SNAT to support the private use of public IP addresses"
@@ -470,6 +498,12 @@ variable "notification_config_topic" {
   type        = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
   default     = ""
+}
+
+variable "deletion_protection" {
+  type        = bool
+  description = "Whether or not to allow Terraform to destroy the cluster."
+  default     = true
 }
 
 variable "network_policy" {
@@ -577,6 +611,12 @@ variable "gke_backup_agent_config" {
   default     = false
 }
 
+variable "gcs_fuse_csi_driver" {
+  type        = bool
+  description = "Whether GCE FUSE CSI driver is enabled for this cluster."
+  default     = false
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -591,6 +631,22 @@ variable "monitoring_enable_managed_prometheus" {
   type        = bool
   description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
   default     = false
+}
+
+variable "monitoring_enable_observability_metrics" {
+  type        = bool
+  description = "Whether or not the advanced datapath metrics are enabled."
+  default     = false
+}
+
+variable "monitoring_observability_metrics_relay_mode" {
+  type        = string
+  description = "Mode used to make advanced datapath metrics relay available."
+  default     = null
+  validation {
+    condition     = var.monitoring_observability_metrics_relay_mode == null ? true : contains(["DISABLED", "INTERNAL_VPC_LB", "EXTERNAL_LB"], var.monitoring_observability_metrics_relay_mode)
+    error_message = "The advanced datapath metrics relay value must be one of DISABLED, INTERNAL_VPC_LB, EXTERNAL_LB."
+  }
 }
 
 variable "monitoring_enabled_components" {
@@ -608,5 +664,11 @@ variable "logging_enabled_components" {
 variable "enable_kubernetes_alpha" {
   type        = bool
   description = "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
+  default     = false
+}
+
+variable "config_connector" {
+  type        = bool
+  description = "Whether ConfigConnector is enabled for this cluster."
   default     = false
 }

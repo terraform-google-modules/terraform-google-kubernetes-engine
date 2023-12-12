@@ -22,8 +22,8 @@ module "gke" {
   regional                          = true
   network                           = module.gke-network.network_name
   subnetwork                        = module.gke-network.subnets_names[0]
-  ip_range_pods                     = module.gke-network.subnets_secondary_ranges[0].*.range_name[0]
-  ip_range_services                 = module.gke-network.subnets_secondary_ranges[0].*.range_name[1]
+  ip_range_pods                     = module.gke-network.subnets_secondary_ranges[0][0].range_name
+  ip_range_services                 = module.gke-network.subnets_secondary_ranges[0][1].range_name
   enable_private_endpoint           = true
   enable_private_nodes              = true
   master_ipv4_cidr_block            = "172.16.0.16/28"
@@ -32,6 +32,7 @@ module "gke" {
   service_account                   = "create"
   remove_default_node_pool          = true
   disable_legacy_metadata_endpoints = true
+  deletion_protection               = false
 
   master_authorized_networks = [
     {

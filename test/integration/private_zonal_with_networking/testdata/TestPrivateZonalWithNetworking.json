@@ -1,5 +1,6 @@
 {
   "addonsConfig": {
+    "configConnectorConfig": {},
     "dnsCacheConfig": {},
     "gcePersistentDiskCsiDriverConfig": {
       "enabled": true
@@ -89,7 +90,8 @@
       "enableComponents": [
         "SYSTEM_COMPONENTS"
       ]
-    }
+    },
+    "managedPrometheusConfig": {}
   },
   "monitoringService": "monitoring.googleapis.com/kubernetes",
   "name": "CLUSTER_NAME",

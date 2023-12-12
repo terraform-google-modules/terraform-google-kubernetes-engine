@@ -453,7 +453,7 @@ variable "firewall_inbound_ports" {
 
 variable "config_connector" {
   type        = bool
-  description = "(Beta) Whether ConfigConnector is enabled for this cluster."
+  description = "Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
 
@@ -461,6 +461,18 @@ variable "gke_backup_agent_config" {
   type        = bool
   description = "(Beta) Whether Backup for GKE agent is enabled for this cluster."
   default     = false
+}
+
+variable "security_posture_mode" {
+  description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
+  type        = string
+  default     = "DISABLED"
+}
+
+variable "security_posture_vulnerability_mode" {
+  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED` and `VULNERABILITY_BASIC`."
+  type        = string
+  default     = null
 }
 
 variable "disable_default_snat" {
@@ -483,4 +495,34 @@ variable "timeouts" {
     condition     = !contains([for t in keys(var.timeouts) : contains(["create", "update", "delete"], t)], false)
     error_message = "Only create, update, delete timeouts can be specified."
   }
+}
+
+variable "enable_gcfs" {
+  type        = bool
+  description = "Enable image streaming on cluster level."
+  default     = false
+}
+
+variable "enable_mesh_certificates" {
+  type        = bool
+  default     = false
+  description = "Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity."
+}
+
+variable "workload_vulnerability_mode" {
+  description = "(beta) Vulnerability mode."
+  type        = string
+  default     = ""
+}
+
+variable "workload_config_audit_mode" {
+  description = "(beta) Workload config audit mode."
+  type        = string
+  default     = "DISABLED"
+}
+
+variable "deletion_protection" {
+  type        = bool
+  description = "Whether or not to allow Terraform to destroy the cluster."
+  default     = true
 }

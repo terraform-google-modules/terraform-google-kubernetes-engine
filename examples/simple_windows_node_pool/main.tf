@@ -43,6 +43,7 @@ module "gke" {
   remove_default_node_pool = true
   service_account          = "create"
   release_channel          = "REGULAR"
+  deletion_protection      = false
 
   node_pools = [
     {

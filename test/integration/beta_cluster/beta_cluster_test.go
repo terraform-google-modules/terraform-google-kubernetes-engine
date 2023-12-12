@@ -36,7 +36,6 @@ func TestBetaCluster(t *testing.T) {
 		location := gke.GetStringOutput("location")
 		clusterName := gke.GetStringOutput("cluster_name")
 		serviceAccount := gke.GetStringOutput("service_account")
-		gcloud.Runf(t, "config set project %s", projectId)
 		op := gcloud.Runf(t, "beta container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		// save output as goldenfile
 		g := golden.NewOrUpdate(t, op.String(),
