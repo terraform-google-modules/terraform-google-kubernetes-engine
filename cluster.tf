@@ -65,6 +65,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "confidential_nodes" {
+    for_each = local.confidential_node_config
+    content {
+      enabled = confidential_nodes.value.enabled
+    }
+  }
+
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
   default_snat_status {
@@ -137,7 +144,16 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  enable_kubernetes_alpha = var.enable_kubernetes_alpha
+  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
+  enable_intranode_visibility = var.enable_intranode_visibility
+  enable_tpu                  = var.enable_tpu
+
+  dynamic "identity_service_config" {
+    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
+    content {
+      enabled = identity_service_config.value
+    }
+  }
 
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
@@ -212,6 +228,13 @@ resource "google_container_cluster" "primary" {
 
     config_connector_config {
       enabled = var.config_connector
+    }
+    dynamic "cloudrun_config" {
+      for_each = local.cluster_cloudrun_config
+
+      content {
+        disabled = cloudrun_config.value.disabled
+      }
     }
   }
 

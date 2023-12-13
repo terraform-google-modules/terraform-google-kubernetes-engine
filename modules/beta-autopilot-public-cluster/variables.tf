@@ -397,6 +397,7 @@ variable "enable_tpu" {
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
   default     = false
 }
+
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
   type        = list(object({ state = string, key_name = string }))
@@ -416,6 +417,14 @@ variable "timeouts" {
     condition     = !contains([for t in keys(var.timeouts) : contains(["create", "update", "delete"], t)], false)
     error_message = "Only create, update, delete timeouts can be specified."
   }
+}
+
+
+
+variable "enable_identity_service" {
+  type        = bool
+  description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
+  default     = false
 }
 
 variable "allow_net_admin" {

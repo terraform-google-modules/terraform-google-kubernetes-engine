@@ -92,6 +92,18 @@ locals {
   logmon_config_is_set       = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus
   gke_backup_agent_config    = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
   gcs_fuse_csi_driver_config = var.gcs_fuse_csi_driver ? [{ enabled = true }] : []
+  cluster_cloudrun_config_load_balancer_config = (var.cloudrun && var.cloudrun_load_balancer_type != "") ? {
+    load_balancer_type = var.cloudrun_load_balancer_type
+  } : {}
+  cluster_cloudrun_config = var.cloudrun ? [
+    merge(
+      {
+        disabled = false
+      },
+      local.cluster_cloudrun_config_load_balancer_config
+    )
+  ] : []
+  cluster_cloudrun_enabled = var.cloudrun
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
@@ -120,6 +132,7 @@ locals {
   cluster_output_http_load_balancing_enabled        = google_container_cluster.primary.addons_config[0].http_load_balancing[0].disabled
   cluster_output_horizontal_pod_autoscaling_enabled = google_container_cluster.primary.addons_config[0].horizontal_pod_autoscaling[0].disabled
   cluster_output_vertical_pod_autoscaling_enabled   = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling[0].enabled : false
+  cluster_output_intranode_visbility_enabled        = google_container_cluster.primary.enable_intranode_visibility
 
 
   master_authorized_networks_config = length(var.master_authorized_networks) == 0 ? [] : [{
@@ -163,6 +176,7 @@ locals {
   cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
     workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
+  confidential_node_config = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
   cluster_mesh_certificates_config = local.workload_identity_enabled ? [{
     enable_certificates = var.enable_mesh_certificates
   }] : []

@@ -89,8 +89,10 @@ module "gke" {
   {% endif %}
   {% if beta_cluster and autopilot_cluster != true  %}
   istio                      = true
-  cloudrun                   = true
   dns_cache                  = false
+  {% endif %}
+  {% if autopilot_cluster != true  %}
+  cloudrun                   = true
   {% endif %}
 
 {% if autopilot_cluster != true %}

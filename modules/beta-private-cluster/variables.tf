@@ -572,6 +572,7 @@ variable "enable_tpu" {
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
   default     = false
 }
+
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
@@ -739,6 +740,19 @@ variable "config_connector" {
   default     = false
 }
 
+variable "cloudrun" {
+  description = "Enable CloudRun addon"
+  type        = bool
+  default     = false
+}
+
+variable "cloudrun_load_balancer_type" {
+  description = "Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
+  type        = string
+  default     = ""
+}
+
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   type        = bool
@@ -755,18 +769,6 @@ variable "kalm_config" {
   type        = bool
   description = "(Beta) Whether KALM is enabled for this cluster."
   default     = false
-}
-
-variable "cloudrun" {
-  description = "(Beta) Enable CloudRun addon"
-  type        = bool
-  default     = false
-}
-
-variable "cloudrun_load_balancer_type" {
-  description = "(Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
-  type        = string
-  default     = ""
 }
 
 variable "enable_pod_security_policy" {
@@ -793,14 +795,15 @@ variable "enable_intranode_visibility" {
   default     = false
 }
 
+variable "enable_gcfs" {
+  type        = bool
+  description = "Enable image streaming on cluster level."
+  default     = false
+}
+
 variable "enable_identity_service" {
   type        = bool
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
   default     = false
 }
 
-variable "enable_gcfs" {
-  type        = bool
-  description = "Enable image streaming on cluster level."
-  default     = false
-}

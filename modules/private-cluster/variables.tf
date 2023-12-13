@@ -505,6 +505,12 @@ variable "shadow_firewall_rules_log_config" {
   }
 }
 
+variable "enable_confidential_nodes" {
+  type        = bool
+  description = "An optional flag to enable confidential node config."
+  default     = false
+}
+
 
 variable "security_posture_mode" {
   description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
@@ -534,6 +540,12 @@ variable "deletion_protection" {
   type        = bool
   description = "Whether or not to allow Terraform to destroy the cluster."
   default     = true
+}
+
+variable "enable_tpu" {
+  type        = bool
+  description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
+  default     = false
 }
 
 variable "network_policy" {
@@ -702,3 +714,16 @@ variable "config_connector" {
   description = "Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
+
+variable "cloudrun" {
+  description = "Enable CloudRun addon"
+  type        = bool
+  default     = false
+}
+
+variable "cloudrun_load_balancer_type" {
+  description = "Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
+  type        = string
+  default     = ""
+}
+
