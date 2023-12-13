@@ -65,6 +65,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "confidential_nodes" {
+    for_each = local.confidential_node_config
+    content {
+      enabled = confidential_nodes.value.enabled
+    }
+  }
+
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
   default_snat_status {

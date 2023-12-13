@@ -542,12 +542,12 @@ variable "shadow_firewall_rules_log_config" {
   }
 }
 
-{% if beta_cluster %}
 variable "enable_confidential_nodes" {
   type = bool
   description = "An optional flag to enable confidential node config."
   default = false
 }
+{% if beta_cluster %}
 
 variable "workload_vulnerability_mode" {
   description = "(beta) Vulnerability mode."

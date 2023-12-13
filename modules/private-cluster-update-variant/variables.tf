@@ -505,6 +505,11 @@ variable "shadow_firewall_rules_log_config" {
   }
 }
 
+variable "enable_confidential_nodes" {
+  type        = bool
+  description = "An optional flag to enable confidential node config."
+  default     = false
+}
 
 variable "security_posture_mode" {
   description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
