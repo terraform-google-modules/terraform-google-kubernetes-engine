@@ -24,11 +24,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 4.76.0, < 5.0, !=4.65.0, !=4.65.1"
+      version = ">= 5.0.0, < 6"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 4.76.0, < 5.0, !=4.65.0, !=4.65.1"
+      version = ">= 5.0.0, < 6"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -40,13 +40,13 @@ terraform {
     }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v28.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v29.0.0"
   }
 {% else %}
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 4.51.0, < 5.0, !=4.65.0, !=4.65.1"
+      version = ">= 5.0.0, < 6"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -58,7 +58,7 @@ terraform {
     }
   }
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v28.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v29.0.0"
   }
 {% endif %}
 }

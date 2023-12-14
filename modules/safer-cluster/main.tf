@@ -19,15 +19,16 @@
 // The safer-cluster module is based on a private cluster, with a several
 // settings set to recommended values by default.
 module "gke" {
-  source             = "../beta-private-cluster/"
-  project_id         = var.project_id
-  name               = var.name
-  description        = var.description
-  regional           = var.regional
-  region             = var.region
-  zones              = var.zones
-  network            = var.network
-  network_project_id = var.network_project_id
+  source              = "../beta-private-cluster/"
+  project_id          = var.project_id
+  name                = var.name
+  description         = var.description
+  regional            = var.regional
+  region              = var.region
+  zones               = var.zones
+  network             = var.network
+  network_project_id  = var.network_project_id
+  deletion_protection = var.deletion_protection
 
   // We need to enforce a minimum Kubernetes Version to ensure
   // that the necessary security features are enabled.
@@ -194,4 +195,14 @@ module "gke" {
   notification_config_topic = var.notification_config_topic
 
   timeouts = var.timeouts
+
+  enable_gcfs = var.enable_gcfs
+
+  // Enabling vulnerability and audit for workloads
+  workload_vulnerability_mode = var.workload_vulnerability_mode
+  workload_config_audit_mode  = var.workload_config_audit_mode
+
+  // Enabling security posture
+  security_posture_mode               = var.security_posture_mode
+  security_posture_vulnerability_mode = var.security_posture_vulnerability_mode
 }

@@ -131,6 +131,12 @@ variable "ip_range_pods" {
   description = "The _name_ of the secondary subnet ip range to use for pods"
 }
 
+variable "additional_ip_range_pods" {
+  type        = list(string)
+  description = "List of _names_ of the additional secondary subnet ip ranges to use for pods"
+  default     = []
+}
+
 variable "ip_range_services" {
   type        = string
   description = "The _name_ of the secondary subnet range to use for services"
@@ -343,6 +349,7 @@ variable "enable_confidential_nodes" {
   description = "An optional flag to enable confidential node config."
   default     = false
 }
+
 variable "workload_vulnerability_mode" {
   description = "(beta) Vulnerability mode."
   type        = string
@@ -350,9 +357,27 @@ variable "workload_vulnerability_mode" {
 }
 
 variable "workload_config_audit_mode" {
-  description = "(beta) Worload config audit mode."
+  description = "(beta) Workload config audit mode."
   type        = string
   default     = "DISABLED"
+}
+
+variable "enable_fqdn_network_policy" {
+  type        = bool
+  description = "Enable FQDN Network Policies on the cluster"
+  default     = null
+}
+
+variable "security_posture_mode" {
+  description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
+  type        = string
+  default     = "DISABLED"
+}
+
+variable "security_posture_vulnerability_mode" {
+  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED` and `VULNERABILITY_BASIC`. Defaults to `VULNERABILITY_DISABLED`."
+  type        = string
+  default     = "VULNERABILITY_DISABLED"
 }
 
 variable "disable_default_snat" {
@@ -365,6 +390,12 @@ variable "notification_config_topic" {
   type        = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
   default     = ""
+}
+
+variable "deletion_protection" {
+  type        = bool
+  description = "Whether or not to allow Terraform to destroy the cluster."
+  default     = true
 }
 
 variable "enable_tpu" {
@@ -393,3 +424,8 @@ variable "timeouts" {
   }
 }
 
+variable "allow_net_admin" {
+  description = "(Optional) Enable NET_ADMIN for the cluster."
+  type        = bool
+  default     = null
+}

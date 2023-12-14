@@ -100,16 +100,14 @@
   },
   "monitoringConfig": {
     "advancedDatapathObservabilityConfig": {
-      "relayMode": "DISABLED"
+      "enableRelay": false
     },
     "componentConfig": {
       "enableComponents": [
         "SYSTEM_COMPONENTS"
       ]
     },
-    "managedPrometheusConfig": {
-      "enabled": true
-    }
+    "managedPrometheusConfig": {}
   },
   "monitoringService": "monitoring.googleapis.com/kubernetes",
   "name": "CLUSTER_NAME",

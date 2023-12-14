@@ -27,10 +27,12 @@ resource "google_container_cluster" "primary" {
   project         = var.project_id
   resource_labels = var.cluster_resource_labels
 
-  location          = local.location
-  node_locations    = local.node_locations
-  cluster_ipv4_cidr = var.cluster_ipv4_cidr
-  network           = "projects/${local.network_project_id}/global/networks/${var.network}"
+  location            = local.location
+  node_locations      = local.node_locations
+  cluster_ipv4_cidr   = var.cluster_ipv4_cidr
+  network             = "projects/${local.network_project_id}/global/networks/${var.network}"
+  deletion_protection = var.deletion_protection
+
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
 
@@ -82,17 +84,15 @@ resource "google_container_cluster" "primary" {
   }
   monitoring_service = local.logmon_config_is_set ? null : var.monitoring_service
   dynamic "monitoring_config" {
-    for_each = length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus ? [1] : []
-
+    for_each = local.logmon_config_is_set || local.logmon_config_is_set ? [1] : []
     content {
-      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
-
-      dynamic "managed_prometheus" {
-        for_each = var.monitoring_enable_managed_prometheus ? [1] : []
-
-        content {
-          enabled = var.monitoring_enable_managed_prometheus
-        }
+      enable_components = var.monitoring_enabled_components
+      managed_prometheus {
+        enabled = var.monitoring_enable_managed_prometheus
+      }
+      advanced_datapath_observability_config {
+        enable_metrics = var.monitoring_enable_observability_metrics
+        relay_mode     = var.monitoring_observability_metrics_relay_mode
       }
     }
   }
@@ -217,9 +217,21 @@ resource "google_container_cluster" "primary" {
 
   datapath_provider = var.datapath_provider
 
+
+  security_posture_config {
+    mode               = var.security_posture_mode
+    vulnerability_mode = var.security_posture_vulnerability_mode
+  }
+
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services
+    dynamic "additional_pod_ranges_config" {
+      for_each = length(var.additional_ip_range_pods) != 0 ? [1] : []
+      content {
+        pod_range_names = var.additional_ip_range_pods
+      }
+    }
     stack_type                    = var.stack_type
   }
 
@@ -425,6 +437,20 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
+  dynamic "placement_policy" {
+    for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
+    content {
+      type = lookup(placement_policy.value, "placement_policy", null)
+    }
+  }
+
+  dynamic "network_config" {
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
+    content {
+      pod_range            = lookup(network_config.value, "pod_range", null)
+      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+    }
+  }
 
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
@@ -529,6 +555,13 @@ resource "google_container_node_pool" "pools" {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
+
+        dynamic "gpu_driver_installation_config" {
+          for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
+          content {
+            gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
+          }
+        }
       }
     }
 
@@ -613,6 +646,20 @@ resource "google_container_node_pool" "windows_pools" {
     }
   }
 
+  dynamic "placement_policy" {
+    for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
+    content {
+      type = lookup(placement_policy.value, "placement_policy", null)
+    }
+  }
+
+  dynamic "network_config" {
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
+    content {
+      pod_range            = lookup(network_config.value, "pod_range", null)
+      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+    }
+  }
 
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
@@ -717,6 +764,13 @@ resource "google_container_node_pool" "windows_pools" {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
+
+        dynamic "gpu_driver_installation_config" {
+          for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
+          content {
+            gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
+          }
+        }
       }
     }
 

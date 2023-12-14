@@ -34,7 +34,7 @@ data "google_container_cluster" "asm" {
 }
 
 resource "kubernetes_namespace" "system" {
-  count = var.create_system_namespace ? 1 : 0
+  count = var.create_system_namespace && var.mesh_management != "MANAGEMENT_AUTOMATIC" ? 1 : 0
 
   metadata {
     name = "istio-system"
@@ -42,6 +42,8 @@ resource "kubernetes_namespace" "system" {
 }
 
 resource "kubernetes_config_map" "asm_options" {
+  count = var.mesh_management != "MANAGEMENT_AUTOMATIC" ? 1 : 0
+
   metadata {
     name      = "asm-options"
     namespace = try(kubernetes_namespace.system[0].metadata[0].name, "istio-system")
@@ -56,6 +58,8 @@ resource "kubernetes_config_map" "asm_options" {
 }
 
 module "cpr" {
+  count = var.mesh_management != "MANAGEMENT_AUTOMATIC" ? 1 : 0
+
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
   version = "~> 3.1"
 
@@ -68,4 +72,43 @@ module "cpr" {
   kubectl_destroy_command = "${path.module}/scripts/destroy_cpr.sh ${local.revision_name}"
 
   module_depends_on = [kubernetes_config_map.asm_options]
+}
+
+# Wait for the ControlPlaneRevision custom resource to be ready.
+# Add an explicit "retry until the resource is created" until
+module "kubectl_asm_wait_for_controlplanerevision_custom_resource_definition" {
+  count = var.mesh_management == "MANAGEMENT_AUTOMATIC" ? 1 : 0
+
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
+
+  project_id              = var.project_id
+  cluster_name            = var.cluster_name
+  cluster_location        = var.cluster_location
+  kubectl_create_command  = "/bin/sh -c 'while ! kubectl wait crd/controlplanerevisions.mesh.cloud.google.com --for condition=established --timeout=60m --all-namespaces; do echo \"crd/controlplanerevisions.mesh.cloud.google.com not yet available, waiting...\"; sleep 5; done'"
+  kubectl_destroy_command = ""
+
+  module_depends_on = [
+    google_gke_hub_feature_membership.mesh_feature_membership
+  ]
+}
+
+# Wait for the ASM control plane revision to be ready so we can safely deploy resources that depend
+# on ASM mutating webhooks.
+# Add an explicit "retry until the resource is created" until
+module "kubectl_asm_wait_for_controlplanerevision" {
+  count = var.mesh_management == "MANAGEMENT_AUTOMATIC" ? 1 : 0
+
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
+  version = "~> 3.1"
+
+  project_id              = var.project_id
+  cluster_name            = var.cluster_name
+  cluster_location        = var.cluster_location
+  kubectl_create_command  = "/bin/sh -c 'while ! kubectl -n istio-system wait ControlPlaneRevision --all --timeout=60m --for condition=Reconciled; do echo \"ControlPlaneRevision not yet available, waiting...\"; sleep 5; done'"
+  kubectl_destroy_command = ""
+
+  module_depends_on = [
+    module.kubectl_asm_wait_for_controlplanerevision_custom_resource_definition[0].wait
+  ]
 }

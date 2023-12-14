@@ -27,10 +27,12 @@ resource "google_container_cluster" "primary" {
   project         = var.project_id
   resource_labels = var.cluster_resource_labels
 
-  location          = local.location
-  node_locations    = local.node_locations
-  cluster_ipv4_cidr = var.cluster_ipv4_cidr
-  network           = "projects/${local.network_project_id}/global/networks/${var.network}"
+  location            = local.location
+  node_locations      = local.node_locations
+  cluster_ipv4_cidr   = var.cluster_ipv4_cidr
+  network             = "projects/${local.network_project_id}/global/networks/${var.network}"
+  deletion_protection = var.deletion_protection
+
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
 
@@ -94,17 +96,15 @@ resource "google_container_cluster" "primary" {
   }
   monitoring_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.monitoring_service
   dynamic "monitoring_config" {
-    for_each = length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus ? [1] : []
-
+    for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
     content {
-      enable_components = length(var.monitoring_enabled_components) > 0 ? var.monitoring_enabled_components : []
-
-      dynamic "managed_prometheus" {
-        for_each = var.monitoring_enable_managed_prometheus ? [1] : []
-
-        content {
-          enabled = var.monitoring_enable_managed_prometheus
-        }
+      enable_components = var.monitoring_enabled_components
+      managed_prometheus {
+        enabled = var.monitoring_enable_managed_prometheus
+      }
+      advanced_datapath_observability_config {
+        enable_metrics = var.monitoring_enable_observability_metrics
+        relay_mode     = var.monitoring_observability_metrics_relay_mode
       }
     }
   }
@@ -170,7 +170,8 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
+  enable_l4_ilb_subsetting   = var.enable_l4_ilb_subsetting
+  enable_fqdn_network_policy = var.enable_fqdn_network_policy
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -274,9 +275,21 @@ resource "google_container_cluster" "primary" {
     }
     workload_vulnerability_mode = var.workload_vulnerability_mode
   }
+
+  security_posture_config {
+    mode               = var.security_posture_mode
+    vulnerability_mode = var.security_posture_vulnerability_mode
+  }
+
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services
+    dynamic "additional_pod_ranges_config" {
+      for_each = length(var.additional_ip_range_pods) != 0 ? [1] : []
+      content {
+        pod_range_names = var.additional_ip_range_pods
+      }
+    }
     stack_type                    = var.stack_type
   }
 
@@ -467,6 +480,14 @@ resource "google_container_cluster" "primary" {
       topic   = var.notification_config_topic
     }
   }
+
+  node_pool_defaults {
+    node_config_defaults {
+      gcfs_config {
+        enabled = var.enable_gcfs
+      }
+    }
+  }
 }
 /******************************************
   Create Container Cluster node pools
@@ -477,10 +498,12 @@ locals {
     "disk_type",
     "accelerator_count",
     "accelerator_type",
+    "gpu_partition_size",
     "enable_secure_boot",
     "enable_integrity_monitoring",
     "local_ssd_count",
     "machine_type",
+    "placement_policy",
     "max_pods_per_node",
     "min_cpu_platform",
     "pod_range",
@@ -490,13 +513,14 @@ locals {
     "enable_gcfs",
     "enable_gvnic",
     "enable_secure_boot",
+    "boot_disk_kms_key",
   ]
 }
 
 # This keepers list is based on the terraform google provider schemaNodeConfig
 # resources where "ForceNew" is "true". schemaNodeConfig can be found in resource_container_node_pool.go at
-# https://github.com/hashicorp/terraform-provider-google/blob/main/google/resource_container_node_pool.go and node_config.go at
-# https://github.com/terraform-providers/terraform-provider-google/blob/main/google/node_config.go
+# https://github.com/hashicorp/terraform-provider-google/blob/main/google/services/container/resource_container_node_pool.go and node_config.go at
+# https://github.com/hashicorp/terraform-provider-google/blob/main/google/services/container/node_config.go
 resource "random_id" "name" {
   for_each    = merge(local.node_pools, local.windows_node_pools)
   byte_length = 2
@@ -506,18 +530,6 @@ resource "random_id" "name" {
       local.force_node_pool_recreation_resources,
       [for keeper in local.force_node_pool_recreation_resources : lookup(each.value, keeper, "")]
     ),
-    {
-      labels = join(",",
-        sort(
-          concat(
-            keys(local.node_pools_labels["all"]),
-            values(local.node_pools_labels["all"]),
-            keys(local.node_pools_labels[each.value["name"]]),
-            values(local.node_pools_labels[each.value["name"]])
-          )
-        )
-      )
-    },
     {
       taints = join(",",
         sort(
@@ -548,16 +560,6 @@ resource "random_id" "name" {
           concat(
             local.node_pools_oauth_scopes["all"],
             local.node_pools_oauth_scopes[each.value["name"]]
-          )
-        )
-      )
-    },
-    {
-      tags = join(",",
-        sort(
-          concat(
-            local.node_pools_tags["all"],
-            local.node_pools_tags[each.value["name"]]
           )
         )
       )
@@ -727,6 +729,13 @@ resource "google_container_node_pool" "pools" {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
+
+        dynamic "gpu_driver_installation_config" {
+          for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
+          content {
+            gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
+          }
+        }
       }
     }
 
@@ -955,6 +964,13 @@ resource "google_container_node_pool" "windows_pools" {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
+
+        dynamic "gpu_driver_installation_config" {
+          for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
+          content {
+            gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
+          }
+        }
       }
     }
 
