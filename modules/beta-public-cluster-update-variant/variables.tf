@@ -488,6 +488,7 @@ variable "enable_confidential_nodes" {
   description = "An optional flag to enable confidential node config."
   default     = false
 }
+
 variable "workload_vulnerability_mode" {
   description = "(beta) Vulnerability mode."
   type        = string
@@ -495,9 +496,27 @@ variable "workload_vulnerability_mode" {
 }
 
 variable "workload_config_audit_mode" {
-  description = "(beta) Worload config audit mode."
+  description = "(beta) Workload config audit mode."
   type        = string
   default     = "DISABLED"
+}
+
+variable "enable_fqdn_network_policy" {
+  type        = bool
+  description = "Enable FQDN Network Policies on the cluster"
+  default     = null
+}
+
+variable "security_posture_mode" {
+  description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
+  type        = string
+  default     = "DISABLED"
+}
+
+variable "security_posture_vulnerability_mode" {
+  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED` and `VULNERABILITY_BASIC`. Defaults to `VULNERABILITY_DISABLED`."
+  type        = string
+  default     = "VULNERABILITY_DISABLED"
 }
 
 variable "disable_default_snat" {
@@ -510,6 +529,12 @@ variable "notification_config_topic" {
   type        = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
   default     = ""
+}
+
+variable "deletion_protection" {
+  type        = bool
+  description = "Whether or not to allow Terraform to destroy the cluster."
+  default     = true
 }
 
 variable "enable_tpu" {
@@ -642,6 +667,22 @@ variable "monitoring_enable_managed_prometheus" {
   type        = bool
   description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
   default     = false
+}
+
+variable "monitoring_enable_observability_metrics" {
+  type        = bool
+  description = "Whether or not the advanced datapath metrics are enabled."
+  default     = false
+}
+
+variable "monitoring_observability_metrics_relay_mode" {
+  type        = string
+  description = "Mode used to make advanced datapath metrics relay available."
+  default     = null
+  validation {
+    condition     = var.monitoring_observability_metrics_relay_mode == null ? true : contains(["DISABLED", "INTERNAL_VPC_LB", "EXTERNAL_LB"], var.monitoring_observability_metrics_relay_mode)
+    error_message = "The advanced datapath metrics relay value must be one of DISABLED, INTERNAL_VPC_LB, EXTERNAL_LB."
+  }
 }
 
 variable "monitoring_enabled_components" {

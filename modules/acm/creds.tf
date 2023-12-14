@@ -39,63 +39,67 @@ resource "time_sleep" "wait_acm" {
 }
 
 resource "google_service_account_iam_binding" "ksa_iam" {
-  count              = length(local.iam_ksa_binding_members) > 0 ? 1 : 0
+  count      = length(local.iam_ksa_binding_members) > 0 ? 1 : 0
+  depends_on = [google_gke_hub_feature_membership.main]
+
   service_account_id = google_service_account.acm_metrics_writer_sa[0].name
   role               = "roles/iam.workloadIdentityUser"
 
   members = [
     for ksa in local.iam_ksa_binding_members : "serviceAccount:${var.project_id}.svc.id.goog[${ksa}]"
   ]
-
-  depends_on = [google_gke_hub_feature_membership.main]
 }
 
-module "annotate-sa-config-management-monitoring" {
-  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "~> 3.1"
+resource "kubernetes_annotations" "annotate-sa-config-management-monitoring" {
+  count = var.enable_config_sync && var.create_metrics_gcp_sa ? 1 : 0
 
-  count            = var.enable_config_sync && var.create_metrics_gcp_sa ? 1 : 0
-  skip_download    = true
-  cluster_name     = var.cluster_name
-  cluster_location = var.location
-  project_id       = var.project_id
+  api_version = "v1"
+  kind        = "ServiceAccount"
 
-  kubectl_create_command  = "kubectl annotate --overwrite sa -n config-management-monitoring default iam.gke.io/gcp-service-account=${google_service_account.acm_metrics_writer_sa[0].email}"
-  kubectl_destroy_command = "kubectl annotate sa -n config-management-monitoring default iam.gke.io/gcp-service-account-"
+  metadata {
+    name      = "default"
+    namespace = "config-management-monitoring"
+  }
 
-  module_depends_on = time_sleep.wait_acm
+  annotations = {
+    "iam.gke.io/gcp-service-account" : google_service_account.acm_metrics_writer_sa[0].email
+  }
+
+  depends_on = [time_sleep.wait_acm]
 }
 
-module "annotate-sa-gatekeeper-system" {
-  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "~> 3.1"
+resource "kubernetes_annotations" "annotate-sa-gatekeeper-system" {
+  count      = var.enable_policy_controller && var.create_metrics_gcp_sa ? 1 : 0
+  depends_on = [time_sleep.wait_acm]
 
-  count            = var.enable_policy_controller && var.create_metrics_gcp_sa ? 1 : 0
-  skip_download    = true
-  cluster_name     = var.cluster_name
-  cluster_location = var.location
-  project_id       = var.project_id
+  api_version = "v1"
+  kind        = "ServiceAccount"
 
-  kubectl_create_command  = "kubectl annotate --overwrite sa -n gatekeeper-system gatekeeper-admin iam.gke.io/gcp-service-account=${google_service_account.acm_metrics_writer_sa[0].email}"
-  kubectl_destroy_command = "kubectl annotate sa -n gatekeeper-system gatekeeper-admin iam.gke.io/gcp-service-account-"
+  metadata {
+    name      = "gatekeeper-admin"
+    namespace = "gatekeeper-system"
+  }
 
-  module_depends_on = time_sleep.wait_acm
+  annotations = {
+    "iam.gke.io/gcp-service-account" : google_service_account.acm_metrics_writer_sa[0].email
+  }
 }
 
-module "annotate-sa-gatekeeper-system-restart" {
-  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "~> 3.1"
+resource "time_static" "restarted_at" {}
+resource "kubernetes_annotations" "annotate-sa-gatekeeper-system-restart" {
+  count = var.enable_policy_controller && var.create_metrics_gcp_sa ? 1 : 0
 
-  count            = var.enable_policy_controller && var.create_metrics_gcp_sa ? 1 : 0
-  skip_download    = true
-  cluster_name     = var.cluster_name
-  cluster_location = var.location
-  project_id       = var.project_id
+  api_version = "apps/v1"
+  kind        = "Deployment"
+  metadata {
+    name      = "gatekeeper-controller-manager"
+    namespace = "gatekeeper-system"
+  }
+  template_annotations = {
+    "kubectl.kubernetes.io/restartedAt" = time_static.restarted_at.rfc3339
+  }
 
-  kubectl_create_command  = "kubectl rollout restart deployment gatekeeper-controller-manager -n gatekeeper-system"
-  kubectl_destroy_command = ""
-
-  module_depends_on = module.annotate-sa-gatekeeper-system
+  depends_on = [kubernetes_annotations.annotate-sa-gatekeeper-system]
 }
 
 resource "google_service_account" "acm_metrics_writer_sa" {

@@ -44,7 +44,8 @@ module "gke" {
   ip_range_pods     = google_compute_subnetwork.main.secondary_ip_range[0].range_name
   ip_range_services = google_compute_subnetwork.main.secondary_ip_range[1].range_name
 
-  service_account = "create"
+  service_account     = "create"
+  deletion_protection = false
   node_pools = [
     {
       name         = "acm-node-pool"

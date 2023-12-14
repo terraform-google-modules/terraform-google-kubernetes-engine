@@ -40,6 +40,7 @@ module "gke" {
   remove_default_node_pool          = false
   disable_legacy_metadata_endpoints = false
   cluster_autoscaling               = var.cluster_autoscaling
+  deletion_protection               = false
 
   node_pools = [
     {
