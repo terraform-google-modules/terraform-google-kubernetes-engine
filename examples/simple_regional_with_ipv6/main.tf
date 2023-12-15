@@ -41,4 +41,5 @@ module "gke" {
   service_account        = var.compute_engine_service_account
   enable_cost_allocation = true
   datapath_provider      = "ADVANCED_DATAPATH"
+  deletion_protection    = false
 }
