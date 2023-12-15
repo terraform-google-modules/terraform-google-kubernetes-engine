@@ -23,18 +23,8 @@ This example illustrates how to create a simple cluster.
 |------|-------------|
 | ca\_certificate | n/a |
 | client\_token | n/a |
-| cluster\_name | Cluster name |
-| ip\_range\_pods | The secondary IP range used for pods |
-| ip\_range\_services | The secondary IP range used for services |
 | kubernetes\_endpoint | n/a |
-| location | n/a |
-| master\_kubernetes\_version | The master Kubernetes version |
-| network | n/a |
-| project\_id | n/a |
-| region | n/a |
 | service\_account | The default service account used for running nodes. |
-| subnetwork | n/a |
-| zones | List of zones in which the cluster resides |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

@@ -155,7 +155,7 @@ resource "google_container_cluster" "primary" {
         pod_range_names = var.additional_ip_range_pods
       }
     }
-    stack_type                    = var.stack_type
+    stack_type = var.stack_type
   }
 
   maintenance_policy {
