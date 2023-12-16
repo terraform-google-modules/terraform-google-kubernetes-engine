@@ -28,7 +28,7 @@ module "acm" {
 
   secret_type = "ssh"
 
-  policy_bundles = ["https://github.com/GoogleCloudPlatform/acm-policy-controller-library/bundles/policy-essentials-v2022?ref=981cdf31878b886b53decdade23d8f76e80140fc"]
+  policy_bundles = ["https://github.com/GoogleCloudPlatform/gke-policy-library/tree/main/bundles/policy-essentials-v2022"]
 
   create_metrics_gcp_sa = true
 }
