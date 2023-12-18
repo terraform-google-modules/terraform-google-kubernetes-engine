@@ -33,7 +33,9 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                  = "../../modules/private-cluster-update-variant"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster-update-variant"
+  version = "~> 29.0"
+
   project_id              = var.project_id
   name                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   regional                = false
