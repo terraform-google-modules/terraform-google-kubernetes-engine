@@ -30,7 +30,6 @@ output "project_id" {
 }
 
 output "location" {
-  # TODO: google_gke_hub_membership b/300473592
   description = "The location of the hub membership."
-  value       = "global"
+  value       = var.enable_fleet_registration ? google_gke_hub_membership.primary[0].location : local.gke_hub_membership_location
 }
