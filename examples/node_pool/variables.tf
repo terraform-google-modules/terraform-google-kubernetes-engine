@@ -80,6 +80,5 @@ variable "cluster_autoscaling" {
     auto_upgrade        = true
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
-  version     = "~> 29.0"
 
 }
