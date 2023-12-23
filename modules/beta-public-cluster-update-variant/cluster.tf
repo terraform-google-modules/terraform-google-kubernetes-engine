@@ -419,6 +419,17 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "private_cluster_config" {
+    for_each = var.master_global_access_enabled ? [{
+      master_global_access_enabled = var.master_global_access_enabled
+    }] : []
+
+    content {
+      master_global_access_config {
+        enabled = private_cluster_config.value.master_global_access_enabled
+      }
+    }
+  }
 
   remove_default_node_pool = var.remove_default_node_pool
 
