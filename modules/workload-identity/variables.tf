@@ -134,6 +134,6 @@ variable "gcp_sa_description" {
 
   validation {
     condition     = var.gcp_sa_description == null ? true : length(var.gcp_sa_description) <= 256
-    error_message = "The Google service account display name must be at most 100 characters"
+    error_message = "The Google service account description must be at most 256 characters"
   }
 }
