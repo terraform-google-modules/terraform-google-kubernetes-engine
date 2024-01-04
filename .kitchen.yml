@@ -87,6 +87,13 @@ suites:
       systems:
         - name: simple_regional_with_gateway_api
           backend: local
+  - name: "simple_regional_with_ipv6"
+    driver:
+      root_module_directory: test/fixtures/simple_regional_with_ipv6
+    verifier:
+      systems:
+        - name: simple_regional_with_ipv6
+          backend: local
   - name: "simple_regional_with_kubeconfig"
     driver:
       root_module_directory: test/fixtures/simple_regional_with_kubeconfig
