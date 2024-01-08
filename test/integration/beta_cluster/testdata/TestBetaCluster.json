@@ -4,9 +4,7 @@
     "dnsCacheConfig": {
       "enabled": true
     },
-    "gcePersistentDiskCsiDriverConfig": {
-      "enabled": true
-    },
+    "gcePersistentDiskCsiDriverConfig": {},
     "gcpFilestoreCsiDriverConfig": {},
     "gkeBackupAgentConfig": {},
     "horizontalPodAutoscaling": {},
