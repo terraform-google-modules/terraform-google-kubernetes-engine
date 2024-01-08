@@ -6,7 +6,9 @@
       "enabled": true
     },
     "gcpFilestoreCsiDriverConfig": {},
-    "gcsFuseCsiDriverConfig": {},
+    "gcsFuseCsiDriverConfig": {
+      "enabled": true
+    },
     "gkeBackupAgentConfig": {},
     "horizontalPodAutoscaling": {},
     "httpLoadBalancing": {},
