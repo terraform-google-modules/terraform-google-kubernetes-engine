@@ -142,6 +142,12 @@ variable "ip_range_services" {
   description = "The _name_ of the secondary subnet range to use for services"
 }
 
+variable "stack_type" {
+  type        = string
+  description = "The stack type to use for this cluster. Either `IPV4` or `IPV4_IPV6`. Defaults to `IPV4`."
+  default     = "IPV4"
+}
+
 
 variable "enable_cost_allocation" {
   type        = bool
@@ -418,3 +424,8 @@ variable "timeouts" {
   }
 }
 
+variable "allow_net_admin" {
+  description = "(Optional) Enable NET_ADMIN for the cluster."
+  type        = bool
+  default     = null
+}

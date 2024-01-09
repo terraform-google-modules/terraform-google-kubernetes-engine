@@ -98,7 +98,7 @@
   },
   "monitoringConfig": {
     "advancedDatapathObservabilityConfig": {
-      "relayMode": "DISABLED"
+      "enableRelay": false
     },
     "componentConfig": {
       "enableComponents": [

@@ -326,6 +326,10 @@ resource "google_container_cluster" "primary" {
     }
     {% endif %}
   }
+  {% if autopilot_cluster %}
+
+  allow_net_admin = var.allow_net_admin
+  {% endif %}
   {% if autopilot_cluster != true %}
 
   datapath_provider = var.datapath_provider
@@ -356,6 +360,7 @@ resource "google_container_cluster" "primary" {
         pod_range_names = var.additional_ip_range_pods
       }
     }
+    stack_type                    = var.stack_type
   }
 
   maintenance_policy {
@@ -715,7 +720,6 @@ resource "google_container_node_pool" "windows_pools" {
     }
   }
 
-  {% if beta_cluster %}
   dynamic "placement_policy" {
     for_each = length(lookup(each.value, "placement_policy", "")) > 0  ? [each.value] : []
     content {
@@ -734,7 +738,6 @@ resource "google_container_node_pool" "windows_pools" {
       {% endif %}
     }
   }
-  {% endif %}
 
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)

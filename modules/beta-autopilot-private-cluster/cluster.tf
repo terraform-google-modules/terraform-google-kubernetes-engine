@@ -130,6 +130,8 @@ resource "google_container_cluster" "primary" {
 
   }
 
+  allow_net_admin = var.allow_net_admin
+
   networking_mode = "VPC_NATIVE"
 
   protect_config {
@@ -153,6 +155,7 @@ resource "google_container_cluster" "primary" {
         pod_range_names = var.additional_ip_range_pods
       }
     }
+    stack_type = var.stack_type
   }
 
   maintenance_policy {
