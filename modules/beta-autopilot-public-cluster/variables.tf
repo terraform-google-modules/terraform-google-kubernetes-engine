@@ -173,11 +173,6 @@ variable "enable_resource_consumption_export" {
 }
 
 
-variable "network_tags" {
-  description = "(Optional, Beta) - List of network tags applied to auto-provisioned node pools."
-  type        = list(string)
-  default     = []
-}
 variable "stub_domains" {
   type        = map(list(string))
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"
@@ -200,6 +195,12 @@ variable "ip_masq_resync_interval" {
   type        = string
   description = "The interval at which the agent attempts to sync its ConfigMap file from the disk."
   default     = "60s"
+}
+
+variable "network_tags" {
+  description = "(Optional, Beta) - List of network tags applied to auto-provisioned node pools."
+  type        = list(string)
+  default     = []
 }
 
 variable "ip_masq_link_local" {
