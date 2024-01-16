@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2022-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ package simple_zonal
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
@@ -23,10 +24,13 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
 
 func TestSimpleZonal(t *testing.T) {
-	bpt := tft.NewTFBlueprintTest(t)
+	bpt := tft.NewTFBlueprintTest(t,
+		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
+	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
