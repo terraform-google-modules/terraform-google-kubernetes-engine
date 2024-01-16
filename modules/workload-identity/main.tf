@@ -43,7 +43,8 @@ resource "google_service_account" "cluster_service_account" {
   count = var.use_existing_gcp_sa ? 0 : 1
 
   account_id   = local.gcp_given_name
-  display_name = substr("GCP SA bound to K8S SA ${local.k8s_sa_project_id}[${local.k8s_given_name}]", 0, 100)
+  display_name = coalesce(var.gcp_sa_display_name, substr("GCP SA bound to K8S SA ${local.k8s_sa_project_id}[${local.k8s_given_name}]", 0, 100))
+  description  = var.gcp_sa_description
   project      = var.project_id
 }
 
