@@ -19,7 +19,7 @@ var (
 		// Error code 409 for concurrent policy changes.
 		".*Error 409.*There were concurrent policy changes.*": "Concurrent policy changes.",
 
-		// Error 403 for quota exceeded
-		".*Error 403.*Quota exceeded for quota metric.*": "Quota exceeded.",
+		// API Rate limit exceeded errors can be retried.
+		".*rateLimitExceeded.*": "Rate limit exceeded.",
 	}
 )
