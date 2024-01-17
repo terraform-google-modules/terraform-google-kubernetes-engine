@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2018-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,5 @@ module "acm" {
 
   secret_type = "ssh"
 
-
-  policy_bundles        = ["https://github.com/GoogleCloudPlatform/gke-policy-library/bundles/policy-essentials-v2022?ref=7a5f87d7e1a2f63582505d14c2c90f496bcf263d"]
   create_metrics_gcp_sa = true
 }

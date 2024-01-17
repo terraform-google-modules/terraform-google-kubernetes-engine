@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2022-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,18 +56,6 @@ resource "google_gke_hub_feature_membership" "main" {
       }
     }
 
-    dynamic "policy_controller" {
-      for_each = var.enable_policy_controller ? [{ enabled = true }] : []
-
-      content {
-        enabled                    = true
-        mutation_enabled           = var.enable_mutation
-        referential_rules_enabled  = var.enable_referential_rules
-        template_library_installed = var.install_template_library
-        log_denies_enabled         = var.enable_log_denies
-      }
-    }
-
     dynamic "hierarchy_controller" {
       for_each = var.hierarchy_controller == null ? [] : [var.hierarchy_controller]
 
@@ -77,5 +65,49 @@ resource "google_gke_hub_feature_membership" "main" {
         enable_pod_tree_labels             = each.value.enable_pod_tree_labels
       }
     }
+  }
+}
+
+resource "google_gke_hub_feature" "policycontroller" {
+  count = var.enable_fleet_feature && var.enable_policy_controller ? 1 : 0
+
+  name     = "policycontroller"
+  project  = var.project_id
+  location = "global"
+}
+
+resource "google_gke_hub_feature_membership" "policycontroller" {
+  count = var.enable_policy_controller ? 1 : 0
+
+  depends_on = [
+    google_gke_hub_feature.policycontroller
+  ]
+
+  location = "global"
+  feature  = "policycontroller"
+
+  membership = module.registration.cluster_membership_id
+  project    = var.project_id
+
+  policycontroller {
+    policy_controller_hub_config {
+      policy_content {
+        template_library {
+          installation = var.install_template_library ? "ALL" : "NOT_INSTALLED"
+        }
+        # TODO: Add support for policy bundles
+        #dynamic "bundles" {
+        #  for_each = var.policy_bundles
+        #  content {
+        #    bundle = policy_bundles.value
+        #  }
+        #}
+      }
+
+      mutation_enabled          = var.enable_mutation
+      referential_rules_enabled = var.enable_referential_rules
+      log_denies_enabled        = var.enable_log_denies
+    }
+    version = var.configmanagement_version
   }
 }
