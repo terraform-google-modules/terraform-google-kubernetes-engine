@@ -48,7 +48,7 @@ resource "google_service_account" "cluster_service_account" {
 resource "google_project_iam_member" "cluster_service_account-nodeService_account" {
   count   = var.create_service_account ? 1 : 0
   project = google_service_account.cluster_service_account[0].project
-  role    = "roles/container.nodeServiceAccount"
+  role    = "roles/container.defaultNodeServiceAccount"
   member  = google_service_account.cluster_service_account[0].member
 }
 

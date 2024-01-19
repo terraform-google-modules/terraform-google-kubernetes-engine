@@ -20,14 +20,12 @@ terraform {
 
   required_providers {
     google = {
-      source = "hashicorp/google"
-      # Avoid v4.49 and v4.50 for https://github.com/hashicorp/terraform-provider-google/issues/13507
-      version = ">= 4.47.0, != 4.49.0, != 4.50.0, < 6"
+      source  = "hashicorp/google"
+      version = ">= 5.6.0, < 6"
     }
     google-beta = {
-      source = "hashicorp/google-beta"
-      # Avoid v4.49 and v4.50 for https://github.com/hashicorp/terraform-provider-google/issues/13507
-      version = ">= 4.47.0, != 4.49.0, != 4.50.0, < 6"
+      source  = "hashicorp/google-beta"
+      version = ">= 5.6.0, < 6"
     }
   }
 
