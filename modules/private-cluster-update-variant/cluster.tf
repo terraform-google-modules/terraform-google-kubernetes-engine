@@ -232,6 +232,7 @@ resource "google_container_cluster" "primary" {
         pod_range_names = var.additional_ip_range_pods
       }
     }
+    stack_type = var.stack_type
   }
 
   maintenance_policy {
@@ -269,7 +270,7 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
-    ignore_changes = [node_pool, initial_node_count, resource_labels["asmv"], resource_labels["mesh_id"]]
+    ignore_changes = [node_pool, initial_node_count, resource_labels["asmv"]]
   }
 
   dynamic "dns_config" {
@@ -289,6 +290,11 @@ resource "google_container_cluster" "primary" {
   node_pool {
     name               = "default-pool"
     initial_node_count = var.initial_node_count
+
+    management {
+      auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
+      auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
+    }
 
     node_config {
       image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
