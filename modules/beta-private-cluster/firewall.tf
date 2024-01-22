@@ -24,9 +24,25 @@
   Required for clusters when VPCs enforce
   a default-deny egress rule
  *****************************************/
+locals {
+  rule_name_base = (
+    var.add_firewall_rule_name_unique_suffix ?
+    "${substr(var.name, 0, min(31, length(var.name)))}-${random_string.google_compute_firewall_suffix[0].result}" :
+    substr(var.name, 0, min(36, length(var.name)))
+  )
+}
+
+resource "random_string" "google_compute_firewall_suffix" {
+  count   = var.add_firewall_rule_name_unique_suffix ? 1 : 0
+  upper   = false
+  lower   = true
+  special = false
+  length  = 4
+}
+
 resource "google_compute_firewall" "intra_egress" {
   count       = var.add_cluster_firewall_rules ? 1 : 0
-  name        = "gke-${substr(var.name, 0, min(36, length(var.name)))}-intra-cluster-egress"
+  name        = "gke-${local.rule_name_base}-intra-cluster-egress"
   description = "Managed by terraform gke module: Allow pods to communicate with each other and the master"
   project     = local.network_project_id
   network     = var.network
@@ -93,7 +109,7 @@ resource "google_compute_firewall" "tpu_egress" {
  *****************************************/
 resource "google_compute_firewall" "master_webhooks" {
   count       = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules ? 1 : 0
-  name        = "gke-${substr(var.name, 0, min(36, length(var.name)))}-webhooks"
+  name        = "gke-${local.rule_name_base}-webhooks"
   description = "Managed by terraform gke module: Allow master to hit pods for admission controllers/webhooks"
   project     = local.network_project_id
   network     = var.network
@@ -120,7 +136,7 @@ resource "google_compute_firewall" "master_webhooks" {
 resource "google_compute_firewall" "shadow_allow_pods" {
   count = var.add_shadow_firewall_rules ? 1 : 0
 
-  name        = "gke-shadow-${substr(var.name, 0, min(36, length(var.name)))}-all"
+  name        = "gke-shadow-${local.rule_name_base}-all"
   description = "Managed by terraform gke module: A shadow firewall rule to match the default rule allowing pod communication."
   project     = local.network_project_id
   network     = var.network
@@ -149,7 +165,7 @@ resource "google_compute_firewall" "shadow_allow_pods" {
 resource "google_compute_firewall" "shadow_allow_master" {
   count = var.add_shadow_firewall_rules ? 1 : 0
 
-  name        = "gke-shadow-${substr(var.name, 0, min(36, length(var.name)))}-master"
+  name        = "gke-shadow-${local.rule_name_base}-master"
   description = "Managed by terraform GKE module: A shadow firewall rule to match the default rule allowing worker nodes communication."
   project     = local.network_project_id
   network     = var.network
@@ -175,7 +191,7 @@ resource "google_compute_firewall" "shadow_allow_master" {
 resource "google_compute_firewall" "shadow_allow_nodes" {
   count = var.add_shadow_firewall_rules ? 1 : 0
 
-  name        = "gke-shadow-${substr(var.name, 0, min(36, length(var.name)))}-vms"
+  name        = "gke-shadow-${local.rule_name_base}-vms"
   description = "Managed by Terraform GKE module: A shadow firewall rule to match the default rule allowing worker nodes communication."
   project     = local.network_project_id
   network     = var.network
@@ -210,7 +226,7 @@ resource "google_compute_firewall" "shadow_allow_nodes" {
 resource "google_compute_firewall" "shadow_allow_inkubelet" {
   count = var.add_shadow_firewall_rules ? 1 : 0
 
-  name        = "gke-shadow-${substr(var.name, 0, min(36, length(var.name)))}-inkubelet"
+  name        = "gke-shadow-${local.rule_name_base}-inkubelet"
   description = "Managed by terraform GKE module: A shadow firewall rule to match the default rule allowing worker nodes & pods communication to kubelet."
   project     = local.network_project_id
   network     = var.network
@@ -237,7 +253,7 @@ resource "google_compute_firewall" "shadow_allow_inkubelet" {
 resource "google_compute_firewall" "shadow_deny_exkubelet" {
   count = var.add_shadow_firewall_rules ? 1 : 0
 
-  name        = "gke-shadow-${substr(var.name, 0, min(36, length(var.name)))}-exkubelet"
+  name        = "gke-shadow-${local.rule_name_base}-exkubelet"
   description = "Managed by terraform GKE module: A shadow firewall rule to match the default deny rule to kubelet."
   project     = local.network_project_id
   network     = var.network
