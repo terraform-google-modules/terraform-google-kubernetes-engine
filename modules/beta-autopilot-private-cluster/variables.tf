@@ -443,6 +443,11 @@ variable "database_encryption" {
   }]
 }
 
+variable "auto_provisioning_defaults_boot_disk_kms_key" {
+  description = "The default key for boot_disks when creating new nodes. This is the key_name of a CloudKMS key."
+  type        = string
+  default     = ""
+}
 
 variable "timeouts" {
   type        = map(string)

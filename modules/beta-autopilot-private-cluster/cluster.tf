@@ -73,10 +73,11 @@ resource "google_container_cluster" "primary" {
 
   cluster_autoscaling {
     dynamic "auto_provisioning_defaults" {
-      for_each = (var.create_service_account || var.service_account != "") ? [1] : []
+      for_each = (var.create_service_account || var.service_account != "" || var.auto_provisioning_defaults_boot_disk_kms_key  != null ) ? [1] : []
 
       content {
-        service_account = local.service_account
+        service_account   = local.service_account
+        boot_disk_kms_key = var.auto_provisioning_defaults_boot_disk_kms_key
       }
     }
   }
