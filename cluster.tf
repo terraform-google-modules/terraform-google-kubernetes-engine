@@ -122,6 +122,7 @@ resource "google_container_cluster" "primary" {
 
       }
     }
+    autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
     dynamic "resource_limits" {
       for_each = local.autoscaling_resource_limits
       content {
