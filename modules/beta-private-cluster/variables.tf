@@ -578,6 +578,7 @@ variable "enable_tpu" {
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
   default     = false
 }
+
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
