@@ -422,6 +422,18 @@ variable "notification_config_topic" {
   default     = ""
 }
 
+variable "notification_config_filter" {
+  type        = list(string)
+  description = "The type of notifications you want to receive. Its values must be in the allowed values list: ${jsonencode(local.notification_config_filter_allowed_values)}"
+
+  validation {
+    condition     = all([for value in var.notification_config_filter : contains(local.notification_config_filter_allowed_values, value)])
+    error_message = "All elements in notification_config_filter must be in the allowed values list: ${jsonencode(local.notification_config_filter_allowed_values)}"
+  }
+
+  default = ["UPGRADE_AVAILABLE_EVENT", "UPGRADE_EVENT", "SECURITY_BULLETIN_EVENT"]
+}
+
 variable "deletion_protection" {
   type        = bool
   description = "Whether or not to allow Terraform to destroy the cluster."

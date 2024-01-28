@@ -130,8 +130,9 @@ locals {
 
   # /BETA features
 
-  cluster_maintenance_window_is_recurring = var.maintenance_recurrence != "" && var.maintenance_end_time != "" ? [1] : []
-  cluster_maintenance_window_is_daily     = length(local.cluster_maintenance_window_is_recurring) > 0 ? [] : [1]
+  cluster_maintenance_window_is_recurring   = var.maintenance_recurrence != "" && var.maintenance_end_time != "" ? [1] : []
+  cluster_maintenance_window_is_daily       = length(local.cluster_maintenance_window_is_recurring) > 0 ? [] : [1]
+  notification_config_filter_allowed_values = ["UPGRADE_AVAILABLE_EVENT", "UPGRADE_EVENT", "SECURITY_BULLETIN_EVENT"]
 }
 
 /******************************************

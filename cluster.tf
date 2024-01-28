@@ -406,6 +406,9 @@ resource "google_container_cluster" "primary" {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
       topic   = var.notification_config_topic
+      filter = {
+        event_types = var.notification_config_filter
+      }
     }
   }
 }
