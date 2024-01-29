@@ -70,14 +70,13 @@ resource "google_container_cluster" "primary" {
       enabled = var.enable_cost_allocation
     }
   }
-{% if beta_cluster %}
+
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
       enabled = confidential_nodes.value.enabled
     }
   }
-{% endif %}
 
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
@@ -153,9 +152,7 @@ resource "google_container_cluster" "primary" {
         {% endif %}
       }
     }
-    {% if beta_cluster %}
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
-    {% endif %}
     dynamic "resource_limits" {
       for_each = local.autoscaling_resource_limits
       content {
