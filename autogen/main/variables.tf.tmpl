@@ -600,13 +600,12 @@ variable "deletion_protection" {
   default     = true
 }
 
-{% if beta_cluster %}
 variable "enable_tpu" {
   type        = bool
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
   default     = false
 }
-{% endif %}
+
 {% if autopilot_cluster != true %}
 variable "network_policy" {
   type        = bool
