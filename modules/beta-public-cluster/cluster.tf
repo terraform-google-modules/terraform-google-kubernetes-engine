@@ -64,6 +64,7 @@ resource "google_container_cluster" "primary" {
       enabled = var.enable_cost_allocation
     }
   }
+
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {

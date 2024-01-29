@@ -65,6 +65,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "confidential_nodes" {
+    for_each = local.confidential_node_config
+    content {
+      enabled = confidential_nodes.value.enabled
+    }
+  }
+
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
   default_snat_status {
@@ -115,6 +122,7 @@ resource "google_container_cluster" "primary" {
 
       }
     }
+    autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
     dynamic "resource_limits" {
       for_each = local.autoscaling_resource_limits
       content {
