@@ -64,6 +64,7 @@ resource "google_container_cluster" "primary" {
       enabled = var.enable_cost_allocation
     }
   }
+
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
@@ -151,10 +152,9 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  enable_kubernetes_alpha = var.enable_kubernetes_alpha
-
-  enable_intranode_visibility = var.enable_intranode_visibility
+  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   enable_tpu                  = var.enable_tpu
+  enable_intranode_visibility = var.enable_intranode_visibility
 
   dynamic "pod_security_policy_config" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []

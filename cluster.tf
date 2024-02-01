@@ -65,6 +65,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "confidential_nodes" {
+    for_each = local.confidential_node_config
+    content {
+      enabled = confidential_nodes.value.enabled
+    }
+  }
+
   subnetwork = "projects/${local.network_project_id}/regions/${local.region}/subnetworks/${var.subnetwork}"
 
   default_snat_status {
@@ -115,6 +122,7 @@ resource "google_container_cluster" "primary" {
 
       }
     }
+    autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
     dynamic "resource_limits" {
       for_each = local.autoscaling_resource_limits
       content {
@@ -138,7 +146,7 @@ resource "google_container_cluster" "primary" {
   }
 
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
-
+  enable_tpu              = var.enable_tpu
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {

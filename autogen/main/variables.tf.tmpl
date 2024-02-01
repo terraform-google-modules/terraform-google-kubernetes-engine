@@ -245,9 +245,7 @@ variable "enable_resource_consumption_export" {
 variable "cluster_autoscaling" {
   type = object({
     enabled             = bool
-{% if beta_cluster %}
     autoscaling_profile = string
-{% endif %}
     min_cpu_cores       = number
     max_cpu_cores       = number
     min_memory_gb       = number
@@ -260,9 +258,7 @@ variable "cluster_autoscaling" {
   })
   default = {
     enabled             = false
-{% if beta_cluster %}
     autoscaling_profile = "BALANCED"
-{% endif %}
     max_cpu_cores       = 0
     min_cpu_cores       = 0
     max_memory_gb       = 0
@@ -548,12 +544,12 @@ variable "shadow_firewall_rules_log_config" {
   }
 }
 
-{% if beta_cluster %}
 variable "enable_confidential_nodes" {
   type = bool
   description = "An optional flag to enable confidential node config."
   default = false
 }
+{% if beta_cluster %}
 
 variable "workload_vulnerability_mode" {
   description = "(beta) Vulnerability mode."
@@ -604,13 +600,12 @@ variable "deletion_protection" {
   default     = true
 }
 
-{% if beta_cluster %}
 variable "enable_tpu" {
   type        = bool
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
   default     = false
 }
-{% endif %}
+
 {% if autopilot_cluster != true %}
 variable "network_policy" {
   type        = bool
