@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2018-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,4 +45,11 @@ variable "membership_name" {
   description = "Membership name that uniquely represents the cluster being registered. Defaults to `$project_id-$location-$cluster_name`."
   type        = string
   default     = ""
+}
+
+// Defaults to global for backward compatibility.
+variable "membership_location" {
+  description = "Membership location for the cluster. Defaults to global."
+  type        = string
+  default     = "global"
 }
