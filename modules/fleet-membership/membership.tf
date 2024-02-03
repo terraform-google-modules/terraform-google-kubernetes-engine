@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2018-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ resource "google_gke_hub_membership" "primary" {
 
   project       = local.hub_project_id
   membership_id = local.gke_hub_membership_name
+  location      = var.membership_location
 
   endpoint {
     gke_cluster {
