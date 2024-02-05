@@ -164,6 +164,7 @@ locals {
   cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
     workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
+  confidential_node_config = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
   cluster_mesh_certificates_config = local.workload_identity_enabled ? [{
     enable_certificates = var.enable_mesh_certificates
   }] : []

@@ -84,7 +84,6 @@ resource "google_compute_firewall" "tpu_egress" {
 
 }
 
-
 /******************************************
   Allow GKE master to hit non 443 ports for
   Webhooks/Admission Controllers

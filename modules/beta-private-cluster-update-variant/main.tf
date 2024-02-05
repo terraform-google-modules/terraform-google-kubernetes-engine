@@ -182,6 +182,7 @@ locals {
   cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
     workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
+  confidential_node_config = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
   cluster_mesh_certificates_config = local.workload_identity_enabled ? [{
     enable_certificates = var.enable_mesh_certificates
   }] : []
@@ -192,7 +193,6 @@ locals {
   cluster_telemetry_type_is_set        = var.cluster_telemetry_type != null
   cluster_pod_security_policy_enabled  = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled = local.cluster_output_intranode_visbility_enabled
-  confidential_node_config             = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
 
   # /BETA features
 
