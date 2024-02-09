@@ -103,7 +103,8 @@ module "gke" {
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
-  monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
+  monitoring_enable_managed_prometheus    = var.monitoring_enable_managed_prometheus
+  monitoring_enable_observability_metrics = var.monitoring_enable_observability_metrics
 
   // We never use the default service account for the cluster. The default
   // project/editor permissions can create problems if nodes were to be ever
