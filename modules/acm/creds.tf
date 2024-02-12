@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2018-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ resource "time_sleep" "wait_acm" {
   count      = (var.create_ssh_key == true || var.ssh_auth_key != null || var.enable_policy_controller || var.enable_config_sync) ? 1 : 0
   depends_on = [google_gke_hub_feature_membership.main]
 
-  create_duration = (length(var.policy_bundles) > 0) ? "600s" : "300s"
+  create_duration = "600s"
 }
 
 resource "google_service_account_iam_binding" "ksa_iam" {

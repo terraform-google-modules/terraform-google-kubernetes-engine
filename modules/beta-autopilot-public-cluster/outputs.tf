@@ -142,6 +142,11 @@ output "identity_namespace" {
   ]
 }
 
+output "tpu_ipv4_cidr_block" {
+  description = "The IP range in CIDR notation used for the TPUs"
+  value       = var.enable_tpu ? google_container_cluster.primary.tpu_ipv4_cidr_block : null
+}
+
 
 
 output "cloudrun_enabled" {
@@ -172,9 +177,4 @@ output "intranode_visibility_enabled" {
 output "identity_service_enabled" {
   description = "Whether Identity Service is enabled"
   value       = local.cluster_pod_security_policy_enabled
-}
-
-output "tpu_ipv4_cidr_block" {
-  description = "The IP range in CIDR notation used for the TPUs"
-  value       = var.enable_tpu ? google_container_cluster.primary.tpu_ipv4_cidr_block : null
 }

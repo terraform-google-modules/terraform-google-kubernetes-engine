@@ -4,4 +4,5 @@ release.
 
 ### Default cluster service account permissions modified
 
-When `create_service_account` is `true`, the service account will now be created with the `Logs Writer`, `Monitoring Metric Writer`, `Monitoring Viewer` and `Stackdriver Resource Metadata Writer` roles instead of the deprecated `Kubernetes Engine Node Service Account` role.
+When `create_service_account` is `true`, the service account will now be created with `Kubernetes Engine Default Node Service Account` role instead of `Kubernetes Engine Node Service Account` roles which is deprecated now.
+This is the Google recommended least privileged role to be used for the service account attached to the GKE Nodes.

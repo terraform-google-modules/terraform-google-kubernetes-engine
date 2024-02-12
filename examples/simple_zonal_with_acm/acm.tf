@@ -16,7 +16,7 @@
 
 module "acm" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/acm"
-  version = "~> 29.0"
+  version = "~> 30.0"
 
   project_id   = var.project_id
   location     = module.gke.location
@@ -30,7 +30,5 @@ module "acm" {
 
   secret_type = "ssh"
 
-
-  policy_bundles        = ["https://github.com/GoogleCloudPlatform/gke-policy-library/bundles/policy-essentials-v2022?ref=7a5f87d7e1a2f63582505d14c2c90f496bcf263d"]
   create_metrics_gcp_sa = true
 }

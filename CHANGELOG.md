@@ -6,6 +6,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [30.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v29.0.0...v30.0.0) (2024-01-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=5.9:** cluster autoscaling profile is GA ([#1839](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1839))
+* Update least privilege default service account ([#1844](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1844))
+* **TPG>=5.6:** use hub membership location for output ([#1824](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1824))
+* Revert create least privilege default service account ([#1757](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1757)) (#1827)
+* **TF>=1.1:** Configure ASM management mode ([#1702](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1702))
+
+### Features
+
+* add advanced datapath observability config option ([#1776](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1776)) ([90e9bdf](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/90e9bdfb2a348ab22d996711e477cc6a7aa27c28))
+* Add support for configuring allow_net_admin in autopilot clusters ([#1768](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1768)) ([493149d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/493149d37aa13bbda1fc8dbcaec1b40f051c642e))
+* add support for pod_range in private cluster ([#1803](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1803)) ([9c62f1f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9c62f1f53afacf664528f9b3187c7e5df8eea1fa))
+* dual stack (IPV4_IPV6) support ([#1818](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1818)) ([d6cb390](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d6cb39062cc6ecc2f86af463afd883d1fd780657))
+* Make confidential_nodes GA ([#1815](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1815)) ([322a5ee](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/322a5ee978c5211d33c8b4605b91f0b4804994a4))
+* promote tpu to ga ([#1856](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1856)) ([ba78819](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ba788191e67a97d6b8eda40d7ba6e0d71c46ff52))
+* **TF>=1.1:** Configure ASM management mode ([#1702](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1702)) ([a9de2d7](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a9de2d79d68b19dfee5b6bd8ee0c646ee621bbee))
+* **TPG>=5.6:** use hub membership location for output ([#1824](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1824)) ([13e79af](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/13e79af0f7a99b8c20099431df4a14ee145f9b03))
+* **TPG>=5.9:** cluster autoscaling profile is GA ([#1839](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1839)) ([495623e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/495623eb38621976142d1e08edea94f6250f60aa))
+* Update least privilege default service account ([#1844](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1844)) ([c63aa4f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c63aa4fc3902aa53b2eea1f5bd0b7363383cacff))
+* workload-identity: Allow passing Google Service Account display_name and description  ([#1834](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1834)) ([b387621](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b387621c54235cf64d2c4cbc86c25a08fc6248fd))
+
+
+### Bug Fixes
+
+* Add project ID to the fleet feature membership for ASM ([#1832](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1832)) ([1835f80](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1835f80a7005a840b981dc60e999dfd8ca099184))
+* alpha option for cluster creation ([#1796](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1796)) ([67b67f3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/67b67f38e46306c7a4e0a1690d7fcb9b551874e1))
+* **CI:** extend wait time for ACM ([#1861](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1861)) ([3d840c0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3d840c04ad339793fd1899d8a129af594ba0a48c))
+* Do not ignore "mesh_id" label on "google_container_cluster" resource ([#1836](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1836)) ([95641a6](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/95641a6e7b1eab8d59e6da48a7e15a5e662da203))
+* Revert create least privilege default service account ([#1757](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1757)) ([#1827](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1827)) ([0d7f638](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0d7f63858d283ffb6c66d9f3a162ee0845db57f0))
+
 ## [29.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v28.0.0...v29.0.0) (2023-11-02)
 
 
