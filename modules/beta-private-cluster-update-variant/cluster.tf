@@ -741,6 +741,14 @@ resource "google_container_node_pool" "pools" {
             gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
           }
         }
+
+        dynamic "gpu_sharing_config" {
+          for_each = lookup(each.value, "gpu_sharing_strategy", "") != "" ? [1] : []
+          content {
+            gpu_sharing_strategy       = lookup(each.value, "gpu_sharing_strategy", "")
+            max_shared_clients_per_gpu = lookup(each.value, "max_shared_clients_per_gpu", 2)
+          }
+        }
       }
     }
 
@@ -974,6 +982,14 @@ resource "google_container_node_pool" "windows_pools" {
           for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
           content {
             gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
+          }
+        }
+
+        dynamic "gpu_sharing_config" {
+          for_each = lookup(each.value, "gpu_sharing_strategy", "") != "" ? [1] : []
+          content {
+            gpu_sharing_strategy       = lookup(each.value, "gpu_sharing_strategy", "")
+            max_shared_clients_per_gpu = lookup(each.value, "max_shared_clients_per_gpu", 2)
           }
         }
       }
