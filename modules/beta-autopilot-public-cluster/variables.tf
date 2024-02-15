@@ -430,3 +430,9 @@ variable "allow_net_admin" {
   type        = bool
   default     = null
 }
+
+variable "fleet_project" {
+  description = "(Optional) Register the cluster with the fleet in this project."
+  type        = string
+  default     = null
+}

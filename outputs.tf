@@ -174,3 +174,8 @@ output "mesh_certificates_config" {
   ]
 }
 
+
+output "fleet_membership" {
+  description = "Fleet membership (if registered)"
+  value       = local.fleet_membership
+}

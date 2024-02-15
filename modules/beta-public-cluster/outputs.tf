@@ -204,3 +204,8 @@ output "identity_service_enabled" {
   description = "Whether Identity Service is enabled"
   value       = local.cluster_pod_security_policy_enabled
 }
+
+output "fleet_membership" {
+  description = "Fleet membership (if registered)"
+  value       = local.fleet_membership
+}

@@ -781,3 +781,9 @@ variable "enable_gcfs" {
   description = "Enable image streaming on cluster level."
   default     = false
 }
+
+variable "fleet_project" {
+  description = "(Optional) Register the cluster with the fleet in this project."
+  type        = string
+  default     = null
+}
