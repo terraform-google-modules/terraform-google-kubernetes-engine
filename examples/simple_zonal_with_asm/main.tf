@@ -50,7 +50,7 @@ module "gke" {
       autoscaling  = false
       auto_upgrade = true
       node_count   = 3
-      machine_type = "e2-standard-4"
+      machine_type = "e2-standard-8"
     },
   ]
 }
