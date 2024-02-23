@@ -24,7 +24,7 @@ import (
 
 var (
 	KubectlTransientErrors = []string{
-		"E0222 .* the server is currently unable to handle the request",
+		"E022[23] .* the server is currently unable to handle the request",
 	}
 )
 
