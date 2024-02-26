@@ -234,3 +234,8 @@ output "identity_service_enabled" {
   value       = local.cluster_pod_security_policy_enabled
 }
 {% endif %}
+
+output "fleet_membership" {
+  description = "Fleet membership (if registered)"
+  value       = local.fleet_membership
+}
