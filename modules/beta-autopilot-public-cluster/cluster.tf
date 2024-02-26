@@ -147,6 +147,13 @@ resource "google_container_cluster" "primary" {
     vulnerability_mode = var.security_posture_vulnerability_mode
   }
 
+  dynamic "fleet" {
+    for_each = var.fleet_project != null ? [1] : []
+    content {
+      project = var.fleet_project
+    }
+  }
+
   ip_allocation_policy {
     cluster_secondary_range_name  = var.ip_range_pods
     services_secondary_range_name = var.ip_range_services
