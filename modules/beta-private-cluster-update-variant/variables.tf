@@ -148,6 +148,12 @@ variable "ip_range_services" {
   description = "The _name_ of the secondary subnet range to use for services"
 }
 
+variable "stack_type" {
+  type        = string
+  description = "The stack type to use for this cluster. Either `IPV4` or `IPV4_IPV6`. Defaults to `IPV4`."
+  default     = "IPV4"
+}
+
 variable "node_pools" {
   type        = list(map(any))
   description = "List of maps containing node pools"
@@ -572,6 +578,7 @@ variable "enable_tpu" {
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
   default     = false
 }
+
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"

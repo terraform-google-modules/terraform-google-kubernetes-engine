@@ -148,6 +148,12 @@ variable "ip_range_services" {
   description = "The _name_ of the secondary subnet range to use for services"
 }
 
+variable "stack_type" {
+  type        = string
+  description = "The stack type to use for this cluster. Either `IPV4` or `IPV4_IPV6`. Defaults to `IPV4`."
+  default     = "IPV4"
+}
+
 variable "node_pools" {
   type        = list(map(any))
   description = "List of maps containing node pools"
@@ -233,28 +239,30 @@ variable "enable_resource_consumption_export" {
 
 variable "cluster_autoscaling" {
   type = object({
-    enabled       = bool
-    min_cpu_cores = number
-    max_cpu_cores = number
-    min_memory_gb = number
-    max_memory_gb = number
-    gpu_resources = list(object({ resource_type = string, minimum = number, maximum = number }))
-    auto_repair   = bool
-    auto_upgrade  = bool
-    disk_size     = optional(number)
-    disk_type     = optional(string)
+    enabled             = bool
+    autoscaling_profile = string
+    min_cpu_cores       = number
+    max_cpu_cores       = number
+    min_memory_gb       = number
+    max_memory_gb       = number
+    gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair         = bool
+    auto_upgrade        = bool
+    disk_size           = optional(number)
+    disk_type           = optional(string)
   })
   default = {
-    enabled       = false
-    max_cpu_cores = 0
-    min_cpu_cores = 0
-    max_memory_gb = 0
-    min_memory_gb = 0
-    gpu_resources = []
-    auto_repair   = true
-    auto_upgrade  = true
-    disk_size     = 100
-    disk_type     = "pd-standard"
+    enabled             = false
+    autoscaling_profile = "BALANCED"
+    max_cpu_cores       = 0
+    min_cpu_cores       = 0
+    max_memory_gb       = 0
+    min_memory_gb       = 0
+    gpu_resources       = []
+    auto_repair         = true
+    auto_upgrade        = true
+    disk_size           = 100
+    disk_type           = "pd-standard"
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
@@ -475,6 +483,11 @@ variable "shadow_firewall_rules_log_config" {
   }
 }
 
+variable "enable_confidential_nodes" {
+  type        = bool
+  description = "An optional flag to enable confidential node config."
+  default     = false
+}
 
 variable "security_posture_mode" {
   description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
@@ -504,6 +517,12 @@ variable "deletion_protection" {
   type        = bool
   description = "Whether or not to allow Terraform to destroy the cluster."
   default     = true
+}
+
+variable "enable_tpu" {
+  type        = bool
+  description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
+  default     = false
 }
 
 variable "network_policy" {

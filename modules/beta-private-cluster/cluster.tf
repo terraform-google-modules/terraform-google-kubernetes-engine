@@ -64,6 +64,7 @@ resource "google_container_cluster" "primary" {
       enabled = var.enable_cost_allocation
     }
   }
+
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
@@ -151,10 +152,9 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  enable_kubernetes_alpha = var.enable_kubernetes_alpha
-
-  enable_intranode_visibility = var.enable_intranode_visibility
+  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   enable_tpu                  = var.enable_tpu
+  enable_intranode_visibility = var.enable_intranode_visibility
 
   dynamic "pod_security_policy_config" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
@@ -290,6 +290,7 @@ resource "google_container_cluster" "primary" {
         pod_range_names = var.additional_ip_range_pods
       }
     }
+    stack_type = var.stack_type
   }
 
   maintenance_policy {
@@ -327,7 +328,7 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
-    ignore_changes = [node_pool, initial_node_count, resource_labels["asmv"], resource_labels["mesh_id"]]
+    ignore_changes = [node_pool, initial_node_count, resource_labels["asmv"]]
   }
 
   dynamic "dns_config" {
@@ -347,6 +348,11 @@ resource "google_container_cluster" "primary" {
   node_pool {
     name               = "default-pool"
     initial_node_count = var.initial_node_count
+
+    management {
+      auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
+      auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
+    }
 
     node_config {
       image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")

@@ -15,7 +15,9 @@
  */
 
 module "hub" {
-  source                  = "../../modules/hub-legacy"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/hub-legacy"
+  version = "~> 30.0"
+
   project_id              = var.project_id
   location                = "remote"
   cluster_name            = kind_cluster.test-cluster.name

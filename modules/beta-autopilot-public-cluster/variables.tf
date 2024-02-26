@@ -142,6 +142,12 @@ variable "ip_range_services" {
   description = "The _name_ of the secondary subnet range to use for services"
 }
 
+variable "stack_type" {
+  type        = string
+  description = "The stack type to use for this cluster. Either `IPV4` or `IPV4_IPV6`. Defaults to `IPV4`."
+  default     = "IPV4"
+}
+
 
 variable "enable_cost_allocation" {
   type        = bool
@@ -397,6 +403,7 @@ variable "enable_tpu" {
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
   default     = false
 }
+
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
   type        = list(object({ state = string, key_name = string }))

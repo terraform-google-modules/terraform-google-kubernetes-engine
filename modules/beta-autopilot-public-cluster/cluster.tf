@@ -56,6 +56,7 @@ resource "google_container_cluster" "primary" {
       enabled = var.enable_cost_allocation
     }
   }
+
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
@@ -155,6 +156,7 @@ resource "google_container_cluster" "primary" {
         pod_range_names = var.additional_ip_range_pods
       }
     }
+    stack_type = var.stack_type
   }
 
   maintenance_policy {

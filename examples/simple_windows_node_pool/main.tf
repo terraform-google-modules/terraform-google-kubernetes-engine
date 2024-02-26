@@ -27,7 +27,9 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source     = "../../modules/beta-public-cluster/"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
+  version = "~> 30.0"
+
   project_id = var.project_id
   regional   = false
   region     = var.region
