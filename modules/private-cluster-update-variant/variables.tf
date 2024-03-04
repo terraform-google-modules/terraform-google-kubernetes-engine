@@ -679,13 +679,19 @@ variable "timeouts" {
 variable "monitoring_enable_managed_prometheus" {
   type        = bool
   description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
-  default     = false
+  default     = null
 }
 
 variable "monitoring_enable_observability_metrics" {
   type        = bool
   description = "Whether or not the advanced datapath metrics are enabled."
-  default     = false
+  default     = null
+}
+
+variable "monitoring_enable_observability_relay" {
+  type        = bool
+  description = "Whether or not the advanced datapath relay is enabled."
+  default     = null
 }
 
 variable "monitoring_observability_metrics_relay_mode" {
