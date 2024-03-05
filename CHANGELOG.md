@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [30.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v30.0.0...v30.1.0) (2024-02-26)
+
+
+### Features
+
+* add direct fleet registration option ([#1878](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1878)) ([6b267bd](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6b267bd91362cd78e06850a267a04c0fd2427b1c))
+* add optional membership_location to fleet-membership ([#1860](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1860)) ([163de39](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/163de3917b3973cab9eeca83054e718c195bff14))
+
+
+### Bug Fixes
+
+* handle missing fleet membership and extend asm timeout ([#1880](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1880)) ([22896b0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/22896b0835a4f68aed92c5330c1e9a65faa97a1c))
+
 ## [30.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v29.0.0...v30.0.0) (2024-01-31)
 
 
