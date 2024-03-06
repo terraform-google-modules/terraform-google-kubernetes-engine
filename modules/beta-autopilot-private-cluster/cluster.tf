@@ -268,4 +268,6 @@ resource "google_container_cluster" "primary" {
       topic   = var.notification_config_topic
     }
   }
+
+  depends_on = [google_project_iam_member.service_agent]
 }
