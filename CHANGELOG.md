@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [30.2.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v30.1.0...v30.2.0) (2024-03-08)
+
+
+### Features
+
+* add cross project fleet service agent ([#1896](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1896)) ([59d36b9](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/59d36b9c2ce27e2830f174afe8dd42416b664833))
+
 ## [30.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v30.0.0...v30.1.0) (2024-02-26)
 
 
