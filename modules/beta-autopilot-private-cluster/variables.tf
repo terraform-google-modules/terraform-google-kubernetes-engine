@@ -466,3 +466,9 @@ variable "fleet_project" {
   type        = string
   default     = null
 }
+
+variable "fleet_project_grant_service_agent" {
+  description = "(Optional) Grant the fleet project service identity the `roles/gkehub.serviceAgent` and `roles/gkehub.crossProjectServiceAgent` roles."
+  type        = bool
+  default     = false
+}

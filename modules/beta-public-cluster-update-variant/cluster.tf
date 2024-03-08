@@ -481,6 +481,8 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
+
+  depends_on = [google_project_iam_member.service_agent]
 }
 /******************************************
   Create Container Cluster node pools
