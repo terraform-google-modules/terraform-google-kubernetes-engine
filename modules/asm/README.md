@@ -2,6 +2,9 @@
 
 This module installs [Anthos Service Mesh](https://cloud.google.com/service-mesh/docs) (ASM) in a Kubernetes Engine (GKE) cluster.
 
+> [!NOTE]
+> ASM Submodule is not supported / managed anymore and ASM team recommends to use [GKEHub TF module](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature#example-usage---gkehub-feature-anthos-service-mesh) to install ASM.
+
 ## Usage
 
 The ASM module requires Terraform 0.14+. There are a few prerequisites to using this module that can be done either through Terraform and/or manually:
