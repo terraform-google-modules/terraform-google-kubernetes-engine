@@ -628,6 +628,9 @@ resource "google_container_cluster" "primary" {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
       topic   = var.notification_config_topic
+      filter {
+        event_type = var.notification_filter_event_type
+      }
     }
   }
   {% if beta_cluster and autopilot_cluster != true %}
