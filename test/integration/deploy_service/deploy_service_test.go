@@ -43,7 +43,7 @@ func TestDeployService(t *testing.T) {
 		k8sOpts := k8s.KubectlOptions{}
 		listServices, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "svc", "terraform-example", "-o", "json")
 		assert.NoError(err)
-		kubeService := utils.ParseJSONResult(t, listServices)
+		kubeService := testutils.ParseKubectlJSONResult(t, listServices)
 		serviceIp := kubeService.Get("status.loadBalancer.ingress").Array()[0].Get("ip")
 		serviceUrl := fmt.Sprintf("http://%s:8080", serviceIp)
 
