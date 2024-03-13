@@ -68,18 +68,16 @@ module "gke" {
       auto_upgrade    = true
     },
     {
-      name                       = "pool-02"
-      machine_type               = "n1-standard-2"
-      min_count                  = 1
-      max_count                  = 2
-      disk_size_gb               = 30
-      disk_type                  = "pd-standard"
-      accelerator_count          = 1
-      accelerator_type           = "nvidia-tesla-p4"
-      gpu_sharing_strategy       = "TIME_SHARING"
-      max_shared_clients_per_gpu = 4
-      auto_repair                = false
-      service_account            = var.compute_engine_service_account
+      name              = "pool-02"
+      machine_type      = "n1-standard-2"
+      min_count         = 1
+      max_count         = 2
+      disk_size_gb      = 30
+      disk_type         = "pd-standard"
+      accelerator_count = 1
+      accelerator_type  = "nvidia-tesla-p4"
+      auto_repair       = false
+      service_account   = var.compute_engine_service_account
     },
   ]
 
