@@ -3,7 +3,7 @@
 This module installs [Anthos Service Mesh](https://cloud.google.com/service-mesh/docs) (ASM) in a Kubernetes Engine (GKE) cluster.
 
 > [!NOTE]
-> ASM Submodule is not supported / managed anymore and ASM team recommends to use [GKEHub TF module](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature#example-usage---gkehub-feature-anthos-service-mesh) to install ASM.
+> This module is no longer supported or recommended. Instead, use the `google_gke_hub_feature` and `google_gke_hub_feature_membership` resources to provision managed service mesh as shown at https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature_membership#example-usage---service-mesh
 
 ## Usage
 
