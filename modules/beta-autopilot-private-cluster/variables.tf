@@ -283,8 +283,8 @@ variable "enable_private_nodes" {
 
 variable "master_ipv4_cidr_block" {
   type        = string
-  description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
-  default     = "10.0.0.0/28"
+  description = "(Beta) The IP range in CIDR notation to use for the hosted master network. Optional for Autopilot clusters."
+  default     = null
 }
 
 variable "master_global_access_enabled" {
@@ -459,4 +459,16 @@ variable "allow_net_admin" {
   description = "(Optional) Enable NET_ADMIN for the cluster."
   type        = bool
   default     = null
+}
+
+variable "fleet_project" {
+  description = "(Optional) Register the cluster with the fleet in this project."
+  type        = string
+  default     = null
+}
+
+variable "fleet_project_grant_service_agent" {
+  description = "(Optional) Grant the fleet project service identity the `roles/gkehub.serviceAgent` and `roles/gkehub.crossProjectServiceAgent` roles."
+  type        = bool
+  default     = false
 }

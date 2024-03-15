@@ -417,7 +417,7 @@ variable "enable_private_nodes" {
 
 variable "master_ipv4_cidr_block" {
   type        = string
-  description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
+  description = "(Beta) The IP range in CIDR notation to use for the hosted master network. Optional for Autopilot clusters."
   default     = "10.0.0.0/28"
 }
 
@@ -720,4 +720,10 @@ variable "config_connector" {
   type        = bool
   description = "Whether ConfigConnector is enabled for this cluster."
   default     = false
+}
+
+variable "fleet_project" {
+  description = "(Optional) Register the cluster with the fleet in this project."
+  type        = string
+  default     = null
 }
