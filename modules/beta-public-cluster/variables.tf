@@ -239,17 +239,24 @@ variable "enable_resource_consumption_export" {
 
 variable "cluster_autoscaling" {
   type = object({
-    enabled             = bool
-    autoscaling_profile = string
-    min_cpu_cores       = number
-    max_cpu_cores       = number
-    min_memory_gb       = number
-    max_memory_gb       = number
-    gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))
-    auto_repair         = bool
-    auto_upgrade        = bool
-    disk_size           = optional(number)
-    disk_type           = optional(string)
+    enabled                 = bool
+    autoscaling_profile     = string
+    min_cpu_cores           = number
+    max_cpu_cores           = number
+    min_memory_gb           = number
+    max_memory_gb           = number
+    gpu_resources           = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair             = bool
+    auto_upgrade            = bool
+    disk_size               = optional(number)
+    disk_type               = optional(string)
+    strategy                = optional(string)
+    max_surge               = optional(number)
+    max_unavailable         = optional(number)
+    node_pool_soak_duration = optional(string)
+    batch_soak_duration     = optional(string)
+    batch_percentage        = optional(number)
+    batch_node_count        = optional(number)
   })
   default = {
     enabled             = false
