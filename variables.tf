@@ -324,6 +324,12 @@ variable "ip_masq_resync_interval" {
   default     = "60s"
 }
 
+variable "network_tags" {
+  description = "(Optional, Beta) - List of network tags applied to auto-provisioned node pools."
+  type        = list(string)
+  default     = []
+}
+
 variable "ip_masq_link_local" {
   type        = bool
   description = "Whether to masquerade traffic to the link-local prefix (169.254.0.0/16)."
