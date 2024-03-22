@@ -90,8 +90,8 @@ module "gke" {
   {% if beta_cluster and autopilot_cluster != true  %}
   istio                      = true
   cloudrun                   = true
-  dns_cache                  = false
   {% endif %}
+  dns_cache                  = false
 
 {% if autopilot_cluster != true %}
   node_pools = [

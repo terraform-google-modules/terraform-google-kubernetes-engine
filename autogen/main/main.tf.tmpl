@@ -231,7 +231,6 @@ locals {
 {% if beta_cluster %}
   # BETA features
   cluster_istio_enabled                    = ! local.cluster_output_istio_disabled
-  cluster_dns_cache_enabled                = var.dns_cache
   {% if autopilot_cluster != true %}
   cluster_telemetry_type_is_set            = var.cluster_telemetry_type != null
   {% endif %}
@@ -241,6 +240,7 @@ locals {
   # /BETA features
 {% endif %}
 
+  cluster_dns_cache_enabled               = var.dns_cache
   cluster_maintenance_window_is_recurring = var.maintenance_recurrence != "" && var.maintenance_end_time != "" ? [1] : []
   cluster_maintenance_window_is_daily     = length(local.cluster_maintenance_window_is_recurring) > 0 ? [] : [1]
 }
