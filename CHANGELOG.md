@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [30.2.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v30.2.0...v30.2.1) (2024-03-22)
+
+
+### Bug Fixes
+
+* make master_ipv4_cidr_block optional for autopilot ([#1902](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1902)) ([af43bdd](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/af43bddeaa5902681c0012b7ea724937b161fad6))
+
 ## [30.2.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v30.1.0...v30.2.0) (2024-03-08)
 
 
