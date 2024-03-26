@@ -102,6 +102,12 @@ variable "service_external_ips" {
   default     = false
 }
 
+variable "gke_backup_agent_config" {
+  type        = bool
+  description = "Whether Backup for GKE agent is enabled for this cluster."
+  default     = false
+}
+
 {% if autopilot_cluster != true %}
 variable "datapath_provider" {
   type        = string
