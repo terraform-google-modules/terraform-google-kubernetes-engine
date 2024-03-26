@@ -280,6 +280,12 @@ variable "monitoring_enable_managed_prometheus" {
   default     = false
 }
 
+variable "monitoring_enable_observability_metrics" {
+  type        = bool
+  description = "Whether or not the advanced datapath metrics are enabled."
+  default     = false
+}
+
 variable "grant_registry_access" {
   type        = bool
   description = "Grants created cluster-specific service account storage.objectViewer role."
