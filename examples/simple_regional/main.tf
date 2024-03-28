@@ -28,7 +28,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google"
-  version = "~> 29.0"
+  version = "~> 30.0"
 
   project_id                  = var.project_id
   name                        = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -43,5 +43,6 @@ module "gke" {
   enable_cost_allocation      = true
   enable_binary_authorization = var.enable_binary_authorization
   gcs_fuse_csi_driver         = true
+  fleet_project               = var.project_id
   deletion_protection         = false
 }

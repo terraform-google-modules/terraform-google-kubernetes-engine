@@ -18,7 +18,7 @@ locals {
   hub_project_id                   = var.hub_project_id == "" ? var.project_id : var.hub_project_id
   gke_hub_membership_name_complete = var.membership_name != "" ? var.membership_name : "${var.project_id}-${var.location}-${var.cluster_name}"
   gke_hub_membership_name          = trimsuffix(substr(local.gke_hub_membership_name_complete, 0, 63), "-")
-  gke_hub_membership_location      = regex(local.gke_hub_membership_location_re, data.google_container_cluster.primary.fleet[0].membership)[0]
+  gke_hub_membership_location      = try(regex(local.gke_hub_membership_location_re, data.google_container_cluster.primary.fleet[0].membership)[0], null)
   gke_hub_membership_location_re   = "//gkehub.googleapis.com/projects/[^/]*/locations/([^/]*)/memberships/[^/]*$"
 }
 

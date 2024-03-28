@@ -79,3 +79,8 @@ output "master_kubernetes_version" {
   description = "The master Kubernetes version"
   value       = module.gke.master_version
 }
+
+output "hub_location" {
+  description = "The location of the hub membership."
+  value       = module.hub.location
+}

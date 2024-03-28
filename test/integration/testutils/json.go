@@ -1,4 +1,4 @@
-// Copyright 2022-2024 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,27 @@
 
 package testutils
 
+import (
+	"bytes"
+	"testing"
+
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
+	"github.com/tidwall/gjson"
+)
+
 var (
-	RetryableTransientErrors = map[string]string{
-		// Error 409: unable to queue the operation
-		".*Error 409.*unable to queue the operation": "Unable to queue operation.",
-
-		// Error code 409 for concurrent policy changes.
-		".*Error 409.*There were concurrent policy changes.*": "Concurrent policy changes.",
-
-		// API Rate limit exceeded errors can be retried.
-		".*rateLimitExceeded.*": "Rate limit exceeded.",
+	KubectlTransientErrors = []string{
+		"E022[23] .* the server is currently unable to handle the request",
 	}
 )
+
+// Filter transient errors from kubectl output
+func ParseKubectlJSONResult(t testing.TB, s string) gjson.Result {
+	bstring := []byte(s)
+
+	for _, v := range KubectlTransientErrors {
+		bstring = bytes.Replace(bstring, []byte(v), []byte(""), -1)
+	}
+
+	return utils.ParseJSONResult(t, string(bstring))
+}

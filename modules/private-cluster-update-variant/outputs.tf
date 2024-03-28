@@ -161,6 +161,11 @@ output "identity_namespace" {
   ]
 }
 
+output "tpu_ipv4_cidr_block" {
+  description = "The IP range in CIDR notation used for the TPUs"
+  value       = var.enable_tpu ? google_container_cluster.primary.tpu_ipv4_cidr_block : null
+}
+
 output "mesh_certificates_config" {
   description = "Mesh certificates configuration"
   value       = local.cluster_mesh_certificates_config
@@ -178,4 +183,9 @@ output "master_ipv4_cidr_block" {
 output "peering_name" {
   description = "The name of the peering between this cluster and the Google owned VPC."
   value       = local.cluster_peering_name
+}
+
+output "fleet_membership" {
+  description = "Fleet membership (if registered)"
+  value       = local.fleet_membership
 }

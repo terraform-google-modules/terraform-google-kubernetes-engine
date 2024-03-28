@@ -57,7 +57,6 @@ resource "google_compute_firewall" "intra_egress" {
 }
 
 
-{% if beta_cluster %}
 /******************************************
   Allow egress to the TPU IPv4 CIDR block
 
@@ -95,8 +94,6 @@ resource "google_compute_firewall" "tpu_egress" {
   {% endif %}
 }
 
-
-{% endif %}
 /******************************************
   Allow GKE master to hit non 443 ports for
   Webhooks/Admission Controllers

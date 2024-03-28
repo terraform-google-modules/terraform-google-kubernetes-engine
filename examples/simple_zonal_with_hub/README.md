@@ -23,6 +23,7 @@ It incorporates the standard cluster module, the [registration module](../../mod
 | ca\_certificate | n/a |
 | client\_token | n/a |
 | cluster\_name | Cluster name |
+| hub\_location | The location of the hub membership. |
 | ip\_range\_pods | The secondary IP range used for pods |
 | ip\_range\_services | The secondary IP range used for services |
 | kubernetes\_endpoint | n/a |

@@ -54,6 +54,8 @@ locals {
   windows_node_pool_names = [for np in toset(var.windows_node_pools) : np.name]
   windows_node_pools      = zipmap(local.windows_node_pool_names, tolist(toset(var.windows_node_pools)))
 
+  fleet_membership = var.fleet_project != null ? google_container_cluster.primary.fleet[0].membership : null
+
   release_channel    = var.release_channel != null ? [{ channel : var.release_channel }] : []
   gateway_api_config = var.gateway_api_channel != null ? [{ channel : var.gateway_api_channel }] : []
 
@@ -162,6 +164,7 @@ locals {
   cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
     workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
+  confidential_node_config = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
   cluster_mesh_certificates_config = local.workload_identity_enabled ? [{
     enable_certificates = var.enable_mesh_certificates
   }] : []
