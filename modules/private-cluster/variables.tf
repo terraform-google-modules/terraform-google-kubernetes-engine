@@ -727,8 +727,3 @@ variable "fleet_project" {
   type        = string
   default     = null
 }
-variable "enable_identity_service" {
-  type        = bool
-  description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
-  default     = false
-}

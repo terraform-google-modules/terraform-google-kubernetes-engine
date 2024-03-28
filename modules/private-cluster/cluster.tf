@@ -160,12 +160,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  dynamic "identity_service_config" {
-    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
-    content {
-      enabled = identity_service_config.value
-    }
-  }
   master_auth {
     client_certificate_config {
       issue_client_certificate = var.issue_client_certificate
