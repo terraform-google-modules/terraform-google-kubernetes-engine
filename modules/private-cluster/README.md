@@ -243,6 +243,8 @@ Then perform the following commands on the root folder:
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | `list(string)` | `[]` | no |
 | windows\_node\_pools | List of maps containing Windows node pools | `list(map(string))` | `[]` | no |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | `list(string)` | `[]` | no |
+| enable_identity_service | Enable external identity providers to authenticate to GKE | `bool` | `false` | no |
+
 
 ## Outputs
 
