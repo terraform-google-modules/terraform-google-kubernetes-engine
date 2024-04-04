@@ -3,13 +3,13 @@
 This example provisions a cluster in an island VPC allowing reuse of the IP address space for multiple clusters in the same project. 
 
 1. An appliance(VM as router) with multiple NICs is used to establish connectivity between the island VPC and the existing network.
-2. Outbound connections will go through the router.
-3. For inbound connections, use Private Service Connect.
+1. Outbound connections will go through the router.
+1. For inbound connections, use Private Service Connect.
 
 ## Deploy
 
 1. Update `project_id`, `cluster_name` and `primary_subnet` values in `terraform.tfvars`, and update other variables as needed.
-2. Use `Terraform` or `OpenTofu` to deploy.
+1. Run `terraform apply`.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
