@@ -78,6 +78,7 @@ module "gke" {
       sandbox_enabled    = true
       cpu_manager_policy = "static"
       cpu_cfs_quota      = true
+      pod_pids_limit     = 4096
     },
   ]
 
