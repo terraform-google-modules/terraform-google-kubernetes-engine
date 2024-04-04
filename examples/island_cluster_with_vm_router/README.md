@@ -1,6 +1,6 @@
 # GKE island cluster using VM as router
 
-This example provisions a cluster in an island VPC allowing reuse of the IP address space for multiple clusters in the same project. 
+This example provisions a cluster in an island VPC allowing reuse of the IP address space for multiple clusters in the same project.
 
 1. An appliance(VM as router) with multiple NICs is used to establish connectivity between the island VPC and the existing network.
 1. Outbound connections will go through the router.
