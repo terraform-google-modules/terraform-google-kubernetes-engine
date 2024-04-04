@@ -160,6 +160,15 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "node_pool_auto_config" {
+    for_each = var.cluster_autoscaling.enabled && length(var.network_tags) > 0 ? [1] : []
+    content {
+      network_tags {
+        tags = var.network_tags
+      }
+    }
+  }
+
   master_auth {
     client_certificate_config {
       issue_client_certificate = var.issue_client_certificate
