@@ -213,7 +213,7 @@ The node_pools variable takes the following parameters:
 | local_ssd_count | The amount of local SSD disks that will be attached to each cluster node and may be used as a `hostpath` volume or a `local` PersistentVolume.  | 0 | Optional |
 {% if beta_cluster %}
 | local_ssd_ephemeral_count | The amount of local SSD disks that will be attached to each cluster node and assigned as scratch space as an `emptyDir` volume. If unspecified, ephemeral storage is backed by the cluster node boot disk. | 0 | Optional |
-| local_nvme_ssd_count | Number of raw-block local NVMe SSD disks to be attached to the node.Each local SSD is 375 GB in size. If zero, it means no raw-block local NVMe SSD disks to be attached to the node. | 0 | Optional |
+| local_nvme_ssd_count | Number of raw-block local NVMe SSD disks to be attached to the node. Each local SSD is 375 GB in size. If zero, it means no raw-block local NVMe SSD disks to be attached to the node. | 0 | Optional |
 {% endif %}
 | machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
 | min_cpu_platform | Minimum CPU platform to be used by the nodes in the pool. The nodes may be scheduled on the specified or newer CPU platform. | " " | Optional |
