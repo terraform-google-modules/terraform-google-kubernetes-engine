@@ -147,6 +147,8 @@ resource "google_container_cluster" "primary" {
 
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
   enable_tpu              = var.enable_tpu
+
+  enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
