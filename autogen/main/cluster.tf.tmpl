@@ -855,7 +855,6 @@ resource "google_container_node_pool" "windows_pools" {
         local_ssd_count = local_nvme_ssd_block_config.value
       }
     }
-    {% endif %}
 
     service_account = lookup(
       each.value,
