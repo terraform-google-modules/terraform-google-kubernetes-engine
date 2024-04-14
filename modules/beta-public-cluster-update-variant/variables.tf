@@ -729,6 +729,12 @@ variable "config_connector" {
   default     = false
 }
 
+variable "enable_l4_ilb_subsetting" {
+  type        = bool
+  description = "Enable L4 ILB Subsetting on the cluster"
+  default     = false
+}
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   type        = bool
@@ -762,12 +768,6 @@ variable "cloudrun_load_balancer_type" {
 variable "enable_pod_security_policy" {
   type        = bool
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. Pod Security Policy was removed from GKE clusters with version >= 1.25.0."
-  default     = false
-}
-
-variable "enable_l4_ilb_subsetting" {
-  type        = bool
-  description = "Enable L4 ILB Subsetting on the cluster"
   default     = false
 }
 

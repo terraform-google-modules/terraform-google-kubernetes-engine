@@ -735,6 +735,12 @@ variable "config_connector" {
   default     = false
 }
 
+variable "enable_l4_ilb_subsetting" {
+  type        = bool
+  description = "Enable L4 ILB Subsetting on the cluster"
+  default     = false
+}
+
 variable "fleet_project" {
   description = "(Optional) Register the cluster with the fleet in this project."
   type        = string

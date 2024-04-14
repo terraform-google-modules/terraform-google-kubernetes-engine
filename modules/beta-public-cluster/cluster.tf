@@ -658,6 +658,13 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    dynamic "local_nvme_ssd_block_config" {
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [1] : []
+      content {
+        local_ssd_count = local_nvme_ssd_block_config.value
+      }
+    }
+
     service_account = lookup(
       each.value,
       "service_account",
@@ -889,6 +896,13 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "local_ssd_ephemeral_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
       content {
         local_ssd_count = ephemeral_storage_config.value
+      }
+    }
+
+    dynamic "local_nvme_ssd_block_config" {
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [1] : []
+      content {
+        local_ssd_count = local_nvme_ssd_block_config.value
       }
     }
 

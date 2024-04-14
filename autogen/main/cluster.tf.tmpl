@@ -225,9 +225,9 @@ resource "google_container_cluster" "primary" {
       enabled = identity_service_config.value
     }
   }
+  {% endif %}
 
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
-  {% endif %}
   {% endif %}
 {% if beta_cluster %}
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
@@ -867,6 +867,13 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
     {% endif %}
+
+    dynamic "local_nvme_ssd_block_config" {
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [1] : []
+      content {
+        local_ssd_count = local_nvme_ssd_block_config.value
+      }
+    }
 
     service_account = lookup(
       each.value,
