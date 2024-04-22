@@ -585,7 +585,7 @@ resource "google_container_cluster" "primary" {
       topic   = var.notification_config_topic
     }
   }
-  {% if beta_cluster and autopilot_cluster != true %}
+  {% if autopilot_cluster != true %}
 
   node_pool_defaults {
     node_config_defaults {
