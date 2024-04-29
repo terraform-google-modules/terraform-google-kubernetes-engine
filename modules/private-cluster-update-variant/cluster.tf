@@ -147,6 +147,8 @@ resource "google_container_cluster" "primary" {
 
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
   enable_tpu              = var.enable_tpu
+
+  enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -156,6 +158,15 @@ resource "google_container_cluster" "primary" {
           cidr_block   = lookup(cidr_blocks.value, "cidr_block", "")
           display_name = lookup(cidr_blocks.value, "display_name", "")
         }
+      }
+    }
+  }
+
+  dynamic "node_pool_auto_config" {
+    for_each = var.cluster_autoscaling.enabled && length(var.network_tags) > 0 ? [1] : []
+    content {
+      network_tags {
+        tags = var.network_tags
       }
     }
   }
@@ -229,6 +240,13 @@ resource "google_container_cluster" "primary" {
   security_posture_config {
     mode               = var.security_posture_mode
     vulnerability_mode = var.security_posture_vulnerability_mode
+  }
+
+  dynamic "fleet" {
+    for_each = var.fleet_project != null ? [1] : []
+    content {
+      project = var.fleet_project
+    }
   }
 
   ip_allocation_policy {
@@ -643,6 +661,13 @@ resource "google_container_node_pool" "pools" {
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
 
+    dynamic "local_nvme_ssd_block_config" {
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [1] : []
+      content {
+        local_ssd_count = local_nvme_ssd_block_config.value
+      }
+    }
+
     service_account = lookup(
       each.value,
       "service_account",
@@ -852,6 +877,13 @@ resource "google_container_node_pool" "windows_pools" {
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
+
+    dynamic "local_nvme_ssd_block_config" {
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [1] : []
+      content {
+        local_ssd_count = local_nvme_ssd_block_config.value
+      }
+    }
 
     service_account = lookup(
       each.value,

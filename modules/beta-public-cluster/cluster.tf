@@ -185,6 +185,15 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "node_pool_auto_config" {
+    for_each = var.cluster_autoscaling.enabled && length(var.network_tags) > 0 ? [1] : []
+    content {
+      network_tags {
+        tags = var.network_tags
+      }
+    }
+  }
+
   master_auth {
     client_certificate_config {
       issue_client_certificate = var.issue_client_certificate
@@ -279,6 +288,13 @@ resource "google_container_cluster" "primary" {
   security_posture_config {
     mode               = var.security_posture_mode
     vulnerability_mode = var.security_posture_vulnerability_mode
+  }
+
+  dynamic "fleet" {
+    for_each = var.fleet_project != null ? [1] : []
+    content {
+      project = var.fleet_project
+    }
   }
 
   ip_allocation_policy {
@@ -474,6 +490,8 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
+
+  depends_on = [google_project_iam_member.service_agent]
 }
 /******************************************
   Create Container Cluster node pools
@@ -618,6 +636,13 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "local_ssd_ephemeral_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
       content {
         local_ssd_count = ephemeral_storage_config.value
+      }
+    }
+
+    dynamic "local_nvme_ssd_block_config" {
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [1] : []
+      content {
+        local_ssd_count = local_nvme_ssd_block_config.value
       }
     }
 
@@ -852,6 +877,13 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "local_ssd_ephemeral_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
       content {
         local_ssd_count = ephemeral_storage_config.value
+      }
+    }
+
+    dynamic "local_nvme_ssd_block_config" {
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [1] : []
+      content {
+        local_ssd_count = local_nvme_ssd_block_config.value
       }
     }
 

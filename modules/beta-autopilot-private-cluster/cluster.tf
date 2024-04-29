@@ -107,6 +107,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+
   master_auth {
     client_certificate_config {
       issue_client_certificate = var.issue_client_certificate
@@ -145,6 +146,13 @@ resource "google_container_cluster" "primary" {
   security_posture_config {
     mode               = var.security_posture_mode
     vulnerability_mode = var.security_posture_vulnerability_mode
+  }
+
+  dynamic "fleet" {
+    for_each = var.fleet_project != null ? [1] : []
+    content {
+      project = var.fleet_project
+    }
   }
 
   ip_allocation_policy {
@@ -261,4 +269,6 @@ resource "google_container_cluster" "primary" {
       topic   = var.notification_config_topic
     }
   }
+
+  depends_on = [google_project_iam_member.service_agent]
 }
