@@ -387,6 +387,7 @@ The node_pools variable takes the following parameters:
 | sandbox_type | Sandbox to use for pods in the node pool | | Required |
 | service_account | The service account to be used by the Node VMs | " " | Optional |
 | tags | The list of instance tags applied to all nodes | | Required |
+| threads_per_core | The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed | | Optional |
 | value | The value for the taint | | Required |
 | version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
 | location_policy | [Location policy](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool#location_policy) specifies the algorithm used when scaling-up the node pool. Location policy is supported only in 1.24.1+ clusters. | " " | Optional |
