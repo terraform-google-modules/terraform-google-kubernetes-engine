@@ -52,6 +52,20 @@ resource "google_project_iam_member" "cluster_service_account-nodeService_accoun
   member  = google_service_account.cluster_service_account[0].member
 }
 
+resource "google_project_iam_member" "cluster_service_account-metric_writer" {
+  count   = var.create_service_account ? 1 : 0
+  project = google_project_iam_member.cluster_service_account-log_writer[0].project
+  role    = "roles/monitoring.metricWriter"
+  member  = google_service_account.cluster_service_account[0].member
+}
+
+resource "google_project_iam_member" "cluster_service_account-resourceMetadata-writer" {
+  count   = var.create_service_account ? 1 : 0
+  project = google_project_iam_member.cluster_service_account-monitoring_viewer[0].project
+  role    = "roles/stackdriver.resourceMetadata.writer"
+  member  = google_service_account.cluster_service_account[0].member
+}
+
 resource "google_project_iam_member" "cluster_service_account-gcr" {
   for_each = var.create_service_account && var.grant_registry_access ? toset(local.registry_projects_list) : []
   project  = each.key
