@@ -574,6 +574,14 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    dynamic "secondary_boot_disks" {
+      for_each = lookup(each.value, "secondary_boot_disks", [])
+      content {
+        disk_image = secondary_boot_disks.value.disk_image
+        mode       = secondary_boot_disks.value.mode
+      }
+    }
+
     service_account = lookup(
       each.value,
       "service_account",
@@ -787,6 +795,14 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [each.value.local_nvme_ssd_count] : []
       content {
         local_ssd_count = local_nvme_ssd_block_config.value
+      }
+    }
+
+    dynamic "secondary_boot_disks" {
+      for_each = lookup(each.value, "secondary_boot_disks", [])
+      content {
+        disk_image = secondary_boot_disks.value.disk_image
+        mode       = secondary_boot_disks.value.mode
       }
     }
 

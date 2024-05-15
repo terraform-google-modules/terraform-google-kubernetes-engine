@@ -856,6 +856,14 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
+    dynamic "secondary_boot_disks" {
+      for_each = lookup(each.value, "secondary_boot_disks", [])
+      content {
+        disk_image = secondary_boot_disks.value.disk_image
+        mode = secondary_boot_disks.value.mode
+      }
+    }
+
     service_account = lookup(
       each.value,
       "service_account",
