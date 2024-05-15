@@ -174,10 +174,11 @@ variable "enable_resource_consumption_export" {
 
 
 variable "network_tags" {
-  description = "(Optional, Beta) - List of network tags applied to auto-provisioned node pools."
+  description = "(Optional) - List of network tags applied to auto-provisioned node pools."
   type        = list(string)
   default     = []
 }
+
 variable "stub_domains" {
   type        = map(list(string))
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"
@@ -283,8 +284,8 @@ variable "enable_private_nodes" {
 
 variable "master_ipv4_cidr_block" {
   type        = string
-  description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
-  default     = "10.0.0.0/28"
+  description = "(Beta) The IP range in CIDR notation to use for the hosted master network. Optional for Autopilot clusters."
+  default     = null
 }
 
 variable "master_global_access_enabled" {
