@@ -206,9 +206,9 @@ resource "google_container_cluster" "primary" {
       enabled = identity_service_config.value
     }
   }
+  {% endif %}
 
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
-  {% endif %}
   {% endif %}
 {% if beta_cluster %}
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
@@ -234,6 +234,17 @@ resource "google_container_cluster" "primary" {
     content {
       network_tags {
         tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : var.network_tags
+      }
+    }
+  }
+{% endif %}
+
+{% if autopilot_cluster != true %}
+  dynamic "node_pool_auto_config" {
+    for_each = var.cluster_autoscaling.enabled && length(var.network_tags) > 0 ? [1] : []
+    content {
+      network_tags {
+        tags = var.network_tags
       }
     }
   }
@@ -295,6 +306,14 @@ resource "google_container_cluster" "primary" {
 
       content {
         enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
+
+    dynamic "stateful_ha_config" {
+      for_each = local.stateful_ha_config
+
+      content {
+        enabled = stateful_ha_config.value.enabled
       }
     }
 
@@ -837,6 +856,13 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
     {% endif %}
+
+    dynamic "local_nvme_ssd_block_config" {
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [each.value.local_nvme_ssd_count] : []
+      content {
+        local_ssd_count = local_nvme_ssd_block_config.value
+      }
+    }
 
     service_account = lookup(
       each.value,
