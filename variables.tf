@@ -642,6 +642,12 @@ variable "gcs_fuse_csi_driver" {
   default     = false
 }
 
+variable "stateful_ha" {
+  type        = bool
+  description = "Whether the Stateful HA Addon is enabled for this cluster."
+  default     = false
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
