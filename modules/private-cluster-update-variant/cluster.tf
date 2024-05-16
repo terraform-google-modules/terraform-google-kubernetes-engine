@@ -229,6 +229,14 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    dynamic "stateful_ha_config" {
+      for_each = local.stateful_ha_config
+
+      content {
+        enabled = stateful_ha_config.value.enabled
+      }
+    }
+
     config_connector_config {
       enabled = var.config_connector
     }
