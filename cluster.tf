@@ -574,11 +574,12 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    # Supports a single secondary boot disk because `map(any)` must have the same values type.
     dynamic "secondary_boot_disks" {
-      for_each = contains(keys(each.value), "secondary_boot_disks") ? each.value.secondary_boot_disks : []
+      for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
       content {
-        disk_image = secondary_boot_disks.value.disk_image
-        mode       = secondary_boot_disks.value.mode
+        disk_image = secondary_boot_disks.value
+        mode       = "CONTAINER_IMAGE_CACHE"
       }
     }
 
@@ -798,11 +799,12 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
+    # Supports a single secondary boot disk because `map(any)` must have the same values type.
     dynamic "secondary_boot_disks" {
-      for_each = contains(keys(each.value), "secondary_boot_disks") ? each.value.secondary_boot_disks : []
+      for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
       content {
-        disk_image = secondary_boot_disks.value.disk_image
-        mode       = secondary_boot_disks.value.mode
+        disk_image = secondary_boot_disks.value
+        mode       = "CONTAINER_IMAGE_CACHE"
       }
     }
 
