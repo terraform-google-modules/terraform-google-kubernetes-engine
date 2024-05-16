@@ -526,7 +526,7 @@ variable "security_posture_mode" {
 }
 
 variable "security_posture_vulnerability_mode" {
-  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED` and `VULNERABILITY_BASIC`. Defaults to `VULNERABILITY_DISABLED`."
+  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`. Defaults to `VULNERABILITY_DISABLED`."
   type        = string
   default     = "VULNERABILITY_DISABLED"
 }
@@ -666,6 +666,12 @@ variable "gcs_fuse_csi_driver" {
   default     = false
 }
 
+variable "stateful_ha" {
+  type        = bool
+  description = "Whether the Stateful HA Addon is enabled for this cluster."
+  default     = false
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -722,6 +728,12 @@ variable "config_connector" {
   default     = false
 }
 
+variable "enable_l4_ilb_subsetting" {
+  type        = bool
+  description = "Enable L4 ILB Subsetting on the cluster"
+  default     = false
+}
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   type        = bool
@@ -755,12 +767,6 @@ variable "cloudrun_load_balancer_type" {
 variable "enable_pod_security_policy" {
   type        = bool
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. Pod Security Policy was removed from GKE clusters with version >= 1.25.0."
-  default     = false
-}
-
-variable "enable_l4_ilb_subsetting" {
-  type        = bool
-  description = "Enable L4 ILB Subsetting on the cluster"
   default     = false
 }
 

@@ -206,9 +206,9 @@ resource "google_container_cluster" "primary" {
       enabled = identity_service_config.value
     }
   }
+  {% endif %}
 
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
-  {% endif %}
   {% endif %}
 {% if beta_cluster %}
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
@@ -306,6 +306,14 @@ resource "google_container_cluster" "primary" {
 
       content {
         enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
+
+    dynamic "stateful_ha_config" {
+      for_each = local.stateful_ha_config
+
+      content {
+        enabled = stateful_ha_config.value.enabled
       }
     }
 
@@ -848,6 +856,13 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
     {% endif %}
+
+    dynamic "local_nvme_ssd_block_config" {
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [each.value.local_nvme_ssd_count] : []
+      content {
+        local_ssd_count = local_nvme_ssd_block_config.value
+      }
+    }
 
     service_account = lookup(
       each.value,

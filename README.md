@@ -158,6 +158,7 @@ Then perform the following commands on the root folder:
 | enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
 | enable\_cost\_allocation | Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery | `bool` | `false` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | `bool` | `false` | no |
+| enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
 | enable\_mesh\_certificates | Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity. | `bool` | `false` | no |
 | enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | `bool` | `false` | no |
 | enable\_resource\_consumption\_export | Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. | `bool` | `true` | no |
@@ -220,13 +221,14 @@ Then perform the following commands on the root folder:
 | remove\_default\_node\_pool | Remove default node pool while setting up the cluster | `bool` | `false` | no |
 | resource\_usage\_export\_dataset\_id | The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export. | `string` | `""` | no |
 | security\_posture\_mode | Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`. | `string` | `"DISABLED"` | no |
-| security\_posture\_vulnerability\_mode | Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED` and `VULNERABILITY_BASIC`. Defaults to `VULNERABILITY_DISABLED`. | `string` | `"VULNERABILITY_DISABLED"` | no |
+| security\_posture\_vulnerability\_mode | Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`. Defaults to `VULNERABILITY_DISABLED`. | `string` | `"VULNERABILITY_DISABLED"` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The create\_service\_account variable default value (true) will cause a cluster-specific service account to be created. This service account should already exists and it will be used by the node pools. If you wish to only override the service account name, you can use service\_account\_name variable. | `string` | `""` | no |
 | service\_account\_name | The name of the service account that will be created if create\_service\_account is true. If you wish to use an existing service account, use service\_account variable. | `string` | `""` | no |
 | service\_external\_ips | Whether external ips specified by a service will be allowed in this cluster | `bool` | `false` | no |
 | shadow\_firewall\_rules\_log\_config | The log\_config for shadow firewall rules. You can set this variable to `null` to disable logging. | <pre>object({<br>    metadata = string<br>  })</pre> | <pre>{<br>  "metadata": "INCLUDE_ALL_METADATA"<br>}</pre> | no |
 | shadow\_firewall\_rules\_priority | The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000. | `number` | `999` | no |
 | stack\_type | The stack type to use for this cluster. Either `IPV4` or `IPV4_IPV6`. Defaults to `IPV4`. | `string` | `"IPV4"` | no |
+| stateful\_ha | Whether the Stateful HA Addon is enabled for this cluster. | `bool` | `false` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | `map(list(string))` | `{}` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | `string` | n/a | yes |
 | timeouts | Timeout for cluster operations. | `map(string)` | `{}` | no |
@@ -295,6 +297,7 @@ The node_pools variable takes the following parameters:
 | key | The key required for the taint | | Required |
 | logging_variant | The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT.  | DEFAULT | Optional |
 | local_ssd_count | The amount of local SSD disks that will be attached to each cluster node and may be used as a `hostpath` volume or a `local` PersistentVolume.  | 0 | Optional |
+| local_nvme_ssd_count | Number of raw-block local NVMe SSD disks to be attached to the node.Each local SSD is 375 GB in size. If zero, it means no raw-block local NVMe SSD disks to be attached to the node. | 0 | Optional |
 | machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
 | min_cpu_platform | Minimum CPU platform to be used by the nodes in the pool. The nodes may be scheduled on the specified or newer CPU platform. | " " | Optional |
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count. Cannot be used with total limits. | 100 | Optional |
