@@ -185,6 +185,11 @@ output "peering_name" {
   value       = local.cluster_peering_name
 }
 
+output "dns_cache_enabled" {
+  description = "Whether DNS Cache enabled"
+  value       = local.cluster_dns_cache_enabled
+}
+
 output "fleet_membership" {
   description = "Fleet membership (if registered)"
   value       = local.fleet_membership
