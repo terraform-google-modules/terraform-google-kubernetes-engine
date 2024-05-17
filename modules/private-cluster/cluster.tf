@@ -229,6 +229,14 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    dynamic "stateful_ha_config" {
+      for_each = local.stateful_ha_config
+
+      content {
+        enabled = stateful_ha_config.value.enabled
+      }
+    }
+
     config_connector_config {
       enabled = var.config_connector
     }
@@ -587,7 +595,7 @@ resource "google_container_node_pool" "pools" {
 
 
     dynamic "local_nvme_ssd_block_config" {
-      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [1] : []
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [each.value.local_nvme_ssd_count] : []
       content {
         local_ssd_count = local_nvme_ssd_block_config.value
       }
@@ -803,7 +811,7 @@ resource "google_container_node_pool" "windows_pools" {
 
 
     dynamic "local_nvme_ssd_block_config" {
-      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [1] : []
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [each.value.local_nvme_ssd_count] : []
       content {
         local_ssd_count = local_nvme_ssd_block_config.value
       }
