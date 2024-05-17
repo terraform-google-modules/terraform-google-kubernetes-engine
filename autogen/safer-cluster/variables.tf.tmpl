@@ -476,7 +476,7 @@ variable "security_posture_mode" {
 }
 
 variable "security_posture_vulnerability_mode" {
-  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED` and `VULNERABILITY_BASIC`."
+  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`"
   type        = string
   default     = null
 }

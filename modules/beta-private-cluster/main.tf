@@ -94,6 +94,7 @@ locals {
   logmon_config_is_set       = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus
   gke_backup_agent_config    = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
   gcs_fuse_csi_driver_config = var.gcs_fuse_csi_driver ? [{ enabled = true }] : []
+  stateful_ha_config         = var.stateful_ha ? [{ enabled = true }] : []
   cluster_cloudrun_config_load_balancer_config = (var.cloudrun && var.cloudrun_load_balancer_type != "") ? {
     load_balancer_type = var.cloudrun_load_balancer_type
   } : {}
@@ -190,13 +191,13 @@ locals {
 
   # BETA features
   cluster_istio_enabled                = !local.cluster_output_istio_disabled
-  cluster_dns_cache_enabled            = var.dns_cache
   cluster_telemetry_type_is_set        = var.cluster_telemetry_type != null
   cluster_pod_security_policy_enabled  = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled = local.cluster_output_intranode_visbility_enabled
 
   # /BETA features
 
+  cluster_dns_cache_enabled               = var.dns_cache
   cluster_maintenance_window_is_recurring = var.maintenance_recurrence != "" && var.maintenance_end_time != "" ? [1] : []
   cluster_maintenance_window_is_daily     = length(local.cluster_maintenance_window_is_recurring) > 0 ? [] : [1]
 }
