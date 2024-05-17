@@ -78,6 +78,7 @@ module "gke" {
   enable_private_endpoint    = true
   enable_private_nodes       = true
   master_ipv4_cidr_block     = "10.0.0.0/28"
+  dns_cache                  = false
 
   node_pools = [
     {
@@ -275,6 +276,7 @@ Then perform the following commands on the root folder:
 |------|-------------|
 | ca\_certificate | Cluster ca certificate (base64 encoded) |
 | cluster\_id | Cluster ID |
+| dns\_cache\_enabled | Whether DNS Cache enabled |
 | endpoint | Cluster endpoint |
 | fleet\_membership | Fleet membership (if registered) |
 | gateway\_api\_channel | The gateway api channel of this cluster. |
