@@ -139,6 +139,8 @@ resource "google_container_cluster" "primary" {
           }
         }
 
+
+        image_type = lookup(var.cluster_autoscaling, "image_type", "COS_CONTAINERD")
       }
     }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
