@@ -120,8 +120,6 @@ resource "google_container_cluster" "primary" {
         disk_size = lookup(var.cluster_autoscaling, "disk_size", 100)
         disk_type = lookup(var.cluster_autoscaling, "disk_type", "pd-standard")
 
-        image_type = lookup(var.cluster_autoscaling, "image_type", "COS_CONTAINERD")
-
         upgrade_settings {
           strategy        = lookup(var.cluster_autoscaling, "strategy", "SURGE")
           max_surge       = lookup(var.cluster_autoscaling, "strategy", "SURGE") == "SURGE" ? lookup(var.cluster_autoscaling, "max_surge", 0) : null
@@ -141,6 +139,8 @@ resource "google_container_cluster" "primary" {
           }
         }
 
+
+        image_type = lookup(var.cluster_autoscaling, "image_type", "COS_CONTAINERD")
       }
     }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
@@ -247,6 +247,14 @@ resource "google_container_cluster" "primary" {
 
       content {
         enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
+
+    dynamic "stateful_ha_config" {
+      for_each = local.stateful_ha_config
+
+      content {
+        enabled = stateful_ha_config.value.enabled
       }
     }
 
@@ -683,9 +691,18 @@ resource "google_container_node_pool" "pools" {
 
 
     dynamic "local_nvme_ssd_block_config" {
-      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [1] : []
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [each.value.local_nvme_ssd_count] : []
       content {
         local_ssd_count = local_nvme_ssd_block_config.value
+      }
+    }
+
+    # Supports a single secondary boot disk because `map(any)` must have the same values type.
+    dynamic "secondary_boot_disks" {
+      for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
+      content {
+        disk_image = secondary_boot_disks.value
+        mode       = "CONTAINER_IMAGE_CACHE"
       }
     }
 
@@ -900,9 +917,18 @@ resource "google_container_node_pool" "windows_pools" {
 
 
     dynamic "local_nvme_ssd_block_config" {
-      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [1] : []
+      for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [each.value.local_nvme_ssd_count] : []
       content {
         local_ssd_count = local_nvme_ssd_block_config.value
+      }
+    }
+
+    # Supports a single secondary boot disk because `map(any)` must have the same values type.
+    dynamic "secondary_boot_disks" {
+      for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
+      content {
+        disk_image = secondary_boot_disks.value
+        mode       = "CONTAINER_IMAGE_CACHE"
       }
     }
 

@@ -120,8 +120,6 @@ resource "google_container_cluster" "primary" {
         disk_size = lookup(var.cluster_autoscaling, "disk_size", 100)
         disk_type = lookup(var.cluster_autoscaling, "disk_type", "pd-standard")
 
-        image_type = lookup(var.cluster_autoscaling, "image_type", "COS_CONTAINERD")
-
         upgrade_settings {
           strategy        = lookup(var.cluster_autoscaling, "strategy", "SURGE")
           max_surge       = lookup(var.cluster_autoscaling, "strategy", "SURGE") == "SURGE" ? lookup(var.cluster_autoscaling, "max_surge", 0) : null
@@ -141,6 +139,8 @@ resource "google_container_cluster" "primary" {
           }
         }
 
+
+        image_type = lookup(var.cluster_autoscaling, "image_type", "COS_CONTAINERD")
       }
     }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
