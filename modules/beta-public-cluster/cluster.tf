@@ -146,6 +146,8 @@ resource "google_container_cluster" "primary" {
         }
 
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
+
+        image_type = lookup(var.cluster_autoscaling, "image_type", "COS_CONTAINERD")
       }
     }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
