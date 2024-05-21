@@ -66,18 +66,19 @@ module "gke" {
       service_account   = var.compute_engine_service_account
     },
     {
-      name               = "pool-03"
-      machine_type       = "n1-standard-2"
-      node_locations     = "${var.region}-b,${var.region}-c"
-      autoscaling        = false
-      node_count         = 2
-      disk_type          = "pd-standard"
-      auto_upgrade       = true
-      service_account    = var.compute_engine_service_account
-      pod_range          = "test"
-      sandbox_enabled    = true
-      cpu_manager_policy = "static"
-      cpu_cfs_quota      = true
+      name                      = "pool-03"
+      machine_type              = "n1-standard-2"
+      node_locations            = "${var.region}-b,${var.region}-c"
+      autoscaling               = false
+      node_count                = 2
+      disk_type                 = "pd-standard"
+      auto_upgrade              = true
+      service_account           = var.compute_engine_service_account
+      pod_range                 = "test"
+      sandbox_enabled           = true
+      cpu_manager_policy        = "static"
+      cpu_cfs_quota             = true
+      local_ssd_ephemeral_count = 2
     },
   ]
 
