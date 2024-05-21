@@ -709,7 +709,7 @@ variable "fleet_project" {
   type        = string
   default     = null
 }
-variable "ephemeral_storage_local_ssd_config" {
+variable "local_ssd_ephemeral_count" {
   description = "(Optional) Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk"
   type        = number
   default     = null

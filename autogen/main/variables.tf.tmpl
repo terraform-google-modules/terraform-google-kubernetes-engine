@@ -875,7 +875,7 @@ variable "fleet_project_grant_service_agent" {
 }
 {% endif %}
 {% if not beta_cluster %}
-variable "ephemeral_storage_local_ssd_config" {
+variable "local_ssd_ephemeral_count" {
   description = "(Optional) Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk"
   type = number
   default = null
