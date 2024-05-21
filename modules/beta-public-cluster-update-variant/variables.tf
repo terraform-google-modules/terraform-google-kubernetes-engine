@@ -244,17 +244,25 @@ variable "enable_resource_consumption_export" {
 
 variable "cluster_autoscaling" {
   type = object({
-    enabled             = bool
-    autoscaling_profile = string
-    min_cpu_cores       = number
-    max_cpu_cores       = number
-    min_memory_gb       = number
-    max_memory_gb       = number
-    gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))
-    auto_repair         = bool
-    auto_upgrade        = bool
-    disk_size           = optional(number)
-    disk_type           = optional(string)
+    enabled                 = bool
+    autoscaling_profile     = string
+    min_cpu_cores           = number
+    max_cpu_cores           = number
+    min_memory_gb           = number
+    max_memory_gb           = number
+    gpu_resources           = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair             = bool
+    auto_upgrade            = bool
+    disk_size               = optional(number)
+    disk_type               = optional(string)
+    image_type              = optional(string)
+    strategy                = optional(string)
+    max_surge               = optional(number)
+    max_unavailable         = optional(number)
+    node_pool_soak_duration = optional(string)
+    batch_soak_duration     = optional(string)
+    batch_percentage        = optional(number)
+    batch_node_count        = optional(number)
   })
   default = {
     enabled             = false
@@ -268,6 +276,7 @@ variable "cluster_autoscaling" {
     auto_upgrade        = true
     disk_size           = 100
     disk_type           = "pd-standard"
+    image_type          = "COS_CONTAINERD"
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
@@ -531,7 +540,7 @@ variable "security_posture_mode" {
 }
 
 variable "security_posture_vulnerability_mode" {
-  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED` and `VULNERABILITY_BASIC`. Defaults to `VULNERABILITY_DISABLED`."
+  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`. Defaults to `VULNERABILITY_DISABLED`."
   type        = string
   default     = "VULNERABILITY_DISABLED"
 }
@@ -668,6 +677,12 @@ variable "gke_backup_agent_config" {
 variable "gcs_fuse_csi_driver" {
   type        = bool
   description = "Whether GCE FUSE CSI driver is enabled for this cluster."
+  default     = false
+}
+
+variable "stateful_ha" {
+  type        = bool
+  description = "Whether the Stateful HA Addon is enabled for this cluster."
   default     = false
 }
 
