@@ -662,7 +662,7 @@ resource "google_container_node_pool" "pools" {
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
     dynamic "ephemeral_storage_local_ssd_config" {
-      for_each = lookup(each.value, "local_ssd_ephemeral_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
+      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
       content {
         local_ssd_count = ephemeral_storage_local_ssd_config.value
       }
@@ -918,7 +918,7 @@ resource "google_container_node_pool" "windows_pools" {
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
     dynamic "ephemeral_storage_local_ssd_config" {
-      for_each = lookup(each.value, "local_ssd_ephemeral_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
+      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
       content {
         local_ssd_count = ephemeral_storage_local_ssd_config.value
       }

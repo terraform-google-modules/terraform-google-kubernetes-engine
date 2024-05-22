@@ -443,8 +443,3 @@ variable "fleet_project_grant_service_agent" {
   type        = bool
   default     = false
 }
-variable "local_ssd_ephemeral_count" {
-  description = "(Optional) Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size"
-  type        = number
-  default     = null
-}
