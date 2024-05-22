@@ -80,6 +80,12 @@ module "gke" {
       cpu_cfs_quota             = true
       local_ssd_ephemeral_count = 2
     },
+    {
+      name                = "pool-04"
+      min_count           = 0
+      service_account     = var.compute_engine_service_account
+      queued_provisioning = true
+    },
   ]
 
   node_pools_metadata = {

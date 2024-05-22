@@ -548,6 +548,7 @@ locals {
     "enable_gvnic",
     "enable_secure_boot",
     "boot_disk_kms_key",
+    "queued_provisioning",
   ]
 }
 
@@ -678,6 +679,13 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
+  dynamic "queued_provisioning" {
+    for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+    content {
+      enabled = lookup(each.value, "queued_provisioning", null)
+    }
+  }
+
   node_config {
     image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type     = lookup(each.value, "machine_type", "e2-medium")
@@ -692,6 +700,12 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
       content {
         enabled = gvnic.value
+      }
+    }
+    dynamic "reservation_affinity" {
+      for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+      content {
+        consume_reservation_type = "NO_RESERVATION"
       }
     }
     labels = merge(
@@ -942,6 +956,13 @@ resource "google_container_node_pool" "windows_pools" {
     }
   }
 
+  dynamic "queued_provisioning" {
+    for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+    content {
+      enabled = lookup(each.value, "queued_provisioning", null)
+    }
+  }
+
   node_config {
     image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type     = lookup(each.value, "machine_type", "e2-medium")
@@ -956,6 +977,12 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
       content {
         enabled = gvnic.value
+      }
+    }
+    dynamic "reservation_affinity" {
+      for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+      content {
+        consume_reservation_type = "NO_RESERVATION"
       }
     }
     labels = merge(
