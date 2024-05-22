@@ -45,4 +45,5 @@ module "gke" {
   gcs_fuse_csi_driver         = true
   fleet_project               = var.project_id
   deletion_protection         = false
+  stateful_ha                 = true
 }
