@@ -120,6 +120,27 @@ resource "google_container_cluster" "primary" {
         disk_size = lookup(var.cluster_autoscaling, "disk_size", 100)
         disk_type = lookup(var.cluster_autoscaling, "disk_type", "pd-standard")
 
+        upgrade_settings {
+          strategy        = lookup(var.cluster_autoscaling, "strategy", "SURGE")
+          max_surge       = lookup(var.cluster_autoscaling, "strategy", "SURGE") == "SURGE" ? lookup(var.cluster_autoscaling, "max_surge", 0) : null
+          max_unavailable = lookup(var.cluster_autoscaling, "strategy", "SURGE") == "SURGE" ? lookup(var.cluster_autoscaling, "max_unavailable", 0) : null
+
+          dynamic "blue_green_settings" {
+            for_each = lookup(var.cluster_autoscaling, "strategy", "SURGE") == "BLUE_GREEN" ? [1] : []
+            content {
+              node_pool_soak_duration = lookup(var.cluster_autoscaling, "node_pool_soak_duration", null)
+
+              standard_rollout_policy {
+                batch_soak_duration = lookup(var.cluster_autoscaling, "batch_soak_duration", null)
+                batch_percentage    = lookup(var.cluster_autoscaling, "batch_percentage", null)
+                batch_node_count    = lookup(var.cluster_autoscaling, "batch_node_count", null)
+              }
+            }
+          }
+        }
+
+
+        image_type = lookup(var.cluster_autoscaling, "image_type", "COS_CONTAINERD")
       }
     }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
