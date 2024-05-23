@@ -552,6 +552,8 @@ locals {
     "accelerator_type",
     "gpu_partition_size",
     "gpu_driver_version",
+    "gpu_sharing_strategy",
+    "max_shared_clients_per_gpu",
     "enable_secure_boot",
     "enable_integrity_monitoring",
     "local_ssd_count",
