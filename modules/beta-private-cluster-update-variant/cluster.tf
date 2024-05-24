@@ -552,6 +552,8 @@ locals {
     "accelerator_type",
     "gpu_partition_size",
     "gpu_driver_version",
+    "gpu_sharing_strategy",
+    "max_shared_clients_per_gpu",
     "enable_secure_boot",
     "enable_integrity_monitoring",
     "local_ssd_count",
@@ -809,6 +811,14 @@ resource "google_container_node_pool" "pools" {
           for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
           content {
             gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
+          }
+        }
+
+        dynamic "gpu_sharing_config" {
+          for_each = lookup(each.value, "gpu_sharing_strategy", "") != "" ? [1] : []
+          content {
+            gpu_sharing_strategy       = lookup(each.value, "gpu_sharing_strategy", "")
+            max_shared_clients_per_gpu = lookup(each.value, "max_shared_clients_per_gpu", 2)
           }
         }
       }
@@ -1073,6 +1083,14 @@ resource "google_container_node_pool" "windows_pools" {
           for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
           content {
             gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
+          }
+        }
+
+        dynamic "gpu_sharing_config" {
+          for_each = lookup(each.value, "gpu_sharing_strategy", "") != "" ? [1] : []
+          content {
+            gpu_sharing_strategy       = lookup(each.value, "gpu_sharing_strategy", "")
+            max_shared_clients_per_gpu = lookup(each.value, "max_shared_clients_per_gpu", 2)
           }
         }
       }
