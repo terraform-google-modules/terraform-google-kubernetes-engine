@@ -456,6 +456,13 @@ variable "timeouts" {
   }
 }
 
+
+variable "enable_intranode_visibility" {
+  type        = bool
+  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
+  default     = false
+}
+
 variable "allow_net_admin" {
   description = "(Optional) Enable NET_ADMIN for the cluster."
   type        = bool
