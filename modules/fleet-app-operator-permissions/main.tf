@@ -20,20 +20,12 @@ provider "google" {
 
 locals {
   principal = var.user != "" ? "user:${var.user}" : "group:${var.group}"
-}
-
-variable "project_level_scope_role" {
-  type    = map(string)
-  default = {
+  project_level_scope_role = {
     "VIEW"  = "roles/gkehub.scopeViewerProjectLevel"
     "EDIT"  = "roles/gkehub.scopeEditorProjectLevel"
     "ADMIN" = "roles/gkehub.scopeEditorProjectLevel" # Same as EDIT
   }
-}
-
-variable  "resource_level_scope_role" {
-  type    = map(string)
-  default = {
+  resource_level_scope_role = {
     "VIEW"  = "roles/gkehub.scopeViewer"
     "EDIT"  = "roles/gkehub.scopeEditor"
     "ADMIN" = "roles/gkehub.scopeAdmin"
@@ -55,7 +47,7 @@ resource "google_project_iam_binding" "log_view_permissions" {
 
 resource "google_project_iam_binding" "project_level_scope_permissions" {
   project  = var.project_id
-  role     = var.project_level_scope_role[var.role]
+  role     = local.project_level_scope_role[var.role]
   members  = [
     local.principal,
   ]
@@ -64,7 +56,7 @@ resource "google_project_iam_binding" "project_level_scope_permissions" {
 resource "google_gke_hub_scope_iam_binding" "resource_level_scope_permissions" {
   project  = var.project_id
   scope_id = var.scope_id
-  role     = var.resource_level_scope_role[var.role]
+  role     = local.resource_level_scope_role[var.role]
   members  = [
     local.principal,
   ]

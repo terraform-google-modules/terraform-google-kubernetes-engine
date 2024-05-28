@@ -36,6 +36,7 @@ variable "group" {
 
 variable "role" {
   description = "The principal role for the Fleet Scope (VIEW/EDIT/ADMIN)."
+  type        = string
   validation {
     condition     = var.role == "VIEW" || var.role == "EDIT" || var.role == "ADMIN"
     error_message = "Allowed values for role are VIEW, EDIT, or ADMIN."
