@@ -23,11 +23,11 @@ To deploy this config:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| group | The group principal for the Fleet Scope, e.g., people@company.com. Either user or group must be provided. | `string` | n/a | yes |
+| group | The group principal for the Fleet Scope, e.g., people@company.com. Either user or group must be provided. | `string` | `""` | no |
 | project\_id | The project to which the Fleet belongs. | `string` | n/a | yes |
 | role | The principal role for the Fleet Scope (VIEW/EDIT/ADMIN). | `string` | n/a | yes |
 | scope\_id | The scope for which IAM and RBAC role bindings are created. | `string` | n/a | yes |
-| user | The user principal for the Fleet Scope, e.g., person@company.com. Either user or group must be provided. | `string` | n/a | yes |
+| user | The user principal for the Fleet Scope, e.g., person@company.com. Either user or group must be provided. | `string` | `""` | no |
 
 ## Outputs
 

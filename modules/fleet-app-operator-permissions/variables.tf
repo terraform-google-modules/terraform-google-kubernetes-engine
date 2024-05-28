@@ -27,11 +27,13 @@ variable "scope_id" {
 variable "user" {
   description = "The user principal for the Fleet Scope, e.g., person@company.com. Either user or group must be provided."
   type        = string
+  default     = ""
 }
 
 variable "group" {
   description = "The group principal for the Fleet Scope, e.g., people@company.com. Either user or group must be provided."
   type        = string
+  default     = ""
 }
 
 variable "role" {
