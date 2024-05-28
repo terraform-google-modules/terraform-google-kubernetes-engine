@@ -29,9 +29,11 @@ To deploy this config:
 | scope\_id | The scope for which IAM and RBAC role bindings are created. | `string` | n/a | yes |
 | user | The user principal for the Fleet Scope, e.g., person@company.com. Either user or group must be provided. | `string` | n/a | yes |
 
-## Output
+## Outputs
+
 | Name | Description |
 |------|-------------|
 | project\_id | The project to which the Fleet belongs. |
 | wait | An output to use when you want to depend on Scope RBAC Role Binding creation finishing. |
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
