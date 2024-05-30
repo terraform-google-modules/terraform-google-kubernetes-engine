@@ -126,7 +126,28 @@ resource "google_container_cluster" "primary" {
         disk_size = lookup(var.cluster_autoscaling, "disk_size", 100)
         disk_type = lookup(var.cluster_autoscaling, "disk_type", "pd-standard")
 
+        upgrade_settings {
+          strategy        = lookup(var.cluster_autoscaling, "strategy", "SURGE")
+          max_surge       = lookup(var.cluster_autoscaling, "strategy", "SURGE") == "SURGE" ? lookup(var.cluster_autoscaling, "max_surge", 0) : null
+          max_unavailable = lookup(var.cluster_autoscaling, "strategy", "SURGE") == "SURGE" ? lookup(var.cluster_autoscaling, "max_unavailable", 0) : null
+
+          dynamic "blue_green_settings" {
+            for_each = lookup(var.cluster_autoscaling, "strategy", "SURGE") == "BLUE_GREEN" ? [1] : []
+            content {
+              node_pool_soak_duration = lookup(var.cluster_autoscaling, "node_pool_soak_duration", null)
+
+              standard_rollout_policy {
+                batch_soak_duration = lookup(var.cluster_autoscaling, "batch_soak_duration", null)
+                batch_percentage    = lookup(var.cluster_autoscaling, "batch_percentage", null)
+                batch_node_count    = lookup(var.cluster_autoscaling, "batch_node_count", null)
+              }
+            }
+          }
+        }
+
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
+
+        image_type = lookup(var.cluster_autoscaling, "image_type", "COS_CONTAINERD")
       }
     }
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
@@ -600,6 +621,13 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
+  dynamic "queued_provisioning" {
+    for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+    content {
+      enabled = lookup(each.value, "queued_provisioning", null)
+    }
+  }
+
   node_config {
     image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type     = lookup(each.value, "machine_type", "e2-medium")
@@ -614,6 +642,12 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
       content {
         enabled = gvnic.value
+      }
+    }
+    dynamic "reservation_affinity" {
+      for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+      content {
+        consume_reservation_type = "NO_RESERVATION"
       }
     }
     labels = merge(
@@ -659,6 +693,12 @@ resource "google_container_node_pool" "pools" {
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
+    dynamic "ephemeral_storage_local_ssd_config" {
+      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 ? [each.value.local_ssd_ephemeral_storage_count] : []
+      content {
+        local_ssd_count = ephemeral_storage_local_ssd_config.value
+      }
+    }
     dynamic "ephemeral_storage_config" {
       for_each = lookup(each.value, "local_ssd_ephemeral_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
       content {
@@ -670,6 +710,15 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [each.value.local_nvme_ssd_count] : []
       content {
         local_ssd_count = local_nvme_ssd_block_config.value
+      }
+    }
+
+    # Supports a single secondary boot disk because `map(any)` must have the same values type.
+    dynamic "secondary_boot_disks" {
+      for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
+      content {
+        disk_image = secondary_boot_disks.value
+        mode       = "CONTAINER_IMAGE_CACHE"
       }
     }
 
@@ -699,6 +748,21 @@ resource "google_container_node_pool" "pools" {
             gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
           }
         }
+
+        dynamic "gpu_sharing_config" {
+          for_each = lookup(each.value, "gpu_sharing_strategy", "") != "" ? [1] : []
+          content {
+            gpu_sharing_strategy       = lookup(each.value, "gpu_sharing_strategy", "")
+            max_shared_clients_per_gpu = lookup(each.value, "max_shared_clients_per_gpu", 2)
+          }
+        }
+      }
+    }
+
+    dynamic "advanced_machine_features" {
+      for_each = lookup(each.value, "threads_per_core", 0) > 0 ? [1] : []
+      content {
+        threads_per_core = lookup(each.value, "threads_per_core", 0)
       }
     }
 
@@ -841,6 +905,13 @@ resource "google_container_node_pool" "windows_pools" {
     }
   }
 
+  dynamic "queued_provisioning" {
+    for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+    content {
+      enabled = lookup(each.value, "queued_provisioning", null)
+    }
+  }
+
   node_config {
     image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type     = lookup(each.value, "machine_type", "e2-medium")
@@ -855,6 +926,12 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
       content {
         enabled = gvnic.value
+      }
+    }
+    dynamic "reservation_affinity" {
+      for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+      content {
+        consume_reservation_type = "NO_RESERVATION"
       }
     }
     labels = merge(
@@ -900,6 +977,12 @@ resource "google_container_node_pool" "windows_pools" {
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
+    dynamic "ephemeral_storage_local_ssd_config" {
+      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 ? [each.value.local_ssd_ephemeral_storage_count] : []
+      content {
+        local_ssd_count = ephemeral_storage_local_ssd_config.value
+      }
+    }
     dynamic "ephemeral_storage_config" {
       for_each = lookup(each.value, "local_ssd_ephemeral_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
       content {
@@ -911,6 +994,15 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "local_nvme_ssd_count", 0) > 0 ? [each.value.local_nvme_ssd_count] : []
       content {
         local_ssd_count = local_nvme_ssd_block_config.value
+      }
+    }
+
+    # Supports a single secondary boot disk because `map(any)` must have the same values type.
+    dynamic "secondary_boot_disks" {
+      for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
+      content {
+        disk_image = secondary_boot_disks.value
+        mode       = "CONTAINER_IMAGE_CACHE"
       }
     }
 
@@ -940,6 +1032,21 @@ resource "google_container_node_pool" "windows_pools" {
             gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
           }
         }
+
+        dynamic "gpu_sharing_config" {
+          for_each = lookup(each.value, "gpu_sharing_strategy", "") != "" ? [1] : []
+          content {
+            gpu_sharing_strategy       = lookup(each.value, "gpu_sharing_strategy", "")
+            max_shared_clients_per_gpu = lookup(each.value, "max_shared_clients_per_gpu", 2)
+          }
+        }
+      }
+    }
+
+    dynamic "advanced_machine_features" {
+      for_each = lookup(each.value, "threads_per_core", 0) > 0 ? [1] : []
+      content {
+        threads_per_core = lookup(each.value, "threads_per_core", 0)
       }
     }
 
