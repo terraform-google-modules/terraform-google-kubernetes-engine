@@ -121,9 +121,9 @@ resource "google_container_cluster" "primary" {
     {% endif %}
     content{
       enable_components = var.monitoring_enabled_components
-      dynamic managed_prometheus {
+      dynamic "managed_prometheus" {
         for_each = var.monitoring_enable_managed_prometheus != null ? [1] : []
-        content{
+        content {
           enabled = var.monitoring_enable_managed_prometheus
         }
       }
