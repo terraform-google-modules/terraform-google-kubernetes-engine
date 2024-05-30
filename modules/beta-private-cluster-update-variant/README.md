@@ -84,25 +84,30 @@ module "gke" {
 
   node_pools = [
     {
-      name                      = "default-node-pool"
-      machine_type              = "e2-medium"
-      node_locations            = "us-central1-b,us-central1-c"
-      min_count                 = 1
-      max_count                 = 100
-      local_ssd_count           = 0
-      spot                      = false
-      local_ssd_ephemeral_count = 0
-      disk_size_gb              = 100
-      disk_type                 = "pd-standard"
-      image_type                = "COS_CONTAINERD"
-      enable_gcfs               = false
-      enable_gvnic              = false
-      logging_variant           = "DEFAULT"
-      auto_repair               = true
-      auto_upgrade              = true
-      service_account           = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
-      preemptible               = false
-      initial_node_count        = 80
+      name                        = "default-node-pool"
+      machine_type                = "e2-medium"
+      node_locations              = "us-central1-b,us-central1-c"
+      min_count                   = 1
+      max_count                   = 100
+      local_ssd_count             = 0
+      spot                        = false
+      local_ssd_ephemeral_count   = 0
+      disk_size_gb                = 100
+      disk_type                   = "pd-standard"
+      image_type                  = "COS_CONTAINERD"
+      enable_gcfs                 = false
+      enable_gvnic                = false
+      logging_variant             = "DEFAULT"
+      auto_repair                 = true
+      auto_upgrade                = true
+      service_account             = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
+      preemptible                 = false
+      initial_node_count          = 80
+      accelerator_count           = 1
+      accelerator_type            = "nvidia-l4"
+      gpu_driver_version          = "LATEST"
+      gpu_sharing_strategy        = "TIME_SHARING"
+      max_shared_clients_per_gpu = 2
     },
   ]
 
@@ -171,7 +176,7 @@ Then perform the following commands on the root folder:
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
 | cloudrun | (Beta) Enable CloudRun addon | `bool` | `false` | no |
 | cloudrun\_load\_balancer\_type | (Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer. | `string` | `""` | no |
-| cluster\_autoscaling | Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling) | <pre>object({<br>    enabled             = bool<br>    autoscaling_profile = string<br>    min_cpu_cores       = number<br>    max_cpu_cores       = number<br>    min_memory_gb       = number<br>    max_memory_gb       = number<br>    gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))<br>    auto_repair         = bool<br>    auto_upgrade        = bool<br>    disk_size           = optional(number)<br>    disk_type           = optional(string)<br>  })</pre> | <pre>{<br>  "auto_repair": true,<br>  "auto_upgrade": true,<br>  "autoscaling_profile": "BALANCED",<br>  "disk_size": 100,<br>  "disk_type": "pd-standard",<br>  "enabled": false,<br>  "gpu_resources": [],<br>  "max_cpu_cores": 0,<br>  "max_memory_gb": 0,<br>  "min_cpu_cores": 0,<br>  "min_memory_gb": 0<br>}</pre> | no |
+| cluster\_autoscaling | Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling) | <pre>object({<br>    enabled                 = bool<br>    autoscaling_profile     = string<br>    min_cpu_cores           = number<br>    max_cpu_cores           = number<br>    min_memory_gb           = number<br>    max_memory_gb           = number<br>    gpu_resources           = list(object({ resource_type = string, minimum = number, maximum = number }))<br>    auto_repair             = bool<br>    auto_upgrade            = bool<br>    disk_size               = optional(number)<br>    disk_type               = optional(string)<br>    image_type              = optional(string)<br>    strategy                = optional(string)<br>    max_surge               = optional(number)<br>    max_unavailable         = optional(number)<br>    node_pool_soak_duration = optional(string)<br>    batch_soak_duration     = optional(string)<br>    batch_percentage        = optional(number)<br>    batch_node_count        = optional(number)<br>  })</pre> | <pre>{<br>  "auto_repair": true,<br>  "auto_upgrade": true,<br>  "autoscaling_profile": "BALANCED",<br>  "disk_size": 100,<br>  "disk_type": "pd-standard",<br>  "enabled": false,<br>  "gpu_resources": [],<br>  "image_type": "COS_CONTAINERD",<br>  "max_cpu_cores": 0,<br>  "max_memory_gb": 0,<br>  "min_cpu_cores": 0,<br>  "min_memory_gb": 0<br>}</pre> | no |
 | cluster\_dns\_domain | The suffix used for all cluster service records. | `string` | `""` | no |
 | cluster\_dns\_provider | Which in-cluster DNS provider should be used. PROVIDER\_UNSPECIFIED (default) or PLATFORM\_DEFAULT or CLOUD\_DNS. | `string` | `"PROVIDER_UNSPECIFIED"` | no |
 | cluster\_dns\_scope | The scope of access to cluster DNS records. DNS\_SCOPE\_UNSPECIFIED (default) or CLUSTER\_SCOPE or VPC\_SCOPE. | `string` | `"DNS_SCOPE_UNSPECIFIED"` | no |
@@ -185,7 +190,7 @@ Then perform the following commands on the root folder:
 | datapath\_provider | The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature. | `string` | `"DATAPATH_PROVIDER_UNSPECIFIED"` | no |
 | default\_max\_pods\_per\_node | The maximum number of pods to schedule per node | `number` | `110` | no |
 | deletion\_protection | Whether or not to allow Terraform to destroy the cluster. | `bool` | `true` | no |
-| deploy\_using\_private\_endpoint | (Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | `bool` | `false` | no |
+| deploy\_using\_private\_endpoint | A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | `bool` | `false` | no |
 | description | The description of the cluster | `string` | `""` | no |
 | disable\_default\_snat | Whether to disable the default SNAT to support the private use of public IP addresses | `bool` | `false` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | `bool` | `true` | no |
@@ -202,8 +207,8 @@ Then perform the following commands on the root folder:
 | enable\_mesh\_certificates | Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity. | `bool` | `false` | no |
 | enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | `bool` | `false` | no |
 | enable\_pod\_security\_policy | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. Pod Security Policy was removed from GKE clusters with version >= 1.25.0. | `bool` | `false` | no |
-| enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint | `bool` | `false` | no |
-| enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only | `bool` | `false` | no |
+| enable\_private\_endpoint | Whether the master's internal IP address is used as the cluster endpoint | `bool` | `false` | no |
+| enable\_private\_nodes | Whether nodes have internal IP addresses only | `bool` | `false` | no |
 | enable\_resource\_consumption\_export | Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. | `bool` | `true` | no |
 | enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster | `bool` | `true` | no |
 | enable\_tpu | Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive! | `bool` | `false` | no |
@@ -239,7 +244,7 @@ Then perform the following commands on the root folder:
 | maintenance\_start\_time | Time window specified for daily or recurring maintenance operations in RFC3339 format | `string` | `"05:00"` | no |
 | master\_authorized\_networks | List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically whitelists). | `list(object({ cidr_block = string, display_name = string }))` | `[]` | no |
 | master\_global\_access\_enabled | Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint. | `bool` | `true` | no |
-| master\_ipv4\_cidr\_block | (Beta) The IP range in CIDR notation to use for the hosted master network. Optional for Autopilot clusters. | `string` | `"10.0.0.0/28"` | no |
+| master\_ipv4\_cidr\_block | The IP range in CIDR notation to use for the hosted master network. Optional for Autopilot clusters. | `string` | `"10.0.0.0/28"` | no |
 | monitoring\_enable\_managed\_prometheus | Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled. | `bool` | `false` | no |
 | monitoring\_enable\_observability\_metrics | Whether or not the advanced datapath metrics are enabled. | `bool` | `false` | no |
 | monitoring\_enabled\_components | List of services to monitor: SYSTEM\_COMPONENTS, WORKLOADS. Empty list is default GKE configuration. | `list(string)` | `[]` | no |
@@ -271,13 +276,14 @@ Then perform the following commands on the root folder:
 | resource\_usage\_export\_dataset\_id | The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export. | `string` | `""` | no |
 | sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it). | `bool` | `false` | no |
 | security\_posture\_mode | Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`. | `string` | `"DISABLED"` | no |
-| security\_posture\_vulnerability\_mode | Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED` and `VULNERABILITY_BASIC`. Defaults to `VULNERABILITY_DISABLED`. | `string` | `"VULNERABILITY_DISABLED"` | no |
+| security\_posture\_vulnerability\_mode | Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`. Defaults to `VULNERABILITY_DISABLED`. | `string` | `"VULNERABILITY_DISABLED"` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The create\_service\_account variable default value (true) will cause a cluster-specific service account to be created. This service account should already exists and it will be used by the node pools. If you wish to only override the service account name, you can use service\_account\_name variable. | `string` | `""` | no |
 | service\_account\_name | The name of the service account that will be created if create\_service\_account is true. If you wish to use an existing service account, use service\_account variable. | `string` | `""` | no |
 | service\_external\_ips | Whether external ips specified by a service will be allowed in this cluster | `bool` | `false` | no |
 | shadow\_firewall\_rules\_log\_config | The log\_config for shadow firewall rules. You can set this variable to `null` to disable logging. | <pre>object({<br>    metadata = string<br>  })</pre> | <pre>{<br>  "metadata": "INCLUDE_ALL_METADATA"<br>}</pre> | no |
 | shadow\_firewall\_rules\_priority | The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000. | `number` | `999` | no |
 | stack\_type | The stack type to use for this cluster. Either `IPV4` or `IPV4_IPV6`. Defaults to `IPV4`. | `string` | `"IPV4"` | no |
+| stateful\_ha | Whether the Stateful HA Addon is enabled for this cluster. | `bool` | `false` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | `map(list(string))` | `{}` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | `string` | n/a | yes |
 | timeouts | Timeout for cluster operations. | `map(string)` | `{}` | no |
@@ -354,12 +360,14 @@ The node_pools variable takes the following parameters:
 | enable_gvnic | gVNIC (GVE) is an alternative to the virtIO-based ethernet driver. Needs a Container-Optimized OS node image. | false | Optional |
 | enable_integrity_monitoring | Enables monitoring and attestation of the boot integrity of the instance. The attestation is performed against the integrity policy baseline. This baseline is initially derived from the implicitly trusted boot image when the instance is created. | true | Optional |
 | enable_secure_boot | Secure Boot helps ensure that the system only runs authentic software by verifying the digital signature of all boot components, and halting the boot process if signature verification fails. | false | Optional |
+| gpu_driver_version | Mode for how the GPU driver is installed | null | Optional |
 | gpu_partition_size | Size of partitions to create on the GPU | null | Optional |
 | image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | COS_CONTAINERD | Optional |
 | initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
 | key | The key required for the taint | | Required |
 | logging_variant | The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT.  | DEFAULT | Optional |
 | local_ssd_count | The amount of local SSD disks that will be attached to each cluster node and may be used as a `hostpath` volume or a `local` PersistentVolume.  | 0 | Optional |
+| local_ssd_ephemeral_storage_count | The amount of local SSD disks that will be attached to each cluster node and assigned as scratch space as an `emptyDir` volume. If unspecified, ephemeral storage is backed by the cluster node boot disk. | 0 | Optional |
 | local_ssd_ephemeral_count | The amount of local SSD disks that will be attached to each cluster node and assigned as scratch space as an `emptyDir` volume. If unspecified, ephemeral storage is backed by the cluster node boot disk. | 0 | Optional |
 | local_nvme_ssd_count | Number of raw-block local NVMe SSD disks to be attached to the node.Each local SSD is 375 GB in size. If zero, it means no raw-block local NVMe SSD disks to be attached to the node. | 0 | Optional |
 | machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
@@ -368,6 +376,7 @@ The node_pools variable takes the following parameters:
 | total_max_count | Total maximum number of nodes in the NodePool. Must be >= min_count. Cannot be used with per zone limits. | null | Optional |
 | max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |
 | strategy | The upgrade stragey to be used for upgrading the nodes. Valid values of state are: `SURGE` or `BLUE_GREEN` | "SURGE" | Optional |
+| threads_per_core | Optional The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed | null | Optional |
 | max_surge | The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. Only works with `SURGE` strategy. | 1 | Optional |
 | max_unavailable | The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater. Only works with `SURGE` strategy. | 0 | Optional |
 | node_pool_soak_duration | Time needed after draining the entire blue pool. After this period, the blue pool will be cleaned up. By default, it is set to one hour (3600 seconds). The maximum length of the soak time is 7 days (604,800 seconds). Only works with `BLUE_GREEN` strategy. | "3600s" | Optional |
@@ -390,6 +399,8 @@ The node_pools variable takes the following parameters:
 | value | The value for the taint | | Required |
 | version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
 | location_policy | [Location policy](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool#location_policy) specifies the algorithm used when scaling-up the node pool. Location policy is supported only in 1.24.1+ clusters. | " " | Optional |
+| secondary_boot_disk | Image of a secondary boot disk to preload container images and data on new nodes. For detail see [documentation](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#nested_secondary_boot_disks). `gcfs_config` must be `enabled=true` for this feature to work. | | Optional |
+| queued_provisioning | Makes nodes obtainable through the ProvisioningRequest API exclusively. | | Optional |
 
 ## windows_node_pools variable
 The windows_node_pools variable takes the same parameters as [node_pools](#node\_pools-variable) but is reserved for provisioning Windows based node pools only. This variable is introduced to satisfy a [specific requirement](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster-windows#create_a_cluster_and_node_pools) for the presence of at least one linux based node pool in the cluster before a windows based node pool can be created.
