@@ -175,11 +175,6 @@ output "mesh_certificates_config" {
 }
 
 
-output "dns_cache_enabled" {
-  description = "Whether DNS Cache enabled"
-  value       = local.cluster_dns_cache_enabled
-}
-
 output "fleet_membership" {
   description = "Fleet membership (if registered)"
   value       = local.fleet_membership

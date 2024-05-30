@@ -17,9 +17,6 @@
     },
     "networkPolicyConfig": {
       "disabled": true
-    },
-    "statefulHaConfig": {
-      "enabled": true
     }
   },
   "autopilot": {},

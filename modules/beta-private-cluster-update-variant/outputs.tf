@@ -185,11 +185,6 @@ output "peering_name" {
   value       = local.cluster_peering_name
 }
 
-output "dns_cache_enabled" {
-  description = "Whether DNS Cache enabled"
-  value       = local.cluster_dns_cache_enabled
-}
-
 output "cloudrun_enabled" {
   description = "Whether CloudRun enabled"
   value       = local.cluster_cloudrun_enabled
@@ -198,6 +193,11 @@ output "cloudrun_enabled" {
 output "istio_enabled" {
   description = "Whether Istio is enabled"
   value       = local.cluster_istio_enabled
+}
+
+output "dns_cache_enabled" {
+  description = "Whether DNS Cache enabled"
+  value       = local.cluster_dns_cache_enabled
 }
 
 output "pod_security_policy_enabled" {

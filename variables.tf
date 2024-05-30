@@ -239,25 +239,17 @@ variable "enable_resource_consumption_export" {
 
 variable "cluster_autoscaling" {
   type = object({
-    enabled                 = bool
-    autoscaling_profile     = string
-    min_cpu_cores           = number
-    max_cpu_cores           = number
-    min_memory_gb           = number
-    max_memory_gb           = number
-    gpu_resources           = list(object({ resource_type = string, minimum = number, maximum = number }))
-    auto_repair             = bool
-    auto_upgrade            = bool
-    disk_size               = optional(number)
-    disk_type               = optional(string)
-    image_type              = optional(string)
-    strategy                = optional(string)
-    max_surge               = optional(number)
-    max_unavailable         = optional(number)
-    node_pool_soak_duration = optional(string)
-    batch_soak_duration     = optional(string)
-    batch_percentage        = optional(number)
-    batch_node_count        = optional(number)
+    enabled             = bool
+    autoscaling_profile = string
+    min_cpu_cores       = number
+    max_cpu_cores       = number
+    min_memory_gb       = number
+    max_memory_gb       = number
+    gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair         = bool
+    auto_upgrade        = bool
+    disk_size           = optional(number)
+    disk_type           = optional(string)
   })
   default = {
     enabled             = false
@@ -271,7 +263,6 @@ variable "cluster_autoscaling" {
     auto_upgrade        = true
     disk_size           = 100
     disk_type           = "pd-standard"
-    image_type          = "COS_CONTAINERD"
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
@@ -307,12 +298,6 @@ variable "node_pools_oauth_scopes" {
     all               = ["https://www.googleapis.com/auth/cloud-platform"]
     default-node-pool = []
   }
-}
-
-variable "network_tags" {
-  description = "(Optional) - List of network tags applied to auto-provisioned node pools."
-  type        = list(string)
-  default     = []
 }
 
 variable "stub_domains" {
@@ -511,7 +496,7 @@ variable "security_posture_mode" {
 }
 
 variable "security_posture_vulnerability_mode" {
-  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`. Defaults to `VULNERABILITY_DISABLED`."
+  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED` and `VULNERABILITY_BASIC`. Defaults to `VULNERABILITY_DISABLED`."
   type        = string
   default     = "VULNERABILITY_DISABLED"
 }
@@ -651,12 +636,6 @@ variable "gcs_fuse_csi_driver" {
   default     = false
 }
 
-variable "stateful_ha" {
-  type        = bool
-  description = "Whether the Stateful HA Addon is enabled for this cluster."
-  default     = false
-}
-
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -697,7 +676,7 @@ variable "monitoring_observability_metrics_relay_mode" {
 
 variable "monitoring_enabled_components" {
   type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS. Empty list is default GKE configuration."
+  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS (provider version >= 3.89.0). Empty list is default GKE configuration."
   default     = []
 }
 
@@ -716,12 +695,6 @@ variable "enable_kubernetes_alpha" {
 variable "config_connector" {
   type        = bool
   description = "Whether ConfigConnector is enabled for this cluster."
-  default     = false
-}
-
-variable "enable_l4_ilb_subsetting" {
-  type        = bool
-  description = "Enable L4 ILB Subsetting on the cluster"
   default     = false
 }
 

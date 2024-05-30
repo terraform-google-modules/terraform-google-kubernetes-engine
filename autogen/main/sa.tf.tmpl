@@ -52,20 +52,6 @@ resource "google_project_iam_member" "cluster_service_account-nodeService_accoun
   member  = google_service_account.cluster_service_account[0].member
 }
 
-resource "google_project_iam_member" "cluster_service_account-metric_writer" {
-  count   = var.create_service_account ? 1 : 0
-  project = google_service_account.cluster_service_account[0].project
-  role    = "roles/monitoring.metricWriter"
-  member  = google_service_account.cluster_service_account[0].member
-}
-
-resource "google_project_iam_member" "cluster_service_account-resourceMetadata-writer" {
-  count   = var.create_service_account ? 1 : 0
-  project = google_service_account.cluster_service_account[0].project
-  role    = "roles/stackdriver.resourceMetadata.writer"
-  member  = google_service_account.cluster_service_account[0].member
-}
-
 resource "google_project_iam_member" "cluster_service_account-gcr" {
   for_each = var.create_service_account && var.grant_registry_access ? toset(local.registry_projects_list) : []
   project  = each.key
@@ -79,19 +65,3 @@ resource "google_project_iam_member" "cluster_service_account-artifact-registry"
   role     = "roles/artifactregistry.reader"
   member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
 }
-{% if beta_cluster %}
-
-resource "google_project_service_identity" "fleet_project" {
-  count    = var.fleet_project_grant_service_agent ? 1 : 0
-  provider = google-beta
-  project  = var.fleet_project
-  service  = "gkehub.googleapis.com"
-}
-
-resource "google_project_iam_member" "service_agent" {
-  for_each = var.fleet_project_grant_service_agent ? toset(["roles/gkehub.serviceAgent", "roles/gkehub.crossProjectServiceAgent"]) : []
-  project  = var.project_id
-  role     = each.value
-  member   = "serviceAccount:${google_project_service_identity.fleet_project[0].email}"
-}
-{% endif %}

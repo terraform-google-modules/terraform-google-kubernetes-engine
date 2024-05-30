@@ -107,7 +107,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-
   master_auth {
     client_certificate_config {
       issue_client_certificate = var.issue_client_certificate
@@ -269,6 +268,4 @@ resource "google_container_cluster" "primary" {
       topic   = var.notification_config_topic
     }
   }
-
-  depends_on = [google_project_iam_member.service_agent]
 }
