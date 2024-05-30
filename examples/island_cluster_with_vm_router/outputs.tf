@@ -1,6 +1,5 @@
-
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +14,6 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 0.13.0"
-
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 3.39.0, < 6"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.13"
-    }
-  }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:workload-identity/v31.0.0"
-  }
+output "cluster_id" {
+  value = module.gke.cluster_id
 }
