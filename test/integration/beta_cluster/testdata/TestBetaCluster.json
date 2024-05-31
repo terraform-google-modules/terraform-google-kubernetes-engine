@@ -100,7 +100,7 @@
   },
   "monitoringConfig": {
     "advancedDatapathObservabilityConfig": {
-      "enableRelay": false
+      "enableMetrics": false
     },
     "componentConfig": {
       "enableComponents": [
