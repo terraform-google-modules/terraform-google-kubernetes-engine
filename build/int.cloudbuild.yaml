@@ -101,7 +101,7 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage init --verbose']
 - id: apply autopilot-private-firewalls
   waitFor:
-    - init create-all
+    - init autopilot-private-firewalls
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage apply --verbose']
 - id: verify autopilot-private-firewalls
