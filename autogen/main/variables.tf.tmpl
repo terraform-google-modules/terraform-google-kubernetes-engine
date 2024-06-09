@@ -584,6 +584,12 @@ variable "enable_fqdn_network_policy" {
   description = "Enable FQDN Network Policies on the cluster"
   default     = null
 }
+
+variable "enable_cilium_clusterwide_network_policy" {
+  type          = bool
+  description   = "Enable Cilium Cluster Wide Network Policies on the cluster"
+  default       = false
+}
 {% endif %}
 
 variable "security_posture_mode" {
