@@ -24,6 +24,12 @@ variable "project_id" {
   type        = string
 }
 
+variable "hub_project_id" {
+  description = "The project in which the GKE Hub belongs. Defaults to GKE cluster project_id."
+  type        = string
+  default     = ""
+}
+
 variable "location" {
   description = "GCP location used to reach cluster."
   type        = string
