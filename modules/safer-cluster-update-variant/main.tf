@@ -68,7 +68,7 @@ module "gke" {
   // NOTE: Dataplane-V2 conflicts with the Calico network policy add-on because
   // it provides redundant NetworkPolicy capabilities. If V2 is enabled, the
   // Calico add-on should be disabled.
-  network_policy = var.datapath_provider == "ADVANCED_DATAPATH" ? false : true
+  network_policy                           = var.datapath_provider == "ADVANCED_DATAPATH" ? false : true
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
   // Default to the recommended Dataplane V2 which enables NetworkPolicies and
