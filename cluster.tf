@@ -171,6 +171,8 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
   enable_tpu              = var.enable_tpu
 

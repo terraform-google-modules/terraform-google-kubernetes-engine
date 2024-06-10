@@ -73,6 +73,7 @@ module "gke" {
   // Default to the recommended Dataplane V2 which enables NetworkPolicies and
   // allows for network policy logging of allowed and denied requests to Pods.
   datapath_provider = var.datapath_provider
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
   maintenance_start_time = var.maintenance_start_time
   maintenance_end_time   = var.maintenance_end_time

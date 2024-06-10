@@ -532,3 +532,8 @@ variable "deletion_protection" {
   description = "Whether or not to allow Terraform to destroy the cluster."
   default     = true
 }
+
+variable "enable_cilium_clusterwide_network_policy" {
+  description = "(Optional) Whether CiliumClusterWideNetworkPolicy is enabled on this cluster. Defaults to false."
+  type        = bool
+}

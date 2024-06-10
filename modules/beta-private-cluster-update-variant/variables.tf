@@ -848,3 +848,8 @@ variable "fleet_project_grant_service_agent" {
   type        = bool
   default     = false
 }
+
+variable "enable_cilium_clusterwide_network_policy" {
+  description = "(Optional) Whether CiliumClusterWideNetworkPolicy is enabled on this cluster. Defaults to false."
+  type        = bool
+}

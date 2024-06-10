@@ -69,6 +69,7 @@ module "gke" {
   // it provides redundant NetworkPolicy capabilities. If V2 is enabled, the
   // Calico add-on should be disabled.
   network_policy = var.datapath_provider == "ADVANCED_DATAPATH" ? false : true
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
   // Default to the recommended Dataplane V2 which enables NetworkPolicies and
   // allows for network policy logging of allowed and denied requests to Pods.

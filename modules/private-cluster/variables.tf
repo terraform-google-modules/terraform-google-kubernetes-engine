@@ -758,3 +758,8 @@ variable "fleet_project" {
   type        = string
   default     = null
 }
+
+variable "enable_cilium_clusterwide_network_policy" {
+  description = "(Optional) Whether CiliumClusterWideNetworkPolicy is enabled on this cluster. Defaults to false."
+  type        = bool
+}

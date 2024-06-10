@@ -309,6 +309,8 @@ resource "google_container_cluster" "primary" {
   }
 
   datapath_provider = var.datapath_provider
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+  
 
   networking_mode = "VPC_NATIVE"
 
