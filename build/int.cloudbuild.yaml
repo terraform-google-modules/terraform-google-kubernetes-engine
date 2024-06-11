@@ -94,27 +94,6 @@ steps:
     - verify safer-cluster-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSaferCluster --stage destroy --verbose']
-- id: init autopilot-private-firewalls
-  waitFor:
-    - create-all
-    - destroy simple-autopilot-private-local
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage init --verbose']
-- id: apply autopilot-private-firewalls
-  waitFor:
-    - init autopilot-private-firewalls
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage apply --verbose']
-- id: verify autopilot-private-firewalls
-  waitFor:
-    - apply autopilot-private-firewalls
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage verify --verbose']
-- id: destroy autopilot-private-firewalls
-  waitFor:
-    - verify autopilot-private-firewalls
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage destroy --verbose']
 - id: init simple-regional-local
   waitFor:
     - create-all
@@ -475,6 +454,27 @@ steps:
     - verify simple-autopilot-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivate --stage teardown --verbose']
+- id: init autopilot-private-firewalls
+  waitFor:
+    - create-all
+    - destroy simple-autopilot-private-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage init --verbose']
+- id: apply autopilot-private-firewalls
+  waitFor:
+    - init autopilot-private-firewalls
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage apply --verbose']
+- id: verify autopilot-private-firewalls
+  waitFor:
+    - apply autopilot-private-firewalls
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage verify --verbose']
+- id: destroy autopilot-private-firewalls
+  waitFor:
+    - verify autopilot-private-firewalls
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage destroy --verbose']
 - id: init simple-autopilot-public-local
   waitFor:
     - create-all
