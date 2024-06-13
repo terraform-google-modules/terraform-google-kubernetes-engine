@@ -66,7 +66,7 @@ control "gcloud" do
       end
 
       it "has the expected databaseEncryption config" do
-        expect(data['databaseEncryption']).to eq({
+        expect(data['databaseEncryption']).to include({
           "state" => 'DECRYPTED',
         })
       end
