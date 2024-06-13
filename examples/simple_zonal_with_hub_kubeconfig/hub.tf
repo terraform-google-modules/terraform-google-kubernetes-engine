@@ -15,8 +15,8 @@
  */
 
 module "hub" {
-  source  = "terraform-google-modules/kubernetes-engine/google//modules/hub-legacy"
-  version = "~> 31.0"
+  source = "../../modules/hub-legacy"
+  # [restore-marker]   version = "~> 31.0"
 
   project_id              = var.project_id
   location                = "remote"

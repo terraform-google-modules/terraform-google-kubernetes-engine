@@ -15,8 +15,8 @@
  */
 
 module "acm" {
-  source  = "terraform-google-modules/kubernetes-engine/google//modules/acm"
-  version = "~> 31.0"
+  source = "../../modules/acm"
+  # [restore-marker]   version = "~> 31.0"
 
   project_id   = var.project_id
   location     = module.gke.location

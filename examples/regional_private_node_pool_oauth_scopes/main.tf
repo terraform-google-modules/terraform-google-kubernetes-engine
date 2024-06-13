@@ -15,8 +15,8 @@
  */
 
 module "gke" {
-  source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
-  version = "~> 31.0"
+  source = "../../modules/private-cluster"
+  # [restore-marker]   version = "~> 31.0"
 
   project_id                        = var.project_id
   name                              = "random-test-cluster"

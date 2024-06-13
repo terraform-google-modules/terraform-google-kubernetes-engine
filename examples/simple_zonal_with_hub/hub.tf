@@ -15,8 +15,8 @@
  */
 
 module "hub" {
-  source  = "terraform-google-modules/kubernetes-engine/google//modules/fleet-membership"
-  version = "~> 31.0"
+  source = "../../modules/fleet-membership"
+  # [restore-marker]   version = "~> 31.0"
 
   project_id   = var.project_id
   location     = module.gke.location

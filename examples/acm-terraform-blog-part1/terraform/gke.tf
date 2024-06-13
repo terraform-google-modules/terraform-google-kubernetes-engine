@@ -30,8 +30,8 @@ module "enabled_google_apis" {
 }
 
 module "gke" {
-  source             = "terraform-google-modules/kubernetes-engine/google"
-  version            = "~> 31.0"
+  source = "../../.."
+  # [restore-marker]   version            = "~> 31.0"
   project_id         = module.enabled_google_apis.project_id
   name               = "sfl-acm-part1"
   region             = var.region
