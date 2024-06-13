@@ -36,7 +36,7 @@ func TestAutopilotPrivateFirewalls(t *testing.T) {
 		firewallRules := []string{"gke-%s-intra-cluster-egress", "gke-%s-webhooks", "gke-shadow-%s-all", "gke-shadow-%s-master", "gke-shadow-%s-vms", "gke-shadow-%s-inkubelet", "gke-shadow-%s-exkubelet"}
 		var fws []string
 		for _, fw := range firewallRules {
-			n := fmt.Sprintf(fw, clusterName[:25])
+			n := fmt.Sprintf(fw, clusterName[:27])
 			fws = append(fws, n)
 		}
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
