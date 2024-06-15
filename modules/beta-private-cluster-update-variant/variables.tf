@@ -562,6 +562,7 @@ variable "enable_fqdn_network_policy" {
   default     = null
 }
 
+
 variable "enable_cilium_clusterwide_network_policy" {
   type        = bool
   description = "Enable Cilium Cluster Wide Network Policies on the cluster"
