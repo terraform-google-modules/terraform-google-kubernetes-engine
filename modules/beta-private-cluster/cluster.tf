@@ -118,6 +118,8 @@ resource "google_container_cluster" "primary" {
         service_account = local.service_account
         oauth_scopes    = local.node_pools_oauth_scopes["all"]
 
+        boot_disk_kms_key = var.boot_disk_kms_key
+
         management {
           auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
           auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
@@ -453,7 +455,7 @@ resource "google_container_cluster" "primary" {
         }
       }
 
-      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", "")
+      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", var.boot_disk_kms_key)
 
       shielded_instance_config {
         enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
@@ -792,13 +794,14 @@ resource "google_container_node_pool" "pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "pod_pids_limit"]
       )) != 0 ? [1] : []
 
       content {
         cpu_manager_policy   = lookup(each.value, "cpu_manager_policy", "static")
         cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
+        pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
       }
     }
 
@@ -1076,13 +1079,14 @@ resource "google_container_node_pool" "windows_pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "pod_pids_limit"]
       )) != 0 ? [1] : []
 
       content {
         cpu_manager_policy   = lookup(each.value, "cpu_manager_policy", "static")
         cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
+        pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
       }
     }
 

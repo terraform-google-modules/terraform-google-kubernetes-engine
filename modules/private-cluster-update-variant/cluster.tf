@@ -112,6 +112,8 @@ resource "google_container_cluster" "primary" {
         service_account = local.service_account
         oauth_scopes    = local.node_pools_oauth_scopes["all"]
 
+        boot_disk_kms_key = var.boot_disk_kms_key
+
         management {
           auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
           auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
