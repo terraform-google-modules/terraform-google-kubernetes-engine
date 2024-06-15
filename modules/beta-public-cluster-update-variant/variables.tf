@@ -795,12 +795,6 @@ variable "sandbox_enabled" {
   default     = false
 }
 
-variable "enable_intranode_visibility" {
-  type        = bool
-  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
-  default     = false
-}
-
 variable "enable_identity_service" {
   type        = bool
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
@@ -812,6 +806,13 @@ variable "enable_gcfs" {
   description = "Enable image streaming on cluster level."
   default     = false
 }
+
+variable "enable_intranode_visibility" {
+  type        = bool
+  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
+  default     = false
+}
+
 
 variable "fleet_project" {
   description = "(Optional) Register the cluster with the fleet in this project."
