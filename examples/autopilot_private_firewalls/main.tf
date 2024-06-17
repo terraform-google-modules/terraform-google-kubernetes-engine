@@ -51,7 +51,7 @@ module "gke" {
   add_master_webhook_firewall_rules = true
   add_shadow_firewall_rules         = true
   network_tags                      = ["allow-google-apis"]
-  deletion_protection    = false
+  deletion_protection               = false
 
   master_authorized_networks = [
     {
