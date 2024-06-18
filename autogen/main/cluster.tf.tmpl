@@ -86,6 +86,15 @@ resource "google_container_cluster" "primary" {
 
   min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : var.kubernetes_version == "latest" ? null : var.kubernetes_version
 
+{% if beta_cluster %}
+  dynamic "secret_manager_config" {
+    for_each = var.enable_secret_manager ? [var.enable_secret_manager] : []
+    content {
+      enabled = secret_manager_config.value
+    }
+  }
+
+{% endif %}
 {% if beta_cluster and autopilot_cluster != true %}
   dynamic "cluster_telemetry" {
     for_each = local.cluster_telemetry_type_is_set ? [1] : []

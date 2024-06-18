@@ -72,6 +72,13 @@ resource "google_container_cluster" "primary" {
 
   min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : var.kubernetes_version == "latest" ? null : var.kubernetes_version
 
+  dynamic "secret_manager_config" {
+    for_each = var.enable_secret_manager ? [var.enable_secret_manager] : []
+    content {
+      enabled = secret_manager_config.value
+    }
+  }
+
   cluster_autoscaling {
     dynamic "auto_provisioning_defaults" {
       for_each = (var.create_service_account || var.service_account != "") ? [1] : []

@@ -901,3 +901,11 @@ variable "fleet_project_grant_service_agent" {
   default = false
 }
 {% endif %}
+{% if beta_cluster %}
+
+variable "enable_secret_manager" {
+  type        = bool
+  description = "Secret Manager add-on to enable usage of Secrets Store CSI Driver in Kubernetes volumes"
+  default     = false
+}
+{% endif %}

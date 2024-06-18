@@ -51,6 +51,7 @@ module "gke" {
   enable_private_nodes            = true
   network_tags                    = [local.cluster_type]
   deletion_protection             = false
+  enable_secret_manager           = true
 
   master_authorized_networks = [
     {

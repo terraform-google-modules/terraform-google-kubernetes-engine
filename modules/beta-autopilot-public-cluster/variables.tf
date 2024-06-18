@@ -443,3 +443,9 @@ variable "fleet_project_grant_service_agent" {
   type        = bool
   default     = false
 }
+
+variable "enable_secret_manager" {
+  type        = bool
+  description = "Secret Manager add-on to enable usage of Secrets Store CSI Driver in Kubernetes volumes"
+  default     = false
+}
