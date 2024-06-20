@@ -810,12 +810,12 @@ variable "config_connector" {
   default     = false
 }
 
+{% endif %}
 variable "enable_l4_ilb_subsetting" {
   type        = bool
   description = "Enable L4 ILB Subsetting on the cluster"
   default     = false
 }
-{% endif %}
 {% if beta_cluster %}
   {% if autopilot_cluster != true %}
 
