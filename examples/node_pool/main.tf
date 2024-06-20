@@ -79,6 +79,7 @@ module "gke" {
       cpu_manager_policy        = "static"
       cpu_cfs_quota             = true
       local_ssd_ephemeral_count = 2
+      pod_pids_limit            = 4096
     },
     {
       name                = "pool-04"
