@@ -84,8 +84,8 @@ resource "google_container_cluster" "primary" {
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
-
-
+  
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
   enable_l4_ilb_subsetting   = var.enable_l4_ilb_subsetting
   
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
