@@ -235,9 +235,9 @@ resource "google_container_cluster" "primary" {
     }
   }
   {% endif %}
+  {% endif %}
 
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
-  {% endif %}
 
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
