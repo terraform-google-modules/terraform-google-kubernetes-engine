@@ -202,7 +202,7 @@ output "intranode_visibility_enabled" {
 
 output "identity_service_enabled" {
   description = "Whether Identity Service is enabled"
-  value       = local.cluster_pod_security_policy_enabled
+  value       = local.cluster_identity_service_enabled
 }
 
 output "fleet_membership" {
