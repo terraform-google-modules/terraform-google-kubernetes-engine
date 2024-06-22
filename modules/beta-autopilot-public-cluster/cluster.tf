@@ -85,10 +85,10 @@ resource "google_container_cluster" "primary" {
     enabled = var.enable_vertical_pod_autoscaling
   }
 
+  enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
+
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
-  enable_l4_ilb_subsetting   = var.enable_l4_ilb_subsetting
-  
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   enable_autopilot           = true
   dynamic "master_authorized_networks_config" {
