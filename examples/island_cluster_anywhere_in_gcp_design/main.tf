@@ -26,8 +26,8 @@ resource "google_service_account" "gke-sa" {
 }
 
 module "gke" {
-  source = "../../modules/beta-private-cluster"
-  # [restore-marker]   version = "~> 31.0"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
+  version = "~> 31.0"
 
   for_each = { for k, v in var.gke_spokes : k => v }
 

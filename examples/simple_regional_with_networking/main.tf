@@ -52,8 +52,8 @@ module "gcp-network" {
 }
 
 module "gke" {
-  source = "../.."
-  # [restore-marker]   version = "~> 31.0"
+  source  = "terraform-google-modules/kubernetes-engine/google"
+  version = "~> 31.0"
 
   project_id             = var.project_id
   name                   = var.cluster_name

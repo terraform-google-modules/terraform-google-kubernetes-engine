@@ -27,8 +27,8 @@ data "google_project" "project" {
 }
 
 module "gke" {
-  source = "../.."
-  # [restore-marker]   version = "~> 31.0"
+  source  = "terraform-google-modules/kubernetes-engine/google"
+  version = "~> 31.0"
 
   project_id              = var.project_id
   name                    = "test-prefix-cluster-test-suffix"
@@ -56,8 +56,8 @@ module "gke" {
 }
 
 module "asm" {
-  source = "../../modules/asm"
-  # [restore-marker]   version = "~> 31.0"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/asm"
+  version = "~> 31.0"
 
   project_id                = var.project_id
   cluster_name              = module.gke.name

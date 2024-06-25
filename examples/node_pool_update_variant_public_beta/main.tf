@@ -38,8 +38,8 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source = "../../modules/beta-public-cluster-update-variant"
-  # [restore-marker]   version = "~> 31.0"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster-update-variant"
+  version = "~> 31.0"
 
   project_id             = var.project_id
   name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"

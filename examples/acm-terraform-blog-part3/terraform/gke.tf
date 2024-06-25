@@ -32,8 +32,8 @@ module "enabled_google_apis" {
 }
 
 module "gke" {
-  source = "../../../modules/beta-public-cluster"
-  # [restore-marker]   version            = "~> 31.0"
+  source             = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
+  version            = "~> 31.0"
   project_id         = module.enabled_google_apis.project_id
   name               = "sfl-acm-part3"
   region             = var.region
@@ -47,8 +47,8 @@ module "gke" {
 }
 
 module "wi" {
-  source = "../../../modules/workload-identity"
-  # [restore-marker]   version             = "~> 31.0"
+  source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
+  version             = "~> 31.0"
   gcp_sa_name         = "cnrmsa"
   cluster_name        = module.gke.name
   name                = "cnrm-controller-manager"
