@@ -592,7 +592,14 @@ variable "enable_fqdn_network_policy" {
   description = "Enable FQDN Network Policies on the cluster"
   default     = null
 }
+
 {% endif %}
+
+variable "enable_cilium_clusterwide_network_policy" {
+  type          = bool
+  description   = "Enable Cilium Cluster Wide Network Policies on the cluster"
+  default       = false
+}
 
 variable "security_posture_mode" {
   description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
