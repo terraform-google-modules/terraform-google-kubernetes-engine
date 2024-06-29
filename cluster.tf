@@ -94,11 +94,15 @@ resource "google_container_cluster" "primary" {
     for_each = local.logmon_config_is_set || local.logmon_config_is_set ? [1] : []
     content {
       enable_components = var.monitoring_enabled_components
-      managed_prometheus {
-        enabled = var.monitoring_enable_managed_prometheus
+      dynamic "managed_prometheus" {
+        for_each = var.monitoring_enable_managed_prometheus != null ? [1] : []
+        content {
+          enabled = var.monitoring_enable_managed_prometheus
+        }
       }
       advanced_datapath_observability_config {
         enable_metrics = var.monitoring_enable_observability_metrics
+        enable_relay   = var.monitoring_enable_observability_relay
         relay_mode     = var.monitoring_observability_metrics_relay_mode
       }
     }
