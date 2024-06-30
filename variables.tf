@@ -213,6 +213,16 @@ variable "node_pools_linux_node_configs_sysctls" {
     default-node-pool = {}
   }
 }
+variable "node_pools_cgroup_mode" {
+  type        = map(string)
+  description = "Map of strings containing cgroup node config by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = ""
+    default-node-pool = ""
+  }
+}
 
 variable "enable_cost_allocation" {
   type        = bool
