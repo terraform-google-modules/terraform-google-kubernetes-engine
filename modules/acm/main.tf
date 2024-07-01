@@ -24,6 +24,7 @@ module "registration" {
 
   cluster_name              = var.cluster_name
   project_id                = var.project_id
+  hub_project_id            = var.hub_project_id
   location                  = var.location
   enable_fleet_registration = var.enable_fleet_registration
   membership_name           = var.cluster_membership_id
