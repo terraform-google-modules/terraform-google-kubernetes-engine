@@ -19,7 +19,7 @@ resource "google_gke_hub_feature" "acm" {
   provider = google-beta
 
   name     = "configmanagement"
-  project  = var.project_id
+  project  = try(var.hub_project_id, var.project_id)
   location = "global"
 }
 
