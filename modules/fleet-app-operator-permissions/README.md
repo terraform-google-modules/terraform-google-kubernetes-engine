@@ -23,7 +23,7 @@ To deploy this config:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| app\_operator\_name | The name of the app operator principal for the Fleet Scope, e.g., `person@google.com` (user), `people@google.com` (group). | `string` | n/a | yes |
+| app\_operator\_name | The name of the app operator principal for the Fleet Scope, e.g., `person@google.com` (user), `people@google.com` (group), `principal://iam.googleapis.com/locations/global/workforcePools/my-pool/subject/person` (user), `principalSet://iam.googleapis.com/locations/global/workforcePools/my-pool/group/people` (group), `serviceAccount:my-service-account@my-project.iam.gserviceaccount.com` (user). | `string` | n/a | yes |
 | is\_user\_app\_operator | Whether the app operator is a user (`true`), or a group (`false`). | `bool` | n/a | yes |
 | project\_id | The project to which the Fleet belongs. | `string` | n/a | yes |
 | role | The principal role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`). | `string` | n/a | yes |

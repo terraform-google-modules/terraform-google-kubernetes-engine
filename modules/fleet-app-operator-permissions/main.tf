@@ -19,7 +19,11 @@ provider "google" {
 }
 
 locals {
-  principal = var.is_user_app_operator ? "user:${var.app_operator_name}" : "group:${var.app_operator_name}"
+  principal = (
+    startswith(var.app_operator_name, "principal://") || startswith(var.app_operator_name, "principalSet://") ? var.app_operator_name : (
+    endswith(var.app_operator_name, "gserviceaccount.com") ? "serviceAccount:${var.app_operator_name}" : (
+    var.is_user_app_operator ? "user:${var.app_operator_name}" : "group:${var.app_operator_name}"
+  )))
   project_level_scope_role = {
     "VIEW"  = "roles/gkehub.scopeViewerProjectLevel"
     "EDIT"  = "roles/gkehub.scopeEditorProjectLevel"

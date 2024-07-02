@@ -25,7 +25,7 @@ variable "scope_id" {
 }
 
 variable "app_operator_name" {
-  description = "The name of the app operator principal for the Fleet Scope, e.g., `person@google.com` (user), `people@google.com` (group)."
+  description = "The name of the app operator principal for the Fleet Scope, e.g., `person@google.com` (user), `people@google.com` (group), `principal://iam.googleapis.com/locations/global/workforcePools/my-pool/subject/person` (user), `principalSet://iam.googleapis.com/locations/global/workforcePools/my-pool/group/people` (group), `serviceAccount:my-service-account@my-project.iam.gserviceaccount.com` (user)."
   type = string
 }
 
