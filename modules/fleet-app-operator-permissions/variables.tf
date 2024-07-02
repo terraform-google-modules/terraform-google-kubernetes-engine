@@ -24,20 +24,18 @@ variable "scope_id" {
   type        = string
 }
 
-variable "user" {
-  description = "The user principal for the Fleet Scope, e.g., person@company.com. Either user or group must be provided."
-  type        = string
-  default     = ""
+variable "app_operator_name" {
+  description = "The name of the app operator principal for the Fleet Scope, e.g., `person@google.com` (user), `people@google.com` (group)."
+  type = string
 }
 
-variable "group" {
-  description = "The group principal for the Fleet Scope, e.g., people@company.com. Either user or group must be provided."
-  type        = string
-  default     = ""
+variable "is_user_app_operator" {
+  description = "Whether the app operator is a user (`true`), or a group (`false`)."
+  type = bool
 }
 
 variable "role" {
-  description = "The principal role for the Fleet Scope (VIEW/EDIT/ADMIN)."
+  description = "The principal role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`)."
   type        = string
   validation {
     condition     = var.role == "VIEW" || var.role == "EDIT" || var.role == "ADMIN"

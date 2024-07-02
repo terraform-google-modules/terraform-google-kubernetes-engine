@@ -19,7 +19,7 @@ provider "google" {
 }
 
 locals {
-  principal = var.user != "" ? "user:${var.user}" : "group:${var.group}"
+  principal = var.is_user_app_operator ? "user:${var.app_operator_name}" : "group:${var.app_operator_name}"
   project_level_scope_role = {
     "VIEW"  = "roles/gkehub.scopeViewerProjectLevel"
     "EDIT"  = "roles/gkehub.scopeEditorProjectLevel"
@@ -67,32 +67,20 @@ resource "random_id" "rand" {
 }
 
 resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_user_role_binding" {
-  lifecycle {
-    precondition {
-      condition     = (var.user != "" && var.group == "") || (var.user == "" && var.group != "")
-      error_message = "Only one of user or group must be specified."
-    }
-  }
-  count                      = var.user == "" ? 0 : 1
+  count                      = var.is_user_app_operator ? 1 : 0
   scope_rbac_role_binding_id = "tf-${random_id.rand.hex}"
   scope_id                   = var.scope_id
-  user                       = var.user
+  user                       = var.app_operator_name
   role {
     predefined_role = var.role
   }
 }
 
 resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_group_role_binding" {
-  lifecycle {
-    precondition {
-      condition     = (var.user != "" && var.group == "") || (var.user == "" && var.group != "")
-      error_message = "Only one of user or group must be specified."
-    }
-  }
-  count                      = var.group == "" ? 0 : 1
+  count                      = var.is_user_app_operator ? 0 : 1
   scope_rbac_role_binding_id = "tf-${random_id.rand.hex}"
   scope_id                   = var.scope_id
-  group                      = var.group
+  group                      = var.app_operator_name
   role {
     predefined_role = var.role
   }

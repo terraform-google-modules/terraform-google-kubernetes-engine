@@ -23,11 +23,11 @@ To deploy this config:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| group | The group principal for the Fleet Scope, e.g., people@company.com. Either user or group must be provided. | `string` | `""` | no |
+| app\_operator\_name | The name of the app operator principal for the Fleet Scope, e.g., `person@google.com` (user), `people@google.com` (group). | `string` | n/a | yes |
+| is\_user\_app\_operator | Whether the app operator is a user (`true`), or a group (`false`). | `bool` | n/a | yes |
 | project\_id | The project to which the Fleet belongs. | `string` | n/a | yes |
-| role | The principal role for the Fleet Scope (VIEW/EDIT/ADMIN). | `string` | n/a | yes |
+| role | The principal role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`). | `string` | n/a | yes |
 | scope\_id | The scope for which IAM and RBAC role bindings are created. | `string` | n/a | yes |
-| user | The user principal for the Fleet Scope, e.g., person@company.com. Either user or group must be provided. | `string` | `""` | no |
 
 ## Outputs
 

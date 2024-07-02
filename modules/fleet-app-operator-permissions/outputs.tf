@@ -21,6 +21,6 @@ output "project_id" {
 
 output "wait" {
   description = "An output to use when you want to depend on Scope RBAC Role Binding creation finishing."
-  value       = var.user != "" ? google_gke_hub_scope_rbac_role_binding.scope_rbac_user_role_binding[0].scope_rbac_role_binding_id : google_gke_hub_scope_rbac_role_binding.scope_rbac_group_role_binding[0].scope_rbac_role_binding_id
+  value       = var.is_user_app_operator ? google_gke_hub_scope_rbac_role_binding.scope_rbac_user_role_binding[0].scope_rbac_role_binding_id : google_gke_hub_scope_rbac_role_binding.scope_rbac_group_role_binding[0].scope_rbac_role_binding_id
 }
 
