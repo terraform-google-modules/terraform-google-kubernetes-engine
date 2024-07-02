@@ -19,18 +19,8 @@ variable "project_id" {
   type        = string
 }
 
-variable "app_operator_email" {
-  description = "Email of the app operator whose team works with the Fleet."
-  type        = string
-}
-
 variable "app_operator_team" {
   description = "The name of the team that the app operator is part of."
-  type        = string
-}
-
-variable "app_operator_role" {
-  description = "The role of the app operator in their team (VIEW/EDIT/ADMIN)."
   type        = string
 }
 

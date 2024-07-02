@@ -23,14 +23,21 @@ resource "google_gke_hub_scope" "scope" {
   scope_id = var.app_operator_team
 }
 
+# Create a Service Account, which can be used as an app operator.
+resource "google_service_account" "service_account" {
+  account_id   = "app-operator-id"
+  display_name = "Test App Operator Service Account"
+}
+
 # Grant permissions to the app operator to work with the Fleet Scope.
 module "permissions" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
   version = "~> 30.3.0"
 
-  project_id = var.project_id
-  scope_id   = google_gke_hub_scope.scope.scope_id
-  user       = var.app_operator_email
-  role       = var.app_operator_role
+  project_id           = var.project_id
+  scope_id             = google_gke_hub_scope.scope.scope_id
+  app_operator_name    = google_service_account.service_account.email
+  is_user_app_operator = true
+  role                 = "VIEW"
 }
 
