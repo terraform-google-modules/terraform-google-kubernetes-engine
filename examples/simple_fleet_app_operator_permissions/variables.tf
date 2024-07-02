@@ -19,8 +19,3 @@ variable "project_id" {
   type        = string
 }
 
-variable "app_operator_team" {
-  description = "The name of the team that the app operator is part of."
-  type        = string
-}
-

@@ -18,15 +18,15 @@ provider "google" {
   project = var.project_id
 }
 
-# Create a Fleet Scope for the app operator's team.
-resource "google_gke_hub_scope" "scope" {
-  scope_id = var.app_operator_team
-}
-
 # Create a Service Account, which can be used as an app operator.
 resource "google_service_account" "service_account" {
   account_id   = "app-operator-id"
   display_name = "Test App Operator Service Account"
+}
+
+# Create a Fleet Scope for the app operator's team.
+resource "google_gke_hub_scope" "scope" {
+  scope_id = "app-operator-team"
 }
 
 # Grant permissions to the app operator to work with the Fleet Scope.
