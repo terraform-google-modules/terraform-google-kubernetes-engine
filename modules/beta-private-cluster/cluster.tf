@@ -267,6 +267,10 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    config_connector_config {
+      enabled = var.config_connector
+    }
+
     dynamic "gke_backup_agent_config" {
       for_each = local.gke_backup_agent_config
 
@@ -290,11 +294,6 @@ resource "google_container_cluster" "primary" {
         enabled = stateful_ha_config.value.enabled
       }
     }
-
-    config_connector_config {
-      enabled = var.config_connector
-    }
-
     istio_config {
       disabled = !var.istio
       auth     = var.istio_auth
