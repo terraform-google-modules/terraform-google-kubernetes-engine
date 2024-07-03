@@ -118,6 +118,8 @@ resource "google_container_cluster" "primary" {
         service_account = local.service_account
         oauth_scopes    = local.node_pools_oauth_scopes["all"]
 
+        boot_disk_kms_key = var.boot_disk_kms_key
+
         management {
           auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
           auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
@@ -143,6 +145,11 @@ resource "google_container_cluster" "primary" {
               }
             }
           }
+        }
+
+        shielded_instance_config {
+          enable_secure_boot          = lookup(var.cluster_autoscaling, "enable_secure_boot", false)
+          enable_integrity_monitoring = lookup(var.cluster_autoscaling, "enable_integrity_monitoring", true)
         }
 
         min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
@@ -191,7 +198,10 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  enable_l4_ilb_subsetting   = var.enable_l4_ilb_subsetting
+  enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
+
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
@@ -445,7 +455,7 @@ resource "google_container_cluster" "primary" {
         }
       }
 
-      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", "")
+      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", var.boot_disk_kms_key)
 
       shielded_instance_config {
         enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
@@ -621,6 +631,13 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
+  dynamic "queued_provisioning" {
+    for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+    content {
+      enabled = lookup(each.value, "queued_provisioning", null)
+    }
+  }
+
   node_config {
     image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type     = lookup(each.value, "machine_type", "e2-medium")
@@ -635,6 +652,12 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
       content {
         enabled = gvnic.value
+      }
+    }
+    dynamic "reservation_affinity" {
+      for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+      content {
+        consume_reservation_type = "NO_RESERVATION"
       }
     }
     labels = merge(
@@ -681,7 +704,7 @@ resource "google_container_node_pool" "pools" {
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
     dynamic "ephemeral_storage_local_ssd_config" {
-      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
+      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 ? [each.value.local_ssd_ephemeral_storage_count] : []
       content {
         local_ssd_count = ephemeral_storage_local_ssd_config.value
       }
@@ -735,6 +758,14 @@ resource "google_container_node_pool" "pools" {
             gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
           }
         }
+
+        dynamic "gpu_sharing_config" {
+          for_each = lookup(each.value, "gpu_sharing_strategy", "") != "" ? [1] : []
+          content {
+            gpu_sharing_strategy       = lookup(each.value, "gpu_sharing_strategy", "")
+            max_shared_clients_per_gpu = lookup(each.value, "max_shared_clients_per_gpu", 2)
+          }
+        }
       }
     }
 
@@ -763,13 +794,14 @@ resource "google_container_node_pool" "pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "pod_pids_limit"]
       )) != 0 ? [1] : []
 
       content {
         cpu_manager_policy   = lookup(each.value, "cpu_manager_policy", "static")
         cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
+        pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
       }
     }
 
@@ -884,6 +916,13 @@ resource "google_container_node_pool" "windows_pools" {
     }
   }
 
+  dynamic "queued_provisioning" {
+    for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+    content {
+      enabled = lookup(each.value, "queued_provisioning", null)
+    }
+  }
+
   node_config {
     image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type     = lookup(each.value, "machine_type", "e2-medium")
@@ -898,6 +937,12 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
       content {
         enabled = gvnic.value
+      }
+    }
+    dynamic "reservation_affinity" {
+      for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+      content {
+        consume_reservation_type = "NO_RESERVATION"
       }
     }
     labels = merge(
@@ -944,7 +989,7 @@ resource "google_container_node_pool" "windows_pools" {
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
     dynamic "ephemeral_storage_local_ssd_config" {
-      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
+      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 ? [each.value.local_ssd_ephemeral_storage_count] : []
       content {
         local_ssd_count = ephemeral_storage_local_ssd_config.value
       }
@@ -998,6 +1043,14 @@ resource "google_container_node_pool" "windows_pools" {
             gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
           }
         }
+
+        dynamic "gpu_sharing_config" {
+          for_each = lookup(each.value, "gpu_sharing_strategy", "") != "" ? [1] : []
+          content {
+            gpu_sharing_strategy       = lookup(each.value, "gpu_sharing_strategy", "")
+            max_shared_clients_per_gpu = lookup(each.value, "max_shared_clients_per_gpu", 2)
+          }
+        }
       }
     }
 
@@ -1026,13 +1079,14 @@ resource "google_container_node_pool" "windows_pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "pod_pids_limit"]
       )) != 0 ? [1] : []
 
       content {
         cpu_manager_policy   = lookup(each.value, "cpu_manager_policy", "static")
         cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
+        pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
       }
     }
 

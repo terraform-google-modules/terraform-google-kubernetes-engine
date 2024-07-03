@@ -37,6 +37,6 @@ terraform {
     }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-private-cluster-update-variant/v30.3.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-private-cluster-update-variant/v31.1.0"
   }
 }

@@ -28,7 +28,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
-  version = "~> 30.0"
+  version = "~> 31.0"
 
   project_id                        = var.project_id
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -79,6 +79,13 @@ module "gke" {
       cpu_manager_policy        = "static"
       cpu_cfs_quota             = true
       local_ssd_ephemeral_count = 2
+      pod_pids_limit            = 4096
+    },
+    {
+      name                = "pool-04"
+      min_count           = 0
+      service_account     = var.compute_engine_service_account
+      queued_provisioning = true
     },
   ]
 

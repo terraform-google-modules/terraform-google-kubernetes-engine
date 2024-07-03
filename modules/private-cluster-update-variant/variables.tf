@@ -239,39 +239,43 @@ variable "enable_resource_consumption_export" {
 
 variable "cluster_autoscaling" {
   type = object({
-    enabled                 = bool
-    autoscaling_profile     = string
-    min_cpu_cores           = number
-    max_cpu_cores           = number
-    min_memory_gb           = number
-    max_memory_gb           = number
-    gpu_resources           = list(object({ resource_type = string, minimum = number, maximum = number }))
-    auto_repair             = bool
-    auto_upgrade            = bool
-    disk_size               = optional(number)
-    disk_type               = optional(string)
-    image_type              = optional(string)
-    strategy                = optional(string)
-    max_surge               = optional(number)
-    max_unavailable         = optional(number)
-    node_pool_soak_duration = optional(string)
-    batch_soak_duration     = optional(string)
-    batch_percentage        = optional(number)
-    batch_node_count        = optional(number)
+    enabled                     = bool
+    autoscaling_profile         = string
+    min_cpu_cores               = number
+    max_cpu_cores               = number
+    min_memory_gb               = number
+    max_memory_gb               = number
+    gpu_resources               = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair                 = bool
+    auto_upgrade                = bool
+    disk_size                   = optional(number)
+    disk_type                   = optional(string)
+    image_type                  = optional(string)
+    strategy                    = optional(string)
+    max_surge                   = optional(number)
+    max_unavailable             = optional(number)
+    node_pool_soak_duration     = optional(string)
+    batch_soak_duration         = optional(string)
+    batch_percentage            = optional(number)
+    batch_node_count            = optional(number)
+    enable_secure_boot          = optional(bool, false)
+    enable_integrity_monitoring = optional(bool, true)
   })
   default = {
-    enabled             = false
-    autoscaling_profile = "BALANCED"
-    max_cpu_cores       = 0
-    min_cpu_cores       = 0
-    max_memory_gb       = 0
-    min_memory_gb       = 0
-    gpu_resources       = []
-    auto_repair         = true
-    auto_upgrade        = true
-    disk_size           = 100
-    disk_type           = "pd-standard"
-    image_type          = "COS_CONTAINERD"
+    enabled                     = false
+    autoscaling_profile         = "BALANCED"
+    max_cpu_cores               = 0
+    min_cpu_cores               = 0
+    max_memory_gb               = 0
+    min_memory_gb               = 0
+    gpu_resources               = []
+    auto_repair                 = true
+    auto_upgrade                = true
+    disk_size                   = 100
+    disk_type                   = "pd-standard"
+    image_type                  = "COS_CONTAINERD"
+    enable_secure_boot          = false
+    enable_integrity_monitoring = true
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
@@ -393,6 +397,12 @@ variable "service_account_name" {
   default     = ""
 }
 
+variable "boot_disk_kms_key" {
+  type        = string
+  description = "The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool, if not overridden in `node_pools`. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. For more information about protecting resources with Cloud KMS Keys please see: https://cloud.google.com/compute/docs/disks/customer-managed-encryption"
+  default     = null
+}
+
 variable "issue_client_certificate" {
   type        = bool
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
@@ -414,25 +424,25 @@ variable "cluster_resource_labels" {
 
 variable "deploy_using_private_endpoint" {
   type        = bool
-  description = "(Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment."
+  description = "A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment."
   default     = false
 }
 
 variable "enable_private_endpoint" {
   type        = bool
-  description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
+  description = "Whether the master's internal IP address is used as the cluster endpoint"
   default     = false
 }
 
 variable "enable_private_nodes" {
   type        = bool
-  description = "(Beta) Whether nodes have internal IP addresses only"
+  description = "Whether nodes have internal IP addresses only"
   default     = false
 }
 
 variable "master_ipv4_cidr_block" {
   type        = string
-  description = "(Beta) The IP range in CIDR notation to use for the hosted master network. Optional for Autopilot clusters."
+  description = "The IP range in CIDR notation to use for the hosted master network. Optional for Autopilot clusters."
   default     = "10.0.0.0/28"
 }
 
@@ -531,6 +541,12 @@ variable "shadow_firewall_rules_log_config" {
 variable "enable_confidential_nodes" {
   type        = bool
   description = "An optional flag to enable confidential node config."
+  default     = false
+}
+
+variable "enable_cilium_clusterwide_network_policy" {
+  type        = bool
+  description = "Enable Cilium Cluster Wide Network Policies on the cluster"
   default     = false
 }
 
