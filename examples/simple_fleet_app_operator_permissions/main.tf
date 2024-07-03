@@ -31,8 +31,7 @@ resource "google_gke_hub_scope" "scope" {
 
 # Grant permissions to the app operator to work with the Fleet Scope.
 module "permissions" {
-  source  = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
-  version = "~> 30.3.0"
+  source = "hosseingolestani/kubernetes-engine/google//modules/fleet-app-operator-permissions"
 
   project_id           = var.project_id
   scope_id             = google_gke_hub_scope.scope.scope_id

@@ -6,12 +6,13 @@ This module bundles different permissions (IAM and RBAC Role Bindings) required 
 ```tf
 Example:
 module "fleet_app_operator_permissions" {
-  source           = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
+  source               = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
 
-  project_id       = "my-project-id"
-  scope_id         = "frontend-team"
-  user             = "person@company.com"
-  role             = "EDIT"
+  project_id           = "my-project-id"
+  scope_id             = "frontend-team"
+  app_operator_name    = "person@company.com"
+  is_user_app_operator = true
+  role                 = "EDIT"
 }
 ```
 

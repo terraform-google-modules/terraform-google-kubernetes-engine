@@ -21,8 +21,8 @@ provider "google" {
 locals {
   principal = (
     startswith(var.app_operator_name, "principal://") || startswith(var.app_operator_name, "principalSet://") ? var.app_operator_name : (
-    endswith(var.app_operator_name, "gserviceaccount.com") ? "serviceAccount:${var.app_operator_name}" : (
-    var.is_user_app_operator ? "user:${var.app_operator_name}" : "group:${var.app_operator_name}"
+      endswith(var.app_operator_name, "gserviceaccount.com") ? "serviceAccount:${var.app_operator_name}" : (
+        var.is_user_app_operator ? "user:${var.app_operator_name}" : "group:${var.app_operator_name}"
   )))
   project_level_scope_role = {
     "VIEW"  = "roles/gkehub.scopeViewerProjectLevel"
@@ -37,9 +37,9 @@ locals {
 }
 
 resource "google_project_iam_binding" "log_view_permissions" {
-  project   = var.project_id
-  role      = "roles/logging.viewAccessor"
-  members   = [
+  project = var.project_id
+  role    = "roles/logging.viewAccessor"
+  members = [
     local.principal,
   ]
   condition {
@@ -50,9 +50,9 @@ resource "google_project_iam_binding" "log_view_permissions" {
 }
 
 resource "google_project_iam_binding" "project_level_scope_permissions" {
-  project  = var.project_id
-  role     = local.project_level_scope_role[var.role]
-  members  = [
+  project = var.project_id
+  role    = local.project_level_scope_role[var.role]
+  members = [
     local.principal,
   ]
 }
@@ -61,7 +61,7 @@ resource "google_gke_hub_scope_iam_binding" "resource_level_scope_permissions" {
   project  = var.project_id
   scope_id = var.scope_id
   role     = local.resource_level_scope_role[var.role]
-  members  = [
+  members = [
     local.principal,
   ]
 }
