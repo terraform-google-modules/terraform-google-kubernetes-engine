@@ -223,7 +223,7 @@ Then perform the following commands on the root folder:
 | ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | `bool` | `false` | no |
 | ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | `string` | `"60s"` | no |
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | `string` | n/a | yes |
-| ip\_range\_services | The _name_ of the secondary subnet range to use for services | `string` | n/a | yes |
+| ip\_range\_services | The _name_ of the secondary subnet range to use for services. Omit to use default range. | `string` | `null` | no |
 | issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | `bool` | `false` | no |
 | istio | (Beta) Enable Istio addon | `bool` | `false` | no |
 | istio\_auth | (Beta) The authentication type between services in Istio. | `string` | `"AUTH_MUTUAL_TLS"` | no |

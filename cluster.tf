@@ -335,6 +335,11 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
+    precondition {
+      condition     = var.ip_range_services == null && var.kubernetes_version != "latest" ? tonumber(split(".", var.kubernetes_version)[0]) >= 1 && tonumber(split(".", var.kubernetes_version)[1]) >= 29 : true
+      error_message = "The ip_range_services is require for this gke version. Please set ip_range_services or use kubernetes_version 1.29 or upper."
+    }
+
     ignore_changes = [node_pool, initial_node_count, resource_labels["asmv"]]
   }
 

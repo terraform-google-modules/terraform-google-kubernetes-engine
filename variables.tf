@@ -145,7 +145,8 @@ variable "additional_ip_range_pods" {
 
 variable "ip_range_services" {
   type        = string
-  description = "The _name_ of the secondary subnet range to use for services"
+  description = "The _name_ of the secondary subnet range to use for services. Omit to use default range."
+  default     = null
 }
 
 variable "stack_type" {
