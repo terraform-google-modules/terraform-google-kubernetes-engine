@@ -741,6 +741,7 @@ variable "gce_pd_csi_driver" {
   default     = true
 }
 
+{% endif %}
 variable "gke_backup_agent_config" {
   type        = bool
   description = "Whether Backup for GKE agent is enabled for this cluster."
@@ -759,7 +760,6 @@ variable "stateful_ha" {
   default     = false
 }
 
-{% endif %}
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
