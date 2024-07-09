@@ -24,18 +24,18 @@ variable "scope_id" {
   type        = string
 }
 
-variable "app_operator_name" {
-  description = "The name of the app operator principal for the Fleet Scope, e.g., `person@google.com` (user), `people@google.com` (group), `principal://iam.googleapis.com/locations/global/workforcePools/my-pool/subject/person` (user), `principalSet://iam.googleapis.com/locations/global/workforcePools/my-pool/group/people` (group), `serviceAccount:my-service-account@my-project.iam.gserviceaccount.com` (user)."
-  type        = string
+variable "users" {
+  description = "The list of app operator user principals, e.g., `person@google.com`, `principal://iam.googleapis.com/locations/global/workforcePools/my-pool/subject/person`, `serviceAccount:my-service-account@my-project.iam.gserviceaccount.com`."
+  type        = list
 }
 
-variable "is_user_app_operator" {
-  description = "Whether the app operator is a user (`true`), or a group (`false`)."
-  type        = bool
+variable "groups" {
+  description = "The list of app operator group principals, e.g., `people@google.com`, `principalSet://iam.googleapis.com/locations/global/workforcePools/my-pool/group/people`."
+  type        = list
 }
 
 variable "role" {
-  description = "The principal role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`)."
+  description = "The principals role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`)."
   type        = string
   validation {
     condition     = var.role == "VIEW" || var.role == "EDIT" || var.role == "ADMIN"

@@ -33,10 +33,10 @@ resource "google_gke_hub_scope" "scope" {
 module "permissions" {
   source = "../../modules/fleet-app-operator-permissions"
 
-  project_id           = var.project_id
-  scope_id             = google_gke_hub_scope.scope.scope_id
-  app_operator_name    = google_service_account.service_account.email
-  is_user_app_operator = true
-  role                 = "VIEW"
+  project_id = var.project_id
+  scope_id   = google_gke_hub_scope.scope.scope_id
+  users      = [google_service_account.service_account.email]
+  groups     = []
+  role       = "VIEW"
 }
 

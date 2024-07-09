@@ -24,11 +24,11 @@ To deploy this config:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| app\_operator\_name | The name of the app operator principal for the Fleet Scope, e.g., `person@google.com` (user), `people@google.com` (group), `principal://iam.googleapis.com/locations/global/workforcePools/my-pool/subject/person` (user), `principalSet://iam.googleapis.com/locations/global/workforcePools/my-pool/group/people` (group), `serviceAccount:my-service-account@my-project.iam.gserviceaccount.com` (user). | `string` | n/a | yes |
-| is\_user\_app\_operator | Whether the app operator is a user (`true`), or a group (`false`). | `bool` | n/a | yes |
+| groups | The list of app operator group principals, e.g., `people@google.com`, `principalSet://iam.googleapis.com/locations/global/workforcePools/my-pool/group/people`. | `list` | n/a | yes |
 | project\_id | The project to which the Fleet belongs. | `string` | n/a | yes |
-| role | The principal role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`). | `string` | n/a | yes |
+| role | The principals role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`). | `string` | n/a | yes |
 | scope\_id | The scope for which IAM and RBAC role bindings are created. | `string` | n/a | yes |
+| users | The list of app operator user principals, e.g., `person@google.com`, `principal://iam.googleapis.com/locations/global/workforcePools/my-pool/subject/person`, `serviceAccount:my-service-account@my-project.iam.gserviceaccount.com`. | `list` | n/a | yes |
 
 ## Outputs
 

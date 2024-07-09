@@ -19,16 +19,23 @@ provider "google" {
 }
 
 locals {
-  principal = (
-    startswith(var.app_operator_name, "principal://") || startswith(var.app_operator_name, "principalSet://") ? var.app_operator_name : (
-      endswith(var.app_operator_name, "gserviceaccount.com") ? "serviceAccount:${var.app_operator_name}" : (
-        var.is_user_app_operator ? "user:${var.app_operator_name}" : "group:${var.app_operator_name}"
-  )))
+  user_principals = [for name in var.users : (
+    startswith(name, "principal://") ? name : (
+      endswith(name, "gserviceaccount.com") ? "serviceAccount:${name}" : (
+        "user:${name}"
+  )))]
+
+  group_principals = [for name in var.groups : (
+    startswith(name, "principalSet://") ? name : (
+      "group:${name}"
+  ))]
+
   project_level_scope_role = {
     "VIEW"  = "roles/gkehub.scopeViewerProjectLevel"
     "EDIT"  = "roles/gkehub.scopeEditorProjectLevel"
     "ADMIN" = "roles/gkehub.scopeEditorProjectLevel" # Same as EDIT
   }
+
   resource_level_scope_role = {
     "VIEW"  = "roles/gkehub.scopeViewer"
     "EDIT"  = "roles/gkehub.scopeEditor"
@@ -39,9 +46,7 @@ locals {
 resource "google_project_iam_binding" "log_view_permissions" {
   project = var.project_id
   role    = "roles/logging.viewAccessor"
-  members = [
-    local.principal,
-  ]
+  members = concat(local.user_principals, local.group_principals)
   condition {
     title       = "conditional log view access"
     description = "log view access for scope ${var.scope_id}"
@@ -52,39 +57,41 @@ resource "google_project_iam_binding" "log_view_permissions" {
 resource "google_project_iam_binding" "project_level_scope_permissions" {
   project = var.project_id
   role    = local.project_level_scope_role[var.role]
-  members = [
-    local.principal,
-  ]
+  members = concat(local.user_principals, local.group_principals)
 }
 
 resource "google_gke_hub_scope_iam_binding" "resource_level_scope_permissions" {
   project  = var.project_id
   scope_id = var.scope_id
   role     = local.resource_level_scope_role[var.role]
-  members = [
-    local.principal,
-  ]
+  members  = concat(local.user_principals, local.group_principals)
 }
 
-resource "random_id" "rand" {
-  byte_length = 8
+resource "random_id" "user_rand_suffix" {
+  for_each    = toset(var.users)
+  byte_length = 4
 }
 
-resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_user_role_binding" {
-  count                      = var.is_user_app_operator ? 1 : 0
-  scope_rbac_role_binding_id = "tf-${random_id.rand.hex}"
+resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_user_role_bindings" {
+  for_each                   = toset(var.users)
+  scope_rbac_role_binding_id = "tf-${random_id.user_rand_suffix[each.key].hex}"
   scope_id                   = var.scope_id
-  user                       = var.app_operator_name
+  user                       = each.key
   role {
     predefined_role = var.role
   }
 }
 
-resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_group_role_binding" {
-  count                      = var.is_user_app_operator ? 0 : 1
-  scope_rbac_role_binding_id = "tf-${random_id.rand.hex}"
+resource "random_id" "group_rand_suffix" {
+  for_each    = toset(var.groups)
+  byte_length = 4
+}
+
+resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_group_role_bindings" {
+  for_each                   = toset(var.groups)
+  scope_rbac_role_binding_id = "tf-${random_id.group_rand_suffix[each.key].hex}"
   scope_id                   = var.scope_id
-  group                      = var.app_operator_name
+  group                      = each.key
   role {
     predefined_role = var.role
   }
