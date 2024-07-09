@@ -135,6 +135,30 @@ resource "google_container_cluster" "primary" {
       disabled = !var.horizontal_pod_autoscaling
     }
 
+
+    dynamic "gke_backup_agent_config" {
+      for_each = local.gke_backup_agent_config
+
+      content {
+        enabled = gke_backup_agent_config.value.enabled
+      }
+    }
+
+    dynamic "gcs_fuse_csi_driver_config" {
+      for_each = local.gcs_fuse_csi_driver_config
+
+      content {
+        enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
+
+    dynamic "stateful_ha_config" {
+      for_each = local.stateful_ha_config
+
+      content {
+        enabled = stateful_ha_config.value.enabled
+      }
+    }
   }
 
   allow_net_admin = var.allow_net_admin
