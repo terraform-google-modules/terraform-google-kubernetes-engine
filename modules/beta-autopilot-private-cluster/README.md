@@ -181,6 +181,7 @@ Then perform the following commands on the root folder:
 | pod\_security\_policy\_enabled | Whether pod security policy is enabled |
 | region | Cluster region |
 | release\_channel | The release channel of this cluster |
+| secret\_manager\_addon\_enabled | Whether Secret Manager add-on is enabled |
 | service\_account | The service account to default running nodes as if not overridden in `node_pools`. |
 | tpu\_ipv4\_cidr\_block | The IP range in CIDR notation used for the TPUs |
 | type | Cluster type (regional / zonal) |
