@@ -19,3 +19,8 @@ variable "fleet_project_id" {
   type        = string
 }
 
+variable "app_operator_user" {
+  description = "The app operator user, e.g., `person@google.com`."
+  type        = string
+}
+

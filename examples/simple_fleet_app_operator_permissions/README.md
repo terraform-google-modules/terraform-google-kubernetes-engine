@@ -7,6 +7,7 @@ This example illustrates how to create a Fleet Scope for a [team](https://cloud.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| app\_operator\_user | The app operator user, e.g., `person@google.com`. | `string` | n/a | yes |
 | fleet\_project\_id | The project to which the Fleet belongs. | `string` | n/a | yes |
 
 ## Outputs
@@ -20,7 +21,6 @@ This example illustrates how to create a Fleet Scope for a [team](https://cloud.
 
 To provision this example, run the following from within this directory:
 - `terraform init` to get the plugins
-- `terraform apply -target google_service_account.service_account` to prepare a service account as for the app operator.
 - `terraform plan` to see the infrastructure plan
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure

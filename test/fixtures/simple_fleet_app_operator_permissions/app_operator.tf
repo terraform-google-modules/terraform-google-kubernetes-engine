@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-locals {
-  project_id = var.project_ids[3] # gke-project-fleet
+provider "google" {
+  project = var.project_ids[3] # gke-project-fleet
 }
 
-module "this" {
-  source = "../../../examples/simple_fleet_app_operator_permissions"
-
-  fleet_project_id  = local.project_id
-  app_operator_user = google_service_account.service_account.email
+# Create a Service Account, which can be used as an app operator.
+resource "google_service_account" "service_account" {
+  account_id   = "app-operator-id"
+  display_name = "Test App Operator Service Account"
 }
 
