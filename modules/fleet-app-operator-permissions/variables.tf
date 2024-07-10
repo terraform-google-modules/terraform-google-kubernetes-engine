@@ -38,7 +38,7 @@ variable "role" {
   description = "The principals role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`)."
   type        = string
   validation {
-    condition     = var.role == "VIEW" || var.role == "EDIT" || var.role == "ADMIN"
+    condition     = contains(["VIEW", "EDIT", "ADMIN"], var.role)
     error_message = "Allowed values for role are VIEW, EDIT, or ADMIN."
   }
 }
