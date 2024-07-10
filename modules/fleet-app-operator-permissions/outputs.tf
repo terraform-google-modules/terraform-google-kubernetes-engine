@@ -21,7 +21,7 @@ output "fleet_project_id" {
 
 output "wait" {
   description = "An output to use when you want to depend on Scope RBAC Role Binding creation finishing."
-  value       = {
+  value = {
     for k, v in merge(google_gke_hub_scope_rbac_role_binding.scope_rbac_user_role_bindings, google_gke_hub_scope_rbac_role_binding.scope_rbac_group_role_bindings) : k => v.scope_rbac_role_binding_id
   }
 }

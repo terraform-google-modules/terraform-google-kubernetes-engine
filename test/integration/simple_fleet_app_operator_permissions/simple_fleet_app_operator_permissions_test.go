@@ -47,7 +47,7 @@ func TestSimpleFleetAppOperatorPermissions(t *testing.T) {
 		assert.Equal(strings.Contains(scopeIam, appOperatorPrincipal), true, "app operator principal should be in the Scope IAM policy")
 		assert.Equal(strings.Contains(scopeIam, scopeLevelRole), true, "app operator Scope role should be in the Scope IAM policy")
 
-		projectIam := gcloud.Runf(t, "projects get-iam-policy %s", scopeId, projectId).String()
+		projectIam := gcloud.Runf(t, "projects get-iam-policy %s", projectId).String()
 		assert.Equal(strings.Contains(projectIam, appOperatorPrincipal), true, "app operator principal should be in the project IAM policy")
 		assert.Equal(strings.Contains(projectIam, projectLevelRole), true, "app operator Scope role should be in the project IAM policy")
 		assert.Equal(strings.Contains(projectIam, logViewRole), true, "app operator's log view role should be in the project IAM policy")

@@ -26,12 +26,12 @@ variable "scope_id" {
 
 variable "users" {
   description = "The list of app operator user principals, e.g., `person@google.com`, `principal://iam.googleapis.com/locations/global/workforcePools/my-pool/subject/person`, `serviceAccount:my-service-account@my-project.iam.gserviceaccount.com`."
-  type        = list
+  type        = list(string)
 }
 
 variable "groups" {
   description = "The list of app operator group principals, e.g., `people@google.com`, `principalSet://iam.googleapis.com/locations/global/workforcePools/my-pool/group/people`."
-  type        = list
+  type        = list(string)
 }
 
 variable "role" {
