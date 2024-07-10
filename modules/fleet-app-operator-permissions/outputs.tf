@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-output "project_id" {
+output "fleet_project_id" {
   description = "The project to which the Fleet belongs."
-  value       = var.project_id
+  value       = var.fleet_project_id
 }
 
 output "wait" {

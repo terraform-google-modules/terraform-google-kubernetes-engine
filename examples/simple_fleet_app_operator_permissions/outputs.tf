@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-output "project_id" {
+output "fleet_project_id" {
   description = "The project to which the Fleet belongs."
-  value       = var.project_id
+  value       = var.fleet_project_id
 }
 
 output "wait" {
-  description = "An output (Fleet Scope RBAC Role Binding ID) to use when you want to depend on granting permissions finishing."
+  description = "An output (Fleet Scope RBAC Role Binding IDs) to use when you want to depend on granting permissions finishing."
   value       = module.permissions.wait
 }
 

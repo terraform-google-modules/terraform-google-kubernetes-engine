@@ -15,7 +15,7 @@
  */
 
 provider "google" {
-  project = var.project_id
+  project = var.fleet_project_id
 }
 
 # Create a Service Account, which can be used as an app operator.
@@ -33,10 +33,10 @@ resource "google_gke_hub_scope" "scope" {
 module "permissions" {
   source = "../../modules/fleet-app-operator-permissions"
 
-  project_id = var.project_id
-  scope_id   = google_gke_hub_scope.scope.scope_id
-  users      = [google_service_account.service_account.email]
-  groups     = []
-  role       = "VIEW"
+  fleet_project_id = var.fleet_project_id
+  scope_id         = google_gke_hub_scope.scope.scope_id
+  users            = [google_service_account.service_account.email]
+  groups           = []
+  role             = "VIEW"
 }
 

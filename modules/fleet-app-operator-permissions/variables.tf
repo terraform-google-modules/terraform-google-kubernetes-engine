@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-variable "project_id" {
+variable "fleet_project_id" {
   description = "The project to which the Fleet belongs."
   type        = string
 }

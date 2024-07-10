@@ -15,7 +15,7 @@
  */
 
 provider "google" {
-  project = var.project_id
+  project = var.fleet_project_id
 }
 
 locals {
@@ -44,24 +44,24 @@ locals {
 }
 
 resource "google_project_iam_binding" "log_view_permissions" {
-  project = var.project_id
+  project = var.fleet_project_id
   role    = "roles/logging.viewAccessor"
   members = concat(local.user_principals, local.group_principals)
   condition {
     title       = "conditional log view access"
     description = "log view access for scope ${var.scope_id}"
-    expression  = "resource.name == \"projects/${var.project_id}/locations/global/buckets/fleet-o11y-scope-${var.scope_id}/views/fleet-o11y-scope-${var.scope_id}-k8s_container\" || resource.name == \"projects/${var.project_id}/locations/global/buckets/fleet-o11y-scope-${var.scope_id}/views/fleet-o11y-scope-${var.scope_id}-k8s_pod\""
+    expression  = "resource.name == \"projects/${var.fleet_project_id}/locations/global/buckets/fleet-o11y-scope-${var.scope_id}/views/fleet-o11y-scope-${var.scope_id}-k8s_container\" || resource.name == \"projects/${var.fleet_project_id}/locations/global/buckets/fleet-o11y-scope-${var.scope_id}/views/fleet-o11y-scope-${var.scope_id}-k8s_pod\""
   }
 }
 
 resource "google_project_iam_binding" "project_level_scope_permissions" {
-  project = var.project_id
+  project = var.fleet_project_id
   role    = local.project_level_scope_role[var.role]
   members = concat(local.user_principals, local.group_principals)
 }
 
 resource "google_gke_hub_scope_iam_binding" "resource_level_scope_permissions" {
-  project  = var.project_id
+  project  = var.fleet_project_id
   scope_id = var.scope_id
   role     = local.resource_level_scope_role[var.role]
   members  = concat(local.user_principals, local.group_principals)

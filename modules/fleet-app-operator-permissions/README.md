@@ -24,8 +24,8 @@ To deploy this config:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| fleet\_project\_id | The project to which the Fleet belongs. | `string` | n/a | yes |
 | groups | The list of app operator group principals, e.g., `people@google.com`, `principalSet://iam.googleapis.com/locations/global/workforcePools/my-pool/group/people`. | `list` | n/a | yes |
-| project\_id | The project to which the Fleet belongs. | `string` | n/a | yes |
 | role | The principals role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`). | `string` | n/a | yes |
 | scope\_id | The scope for which IAM and RBAC role bindings are created. | `string` | n/a | yes |
 | users | The list of app operator user principals, e.g., `person@google.com`, `principal://iam.googleapis.com/locations/global/workforcePools/my-pool/subject/person`, `serviceAccount:my-service-account@my-project.iam.gserviceaccount.com`. | `list` | n/a | yes |
@@ -34,7 +34,7 @@ To deploy this config:
 
 | Name | Description |
 |------|-------------|
-| project\_id | The project to which the Fleet belongs. |
+| fleet\_project\_id | The project to which the Fleet belongs. |
 | wait | An output to use when you want to depend on Scope RBAC Role Binding creation finishing. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
