@@ -6,18 +6,22 @@ This module bundles different permissions (IAM and RBAC Role Bindings) required 
 ```tf
 Example:
 module "fleet_app_operator_permissions" {
-  source               = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
+  source = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
 
-  project_id           = "my-project-id"
-  scope_id             = "frontend-team"
-  app_operator_name    = "person@company.com"
-  is_user_app_operator = true
-  role                 = "EDIT"
+  fleet_project_id = "my-project-id"
+  scope_id         = "frontend-team"
+  users            = ["person1@company.com", "person2@company.com"]
+  groups           = ["people@company.com"]
+  role             = "EDIT"
 }
 ```
 
-To deploy this config:
-1. Run `terraform apply`
+To deploy this config, run:
+- `terraform init` to get the plugins
+- `terraform plan` to see the infrastructure plan
+- `terraform apply` to apply the infrastructure build
+- `terraform destroy` to destroy the built infrastructure
+
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
