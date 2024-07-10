@@ -624,6 +624,14 @@ resource "google_container_cluster" "primary" {
     }
   }
   {% endif %}
+  {% if beta_cluster and autopilot_cluster %}
+
+  node_pool_defaults {
+    node_config_defaults {
+      logging_variant = var.logging_variant
+    }
+  }
+  {% endif %}
   {% if beta_cluster %}
 
   depends_on = [google_project_iam_member.service_agent]

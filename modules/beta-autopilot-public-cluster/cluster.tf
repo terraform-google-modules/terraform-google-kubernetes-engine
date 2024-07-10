@@ -33,11 +33,6 @@ resource "google_container_cluster" "primary" {
   network             = "projects/${local.network_project_id}/global/networks/${var.network}"
   deletion_protection = var.deletion_protection
 
-  node_pool_defaults {
-    node_config_defaults {
-      logging_variant = var.logging_variant
-    }
-  }
 
   dynamic "release_channel" {
     for_each = local.release_channel
@@ -253,6 +248,12 @@ resource "google_container_cluster" "primary" {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
       topic   = var.notification_config_topic
+    }
+  }
+
+  node_pool_defaults {
+    node_config_defaults {
+      logging_variant = var.logging_variant
     }
   }
 

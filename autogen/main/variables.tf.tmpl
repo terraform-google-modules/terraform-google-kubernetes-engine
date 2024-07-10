@@ -889,3 +889,11 @@ variable "fleet_project_grant_service_agent" {
   default = false
 }
 {% endif %}
+{% if beta_cluster and autopilot_cluster %}
+
+variable "logging_variant" {
+  description = "(Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT."
+  type        = string
+  default     = "DEFAULT"
+}
+{% endif %}
