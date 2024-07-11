@@ -84,6 +84,11 @@ resource "google_container_cluster" "primary" {
   vertical_pod_autoscaling {
     enabled = var.enable_vertical_pod_autoscaling
   }
+
+  enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
+
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   enable_autopilot           = true
   dynamic "master_authorized_networks_config" {
@@ -99,10 +104,10 @@ resource "google_container_cluster" "primary" {
     }
   }
   dynamic "node_pool_auto_config" {
-    for_each = length(var.network_tags) > 0 ? [1] : []
+    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? [1] : []
     content {
       network_tags {
-        tags = var.network_tags
+        tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : var.network_tags
       }
     }
   }
@@ -130,6 +135,30 @@ resource "google_container_cluster" "primary" {
       disabled = !var.horizontal_pod_autoscaling
     }
 
+
+    dynamic "gke_backup_agent_config" {
+      for_each = local.gke_backup_agent_config
+
+      content {
+        enabled = gke_backup_agent_config.value.enabled
+      }
+    }
+
+    dynamic "gcs_fuse_csi_driver_config" {
+      for_each = local.gcs_fuse_csi_driver_config
+
+      content {
+        enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
+
+    dynamic "stateful_ha_config" {
+      for_each = local.stateful_ha_config
+
+      content {
+        enabled = stateful_ha_config.value.enabled
+      }
+    }
   }
 
   allow_net_admin = var.allow_net_admin

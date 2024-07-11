@@ -369,6 +369,13 @@ variable "enable_fqdn_network_policy" {
   default     = null
 }
 
+
+variable "enable_cilium_clusterwide_network_policy" {
+  type        = bool
+  description = "Enable Cilium Cluster Wide Network Policies on the cluster"
+  default     = false
+}
+
 variable "security_posture_mode" {
   description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
   type        = string
@@ -416,6 +423,24 @@ variable "database_encryption" {
 }
 
 
+variable "gke_backup_agent_config" {
+  type        = bool
+  description = "Whether Backup for GKE agent is enabled for this cluster."
+  default     = false
+}
+
+variable "gcs_fuse_csi_driver" {
+  type        = bool
+  description = "Whether GCE FUSE CSI driver is enabled for this cluster."
+  default     = false
+}
+
+variable "stateful_ha" {
+  type        = bool
+  description = "Whether the Stateful HA Addon is enabled for this cluster."
+  default     = false
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -426,6 +451,11 @@ variable "timeouts" {
   }
 }
 
+variable "enable_l4_ilb_subsetting" {
+  type        = bool
+  description = "Enable L4 ILB Subsetting on the cluster"
+  default     = false
+}
 variable "allow_net_admin" {
   description = "(Optional) Enable NET_ADMIN for the cluster."
   type        = bool

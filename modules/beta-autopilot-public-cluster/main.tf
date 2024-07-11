@@ -66,6 +66,9 @@ locals {
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
   pod_all_ip_ranges         = var.add_cluster_firewall_rules ? compact(concat([local.cluster_alias_ranges_cidr[var.ip_range_pods]], [for range in var.additional_ip_range_pods : local.cluster_alias_ranges_cidr[range] if length(range) > 0])) : []
 
+  gke_backup_agent_config    = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
+  gcs_fuse_csi_driver_config = var.gcs_fuse_csi_driver ? [{ enabled = true }] : []
+  stateful_ha_config         = var.stateful_ha ? [{ enabled = true }] : []
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
@@ -88,9 +91,11 @@ locals {
   cluster_output_vertical_pod_autoscaling_enabled   = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling[0].enabled : false
 
   # BETA features
-  cluster_output_istio_disabled              = google_container_cluster.primary.addons_config[0].istio_config != null && length(google_container_cluster.primary.addons_config[0].istio_config) == 1 ? google_container_cluster.primary.addons_config[0].istio_config[0].disabled : false
-  cluster_output_pod_security_policy_enabled = google_container_cluster.primary.pod_security_policy_config != null && length(google_container_cluster.primary.pod_security_policy_config) == 1 ? google_container_cluster.primary.pod_security_policy_config[0].enabled : false
-  cluster_output_intranode_visbility_enabled = google_container_cluster.primary.enable_intranode_visibility
+  cluster_output_istio_disabled               = google_container_cluster.primary.addons_config[0].istio_config != null && length(google_container_cluster.primary.addons_config[0].istio_config) == 1 ? google_container_cluster.primary.addons_config[0].istio_config[0].disabled : false
+  cluster_output_pod_security_policy_enabled  = google_container_cluster.primary.pod_security_policy_config != null && length(google_container_cluster.primary.pod_security_policy_config) == 1 ? google_container_cluster.primary.pod_security_policy_config[0].enabled : false
+  cluster_output_intranode_visbility_enabled  = google_container_cluster.primary.enable_intranode_visibility
+  cluster_output_identity_service_enabled     = google_container_cluster.primary.identity_service_config != null && length(google_container_cluster.primary.identity_service_config) == 1 ? google_container_cluster.primary.identity_service_config[0].enabled : false
+  cluster_output_secret_manager_addon_enabled = google_container_cluster.primary.secret_manager_config != null && length(google_container_cluster.primary.secret_manager_config) == 1 ? google_container_cluster.primary.secret_manager_config[0].enabled : false
 
   # /BETA features
 
@@ -128,6 +133,8 @@ locals {
   cluster_istio_enabled                = !local.cluster_output_istio_disabled
   cluster_pod_security_policy_enabled  = local.cluster_output_pod_security_policy_enabled
   cluster_intranode_visibility_enabled = local.cluster_output_intranode_visbility_enabled
+  cluster_identity_service_enabled     = local.cluster_output_identity_service_enabled
+  cluster_secret_manager_addon_enabled = local.cluster_output_secret_manager_addon_enabled
 
   # /BETA features
 

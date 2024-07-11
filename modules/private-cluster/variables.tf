@@ -239,39 +239,43 @@ variable "enable_resource_consumption_export" {
 
 variable "cluster_autoscaling" {
   type = object({
-    enabled                 = bool
-    autoscaling_profile     = string
-    min_cpu_cores           = number
-    max_cpu_cores           = number
-    min_memory_gb           = number
-    max_memory_gb           = number
-    gpu_resources           = list(object({ resource_type = string, minimum = number, maximum = number }))
-    auto_repair             = bool
-    auto_upgrade            = bool
-    disk_size               = optional(number)
-    disk_type               = optional(string)
-    image_type              = optional(string)
-    strategy                = optional(string)
-    max_surge               = optional(number)
-    max_unavailable         = optional(number)
-    node_pool_soak_duration = optional(string)
-    batch_soak_duration     = optional(string)
-    batch_percentage        = optional(number)
-    batch_node_count        = optional(number)
+    enabled                     = bool
+    autoscaling_profile         = string
+    min_cpu_cores               = number
+    max_cpu_cores               = number
+    min_memory_gb               = number
+    max_memory_gb               = number
+    gpu_resources               = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair                 = bool
+    auto_upgrade                = bool
+    disk_size                   = optional(number)
+    disk_type                   = optional(string)
+    image_type                  = optional(string)
+    strategy                    = optional(string)
+    max_surge                   = optional(number)
+    max_unavailable             = optional(number)
+    node_pool_soak_duration     = optional(string)
+    batch_soak_duration         = optional(string)
+    batch_percentage            = optional(number)
+    batch_node_count            = optional(number)
+    enable_secure_boot          = optional(bool, false)
+    enable_integrity_monitoring = optional(bool, true)
   })
   default = {
-    enabled             = false
-    autoscaling_profile = "BALANCED"
-    max_cpu_cores       = 0
-    min_cpu_cores       = 0
-    max_memory_gb       = 0
-    min_memory_gb       = 0
-    gpu_resources       = []
-    auto_repair         = true
-    auto_upgrade        = true
-    disk_size           = 100
-    disk_type           = "pd-standard"
-    image_type          = "COS_CONTAINERD"
+    enabled                     = false
+    autoscaling_profile         = "BALANCED"
+    max_cpu_cores               = 0
+    min_cpu_cores               = 0
+    max_memory_gb               = 0
+    min_memory_gb               = 0
+    gpu_resources               = []
+    auto_repair                 = true
+    auto_upgrade                = true
+    disk_size                   = 100
+    disk_type                   = "pd-standard"
+    image_type                  = "COS_CONTAINERD"
+    enable_secure_boot          = false
+    enable_integrity_monitoring = true
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
@@ -391,6 +395,12 @@ variable "service_account_name" {
   type        = string
   description = "The name of the service account that will be created if create_service_account is true. If you wish to use an existing service account, use service_account variable."
   default     = ""
+}
+
+variable "boot_disk_kms_key" {
+  type        = string
+  description = "The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool, if not overridden in `node_pools`. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. For more information about protecting resources with Cloud KMS Keys please see: https://cloud.google.com/compute/docs/disks/customer-managed-encryption"
+  default     = null
 }
 
 variable "issue_client_certificate" {
@@ -531,6 +541,12 @@ variable "shadow_firewall_rules_log_config" {
 variable "enable_confidential_nodes" {
   type        = bool
   description = "An optional flag to enable confidential node config."
+  default     = false
+}
+
+variable "enable_cilium_clusterwide_network_policy" {
+  type        = bool
+  description = "Enable Cilium Cluster Wide Network Policies on the cluster"
   default     = false
 }
 
