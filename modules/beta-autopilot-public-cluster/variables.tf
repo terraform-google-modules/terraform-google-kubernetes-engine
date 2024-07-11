@@ -447,5 +447,5 @@ variable "fleet_project_grant_service_agent" {
 variable "logging_variant" {
   description = "(Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT."
   type        = string
-  default     = "DEFAULT"
+  default     = null
 }
