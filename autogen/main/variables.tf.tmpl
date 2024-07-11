@@ -862,6 +862,12 @@ variable "enable_pod_security_policy" {
   default     = false
 }
 
+variable "enable_secret_manager_addon" {
+  description = "(Beta) Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
+
 variable "sandbox_enabled" {
   type        = bool
   description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
@@ -906,5 +912,13 @@ variable "fleet_project_grant_service_agent" {
   description = "(Optional) Grant the fleet project service identity the `roles/gkehub.serviceAgent` and `roles/gkehub.crossProjectServiceAgent` roles."
   type = bool
   default = false
+}
+{% endif %}
+{% if beta_cluster and autopilot_cluster %}
+
+variable "logging_variant" {
+  description = "(Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT."
+  type        = string
+  default     = null
 }
 {% endif %}
