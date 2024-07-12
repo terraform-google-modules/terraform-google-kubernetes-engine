@@ -7,7 +7,6 @@ This example illustrates how to create a Fleet Scope for a [team](https://cloud.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| app\_operator\_user | The app operator user, e.g., `person@google.com`. | `string` | n/a | yes |
 | fleet\_project\_id | The project to which the Fleet belongs. | `string` | n/a | yes |
 
 ## Outputs

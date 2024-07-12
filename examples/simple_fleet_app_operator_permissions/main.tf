@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-provider "google" {
-  project = var.fleet_project_id
+locals {
+  app_operator_id   = "app-operator-id"
+  app_operator_team = "app-operator-team"
+  app_operator_role = "VIEW"
+}
+
+# Create a Service Account, which can be used as an app operator.
+resource "google_service_account" "service_account" {
+  project      = var.fleet_project_id
+  account_id   = local.app_operator_id
+  display_name = "Test App Operator Service Account"
 }
 
 # Create a Fleet Scope for the app operator's team.
 resource "google_gke_hub_scope" "scope" {
-  scope_id = "app-operator-team"
+  project  = var.fleet_project_id
+  scope_id = local.app_operator_team
 }
 
 # Grant permissions to the app operator to work with the Fleet Scope.
@@ -29,8 +39,12 @@ module "permissions" {
 
   fleet_project_id = var.fleet_project_id
   scope_id         = google_gke_hub_scope.scope.scope_id
-  users            = [var.app_operator_user]
+  users            = ["${local.app_operator_id}@${var.fleet_project_id}.iam.gserviceaccount.com"]
   groups           = []
-  role             = "VIEW"
+  role             = local.app_operator_role
+
+  depends_on = [
+    google_service_account.service_account
+  ]
 }
 

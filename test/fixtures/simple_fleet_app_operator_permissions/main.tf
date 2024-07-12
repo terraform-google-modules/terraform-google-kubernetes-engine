@@ -21,7 +21,6 @@ locals {
 module "this" {
   source = "../../../examples/simple_fleet_app_operator_permissions"
 
-  fleet_project_id  = local.project_id
-  app_operator_user = google_service_account.service_account.email
+  fleet_project_id = local.project_id
 }
 

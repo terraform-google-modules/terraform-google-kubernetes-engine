@@ -18,7 +18,3 @@ output "project_id" {
   value = local.project_id
 }
 
-output "app_operator_user" {
-  value = google_service_account.service_account.email
-}
-

@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-provider "google" {
-  project = var.fleet_project_id
-}
-
 locals {
   user_principals = [for name in var.users : (
     startswith(name, "principal://") ? name : (
@@ -74,6 +70,7 @@ resource "random_id" "user_rand_suffix" {
 
 resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_user_role_bindings" {
   for_each                   = toset(var.users)
+  project                    = var.fleet_project_id
   scope_rbac_role_binding_id = "tf-${random_id.user_rand_suffix[each.key].hex}"
   scope_id                   = var.scope_id
   user                       = each.key
@@ -89,6 +86,7 @@ resource "random_id" "group_rand_suffix" {
 
 resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_group_role_bindings" {
   for_each                   = toset(var.groups)
+  project                    = var.fleet_project_id
   scope_rbac_role_binding_id = "tf-${random_id.group_rand_suffix[each.key].hex}"
   scope_id                   = var.scope_id
   group                      = each.key
