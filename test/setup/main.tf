@@ -117,15 +117,5 @@ module "gke-project-fleet" {
   default_service_account = "keep"
 
   activate_apis = local.apis
-  activate_api_identities = [
-    {
-      api   = "gkehub.googleapis.com"
-      roles = ["roles/gkehub.editor"]
-    },
-    {
-      api   = "iam.googleapis.com"
-      roles = ["roles/iam.serviceAccountCreator"]
-    },
-  ]
 }
 
