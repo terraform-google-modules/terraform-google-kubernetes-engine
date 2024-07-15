@@ -184,6 +184,13 @@ resource "google_container_cluster" "primary" {
   enable_tpu                  = var.enable_tpu
   enable_intranode_visibility = var.enable_intranode_visibility
 
+  dynamic "secret_manager_config" {
+    for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
+    content {
+      enabled = secret_manager_config.value
+    }
+  }
+
   dynamic "pod_security_policy_config" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
     content {
@@ -198,7 +205,10 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  enable_l4_ilb_subsetting   = var.enable_l4_ilb_subsetting
+  enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
+
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
@@ -264,6 +274,10 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    config_connector_config {
+      enabled = var.config_connector
+    }
+
     dynamic "gke_backup_agent_config" {
       for_each = local.gke_backup_agent_config
 
@@ -287,11 +301,6 @@ resource "google_container_cluster" "primary" {
         enabled = stateful_ha_config.value.enabled
       }
     }
-
-    config_connector_config {
-      enabled = var.config_connector
-    }
-
     istio_config {
       disabled = !var.istio
       auth     = var.istio_auth
