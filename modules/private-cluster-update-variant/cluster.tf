@@ -173,8 +173,10 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  enable_kubernetes_alpha = var.enable_kubernetes_alpha
-  enable_tpu              = var.enable_tpu
+  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
+  enable_tpu                  = var.enable_tpu
+  enable_intranode_visibility = var.enable_intranode_visibility
+
 
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
 
