@@ -6,6 +6,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [31.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v31.0.0...v31.1.0) (2024-06-26)
+
+
+### Features
+
+* Add enable_cilium_clusterwide_network_policy support ([#1972](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1972)) ([72cf873](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/72cf8732fa05964596f9f266dd34217803e2c0cc))
+* Add enable_l4_ilb_subsetting for autopilot clusters ([#1969](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1969)) ([c48dc6e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c48dc6eb00f475ab4f213549a503da5434a7e926))
+* add pod_pids_limit for kubelet_config in all modules, example and autogen ([#1922](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1922)) ([eec38a2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/eec38a2de73d637b5871881e0a3335f0e4a2f413))
+* Adding extra permissions to the cluster's default service account ([#1943](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1943)) ([4fab404](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4fab404c2f63abcd5070b922edd024e24d8294b9))
+* Set boot_disk_kms_key cluster wide and for cluster_autoscaling ([#1959](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1959)) ([654868e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/654868e292a68fbc0f5ef7dd4bf50336fa8efc48))
+
+
+### Bug Fixes
+
+* avoid `auto_provisioning_defaults` drift ([#1806](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1806)) ([0005ab9](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0005ab9f9b9d23e4747dae9e369f69bbaab40b27))
+* firewall rules for autopilot clusters are ineffective. add cluster_network_tag to autopilot cluster network_tags if firewalls are toggled on  ([#1817](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1817)) ([e7b20cd](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e7b20cd193188bdfebd8e2f6a4eb863b0f5af21c))
+* Fix the value of output "identity_service_enabled" in beta modules ([#1982](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1982)) ([a6210fc](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a6210fc3d607772c2ef83ece2725fc58981ea7fe))
+
 ## [31.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v30.3.0...v31.0.0) (2024-05-28)
 
 

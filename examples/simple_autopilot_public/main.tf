@@ -48,4 +48,8 @@ module "gke" {
   enable_vertical_pod_autoscaling = true
   network_tags                    = [local.cluster_type]
   deletion_protection             = false
+  enable_l4_ilb_subsetting        = true
+  gcs_fuse_csi_driver             = true
+  stateful_ha                     = false
+  gke_backup_agent_config         = false
 }
