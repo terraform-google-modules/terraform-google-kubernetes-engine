@@ -112,6 +112,8 @@ resource "google_container_cluster" "primary" {
         service_account = local.service_account
         oauth_scopes    = local.node_pools_oauth_scopes["all"]
 
+        boot_disk_kms_key = var.boot_disk_kms_key
+
         management {
           auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
           auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
@@ -175,6 +177,9 @@ resource "google_container_cluster" "primary" {
   enable_tpu              = var.enable_tpu
 
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
+
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+
   dynamic "master_authorized_networks_config" {
     for_each = local.master_authorized_networks_config
     content {
@@ -239,6 +244,10 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    config_connector_config {
+      enabled = var.config_connector
+    }
+
     dynamic "gke_backup_agent_config" {
       for_each = local.gke_backup_agent_config
 
@@ -261,10 +270,6 @@ resource "google_container_cluster" "primary" {
       content {
         enabled = stateful_ha_config.value.enabled
       }
-    }
-
-    config_connector_config {
-      enabled = var.config_connector
     }
   }
 

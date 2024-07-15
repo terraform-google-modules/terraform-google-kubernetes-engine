@@ -413,6 +413,14 @@ variable "service_account_name" {
   default     = ""
 }
 
+{% if autopilot_cluster != true %}
+variable "boot_disk_kms_key" {
+  type        = string
+  description = "The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool, if not overridden in `node_pools`. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. For more information about protecting resources with Cloud KMS Keys please see: https://cloud.google.com/compute/docs/disks/customer-managed-encryption"
+  default     = null
+}
+
+{% endif %}
 variable "issue_client_certificate" {
   type        = bool
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
@@ -584,7 +592,14 @@ variable "enable_fqdn_network_policy" {
   description = "Enable FQDN Network Policies on the cluster"
   default     = null
 }
+
 {% endif %}
+
+variable "enable_cilium_clusterwide_network_policy" {
+  type          = bool
+  description   = "Enable Cilium Cluster Wide Network Policies on the cluster"
+  default       = false
+}
 
 variable "security_posture_mode" {
   description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
@@ -726,6 +741,7 @@ variable "gce_pd_csi_driver" {
   default     = true
 }
 
+{% endif %}
 variable "gke_backup_agent_config" {
   type        = bool
   description = "Whether Backup for GKE agent is enabled for this cluster."
@@ -744,7 +760,6 @@ variable "stateful_ha" {
   default     = false
 }
 
-{% endif %}
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -802,12 +817,12 @@ variable "config_connector" {
   default     = false
 }
 
+{% endif %}
 variable "enable_l4_ilb_subsetting" {
   type        = bool
   description = "Enable L4 ILB Subsetting on the cluster"
   default     = false
 }
-{% endif %}
 {% if beta_cluster %}
   {% if autopilot_cluster != true %}
 
@@ -844,6 +859,12 @@ variable "cloudrun_load_balancer_type" {
 variable "enable_pod_security_policy" {
   type        = bool
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. Pod Security Policy was removed from GKE clusters with version >= 1.25.0."
+  default     = false
+}
+
+variable "enable_secret_manager_addon" {
+  description = "(Beta) Enable the Secret Manager add-on for this cluster"
+  type        = bool
   default     = false
 }
 
@@ -891,5 +912,13 @@ variable "fleet_project_grant_service_agent" {
   description = "(Optional) Grant the fleet project service identity the `roles/gkehub.serviceAgent` and `roles/gkehub.crossProjectServiceAgent` roles."
   type = bool
   default = false
+}
+{% endif %}
+{% if beta_cluster and autopilot_cluster %}
+
+variable "logging_variant" {
+  description = "(Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT."
+  type        = string
+  default     = null
 }
 {% endif %}
