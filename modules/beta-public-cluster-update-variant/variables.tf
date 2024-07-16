@@ -814,17 +814,18 @@ variable "sandbox_enabled" {
   default     = false
 }
 
+variable "enable_gcfs" {
+  type        = bool
+  description = "Enable image streaming on cluster level."
+  default     = false
+}
+
 variable "enable_identity_service" {
   type        = bool
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
   default     = false
 }
 
-variable "enable_gcfs" {
-  type        = bool
-  description = "Enable image streaming on cluster level."
-  default     = false
-}
 
 variable "fleet_project" {
   description = "(Optional) Register the cluster with the fleet in this project."

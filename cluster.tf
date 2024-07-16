@@ -173,6 +173,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "identity_service_config" {
+    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
+    content {
+      enabled = identity_service_config.value
+    }
+  }
+
   enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   enable_tpu                  = var.enable_tpu
   enable_intranode_visibility = var.enable_intranode_visibility

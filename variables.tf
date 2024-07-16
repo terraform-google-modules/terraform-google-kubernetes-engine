@@ -741,6 +741,13 @@ variable "enable_l4_ilb_subsetting" {
   default     = false
 }
 
+variable "enable_identity_service" {
+  type        = bool
+  description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
+  default     = false
+}
+
+
 variable "fleet_project" {
   description = "(Optional) Register the cluster with the fleet in this project."
   type        = string
