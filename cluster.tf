@@ -465,6 +465,13 @@ resource "google_container_cluster" "primary" {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
       topic   = var.notification_config_topic
+
+      dynamic "filter" {
+        for_each = length(var.notification_filter_event_type) > 0 ? [1] : []
+        content {
+          event_type = var.notification_filter_event_type
+        }
+      }
     }
   }
 }
