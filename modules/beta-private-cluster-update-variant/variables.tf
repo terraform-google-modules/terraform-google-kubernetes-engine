@@ -784,6 +784,12 @@ variable "config_connector" {
   default     = false
 }
 
+variable "enable_intranode_visibility" {
+  type        = bool
+  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
+  default     = false
+}
+
 variable "enable_l4_ilb_subsetting" {
   type        = bool
   description = "Enable L4 ILB Subsetting on the cluster"
@@ -835,12 +841,6 @@ variable "enable_secret_manager_addon" {
 variable "sandbox_enabled" {
   type        = bool
   description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
-  default     = false
-}
-
-variable "enable_intranode_visibility" {
-  type        = bool
-  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
   default     = false
 }
 
