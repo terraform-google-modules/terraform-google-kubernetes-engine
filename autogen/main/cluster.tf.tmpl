@@ -216,11 +216,11 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  enable_kubernetes_alpha = var.enable_kubernetes_alpha
+  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   enable_tpu                  = var.enable_tpu
-  {% if beta_cluster %}
   enable_intranode_visibility = var.enable_intranode_visibility
 
+  {% if beta_cluster %}
   dynamic "secret_manager_config" {
     for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
     content {
@@ -628,6 +628,13 @@ resource "google_container_cluster" "primary" {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
       topic   = var.notification_config_topic
+
+      dynamic "filter" {
+        for_each = length(var.notification_filter_event_type) > 0 ? [1] : []
+        content {
+          event_type = var.notification_filter_event_type
+        }
+      }
     }
   }
   {% if beta_cluster and autopilot_cluster != true %}
