@@ -132,7 +132,6 @@ locals {
   cluster_intranode_visibility_enabled = local.cluster_output_intranode_visbility_enabled
   cluster_identity_service_enabled     = local.cluster_output_identity_service_enabled
 
-
   # BETA features
   cluster_istio_enabled                = !local.cluster_output_istio_disabled
   cluster_pod_security_policy_enabled  = local.cluster_output_pod_security_policy_enabled

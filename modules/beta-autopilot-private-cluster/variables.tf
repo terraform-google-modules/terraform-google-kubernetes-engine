@@ -493,7 +493,6 @@ variable "enable_l4_ilb_subsetting" {
   default     = false
 }
 
-
 variable "allow_net_admin" {
   description = "(Optional) Enable NET_ADMIN for the cluster."
   type        = bool

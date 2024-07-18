@@ -783,7 +783,6 @@ variable "enable_identity_service" {
   default     = false
 }
 
-
 variable "fleet_project" {
   description = "(Optional) Register the cluster with the fleet in this project."
   type        = string
