@@ -19,7 +19,7 @@ resource "google_gke_hub_feature" "acm" {
   provider = google-beta
 
   name     = "configmanagement"
-  project  = try(var.hub_project_id, var.project_id)
+  project  = coalesce(var.hub_project_id, var.project_id)
   location = "global"
 }
 
@@ -33,7 +33,7 @@ resource "google_gke_hub_feature_membership" "main" {
   feature  = "configmanagement"
 
   membership = module.registration.cluster_membership_id
-  project    = try(var.hub_project_id, var.project_id)
+  project    = coalesce(var.hub_project_id, var.project_id)
 
   configmanagement {
     version = var.configmanagement_version
