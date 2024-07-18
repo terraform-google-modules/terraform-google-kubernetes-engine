@@ -221,6 +221,13 @@ resource "google_container_cluster" "primary" {
   {% if beta_cluster %}
   enable_intranode_visibility = var.enable_intranode_visibility
 
+  dynamic "secret_manager_config" {
+    for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
+    content {
+      enabled = secret_manager_config.value
+    }
+  }
+
   dynamic "pod_security_policy_config" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
     content {
@@ -235,9 +242,12 @@ resource "google_container_cluster" "primary" {
     }
   }
   {% endif %}
+  {% endif %}
 
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
-  {% endif %}
+
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+
 {% if beta_cluster %}
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
 {% endif %}
@@ -258,10 +268,10 @@ resource "google_container_cluster" "primary" {
   }
 {% if autopilot_cluster %}
   dynamic "node_pool_auto_config" {
-    for_each = length(var.network_tags) > 0 ? [1] : []
+    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? [1] : []
     content {
       network_tags {
-        tags = var.network_tags
+        tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : var.network_tags
       }
     }
   }
@@ -321,6 +331,11 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    config_connector_config {
+      enabled = var.config_connector
+    }
+    {% endif %}
+
     dynamic "gke_backup_agent_config" {
       for_each = local.gke_backup_agent_config
 
@@ -344,13 +359,7 @@ resource "google_container_cluster" "primary" {
         enabled = stateful_ha_config.value.enabled
       }
     }
-
-    config_connector_config {
-      enabled = var.config_connector
-    }
-    {% endif %}
     {% if beta_cluster and autopilot_cluster != true %}
-
     istio_config {
       disabled = !var.istio
       auth     = var.istio_auth
@@ -628,6 +637,14 @@ resource "google_container_cluster" "primary" {
       gcfs_config {
         enabled = var.enable_gcfs
       }
+    }
+  }
+  {% endif %}
+  {% if beta_cluster and autopilot_cluster %}
+
+  node_pool_defaults {
+    node_config_defaults {
+      logging_variant = var.logging_variant
     }
   }
   {% endif %}
