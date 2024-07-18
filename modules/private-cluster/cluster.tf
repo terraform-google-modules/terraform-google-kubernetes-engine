@@ -735,7 +735,6 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
-
     dynamic "linux_node_config" {
       for_each = length(merge(
         local.node_pools_linux_node_configs_sysctls["all"],
@@ -1007,7 +1006,6 @@ resource "google_container_node_pool" "windows_pools" {
         pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
       }
     }
-
 
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
