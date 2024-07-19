@@ -18,7 +18,7 @@ locals {
   project_id = var.project_ids[3] # gke-project-fleet
 }
 
-module "this" {
+module "example" {
   source = "../../../examples/simple_fleet_app_operator_permissions"
 
   fleet_project_id = local.project_id

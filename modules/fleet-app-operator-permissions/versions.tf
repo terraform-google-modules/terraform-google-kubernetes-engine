@@ -33,7 +33,7 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:fleet-app-operator-permissions/v30.3.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:fleet-app-operator-permissions/v30.1.0"
   }
 }
 
