@@ -180,6 +180,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "identity_service_config" {
+    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
+    content {
+      enabled = identity_service_config.value
+    }
+  }
+
   enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   enable_tpu                  = var.enable_tpu
   enable_intranode_visibility = var.enable_intranode_visibility
@@ -195,13 +202,6 @@ resource "google_container_cluster" "primary" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
     content {
       enabled = pod_security_policy_config.value
-    }
-  }
-
-  dynamic "identity_service_config" {
-    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
-    content {
-      enabled = identity_service_config.value
     }
   }
 
@@ -876,13 +876,6 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
-    dynamic "sandbox_config" {
-      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
-      content {
-        sandbox_type = sandbox_config.value
-      }
-    }
-
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
@@ -894,6 +887,13 @@ resource "google_container_node_pool" "pools" {
         cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
         pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
+      }
+    }
+
+    dynamic "sandbox_config" {
+      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
+      content {
+        sandbox_type = sandbox_config.value
       }
     }
 
@@ -1162,13 +1162,6 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
-    dynamic "sandbox_config" {
-      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
-      content {
-        sandbox_type = sandbox_config.value
-      }
-    }
-
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
@@ -1180,6 +1173,13 @@ resource "google_container_node_pool" "windows_pools" {
         cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
         pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
+      }
+    }
+
+    dynamic "sandbox_config" {
+      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
+      content {
+        sandbox_type = sandbox_config.value
       }
     }
 
