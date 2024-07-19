@@ -778,13 +778,6 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
-    dynamic "sandbox_config" {
-      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
-      content {
-        sandbox_type = sandbox_config.value
-      }
-    }
-
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
@@ -796,6 +789,13 @@ resource "google_container_node_pool" "pools" {
         cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
         pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
+      }
+    }
+
+    dynamic "sandbox_config" {
+      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
+      content {
+        sandbox_type = sandbox_config.value
       }
     }
 
@@ -1063,13 +1063,6 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
-    dynamic "sandbox_config" {
-      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
-      content {
-        sandbox_type = sandbox_config.value
-      }
-    }
-
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
@@ -1081,6 +1074,13 @@ resource "google_container_node_pool" "windows_pools" {
         cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
         pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
+      }
+    }
+
+    dynamic "sandbox_config" {
+      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
+      content {
+        sandbox_type = sandbox_config.value
       }
     }
 
