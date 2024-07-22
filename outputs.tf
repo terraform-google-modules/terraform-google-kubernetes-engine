@@ -180,6 +180,16 @@ output "dns_cache_enabled" {
   value       = local.cluster_dns_cache_enabled
 }
 
+output "identity_service_enabled" {
+  description = "Whether Identity Service is enabled"
+  value       = local.cluster_identity_service_enabled
+}
+
+output "intranode_visibility_enabled" {
+  description = "Whether intra-node visibility is enabled"
+  value       = local.cluster_intranode_visibility_enabled
+}
+
 output "fleet_membership" {
   description = "Fleet membership (if registered)"
   value       = local.fleet_membership

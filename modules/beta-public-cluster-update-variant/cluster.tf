@@ -180,21 +180,28 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "identity_service_config" {
+    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
+    content {
+      enabled = identity_service_config.value
+    }
+  }
+
   enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   enable_tpu                  = var.enable_tpu
   enable_intranode_visibility = var.enable_intranode_visibility
+
+  dynamic "secret_manager_config" {
+    for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
+    content {
+      enabled = secret_manager_config.value
+    }
+  }
 
   dynamic "pod_security_policy_config" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
     content {
       enabled = pod_security_policy_config.value
-    }
-  }
-
-  dynamic "identity_service_config" {
-    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
-    content {
-      enabled = identity_service_config.value
     }
   }
 
@@ -388,9 +395,10 @@ resource "google_container_cluster" "primary" {
   dynamic "dns_config" {
     for_each = var.cluster_dns_provider == "CLOUD_DNS" ? [1] : []
     content {
-      cluster_dns        = var.cluster_dns_provider
-      cluster_dns_scope  = var.cluster_dns_scope
-      cluster_dns_domain = var.cluster_dns_domain
+      additive_vpc_scope_dns_domain = var.additive_vpc_scope_dns_domain
+      cluster_dns                   = var.cluster_dns_provider
+      cluster_dns_scope             = var.cluster_dns_scope
+      cluster_dns_domain            = var.cluster_dns_domain
     }
   }
 
@@ -518,6 +526,13 @@ resource "google_container_cluster" "primary" {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
       topic   = var.notification_config_topic
+
+      dynamic "filter" {
+        for_each = length(var.notification_filter_event_type) > 0 ? [1] : []
+        content {
+          event_type = var.notification_filter_event_type
+        }
+      }
     }
   }
 
@@ -843,13 +858,6 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
-    dynamic "sandbox_config" {
-      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
-      content {
-        sandbox_type = sandbox_config.value
-      }
-    }
-
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
@@ -861,6 +869,13 @@ resource "google_container_node_pool" "pools" {
         cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
         pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
+      }
+    }
+
+    dynamic "sandbox_config" {
+      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
+      content {
+        sandbox_type = sandbox_config.value
       }
     }
 
@@ -1129,13 +1144,6 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
-    dynamic "sandbox_config" {
-      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
-      content {
-        sandbox_type = sandbox_config.value
-      }
-    }
-
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
@@ -1147,6 +1155,13 @@ resource "google_container_node_pool" "windows_pools" {
         cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
         pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
+      }
+    }
+
+    dynamic "sandbox_config" {
+      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
+      content {
+        sandbox_type = sandbox_config.value
       }
     }
 

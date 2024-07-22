@@ -430,6 +430,12 @@ variable "notification_config_topic" {
   default     = ""
 }
 
+variable "notification_filter_event_type" {
+  type        = list(string)
+  description = "Choose what type of notifications you want to receive. If no filters are applied, you'll receive all notification types. Can be used to filter what notifications are sent. Accepted values are UPGRADE_AVAILABLE_EVENT, UPGRADE_EVENT, and SECURITY_BULLETIN_EVENT."
+  default     = []
+}
+
 variable "deletion_protection" {
   type        = bool
   description = "Whether or not to allow Terraform to destroy the cluster."
@@ -486,6 +492,7 @@ variable "enable_l4_ilb_subsetting" {
   description = "Enable L4 ILB Subsetting on the cluster"
   default     = false
 }
+
 variable "allow_net_admin" {
   description = "(Optional) Enable NET_ADMIN for the cluster."
   type        = bool
@@ -502,4 +509,10 @@ variable "fleet_project_grant_service_agent" {
   description = "(Optional) Grant the fleet project service identity the `roles/gkehub.serviceAgent` and `roles/gkehub.crossProjectServiceAgent` roles."
   type        = bool
   default     = false
+}
+
+variable "logging_variant" {
+  description = "(Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT."
+  type        = string
+  default     = null
 }

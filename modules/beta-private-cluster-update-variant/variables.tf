@@ -599,6 +599,12 @@ variable "notification_config_topic" {
   default     = ""
 }
 
+variable "notification_filter_event_type" {
+  type        = list(string)
+  description = "Choose what type of notifications you want to receive. If no filters are applied, you'll receive all notification types. Can be used to filter what notifications are sent. Accepted values are UPGRADE_AVAILABLE_EVENT, UPGRADE_EVENT, and SECURITY_BULLETIN_EVENT."
+  default     = []
+}
+
 variable "deletion_protection" {
   type        = bool
   description = "Whether or not to allow Terraform to destroy the cluster."
@@ -704,6 +710,11 @@ variable "cluster_dns_domain" {
   default     = ""
 }
 
+variable "additive_vpc_scope_dns_domain" {
+  type        = string
+  description = "(Beta) This will enable Cloud DNS additive VPC scope. Must provide a domain name that is unique within the VPC. For this to work cluster_dns = `CLOUD_DNS` and cluster_dns_scope = `CLUSTER_SCOPE` must both be set as well."
+  default     = ""
+}
 variable "gce_pd_csi_driver" {
   type        = bool
   description = "Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
@@ -784,6 +795,12 @@ variable "config_connector" {
   default     = false
 }
 
+variable "enable_intranode_visibility" {
+  type        = bool
+  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
+  default     = false
+}
+
 variable "enable_l4_ilb_subsetting" {
   type        = bool
   description = "Enable L4 ILB Subsetting on the cluster"
@@ -826,27 +843,27 @@ variable "enable_pod_security_policy" {
   default     = false
 }
 
+variable "enable_secret_manager_addon" {
+  description = "(Beta) Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
+
 variable "sandbox_enabled" {
   type        = bool
   description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
   default     = false
 }
 
-variable "enable_intranode_visibility" {
+variable "enable_gcfs" {
   type        = bool
-  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
+  description = "Enable image streaming on cluster level."
   default     = false
 }
 
 variable "enable_identity_service" {
   type        = bool
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
-  default     = false
-}
-
-variable "enable_gcfs" {
-  type        = bool
-  description = "Enable image streaming on cluster level."
   default     = false
 }
 
