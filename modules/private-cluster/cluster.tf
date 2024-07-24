@@ -173,8 +173,17 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  enable_kubernetes_alpha = var.enable_kubernetes_alpha
-  enable_tpu              = var.enable_tpu
+  dynamic "identity_service_config" {
+    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
+    content {
+      enabled = identity_service_config.value
+    }
+  }
+
+  enable_kubernetes_alpha     = var.enable_kubernetes_alpha
+  enable_tpu                  = var.enable_tpu
+  enable_intranode_visibility = var.enable_intranode_visibility
+
 
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
 
@@ -362,9 +371,10 @@ resource "google_container_cluster" "primary" {
     }
 
     node_config {
-      image_type       = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
-      machine_type     = lookup(var.node_pools[0], "machine_type", "e2-medium")
-      min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
+      image_type                  = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
+      machine_type                = lookup(var.node_pools[0], "machine_type", "e2-medium")
+      min_cpu_platform            = lookup(var.node_pools[0], "min_cpu_platform", "")
+      enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
       dynamic "gcfs_config" {
         for_each = lookup(var.node_pools[0], "enable_gcfs", false) ? [true] : []
         content {
@@ -482,6 +492,13 @@ resource "google_container_cluster" "primary" {
     pubsub {
       enabled = var.notification_config_topic != "" ? true : false
       topic   = var.notification_config_topic
+
+      dynamic "filter" {
+        for_each = length(var.notification_filter_event_type) > 0 ? [1] : []
+        content {
+          event_type = var.notification_filter_event_type
+        }
+      }
     }
   }
 }
@@ -573,9 +590,10 @@ resource "google_container_node_pool" "pools" {
   }
 
   node_config {
-    image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
-    machine_type     = lookup(each.value, "machine_type", "e2-medium")
-    min_cpu_platform = lookup(each.value, "min_cpu_platform", "")
+    image_type                  = lookup(each.value, "image_type", "COS_CONTAINERD")
+    machine_type                = lookup(each.value, "machine_type", "e2-medium")
+    min_cpu_platform            = lookup(each.value, "min_cpu_platform", "")
+    enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
     dynamic "gcfs_config" {
       for_each = lookup(each.value, "enable_gcfs", false) ? [true] : []
       content {
@@ -712,6 +730,19 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    dynamic "kubelet_config" {
+      for_each = length(setintersection(
+        keys(each.value),
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "pod_pids_limit"]
+      )) != 0 ? [1] : []
+
+      content {
+        cpu_manager_policy   = lookup(each.value, "cpu_manager_policy", "static")
+        cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
+        cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
+        pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
+      }
+    }
 
     dynamic "linux_node_config" {
       for_each = length(merge(
@@ -832,9 +863,10 @@ resource "google_container_node_pool" "windows_pools" {
   }
 
   node_config {
-    image_type       = lookup(each.value, "image_type", "COS_CONTAINERD")
-    machine_type     = lookup(each.value, "machine_type", "e2-medium")
-    min_cpu_platform = lookup(each.value, "min_cpu_platform", "")
+    image_type                  = lookup(each.value, "image_type", "COS_CONTAINERD")
+    machine_type                = lookup(each.value, "machine_type", "e2-medium")
+    min_cpu_platform            = lookup(each.value, "min_cpu_platform", "")
+    enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
     dynamic "gcfs_config" {
       for_each = lookup(each.value, "enable_gcfs", false) ? [true] : []
       content {
@@ -971,6 +1003,19 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
+    dynamic "kubelet_config" {
+      for_each = length(setintersection(
+        keys(each.value),
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "pod_pids_limit"]
+      )) != 0 ? [1] : []
+
+      content {
+        cpu_manager_policy   = lookup(each.value, "cpu_manager_policy", "static")
+        cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
+        cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
+        pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
+      }
+    }
 
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")

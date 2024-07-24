@@ -103,3 +103,19 @@ module "gke-project-asm" {
 
   activate_apis = local.apis
 }
+
+module "gke-project-fleet" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 15.0"
+
+  name              = "ci-gke-fleet-${random_id.random_project_id_suffix.hex}"
+  random_project_id = true
+  org_id            = var.org_id
+  folder_id         = var.folder_id
+  billing_account   = var.billing_account
+  # due to https://github.com/hashicorp/terraform-provider-google/issues/9505 for AP
+  default_service_account = "keep"
+
+  activate_apis = local.apis
+}
+

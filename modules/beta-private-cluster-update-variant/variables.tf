@@ -551,13 +551,13 @@ variable "enable_confidential_nodes" {
 }
 
 variable "workload_vulnerability_mode" {
-  description = "(beta) Vulnerability mode."
+  description = "(beta) Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC."
   type        = string
   default     = ""
 }
 
 variable "workload_config_audit_mode" {
-  description = "(beta) Workload config audit mode."
+  description = "(beta) Sets which mode of auditing should be used for the cluster's workloads. Accepted values are DISABLED, BASIC."
   type        = string
   default     = "DISABLED"
 }
@@ -576,13 +576,13 @@ variable "enable_cilium_clusterwide_network_policy" {
 }
 
 variable "security_posture_mode" {
-  description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
+  description = "Security posture mode. Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
   type        = string
   default     = "DISABLED"
 }
 
 variable "security_posture_vulnerability_mode" {
-  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`. Defaults to `VULNERABILITY_DISABLED`."
+  description = "Security posture vulnerability mode. Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`. Defaults to `VULNERABILITY_DISABLED`."
   type        = string
   default     = "VULNERABILITY_DISABLED"
 }
@@ -597,6 +597,12 @@ variable "notification_config_topic" {
   type        = string
   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
   default     = ""
+}
+
+variable "notification_filter_event_type" {
+  type        = list(string)
+  description = "Choose what type of notifications you want to receive. If no filters are applied, you'll receive all notification types. Can be used to filter what notifications are sent. Accepted values are UPGRADE_AVAILABLE_EVENT, UPGRADE_EVENT, and SECURITY_BULLETIN_EVENT."
+  default     = []
 }
 
 variable "deletion_protection" {
@@ -704,6 +710,11 @@ variable "cluster_dns_domain" {
   default     = ""
 }
 
+variable "additive_vpc_scope_dns_domain" {
+  type        = string
+  description = "(Beta) This will enable Cloud DNS additive VPC scope. Must provide a domain name that is unique within the VPC. For this to work cluster_dns = `CLOUD_DNS` and cluster_dns_scope = `CLUSTER_SCOPE` must both be set as well."
+  default     = ""
+}
 variable "gce_pd_csi_driver" {
   type        = bool
   description = "Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
@@ -762,13 +773,13 @@ variable "monitoring_observability_metrics_relay_mode" {
 
 variable "monitoring_enabled_components" {
   type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS. Empty list is default GKE configuration."
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET, KUBELET, CADVISOR and DCGM. In beta provider, WORKLOADS is supported on top of those 12 values. (WORKLOADS is deprecated and removed in GKE 1.24.) KUBELET and CADVISOR are only supported in GKE 1.29.3-gke.1093000 and above. Empty list is default GKE configuration."
   default     = []
 }
 
 variable "logging_enabled_components" {
   type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS. Empty list is default GKE configuration."
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
   default     = []
 }
 
@@ -781,6 +792,12 @@ variable "enable_kubernetes_alpha" {
 variable "config_connector" {
   type        = bool
   description = "Whether ConfigConnector is enabled for this cluster."
+  default     = false
+}
+
+variable "enable_intranode_visibility" {
+  type        = bool
+  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
   default     = false
 }
 
@@ -838,21 +855,15 @@ variable "sandbox_enabled" {
   default     = false
 }
 
-variable "enable_intranode_visibility" {
+variable "enable_gcfs" {
   type        = bool
-  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
+  description = "Enable image streaming on cluster level."
   default     = false
 }
 
 variable "enable_identity_service" {
   type        = bool
   description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
-  default     = false
-}
-
-variable "enable_gcfs" {
-  type        = bool
-  description = "Enable image streaming on cluster level."
   default     = false
 }
 

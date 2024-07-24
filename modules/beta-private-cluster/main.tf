@@ -131,16 +131,16 @@ locals {
   cluster_output_min_master_version                 = google_container_cluster.primary.min_master_version
   cluster_output_logging_service                    = google_container_cluster.primary.logging_service
   cluster_output_monitoring_service                 = google_container_cluster.primary.monitoring_service
-  cluster_output_network_policy_enabled             = google_container_cluster.primary.addons_config[0].network_policy_config[0].disabled
-  cluster_output_http_load_balancing_enabled        = google_container_cluster.primary.addons_config[0].http_load_balancing[0].disabled
-  cluster_output_horizontal_pod_autoscaling_enabled = google_container_cluster.primary.addons_config[0].horizontal_pod_autoscaling[0].disabled
+  cluster_output_network_policy_enabled             = coalescelist(lookup(coalescelist(google_container_cluster.primary.addons_config, [{}])[0], "network_policy_config", [{}]), [{ disabled = false }])[0].disabled
+  cluster_output_http_load_balancing_enabled        = coalescelist(lookup(coalescelist(google_container_cluster.primary.addons_config, [{}])[0], "http_load_balancing", [{}]), [{ disabled = false }])[0].disabled
+  cluster_output_horizontal_pod_autoscaling_enabled = coalescelist(lookup(coalescelist(google_container_cluster.primary.addons_config, [{}])[0], "horizontal_pod_autoscaling", [{}]), [{ disabled = false }])[0].disabled
   cluster_output_vertical_pod_autoscaling_enabled   = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling[0].enabled : false
+  cluster_output_intranode_visbility_enabled        = google_container_cluster.primary.enable_intranode_visibility
+  cluster_output_identity_service_enabled           = google_container_cluster.primary.identity_service_config != null && length(google_container_cluster.primary.identity_service_config) == 1 ? google_container_cluster.primary.identity_service_config[0].enabled : false
 
   # BETA features
   cluster_output_istio_disabled               = google_container_cluster.primary.addons_config[0].istio_config != null && length(google_container_cluster.primary.addons_config[0].istio_config) == 1 ? google_container_cluster.primary.addons_config[0].istio_config[0].disabled : false
   cluster_output_pod_security_policy_enabled  = google_container_cluster.primary.pod_security_policy_config != null && length(google_container_cluster.primary.pod_security_policy_config) == 1 ? google_container_cluster.primary.pod_security_policy_config[0].enabled : false
-  cluster_output_intranode_visbility_enabled  = google_container_cluster.primary.enable_intranode_visibility
-  cluster_output_identity_service_enabled     = google_container_cluster.primary.identity_service_config != null && length(google_container_cluster.primary.identity_service_config) == 1 ? google_container_cluster.primary.identity_service_config[0].enabled : false
   cluster_output_secret_manager_addon_enabled = google_container_cluster.primary.secret_manager_config != null && length(google_container_cluster.primary.secret_manager_config) == 1 ? google_container_cluster.primary.secret_manager_config[0].enabled : false
 
   # /BETA features
@@ -186,7 +186,9 @@ locals {
   cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
     workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
-  confidential_node_config = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
+  confidential_node_config             = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
+  cluster_intranode_visibility_enabled = local.cluster_output_intranode_visbility_enabled
+  cluster_identity_service_enabled     = local.cluster_output_identity_service_enabled
   cluster_mesh_certificates_config = local.workload_identity_enabled ? [{
     enable_certificates = var.enable_mesh_certificates
   }] : []
@@ -195,8 +197,6 @@ locals {
   cluster_istio_enabled                = !local.cluster_output_istio_disabled
   cluster_telemetry_type_is_set        = var.cluster_telemetry_type != null
   cluster_pod_security_policy_enabled  = local.cluster_output_pod_security_policy_enabled
-  cluster_intranode_visibility_enabled = local.cluster_output_intranode_visbility_enabled
-  cluster_identity_service_enabled     = local.cluster_output_identity_service_enabled
   cluster_secret_manager_addon_enabled = local.cluster_output_secret_manager_addon_enabled
 
   # /BETA features

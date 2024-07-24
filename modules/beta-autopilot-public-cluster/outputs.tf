@@ -169,9 +169,9 @@ output "pod_security_policy_enabled" {
   value       = local.cluster_pod_security_policy_enabled
 }
 
-output "intranode_visibility_enabled" {
-  description = "Whether intra-node visibility is enabled"
-  value       = local.cluster_intranode_visibility_enabled
+output "secret_manager_addon_enabled" {
+  description = "Whether Secret Manager add-on is enabled"
+  value       = local.cluster_secret_manager_addon_enabled
 }
 
 output "identity_service_enabled" {
@@ -179,9 +179,9 @@ output "identity_service_enabled" {
   value       = local.cluster_identity_service_enabled
 }
 
-output "secret_manager_addon_enabled" {
-  description = "Whether Secret Manager add-on is enabled"
-  value       = local.cluster_secret_manager_addon_enabled
+output "intranode_visibility_enabled" {
+  description = "Whether intra-node visibility is enabled"
+  value       = local.cluster_intranode_visibility_enabled
 }
 
 output "fleet_membership" {
