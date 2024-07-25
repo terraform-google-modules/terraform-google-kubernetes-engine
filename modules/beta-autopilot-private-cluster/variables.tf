@@ -424,11 +424,6 @@ variable "disable_default_snat" {
   default     = false
 }
 
-variable "enable_default_node_pools_metadata" {
-  type        = bool
-  description = "Whether to enable the default node pools metadata key-value pairs such as `cluster_name` and `node_pool`"
-  default     = true
-}
 
 variable "notification_config_topic" {
   type        = string
