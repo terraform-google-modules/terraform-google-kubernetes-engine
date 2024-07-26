@@ -601,7 +601,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  {% if autopilot_cluster != true %}
   dynamic "workload_identity_config" {
     for_each = local.cluster_workload_identity_config
 
@@ -609,7 +608,6 @@ resource "google_container_cluster" "primary" {
       workload_pool = workload_identity_config.value.workload_pool
     }
   }
-  {% endif %}
 
   {% if autopilot_cluster != true %}
   dynamic "mesh_certificates" {
