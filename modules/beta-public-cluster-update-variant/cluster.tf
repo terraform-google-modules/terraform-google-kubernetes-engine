@@ -748,8 +748,8 @@ resource "google_container_node_pool" "pools" {
       local.node_pools_resource_labels[each.value["name"]],
     )
     metadata = merge(
-      lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
-      lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
+      lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", var.enable_default_node_pools_metadata) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", var.enable_default_node_pools_metadata) ? { "node_pool" = each.value["name"] } : {},
       local.node_pools_metadata["all"],
       local.node_pools_metadata[each.value["name"]],
       {
@@ -1035,8 +1035,8 @@ resource "google_container_node_pool" "windows_pools" {
       local.node_pools_resource_labels[each.value["name"]],
     )
     metadata = merge(
-      lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
-      lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},
+      lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", var.enable_default_node_pools_metadata) ? { "cluster_name" = var.name } : {},
+      lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", var.enable_default_node_pools_metadata) ? { "node_pool" = each.value["name"] } : {},
       local.node_pools_metadata["all"],
       local.node_pools_metadata[each.value["name"]],
       {
