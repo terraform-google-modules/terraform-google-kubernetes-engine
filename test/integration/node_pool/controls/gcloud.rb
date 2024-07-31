@@ -62,8 +62,8 @@ control "gcloud" do
     describe "node pools" do
       let(:node_pools) { data['nodePools'].reject { |p| p['name'] == "default-pool" || p['name'] =~ %r{^nap-.*} } }
 
-      it "has 4" do
-        expect(node_pools.count).to eq 4
+      it "has 5" do
+        expect(node_pools.count).to eq 5
       end
 
       describe "pool-01" do
@@ -509,6 +509,27 @@ control "gcloud" do
               "name" => "pool-04",
               "queued_provisioning" => including(
                 "enabled" => true,
+              ),
+            )
+          )
+        end
+      end
+
+      describe "pool-05" do
+        it "exists" do
+          expect(data['nodePools']).to include(
+            including(
+              "name" => "pool-05",
+            )
+          )
+        end
+
+        it "has enable_nested_virtualization enabled" do
+          expect(data['nodePools']).not_to include(
+            including(
+              "name" => "pool-05",
+              "advanced_machine_features" => including(
+                "enable_nested_virtualization" => true,
               ),
             )
           )
