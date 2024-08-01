@@ -290,6 +290,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "workload_identity_config" {
+    for_each = local.cluster_workload_identity_config
+
+    content {
+      workload_pool = workload_identity_config.value.workload_pool
+    }
+  }
 
 
   dynamic "authenticator_groups_config" {
