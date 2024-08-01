@@ -89,6 +89,13 @@ resource "google_container_cluster" "primary" {
 
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
+  dynamic "secret_manager_config" {
+    for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
+    content {
+      enabled = secret_manager_config.value
+    }
+  }
+
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   enable_autopilot           = true
   dynamic "master_authorized_networks_config" {
