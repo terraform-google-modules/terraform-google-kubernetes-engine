@@ -369,6 +369,11 @@ variable "enable_fqdn_network_policy" {
   default     = null
 }
 
+variable "enable_secret_manager_addon" {
+  description = "(Beta) Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
 
 variable "enable_cilium_clusterwide_network_policy" {
   type        = bool
