@@ -720,7 +720,7 @@ resource "google_container_node_pool" "pools" {
       content {
         consume_reservation_type = reservation_affinity.value.consume_reservation_type
         key                      = reservation_affinity.value.key
-        values                   = split(",", reservation_affinity.value.values)
+        values                   = reservation_affinity.value.values == null ? null : split(",", reservation_affinity.value.values)
       }
     }
     labels = merge(
@@ -1011,7 +1011,7 @@ resource "google_container_node_pool" "windows_pools" {
       content {
         consume_reservation_type = reservation_affinity.value.consume_reservation_type
         key                      = reservation_affinity.value.key
-        values                   = split(",", reservation_affinity.value.values)
+        values                   = reservation_affinity.value.values == null ? null : split(",", reservation_affinity.value.values)
       }
     }
     labels = merge(
