@@ -87,6 +87,12 @@ module "gke" {
       service_account     = var.compute_engine_service_account
       queued_provisioning = true
     },
+    {
+      name                         = "pool-05"
+      machine_type                 = "n1-standard-2"
+      node_count                   = 1
+      enable_nested_virtualization = true
+    },
   ]
 
   node_pools_metadata = {
