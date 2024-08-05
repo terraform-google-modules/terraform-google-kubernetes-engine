@@ -436,15 +436,17 @@ resource "google_container_cluster" "primary" {
 
   dynamic "private_cluster_config" {
     for_each = var.enable_private_nodes ? [{
-      enable_private_nodes    = var.enable_private_nodes,
-      enable_private_endpoint = var.enable_private_endpoint
-      master_ipv4_cidr_block  = var.master_ipv4_cidr_block
+      enable_private_nodes        = var.enable_private_nodes,
+      enable_private_endpoint     = var.enable_private_endpoint
+      master_ipv4_cidr_block      = var.master_ipv4_cidr_block
+      private_endpoint_subnetwork = var.private_endpoint_subnetwork
     }] : []
 
     content {
-      enable_private_endpoint = private_cluster_config.value.enable_private_endpoint
-      enable_private_nodes    = private_cluster_config.value.enable_private_nodes
-      master_ipv4_cidr_block  = private_cluster_config.value.master_ipv4_cidr_block
+      enable_private_endpoint     = private_cluster_config.value.enable_private_endpoint
+      enable_private_nodes        = private_cluster_config.value.enable_private_nodes
+      master_ipv4_cidr_block      = private_cluster_config.value.master_ipv4_cidr_block
+      private_endpoint_subnetwork = private_cluster_config.value.private_endpoint_subnetwork
       dynamic "master_global_access_config" {
         for_each = var.master_global_access_enabled ? [var.master_global_access_enabled] : []
         content {
