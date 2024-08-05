@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2018-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,13 +30,13 @@ module "example" {
   cluster_autoscaling = {
     enabled             = true
     autoscaling_profile = "OPTIMIZE_UTILIZATION"
-    max_cpu_cores       = 20
-    min_cpu_cores       = 5
-    max_memory_gb       = 30
-    min_memory_gb       = 10
-    gpu_resources       = []
-    auto_repair         = true
-    auto_upgrade        = true
+    #max_cpu_cores = null
+    min_cpu_cores = 5
+    max_memory_gb = 30
+    #min_memory_gb = null
+    gpu_resources = []
+    auto_repair   = true
+    auto_upgrade  = true
   }
 }
 
