@@ -23,7 +23,7 @@ locals {
       ["dummy"],
     ),
   )
-  service_account_default_name = "tf-gke-${substr(var.name, 0, min(15, length(var.name)))}-${random_string.cluster_service_account_suffix.result}"
+  service_account_default_name = var.create_service_account && var.service_account_name == "" ? "tf-gke-${substr(var.name, 0, min(15, length(var.name)))}-${random_string.cluster_service_account_suffix[0].result}" : null
 
   // if user set var.service_account it will be used even if var.create_service_account==true, so service account will be created but not used
   service_account = (var.service_account == "" || var.service_account == "create") && var.create_service_account ? local.service_account_list[0] : var.service_account
@@ -32,6 +32,7 @@ locals {
 }
 
 resource "random_string" "cluster_service_account_suffix" {
+  count   = var.create_service_account && var.service_account_name == "" ? 1 : 0
   upper   = false
   lower   = true
   special = false
