@@ -30,7 +30,7 @@ module "example" {
   cluster_autoscaling = {
     enabled             = true
     autoscaling_profile = "OPTIMIZE_UTILIZATION"
-    #max_cpu_cores = null
+    max_cpu_cores = 100 # temporary
     min_cpu_cores = 5
     max_memory_gb = 30
     #min_memory_gb = null
