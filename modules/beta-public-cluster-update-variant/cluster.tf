@@ -747,6 +747,10 @@ resource "google_container_node_pool" "pools" {
       local.node_pools_resource_labels["all"],
       local.node_pools_resource_labels[each.value["name"]],
     )
+    resource_manager_tags = merge(
+      local.node_pools_resource_manager_tags["all"],
+      local.node_pools_resource_manager_tags[each.value["name"]],
+    )
     metadata = merge(
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", var.enable_default_node_pools_metadata) ? { "cluster_name" = var.name } : {},
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", var.enable_default_node_pools_metadata) ? { "node_pool" = each.value["name"] } : {},
@@ -847,9 +851,10 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "advanced_machine_features" {
-      for_each = lookup(each.value, "threads_per_core", 0) > 0 ? [1] : []
+      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) ? [1] : []
       content {
-        threads_per_core = lookup(each.value, "threads_per_core", 0)
+        threads_per_core             = lookup(each.value, "threads_per_core", 0)
+        enable_nested_virtualization = lookup(each.value, "enable_nested_virtualization", null)
       }
     }
 
@@ -1036,6 +1041,10 @@ resource "google_container_node_pool" "windows_pools" {
       local.node_pools_resource_labels["all"],
       local.node_pools_resource_labels[each.value["name"]],
     )
+    resource_manager_tags = merge(
+      local.node_pools_resource_manager_tags["all"],
+      local.node_pools_resource_manager_tags[each.value["name"]],
+    )
     metadata = merge(
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", var.enable_default_node_pools_metadata) ? { "cluster_name" = var.name } : {},
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", var.enable_default_node_pools_metadata) ? { "node_pool" = each.value["name"] } : {},
@@ -1136,9 +1145,10 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     dynamic "advanced_machine_features" {
-      for_each = lookup(each.value, "threads_per_core", 0) > 0 ? [1] : []
+      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) ? [1] : []
       content {
-        threads_per_core = lookup(each.value, "threads_per_core", 0)
+        threads_per_core             = lookup(each.value, "threads_per_core", 0)
+        enable_nested_virtualization = lookup(each.value, "enable_nested_virtualization", null)
       }
     }
 
