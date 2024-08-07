@@ -705,6 +705,20 @@ variable "stateful_ha" {
   default     = false
 }
 
+variable "ray_operator_config" {
+  type = object({
+    enabled            = bool
+    logging_enabled    = optional(bool, false)
+    monitoring_enabled = optional(bool, false)
+  })
+  description = "The Ray Operator Addon configuration for this cluster."
+  default = {
+    enabled            = false
+    logging_enabled    = false
+    monitoring_enabled = false
+  }
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
