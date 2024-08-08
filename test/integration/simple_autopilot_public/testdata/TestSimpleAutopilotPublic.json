@@ -9,7 +9,7 @@
       "rayOperatorConfig": {
         "enabled": true,
         "rayClusterLoggingConfig": {
-          "enabled": true         
+          "enabled": true
         },
         "rayClusterMonitoringConfig": {
           "enabled": true
