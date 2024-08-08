@@ -52,6 +52,7 @@ module "gke" {
   add_shadow_firewall_rules         = true
   network_tags                      = ["allow-google-apis"]
   deletion_protection               = false
+  enable_binary_authorization       = true
 
   master_authorized_networks = [
     {

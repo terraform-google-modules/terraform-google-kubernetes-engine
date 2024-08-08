@@ -743,12 +743,14 @@ variable "enable_shielded_nodes" {
   default     = true
 }
 
+{% endif %}
 variable "enable_binary_authorization" {
   type        = bool
   description = "Enable BinAuthZ Admission controller"
   default     = false
 }
 
+{% if autopilot_cluster != true %}
 variable "node_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
   default     = "GKE_METADATA"
