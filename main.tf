@@ -95,6 +95,7 @@ locals {
   gke_backup_agent_config    = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
   gcs_fuse_csi_driver_config = var.gcs_fuse_csi_driver ? [{ enabled = true }] : []
   stateful_ha_config         = var.stateful_ha ? [{ enabled = true }] : []
+  ray_operator_config        = length(var.ray_operator_config) > 0 && lookup(var.ray_operator_config, "enabled", false) ? [var.ray_operator_config] : []
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
