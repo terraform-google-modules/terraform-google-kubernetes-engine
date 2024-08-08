@@ -53,7 +53,7 @@ module "gke" {
   stateful_ha                     = false
   gke_backup_agent_config         = false
   ray_operator_config = {
-    enable = true
+    enabled = true
     logging_enabled = true
     monitoring_enabled = true
   }
