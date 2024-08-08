@@ -752,6 +752,17 @@ resource "google_container_node_pool" "pools" {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
     }
+
+    dynamic "sole_tenant_config" {
+      for_each = lookup(var.node_pools_sole_tenant_selectors, each.value["name"], null) == null ? [] : [1]
+      content {
+        node_affinity {
+          key = var.node_pools_sole_tenant_selectors[each.value["name"]]["key"]
+          operator = var.node_pools_sole_tenant_selectors[each.value["name"]]["operator"]
+          values = var.node_pools_sole_tenant_selectors[each.value["name"]]["values"]
+        }
+      }
+    }
   }
 
   lifecycle {

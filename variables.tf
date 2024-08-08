@@ -192,6 +192,16 @@ variable "node_pools_resource_labels" {
   }
 }
 
+variable "node_pools_sole_tenant_selectors" {
+  type        = map(object({ key = optional(string), values = optional(list(string)), operator = optional(string) }))
+  description = "Map of maps containing label selectors for sole tenant nodes"
+
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
 variable "node_pools_resource_manager_tags" {
   type        = map(map(string))
   description = "Map of maps containing resource manager tags by node-pool name"
