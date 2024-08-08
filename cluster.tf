@@ -757,9 +757,9 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(var.node_pools_sole_tenant_selectors, each.value["name"], null) == null ? [] : [1]
       content {
         node_affinity {
-          key = var.node_pools_sole_tenant_selectors[each.value["name"]]["key"]
+          key      = var.node_pools_sole_tenant_selectors[each.value["name"]]["key"]
           operator = var.node_pools_sole_tenant_selectors[each.value["name"]]["operator"]
-          values = var.node_pools_sole_tenant_selectors[each.value["name"]]["values"]
+          values   = var.node_pools_sole_tenant_selectors[each.value["name"]]["values"]
         }
       }
     }
