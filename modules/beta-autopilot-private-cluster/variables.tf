@@ -469,6 +469,12 @@ variable "database_encryption" {
   }]
 }
 
+variable "enable_binary_authorization" {
+  type        = bool
+  description = "Enable BinAuthZ Admission controller"
+  default     = false
+}
+
 
 variable "gke_backup_agent_config" {
   type        = bool

@@ -85,6 +85,13 @@ resource "google_container_cluster" "primary" {
     enabled = var.enable_vertical_pod_autoscaling
   }
 
+  dynamic "binary_authorization" {
+    for_each = var.enable_binary_authorization ? [var.enable_binary_authorization] : []
+    content {
+      evaluation_mode = "PROJECT_SINGLETON_POLICY_ENFORCE"
+    }
+  }
+
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
 
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
