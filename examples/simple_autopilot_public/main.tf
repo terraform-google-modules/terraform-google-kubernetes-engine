@@ -44,7 +44,7 @@ module "gke" {
   subnetwork                      = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
   ip_range_pods                   = local.pods_range_name
   ip_range_services               = local.svc_range_name
-  release_channel                 = "REGULAR"
+  release_channel                 = "RAPID"
   enable_vertical_pod_autoscaling = true
   network_tags                    = [local.cluster_type]
   deletion_protection             = false
@@ -52,4 +52,9 @@ module "gke" {
   gcs_fuse_csi_driver             = true
   stateful_ha                     = false
   gke_backup_agent_config         = false
+  ray_operator_config = {
+    enable = true
+    logging_enabled = true
+    monitoring_enabled = true
+  }
 }
