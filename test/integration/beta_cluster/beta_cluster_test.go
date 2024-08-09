@@ -75,7 +75,7 @@ func TestBetaCluster(t *testing.T) {
 			switch npName {
 			case "default-pool":
 				assert.False(np.Get("initialNodeCount").Exists(), "has no initial node count")
-				assert.False(np.Get("autoscaling").Exists(), "does not have autoscaling enabled")
+				assert.False(np.Get("autoscaling.enabled").Exists(), "does not have autoscaling enabled")
 			case "default-node-pool":
 				assert.JSONEq(gNp.Get("config").String(), np.Get("config").String())
 				assert.JSONEq(gNp.Get("autoscaling").String(), np.Get("autoscaling").String())
