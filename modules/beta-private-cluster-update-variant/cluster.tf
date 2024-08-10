@@ -301,6 +301,23 @@ resource "google_container_cluster" "primary" {
         enabled = stateful_ha_config.value.enabled
       }
     }
+
+    dynamic "ray_operator_config" {
+      for_each = local.ray_operator_config
+
+      content {
+
+        enabled = ray_operator_config.value.enabled
+
+        ray_cluster_logging_config {
+          enabled = ray_operator_config.value.logging_enabled
+        }
+        ray_cluster_monitoring_config {
+          enabled = ray_operator_config.value.monitoring_enabled
+        }
+      }
+    }
+
     istio_config {
       disabled = !var.istio
       auth     = var.istio_auth
