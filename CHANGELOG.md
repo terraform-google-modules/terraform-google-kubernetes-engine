@@ -6,6 +6,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [32.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v31.1.0...v32.0.0) (2024-08-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=5.40.0:** Add support for RayOperator Addon ([#2032](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2032))
+* **TPG>=5.33:** add secret manager add-on config to beta modules ([#1977](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1977))
+
+### Features
+
+* Add additional functionality for autopilot clusters ([#1985](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1985)) ([3b0bbe8](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3b0bbe8a60532cc2a2b8b676db1dfb7f0d2d0054))
+* add notification event filter ([#1996](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1996)) ([9ff1b5e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9ff1b5e373a4aafa6199abbc07f8c07bf092ac2f))
+* add optional private_endpoint_subnetwork variable in private submodules ([#2009](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2009)) ([7a2e9b8](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7a2e9b8e6d7fbb6c4986cce2c8484be58ec1c82e))
+* add support for `logging_variant` in Autopilot clusters ([#1962](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1962)) ([08028a8](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/08028a89d9ca812034f4b7d487e7f28131b41061))
+* add support for additive_vpc_scope_dns_domain ([#1998](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1998)) ([b54b7ba](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b54b7ba89b47df5692d17ed41a898f4bffbcd5b5))
+* add support for confidential storage + docs fixes ([#2003](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2003)) ([270a5c7](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/270a5c7380dd9fe9c41779143ddbfd5bf32c8fff))
+* allow default node pools metadata key-value pairs to be disabled ([#2005](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2005)) ([318f38f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/318f38fba30068761ad6bf61ec34cdbf9a09cab9))
+* anthos modules remote fleet project ([#1995](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1995)) ([674f772](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/674f77210a0a2b5236b53e0183393e34bd7a1dd2))
+* bump `enable_intranode_visibility` to GA ([#1956](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1956)) ([4274b0e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4274b0e286509103c25ae9b2d62f932e922f7659))
+* bump identity_service_config to ga ([#1997](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1997)) ([9d6a400](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9d6a4005ea8601dc88ce2a64edcc5ce663765893))
+* bump kubelet config to ga + minor doc fixes ([#1994](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1994)) ([6bd1bc1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6bd1bc103955fa4f4af8aca53e2afddd68a43a1c))
+* **cluster.tf:** add support for setting cgroup mode ([#2001](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2001)) ([3fc4db4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3fc4db4323187d350582a2915b24954ada6c792e))
+* enable binauthz for autopilot ([#2030](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2030)) ([3ebf04a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3ebf04a3ce27d6d251bedd98fdbb67ed47e88819))
+* extend enable_secret_manager_addon to beta-autopilot clusters ([#2017](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2017)) ([7f31e96](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7f31e96141308f8c00c178b1dd6d525ca233eddc))
+* Fleet app operator permissions ([#1986](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1986)) ([e0fd03a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e0fd03ac22212f2c1895f2651e263f36409937c4))
+* support enable_nested_virtualization ([#2012](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2012)) ([e298e74](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e298e7492c32d61a1387912c3525cd610434912d))
+* support workload_identity_config on autopilot ([#2011](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2011)) ([b4f2e14](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b4f2e14a39140451f420ea259dc29da4f34129f9))
+* **TPG>=5.33:** add secret manager add-on config to beta modules ([#1977](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1977)) ([5c58d89](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5c58d892cc52074c70032a73a9f7fc37d25738f5))
+* **TPG>=5.40.0:** Add support for RayOperator Addon ([#2032](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2032)) ([c046af1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c046af17aa9da70b3a639aaf025e3c4084dcb692))
+
+
+### Bug Fixes
+
+* add missing gpu node pool param docs  ([#2023](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2023)) ([ac76d4d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ac76d4d50d1fb17e7430facd06f22fe66a5c08ee))
+* empty addons_config handling ([#1978](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1978)) ([9ae8b38](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9ae8b385ce84d705cf3ac7722bad89a24d056302))
+* enable_confidential_storage fix ([#2018](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2018)) ([12cfe5e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/12cfe5e4d3c668117649cb346e49b0d2e598f4ed))
+* skip service account `random_string` when not needed ([#2024](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2024)) ([be88d19](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/be88d197d1d560cf508ddf1f4d026e9d2b91bbc9))
+
 ## [31.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v31.0.0...v31.1.0) (2024-06-26)
 
 
