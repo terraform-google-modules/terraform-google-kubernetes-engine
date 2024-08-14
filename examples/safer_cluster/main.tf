@@ -52,7 +52,7 @@ resource "random_shuffle" "version" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/safer-cluster"
-  version = "~> 31.0"
+  version = "~> 32.0"
 
   project_id                 = var.project_id
   name                       = "${local.cluster_type}-cluster-${random_string.suffix.result}"
