@@ -51,9 +51,10 @@ func TestDeployService(t *testing.T) {
 			return func() (bool, error) {
 				_, err := http.Get(cmd)
 				if err != nil {
-					return false, err
+					t.Logf("%s", err)
+					return true, err
 				}
-				return true, nil
+				return false, nil
 			}
 		}
 
