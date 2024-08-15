@@ -590,7 +590,6 @@ locals {
     "service_account",
     "enable_gcfs",
     "enable_gvnic",
-    "enable_secure_boot",
     "boot_disk_kms_key",
     "queued_provisioning",
     "enable_confidential_storage",
