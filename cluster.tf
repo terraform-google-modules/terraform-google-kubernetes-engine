@@ -605,19 +605,11 @@ resource "google_container_node_pool" "pools" {
       }
     }
     dynamic "reservation_affinity" {
-      for_each = lookup(each.value, "queued_provisioning", false) ? [{
-        consume_reservation_type = "NO_RESERVATION"
-        key                      = null
-        values                   = null
-        }] : [{
-        consume_reservation_type = lookup(each.value, "consume_reservation_type", null)
-        key                      = lookup(each.value, "reservation_affinity_key", null)
-        values                   = lookup(each.value, "reservation_affinity_values", null)
-      }]
+      for_each = lookup(each.value, "queued_provisioning", false) || lookup(each.value, "consume_reservation_type", "") != "" ? [each.value] : []
       content {
-        consume_reservation_type = reservation_affinity.value.consume_reservation_type
-        key                      = reservation_affinity.value.key
-        values                   = reservation_affinity.value.values == null ? null : split(",", reservation_affinity.value.values)
+        consume_reservation_type = lookup(reservation_affinity.value, "queued_provisioning", false) ? "NO_RESERVATION" : lookup(reservation_affinity.value, "consume_reservation_type", null)
+        key                      = lookup(reservation_affinity.value, "reservation_affinity_key", null)
+        values                   = lookup(reservation_affinity.value, "reservation_affinity_values", null) == null ? null : split(",", lookup(reservation_affinity.value, "reservation_affinity_values", null))
       }
     }
     labels = merge(
@@ -895,19 +887,11 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
     dynamic "reservation_affinity" {
-      for_each = lookup(each.value, "queued_provisioning", false) ? [{
-        consume_reservation_type = "NO_RESERVATION"
-        key                      = null
-        values                   = null
-        }] : [{
-        consume_reservation_type = lookup(each.value, "consume_reservation_type", null)
-        key                      = lookup(each.value, "reservation_affinity_key", null)
-        values                   = lookup(each.value, "reservation_affinity_values", null)
-      }]
+      for_each = lookup(each.value, "queued_provisioning", false) || lookup(each.value, "consume_reservation_type", "") != "" ? [each.value] : []
       content {
-        consume_reservation_type = reservation_affinity.value.consume_reservation_type
-        key                      = reservation_affinity.value.key
-        values                   = reservation_affinity.value.values == null ? null : split(",", reservation_affinity.value.values)
+        consume_reservation_type = lookup(reservation_affinity.value, "queued_provisioning", false) ? "NO_RESERVATION" : lookup(reservation_affinity.value, "consume_reservation_type", null)
+        key                      = lookup(reservation_affinity.value, "reservation_affinity_key", null)
+        values                   = lookup(reservation_affinity.value, "reservation_affinity_values", null) == null ? null : split(",", lookup(reservation_affinity.value, "reservation_affinity_values", null))
       }
     }
     labels = merge(
