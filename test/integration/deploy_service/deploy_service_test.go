@@ -50,10 +50,11 @@ func TestDeployService(t *testing.T) {
 		pollHTTPEndPoint := func(cmd string) func() (bool, error) {
 			return func() (bool, error) {
 				_, err := http.Get(cmd)
-				if assert.NoError(err) {
-					return false, nil
+				if err != nil {
+					t.Logf("%s", err)
+					return true, err
 				}
-				return true, nil
+				return false, nil
 			}
 		}
 
