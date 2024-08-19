@@ -818,13 +818,13 @@ variable "ray_operator_config" {
   type        = object({
     enabled = bool
     logging_enabled = optional(bool, false)
-    monitoring_enabled = optional(bool, false) 
+    monitoring_enabled = optional(bool, false)
   })
   description = "The Ray Operator Addon configuration for this cluster."
   default     = {
     enabled = false
     logging_enabled = false
-    monitoring_enabled = false 
+    monitoring_enabled = false
   }
 }
 
@@ -944,7 +944,7 @@ variable "sandbox_enabled" {
 
 variable "enable_gcfs" {
   type        = bool
-  description = "Enable image streaming on cluster level."
+  description = "(Beta) Enable image streaming on cluster level."
   default     = false
 }
   {% endif %}
