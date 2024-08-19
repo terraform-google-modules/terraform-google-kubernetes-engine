@@ -191,13 +191,6 @@ resource "google_container_cluster" "primary" {
   enable_tpu                  = var.enable_tpu
   enable_intranode_visibility = var.enable_intranode_visibility
 
-  dynamic "secret_manager_config" {
-    for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
-    content {
-      enabled = secret_manager_config.value
-    }
-  }
-
   dynamic "pod_security_policy_config" {
     for_each = var.enable_pod_security_policy ? [var.enable_pod_security_policy] : []
     content {
@@ -208,6 +201,13 @@ resource "google_container_cluster" "primary" {
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
 
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+
+  dynamic "secret_manager_config" {
+    for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
+    content {
+      enabled = secret_manager_config.value
+    }
+  }
 
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   dynamic "master_authorized_networks_config" {
@@ -301,6 +301,23 @@ resource "google_container_cluster" "primary" {
         enabled = stateful_ha_config.value.enabled
       }
     }
+
+    dynamic "ray_operator_config" {
+      for_each = local.ray_operator_config
+
+      content {
+
+        enabled = ray_operator_config.value.enabled
+
+        ray_cluster_logging_config {
+          enabled = ray_operator_config.value.logging_enabled
+        }
+        ray_cluster_monitoring_config {
+          enabled = ray_operator_config.value.monitoring_enabled
+        }
+      }
+    }
+
     istio_config {
       disabled = !var.istio
       auth     = var.istio_auth
@@ -490,15 +507,17 @@ resource "google_container_cluster" "primary" {
 
   dynamic "private_cluster_config" {
     for_each = var.enable_private_nodes ? [{
-      enable_private_nodes    = var.enable_private_nodes,
-      enable_private_endpoint = var.enable_private_endpoint
-      master_ipv4_cidr_block  = var.master_ipv4_cidr_block
+      enable_private_nodes        = var.enable_private_nodes,
+      enable_private_endpoint     = var.enable_private_endpoint
+      master_ipv4_cidr_block      = var.master_ipv4_cidr_block
+      private_endpoint_subnetwork = var.private_endpoint_subnetwork
     }] : []
 
     content {
-      enable_private_endpoint = private_cluster_config.value.enable_private_endpoint
-      enable_private_nodes    = private_cluster_config.value.enable_private_nodes
-      master_ipv4_cidr_block  = private_cluster_config.value.master_ipv4_cidr_block
+      enable_private_endpoint     = private_cluster_config.value.enable_private_endpoint
+      enable_private_nodes        = private_cluster_config.value.enable_private_nodes
+      master_ipv4_cidr_block      = private_cluster_config.value.master_ipv4_cidr_block
+      private_endpoint_subnetwork = private_cluster_config.value.private_endpoint_subnetwork
       dynamic "master_global_access_config" {
         for_each = var.master_global_access_enabled ? [var.master_global_access_enabled] : []
         content {
@@ -657,7 +676,7 @@ resource "google_container_node_pool" "pools" {
     image_type                  = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type                = lookup(each.value, "machine_type", "e2-medium")
     min_cpu_platform            = lookup(each.value, "min_cpu_platform", "")
-    enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
+    enable_confidential_storage = lookup(each.value, "enable_confidential_storage", false)
     dynamic "gcfs_config" {
       for_each = lookup(each.value, "enable_gcfs", false) ? [true] : [false]
       content {
@@ -685,6 +704,10 @@ resource "google_container_node_pool" "pools" {
     resource_labels = merge(
       local.node_pools_resource_labels["all"],
       local.node_pools_resource_labels[each.value["name"]],
+    )
+    resource_manager_tags = merge(
+      local.node_pools_resource_manager_tags["all"],
+      local.node_pools_resource_manager_tags[each.value["name"]],
     )
     metadata = merge(
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", var.enable_default_node_pools_metadata) ? { "cluster_name" = var.name } : {},
@@ -786,9 +809,10 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "advanced_machine_features" {
-      for_each = lookup(each.value, "threads_per_core", 0) > 0 ? [1] : []
+      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) ? [1] : []
       content {
-        threads_per_core = lookup(each.value, "threads_per_core", 0)
+        threads_per_core             = lookup(each.value, "threads_per_core", 0)
+        enable_nested_virtualization = lookup(each.value, "enable_nested_virtualization", null)
       }
     }
 
@@ -824,7 +848,8 @@ resource "google_container_node_pool" "pools" {
     dynamic "linux_node_config" {
       for_each = length(merge(
         local.node_pools_linux_node_configs_sysctls["all"],
-        local.node_pools_linux_node_configs_sysctls[each.value["name"]]
+        local.node_pools_linux_node_configs_sysctls[each.value["name"]],
+        local.node_pools_cgroup_mode[each.value["name"]] == "" ? {} : { cgroup = local.node_pools_cgroup_mode[each.value["name"]] }
       )) != 0 ? [1] : []
 
       content {
@@ -832,6 +857,7 @@ resource "google_container_node_pool" "pools" {
           local.node_pools_linux_node_configs_sysctls["all"],
           local.node_pools_linux_node_configs_sysctls[each.value["name"]]
         )
+        cgroup_mode = local.node_pools_cgroup_mode[each.value["name"]] == "" ? null : local.node_pools_cgroup_mode[each.value["name"]]
       }
     }
 
@@ -943,7 +969,7 @@ resource "google_container_node_pool" "windows_pools" {
     image_type                  = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type                = lookup(each.value, "machine_type", "e2-medium")
     min_cpu_platform            = lookup(each.value, "min_cpu_platform", "")
-    enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
+    enable_confidential_storage = lookup(each.value, "enable_confidential_storage", false)
     dynamic "gcfs_config" {
       for_each = lookup(each.value, "enable_gcfs", false) ? [true] : [false]
       content {
@@ -971,6 +997,10 @@ resource "google_container_node_pool" "windows_pools" {
     resource_labels = merge(
       local.node_pools_resource_labels["all"],
       local.node_pools_resource_labels[each.value["name"]],
+    )
+    resource_manager_tags = merge(
+      local.node_pools_resource_manager_tags["all"],
+      local.node_pools_resource_manager_tags[each.value["name"]],
     )
     metadata = merge(
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", var.enable_default_node_pools_metadata) ? { "cluster_name" = var.name } : {},
@@ -1072,9 +1102,10 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     dynamic "advanced_machine_features" {
-      for_each = lookup(each.value, "threads_per_core", 0) > 0 ? [1] : []
+      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) ? [1] : []
       content {
-        threads_per_core = lookup(each.value, "threads_per_core", 0)
+        threads_per_core             = lookup(each.value, "threads_per_core", 0)
+        enable_nested_virtualization = lookup(each.value, "enable_nested_virtualization", null)
       }
     }
 

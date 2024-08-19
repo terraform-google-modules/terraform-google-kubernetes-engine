@@ -28,7 +28,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
-  version = "~> 31.0"
+  version = "~> 32.0"
 
   project_id                        = var.project_id
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -86,6 +86,12 @@ module "gke" {
       min_count           = 0
       service_account     = var.compute_engine_service_account
       queued_provisioning = true
+    },
+    {
+      name                         = "pool-05"
+      machine_type                 = "n1-standard-2"
+      node_count                   = 1
+      enable_nested_virtualization = true
     },
   ]
 

@@ -369,6 +369,11 @@ variable "enable_fqdn_network_policy" {
   default     = null
 }
 
+variable "enable_secret_manager_addon" {
+  description = "(Beta) Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
 
 variable "enable_cilium_clusterwide_network_policy" {
   type        = bool
@@ -428,6 +433,12 @@ variable "database_encryption" {
   }]
 }
 
+variable "enable_binary_authorization" {
+  type        = bool
+  description = "Enable BinAuthZ Admission controller"
+  default     = false
+}
+
 
 variable "gke_backup_agent_config" {
   type        = bool
@@ -445,6 +456,20 @@ variable "stateful_ha" {
   type        = bool
   description = "Whether the Stateful HA Addon is enabled for this cluster."
   default     = false
+}
+
+variable "ray_operator_config" {
+  type = object({
+    enabled            = bool
+    logging_enabled    = optional(bool, false)
+    monitoring_enabled = optional(bool, false)
+  })
+  description = "The Ray Operator Addon configuration for this cluster."
+  default = {
+    enabled            = false
+    logging_enabled    = false
+    monitoring_enabled = false
+  }
 }
 
 variable "timeouts" {

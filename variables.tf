@@ -192,6 +192,16 @@ variable "node_pools_resource_labels" {
   }
 }
 
+variable "node_pools_resource_manager_tags" {
+  type        = map(map(string))
+  description = "Map of maps containing resource manager tags by node-pool name"
+
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
 variable "node_pools_metadata" {
   type        = map(map(string))
   description = "Map of maps containing node metadata by node-pool name"
@@ -211,6 +221,16 @@ variable "node_pools_linux_node_configs_sysctls" {
   default = {
     all               = {}
     default-node-pool = {}
+  }
+}
+variable "node_pools_cgroup_mode" {
+  type        = map(string)
+  description = "Map of strings containing cgroup node config by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = ""
+    default-node-pool = ""
   }
 }
 
@@ -683,6 +703,20 @@ variable "stateful_ha" {
   type        = bool
   description = "Whether the Stateful HA Addon is enabled for this cluster."
   default     = false
+}
+
+variable "ray_operator_config" {
+  type = object({
+    enabled            = bool
+    logging_enabled    = optional(bool, false)
+    monitoring_enabled = optional(bool, false)
+  })
+  description = "The Ray Operator Addon configuration for this cluster."
+  default = {
+    enabled            = false
+    logging_enabled    = false
+    monitoring_enabled = false
+  }
 }
 
 variable "timeouts" {

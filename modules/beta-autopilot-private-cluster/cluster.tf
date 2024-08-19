@@ -85,9 +85,23 @@ resource "google_container_cluster" "primary" {
     enabled = var.enable_vertical_pod_autoscaling
   }
 
+  dynamic "binary_authorization" {
+    for_each = var.enable_binary_authorization ? [var.enable_binary_authorization] : []
+    content {
+      evaluation_mode = "PROJECT_SINGLETON_POLICY_ENFORCE"
+    }
+  }
+
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
 
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+
+  dynamic "secret_manager_config" {
+    for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
+    content {
+      enabled = secret_manager_config.value
+    }
+  }
 
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   enable_autopilot           = true
@@ -159,6 +173,23 @@ resource "google_container_cluster" "primary" {
         enabled = stateful_ha_config.value.enabled
       }
     }
+
+    dynamic "ray_operator_config" {
+      for_each = local.ray_operator_config
+
+      content {
+
+        enabled = ray_operator_config.value.enabled
+
+        ray_cluster_logging_config {
+          enabled = ray_operator_config.value.logging_enabled
+        }
+        ray_cluster_monitoring_config {
+          enabled = ray_operator_config.value.monitoring_enabled
+        }
+      }
+    }
+
   }
 
   allow_net_admin = var.allow_net_admin
@@ -255,15 +286,17 @@ resource "google_container_cluster" "primary" {
 
   dynamic "private_cluster_config" {
     for_each = var.enable_private_nodes ? [{
-      enable_private_nodes    = var.enable_private_nodes,
-      enable_private_endpoint = var.enable_private_endpoint
-      master_ipv4_cidr_block  = var.master_ipv4_cidr_block
+      enable_private_nodes        = var.enable_private_nodes,
+      enable_private_endpoint     = var.enable_private_endpoint
+      master_ipv4_cidr_block      = var.master_ipv4_cidr_block
+      private_endpoint_subnetwork = var.private_endpoint_subnetwork
     }] : []
 
     content {
-      enable_private_endpoint = private_cluster_config.value.enable_private_endpoint
-      enable_private_nodes    = private_cluster_config.value.enable_private_nodes
-      master_ipv4_cidr_block  = private_cluster_config.value.master_ipv4_cidr_block
+      enable_private_endpoint     = private_cluster_config.value.enable_private_endpoint
+      enable_private_nodes        = private_cluster_config.value.enable_private_nodes
+      master_ipv4_cidr_block      = private_cluster_config.value.master_ipv4_cidr_block
+      private_endpoint_subnetwork = private_cluster_config.value.private_endpoint_subnetwork
       dynamic "master_global_access_config" {
         for_each = var.master_global_access_enabled ? [var.master_global_access_enabled] : []
         content {
@@ -283,6 +316,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "workload_identity_config" {
+    for_each = local.cluster_workload_identity_config
+
+    content {
+      workload_pool = workload_identity_config.value.workload_pool
+    }
+  }
 
 
   dynamic "authenticator_groups_config" {

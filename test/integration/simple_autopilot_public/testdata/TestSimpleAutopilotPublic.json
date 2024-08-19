@@ -6,6 +6,15 @@
       "gcePersistentDiskCsiDriverConfig": {
         "enabled": true
       },
+      "rayOperatorConfig": {
+        "enabled": true,
+        "rayClusterLoggingConfig": {
+          "enabled": true
+        },
+        "rayClusterMonitoringConfig": {
+          "enabled": true
+        }
+      },
       "gcpFilestoreCsiDriverConfig": {
         "enabled": true
       },

@@ -192,6 +192,16 @@ variable "node_pools_resource_labels" {
   }
 }
 
+variable "node_pools_resource_manager_tags" {
+  type        = map(map(string))
+  description = "Map of maps containing resource manager tags by node-pool name"
+
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
 variable "node_pools_metadata" {
   type        = map(map(string))
   description = "Map of maps containing node metadata by node-pool name"
@@ -211,6 +221,16 @@ variable "node_pools_linux_node_configs_sysctls" {
   default = {
     all               = {}
     default-node-pool = {}
+  }
+}
+variable "node_pools_cgroup_mode" {
+  type        = map(string)
+  description = "Map of strings containing cgroup node config by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = ""
+    default-node-pool = ""
   }
 }
 
@@ -452,6 +472,12 @@ variable "master_ipv4_cidr_block" {
   default     = "10.0.0.0/28"
 }
 
+variable "private_endpoint_subnetwork" {
+  type        = string
+  description = "The subnetwork to use for the hosted master network."
+  default     = null
+}
+
 variable "master_global_access_enabled" {
   type        = bool
   description = "Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
@@ -568,6 +594,11 @@ variable "enable_fqdn_network_policy" {
   default     = null
 }
 
+variable "enable_secret_manager_addon" {
+  description = "(Beta) Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
 
 variable "enable_cilium_clusterwide_network_policy" {
   type        = bool
@@ -745,6 +776,20 @@ variable "stateful_ha" {
   default     = false
 }
 
+variable "ray_operator_config" {
+  type = object({
+    enabled            = bool
+    logging_enabled    = optional(bool, false)
+    monitoring_enabled = optional(bool, false)
+  })
+  description = "The Ray Operator Addon configuration for this cluster."
+  default = {
+    enabled            = false
+    logging_enabled    = false
+    monitoring_enabled = false
+  }
+}
+
 variable "timeouts" {
   type        = map(string)
   description = "Timeout for cluster operations."
@@ -846,12 +891,6 @@ variable "cloudrun_load_balancer_type" {
 variable "enable_pod_security_policy" {
   type        = bool
   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. Pod Security Policy was removed from GKE clusters with version >= 1.25.0."
-  default     = false
-}
-
-variable "enable_secret_manager_addon" {
-  description = "(Beta) Enable the Secret Manager add-on for this cluster"
-  type        = bool
   default     = false
 }
 
