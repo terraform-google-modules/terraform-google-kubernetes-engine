@@ -40,7 +40,6 @@ module "permissions" {
   fleet_project_id = var.fleet_project_id
   scope_id         = google_gke_hub_scope.scope.scope_id
   users            = ["${local.app_operator_id}@${var.fleet_project_id}.iam.gserviceaccount.com"]
-  groups           = []
   role             = local.app_operator_role
 
   depends_on = [
