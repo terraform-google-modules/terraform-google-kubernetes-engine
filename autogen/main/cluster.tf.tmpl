@@ -364,9 +364,9 @@ resource "google_container_cluster" "primary" {
 
     dynamic "ray_operator_config" {
       for_each = local.ray_operator_config
-    
+
       content {
-        
+
         enabled = ray_operator_config.value.enabled
 
         ray_cluster_logging_config {
@@ -478,6 +478,11 @@ resource "google_container_cluster" "primary" {
   {% if autopilot_cluster != true %}
   lifecycle {
     ignore_changes = [node_pool, initial_node_count, resource_labels["asmv"]]
+  }
+  {% endif %}
+  {% if autopilot_cluster == true %}
+  lifecycle {
+    ignore_changes = [node_pool_defaults[0].node_config_defaults[0].gcfs_config[0].enabled]
   }
   {% endif %}
 
@@ -660,21 +665,18 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-  {% if beta_cluster and autopilot_cluster != true %}
+  {% if beta_cluster %}
 
   node_pool_defaults {
     node_config_defaults {
+      {% if autopilot_cluster %}
+      logging_variant = var.logging_variant
+      {% endif %}
+      {% if autopilot_cluster != true %}
       gcfs_config {
         enabled = var.enable_gcfs
       }
-    }
-  }
-  {% endif %}
-  {% if beta_cluster and autopilot_cluster %}
-
-  node_pool_defaults {
-    node_config_defaults {
-      logging_variant = var.logging_variant
+      {% endif %}
     }
   }
   {% endif %}

@@ -188,6 +188,9 @@
           "variantConfig": {
             "variant": "DEFAULT"
           }
+        },
+        "gcfsConfig": {
+          "enabled": true
         }
       }
     },
