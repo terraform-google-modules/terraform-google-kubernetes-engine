@@ -39,10 +39,11 @@ locals {
   }
 }
 
-resource "google_project_iam_binding" "log_view_permissions" {
-  project = var.fleet_project_id
-  role    = "roles/logging.viewAccessor"
-  members = concat(local.user_principals, local.group_principals)
+resource "google_project_iam_member" "log_view_permissions" {
+  project  = var.fleet_project_id
+  for_each = toset(concat(local.user_principals, local.group_principals))
+  role     = "roles/logging.viewAccessor"
+  member   = each.value
   condition {
     title       = "conditional log view access"
     description = "log view access for scope ${var.scope_id}"
@@ -50,10 +51,11 @@ resource "google_project_iam_binding" "log_view_permissions" {
   }
 }
 
-resource "google_project_iam_binding" "project_level_scope_permissions" {
-  project = var.fleet_project_id
-  role    = local.project_level_scope_role[var.role]
-  members = concat(local.user_principals, local.group_principals)
+resource "google_project_iam_member" "project_level_scope_permissions" {
+  project  = var.fleet_project_id
+  for_each = toset(concat(local.user_principals, local.group_principals))
+  role     = local.project_level_scope_role[var.role]
+  member   = each.value
 }
 
 resource "google_gke_hub_scope_iam_binding" "resource_level_scope_permissions" {
