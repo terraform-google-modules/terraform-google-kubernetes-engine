@@ -941,13 +941,18 @@ variable "sandbox_enabled" {
   description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
   default     = false
 }
+  {% endif %}
 
 variable "enable_gcfs" {
   type        = bool
   description = "(Beta) Enable image streaming on cluster level."
+  {% if autopilot_cluster != true %}
   default     = false
-}
   {% endif %}
+  {% if autopilot_cluster %}
+  default     = null
+  {% endif %}
+}
 {% endif %}
 
 {% if autopilot_cluster != true %}
