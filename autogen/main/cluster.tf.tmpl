@@ -480,11 +480,6 @@ resource "google_container_cluster" "primary" {
     ignore_changes = [node_pool, initial_node_count, resource_labels["asmv"]]
   }
   {% endif %}
-  {% if autopilot_cluster == true %}
-  lifecycle {
-    ignore_changes = [node_pool_defaults[0].node_config_defaults[0].gcfs_config[0]]
-  }
-  {% endif %}
 
   {% if autopilot_cluster != true %}
   dynamic "dns_config" {

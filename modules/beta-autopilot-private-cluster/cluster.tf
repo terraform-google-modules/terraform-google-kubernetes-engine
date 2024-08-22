@@ -261,9 +261,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  lifecycle {
-    ignore_changes = [node_pool_defaults[0].node_config_defaults[0].gcfs_config[0]]
-  }
 
   timeouts {
     create = lookup(var.timeouts, "create", "45m")
