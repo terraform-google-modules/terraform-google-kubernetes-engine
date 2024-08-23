@@ -53,6 +53,7 @@ func TestSimpleAutopilotPrivate(t *testing.T) {
 			"addonsConfig.httpLoadBalancing",
 			"addonsConfig.kubernetesDashboard.disabled",
 			"addonsConfig.networkPolicyConfig.disabled",
+			"masterAuthorizedNetworksConfig.enabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)

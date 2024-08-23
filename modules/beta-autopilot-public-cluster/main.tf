@@ -100,11 +100,6 @@ locals {
 
   # /BETA features
 
-  master_authorized_networks_config = length(var.master_authorized_networks) == 0 ? [] : [{
-    cidr_blocks : var.master_authorized_networks
-  }]
-
-
   cluster_master_auth_list_layer1 = local.cluster_output_master_auth
   cluster_master_auth_list_layer2 = local.cluster_master_auth_list_layer1[0]
   cluster_master_auth_map         = local.cluster_master_auth_list_layer2[0]
