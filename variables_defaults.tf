@@ -127,7 +127,7 @@ locals {
     ),
     var.node_pools_linux_node_configs_sysctls
   )
-   node_pools_cgroup_mode = merge(
+  node_pools_cgroup_mode = merge(
     { all = "" },
     { default-node-pool = "" },
     zipmap(

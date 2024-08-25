@@ -92,7 +92,7 @@ resource "google_container_cluster" "primary" {
   monitoring_service = local.logmon_config_is_set ? null : var.monitoring_service
   dynamic "monitoring_config" {
     for_each = local.logmon_config_is_set || local.logmon_config_is_set ? [1] : []
-    content{
+    content {
       enable_components = var.monitoring_enabled_components
       managed_prometheus {
         enabled = var.monitoring_enable_managed_prometheus
@@ -110,13 +110,13 @@ resource "google_container_cluster" "primary" {
 
       content {
         service_account = local.service_account
-        oauth_scopes = local.node_pools_oauth_scopes["all"]
+        oauth_scopes    = local.node_pools_oauth_scopes["all"]
 
         boot_disk_kms_key = var.boot_disk_kms_key
 
         management {
-            auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
-            auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade",true)
+          auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
+          auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
         }
 
         disk_size = lookup(var.cluster_autoscaling, "disk_size", 100)
@@ -164,7 +164,7 @@ resource "google_container_cluster" "primary" {
     enabled = var.enable_vertical_pod_autoscaling
   }
   default_max_pods_per_node = var.default_max_pods_per_node
-  enable_shielded_nodes       = var.enable_shielded_nodes
+  enable_shielded_nodes     = var.enable_shielded_nodes
 
   dynamic "binary_authorization" {
     for_each = var.enable_binary_authorization ? [var.enable_binary_authorization] : []
@@ -323,7 +323,7 @@ resource "google_container_cluster" "primary" {
         pod_range_names = var.additional_ip_range_pods
       }
     }
-    stack_type                    = var.stack_type
+    stack_type = var.stack_type
   }
 
   maintenance_policy {
@@ -367,9 +367,9 @@ resource "google_container_cluster" "primary" {
   dynamic "dns_config" {
     for_each = var.cluster_dns_provider == "CLOUD_DNS" ? [1] : []
     content {
-      cluster_dns                   = var.cluster_dns_provider
-      cluster_dns_scope             = var.cluster_dns_scope
-      cluster_dns_domain            = var.cluster_dns_domain
+      cluster_dns        = var.cluster_dns_provider
+      cluster_dns_scope  = var.cluster_dns_scope
+      cluster_dns_domain = var.cluster_dns_domain
     }
   }
 
@@ -554,23 +554,23 @@ resource "google_container_node_pool" "pools" {
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
-      min_node_count = contains(keys(autoscaling.value), "total_min_count") ? null : lookup(autoscaling.value, "min_count", 1)
-      max_node_count = contains(keys(autoscaling.value), "total_max_count") ? null : lookup(autoscaling.value, "max_count", 100)
-      location_policy = lookup(autoscaling.value, "location_policy", null)
+      min_node_count       = contains(keys(autoscaling.value), "total_min_count") ? null : lookup(autoscaling.value, "min_count", 1)
+      max_node_count       = contains(keys(autoscaling.value), "total_max_count") ? null : lookup(autoscaling.value, "max_count", 100)
+      location_policy      = lookup(autoscaling.value, "location_policy", null)
       total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
       total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
     }
   }
 
   dynamic "placement_policy" {
-    for_each = length(lookup(each.value, "placement_policy", "")) > 0  ? [each.value] : []
+    for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
     content {
       type = lookup(placement_policy.value, "placement_policy", null)
     }
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0  ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = var.enable_private_nodes
@@ -614,10 +614,10 @@ resource "google_container_node_pool" "pools" {
     min_cpu_platform            = lookup(each.value, "min_cpu_platform", "")
     enable_confidential_storage = lookup(each.value, "enable_confidential_storage", false)
     dynamic "gcfs_config" {
-        for_each = lookup(each.value, "enable_gcfs", false) ? [true] : []
-        content {
-          enabled = gcfs_config.value
-        }
+      for_each = lookup(each.value, "enable_gcfs", false) ? [true] : []
+      content {
+        enabled = gcfs_config.value
+      }
     }
     dynamic "gvnic" {
       for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
@@ -699,7 +699,7 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
       content {
         disk_image = secondary_boot_disks.value
-        mode = "CONTAINER_IMAGE_CACHE"
+        mode       = "CONTAINER_IMAGE_CACHE"
       }
     }
 
@@ -709,7 +709,7 @@ resource "google_container_node_pool" "pools" {
       local.service_account,
     )
     preemptible = lookup(each.value, "preemptible", false)
-    spot = lookup(each.value, "spot", false)
+    spot        = lookup(each.value, "spot", false)
 
     oauth_scopes = concat(
       local.node_pools_oauth_scopes["all"],
@@ -719,8 +719,8 @@ resource "google_container_node_pool" "pools" {
     dynamic "guest_accelerator" {
       for_each = lookup(each.value, "accelerator_count", 0) > 0 ? [1] : []
       content {
-        type  = lookup(each.value, "accelerator_type", "")
-        count = lookup(each.value, "accelerator_count", 0)
+        type               = lookup(each.value, "accelerator_type", "")
+        count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
 
         dynamic "gpu_driver_installation_config" {
@@ -774,7 +774,7 @@ resource "google_container_node_pool" "pools" {
       for_each = length(merge(
         local.node_pools_linux_node_configs_sysctls["all"],
         local.node_pools_linux_node_configs_sysctls[each.value["name"]],
-        local.node_pools_cgroup_mode[each.value["name"]] == "" ? {} : {cgroup = local.node_pools_cgroup_mode[each.value["name"]]}
+        local.node_pools_cgroup_mode[each.value["name"]] == "" ? {} : { cgroup = local.node_pools_cgroup_mode[each.value["name"]] }
       )) != 0 ? [1] : []
 
       content {
@@ -836,23 +836,23 @@ resource "google_container_node_pool" "windows_pools" {
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
-      min_node_count = contains(keys(autoscaling.value), "total_min_count") ? null : lookup(autoscaling.value, "min_count", 1)
-      max_node_count = contains(keys(autoscaling.value), "total_max_count") ? null : lookup(autoscaling.value, "max_count", 100)
-      location_policy = lookup(autoscaling.value, "location_policy", null)
+      min_node_count       = contains(keys(autoscaling.value), "total_min_count") ? null : lookup(autoscaling.value, "min_count", 1)
+      max_node_count       = contains(keys(autoscaling.value), "total_max_count") ? null : lookup(autoscaling.value, "max_count", 100)
+      location_policy      = lookup(autoscaling.value, "location_policy", null)
       total_min_node_count = lookup(autoscaling.value, "total_min_count", null)
       total_max_node_count = lookup(autoscaling.value, "total_max_count", null)
     }
   }
 
   dynamic "placement_policy" {
-    for_each = length(lookup(each.value, "placement_policy", "")) > 0  ? [each.value] : []
+    for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
     content {
       type = lookup(placement_policy.value, "placement_policy", null)
     }
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0  ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = var.enable_private_nodes
@@ -896,10 +896,10 @@ resource "google_container_node_pool" "windows_pools" {
     min_cpu_platform            = lookup(each.value, "min_cpu_platform", "")
     enable_confidential_storage = lookup(each.value, "enable_confidential_storage", false)
     dynamic "gcfs_config" {
-        for_each = lookup(each.value, "enable_gcfs", false) ? [true] : []
-        content {
-          enabled = gcfs_config.value
-        }
+      for_each = lookup(each.value, "enable_gcfs", false) ? [true] : []
+      content {
+        enabled = gcfs_config.value
+      }
     }
     dynamic "gvnic" {
       for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
@@ -981,7 +981,7 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
       content {
         disk_image = secondary_boot_disks.value
-        mode = "CONTAINER_IMAGE_CACHE"
+        mode       = "CONTAINER_IMAGE_CACHE"
       }
     }
 
@@ -991,7 +991,7 @@ resource "google_container_node_pool" "windows_pools" {
       local.service_account,
     )
     preemptible = lookup(each.value, "preemptible", false)
-    spot = lookup(each.value, "spot", false)
+    spot        = lookup(each.value, "spot", false)
 
     oauth_scopes = concat(
       local.node_pools_oauth_scopes["all"],
@@ -1001,8 +1001,8 @@ resource "google_container_node_pool" "windows_pools" {
     dynamic "guest_accelerator" {
       for_each = lookup(each.value, "accelerator_count", 0) > 0 ? [1] : []
       content {
-        type  = lookup(each.value, "accelerator_type", "")
-        count = lookup(each.value, "accelerator_count", 0)
+        type               = lookup(each.value, "accelerator_type", "")
+        count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
 
         dynamic "gpu_driver_installation_config" {
