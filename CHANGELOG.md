@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [32.0.4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v32.0.3...v32.0.4) (2024-08-26)
+
+
+### Bug Fixes
+
+* allow enable_private_endpoint with no master_authorized_networks ([#2058](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2058)) ([528b373](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/528b373cc13e8c02d18fdc2078169b940f076083))
+
 ## [32.0.3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v32.0.2...v32.0.3) (2024-08-22)
 
 

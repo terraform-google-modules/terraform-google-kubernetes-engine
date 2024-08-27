@@ -144,11 +144,6 @@ locals {
   cluster_output_secret_manager_addon_enabled = google_container_cluster.primary.secret_manager_config != null && length(google_container_cluster.primary.secret_manager_config) == 1 ? google_container_cluster.primary.secret_manager_config[0].enabled : false
 
   # /BETA features
-
-  master_authorized_networks_config = length(var.master_authorized_networks) == 0 ? [] : [{
-    cidr_blocks : var.master_authorized_networks
-  }]
-
   cluster_output_node_pools_names = concat(
     [for np in google_container_node_pool.pools : np.name], [""],
     [for np in google_container_node_pool.windows_pools : np.name], [""]
