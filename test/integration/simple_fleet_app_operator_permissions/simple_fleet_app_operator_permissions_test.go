@@ -24,13 +24,15 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
-	)
+)
 
 func TestSimpleFleetAppOperatorPermissions(t *testing.T) {
 	appOppT := tft.NewTFBlueprintTest(t,
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
 	)
 	appOppT.DefineVerify(func(assert *assert.Assertions) {
+		appOppT.DefaultVerify(assert)
+
 		projectId := appOppT.GetStringOutput("project_id")
 		scopeId := "app-operator-team"
 		appOperatorEmail := fmt.Sprintf("app-operator-id@%s.iam.gserviceaccount.com", projectId)
