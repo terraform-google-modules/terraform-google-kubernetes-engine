@@ -64,6 +64,7 @@ func TestSimpleZonalPrivate(t *testing.T) {
 			"nodePools.config.labels",
 			"nodePools.config.tags",
 			"nodePools.management.autoRepair",
+			"masterAuthorizedNetworksConfig",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)

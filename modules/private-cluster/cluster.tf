@@ -190,10 +190,10 @@ resource "google_container_cluster" "primary" {
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
   dynamic "master_authorized_networks_config" {
-    for_each = local.master_authorized_networks_config
+    for_each = var.enable_private_endpoint || length(var.master_authorized_networks) > 0 ? [true] : []
     content {
       dynamic "cidr_blocks" {
-        for_each = master_authorized_networks_config.value.cidr_blocks
+        for_each = var.master_authorized_networks
         content {
           cidr_block   = lookup(cidr_blocks.value, "cidr_block", "")
           display_name = lookup(cidr_blocks.value, "display_name", "")
