@@ -17,7 +17,7 @@ To opt out, set `enable_private_nodes` to `false`.
 
 ### Autopilot Cluster GCFS Default
 Autopilot cluster modules now set `enable_gcfs` to `true` by default.
-To maintance the previous behavior, set `enable_gcfs` to `null`.
+To maintain the previous behavior, set `enable_gcfs` to `null`.
 
 ```diff
   module "cluster" {
