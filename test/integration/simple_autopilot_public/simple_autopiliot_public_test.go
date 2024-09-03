@@ -56,6 +56,7 @@ func TestSimpleAutopilotPublic(t *testing.T) {
 			"addonsConfig.rayOperatorConfig.enabled",
 			"addonsConfig.rayOperatorConfig.rayClusterLoggingConfig.enabled",
 			"addonsConfig.rayOperatorConfig.rayClusterMonitoringConfig.enabled",
+			"nodePoolDefaults.nodeConfigDefaults.gcfsConfig.enabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)

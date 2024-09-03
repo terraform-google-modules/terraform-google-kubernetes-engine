@@ -6,6 +6,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [32.0.4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v32.0.3...v32.0.4) (2024-08-26)
+
+
+### Bug Fixes
+
+* allow enable_private_endpoint with no master_authorized_networks ([#2058](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2058)) ([528b373](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/528b373cc13e8c02d18fdc2078169b940f076083))
+
+## [32.0.3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v32.0.2...v32.0.3) (2024-08-22)
+
+
+### Bug Fixes
+
+* **autopilot:** option to configure gcfs ([#2052](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2052)) ([c1a720a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c1a720a404e21540b44300fa972eb1ffd9b736e3))
+
+## [32.0.2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v32.0.1...v32.0.2) (2024-08-21)
+
+
+### Bug Fixes
+
+* **autopilot:** ignore gcfs null ([#2049](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2049)) ([5e0de62](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5e0de62f34b4adb96b136779fdf9491299f450db))
+
+## [32.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v32.0.0...v32.0.1) (2024-08-20)
+
+
+### Bug Fixes
+
+* **fleet_app_operator_permissions:** enable multi use per project ([#2045](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2045)) ([a83100d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a83100d6ef335e453fd91933ef8eaf7fe47a52b0))
+* **fleet_app_operator_permissions:** optional groups and users ([#2044](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2044)) ([a5a67e5](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a5a67e56fd343b66a8ba5b02cd01c1dd2e27da8a))
+* gcfs AP diff and general cleanup ([#2043](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2043)) ([ec42a18](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ec42a18d307e7dd3d9b35ebae6440c51ab3bb1c4))
+* remove duplicte enable_secure_boot ([#2040](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2040)) ([d469973](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d46997327a625cfcb5cb5fb0286d7cbfd5a28125))
+
 ## [32.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v31.1.0...v32.0.0) (2024-08-10)
 
 

@@ -902,7 +902,7 @@ variable "sandbox_enabled" {
 
 variable "enable_gcfs" {
   type        = bool
-  description = "Enable image streaming on cluster level."
+  description = "(Beta) Enable image streaming on cluster level."
   default     = false
 }
 
