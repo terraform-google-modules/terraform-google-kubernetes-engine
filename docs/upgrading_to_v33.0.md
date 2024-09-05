@@ -13,3 +13,17 @@ To opt out, set `enable_private_nodes` to `false`.
 +   enable_private_nodes = false
 }
 ```
+
+### Advanced Datapath Observability Relay
+The `monitoring_observability_metrics_relay_mode` parameter has been
+replaced with `monitoring_enable_observability_relay`.
+
+```diff
+  module "cluster" {
+-   version          = "~> 32.0"
++   version          = "~> 33.0"
+
+-   monitoring_observability_metrics_relay_mode = "INTERNAL_VPC_LB"
++   monitoring_enable_observability_relay       = true
+}
+```
