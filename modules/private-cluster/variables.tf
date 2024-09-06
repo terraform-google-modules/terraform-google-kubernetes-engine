@@ -777,14 +777,10 @@ variable "monitoring_enable_observability_metrics" {
   default     = false
 }
 
-variable "monitoring_observability_metrics_relay_mode" {
-  type        = string
-  description = "Mode used to make advanced datapath metrics relay available."
-  default     = null
-  validation {
-    condition     = var.monitoring_observability_metrics_relay_mode == null ? true : contains(["DISABLED", "INTERNAL_VPC_LB", "EXTERNAL_LB"], var.monitoring_observability_metrics_relay_mode)
-    error_message = "The advanced datapath metrics relay value must be one of DISABLED, INTERNAL_VPC_LB, EXTERNAL_LB."
-  }
+variable "monitoring_enable_observability_relay" {
+  type        = bool
+  description = "Whether or not the advanced datapath relay is enabled."
+  default     = false
 }
 
 variable "monitoring_enabled_components" {
