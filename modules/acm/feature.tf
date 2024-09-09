@@ -42,6 +42,7 @@ resource "google_gke_hub_feature_membership" "main" {
       for_each = var.enable_config_sync ? [{ enabled = true }] : []
 
       content {
+        enabled       = var.enable_config_sync
         source_format = var.source_format != "" ? var.source_format : null
 
         git {
