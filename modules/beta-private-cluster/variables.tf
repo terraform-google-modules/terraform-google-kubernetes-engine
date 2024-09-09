@@ -379,6 +379,12 @@ variable "create_service_account" {
   default     = true
 }
 
+variable "monitoring_metric_writer_role" {
+  type        = string
+  description = "custom monitoring metrics writer role in case there is any"
+  default     = "roles/monitoring.metricWriter"
+}
+
 variable "grant_registry_access" {
   type        = bool
   description = "Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles."

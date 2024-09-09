@@ -55,7 +55,7 @@ resource "google_project_iam_member" "cluster_service_account-nodeService_accoun
 resource "google_project_iam_member" "cluster_service_account-metric_writer" {
   count   = var.create_service_account ? 1 : 0
   project = google_service_account.cluster_service_account[0].project
-  role    = "roles/monitoring.metricWriter"
+  role    = var.monitoring_metric_writer_role
   member  = google_service_account.cluster_service_account[0].member
 }
 
