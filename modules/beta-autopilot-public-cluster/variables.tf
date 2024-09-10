@@ -491,7 +491,7 @@ variable "enable_l4_ilb_subsetting" {
 variable "enable_gcfs" {
   type        = bool
   description = "(Beta) Enable image streaming on cluster level."
-  default     = null
+  default     = true
 }
 
 variable "allow_net_admin" {

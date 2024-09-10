@@ -14,6 +14,20 @@ To opt out, set `enable_private_nodes` to `false`.
 }
 ```
 
+### Autopilot Cluster GCFS Default
+Autopilot cluster modules now set `enable_gcfs` to `true` by default to
+aligned with TPGv6. To maintain the previous provider default behavior, set
+`enable_gcfs` to `null`.
+
+```diff
+  module "cluster" {
+-   version          = "~> 32.0"
++   version          = "~> 33.0"
+
++   enable_gcfs = null
+}
+```
+
 ### Advanced Datapath Observability Relay
 The `monitoring_observability_metrics_relay_mode` parameter has been
 replaced with `monitoring_enable_observability_relay`.
