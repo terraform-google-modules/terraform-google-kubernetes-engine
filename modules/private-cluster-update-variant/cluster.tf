@@ -99,7 +99,7 @@ resource "google_container_cluster" "primary" {
       }
       advanced_datapath_observability_config {
         enable_metrics = var.monitoring_enable_observability_metrics
-        relay_mode     = var.monitoring_observability_metrics_relay_mode
+        enable_relay   = var.monitoring_enable_observability_relay
       }
     }
   }
@@ -190,10 +190,10 @@ resource "google_container_cluster" "primary" {
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
   dynamic "master_authorized_networks_config" {
-    for_each = local.master_authorized_networks_config
+    for_each = var.enable_private_endpoint || length(var.master_authorized_networks) > 0 ? [true] : []
     content {
       dynamic "cidr_blocks" {
-        for_each = master_authorized_networks_config.value.cidr_blocks
+        for_each = var.master_authorized_networks
         content {
           cidr_block   = lookup(cidr_blocks.value, "cidr_block", "")
           display_name = lookup(cidr_blocks.value, "display_name", "")
@@ -550,6 +550,9 @@ locals {
     "boot_disk_kms_key",
     "queued_provisioning",
     "enable_confidential_storage",
+    "consume_reservation_type",
+    "reservation_affinity_key",
+    "reservation_affinity_values"
   ]
 }
 
@@ -705,9 +708,11 @@ resource "google_container_node_pool" "pools" {
       }
     }
     dynamic "reservation_affinity" {
-      for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+      for_each = lookup(each.value, "queued_provisioning", false) || lookup(each.value, "consume_reservation_type", "") != "" ? [each.value] : []
       content {
-        consume_reservation_type = "NO_RESERVATION"
+        consume_reservation_type = lookup(reservation_affinity.value, "queued_provisioning", false) ? "NO_RESERVATION" : lookup(reservation_affinity.value, "consume_reservation_type", null)
+        key                      = lookup(reservation_affinity.value, "reservation_affinity_key", null)
+        values                   = lookup(reservation_affinity.value, "reservation_affinity_values", null) == null ? null : [for s in split(",", lookup(reservation_affinity.value, "reservation_affinity_values", null)) : trimspace(s)]
       }
     }
     labels = merge(
@@ -986,9 +991,11 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
     dynamic "reservation_affinity" {
-      for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+      for_each = lookup(each.value, "queued_provisioning", false) || lookup(each.value, "consume_reservation_type", "") != "" ? [each.value] : []
       content {
-        consume_reservation_type = "NO_RESERVATION"
+        consume_reservation_type = lookup(reservation_affinity.value, "queued_provisioning", false) ? "NO_RESERVATION" : lookup(reservation_affinity.value, "consume_reservation_type", null)
+        key                      = lookup(reservation_affinity.value, "reservation_affinity_key", null)
+        values                   = lookup(reservation_affinity.value, "reservation_affinity_values", null) == null ? null : [for s in split(",", lookup(reservation_affinity.value, "reservation_affinity_values", null)) : trimspace(s)]
       }
     }
     labels = merge(

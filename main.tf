@@ -126,11 +126,6 @@ locals {
   cluster_output_intranode_visbility_enabled        = google_container_cluster.primary.enable_intranode_visibility
   cluster_output_identity_service_enabled           = google_container_cluster.primary.identity_service_config != null && length(google_container_cluster.primary.identity_service_config) == 1 ? google_container_cluster.primary.identity_service_config[0].enabled : false
 
-
-  master_authorized_networks_config = length(var.master_authorized_networks) == 0 ? [] : [{
-    cidr_blocks : var.master_authorized_networks
-  }]
-
   cluster_output_node_pools_names = concat(
     [for np in google_container_node_pool.pools : np.name], [""],
     [for np in google_container_node_pool.windows_pools : np.name], [""]

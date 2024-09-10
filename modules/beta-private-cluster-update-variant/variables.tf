@@ -463,7 +463,7 @@ variable "enable_private_endpoint" {
 variable "enable_private_nodes" {
   type        = bool
   description = "Whether nodes have internal IP addresses only"
-  default     = false
+  default     = true
 }
 
 variable "master_ipv4_cidr_block" {
@@ -812,14 +812,10 @@ variable "monitoring_enable_observability_metrics" {
   default     = false
 }
 
-variable "monitoring_observability_metrics_relay_mode" {
-  type        = string
-  description = "Mode used to make advanced datapath metrics relay available."
-  default     = null
-  validation {
-    condition     = var.monitoring_observability_metrics_relay_mode == null ? true : contains(["DISABLED", "INTERNAL_VPC_LB", "EXTERNAL_LB"], var.monitoring_observability_metrics_relay_mode)
-    error_message = "The advanced datapath metrics relay value must be one of DISABLED, INTERNAL_VPC_LB, EXTERNAL_LB."
-  }
+variable "monitoring_enable_observability_relay" {
+  type        = bool
+  description = "Whether or not the advanced datapath relay is enabled."
+  default     = false
 }
 
 variable "monitoring_enabled_components" {
