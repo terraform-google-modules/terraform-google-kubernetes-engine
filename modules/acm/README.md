@@ -1,4 +1,4 @@
-> [!NOTE]
+> [!WARNING]
 > This Terraform Kubernetes Engine ACM Submodule has been deprecated in release v33.0.0 and will be removed entirely in a future release. It is recommended to migrate to the [`google_gke_hub_feature`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature#example-usage---enable-fleet-default-member-config-configmanagement) and [`google_gke_hub_feature_membership`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature_membership#example-usage---config-management) resources.
 
 # Terraform Kubernetes Engine ACM Submodule
