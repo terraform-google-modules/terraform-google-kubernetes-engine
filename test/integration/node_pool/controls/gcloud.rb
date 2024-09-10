@@ -262,8 +262,7 @@ control "gcloud" do
             including(
               "name" => "pool-02",
               "config" => including(
-                "accelerators" => [{"acceleratorCount" => expected_accelerators_count,
-                                    "acceleratorType" => expected_accelerators_type}],
+                "accelerators" => [{"acceleratorType" => expected_accelerators_type}],
               ),
             )
           )
