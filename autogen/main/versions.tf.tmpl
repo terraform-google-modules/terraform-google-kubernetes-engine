@@ -40,7 +40,7 @@ terraform {
     }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v33.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v33.0.1"
   }
 {% elif beta_cluster and autopilot_cluster %}
   required_providers {
@@ -64,7 +64,7 @@ terraform {
     }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v33.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v33.0.1"
   }
 {% elif autopilot_cluster  %}
   required_providers {
@@ -83,7 +83,7 @@ terraform {
     }
   }
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v33.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v33.0.1"
   }
 {% else %}
   required_providers {
@@ -101,7 +101,7 @@ terraform {
     }
   }
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v33.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v33.0.1"
   }
 {% endif %}
 }
