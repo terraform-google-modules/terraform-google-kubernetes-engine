@@ -30,6 +30,6 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:workload-identity/v32.0.4"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:workload-identity/v33.0.0"
   }
 }
