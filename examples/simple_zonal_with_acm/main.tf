@@ -32,7 +32,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google"
-  version = "~> 30.0"
+  version = "~> 32.0"
 
   project_id = var.project_id
   regional   = false
