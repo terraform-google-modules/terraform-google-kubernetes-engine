@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [33.0.3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.2...v33.0.3) (2024-09-13)
+
+
+### Bug Fixes
+
+* correct gcfs_config value ([#2095](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2095)) ([1b7a845](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1b7a845714cd86cbc3fbb7bf782b868330ca5fe9))
+
+## [33.0.2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.1...v33.0.2) (2024-09-13)
+
+
+### Bug Fixes
+
+* asm and auth allow TPGv6 ([#2092](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2092)) ([0ce1df6](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0ce1df6894fe8883ad394e4e5a39ac766a33e1ce))
+* no gcfs block when enable_gcfs  null ([#2093](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2093)) ([f4c1af2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f4c1af2a544ac426ecad44525bca5a34713c40a5))
+
 ## [33.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.0...v33.0.1) (2024-09-11)
 
 

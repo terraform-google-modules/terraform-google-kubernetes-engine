@@ -51,6 +51,7 @@ module "gke" {
       max_count       = 2
       service_account = var.compute_engine_service_account
       auto_upgrade    = true
+      enable_gcfs     = false
     },
     {
       name              = "pool-02"
