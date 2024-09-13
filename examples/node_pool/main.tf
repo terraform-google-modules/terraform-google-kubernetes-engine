@@ -79,7 +79,7 @@ module "gke" {
       sandbox_enabled                        = true
       cpu_manager_policy                     = "static"
       cpu_cfs_quota                          = true
-      insecure_kubelet_readonly_port_enabled = "TRUE"
+      insecure_kubelet_readonly_port_enabled = "FALSE"
       local_ssd_ephemeral_count              = 2
       pod_pids_limit                         = 4096
     },

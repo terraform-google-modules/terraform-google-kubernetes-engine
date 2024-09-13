@@ -108,6 +108,17 @@ variable "service_external_ips" {
   default     = false
 }
 
+variable "insecure_kubelet_readonly_port_enabled" {
+  type        = string
+  description = "Whether or not to set `insecure_kubelet_readonly_port_enabled` for node pool defaults and autopilot clusters. Note: this can be set at the node pool level separately within `node_pools`."
+  default     = ""
+
+  validation {
+    condition     = contains(["FALSE", "TRUE", ""], var.insecure_kubelet_readonly_port_enabled)
+    error_message = "The node_metadata value must be one of \"TRUE\", \"FALSE\", or empty string (\"\")."
+  }
+}
+
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
