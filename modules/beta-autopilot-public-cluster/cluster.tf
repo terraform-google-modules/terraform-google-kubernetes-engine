@@ -119,8 +119,12 @@ resource "google_container_cluster" "primary" {
     }
   }
   dynamic "node_pool_auto_config" {
-    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? [1] : []
+    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != "" ? [1] : []
     content {
+      dynamic "kubelet_config" {
+        for_each                               = var.insecure_kubelet_readonly_port_enabled != "" ? [1] : []
+        insecure_kubelet_readonly_port_enabled = var.insecure_kubelet_readonly_port_enabled
+      }
       network_tags {
         tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : var.network_tags
       }

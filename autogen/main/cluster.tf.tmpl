@@ -271,8 +271,12 @@ resource "google_container_cluster" "primary" {
   }
 {% if autopilot_cluster %}
   dynamic "node_pool_auto_config" {
-    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? [1] : []
+    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled !="" ? [1] : []
     content {
+      dynamic "kubelet_config" {
+        for_each = var.insecure_kubelet_readonly_port_enabled != "" ? [1] : []
+          insecure_kubelet_readonly_port_enabled = var.insecure_kubelet_readonly_port_enabled
+      }
       network_tags {
         tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : var.network_tags
       }
@@ -661,7 +665,6 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-  {% if beta_cluster %}
 
   node_pool_defaults {
     node_config_defaults {
@@ -678,12 +681,12 @@ resource "google_container_cluster" "primary" {
       gcfs_config {
         enabled = var.enable_gcfs
       }
+      insecure_kubelet_readonly_port_enabled = var.insecure_kubelet_readonly_port_enabled != "" ? var.insecure_kubelet_readonly_port_enabled : null
       {% endif %}
     }
   }
-  {% endif %}
-  {% if beta_cluster %}
 
+  {% if beta_cluster %}
   depends_on = [google_project_iam_member.service_agent]
   {% endif %}
 }
@@ -1049,7 +1052,7 @@ resource "google_container_node_pool" "windows_pools" {
         cpu_manager_policy                     = lookup(each.value, "cpu_manager_policy", "static")
         cpu_cfs_quota                          = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period                   = lookup(each.value, "cpu_cfs_quota_period", null)
-        insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null)
+        insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled != "" ? var.insecure_kubelet_readonly_port_enabled : null)
         pod_pids_limit                         = lookup(each.value, "pod_pids_limit", null)
       }
     }
