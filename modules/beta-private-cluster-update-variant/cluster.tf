@@ -439,7 +439,7 @@ resource "google_container_cluster" "primary" {
       min_cpu_platform            = lookup(var.node_pools[0], "min_cpu_platform", "")
       enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
       dynamic "gcfs_config" {
-        for_each = lookup(var.node_pools[0], "enable_gcfs", null) != null ? [var.node_pools[0]] : []
+        for_each = lookup(var.node_pools[0], "enable_gcfs", null) != null ? [var.node_pools[0].enable_gcfs] : []
         content {
           enabled = gcfs_config.value
         }
