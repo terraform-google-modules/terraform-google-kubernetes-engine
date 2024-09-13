@@ -19,11 +19,11 @@ terraform {
   required_version = ">= 0.13.0"
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:acm/v33.0.2"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:acm/v33.0.3"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:acm/v33.0.2"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:acm/v33.0.3"
   }
 
   required_providers {
