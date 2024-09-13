@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [33.0.3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.2...v33.0.3) (2024-09-13)
+
+
+### Bug Fixes
+
+* correct gcfs_config value ([#2095](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2095)) ([1b7a845](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1b7a845714cd86cbc3fbb7bf782b868330ca5fe9))
+
 ## [33.0.2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.1...v33.0.2) (2024-09-13)
 
 
