@@ -660,7 +660,6 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
-  {% if beta_cluster %}
 
   node_pool_defaults {
     node_config_defaults {
@@ -674,13 +673,14 @@ resource "google_container_cluster" "primary" {
       }
       {% endif %}
       {% if autopilot_cluster != true %}
+      {% if beta_cluster %}
       gcfs_config {
         enabled = var.enable_gcfs
       }
       {% endif %}
+      {% endif %}
     }
   }
-  {% endif %}
   {% if beta_cluster %}
 
   depends_on = [google_project_iam_member.service_agent]

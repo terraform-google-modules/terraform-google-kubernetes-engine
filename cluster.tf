@@ -499,6 +499,11 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
+
+  node_pool_defaults {
+    node_config_defaults {
+    }
+  }
 }
 /******************************************
   Create Container Cluster node pools
