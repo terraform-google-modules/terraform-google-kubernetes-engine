@@ -6,6 +6,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [33.0.3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.2...v33.0.3) (2024-09-13)
+
+
+### Bug Fixes
+
+* correct gcfs_config value ([#2095](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2095)) ([1b7a845](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1b7a845714cd86cbc3fbb7bf782b868330ca5fe9))
+
+## [33.0.2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.1...v33.0.2) (2024-09-13)
+
+
+### Bug Fixes
+
+* asm and auth allow TPGv6 ([#2092](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2092)) ([0ce1df6](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0ce1df6894fe8883ad394e4e5a39ac766a33e1ce))
+* no gcfs block when enable_gcfs  null ([#2093](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2093)) ([f4c1af2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f4c1af2a544ac426ecad44525bca5a34713c40a5))
+
+## [33.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.0...v33.0.1) (2024-09-11)
+
+
+### Bug Fixes
+
+* avoid TPG v6.2.0 with Autopilot ([#2086](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2086)) ([fdd1287](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/fdd12875851e37c7570fcc96a582685d1f000879))
+
+## [33.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v32.0.4...v33.0.0) (2024-09-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* **beta-autopilot:** enable gcfs by default ([#2066](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2066))
+* **TPG>=5.41:** add config_sync.enabled ([#2074](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2074))
+* update relay_mode to enable_relay ([#2067](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2067))
+* **private_cluster:** enable private nodes by default ([#2064](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2064))
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v16 ([#2057](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2057))
+
+### Features
+
+* **beta-autopilot:** enable gcfs by default ([#2066](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2066)) ([a083437](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a083437ddf00197fa13ecc27c6f2845d849d6306))
+* **deps:** Update Terraform Google Provider to v6 (major) ([#2063](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2063)) ([8b7e342](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8b7e342e37f0750c1b2de32730c3bd466a1a4ec8))
+* **private_cluster:** enable private nodes by default ([#2064](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2064)) ([e11787c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e11787c83169c93fe6de3f774cf310ee05287659))
+* support reservation affinity ([#2010](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2010)) ([7cc0626](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7cc06267bb8654194eb0031772b0345863030457))
+
+
+### Bug Fixes
+
+* avoid TPGv5.44.0 with Autopilot ([#2076](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2076)) ([f54d2e1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f54d2e1d4c04727f1ba01df50c7db434af1ae440))
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v16 ([#2057](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2057)) ([8e53122](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8e53122ccc78e9301c5c9041d195b0c0e3754b26))
+* Node Pool enable_gcfs true:false ([#1976](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1976)) ([419078d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/419078df92a84d2102d0a8e6fe38513ca3b380a7))
+* **TPG>=5.41:** add config_sync.enabled ([#2074](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2074)) ([4939c6f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4939c6f727783f07ffcb6e44cbe185d5e200e42f))
+* update relay_mode to enable_relay ([#2067](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2067)) ([dafdd72](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/dafdd72cdb5df98f84561ed7153a098b9844ccf5))
+
 ## [32.0.4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v32.0.3...v32.0.4) (2024-08-26)
 
 
