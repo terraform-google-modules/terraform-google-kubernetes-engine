@@ -503,9 +503,6 @@ resource "google_container_cluster" "primary" {
 
   node_pool_defaults {
     node_config_defaults {
-      gcfs_config {
-        enabled = var.enable_gcfs
-      }
       insecure_kubelet_readonly_port_enabled = var.insecure_kubelet_readonly_port_enabled != "" ? var.insecure_kubelet_readonly_port_enabled : null
     }
   }
