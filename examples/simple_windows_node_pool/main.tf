@@ -61,7 +61,7 @@ module "gke" {
     {
       name         = "win-pool-01"
       autoscaling  = false
-      auto_upgrade = true
+      auto_upgrade = false
       node_count   = 1
       machine_type = "n2-standard-2"
       image_type   = "WINDOWS_LTSC_CONTAINERD"
