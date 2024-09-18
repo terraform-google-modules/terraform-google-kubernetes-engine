@@ -64,7 +64,7 @@ module "gke" {
       auto_upgrade = false
       auto_repair  = false
       node_count   = 1
-      machine_type = "n2-standard-2"
+      machine_type = "n2-standard-4"
       image_type   = "WINDOWS_LTSC_CONTAINERD"
     },
   ]
