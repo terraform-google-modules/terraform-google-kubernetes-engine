@@ -169,6 +169,9 @@ module "gke" {
   // Enable cost allocation support
   enable_cost_allocation = var.enable_cost_allocation
 
+  // Enable L4 ILB subsetting on the cluster
+  enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
+
   // Use of PodSecurityPolicy admission controller
   // https://cloud.google.com/kubernetes-engine/docs/how-to/pod-security-policies
   enable_pod_security_policy = var.enable_pod_security_policy
