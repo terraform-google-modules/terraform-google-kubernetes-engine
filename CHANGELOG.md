@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [33.0.4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.3...v33.0.4) (2024-09-18)
+
+
+### Bug Fixes
+
+* TPG &lt; 6.2 for Autopilot ([#2101](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2101)) ([bff49e1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/bff49e1964889d49c0e0b774b2c23220c116ac15))
+
 ## [33.0.3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.2...v33.0.3) (2024-09-13)
 
 
