@@ -595,7 +595,8 @@ locals {
     "enable_confidential_storage",
     "consume_reservation_type",
     "reservation_affinity_key",
-    "reservation_affinity_values"
+    "reservation_affinity_values",
+    "enable_confidential_nodes",
   ]
 }
 
@@ -930,6 +931,14 @@ resource "google_container_node_pool" "pools" {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
     }
+
+    dynamic "confidential_nodes" {
+      for_each = lookup(each.value, "enable_confidential_nodes", false) ? [true] : []
+      content {
+        enabled = confidential_nodes.value
+      }
+    }
+
   }
 
   lifecycle {
@@ -1211,6 +1220,14 @@ resource "google_container_node_pool" "windows_pools" {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
     }
+
+    dynamic "confidential_nodes" {
+      for_each = lookup(each.value, "enable_confidential_nodes", false) ? [true] : []
+      content {
+        enabled = confidential_nodes.value
+      }
+    }
+
   }
 
   lifecycle {
