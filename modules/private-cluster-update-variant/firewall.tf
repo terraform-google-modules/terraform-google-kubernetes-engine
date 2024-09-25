@@ -53,6 +53,38 @@ resource "google_compute_firewall" "intra_egress" {
 
 
 /******************************************
+  Allow egress to the TPU IPv4 CIDR block
+
+  This rule is defined separately from the
+  intra_egress rule above since it requires
+  an output from the google_container_cluster
+  resource.
+
+  https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1124
+ *****************************************/
+resource "google_compute_firewall" "tpu_egress" {
+  count       = var.add_cluster_firewall_rules && var.enable_tpu ? 1 : 0
+  name        = "gke-${substr(var.name, 0, min(36, length(var.name)))}-tpu-egress"
+  description = "Managed by terraform gke module: Allow pods to communicate with TPUs"
+  project     = local.network_project_id
+  network     = var.network
+  priority    = var.firewall_priority
+  direction   = "EGRESS"
+
+  target_tags        = [local.cluster_network_tag]
+  destination_ranges = [google_container_cluster.primary.tpu_ipv4_cidr_block]
+
+  # Allow all possible protocols
+  allow { protocol = "tcp" }
+  allow { protocol = "udp" }
+  allow { protocol = "icmp" }
+  allow { protocol = "sctp" }
+  allow { protocol = "esp" }
+  allow { protocol = "ah" }
+
+}
+
+/******************************************
   Allow GKE master to hit non 443 ports for
   Webhooks/Admission Controllers
 

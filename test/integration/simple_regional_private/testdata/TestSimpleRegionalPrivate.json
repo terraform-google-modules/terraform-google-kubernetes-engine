@@ -25,6 +25,7 @@
     "currentNodeCount": 3,
     "currentNodeVersion": "1.25.4-gke.2100",
     "databaseEncryption": {
+      "currentState": "CURRENT_STATE_DECRYPTED",
       "state": "DECRYPTED"
     },
     "defaultMaxPodsConstraint": {

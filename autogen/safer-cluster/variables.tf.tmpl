@@ -280,6 +280,12 @@ variable "monitoring_enable_managed_prometheus" {
   default     = false
 }
 
+variable "monitoring_enabled_components" {
+  type        = list(string)
+  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS. Empty list is default GKE configuration."
+  default     = []
+}
+
 variable "grant_registry_access" {
   type        = bool
   description = "Grants created cluster-specific service account storage.objectViewer role."
@@ -385,6 +391,12 @@ variable "enable_intranode_visibility" {
   default     = false
 }
 
+variable "enable_l4_ilb_subsetting" {
+  type        = bool
+  description = "Enable L4 ILB Subsetting on the cluster"
+  default     = false
+}
+
 variable "enable_vertical_pod_autoscaling" {
   type        = bool
   description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
@@ -470,7 +482,7 @@ variable "security_posture_mode" {
 }
 
 variable "security_posture_vulnerability_mode" {
-  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED` and `VULNERABILITY_BASIC`."
+  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`"
   type        = string
   default     = null
 }

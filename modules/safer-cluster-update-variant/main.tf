@@ -104,6 +104,7 @@ module "gke" {
   monitoring_service = var.monitoring_service
 
   monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
+  monitoring_enabled_components        = var.monitoring_enabled_components
 
   // We never use the default service account for the cluster. The default
   // project/editor permissions can create problems if nodes were to be ever
@@ -163,6 +164,9 @@ module "gke" {
 
   // Enable cost allocation support
   enable_cost_allocation = var.enable_cost_allocation
+
+  // Enable L4 ILB subsetting on the cluster
+  enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
 
   // Use of PodSecurityPolicy admission controller
   // https://cloud.google.com/kubernetes-engine/docs/how-to/pod-security-policies

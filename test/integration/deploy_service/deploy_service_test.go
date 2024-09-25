@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2022-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@ package deploy_service
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 	"time"
@@ -25,10 +25,13 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
 
 func TestDeployService(t *testing.T) {
-	bpt := tft.NewTFBlueprintTest(t)
+	bpt := tft.NewTFBlueprintTest(t,
+		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
+	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		// bpt.DefaultVerify(assert)
@@ -40,24 +43,25 @@ func TestDeployService(t *testing.T) {
 		k8sOpts := k8s.KubectlOptions{}
 		listServices, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "svc", "terraform-example", "-o", "json")
 		assert.NoError(err)
-		kubeService := utils.ParseJSONResult(t, listServices)
+		kubeService := testutils.ParseKubectlJSONResult(t, listServices)
 		serviceIp := kubeService.Get("status.loadBalancer.ingress").Array()[0].Get("ip")
 		serviceUrl := fmt.Sprintf("http://%s:8080", serviceIp)
 
 		pollHTTPEndPoint := func(cmd string) func() (bool, error) {
 			return func() (bool, error) {
 				_, err := http.Get(cmd)
-				if assert.NoError(err) {
-					return false, nil
+				if err != nil {
+					t.Logf("%s", err)
+					return true, err
 				}
-				return true, nil
+				return false, nil
 			}
 		}
 
 		utils.Poll(t, pollHTTPEndPoint(serviceUrl), 20, 10*time.Second)
 		response, err := http.Get(serviceUrl)
 		assert.NoError(err)
-		responseData, err := ioutil.ReadAll(response.Body)
+		responseData, err := io.ReadAll(response.Body)
 		assert.NoError(err)
 		assert.Contains(string(responseData), "Thank you for using nginx.", "Service is Functional")
 	})

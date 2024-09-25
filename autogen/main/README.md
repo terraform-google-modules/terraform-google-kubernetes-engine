@@ -90,33 +90,38 @@ module "gke" {
   {% if beta_cluster and autopilot_cluster != true  %}
   istio                      = true
   cloudrun                   = true
-  dns_cache                  = false
   {% endif %}
+  dns_cache                  = false
 
 {% if autopilot_cluster != true %}
   node_pools = [
     {
-      name                      = "default-node-pool"
-      machine_type              = "e2-medium"
-      node_locations            = "us-central1-b,us-central1-c"
-      min_count                 = 1
-      max_count                 = 100
-      local_ssd_count           = 0
-      spot                      = false
+      name                        = "default-node-pool"
+      machine_type                = "e2-medium"
+      node_locations              = "us-central1-b,us-central1-c"
+      min_count                   = 1
+      max_count                   = 100
+      local_ssd_count             = 0
+      spot                        = false
       {% if beta_cluster %}
-      local_ssd_ephemeral_count = 0
+      local_ssd_ephemeral_count   = 0
       {% endif %}
-      disk_size_gb              = 100
-      disk_type                 = "pd-standard"
-      image_type                = "COS_CONTAINERD"
-      enable_gcfs               = false
-      enable_gvnic              = false
-      logging_variant           = "DEFAULT"
-      auto_repair               = true
-      auto_upgrade              = true
-      service_account           = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
-      preemptible               = false
-      initial_node_count        = 80
+      disk_size_gb                = 100
+      disk_type                   = "pd-standard"
+      image_type                  = "COS_CONTAINERD"
+      enable_gcfs                 = false
+      enable_gvnic                = false
+      logging_variant             = "DEFAULT"
+      auto_repair                 = true
+      auto_upgrade                = true
+      service_account             = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
+      preemptible                 = false
+      initial_node_count          = 80
+      accelerator_count           = 1
+      accelerator_type            = "nvidia-l4"
+      gpu_driver_version          = "LATEST"
+      gpu_sharing_strategy        = "TIME_SHARING"
+      max_shared_clients_per_gpu = 2
     },
   ]
 
@@ -192,12 +197,11 @@ The node_pools variable takes the following parameters:
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
 | auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
 | boot_disk_kms_key | The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. | " " | Optional |
-{% if beta_cluster %}
 | cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". | "static" | Optional |
 | cpu_cfs_quota | Enforces the Pod's CPU limit. Setting this value to false means that the CPU limits for Pods are ignored | null | Optional |
 | cpu_cfs_quota_period | The CPU CFS quota period value, which specifies the period of how often a cgroup's access to CPU resources should be reallocated | null | Optional |
-| enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
-{% endif %}
+| pod_pids_limit | Controls the maximum number of processes allowed to run in a pod. The value must be greater than or equal to 1024 and less than 4194304. | null | Optional |
+| enable_confidential_nodes | An optional flag to enable confidential node config. | false | Optional |
 | disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100 | Optional |
 | disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |
 | effect | Effect for the taint | | Required |
@@ -205,21 +209,27 @@ The node_pools variable takes the following parameters:
 | enable_gvnic | gVNIC (GVE) is an alternative to the virtIO-based ethernet driver. Needs a Container-Optimized OS node image. | false | Optional |
 | enable_integrity_monitoring | Enables monitoring and attestation of the boot integrity of the instance. The attestation is performed against the integrity policy baseline. This baseline is initially derived from the implicitly trusted boot image when the instance is created. | true | Optional |
 | enable_secure_boot | Secure Boot helps ensure that the system only runs authentic software by verifying the digital signature of all boot components, and halting the boot process if signature verification fails. | false | Optional |
+| gpu_driver_version | Mode for how the GPU driver is installed | null | Optional |
 | gpu_partition_size | Size of partitions to create on the GPU | null | Optional |
 | image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | COS_CONTAINERD | Optional |
 | initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
 | key | The key required for the taint | | Required |
 | logging_variant | The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT.  | DEFAULT | Optional |
 | local_ssd_count | The amount of local SSD disks that will be attached to each cluster node and may be used as a `hostpath` volume or a `local` PersistentVolume.  | 0 | Optional |
+| local_ssd_ephemeral_storage_count | The amount of local SSD disks that will be attached to each cluster node and assigned as scratch space as an `emptyDir` volume. If unspecified, ephemeral storage is backed by the cluster node boot disk. | 0 | Optional |
 {% if beta_cluster %}
 | local_ssd_ephemeral_count | The amount of local SSD disks that will be attached to each cluster node and assigned as scratch space as an `emptyDir` volume. If unspecified, ephemeral storage is backed by the cluster node boot disk. | 0 | Optional |
 {% endif %}
+| local_nvme_ssd_count | Number of raw-block local NVMe SSD disks to be attached to the node.Each local SSD is 375 GB in size. If zero, it means no raw-block local NVMe SSD disks to be attached to the node. | 0 | Optional |
 | machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |
 | min_cpu_platform | Minimum CPU platform to be used by the nodes in the pool. The nodes may be scheduled on the specified or newer CPU platform. | " " | Optional |
+| enable_confidential_storage | Enabling Confidential Storage will create boot disk with confidential mode. | false | Optional |
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count. Cannot be used with total limits. | 100 | Optional |
 | total_max_count | Total maximum number of nodes in the NodePool. Must be >= min_count. Cannot be used with per zone limits. | null | Optional |
 | max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |
 | strategy | The upgrade stragey to be used for upgrading the nodes. Valid values of state are: `SURGE` or `BLUE_GREEN` | "SURGE" | Optional |
+| threads_per_core | Optional The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed | null | Optional |
+| enable_nested_virtualization | Whether the node should have nested virtualization | null | Optional |
 | max_surge | The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. Only works with `SURGE` strategy. | 1 | Optional |
 | max_unavailable | The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater. Only works with `SURGE` strategy. | 0 | Optional |
 | node_pool_soak_duration | Time needed after draining the entire blue pool. After this period, the blue pool will be cleaned up. By default, it is set to one hour (3600 seconds). The maximum length of the soak time is 7 days (604,800 seconds). Only works with `BLUE_GREEN` strategy. | "3600s" | Optional |
@@ -229,12 +239,10 @@ The node_pools variable takes the following parameters:
 | min_count | Minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true. Cannot be used with total limits. | 1 | Optional |
 | total_min_count | Total minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true. Cannot be used with per zone limits. | null | Optional |
 | name | The name of the node pool |  | Required |
-{% if beta_cluster %}
-| placement_policy | Placement type to set for nodes in a node pool. Can be set as [COMPACT](https://cloud.google.com/kubernetes-engine/docs/how-to/compact-placement#overview) if desired | Optional |
+| placement_policy | Placement type to set for nodes in a node pool. Can be set as [COMPACT](https://cloud.google.com/kubernetes-engine/docs/how-to/compact-placement#overview) if desired |  | Optional |
 | pod_range |  The name of the secondary range for pod IPs. |  | Optional |
 {% if not private_cluster %}
 | enable_private_nodes |  Whether nodes have internal IP addresses only. |  | Optional |
-{% endif %}
 {% endif %}
 | node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusters |  | Required |
 | node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. Defaults to cluster level node locations if nothing is specified | " " | Optional |
@@ -249,6 +257,13 @@ The node_pools variable takes the following parameters:
 | value | The value for the taint | | Required |
 | version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
 | location_policy | [Location policy](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool#location_policy) specifies the algorithm used when scaling-up the node pool. Location policy is supported only in 1.24.1+ clusters. | " " | Optional |
+| secondary_boot_disk | Image of a secondary boot disk to preload container images and data on new nodes. For detail see [documentation](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#nested_secondary_boot_disks). `gcfs_config` must be `enabled=true` for this feature to work. | | Optional |
+| queued_provisioning | Makes nodes obtainable through the ProvisioningRequest API exclusively. | | Optional |
+| gpu_sharing_strategy | The type of GPU sharing strategy to enable on the GPU node. Accepted values are: "TIME_SHARING" and "MPS". | | Optional |
+| max_shared_clients_per_gpu | The maximum number of containers that can share a GPU. | | Optional |
+| consume_reservation_type | The type of reservation consumption. Accepted values are: "UNSPECIFIED": Default value (should not be specified). "NO_RESERVATION": Do not consume from any reserved capacity, "ANY_RESERVATION": Consume any reservation available, "SPECIFIC_RESERVATION": Must consume from a specific reservation. Must specify key value fields for specifying the reservations. | | Optional |
+| reservation_affinity_key | The label key of a reservation resource. To target a SPECIFIC_RESERVATION by name, specify "compute.googleapis.com/reservation-name" as the key and specify the name of your reservation as its value. | | Optional |
+| reservation_affinity_values | The list of label values of reservation resources. For example: the name of the specific reservation when using a key of "compute.googleapis.com/reservation-name". This should be passed as comma separated string. | | Optional |
 
 ## windows_node_pools variable
 The windows_node_pools variable takes the same parameters as [node_pools](#node\_pools-variable) but is reserved for provisioning Windows based node pools only. This variable is introduced to satisfy a [specific requirement](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster-windows#create_a_cluster_and_node_pools) for the presence of at least one linux based node pool in the cluster before a windows based node pool can be created.
@@ -272,9 +287,9 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
 {% if beta_cluster %}
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v5
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v5.9+
 {% else %}
-- [Terraform Provider for GCP][terraform-provider-google] v5
+- [Terraform Provider for GCP][terraform-provider-google] v5.9+
 {% endif %}
 #### gcloud
 Some submodules use the [terraform-google-gcloud](https://github.com/terraform-google-modules/terraform-google-gcloud) module. By default, this module assumes you already have gcloud installed in your $PATH.

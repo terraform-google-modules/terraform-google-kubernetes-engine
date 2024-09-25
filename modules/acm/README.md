@@ -1,3 +1,6 @@
+> [!WARNING]
+> This Terraform Kubernetes Engine ACM Submodule has been deprecated in release v33.0.0 and will be removed entirely in a future release. It is recommended to migrate to the [`google_gke_hub_feature`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature#example-usage---enable-fleet-default-member-config-configmanagement) and [`google_gke_hub_feature_membership`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature_membership#example-usage---config-management) resources.
+
 # Terraform Kubernetes Engine ACM Submodule
 
 This module installs [Anthos Config Management](https://cloud.google.com/anthos-config-management/docs/) (ACM) in a Kubernetes cluster.
@@ -86,6 +89,7 @@ data "google_client_config" "default" {}
 | enable\_mutation | Whether to enable mutations for ACM Policy Controller. | `bool` | `false` | no |
 | enable\_policy\_controller | Whether to enable the ACM Policy Controller on the cluster | `bool` | `true` | no |
 | enable\_referential\_rules | Enables referential constraints which reference another object in it definition and are therefore eventually consistent. | `bool` | `true` | no |
+| fleet\_project\_id | The project in which the GKE fleet is located. Defaults to GKE cluster project\_id. | `string` | `""` | no |
 | gcp\_service\_account\_email | The service account email for authentication when `secret_type` is `gcpServiceAccount`. | `string` | `null` | no |
 | hierarchy\_controller | Configurations for Hierarchy Controller. See [Hierarchy Controller docs](https://cloud.google.com/anthos-config-management/docs/how-to/installing-hierarchy-controller) for more details | `map(any)` | `null` | no |
 | https\_proxy | URL for the HTTPS proxy to be used when communicating with the Git repo. | `string` | `null` | no |

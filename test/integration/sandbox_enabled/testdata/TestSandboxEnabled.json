@@ -2,9 +2,7 @@
   "addonsConfig": {
     "configConnectorConfig": {},
     "dnsCacheConfig": {},
-    "gcePersistentDiskCsiDriverConfig": {
-      "enabled": true
-    },
+    "gcePersistentDiskCsiDriverConfig": {},
     "gcpFilestoreCsiDriverConfig": {},
     "gkeBackupAgentConfig": {},
     "horizontalPodAutoscaling": {},
@@ -27,6 +25,7 @@
   "currentNodeCount": 3,
   "currentNodeVersion": "1.24.7-gke.900",
   "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
   },
   "defaultMaxPodsConstraint": {

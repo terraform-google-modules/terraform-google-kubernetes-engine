@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2022-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,16 +16,20 @@ package private_zonal_with_networking
 
 import (
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
 
 func TestPrivateZonalWithNetworking(t *testing.T) {
-	bpt := tft.NewTFBlueprintTest(t)
+	bpt := tft.NewTFBlueprintTest(t,
+		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
+	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		// Commenting Default Verify due to issue 1478 for location Policy
@@ -72,7 +76,7 @@ func TestPrivateZonalWithNetworking(t *testing.T) {
 			switch npName {
 			case "default-pool":
 				assert.False(np.Get("initialNodeCount").Exists(), "has no initial node count")
-				assert.False(np.Get("autoscaling").Exists(), "does not have autoscaling enabled")
+				assert.False(np.Get("autoscaling.enabled").Exists(), "does not have autoscaling enabled")
 			case "default-node-pool":
 				assert.JSONEq(gNp.Get("config").String(), np.Get("config").String())
 			}

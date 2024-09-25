@@ -27,7 +27,9 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                 = "../../"
+  source  = "terraform-google-modules/kubernetes-engine/google"
+  version = "~> 33.0"
+
   project_id             = var.project_id
   name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   regional               = true
@@ -42,7 +44,8 @@ module "gke" {
 }
 
 module "gke_auth" {
-  source = "../../modules/auth"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/auth"
+  version = "~> 33.0"
 
   project_id   = var.project_id
   location     = module.gke.location

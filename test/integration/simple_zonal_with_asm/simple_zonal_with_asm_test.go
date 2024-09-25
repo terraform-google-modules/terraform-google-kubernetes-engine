@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2022-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,16 +16,19 @@ package simple_zonal_with_asm
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
-	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
 
 func TestSimpleZonalWithASM(t *testing.T) {
-	bpt := tft.NewTFBlueprintTest(t)
+	bpt := tft.NewTFBlueprintTest(t,
+		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
+	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
@@ -46,11 +49,11 @@ func TestSimpleZonalWithASM(t *testing.T) {
 		k8sOpts := k8s.KubectlOptions{}
 		listNameSpace, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "ns", "istio-system", "-o", "json")
 		assert.NoError(err)
-		kubeNS := utils.ParseJSONResult(t, listNameSpace)
+		kubeNS := testutils.ParseKubectlJSONResult(t, listNameSpace)
 		assert.Contains(kubeNS.Get("metadata.name").String(), "istio-system", "Namespace is Functional")
 		listConfigMap, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "configmap", "asm-options", "-n", "istio-system", "-o", "json")
 		assert.NoError(err)
-		kubeCM := utils.ParseJSONResult(t, listConfigMap)
+		kubeCM := testutils.ParseKubectlJSONResult(t, listConfigMap)
 		assert.Contains(kubeCM.Get("metadata.name").String(), "asm-options", "Configmap is Present")
 
 	})

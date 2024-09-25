@@ -161,6 +161,11 @@ output "identity_namespace" {
   ]
 }
 
+output "tpu_ipv4_cidr_block" {
+  description = "The IP range in CIDR notation used for the TPUs"
+  value       = var.enable_tpu ? google_container_cluster.primary.tpu_ipv4_cidr_block : null
+}
+
 output "mesh_certificates_config" {
   description = "Mesh certificates configuration"
   value       = local.cluster_mesh_certificates_config
@@ -169,3 +174,23 @@ output "mesh_certificates_config" {
   ]
 }
 
+
+output "dns_cache_enabled" {
+  description = "Whether DNS Cache enabled"
+  value       = local.cluster_dns_cache_enabled
+}
+
+output "identity_service_enabled" {
+  description = "Whether Identity Service is enabled"
+  value       = local.cluster_identity_service_enabled
+}
+
+output "intranode_visibility_enabled" {
+  description = "Whether intra-node visibility is enabled"
+  value       = local.cluster_intranode_visibility_enabled
+}
+
+output "fleet_membership" {
+  description = "Fleet membership (if registered)"
+  value       = local.fleet_membership
+}

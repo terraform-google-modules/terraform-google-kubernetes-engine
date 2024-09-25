@@ -19,7 +19,7 @@ resource "google_gke_hub_feature" "acm" {
   provider = google-beta
 
   name     = "configmanagement"
-  project  = var.project_id
+  project  = coalesce(var.fleet_project_id, var.project_id)
   location = "global"
 }
 
@@ -33,7 +33,7 @@ resource "google_gke_hub_feature_membership" "main" {
   feature  = "configmanagement"
 
   membership = module.registration.cluster_membership_id
-  project    = var.project_id
+  project    = coalesce(var.fleet_project_id, var.project_id)
 
   configmanagement {
     version = var.configmanagement_version
@@ -42,6 +42,7 @@ resource "google_gke_hub_feature_membership" "main" {
       for_each = var.enable_config_sync ? [{ enabled = true }] : []
 
       content {
+        enabled       = var.enable_config_sync
         source_format = var.source_format != "" ? var.source_format : null
 
         git {

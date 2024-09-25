@@ -142,6 +142,12 @@ variable "ip_range_services" {
   description = "The _name_ of the secondary subnet range to use for services"
 }
 
+variable "stack_type" {
+  type        = string
+  description = "The stack type to use for this cluster. Either `IPV4` or `IPV4_IPV6`. Defaults to `IPV4`."
+  default     = "IPV4"
+}
+
 
 variable "enable_cost_allocation" {
   type        = bool
@@ -168,10 +174,11 @@ variable "enable_resource_consumption_export" {
 
 
 variable "network_tags" {
-  description = "(Optional, Beta) - List of network tags applied to auto-provisioned node pools."
+  description = "(Optional) - List of network tags applied to auto-provisioned node pools."
   type        = list(string)
   default     = []
 }
+
 variable "stub_domains" {
   type        = map(list(string))
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"
@@ -259,26 +266,32 @@ variable "cluster_resource_labels" {
 
 variable "deploy_using_private_endpoint" {
   type        = bool
-  description = "(Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment."
+  description = "A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment."
   default     = false
 }
 
 variable "enable_private_endpoint" {
   type        = bool
-  description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
+  description = "Whether the master's internal IP address is used as the cluster endpoint"
   default     = false
 }
 
 variable "enable_private_nodes" {
   type        = bool
-  description = "(Beta) Whether nodes have internal IP addresses only"
-  default     = false
+  description = "Whether nodes have internal IP addresses only"
+  default     = true
 }
 
 variable "master_ipv4_cidr_block" {
   type        = string
-  description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
-  default     = "10.0.0.0/28"
+  description = "The IP range in CIDR notation to use for the hosted master network. Optional for Autopilot clusters."
+  default     = null
+}
+
+variable "private_endpoint_subnetwork" {
+  type        = string
+  description = "The subnetwork to use for the hosted master network."
+  default     = null
 }
 
 variable "master_global_access_enabled" {
@@ -375,13 +388,13 @@ variable "enable_confidential_nodes" {
 }
 
 variable "workload_vulnerability_mode" {
-  description = "(beta) Vulnerability mode."
+  description = "(beta) Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC."
   type        = string
   default     = ""
 }
 
 variable "workload_config_audit_mode" {
-  description = "(beta) Workload config audit mode."
+  description = "(beta) Sets which mode of auditing should be used for the cluster's workloads. Accepted values are DISABLED, BASIC."
   type        = string
   default     = "DISABLED"
 }
@@ -392,14 +405,26 @@ variable "enable_fqdn_network_policy" {
   default     = null
 }
 
+variable "enable_secret_manager_addon" {
+  description = "(Beta) Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
+
+variable "enable_cilium_clusterwide_network_policy" {
+  type        = bool
+  description = "Enable Cilium Cluster Wide Network Policies on the cluster"
+  default     = false
+}
+
 variable "security_posture_mode" {
-  description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
+  description = "Security posture mode. Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
   type        = string
   default     = "DISABLED"
 }
 
 variable "security_posture_vulnerability_mode" {
-  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED` and `VULNERABILITY_BASIC`. Defaults to `VULNERABILITY_DISABLED`."
+  description = "Security posture vulnerability mode. Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`. Defaults to `VULNERABILITY_DISABLED`."
   type        = string
   default     = "VULNERABILITY_DISABLED"
 }
@@ -416,6 +441,12 @@ variable "notification_config_topic" {
   default     = ""
 }
 
+variable "notification_filter_event_type" {
+  type        = list(string)
+  description = "Choose what type of notifications you want to receive. If no filters are applied, you'll receive all notification types. Can be used to filter what notifications are sent. Accepted values are UPGRADE_AVAILABLE_EVENT, UPGRADE_EVENT, and SECURITY_BULLETIN_EVENT."
+  default     = []
+}
+
 variable "deletion_protection" {
   type        = bool
   description = "Whether or not to allow Terraform to destroy the cluster."
@@ -427,6 +458,7 @@ variable "enable_tpu" {
   description = "Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive!"
   default     = false
 }
+
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
   type        = list(object({ state = string, key_name = string }))
@@ -437,6 +469,44 @@ variable "database_encryption" {
   }]
 }
 
+variable "enable_binary_authorization" {
+  type        = bool
+  description = "Enable BinAuthZ Admission controller"
+  default     = false
+}
+
+
+variable "gke_backup_agent_config" {
+  type        = bool
+  description = "Whether Backup for GKE agent is enabled for this cluster."
+  default     = false
+}
+
+variable "gcs_fuse_csi_driver" {
+  type        = bool
+  description = "Whether GCE FUSE CSI driver is enabled for this cluster."
+  default     = false
+}
+
+variable "stateful_ha" {
+  type        = bool
+  description = "Whether the Stateful HA Addon is enabled for this cluster."
+  default     = false
+}
+
+variable "ray_operator_config" {
+  type = object({
+    enabled            = bool
+    logging_enabled    = optional(bool, false)
+    monitoring_enabled = optional(bool, false)
+  })
+  description = "The Ray Operator Addon configuration for this cluster."
+  default = {
+    enabled            = false
+    logging_enabled    = false
+    monitoring_enabled = false
+  }
+}
 
 variable "timeouts" {
   type        = map(string)
@@ -448,8 +518,38 @@ variable "timeouts" {
   }
 }
 
+variable "enable_l4_ilb_subsetting" {
+  type        = bool
+  description = "Enable L4 ILB Subsetting on the cluster"
+  default     = false
+}
+
+variable "enable_gcfs" {
+  type        = bool
+  description = "(Beta) Enable image streaming on cluster level."
+  default     = true
+}
+
 variable "allow_net_admin" {
   description = "(Optional) Enable NET_ADMIN for the cluster."
   type        = bool
+  default     = null
+}
+
+variable "fleet_project" {
+  description = "(Optional) Register the cluster with the fleet in this project."
+  type        = string
+  default     = null
+}
+
+variable "fleet_project_grant_service_agent" {
+  description = "(Optional) Grant the fleet project service identity the `roles/gkehub.serviceAgent` and `roles/gkehub.crossProjectServiceAgent` roles."
+  type        = bool
+  default     = false
+}
+
+variable "logging_variant" {
+  description = "(Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT."
+  type        = string
   default     = null
 }

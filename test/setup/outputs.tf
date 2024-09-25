@@ -15,7 +15,7 @@
  */
 
 output "project_ids" {
-  value = [module.gke-project-1.project_id, module.gke-project-2.project_id, module.gke-project-asm.project_id]
+  value = [module.gke-project-1.project_id, module.gke-project-2.project_id, module.gke-project-asm.project_id, module.gke-project-fleet.project_id]
 }
 
 output "sa_key" {
