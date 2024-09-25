@@ -679,7 +679,7 @@ resource "google_container_cluster" "primary" {
         enabled = var.enable_gcfs
       }
       {% endif %}
-      insecure_kubelet_readonly_port_enabled = var.insecure_kubelet_readonly_port_enabled != "" ? var.insecure_kubelet_readonly_port_enabled : null
+      insecure_kubelet_readonly_port_enabled = var.insecure_kubelet_readonly_port_enabled != null ? var.insecure_kubelet_readonly_port_enabled : null
       {% endif %}
     }
   }
