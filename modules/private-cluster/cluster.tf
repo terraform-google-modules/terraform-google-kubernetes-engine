@@ -154,9 +154,9 @@ resource "google_container_cluster" "primary" {
     dynamic "resource_limits" {
       for_each = local.autoscaling_resource_limits
       content {
-        resource_type = lookup(resource_limits.value, "resource_type")
-        minimum       = lookup(resource_limits.value, "minimum")
-        maximum       = lookup(resource_limits.value, "maximum")
+        resource_type = resource_limits.value["resource_type"]
+        minimum       = resource_limits.value["minimum"]
+        maximum       = resource_limits.value["maximum"]
       }
     }
   }
