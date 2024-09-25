@@ -210,7 +210,6 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-standard",
-        "gcfsConfig": {},
         "imageType": "COS_CONTAINERD",
         "labels": {
           "cluster_name": "CLUSTER_NAME",

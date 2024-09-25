@@ -696,7 +696,7 @@ resource "google_container_node_pool" "pools" {
     min_cpu_platform            = lookup(each.value, "min_cpu_platform", "")
     enable_confidential_storage = lookup(each.value, "enable_confidential_storage", false)
     dynamic "gcfs_config" {
-      for_each = lookup(each.value, "enable_gcfs", false) ? [true] : [false]
+      for_each = lookup(each.value, "enable_gcfs", null) != null ? [each.value.enable_gcfs] : []
       content {
         enabled = gcfs_config.value
       }
@@ -979,7 +979,7 @@ resource "google_container_node_pool" "windows_pools" {
     min_cpu_platform            = lookup(each.value, "min_cpu_platform", "")
     enable_confidential_storage = lookup(each.value, "enable_confidential_storage", false)
     dynamic "gcfs_config" {
-      for_each = lookup(each.value, "enable_gcfs", false) ? [true] : [false]
+      for_each = lookup(each.value, "enable_gcfs", null) != null ? [each.value.enable_gcfs] : []
       content {
         enabled = gcfs_config.value
       }
