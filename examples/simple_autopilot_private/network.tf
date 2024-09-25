@@ -21,6 +21,8 @@ module "gcp-network" {
   project_id   = var.project_id
   network_name = local.network_name
 
+  private_ip_google_access = false
+
   subnets = [
     {
       subnet_name   = local.subnet_name
