@@ -154,9 +154,9 @@ resource "google_container_cluster" "primary" {
     dynamic "resource_limits" {
       for_each = local.autoscaling_resource_limits
       content {
-        resource_type = lookup(resource_limits.value, "resource_type")
-        minimum       = lookup(resource_limits.value, "minimum")
-        maximum       = lookup(resource_limits.value, "maximum")
+        resource_type = resource_limits.value["resource_type"]
+        minimum       = resource_limits.value["minimum"]
+        maximum       = resource_limits.value["maximum"]
       }
     }
   }
@@ -614,7 +614,7 @@ resource "google_container_node_pool" "pools" {
     min_cpu_platform            = lookup(each.value, "min_cpu_platform", "")
     enable_confidential_storage = lookup(each.value, "enable_confidential_storage", false)
     dynamic "gcfs_config" {
-      for_each = lookup(each.value, "enable_gcfs", false) ? [true] : [false]
+      for_each = lookup(each.value, "enable_gcfs", null) != null ? [each.value.enable_gcfs] : []
       content {
         enabled = gcfs_config.value
       }
@@ -896,7 +896,7 @@ resource "google_container_node_pool" "windows_pools" {
     min_cpu_platform            = lookup(each.value, "min_cpu_platform", "")
     enable_confidential_storage = lookup(each.value, "enable_confidential_storage", false)
     dynamic "gcfs_config" {
-      for_each = lookup(each.value, "enable_gcfs", false) ? [true] : [false]
+      for_each = lookup(each.value, "enable_gcfs", null) != null ? [each.value.enable_gcfs] : []
       content {
         enabled = gcfs_config.value
       }
