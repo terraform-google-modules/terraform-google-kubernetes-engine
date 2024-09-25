@@ -21,13 +21,12 @@ module "gcp-network" {
   project_id   = var.project_id
   network_name = local.network_name
 
-  private_ip_google_access = false
-
   subnets = [
     {
-      subnet_name   = local.subnet_name
-      subnet_ip     = "10.0.0.0/17"
-      subnet_region = var.region
+      subnet_name           = local.subnet_name
+      subnet_ip             = "10.0.0.0/17"
+      subnet_region         = var.region
+      subnet_private_access = false
     },
     {
       subnet_name   = local.master_auth_subnetwork
