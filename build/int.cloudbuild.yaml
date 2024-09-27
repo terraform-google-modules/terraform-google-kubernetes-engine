@@ -137,6 +137,7 @@ steps:
 - id: apply simple-regional-cluster-autoscaling
   waitFor:
     - create-all
+    - destroy simple-autopilot-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalClusterAutoscaling --stage apply --verbose']
 - id: verify simple-regional-cluster-autoscaling
