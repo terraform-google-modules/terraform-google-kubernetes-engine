@@ -30,9 +30,6 @@ func TestSimpleRegionalClusterAutoscaling(t *testing.T) {
 	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
-		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
-		// bpt.DefaultVerify(assert)
-
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")
