@@ -83,8 +83,7 @@
         "displayName": "VPC"
       }
     ],
-    "enabled": true,
-    "gcpPublicCidrsAccessEnabled": true
+    "enabled": true
   },
   "monitoringConfig": {
     "componentConfig": {
