@@ -106,6 +106,7 @@
   "nodeConfig": {
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
+    "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "loggingConfig": {
       "variantConfig": {
