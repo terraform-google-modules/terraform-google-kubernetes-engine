@@ -210,6 +210,7 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-standard",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "labels": {
           "cluster_name": "CLUSTER_NAME",
