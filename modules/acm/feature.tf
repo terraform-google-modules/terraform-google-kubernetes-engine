@@ -29,7 +29,7 @@ resource "google_gke_hub_feature_membership" "main" {
     google_gke_hub_feature.acm
   ]
 
-  location = "global"
+  location = module.registration.location
   feature  = "configmanagement"
 
   membership = module.registration.cluster_membership_id
