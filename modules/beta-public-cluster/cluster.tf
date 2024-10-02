@@ -849,6 +849,14 @@ resource "google_container_node_pool" "pools" {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
     }
+
+    dynamic "confidential_nodes" {
+      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.confidential_nodes] : []
+      content {
+        enabled = confidential_nodes.value
+      }
+    }
+
   }
 
   lifecycle {
@@ -1129,6 +1137,14 @@ resource "google_container_node_pool" "windows_pools" {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
     }
+
+    dynamic "confidential_nodes" {
+      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.confidential_nodes] : []
+      content {
+        enabled = confidential_nodes.value
+      }
+    }
+
   }
 
   lifecycle {
