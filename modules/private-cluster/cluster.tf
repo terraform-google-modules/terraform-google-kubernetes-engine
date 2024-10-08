@@ -174,7 +174,7 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "identity_service_config" {
-    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
+    for_each = var.enable_identity_service != null ? [var.enable_identity_service] : []
     content {
       enabled = identity_service_config.value
     }

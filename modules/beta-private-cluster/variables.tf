@@ -910,7 +910,7 @@ variable "enable_gcfs" {
 
 variable "enable_identity_service" {
   type        = bool
-  description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
+  description = "(Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
   default     = false
 }
 
