@@ -204,10 +204,10 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "node_pool_auto_config" {
-    for_each = var.cluster_autoscaling.enabled && length(var.network_tags) > 0 ? [1] : []
+    for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
     content {
       network_tags {
-        tags = var.network_tags
+        tags = var.add_cluster_firewall_rules ? (concat(var.network_tags, [local.cluster_network_tag])) : var.network_tags
       }
     }
   }
