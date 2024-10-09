@@ -6,6 +6,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [33.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.4...v33.1.0) (2024-10-09)
+
+
+### Features
+
+* add a flag to allow access through Google Cloud public IP addresses ([#2078](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2078)) ([2f412bb](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2f412bb54ed0e576af6fbeeac33382a384fe4dc0))
+* added confidential-nodes flag for node-pools ([#2110](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2110)) ([b2a597b](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b2a597b8a7f7fded526a8000940efaea852437bc))
+* enable L4 ILB subsetting support for safer clusters ([#2105](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2105)) ([0733908](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/073390897e38310124646e56a39c305809fbded4))
+
+
+### Bug Fixes
+
+* **acm:** correct membership location ([#2128](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2128)) ([7cf9894](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7cf9894f40e76ad8bc787fbcfa9d06f1e658f855))
+* **acm:** use membership registration location ([#2123](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2123)) ([caa194f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/caa194fd73720dd5ffea1ac36817a4601a700735))
+* allow changing `enable_identity_service` value in place ([#2132](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2132)) ([9c2191e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9c2191eca6582f9f2be3fe941afdf26eb03d78e4))
+* allow null `enable_gcfs` setting in defined nodepools ([#2111](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2111)) ([700a01d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/700a01d56f063d2aeec97c30cd03abdfbf1ca312))
+* **autopilot:** narrow version exclusion ([#2112](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2112)) ([620bf32](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/620bf32e877201af5a7e575af61b9590431991ef))
+* ignore control plane network when private endpoint subnet is set ([#2122](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2122)) ([a4b130d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a4b130d2bba7db0caa9a2339f016d9d880fbac9a))
+
 ## [33.0.4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.3...v33.0.4) (2024-09-18)
 
 
