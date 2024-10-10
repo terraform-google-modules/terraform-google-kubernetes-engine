@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [34.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.1.0...v34.0.0) (2024-10-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v17 ([#2109](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2109))
+
+### Bug Fixes
+
+* add target tags to `node_pool_auto_config` for standard clusters ([#2118](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2118)) ([d5f66e8](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d5f66e86dd163d505ff455a9c5fafe7d659da36f))
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v17 ([#2109](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2109)) ([3073b04](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3073b048cb79524aeaaf46ff2835b79a6f7b7f23))
+
 ## [33.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.4...v33.1.0) (2024-10-09)
 
 
