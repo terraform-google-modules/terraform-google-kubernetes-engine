@@ -150,6 +150,10 @@ resource "google_container_cluster" "primary" {
       disabled = !var.horizontal_pod_autoscaling
     }
 
+    gcp_filestore_csi_driver_config {
+      enabled = var.filestore_csi_driver
+    }
+
 
     dynamic "gke_backup_agent_config" {
       for_each = local.gke_backup_agent_config
