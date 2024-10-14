@@ -21,11 +21,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 5.44.1, !=6.0.0, !=6.0.1, !=6.1.0, !=6.2.0, !=6.3.0, < 7"
+      version = ">= 5.44.2, !=6.0.0, !=6.0.1, !=6.1.0, !=6.2.0, !=6.3.0, !=6.4.0, !=6.5.0, !=6.6.0, < 7"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 5.44.1, !=6.0.0, !=6.0.1, !=6.1.0, !=6.2.0, !=6.3.0, < 7"
+      version = ">= 5.44.2, !=6.0.0, !=6.0.1, !=6.1.0, !=6.2.0, !=6.3.0, !=6.4.0, !=6.5.0, !=6.6.0, < 7"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
