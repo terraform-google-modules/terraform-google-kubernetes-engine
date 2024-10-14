@@ -32,8 +32,9 @@ resource "google_gke_hub_feature_membership" "main" {
   location = "global"
   feature  = "configmanagement"
 
-  membership = module.registration.cluster_membership_id
-  project    = coalesce(var.fleet_project_id, var.project_id)
+  membership_location = module.registration.location
+  membership          = module.registration.cluster_membership_id
+  project             = coalesce(var.fleet_project_id, var.project_id)
 
   configmanagement {
     version = var.configmanagement_version

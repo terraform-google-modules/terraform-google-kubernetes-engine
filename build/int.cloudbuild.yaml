@@ -134,6 +134,22 @@ steps:
     - verify simple-regional-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalPrivate --stage teardown --verbose']
+- id: apply simple-regional-cluster-autoscaling
+  waitFor:
+    - create-all
+    - destroy simple-regional-private-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalClusterAutoscaling --stage apply --verbose']
+- id: verify simple-regional-cluster-autoscaling
+  waitFor:
+    - apply simple-regional-cluster-autoscaling
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalClusterAutoscaling --stage verify --verbose']
+- id: destroy simple-regional-cluster-autoscaling
+  waitFor:
+    - verify simple-regional-cluster-autoscaling
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalClusterAutoscaling --stage teardown --verbose']
 - id: init simple-regional-with-kubeconfig-local
   waitFor:
     - create-all

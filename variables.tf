@@ -78,6 +78,12 @@ variable "master_authorized_networks" {
   default     = []
 }
 
+variable "gcp_public_cidrs_access_enabled" {
+  type        = bool
+  description = "Allow access through Google Cloud public IP addresses"
+  default     = null
+}
+
 variable "enable_vertical_pod_autoscaling" {
   type        = bool
   description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
@@ -785,7 +791,7 @@ variable "enable_l4_ilb_subsetting" {
 
 variable "enable_identity_service" {
   type        = bool
-  description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
+  description = "(Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
   default     = false
 }
 

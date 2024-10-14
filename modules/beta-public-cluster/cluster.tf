@@ -161,9 +161,9 @@ resource "google_container_cluster" "primary" {
     dynamic "resource_limits" {
       for_each = local.autoscaling_resource_limits
       content {
-        resource_type = lookup(resource_limits.value, "resource_type")
-        minimum       = lookup(resource_limits.value, "minimum")
-        maximum       = lookup(resource_limits.value, "maximum")
+        resource_type = resource_limits.value["resource_type"]
+        minimum       = resource_limits.value["minimum"]
+        maximum       = resource_limits.value["maximum"]
       }
     }
   }
@@ -181,7 +181,7 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "identity_service_config" {
-    for_each = var.enable_identity_service ? [var.enable_identity_service] : []
+    for_each = var.enable_identity_service != null ? [var.enable_identity_service] : []
     content {
       enabled = identity_service_config.value
     }
@@ -211,8 +211,9 @@ resource "google_container_cluster" "primary" {
 
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   dynamic "master_authorized_networks_config" {
-    for_each = length(var.master_authorized_networks) > 0 ? [true] : []
+    for_each = var.gcp_public_cidrs_access_enabled != null || length(var.master_authorized_networks) > 0 ? [true] : []
     content {
+      gcp_public_cidrs_access_enabled = var.gcp_public_cidrs_access_enabled
       dynamic "cidr_blocks" {
         for_each = var.master_authorized_networks
         content {
@@ -224,10 +225,10 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "node_pool_auto_config" {
-    for_each = var.cluster_autoscaling.enabled && length(var.network_tags) > 0 ? [1] : []
+    for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
     content {
       network_tags {
-        tags = var.network_tags
+        tags = var.add_cluster_firewall_rules ? (concat(var.network_tags, [local.cluster_network_tag])) : var.network_tags
       }
     }
   }
@@ -439,7 +440,7 @@ resource "google_container_cluster" "primary" {
       min_cpu_platform            = lookup(var.node_pools[0], "min_cpu_platform", "")
       enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
       dynamic "gcfs_config" {
-        for_each = lookup(var.node_pools[0], "enable_gcfs", false) ? [true] : [false]
+        for_each = lookup(var.node_pools[0], "enable_gcfs", null) != null ? [var.node_pools[0].enable_gcfs] : []
         content {
           enabled = gcfs_config.value
         }
@@ -657,7 +658,7 @@ resource "google_container_node_pool" "pools" {
     min_cpu_platform            = lookup(each.value, "min_cpu_platform", "")
     enable_confidential_storage = lookup(each.value, "enable_confidential_storage", false)
     dynamic "gcfs_config" {
-      for_each = lookup(each.value, "enable_gcfs", false) ? [true] : [false]
+      for_each = lookup(each.value, "enable_gcfs", null) != null ? [each.value.enable_gcfs] : []
       content {
         enabled = gcfs_config.value
       }
@@ -848,6 +849,14 @@ resource "google_container_node_pool" "pools" {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
     }
+
+    dynamic "confidential_nodes" {
+      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.confidential_nodes] : []
+      content {
+        enabled = confidential_nodes.value
+      }
+    }
+
   }
 
   lifecycle {
@@ -952,7 +961,7 @@ resource "google_container_node_pool" "windows_pools" {
     min_cpu_platform            = lookup(each.value, "min_cpu_platform", "")
     enable_confidential_storage = lookup(each.value, "enable_confidential_storage", false)
     dynamic "gcfs_config" {
-      for_each = lookup(each.value, "enable_gcfs", false) ? [true] : [false]
+      for_each = lookup(each.value, "enable_gcfs", null) != null ? [each.value.enable_gcfs] : []
       content {
         enabled = gcfs_config.value
       }
@@ -1128,6 +1137,14 @@ resource "google_container_node_pool" "windows_pools" {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
       enable_integrity_monitoring = lookup(each.value, "enable_integrity_monitoring", true)
     }
+
+    dynamic "confidential_nodes" {
+      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.confidential_nodes] : []
+      content {
+        enabled = confidential_nodes.value
+      }
+    }
+
   }
 
   lifecycle {
