@@ -582,6 +582,7 @@ locals {
     "enable_secure_boot",
     "enable_integrity_monitoring",
     "local_ssd_count",
+    "local_ssd_ephemeral_count",
     "machine_type",
     "placement_policy",
     "max_pods_per_node",
@@ -599,6 +600,7 @@ locals {
     "reservation_affinity_key",
     "reservation_affinity_values",
     "enable_confidential_nodes",
+    "secondary_boot_disk",
   ]
 }
 
