@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2021-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-module "services" {
-  source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 17.0"
-
-  project_id                  = var.project_id
-  enable_apis                 = var.enable_apis
-  disable_services_on_destroy = var.disable_services_on_destroy
-  disable_dependent_services  = var.disable_dependent_services
-
-  activate_apis = [
-    "compute.googleapis.com",
-    "iam.googleapis.com",
-    "container.googleapis.com"
-  ]
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+    }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+    }
+  }
+  required_version = ">= 0.13"
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2018-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,23 @@
  * limitations under the License.
  */
 
-module "services" {
-  source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 17.0"
-
-  project_id                  = var.project_id
-  enable_apis                 = var.enable_apis
-  disable_services_on_destroy = var.disable_services_on_destroy
-  disable_dependent_services  = var.disable_dependent_services
-
-  activate_apis = [
-    "compute.googleapis.com",
-    "iam.googleapis.com",
-    "container.googleapis.com"
-  ]
+output "kubernetes_endpoint" {
+  sensitive = true
+  value     = module.gke.endpoint
 }
+
+output "client_token" {
+  sensitive = true
+  value     = base64encode(data.google_client_config.default.access_token)
+}
+
+output "ca_certificate" {
+  sensitive = true
+  value     = module.gke.ca_certificate
+}
+
+output "service_account" {
+  description = "The default service account used for running nodes."
+  value       = module.gke.service_account
+}
+
