@@ -555,6 +555,7 @@ locals {
     "reservation_affinity_key",
     "reservation_affinity_values",
     "enable_confidential_nodes",
+    "secondary_boot_disk",
   ]
 }
 
