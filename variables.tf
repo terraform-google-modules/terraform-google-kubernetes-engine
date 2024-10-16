@@ -108,6 +108,12 @@ variable "service_external_ips" {
   default     = false
 }
 
+variable "insecure_kubelet_readonly_port_enabled" {
+  type        = bool
+  description = "Whether or not to set `insecure_kubelet_readonly_port_enabled` for node pool defaults and autopilot clusters. Note: this can be set at the node pool level separately within `node_pools`."
+  default     = null
+}
+
 variable "datapath_provider" {
   type        = string
   description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
