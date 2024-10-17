@@ -79,7 +79,7 @@ module "gke" {
   master_ipv4_cidr_block  = "172.16.0.0/28"
   deletion_protection     = false
 
-  insecure_kubelet_readonly_port_enabled = "FALSE"
+  insecure_kubelet_readonly_port_enabled = false
 
   master_authorized_networks = [
     {
