@@ -411,8 +411,14 @@ variable "authenticator_security_group" {
 
 variable "compute_engine_service_account" {
   type        = string
-  description = "Use the given service account for nodes rather than creating a new dedicated service account."
+  description = "Use the given service account for nodes rather than creating a new dedicated service account. If set then also set var.create_service_account to false to avoid 'value depends on resource attributes that cannot be determined until apply' errors."
   default     = ""
+}
+
+variable "create_service_account" {
+  type        = bool
+  description = "Defines if service account specified to run nodes should be created. Explicitly set to false if var.compute_engine_service_account is set to avoid 'value depends on resource attributes that cannot be determined until apply' errors."
+  default     = true
 }
 
 variable "enable_shielded_nodes" {
