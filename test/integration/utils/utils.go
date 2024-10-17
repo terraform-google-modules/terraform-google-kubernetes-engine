@@ -15,10 +15,13 @@
 package utils
 
 import (
+	"slices"
 	"testing"
 	"time"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	tfjson "github.com/hashicorp/terraform-json"
+	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
 
@@ -31,4 +34,20 @@ func GetTestProjectFromSetup(t *testing.T, idx int) string {
 		t.Fatalf("project_ids has %d elements, index of %d is invalid", len(projectIDs), idx)
 	}
 	return projectIDs[idx]
+}
+
+var (
+	// TGKEVerify Exempt Resources. e.g. google_container_cluster.primary
+	verifyExemptResources = []string{}
+)
+
+func TGKEVerify(t *testing.T, b *tft.TFBlueprintTest, assert *assert.Assertions) {
+	_, ps := b.PlanAndShow()
+	for _, r := range ps.ResourceChangesMap {
+		if slices.Contains(verifyExemptResources, r.Address) {
+			t.Logf("Exempt plan address: %s", r.Address)
+			continue
+		}
+		assert.Equal(tfjson.Actions{tfjson.ActionNoop}, r.Change.Actions, "plan must be no-op for resource: %s", r.Address)
+	}
 }
