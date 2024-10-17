@@ -137,3 +137,9 @@ variable "gcp_sa_description" {
     error_message = "The Google service account description must be at most 256 characters"
   }
 }
+
+variable "create_ignore_already_exists" {
+  description = "If set to true, skip service account creation if a service account with the same email already exists."
+  type        = bool
+  default     = false
+}
