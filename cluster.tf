@@ -782,7 +782,7 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "confidential_nodes" {
-      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.confidential_nodes] : []
+      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.enable_confidential_nodes] : []
       content {
         enabled = confidential_nodes.value
       }
@@ -1058,7 +1058,7 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     dynamic "confidential_nodes" {
-      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.confidential_nodes] : []
+      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.enable_confidential_nodes] : []
       content {
         enabled = confidential_nodes.value
       }
