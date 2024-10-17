@@ -407,6 +407,16 @@ resource "google_container_cluster" "primary" {
         }
       }
 
+      # In the case of the default pool use the module level variable as a
+      # fallback if it's not set explicitly for this pool.
+      dynamic "kubelet_config" {
+        for_each = lookup(var.node_pools[0], "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled) != null ? [lookup(var.node_pools[0], "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled)] : []
+
+        content {
+          insecure_kubelet_readonly_port_enabled = upper(tostring(kubelet_config.value))
+        }
+      }
+
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
       tags = concat(
@@ -524,7 +534,7 @@ resource "google_container_cluster" "primary" {
 
   node_pool_defaults {
     node_config_defaults {
-      insecure_kubelet_readonly_port_enabled = var.insecure_kubelet_readonly_port_enabled != null ? var.insecure_kubelet_readonly_port_enabled : null
+      insecure_kubelet_readonly_port_enabled = var.insecure_kubelet_readonly_port_enabled != null ? upper(tostring(var.insecure_kubelet_readonly_port_enabled)) : null
     }
   }
 
@@ -858,7 +868,7 @@ resource "google_container_node_pool" "pools" {
         cpu_manager_policy                     = lookup(each.value, "cpu_manager_policy", "static")
         cpu_cfs_quota                          = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period                   = lookup(each.value, "cpu_cfs_quota_period", null)
-        insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled != null ? var.insecure_kubelet_readonly_port_enabled : null)
+        insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null) != null ? upper(tostring(each.value.insecure_kubelet_readonly_port_enabled)) : null
         pod_pids_limit                         = lookup(each.value, "pod_pids_limit", null)
       }
     }
@@ -1150,7 +1160,7 @@ resource "google_container_node_pool" "windows_pools" {
         cpu_manager_policy                     = lookup(each.value, "cpu_manager_policy", "static")
         cpu_cfs_quota                          = lookup(each.value, "cpu_cfs_quota", null)
         cpu_cfs_quota_period                   = lookup(each.value, "cpu_cfs_quota_period", null)
-        insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled != null ? var.insecure_kubelet_readonly_port_enabled : null)
+        insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null) != null ? upper(tostring(each.value.insecure_kubelet_readonly_port_enabled)) : null
         pod_pids_limit                         = lookup(each.value, "pod_pids_limit", null)
       }
     }

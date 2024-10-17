@@ -66,7 +66,7 @@ module "gke" {
       max_count                              = 2
       service_account                        = var.compute_engine_service_account
       auto_upgrade                           = true
-      insecure_kubelet_readonly_port_enabled = "FALSE"
+      insecure_kubelet_readonly_port_enabled = false
     },
     {
       name              = "pool-02"
