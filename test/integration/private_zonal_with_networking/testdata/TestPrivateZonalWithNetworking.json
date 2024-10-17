@@ -107,6 +107,9 @@
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
     "imageType": "COS_CONTAINERD",
+    "kubeletConfig": {
+      "insecureKubeletReadonlyPortEnabled": false
+    },
     "loggingConfig": {
       "variantConfig": {
         "variant": "DEFAULT"
