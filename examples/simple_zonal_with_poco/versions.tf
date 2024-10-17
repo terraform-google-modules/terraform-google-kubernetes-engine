@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2021-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-module "acm" {
-  source  = "terraform-google-modules/kubernetes-engine/google//modules/acm"
-  version = "~> 33.0"
-
-  project_id   = var.project_id
-  location     = module.gke.location
-  cluster_name = module.gke.name
-
-  sync_repo   = "git@github.com:GoogleCloudPlatform/anthos-config-management-samples.git"
-  sync_branch = "1.0.0"
-  policy_dir  = "foo-corp"
-
-  enable_policy_controller = false
-
-  enable_fleet_feature = var.enable_fleet_feature
-
-  secret_type = "ssh"
-
-  create_metrics_gcp_sa = true
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+    }
+    random = {
+      source = "hashicorp/random"
+    }
+  }
+  required_version = ">= 1.3"
 }
