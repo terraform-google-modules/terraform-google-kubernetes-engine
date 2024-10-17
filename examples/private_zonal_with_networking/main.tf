@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2019-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,6 +78,8 @@ module "gke" {
   enable_private_nodes    = true
   master_ipv4_cidr_block  = "172.16.0.0/28"
   deletion_protection     = false
+
+  insecure_kubelet_readonly_port_enabled = false
 
   master_authorized_networks = [
     {
