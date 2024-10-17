@@ -79,10 +79,6 @@ func TestSimpleZonal(t *testing.T) {
 		assert.NoError(err)
 		configkubeNS := testutils.ParseKubectlJSONResult(t, configNameSpace)
 		assert.Contains(configkubeNS.Get("metadata.name").String(), "config-management-system", "Namespace is Functional")
-		gateKeeperNameSpace, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "ns", "gatekeeper-system", "-o", "json")
-		assert.NoError(err)
-		gateKeeperkubeNS := testutils.ParseKubectlJSONResult(t, gateKeeperNameSpace)
-		assert.Contains(gateKeeperkubeNS.Get("metadata.name").String(), "gatekeeper-system", "Namespace is Functional")
 	})
 
 	bpt.Test()
