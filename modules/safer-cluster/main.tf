@@ -115,10 +115,15 @@ module "gke" {
   //   All applications should run with an identity defined via Workload Identity anyway.
   // - Use a service account passed as a parameter to the module, in case the user
   //   wants to maintain control of their service accounts.
-  create_service_account = var.compute_engine_service_account == "" ? true : false
-  service_account        = var.compute_engine_service_account
-  registry_project_ids   = var.registry_project_ids
-  grant_registry_access  = var.grant_registry_access
+  service_account       = var.compute_engine_service_account
+  registry_project_ids  = var.registry_project_ids
+  grant_registry_access = var.grant_registry_access
+
+  // If create_service_account is explicitly set to false we short-circuit the
+  // compute_engine_service_account check to potentially avoid an error (see variables.tf documentation).
+  // Otherwise if true (the default), we check if compute_engine_service_account is set for backwards compatability
+  // before the create_service_account variable was added.
+  create_service_account = var.create_service_account == false ? var.create_service_account : (var.compute_engine_service_account == "" ? true : false)
 
   issue_client_certificate = false
 
