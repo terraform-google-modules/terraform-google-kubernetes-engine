@@ -6,6 +6,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [34.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.1.0...v34.0.0) (2024-10-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=5.44.2:** add standard cluster support for `insecureKubeletReadonlyPortEnabled` ([#2082](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2082))
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v17 ([#2109](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2109))
+
+### Features
+
+* **safer-cluster:** add create_service_account variable ([#2138](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2138)) ([cccabcb](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/cccabcb0eca2a7755908e8d17b40ffba87f4839e))
+* **TPG>=5.44.2:** add standard cluster support for `insecureKubeletReadonlyPortEnabled` ([#2082](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2082)) ([96626d5](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/96626d541617cb99a3ee19b019ba51c6146f69c0))
+
+
+### Bug Fixes
+
+* add target tags to `node_pool_auto_config` for standard clusters ([#2118](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2118)) ([d5f66e8](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d5f66e86dd163d505ff455a9c5fafe7d659da36f))
+* correct confidential node field name ([#2140](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2140)) ([373c969](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/373c96954af9ce53dd3eb062f372efa832378334))
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v17 ([#2109](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2109)) ([3073b04](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3073b048cb79524aeaaf46ff2835b79a6f7b7f23))
+* **node_pools:** Update Variants: Add recreate for `secondary_boot_disk` and `local_ssd_ephemeral_count` (beta) ([#2139](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2139)) ([66231d5](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/66231d5ad91e282e750b4c9c3b398ab97aa8c147))
+
 ## [33.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.4...v33.1.0) (2024-10-09)
 
 
