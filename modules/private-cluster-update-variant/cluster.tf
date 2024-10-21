@@ -407,6 +407,21 @@ resource "google_container_cluster" "primary" {
         }
       }
 
+      dynamic "kubelet_config" {
+        for_each = length(setintersection(
+          keys(var.node_pools[0]),
+          ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit"]
+        )) != 0 || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
+
+        content {
+          cpu_manager_policy                     = lookup(var.node_pools[0], "cpu_manager_policy", "static")
+          cpu_cfs_quota                          = lookup(var.node_pools[0], "cpu_cfs_quota", null)
+          cpu_cfs_quota_period                   = lookup(var.node_pools[0], "cpu_cfs_quota_period", null)
+          insecure_kubelet_readonly_port_enabled = lookup(var.node_pools[0], "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled) != null ? upper(tostring(lookup(var.node_pools[0], "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled))) : null
+          pod_pids_limit                         = lookup(var.node_pools[0], "pod_pids_limit", null)
+        }
+      }
+
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
       tags = concat(
