@@ -69,7 +69,7 @@ EOF
 }
 
 # Fix the name typo in the previous ConfigMap creation call
-moved = {
+moved {
   from = kubernetes_config_map_v1_data.kube-dns-upstream-namservers
   to   = kubernetes_config_map_v1_data.kube-dns-upstream-nameservers
 }
