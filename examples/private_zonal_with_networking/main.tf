@@ -79,6 +79,8 @@ module "gke" {
   master_ipv4_cidr_block  = "172.16.0.0/28"
   deletion_protection     = false
 
+  insecure_kubelet_readonly_port_enabled = false
+
   master_authorized_networks = [
     {
       cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
