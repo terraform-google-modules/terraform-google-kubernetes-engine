@@ -600,6 +600,12 @@ variable "enable_tpu" {
   default     = false
 }
 
+variable "filestore_csi_driver" {
+  type        = bool
+  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
+  default     = false
+}
+
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
@@ -621,12 +627,6 @@ variable "initial_node_count" {
 variable "remove_default_node_pool" {
   type        = bool
   description = "Remove default node pool while setting up the cluster"
-  default     = false
-}
-
-variable "filestore_csi_driver" {
-  type        = bool
-  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
   default     = false
 }
 
