@@ -41,7 +41,7 @@ EOF
   ]
 }
 
-resource "kubernetes_config_map_v1_data" "kube-dns-upstream-namservers" {
+resource "kubernetes_config_map_v1_data" "kube-dns-upstream-nameservers" {
   count = !local.custom_kube_dns_config && local.upstream_nameservers_config ? 1 : 0
 
   metadata {
@@ -60,6 +60,12 @@ EOF
   depends_on = [
     google_container_cluster.primary,
   ]
+}
+
+# Fix the name typo in the previous ConfigMap creation call
+moved {
+  from = kubernetes_config_map_v1_data.kube-dns-upstream-namservers
+  to   = kubernetes_config_map_v1_data.kube-dns-upstream-nameservers
 }
 
 resource "kubernetes_config_map_v1_data" "kube-dns-upstream-nameservers-and-stub-domains" {
