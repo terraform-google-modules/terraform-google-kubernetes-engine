@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-# Fix the name typo in the previous ConfigMap creation call
-moved {
-  from = kubernetes_config_map_v1_data.kube-dns-upstream-namservers
-  to   = kubernetes_config_map_v1_data.kube-dns-upstream-nameservers
-}
-
 # Updates for kebab to snake case, to match best practices and Google style.
 moved {
   from = kubernetes_config_map_v1_data.kube-dns
   to   = kubernetes_config_map_v1_data.kube_dns
 }
 
+# Typo fix and snake case at the same time
 moved {
-  from = kubernetes_config_map_v1_data.kube-dns-upstream-nameservers
+  from = kubernetes_config_map_v1_data.kube-dns-upstream-namservers
   to   = kubernetes_config_map_v1_data.kube_dns_upstream_nameservers
 }
 
