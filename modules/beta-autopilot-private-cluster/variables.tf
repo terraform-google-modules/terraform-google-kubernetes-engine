@@ -185,17 +185,6 @@ variable "network_tags" {
   default     = []
 }
 
-variable "stub_domains" {
-  type        = map(list(string))
-  description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"
-  default     = {}
-}
-
-variable "upstream_nameservers" {
-  type        = list(string)
-  description = "If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf"
-  default     = []
-}
 
 variable "non_masquerade_cidrs" {
   type        = list(string)

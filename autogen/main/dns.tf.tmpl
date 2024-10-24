@@ -16,6 +16,7 @@
 
 {{ autogeneration_note }}
 
+{% if autopilot_cluster != true %}
 /******************************************
   Manage kube-dns configmaps
  *****************************************/
@@ -95,3 +96,4 @@ EOF
     {% endif %}
   ]
 }
+{% endif %}
