@@ -141,5 +141,5 @@ variable "gcp_sa_description" {
 variable "create_ignore_already_exists" {
   description = "If set to true, skip service account creation if a service account with the same email already exists."
   type        = bool
-  default     = false
+  default     = null
 }
