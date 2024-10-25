@@ -30,6 +30,8 @@ func TestSimpleRegionalClusterAutoscaling(t *testing.T) {
 	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
+		bpt.DefaultVerify(assert)
+
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")
