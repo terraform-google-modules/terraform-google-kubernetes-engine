@@ -347,6 +347,21 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "logging_config" {
+    for_each = length(var.logging_enabled_components) > 0 ? [1] : []
+
+    content {
+      enable_components = var.logging_enabled_components
+    }
+  }
+
+  dynamic "monitoring_config" {
+    for_each = length(var.monitoring_enabled_components) > 0 ? [1] : []
+    content {
+      enable_components = var.monitoring_enabled_components
+    }
+  }
+
   node_pool_defaults {
     node_config_defaults {
       logging_variant = var.logging_variant
