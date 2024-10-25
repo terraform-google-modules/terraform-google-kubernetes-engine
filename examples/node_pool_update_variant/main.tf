@@ -61,11 +61,12 @@ module "gke" {
 
   node_pools = [
     {
-      name            = "pool-01"
-      min_count       = 1
-      max_count       = 2
-      service_account = var.compute_engine_service_account
-      auto_upgrade    = true
+      name                                   = "pool-01"
+      min_count                              = 1
+      max_count                              = 2
+      service_account                        = var.compute_engine_service_account
+      auto_upgrade                           = true
+      insecure_kubelet_readonly_port_enabled = false
     },
     {
       name              = "pool-02"

@@ -407,6 +407,21 @@ resource "google_container_cluster" "primary" {
         }
       }
 
+      dynamic "kubelet_config" {
+        for_each = length(setintersection(
+          keys(var.node_pools[0]),
+          ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit"]
+        )) != 0 || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
+
+        content {
+          cpu_manager_policy                     = lookup(var.node_pools[0], "cpu_manager_policy", "static")
+          cpu_cfs_quota                          = lookup(var.node_pools[0], "cpu_cfs_quota", null)
+          cpu_cfs_quota_period                   = lookup(var.node_pools[0], "cpu_cfs_quota_period", null)
+          insecure_kubelet_readonly_port_enabled = lookup(var.node_pools[0], "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled) != null ? upper(tostring(lookup(var.node_pools[0], "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled))) : null
+          pod_pids_limit                         = lookup(var.node_pools[0], "pod_pids_limit", null)
+        }
+      }
+
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
       tags = concat(
@@ -521,6 +536,13 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
+
+  node_pool_defaults {
+    node_config_defaults {
+      insecure_kubelet_readonly_port_enabled = var.insecure_kubelet_readonly_port_enabled != null ? upper(tostring(var.insecure_kubelet_readonly_port_enabled)) : null
+    }
+  }
+
 }
 /******************************************
   Create Container Cluster node pools
@@ -760,14 +782,15 @@ resource "google_container_node_pool" "pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "pod_pids_limit"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit"]
       )) != 0 ? [1] : []
 
       content {
-        cpu_manager_policy   = lookup(each.value, "cpu_manager_policy", "static")
-        cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
-        cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
-        pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
+        cpu_manager_policy                     = lookup(each.value, "cpu_manager_policy", "static")
+        cpu_cfs_quota                          = lookup(each.value, "cpu_cfs_quota", null)
+        cpu_cfs_quota_period                   = lookup(each.value, "cpu_cfs_quota_period", null)
+        insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null) != null ? upper(tostring(each.value.insecure_kubelet_readonly_port_enabled)) : null
+        pod_pids_limit                         = lookup(each.value, "pod_pids_limit", null)
       }
     }
 
@@ -795,7 +818,7 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "confidential_nodes" {
-      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.confidential_nodes] : []
+      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.enable_confidential_nodes] : []
       content {
         enabled = confidential_nodes.value
       }
@@ -1050,14 +1073,15 @@ resource "google_container_node_pool" "windows_pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "pod_pids_limit"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit"]
       )) != 0 ? [1] : []
 
       content {
-        cpu_manager_policy   = lookup(each.value, "cpu_manager_policy", "static")
-        cpu_cfs_quota        = lookup(each.value, "cpu_cfs_quota", null)
-        cpu_cfs_quota_period = lookup(each.value, "cpu_cfs_quota_period", null)
-        pod_pids_limit       = lookup(each.value, "pod_pids_limit", null)
+        cpu_manager_policy                     = lookup(each.value, "cpu_manager_policy", "static")
+        cpu_cfs_quota                          = lookup(each.value, "cpu_cfs_quota", null)
+        cpu_cfs_quota_period                   = lookup(each.value, "cpu_cfs_quota_period", null)
+        insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null) != null ? upper(tostring(each.value.insecure_kubelet_readonly_port_enabled)) : null
+        pod_pids_limit                         = lookup(each.value, "pod_pids_limit", null)
       }
     }
 
@@ -1070,7 +1094,7 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     dynamic "confidential_nodes" {
-      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.confidential_nodes] : []
+      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.enable_confidential_nodes] : []
       content {
         enabled = confidential_nodes.value
       }

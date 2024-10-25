@@ -26,6 +26,8 @@ module "acm" {
   sync_branch = "1.0.0"
   policy_dir  = "foo-corp"
 
+  enable_policy_controller = false
+
   enable_fleet_feature = var.enable_fleet_feature
 
   secret_type = "ssh"

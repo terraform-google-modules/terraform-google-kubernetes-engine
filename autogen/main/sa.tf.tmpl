@@ -46,35 +46,35 @@ resource "google_service_account" "cluster_service_account" {
   display_name = "Terraform-managed service account for cluster ${var.name}"
 }
 
-resource "google_project_iam_member" "cluster_service_account-nodeService_account" {
+resource "google_project_iam_member" "cluster_service_account_node_service_account" {
   count   = var.create_service_account ? 1 : 0
   project = google_service_account.cluster_service_account[0].project
   role    = "roles/container.defaultNodeServiceAccount"
   member  = google_service_account.cluster_service_account[0].member
 }
 
-resource "google_project_iam_member" "cluster_service_account-metric_writer" {
+resource "google_project_iam_member" "cluster_service_account_metric_writer" {
   count   = var.create_service_account ? 1 : 0
   project = google_service_account.cluster_service_account[0].project
   role    = "roles/monitoring.metricWriter"
   member  = google_service_account.cluster_service_account[0].member
 }
 
-resource "google_project_iam_member" "cluster_service_account-resourceMetadata-writer" {
+resource "google_project_iam_member" "cluster_service_account_resource_metadata_writer" {
   count   = var.create_service_account ? 1 : 0
   project = google_service_account.cluster_service_account[0].project
   role    = "roles/stackdriver.resourceMetadata.writer"
   member  = google_service_account.cluster_service_account[0].member
 }
 
-resource "google_project_iam_member" "cluster_service_account-gcr" {
+resource "google_project_iam_member" "cluster_service_account_gcr" {
   for_each = var.create_service_account && var.grant_registry_access ? toset(local.registry_projects_list) : []
   project  = each.key
   role     = "roles/storage.objectViewer"
   member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
 }
 
-resource "google_project_iam_member" "cluster_service_account-artifact-registry" {
+resource "google_project_iam_member" "cluster_service_account_artifact_registry" {
   for_each = var.create_service_account && var.grant_registry_access ? toset(local.registry_projects_list) : []
   project  = each.key
   role     = "roles/artifactregistry.reader"
