@@ -46,7 +46,7 @@ resource "google_service_account" "cluster_service_account" {
   display_name                 = coalesce(var.gcp_sa_display_name, substr("GCP SA bound to K8S SA ${local.k8s_sa_project_id}[${local.k8s_given_name}]", 0, 100))
   description                  = var.gcp_sa_description
   project                      = var.project_id
-  create_ignore_already_exists = var.create_ignore_already_exists
+  create_ignore_already_exists = var.gcp_sa_create_ignore_already_exists
 }
 
 resource "kubernetes_service_account" "main" {
