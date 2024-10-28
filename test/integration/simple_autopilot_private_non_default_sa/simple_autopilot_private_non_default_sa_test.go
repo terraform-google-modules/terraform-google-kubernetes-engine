@@ -33,8 +33,7 @@ func TestSimpleAutopilotPrivateNonDefaultSA(t *testing.T) {
 	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
-		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
-		// bpt.DefaultVerify(assert)
+		bpt.DefaultVerify(assert)
 
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")

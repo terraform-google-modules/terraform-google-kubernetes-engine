@@ -26,8 +26,7 @@ import (
 func TestAutopilotPrivateFirewalls(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t)
 	bpt.DefineVerify(func(assert *assert.Assertions) {
-		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
-		// bpt.DefaultVerify(assert)
+		bpt.DefaultVerify(assert)
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")
