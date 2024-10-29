@@ -588,6 +588,12 @@ variable "enable_confidential_nodes" {
   default     = false
 }
 
+variable "enable_secret_manager_addon" {
+  description = "Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
+
 variable "workload_vulnerability_mode" {
   description = "(beta) Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC."
   type        = string
@@ -604,12 +610,6 @@ variable "enable_fqdn_network_policy" {
   type        = bool
   description = "Enable FQDN Network Policies on the cluster"
   default     = null
-}
-
-variable "enable_secret_manager_addon" {
-  description = "(Beta) Enable the Secret Manager add-on for this cluster"
-  type        = bool
-  default     = false
 }
 
 variable "enable_cilium_clusterwide_network_policy" {
