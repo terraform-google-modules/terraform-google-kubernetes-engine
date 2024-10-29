@@ -16,6 +16,7 @@ package utils
 
 import (
 	"slices"
+	"strings"
 	"testing"
 	"time"
 
@@ -36,15 +37,18 @@ func GetTestProjectFromSetup(t *testing.T, idx int) string {
 	return projectIDs[idx]
 }
 
-var (
-	// TGKEVerify Exempt Resources. e.g. google_container_cluster.primary
-	verifyExemptResources = []string{}
-)
-
+// TGKEVerify asserts no resource changes exist after apply.
 func TGKEVerify(t *testing.T, b *tft.TFBlueprintTest, assert *assert.Assertions) {
+	TGKEVerifyExemptResources(t, b, assert, []string{})
+}
+
+// TGKEVerifyExemptResources asserts no resource changes exist after apply except exempt resources: e.g. google_container_cluster.primary
+func TGKEVerifyExemptResources(t *testing.T, b *tft.TFBlueprintTest, assert *assert.Assertions, verifyExemptResources []string) {
 	_, ps := b.PlanAndShow()
 	for _, r := range ps.ResourceChangesMap {
-		if slices.Contains(verifyExemptResources, r.Address) {
+		if slices.ContainsFunc(verifyExemptResources, func(str string) bool {
+			return strings.HasSuffix(r.Address, str)
+		}) {
 			t.Logf("Exempt plan address: %s", r.Address)
 			continue
 		}
