@@ -21,7 +21,7 @@ locals {
 
 module "bastion" {
   source  = "terraform-google-modules/bastion-host/google"
-  version = "~> 7.0"
+  version = "~> 8.0"
 
   network        = module.vpc.network_self_link
   subnet         = module.vpc.subnets_self_links[0]

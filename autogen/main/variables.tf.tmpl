@@ -357,6 +357,7 @@ variable "network_tags" {
   default = []
 }
 
+{% if autopilot_cluster != true %}
 variable "stub_domains" {
   type        = map(list(string))
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"
@@ -368,6 +369,7 @@ variable "upstream_nameservers" {
   description = "If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf"
   default     = []
 }
+{% endif %}
 
 variable "non_masquerade_cidrs" {
   type        = list(string)

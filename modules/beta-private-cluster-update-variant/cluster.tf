@@ -647,7 +647,7 @@ locals {
 resource "random_id" "name" {
   for_each    = merge(local.node_pools, local.windows_node_pools)
   byte_length = 2
-  prefix      = format("%s-", lookup(each.value, "name"))
+  prefix      = "${each.key}-"
   keepers = merge(
     zipmap(
       local.force_node_pool_recreation_resources,
