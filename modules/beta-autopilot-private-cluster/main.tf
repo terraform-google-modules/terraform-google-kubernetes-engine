@@ -56,11 +56,9 @@ locals {
 
 
 
-  custom_kube_dns_config      = length(keys(var.stub_domains)) > 0
-  upstream_nameservers_config = length(var.upstream_nameservers) > 0
-  network_project_id          = var.network_project_id != "" ? var.network_project_id : var.project_id
-  zone_count                  = length(var.zones)
-  cluster_type                = var.regional ? "regional" : "zonal"
+  network_project_id = var.network_project_id != "" ? var.network_project_id : var.project_id
+  zone_count         = length(var.zones)
+  cluster_type       = var.regional ? "regional" : "zonal"
 
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
