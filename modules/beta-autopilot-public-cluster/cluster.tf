@@ -72,6 +72,22 @@ resource "google_container_cluster" "primary" {
 
   min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : var.kubernetes_version == "latest" ? null : var.kubernetes_version
 
+
+  dynamic "logging_config" {
+    for_each = length(var.logging_enabled_components) > 0 ? [1] : []
+
+    content {
+      enable_components = var.logging_enabled_components
+    }
+  }
+
+  dynamic "monitoring_config" {
+    for_each = length(var.monitoring_enabled_components) > 0 ? [1] : []
+    content {
+      enable_components = var.monitoring_enabled_components
+    }
+  }
+
   cluster_autoscaling {
     dynamic "auto_provisioning_defaults" {
       for_each = (var.create_service_account || var.service_account != "") ? [1] : []
@@ -323,21 +339,6 @@ resource "google_container_cluster" "primary" {
           event_type = var.notification_filter_event_type
         }
       }
-    }
-  }
-
-  dynamic "logging_config" {
-    for_each = length(var.logging_enabled_components) > 0 ? [1] : []
-
-    content {
-      enable_components = var.logging_enabled_components
-    }
-  }
-
-  dynamic "monitoring_config" {
-    for_each = length(var.monitoring_enabled_components) > 0 ? [1] : []
-    content {
-      enable_components = var.monitoring_enabled_components
     }
   }
 
