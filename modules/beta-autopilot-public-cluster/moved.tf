@@ -14,22 +14,6 @@
  * limitations under the License.
  */
 
-# Updates for kebab to snake case, to match best practices and Google style.
-moved {
-  from = kubernetes_config_map_v1_data.kube-dns
-  to   = kubernetes_config_map_v1_data.kube_dns
-}
-
-# Typo fix and snake case at the same time
-moved {
-  from = kubernetes_config_map_v1_data.kube-dns-upstream-namservers
-  to   = kubernetes_config_map_v1_data.kube_dns_upstream_nameservers
-}
-
-moved {
-  from = kubernetes_config_map_v1_data.kube-dns-upstream-nameservers-and-stub-domains
-  to   = kubernetes_config_map_v1_data.kube_dns_upstream_nameservers_and_stub_domains
-}
 
 moved {
   from = kubernetes_config_map.ip-masq-agent
