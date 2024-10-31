@@ -582,6 +582,12 @@ variable "enable_confidential_nodes" {
   default     = false
 }
 
+variable "enable_secret_manager_addon" {
+  description = "Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
+
 variable "enable_cilium_clusterwide_network_policy" {
   type        = bool
   description = "Enable Cilium Cluster Wide Network Policies on the cluster"

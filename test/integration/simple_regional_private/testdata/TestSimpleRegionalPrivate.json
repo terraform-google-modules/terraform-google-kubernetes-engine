@@ -242,6 +242,9 @@
       "privateEndpoint": "172.16.0.2",
       "publicEndpoint": "104.198.172.159"
     },
+    "secretManagerConfig": {
+      "enabled": true
+    },
     "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/us-central1/clusters/CLUSTER_NAME",
     "servicesIpv4Cidr": "192.168.64.0/18",
     "shieldedNodes": {
