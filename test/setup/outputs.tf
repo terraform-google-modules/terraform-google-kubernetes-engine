@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2019-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,10 @@
 
 output "project_ids" {
   value = [module.gke-project-1.project_id, module.gke-project-2.project_id, module.gke-project-asm.project_id, module.gke-project-fleet.project_id]
+}
+
+output "project_id" {
+  value = module.gke-project-default.project_id
 }
 
 output "sa_key" {

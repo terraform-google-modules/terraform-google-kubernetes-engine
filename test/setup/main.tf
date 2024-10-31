@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2019-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -120,3 +120,17 @@ module "gke-project-fleet" {
   activate_apis = local.apis
 }
 
+module "gke-project-default" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 17.0"
+
+  name              = "ci-gke-default-${random_id.random_project_id_suffix.hex}"
+  random_project_id = true
+  org_id            = var.org_id
+  folder_id         = var.folder_id
+  billing_account   = var.billing_account
+  # due to https://github.com/hashicorp/terraform-provider-google/issues/9505 for AP
+  default_service_account = "keep"
+
+  activate_apis = local.apis
+}

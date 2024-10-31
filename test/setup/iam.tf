@@ -114,6 +114,14 @@ resource "google_project_iam_member" "int_test_fleet" {
   member  = "serviceAccount:${google_service_account.int_test.email}"
 }
 
+resource "google_project_iam_member" "int_test_default" {
+  for_each = toset(local.int_required_roles)
+
+  project = module.gke-project-default.project_id
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.int_test.email}"
+}
+
 resource "google_service_account_key" "int_test" {
   service_account_id = google_service_account.int_test.id
 }
