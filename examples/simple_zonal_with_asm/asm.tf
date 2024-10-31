@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,27 @@
  * limitations under the License.
  */
 
-output "revision_name" {
-  value       = local.revision_name
-  description = "The name of the installed managed ASM revision."
+resource "google_gke_hub_feature" "mesh_feature" {
+  name     = "servicemesh"
+  project  = var.project_id
+  location = "global"
+
+  count = var.enable_fleet_feature ? 1 : 0
 }
 
-output "wait" {
-  value       = var.mesh_management == "MANAGEMENT_AUTOMATIC" ? module.kubectl_asm_wait_for_controlplanerevision[0].wait : module.cpr[0].wait
-  description = "An output to use when depending on the ASM installation finishing."
+resource "google_gke_hub_feature_membership" "mesh_feature_membership" {
+  project  = var.project_id
+  location = "global"
+
+  feature             = "servicemesh"
+  membership          = module.gke.fleet_membership
+  membership_location = module.gke.region
+
+  mesh {
+    management = var.mesh_management
+  }
+
+  depends_on = [
+    google_gke_hub_feature.mesh_feature
+  ]
 }

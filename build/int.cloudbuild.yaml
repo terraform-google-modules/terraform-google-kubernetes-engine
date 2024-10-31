@@ -369,17 +369,17 @@ steps:
   waitFor:
     - create-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalWithASM --stage apply --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/simple_zonal_with_asm --stage apply --verbose --test-dir test/integration']
 - id: verify simple-zonal-with-asm-local
   waitFor:
     - apply simple-zonal-with-asm-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalWithASM --stage verify --verbose']
-- id: destroy simple-zonal-with-asm-local
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/simple_zonal_with_asm --stage verify --verbose --test-dir test/integration']
+- id: teardown simple-zonal-with-asm-local
   waitFor:
     - verify simple-zonal-with-asm-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalWithASM --stage teardown --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/simple_zonal_with_asm --stage teardown --verbose --test-dir test/integration']
 - id: apply simple-autopilot-private-local
   waitFor:
     - create-all
