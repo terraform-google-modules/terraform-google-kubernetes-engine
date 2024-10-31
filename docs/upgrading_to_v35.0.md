@@ -50,3 +50,41 @@ To avoid this, it is possible to edit the remote state of the `random_id` resour
 1. Bump the serial number at the top
 2. Push the modified state to the remote `terraform state push default.tfstate`
 3. Confirm the `random_id` resource(s) no longer changes (or the corresponding `nodepool`) in a `terraform plan`
+
+### ASM Sub-Module Removal
+The ASM Sub-Module has been removed in v35.0.  Please use the [google_gke_hub_feature](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature#example-usage---enable-fleet-default-member-config-service-mesh) and [google_gke_hub_feature_membership](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature_membership#example-usage---service-mesh) resources.
+
+
+```diff
+-module "asm" {
+-  source  = "terraform-google-modules/kubernetes-engine/google//modules/asm"
+-  version = "~> 34.0"
+
+-  project_id                = var.project_id
+-  cluster_name              = module.gke.name
+-  cluster_location          = module.gke.location
+-  multicluster_mode         = "connected"
+-  enable_cni                = true
+-  enable_fleet_registration = true
+-  enable_mesh_feature       = true
+-}
+
++resource "google_gke_hub_feature" "mesh_feature" {
++  project  = var.project_id
++  location = "global"
++  name     = "servicemesh"
++}
+
++resource "google_gke_hub_feature_membership" "mesh_feature_membership" {
++  project  = var.project_id
++  location = "global"
+
++  feature             = google_gke_hub_feature.mesh_feature.name
++  membership          = module.gke.fleet_membership
++  membership_location = module.gke.region
+
++  mesh {
++    management = "MANAGEMENT_AUTOMATIC"
++  }
++}
+```
