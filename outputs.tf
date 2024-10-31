@@ -190,6 +190,11 @@ output "intranode_visibility_enabled" {
   value       = local.cluster_intranode_visibility_enabled
 }
 
+output "secret_manager_addon_enabled" {
+  description = "Whether Secret Manager add-on is enabled"
+  value       = local.cluster_secret_manager_addon_enabled
+}
+
 output "fleet_membership" {
   description = "Fleet membership (if registered)"
   value       = local.fleet_membership

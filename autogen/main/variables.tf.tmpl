@@ -613,6 +613,12 @@ variable "enable_confidential_nodes" {
   description = "An optional flag to enable confidential node config."
   default = false
 }
+
+variable "enable_secret_manager_addon" {
+  description = "Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
 {% if beta_cluster %}
 
 variable "workload_vulnerability_mode" {
@@ -631,12 +637,6 @@ variable "enable_fqdn_network_policy" {
   type        = bool
   description = "Enable FQDN Network Policies on the cluster"
   default     = null
-}
-
-variable "enable_secret_manager_addon" {
-  description = "(Beta) Enable the Secret Manager add-on for this cluster"
-  type        = bool
-  default     = false
 }
 {% endif %}
 

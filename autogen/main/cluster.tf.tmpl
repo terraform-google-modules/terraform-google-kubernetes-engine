@@ -254,7 +254,6 @@ resource "google_container_cluster" "primary" {
 
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
-{% if beta_cluster %}
   dynamic "secret_manager_config" {
     for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
     content {
@@ -262,6 +261,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+{% if beta_cluster %}
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
 {% endif %}
 {% if autopilot_cluster %}
