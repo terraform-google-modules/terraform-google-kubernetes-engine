@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2018-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,38 @@
 
 variable "project_id" {
   description = "The project ID to host the cluster in"
+  type        = string
 }
 
 variable "region" {
   description = "The region to host the cluster in"
+  type        = string
+  default     = "us-central1"
 }
 
-variable "zones" {
-  type        = list(string)
+variable "zone" {
   description = "The zone to host the cluster in (required if is a zonal cluster)"
+  type        = string
+  default     = "us-central1-a"
 }
 
-variable "network" {
-  description = "The VPC network to host the cluster in"
+variable "enable_fleet_feature" {
+  description = "Whether to enable the Mesh feature on the fleet."
+  type        = bool
+  default     = true
 }
 
-variable "subnetwork" {
-  description = "The subnetwork to host the cluster in"
-}
-
-variable "ip_range_pods" {
-  description = "The secondary ip range to use for pods"
-}
-
-variable "ip_range_services" {
-  description = "The secondary ip range to use for services"
+variable "mesh_management" {
+  default     = "MANAGEMENT_AUTOMATIC"
+  description = "ASM Management mode. For more information, see the [gke_hub_feature_membership resource documentation](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature_membership#nested_mesh)"
+  type        = string
+  validation {
+    condition = anytrue([
+      var.mesh_management == null,
+      var.mesh_management == "",
+      var.mesh_management == "MANAGEMENT_AUTOMATIC",
+      var.mesh_management == "MANAGEMENT_MANUAL",
+    ])
+    error_message = "Must be null, empty, or one of MANAGEMENT_AUTOMATIC or MANAGEMENT_MANUAL."
+  }
 }
