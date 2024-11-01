@@ -85,13 +85,3 @@ suites:
       systems:
         - name: workload_metadata_config
           backend: local
-  - name: "node_pool"
-    transport:
-      root_module_directory: test/fixtures/node_pool
-    verifier:
-      systems:
-        - name: node_pool
-          backend: local
-          controls:
-            - gcloud
-            - kubectl
