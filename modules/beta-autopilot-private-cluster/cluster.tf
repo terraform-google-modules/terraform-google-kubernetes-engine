@@ -72,7 +72,6 @@ resource "google_container_cluster" "primary" {
 
   min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : var.kubernetes_version == "latest" ? null : var.kubernetes_version
 
-
   dynamic "logging_config" {
     for_each = length(var.logging_enabled_components) > 0 ? [1] : []
 
