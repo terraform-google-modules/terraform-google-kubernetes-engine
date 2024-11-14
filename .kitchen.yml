@@ -32,57 +32,6 @@ platforms:
   - name: local
 
 suites:
-  - name: "shared_vpc"
-    transport:
-      root_module_directory: test/fixtures/shared_vpc
-    verifier:
-      systems:
-        - name: shared_vpc
-          backend: local
-  - name: "safer_cluster"
-    transport:
-      root_module_directory: test/fixtures/safer_cluster
-    verifier:
-      systems:
-        - name: safer_cluster
-          backend: local
-          controls:
-            - gcloud
-        - name: inspec-gcp
-          backend: gcp
-          controls:
-            - network
-  - name: "simple_regional"
-    transport:
-      root_module_directory: test/fixtures/simple_regional
-    verifier:
-      systems:
-        - name: simple_regional
-          backend: local
-  - name: "simple_regional_with_networking"
-    transport:
-      root_module_directory: test/fixtures/simple_regional_with_networking
-    verifier:
-      systems:
-        - name: simple_regional_with_networking
-          backend: local
-          controls:
-            - gcloud
-        - name: subnet
-          backend: local
-          controls:
-            - subnet
-        - name: network
-          backend: gcp
-          controls:
-            - network
-  - name: "simple_regional_private"
-    transport:
-      root_module_directory: test/fixtures/simple_regional_private
-    verifier:
-      systems:
-        - name: simple_regional_private
-          backend: local
   - name: "simple_regional_with_gateway_api"
     transport:
       root_module_directory: test/fixtures/simple_regional_with_gateway_api
@@ -97,36 +46,6 @@ suites:
       systems:
         - name: simple_regional_with_ipv6
           backend: local
-  - name: "simple_regional_with_kubeconfig"
-    transport:
-      root_module_directory: test/fixtures/simple_regional_with_kubeconfig
-    verifier:
-      systems:
-        - name: simple_regional_with_kubeconfig
-          backend: local
-  - name: "simple_zonal"
-    transport:
-      root_module_directory: test/fixtures/simple_zonal
-    verifier:
-      systems:
-        - name: gcloud
-          backend: local
-          controls:
-            - gcloud
-            - acm
-        - name: gcp
-          backend: gcp
-          controls:
-            - gcp
-  - name: "simple_zonal_private"
-    transport:
-      root_module_directory: test/fixtures/simple_zonal_private
-    verifier:
-      systems:
-        - name: simple_zonal_private
-          backend: local
-          controls:
-            - gcloud
   - name: "stub_domains"
     transport:
       root_module_directory: test/fixtures/stub_domains
@@ -179,29 +98,6 @@ suites:
       systems:
         - name: workload_metadata_config
           backend: local
-  - name: "simple_windows_node_pool"
-    transport:
-      root_module_directory: test/fixtures/simple_windows_node_pool
-    verifier:
-      systems:
-        - name: gcloud
-          backend: local
-          controls:
-            - gcloud
-        - name: gcp
-          backend: gcp
-          controls:
-            - gcp
-  - name: "deploy_service"
-    transport:
-      root_module_directory: test/fixtures/deploy_service
-    verifier:
-      systems:
-        - name: deploy_service
-          backend: local
-          controls:
-            - gcloud
-            - kubectl
   - name: "node_pool"
     transport:
       root_module_directory: test/fixtures/node_pool
@@ -212,41 +108,10 @@ suites:
           controls:
             - gcloud
             - kubectl
-  - name: "sandbox_enabled"
-    transport:
-      root_module_directory: test/fixtures/sandbox_enabled
-    verifier:
-      systems:
-        - name: sandbox_enabled
-          backend: local
   - name: "safer_cluster_iap_bastion"
     transport:
       root_module_directory: test/fixtures/safer_cluster_iap_bastion
     verifier:
       systems:
         - name: safer_cluster_iap_bastion
-          backend: local
-  - name: "simple_zonal_with_asm"
-    transport:
-      root_module_directory: test/fixtures/simple_zonal_with_asm
-    verifier:
-      systems:
-        - name: simple_zonal_with_asm
-          backend: local
-          controls:
-            - gcloud
-            - kubectl
-  - name: "simple_autopilot_private"
-    transport:
-      root_module_directory: test/fixtures/simple_autopilot_private
-    verifier:
-      systems:
-        - name: simple_autopilot_private
-          backend: local
-  - name: "simple_autopilot_public"
-    transport:
-      root_module_directory: test/fixtures/simple_autopilot_public
-    verifier:
-      systems:
-        - name: simple_autopilot_public
           backend: local

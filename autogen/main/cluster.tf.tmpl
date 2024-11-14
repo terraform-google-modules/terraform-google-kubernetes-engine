@@ -94,13 +94,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 {% endif %}
-{% if autopilot_cluster != true %}
-  # only one of logging/monitoring_service or logging/monitoring_config can be specified
-  {% if beta_cluster %}
-  logging_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.logging_service
-  {% else %}
-  logging_service = local.logmon_config_is_set ? null : var.logging_service
-  {% endif %}
   dynamic "logging_config" {
     for_each = length(var.logging_enabled_components) > 0 ? [1] : []
 
@@ -108,19 +101,20 @@ resource "google_container_cluster" "primary" {
       enable_components = var.logging_enabled_components
     }
   }
-  {% if beta_cluster %}
-  monitoring_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.monitoring_service
-  {% else %}
-  monitoring_service = local.logmon_config_is_set ? null : var.monitoring_service
-  {% endif %}
+
   dynamic "monitoring_config" {
+  {% if autopilot_cluster != true %}
     {% if beta_cluster %}
     for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
     {% else %}
     for_each = local.logmon_config_is_set || local.logmon_config_is_set ? [1] : []
     {% endif %}
+  {% else %}
+    for_each = length(var.monitoring_enabled_components) > 0 ? [1] : []
+  {% endif %}
     content{
       enable_components = var.monitoring_enabled_components
+    {% if autopilot_cluster != true %}
       managed_prometheus {
         enabled = var.monitoring_enable_managed_prometheus
       }
@@ -128,8 +122,23 @@ resource "google_container_cluster" "primary" {
         enable_metrics = var.monitoring_enable_observability_metrics
         enable_relay   = var.monitoring_enable_observability_relay
       }
+    {% endif %}
     }
   }
+
+{% if autopilot_cluster != true %}
+  # only one of logging/monitoring_service or logging/monitoring_config can be specified
+  {% if beta_cluster %}
+  logging_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.logging_service
+  {% else %}
+  logging_service = local.logmon_config_is_set ? null : var.logging_service
+  {% endif %}
+  {% if beta_cluster %}
+  monitoring_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.monitoring_service
+  {% else %}
+  monitoring_service = local.logmon_config_is_set ? null : var.monitoring_service
+  {% endif %}
+
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
     dynamic "auto_provisioning_defaults" {

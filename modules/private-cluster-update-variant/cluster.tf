@@ -80,8 +80,6 @@ resource "google_container_cluster" "primary" {
 
   min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : var.kubernetes_version == "latest" ? null : var.kubernetes_version
 
-  # only one of logging/monitoring_service or logging/monitoring_config can be specified
-  logging_service = local.logmon_config_is_set ? null : var.logging_service
   dynamic "logging_config" {
     for_each = length(var.logging_enabled_components) > 0 ? [1] : []
 
@@ -89,7 +87,7 @@ resource "google_container_cluster" "primary" {
       enable_components = var.logging_enabled_components
     }
   }
-  monitoring_service = local.logmon_config_is_set ? null : var.monitoring_service
+
   dynamic "monitoring_config" {
     for_each = local.logmon_config_is_set || local.logmon_config_is_set ? [1] : []
     content {
@@ -103,6 +101,11 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
+
+  # only one of logging/monitoring_service or logging/monitoring_config can be specified
+  logging_service    = local.logmon_config_is_set ? null : var.logging_service
+  monitoring_service = local.logmon_config_is_set ? null : var.monitoring_service
+
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
     dynamic "auto_provisioning_defaults" {
