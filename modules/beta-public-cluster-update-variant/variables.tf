@@ -552,6 +552,12 @@ variable "enable_confidential_nodes" {
   default     = false
 }
 
+variable "enable_gcfs" {
+  type        = bool
+  description = "Enable image streaming on cluster level."
+  default     = false
+}
+
 variable "enable_secret_manager_addon" {
   description = "Enable the Secret Manager add-on for this cluster"
   type        = bool
@@ -904,12 +910,6 @@ variable "enable_pod_security_policy" {
 variable "sandbox_enabled" {
   type        = bool
   description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
-  default     = false
-}
-
-variable "enable_gcfs" {
-  type        = bool
-  description = "(Beta) Enable image streaming on cluster level."
   default     = false
 }
 

@@ -346,6 +346,12 @@ variable "enable_confidential_nodes" {
   default     = false
 }
 
+variable "enable_gcfs" {
+  type        = bool
+  description = "Enable image streaming on cluster level."
+  default     = true
+}
+
 variable "enable_secret_manager_addon" {
   description = "Enable the Secret Manager add-on for this cluster"
   type        = bool
@@ -534,12 +540,6 @@ variable "enable_l4_ilb_subsetting" {
   type        = bool
   description = "Enable L4 ILB Subsetting on the cluster"
   default     = false
-}
-
-variable "enable_gcfs" {
-  type        = bool
-  description = "(Beta) Enable image streaming on cluster level."
-  default     = true
 }
 
 variable "allow_net_admin" {
