@@ -546,6 +546,12 @@ variable "enable_confidential_nodes" {
   default     = false
 }
 
+variable "enable_gcfs" {
+  type        = bool
+  description = "Enable image streaming on cluster level."
+  default     = false
+}
+
 variable "enable_secret_manager_addon" {
   description = "Enable the Secret Manager add-on for this cluster"
   type        = bool

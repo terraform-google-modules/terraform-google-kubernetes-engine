@@ -698,11 +698,9 @@ resource "google_container_cluster" "primary" {
       }
       {% endif %}
       {% if autopilot_cluster != true %}
-      {% if beta_cluster %}
       gcfs_config {
         enabled = var.enable_gcfs
       }
-      {% endif %}
       insecure_kubelet_readonly_port_enabled = var.insecure_kubelet_readonly_port_enabled != null ? upper(tostring(var.insecure_kubelet_readonly_port_enabled)) : null
       {% endif %}
     }

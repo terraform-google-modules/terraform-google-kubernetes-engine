@@ -614,6 +614,17 @@ variable "enable_confidential_nodes" {
   default = false
 }
 
+variable "enable_gcfs" {
+  type        = bool
+  description = "Enable image streaming on cluster level."
+  {% if autopilot_cluster != true %}
+  default     = false
+  {% endif %}
+  {% if autopilot_cluster %}
+  default     = true
+  {% endif %}
+}
+
 variable "enable_secret_manager_addon" {
   description = "Enable the Secret Manager add-on for this cluster"
   type        = bool
@@ -987,17 +998,6 @@ variable "sandbox_enabled" {
   default     = false
 }
   {% endif %}
-
-variable "enable_gcfs" {
-  type        = bool
-  description = "(Beta) Enable image streaming on cluster level."
-  {% if autopilot_cluster != true %}
-  default     = false
-  {% endif %}
-  {% if autopilot_cluster %}
-  default     = true
-  {% endif %}
-}
 {% endif %}
 
 {% if autopilot_cluster != true %}
