@@ -24,33 +24,33 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 6.7.0, < 6.10.0"
+      version = ">= 6.7.0, < 6.11.0"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 6.7.0, < 6.10.0"
+      version = ">= 6.7.0, < 6.11.0"
     }
 {% elif beta_cluster and autopilot_cluster %}
   required_providers {
     google = {
       source = "hashicorp/google"
-      version = ">= 6.5.0, < 6.10.0"
+      version = ">= 6.5.0, < 6.11.0"
     }
     google-beta = {
       source = "hashicorp/google-beta"
-      version = ">= 6.5.0, < 6.10.0"
+      version = ">= 6.5.0, < 6.11.0"
     }
 {% elif autopilot_cluster  %}
   required_providers {
     google = {
       source = "hashicorp/google"
-      version = ">= 6.5.0, < 6.10.0"
+      version = ">= 6.5.0, < 6.11.0"
     }
 {% else %}
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 6.7.0, < 6.10.0"
+      version = ">= 6.7.0, < 6.11.0"
     }
 {% endif %}
     kubernetes = {
