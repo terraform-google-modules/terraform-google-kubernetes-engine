@@ -24,70 +24,35 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 6.7.0, < 7"
+      version = ">= 6.7.0, < 6.10.0"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 6.7.0, < 7"
+      version = ">= 6.7.0, < 6.10.0"
     }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.10"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = ">= 2.1"
-    }
-  }
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v34.0.0"
-  }
 {% elif beta_cluster and autopilot_cluster %}
   required_providers {
     google = {
       source = "hashicorp/google"
-      version = ">= 6.5.0, < 7"
+      version = ">= 6.5.0, < 6.10.0"
     }
     google-beta = {
       source = "hashicorp/google-beta"
-      version = ">= 6.5.0, < 7"
+      version = ">= 6.5.0, < 6.10.0"
     }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.10"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = ">= 2.1"
-    }
-  }
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v34.0.0"
-  }
 {% elif autopilot_cluster  %}
   required_providers {
     google = {
       source = "hashicorp/google"
-      version = ">= 6.5.0, < 7"
+      version = ">= 6.5.0, < 6.10.0"
     }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.10"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = ">= 2.1"
-    }
-  }
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v34.0.0"
-  }
 {% else %}
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 6.7.0, < 7"
+      version = ">= 6.7.0, < 6.10.0"
     }
+{% endif %}
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = "~> 2.10"
@@ -97,8 +62,7 @@ terraform {
       version = ">= 2.1"
     }
   }
-  provider_meta "google" {
+  provider_meta "{% if beta_cluster %}google-beta{% else %}google{% endif %}" {
     module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v34.0.0"
   }
-{% endif %}
 }
