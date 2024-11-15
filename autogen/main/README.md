@@ -85,7 +85,6 @@ module "gke" {
   {% if private_cluster %}
   enable_private_endpoint    = true
   enable_private_nodes       = true
-  master_ipv4_cidr_block     = "10.0.0.0/28"
   {% endif %}
   {% if beta_cluster and autopilot_cluster != true  %}
   istio                      = true
