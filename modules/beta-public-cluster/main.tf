@@ -49,10 +49,8 @@ locals {
   master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
   // Build a map of maps of node pools from a list of objects
-  node_pool_names         = [for np in toset(var.node_pools) : np.name]
-  node_pools              = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
-  windows_node_pool_names = [for np in toset(var.windows_node_pools) : np.name]
-  windows_node_pools      = zipmap(local.windows_node_pool_names, tolist(toset(var.windows_node_pools)))
+  node_pools         = { for np in var.node_pools : np.name => np }
+  windows_node_pools = { for np in var.windows_node_pools : np.name => np }
 
   fleet_membership = var.fleet_project != null ? google_container_cluster.primary.fleet[0].membership : null
 
