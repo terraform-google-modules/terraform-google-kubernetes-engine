@@ -83,3 +83,7 @@ output "service_account" {
 output "registry_project_ids" {
   value = var.registry_project_ids
 }
+
+output "random_string" {
+  value = random_string.suffix.result
+}
