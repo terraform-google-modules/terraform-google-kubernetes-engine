@@ -15,15 +15,20 @@ package node_pool
 
 import (
 	"fmt"
+	"slices"
+	"strings"
 	"testing"
 	"time"
 
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/cai"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
-	gkeutils "github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/utils"
+	"golang.org/x/sync/errgroup"
 )
 
 func TestNodePool(t *testing.T) {
@@ -34,20 +39,25 @@ func TestNodePool(t *testing.T) {
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		// Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
 		// bpt.DefaultVerify(assert)
-		gkeutils.TGKEVerify(t, bpt, assert) // Verify Resources
+		testutils.TGKEVerify(t, bpt, assert) // Verify Resources
 
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")
+		randomString := bpt.GetStringOutput("random_string")
+		kubernetesEndpoint := bpt.GetStringOutput("kubernetes_endpoint")
+		//serviceAccount := bpt.GetStringOutput("service_account")
 
-		//cluster := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
+		// Retrieve Cluster using CAI
 		clusterResourceName := fmt.Sprintf("//container.googleapis.com/projects/%s/locations/%s/clusters/%s", projectId, location, clusterName)
-		cluster := gkeutils.GetProjectResources(t, projectId, gkeutils.WithAssetType("container.googleapis.com/Cluster")).Get("#(name=\"" + clusterResourceName + "\").resource.data")
+		cluster := cai.GetProjectResources(t, projectId, cai.WithAssetTypes([]string{"container.googleapis.com/Cluster"})).Get("#(name=\"" + clusterResourceName + "\").resource.data")
+		// Equivalent gcloud describe command
+		// cluster := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 
 		// Cluster
 		assert.Contains([]string{"RUNNING", "RECONCILING"}, cluster.Get("status").String(), "Cluster is Running")
 		assert.Equal("COS_CONTAINERD", cluster.Get("autoscaling.autoprovisioningNodePoolDefaults.imageType").String(), "has the expected image type")
-		assert.Equal("[\n        \"https://www.googleapis.com/auth/cloud-platform\"\n      ]", cluster.Get("autoscaling.autoprovisioningNodePoolDefaults.oauthScopes").String(), "has the expected oauth scopes")
+		assert.Equal("https://www.googleapis.com/auth/cloud-platform", cluster.Get("autoscaling.autoprovisioningNodePoolDefaults.oauthScopes.0").String(), "has the expected oauth scopes")
 		assert.Equal("default", cluster.Get("autoscaling.autoprovisioningNodePoolDefaults.serviceAccount").String(), "has the expected service account")
 		assert.Equal("OPTIMIZE_UTILIZATION", cluster.Get("autoscaling.autoscalingProfile").String(), "has the expected autoscaling profile")
 		assert.True(cluster.Get("autoscaling.enableNodeAutoprovisioning").Bool(), "has the expected node autoprovisioning")
@@ -64,6 +74,84 @@ func TestNodePool(t *testing.T) {
 				}
 			]`,
 			cluster.Get("autoscaling.resourceLimits").String(), "has the expected resource limits")
+
+		// Cluster (using golden image with sanitizer)
+		g := golden.NewOrUpdate(t, cluster.String(),
+			//golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
+			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
+			golden.WithSanitizer(golden.StringSanitizer(location, "LOCATION")),
+			//golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
+			golden.WithSanitizer(golden.StringSanitizer(randomString, "RANDOM_STRING")),
+			golden.WithSanitizer(golden.StringSanitizer(kubernetesEndpoint, "KUBERNETES_ENDPOINT")),
+		)
+
+		fmt.Println("START JSONEq")
+		validateJSONPaths := []string{
+			"autoscaling.autoprovisioningNodePoolDefaults.imageType",
+			"autoscaling.autoprovisioningNodePoolDefaults.oauthScopes.0",
+			"autoscaling.autoprovisioningNodePoolDefaults.serviceAccount",
+			"autoscaling.autoscalingProfile",
+			"autoscaling.enableNodeAutoprovisioning",
+			"autoscaling.resourceLimits[0].maximum",
+			"autoscaling.resourceLimits[0].minimum",
+			"autoscaling.resourceLimits[0].resourceType",
+			"autoscaling.resourceLimits[1].maximum",
+			"autoscaling.resourceLimits[1].minimum",
+			"autoscaling.resourceLimits[1].resourceType",
+		}
+		for _, pth := range validateJSONPaths {
+			g.JSONEq(assert, cluster, pth)
+		}
+		fmt.Println("END JSONEq")
+
+		fmt.Println("START one path")
+		g.JSONPathEqs(assert, cluster, []string{"autoscaling.autoprovisioningNodePoolDefaults.imageType"})
+		fmt.Println("END one path")
+
+		fmt.Println("START multi path")
+		g.JSONPathEqs(assert, cluster, validateJSONPaths)
+		fmt.Println("END multi path")
+
+		fmt.Println("START all paths")
+		// Test validating all paths in golden image
+		jsonPaths := utils.GetTerminalJSONPaths(g.GetJSON())
+
+		// List of paths exempt from validation
+		exemptJSONPathPrefixes := []string{
+			"nodePools", // nodePools are unordered
+			"monitoringConfig.componentConfig.enableComponents",
+		}
+
+		// Remove exempt paths by prefix
+		jsonPaths = slices.DeleteFunc(jsonPaths, func(s string) bool {
+			for _, path := range exemptJSONPathPrefixes {
+				if strings.HasPrefix(s, path) {
+					// prefix match
+					return true
+				}
+			}
+			// no prefix match
+			return false
+		})
+
+		jsonPaths = append(jsonPaths, "monitoringConfig.componentConfig.enableComponents")
+		// TODO replace with g.JSONPathEqs(assert, cluster, jsonPaths) in bpt v0.17.2
+
+		// JSONPathEqs asserts that json content in jsonPaths for got and goldenfile are the same
+		syncGroup := new(errgroup.Group)
+		syncGroup.SetLimit(24)
+		t.Logf("Checking %d JSON paths with max %d goroutines", len(jsonPaths), 20)
+		for _, jsonPath := range jsonPaths {
+			jsonPath := jsonPath
+			syncGroup.Go(func() error {
+				g.JSONEq(assert, cluster, jsonPath)
+				return nil
+			})
+		}
+		if err := syncGroup.Wait(); err != nil {
+			t.Fatal(err)
+		}
+		fmt.Println("END all paths")
 
 		// Pool-01
 		assert.Equal("pool-01", cluster.Get("nodePools.#(name==\"pool-01\").name").String(), "pool-1 exists")
@@ -129,7 +217,7 @@ func TestNodePool(t *testing.T) {
 		k8sOpts := k8s.KubectlOptions{}
 		clusterNodesOp, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "nodes", "-o", "json")
 		assert.NoError(err)
-		clusterNodes := testutils.ParseKubectlJSONResult(t, clusterNodesOp)
+		clusterNodes := utils.ParseKubectlJSONResult(t, clusterNodesOp)
 		assert.JSONEq(`[
 				{
 					"effect": "PreferNoSchedule",
@@ -148,6 +236,11 @@ func TestNodePool(t *testing.T) {
 					"effect": "PreferNoSchedule",
 					"key": "all-pools-example",
 					"value": "true"
+				},
+				{
+					"effect": "NoSchedule",
+					"key": "nvidia.com/gpu",
+					"value": "present"
 				}
 			]`,
 			clusterNodes.Get("items.#(metadata.labels.node_pool==\"pool-02\").spec.taints").String(), "has the expected all-pools-example taint")
@@ -156,6 +249,11 @@ func TestNodePool(t *testing.T) {
 					"effect": "PreferNoSchedule",
 					"key": "all-pools-example",
 					"value": "true"
+				},
+				{
+					"effect": "NoSchedule",
+					"key": "sandbox.gke.io/runtime",
+					"value": "gvisor"
 				}
 			]`,
 			clusterNodes.Get("items.#(metadata.labels.node_pool==\"pool-03\").spec.taints").String(), "has the expected all-pools-example taint")
