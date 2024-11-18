@@ -94,17 +94,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  dynamic "monitoring_config" {
-    for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
-    content {
-      enable_components = var.monitoring_enabled_components
-      managed_prometheus {
-        enabled = var.monitoring_enable_managed_prometheus
-      }
-      advanced_datapath_observability_config {
-        enable_metrics = var.monitoring_enable_observability_metrics
-        enable_relay   = var.monitoring_enable_observability_relay
-      }
+  monitoring_config {
+    enable_components = var.monitoring_enabled_components
+    managed_prometheus {
+      enabled = var.monitoring_enable_managed_prometheus
+    }
+    advanced_datapath_observability_config {
+      enable_metrics = var.monitoring_enable_observability_metrics
+      enable_relay   = var.monitoring_enable_observability_relay
     }
   }
 
