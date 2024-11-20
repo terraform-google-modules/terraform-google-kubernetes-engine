@@ -280,6 +280,7 @@ Then perform the following commands on the root folder:
 | cluster\_id | Cluster ID |
 | dns\_cache\_enabled | Whether DNS Cache enabled |
 | endpoint | Cluster endpoint |
+| endpoint\_dns | Cluster endpoint DNS |
 | fleet\_membership | Fleet membership (if registered) |
 | gateway\_api\_channel | The gateway api channel of this cluster. |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |

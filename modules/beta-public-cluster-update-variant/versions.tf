@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2022-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 6.7.0, < 7"
+      version = ">= 6.11.0, < 7"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 6.7.0, < 7"
+      version = ">= 6.11.0, < 7"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"

@@ -70,6 +70,20 @@ output "endpoint" {
   ]
 }
 
+output "endpoint_dns" {
+  description = "Cluster endpoint DNS"
+  value       = google_container_cluster.primary.control_plane_endpoints_config[0].dns_endpoint_config[0].endpoint
+  depends_on = [
+    /* Nominally, the endpoint is populated as soon as it is known to Terraform.
+    * However, the cluster may not be in a usable state yet.  Therefore any
+    * resources dependent on the cluster being up will fail to deploy.  With
+    * this explicit dependency, dependent resources can wait for the cluster
+    * to be up.
+    */
+    google_container_cluster.primary,
+  ]
+}
+
 output "min_master_version" {
   description = "Minimum master kubernetes version"
   value       = local.cluster_min_master_version

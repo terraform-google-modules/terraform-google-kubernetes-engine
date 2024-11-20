@@ -546,6 +546,15 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "control_plane_endpoints_config" {
+    for_each = var.enable_private_endpoint && var.deploy_using_private_endpoint ? [1] : [0]
+    content {
+      dns_endpoint_config {
+        allow_external_traffic = var.deploy_using_private_endpoint
+      }
+    }
+  }
+
   remove_default_node_pool = var.remove_default_node_pool
 
   dynamic "database_encryption" {
