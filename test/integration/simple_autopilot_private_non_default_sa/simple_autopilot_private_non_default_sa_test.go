@@ -22,11 +22,10 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
-	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/utils"
 )
 
 func TestSimpleAutopilotPrivateNonDefaultSA(t *testing.T) {
-	projectID := utils.GetTestProjectFromSetup(t, 1)
+	projectID := testutils.GetTestProjectFromSetup(t, 1)
 	bpt := tft.NewTFBlueprintTest(t,
 		tft.WithVars(map[string]interface{}{"project_id": projectID}),
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),

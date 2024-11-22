@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package utils
+package testutils
 
 import (
 	"slices"
@@ -23,12 +23,24 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 	tfjson "github.com/hashicorp/terraform-json"
 	"github.com/stretchr/testify/assert"
-	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
+)
+
+var (
+	RetryableTransientErrors = map[string]string{
+		// Error 409: unable to queue the operation
+		".*Error 409.*unable to queue the operation": "Unable to queue operation.",
+
+		// Error code 409 for concurrent policy changes.
+		".*Error 409.*There were concurrent policy changes.*": "Concurrent policy changes.",
+
+		// API Rate limit exceeded errors can be retried.
+		".*rateLimitExceeded.*": "Rate limit exceeded.",
+	}
 )
 
 func GetTestProjectFromSetup(t *testing.T, idx int) string {
 	setup := tft.NewTFBlueprintTest(t,
-		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
+		tft.WithRetryableTerraformErrors(RetryableTransientErrors, 3, 2*time.Minute),
 	)
 	projectIDs := setup.GetTFSetupOutputListVal("project_ids")
 	if len(projectIDs)-1 < idx {
