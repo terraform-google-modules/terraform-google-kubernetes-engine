@@ -99,7 +99,7 @@ resource "google_container_cluster" "primary" {
     content {
       enable_components = var.monitoring_enabled_components
       managed_prometheus {
-        enabled = var.monitoring_enable_managed_prometheus
+        enabled = var.monitoring_enable_managed_prometheus == null ? false : var.monitoring_enable_managed_prometheus
       }
       advanced_datapath_observability_config {
         enable_metrics = var.monitoring_enable_observability_metrics
