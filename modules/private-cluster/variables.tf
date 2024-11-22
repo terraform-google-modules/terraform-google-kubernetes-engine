@@ -839,7 +839,7 @@ variable "logging_enabled_components" {
 variable "monitoring_enable_managed_prometheus" {
   type        = bool
   description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
-  default     = false
+  default     = null
 }
 
 variable "monitoring_enable_observability_metrics" {
