@@ -80,8 +80,11 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  monitoring_config {
-    enable_components = var.monitoring_enabled_components
+  dynamic "monitoring_config" {
+    for_each = length(var.monitoring_enabled_components) > 0 ? [1] : []
+    content {
+      enable_components = var.monitoring_enabled_components
+    }
   }
 
   cluster_autoscaling {
