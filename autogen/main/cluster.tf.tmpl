@@ -107,7 +107,7 @@ resource "google_container_cluster" "primary" {
     {% if beta_cluster %}
     for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
     {% else %}
-    for_each = local.logmon_config_is_set || local.logmon_config_is_set ? [1] : []
+    for_each = local.logmon_config_is_set ? [1] : []
     {% endif %}
   {% else %}
     for_each = length(var.monitoring_enabled_components) > 0 ? [1] : []
@@ -116,7 +116,7 @@ resource "google_container_cluster" "primary" {
       enable_components = var.monitoring_enabled_components
     {% if autopilot_cluster != true %}
       managed_prometheus {
-        enabled = var.monitoring_enable_managed_prometheus
+        enabled = var.monitoring_enable_managed_prometheus == null ? false : var.monitoring_enable_managed_prometheus
       }
       advanced_datapath_observability_config {
         enable_metrics = var.monitoring_enable_observability_metrics
