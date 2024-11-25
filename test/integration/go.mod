@@ -8,7 +8,7 @@ require (
 	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.17.0
 	github.com/gruntwork-io/terratest v0.47.2
 	github.com/hashicorp/terraform-json v0.23.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	github.com/tidwall/gjson v1.18.0
 )
 
