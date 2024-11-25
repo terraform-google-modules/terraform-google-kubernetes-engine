@@ -21,6 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
@@ -77,7 +78,7 @@ func TestSimpleZonal(t *testing.T) {
 		k8sOpts := k8s.KubectlOptions{}
 		configNameSpace, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "ns", "config-management-system", "-o", "json")
 		assert.NoError(err)
-		configkubeNS := testutils.ParseKubectlJSONResult(t, configNameSpace)
+		configkubeNS := utils.ParseKubectlJSONResult(t, configNameSpace)
 		assert.Contains(configkubeNS.Get("metadata.name").String(), "config-management-system", "Namespace is Functional")
 	})
 

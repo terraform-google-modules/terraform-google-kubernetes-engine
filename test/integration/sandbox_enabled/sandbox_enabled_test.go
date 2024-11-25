@@ -22,7 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
-	gkeutils "github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/utils"
 )
 
 func TestSandboxEnabled(t *testing.T) {
@@ -33,7 +32,7 @@ func TestSandboxEnabled(t *testing.T) {
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
 		// bpt.DefaultVerify(assert)
-		gkeutils.TGKEVerify(t, bpt, assert) // Verify Resources
+		testutils.TGKEVerify(t, bpt, assert) // Verify Resources
 
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
