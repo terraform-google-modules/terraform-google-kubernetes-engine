@@ -519,7 +519,7 @@ variable "monitoring_enabled_components" {
 
 variable "logging_enabled_components" {
   type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, KCP_CONNECTION, KCP_SSHD, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
   default     = []
   validation {
     condition = alltrue([
@@ -529,10 +529,12 @@ variable "logging_enabled_components" {
         "APISERVER",
         "CONTROLLER_MANAGER",
         "SCHEDULER",
+        "KCP_CONNECTION",
+        "KCP_SSHD",
         "WORKLOADS"
       ], c)
     ])
-    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS."
+    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, KCP_CONNECTION, KCP_SSHD and WORKLOADS."
   }
 }
 
