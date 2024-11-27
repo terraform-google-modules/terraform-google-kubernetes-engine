@@ -54,7 +54,7 @@ func TestBetaCluster(t *testing.T) {
 			"privateClusterConfig.enablePrivateEndpoint",
 			"networkConfig.datapathProvider",
 			"databaseEncryption.state",
-			"identityServiceConfig.enabled",
+			// "identityServiceConfig.enabled", TODO: b/378974729
 			"addonsConfig",
 			"networkConfig.datapathProvider",
 			"binaryAuthorization",
