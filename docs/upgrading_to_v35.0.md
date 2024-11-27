@@ -7,7 +7,7 @@ The Terraform Kubernetes Engine Module now requires version 6 of the Google Clou
 ### Private Cluster Sub-Modules Endpoint Output
 The private cluster sub-modules now return the cluster's private endpoint for the `endpoint` output when the `enable_private_endpoint` argument is `true`, regardless of the `deploy_using_private_endpoint` argument value.
 
-### Update variant random ID keepers updated
+## Update variant random ID keepers updated
 
 The v35.0 release updates the keepers for the update variant modules. This will force a recreation of the nodepools.
 
