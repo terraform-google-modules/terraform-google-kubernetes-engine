@@ -290,6 +290,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | cluster\_id | Cluster ID |
 | enable\_mesh\_certificates | Mesh certificate configuration value |
 | endpoint | Cluster endpoint |
+| endpoint\_dns | Cluster endpoint DNS |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |

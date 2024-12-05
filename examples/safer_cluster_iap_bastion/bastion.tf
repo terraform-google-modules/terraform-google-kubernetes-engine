@@ -34,4 +34,6 @@ module "bastion" {
   startup_script = templatefile("${path.module}/templates/startup-script.tftpl", {})
   members        = var.bastion_members
   shielded_vm    = "false"
+
+  service_account_roles = ["roles/container.viewer"]
 }
