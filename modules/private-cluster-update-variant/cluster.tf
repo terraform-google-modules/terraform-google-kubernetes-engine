@@ -572,8 +572,6 @@ resource "google_container_cluster" "primary" {
  *****************************************/
 locals {
   force_node_pool_recreation_resources = [
-    "disk_size_gb",
-    "disk_type",
     "accelerator_count",
     "accelerator_type",
     "gpu_partition_size",
@@ -583,7 +581,6 @@ locals {
     "enable_secure_boot",
     "enable_integrity_monitoring",
     "local_ssd_count",
-    "machine_type",
     "placement_policy",
     "max_pods_per_node",
     "min_cpu_platform",
@@ -591,7 +588,6 @@ locals {
     "preemptible",
     "spot",
     "service_account",
-    "enable_gcfs",
     "enable_gvnic",
     "boot_disk_kms_key",
     "queued_provisioning",
