@@ -15,7 +15,7 @@
  */
 
 locals {
-  test_command = "gcloud beta compute ssh ${module.example.bastion_name} --tunnel-through-iap --verbosity=error --project ${var.project_ids[1]} --zone ${module.example.bastion_zone} --ssh-flag=\"-T\" -q -- curl -sS https://${module.example.endpoint}/version -k"
+  test_command = "gcloud beta compute ssh ${module.example.bastion_name} --tunnel-through-iap --verbosity=error --project ${var.project_ids[1]} --zone ${module.example.bastion_zone} -q --command='curl -H \"Authorization: Bearer $(gcloud auth print-access-token)\" -H \"Content-Type: application/json\" -sS https://${module.example.endpoint_dns}/version -k'"
 }
 
 module "example" {

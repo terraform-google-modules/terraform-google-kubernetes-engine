@@ -35,6 +35,12 @@ output "endpoint" {
   value       = module.gke.endpoint
 }
 
+output "endpoint_dns" {
+  sensitive   = true
+  description = "Cluster endpoint DNS"
+  value       = module.gke.endpoint_dns
+}
+
 output "master_authorized_networks_config" {
   description = "Networks from which access to master is permitted"
   value       = module.gke.master_authorized_networks_config
