@@ -34,7 +34,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster-update-variant"
-  version = "~> 33.0"
+  version = "~> 34.0"
 
   project_id              = var.project_id
   name                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -61,11 +61,12 @@ module "gke" {
 
   node_pools = [
     {
-      name            = "pool-01"
-      min_count       = 1
-      max_count       = 2
-      service_account = var.compute_engine_service_account
-      auto_upgrade    = true
+      name                                   = "pool-01"
+      min_count                              = 1
+      max_count                              = 2
+      service_account                        = var.compute_engine_service_account
+      auto_upgrade                           = true
+      insecure_kubelet_readonly_port_enabled = false
     },
     {
       name              = "pool-02"

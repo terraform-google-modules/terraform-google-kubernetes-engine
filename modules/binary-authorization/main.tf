@@ -25,7 +25,7 @@ locals {
 
 module "project-services" {
   source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 16.0"
+  version = "~> 17.0"
 
   project_id    = var.project_id
   activate_apis = local.required_enabled_apis

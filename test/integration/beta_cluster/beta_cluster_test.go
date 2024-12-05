@@ -33,8 +33,7 @@ func TestBetaCluster(t *testing.T) {
 	)
 
 	gke.DefineVerify(func(assert *assert.Assertions) {
-		// Commenting Default Verify due to issue 1478 for location Policy
-		// gke.DefaultVerify(assert) //disables no changes
+		gke.DefaultVerify(assert)
 
 		projectId := gke.GetStringOutput("project_id")
 		location := gke.GetStringOutput("location")
@@ -55,7 +54,7 @@ func TestBetaCluster(t *testing.T) {
 			"privateClusterConfig.enablePrivateEndpoint",
 			"networkConfig.datapathProvider",
 			"databaseEncryption.state",
-			"identityServiceConfig.enabled",
+			// "identityServiceConfig.enabled", TODO: b/378974729
 			"addonsConfig",
 			"networkConfig.datapathProvider",
 			"binaryAuthorization",

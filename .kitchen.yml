@@ -14,11 +14,14 @@
 ---
 driver:
   name: "terraform"
-  command_timeout: 2700
   verify_version: false
 
 provisioner:
   name: "terraform"
+
+transport:
+  name: "terraform"
+  command_timeout: 2700
 
 verifier:
   name: terraform
@@ -29,103 +32,22 @@ platforms:
   - name: local
 
 suites:
-  - name: "shared_vpc"
-    driver:
-      root_module_directory: test/fixtures/shared_vpc
-    verifier:
-      systems:
-        - name: shared_vpc
-          backend: local
-  - name: "safer_cluster"
-    driver:
-      root_module_directory: test/fixtures/safer_cluster
-    verifier:
-      systems:
-        - name: safer_cluster
-          backend: local
-          controls:
-            - gcloud
-        - name: inspec-gcp
-          backend: gcp
-          controls:
-            - network
-  - name: "simple_regional"
-    driver:
-      root_module_directory: test/fixtures/simple_regional
-    verifier:
-      systems:
-        - name: simple_regional
-          backend: local
-  - name: "simple_regional_with_networking"
-    driver:
-      root_module_directory: test/fixtures/simple_regional_with_networking
-    verifier:
-      systems:
-        - name: simple_regional_with_networking
-          backend: local
-          controls:
-            - gcloud
-        - name: subnet
-          backend: local
-          controls:
-            - subnet
-        - name: network
-          backend: gcp
-          controls:
-            - network
-  - name: "simple_regional_private"
-    driver:
-      root_module_directory: test/fixtures/simple_regional_private
-    verifier:
-      systems:
-        - name: simple_regional_private
-          backend: local
   - name: "simple_regional_with_gateway_api"
-    driver:
+    transport:
       root_module_directory: test/fixtures/simple_regional_with_gateway_api
     verifier:
       systems:
         - name: simple_regional_with_gateway_api
           backend: local
   - name: "simple_regional_with_ipv6"
-    driver:
+    transport:
       root_module_directory: test/fixtures/simple_regional_with_ipv6
     verifier:
       systems:
         - name: simple_regional_with_ipv6
           backend: local
-  - name: "simple_regional_with_kubeconfig"
-    driver:
-      root_module_directory: test/fixtures/simple_regional_with_kubeconfig
-    verifier:
-      systems:
-        - name: simple_regional_with_kubeconfig
-          backend: local
-  - name: "simple_zonal"
-    driver:
-      root_module_directory: test/fixtures/simple_zonal
-    verifier:
-      systems:
-        - name: gcloud
-          backend: local
-          controls:
-            - gcloud
-            - acm
-        - name: gcp
-          backend: gcp
-          controls:
-            - gcp
-  - name: "simple_zonal_private"
-    driver:
-      root_module_directory: test/fixtures/simple_zonal_private
-    verifier:
-      systems:
-        - name: simple_zonal_private
-          backend: local
-          controls:
-            - gcloud
   - name: "stub_domains"
-    driver:
+    transport:
       root_module_directory: test/fixtures/stub_domains
     verifier:
       systems:
@@ -137,27 +59,27 @@ suites:
   # Disabled due to issue #264
   # (https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/264)
   #  - name: stub_domains_private
-  #    driver:
+  #    transport:
   #      root_module_directory: test/fixtures/stub_domains_private
   #      systems:
   #        - name: stub_domains_private
   #          backend: local
   - name: "upstream_nameservers"
-    driver:
+    transport:
       root_module_directory: test/fixtures/upstream_nameservers
     verifier:
       systems:
         - name: upstream_nameservers
           backend: local
   - name: "stub_domains_upstream_nameservers"
-    driver:
+    transport:
       root_module_directory: test/fixtures/stub_domains_upstream_nameservers
     verifier:
       systems:
         - name: stub_domains_upstream_nameservers
           backend: local
   - name: "workload_identity"
-    driver:
+    transport:
       root_module_directory: test/fixtures/workload_identity
     verifier:
       systems:
@@ -170,37 +92,14 @@ suites:
           controls:
             - gcp
   - name: "workload_metadata_config"
-    driver:
+    transport:
       root_module_directory: test/fixtures/workload_metadata_config
     verifier:
       systems:
         - name: workload_metadata_config
           backend: local
-  - name: "simple_windows_node_pool"
-    driver:
-      root_module_directory: test/fixtures/simple_windows_node_pool
-    verifier:
-      systems:
-        - name: gcloud
-          backend: local
-          controls:
-            - gcloud
-        - name: gcp
-          backend: gcp
-          controls:
-            - gcp
-  - name: "deploy_service"
-    driver:
-      root_module_directory: test/fixtures/deploy_service
-    verifier:
-      systems:
-        - name: deploy_service
-          backend: local
-          controls:
-            - gcloud
-            - kubectl
   - name: "node_pool"
-    driver:
+    transport:
       root_module_directory: test/fixtures/node_pool
     verifier:
       systems:
@@ -209,41 +108,10 @@ suites:
           controls:
             - gcloud
             - kubectl
-  - name: "sandbox_enabled"
-    driver:
-      root_module_directory: test/fixtures/sandbox_enabled
-    verifier:
-      systems:
-        - name: sandbox_enabled
-          backend: local
   - name: "safer_cluster_iap_bastion"
-    driver:
+    transport:
       root_module_directory: test/fixtures/safer_cluster_iap_bastion
     verifier:
       systems:
         - name: safer_cluster_iap_bastion
-          backend: local
-  - name: "simple_zonal_with_asm"
-    driver:
-      root_module_directory: test/fixtures/simple_zonal_with_asm
-    verifier:
-      systems:
-        - name: simple_zonal_with_asm
-          backend: local
-          controls:
-            - gcloud
-            - kubectl
-  - name: "simple_autopilot_private"
-    driver:
-      root_module_directory: test/fixtures/simple_autopilot_private
-    verifier:
-      systems:
-        - name: simple_autopilot_private
-          backend: local
-  - name: "simple_autopilot_public"
-    driver:
-      root_module_directory: test/fixtures/simple_autopilot_public
-    verifier:
-      systems:
-        - name: simple_autopilot_public
           backend: local

@@ -21,11 +21,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 5.40.0, < 7"
+      version = ">= 6.7.0, < 7"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 5.40.0, < 7"
+      version = ">= 6.7.0, < 7"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -37,6 +37,6 @@ terraform {
     }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-public-cluster-update-variant/v33.0.4"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-public-cluster-update-variant/v34.0.0"
   }
 }

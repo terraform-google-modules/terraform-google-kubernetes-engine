@@ -83,7 +83,8 @@
         "displayName": "VPC"
       }
     ],
-    "enabled": true
+    "enabled": true,
+    "privateEndpointEnforcementEnabled": true
   },
   "monitoringConfig": {
     "componentConfig": {

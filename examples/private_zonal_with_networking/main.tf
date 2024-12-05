@@ -61,7 +61,7 @@ data "google_compute_subnetwork" "subnetwork" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
-  version = "~> 33.0"
+  version = "~> 34.0"
 
   project_id = var.project_id
   name       = var.cluster_name
@@ -78,6 +78,8 @@ module "gke" {
   enable_private_nodes    = true
   master_ipv4_cidr_block  = "172.16.0.0/28"
   deletion_protection     = false
+
+  insecure_kubelet_readonly_port_enabled = false
 
   master_authorized_networks = [
     {

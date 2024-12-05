@@ -16,7 +16,7 @@
 
 module "acm" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/acm"
-  version = "~> 33.0"
+  version = "~> 34.0"
 
   project_id   = var.project_id
   location     = module.gke.location
@@ -25,6 +25,8 @@ module "acm" {
   sync_repo   = "git@github.com:GoogleCloudPlatform/anthos-config-management-samples.git"
   sync_branch = "1.0.0"
   policy_dir  = "foo-corp"
+
+  enable_policy_controller = false
 
   enable_fleet_feature = var.enable_fleet_feature
 

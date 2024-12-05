@@ -6,6 +6,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [34.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.1.0...v34.0.0) (2024-10-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=5.44.2:** add standard cluster support for `insecureKubeletReadonlyPortEnabled` ([#2082](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2082))
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v17 ([#2109](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2109))
+
+### Features
+
+* Add create_ignore_already_exists to workload_identity ([#2142](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2142)) ([76d779c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/76d779c314727bfccf64bfd34c61e1ce56bc55b9))
+* **safer-cluster:** add create_service_account variable ([#2138](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2138)) ([cccabcb](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/cccabcb0eca2a7755908e8d17b40ffba87f4839e))
+* **TPG>=5.44.2:** add standard cluster support for `insecureKubeletReadonlyPortEnabled` ([#2082](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2082)) ([96626d5](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/96626d541617cb99a3ee19b019ba51c6146f69c0))
+
+
+### Bug Fixes
+
+* add kubelet_config to default-pool ([#2147](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2147)) ([7828a0f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7828a0ff35136a9e5fa91a7d26ba07bda734c31b))
+* add target tags to `node_pool_auto_config` for standard clusters ([#2118](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2118)) ([d5f66e8](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d5f66e86dd163d505ff455a9c5fafe7d659da36f))
+* correct confidential node field name ([#2140](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2140)) ([373c969](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/373c96954af9ce53dd3eb062f372efa832378334))
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v17 ([#2109](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2109)) ([3073b04](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3073b048cb79524aeaaf46ff2835b79a6f7b7f23))
+* fix typo in kube-dns-upstream-nameservers configmap ([#2149](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2149)) ([843c56c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/843c56cef4157a3bcc281a8bd08021baa733dae1))
+* **node_pools:** Update Variants: Add recreate for `secondary_boot_disk` and `local_ssd_ephemeral_count` (beta) ([#2139](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2139)) ([66231d5](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/66231d5ad91e282e750b4c9c3b398ab97aa8c147))
+* remove dns from autopilot ([#2152](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2152)) ([2e645cd](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2e645cd4248b1a3663fde9f9fea4372f408e7b36))
+* remove unnecessary lookup for safer_cluster nodepool ID ([#2160](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2160)) ([179a8ec](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/179a8ecd241690215253ec860ca041b7b3781e9e))
+* send provider enum values for `insecureKubeletReadonlyPortEnabled` ([#2145](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2145)) ([922ab1d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/922ab1daa32b97325b8c62a19f0b24ee71e189e5))
+* update resource names to snake_case ([#2151](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2151)) ([375d27c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/375d27cffddb1af851462c2b3a773a25e4dd40ac))
+
+## [33.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.4...v33.1.0) (2024-10-09)
+
+
+### Features
+
+* add a flag to allow access through Google Cloud public IP addresses ([#2078](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2078)) ([2f412bb](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2f412bb54ed0e576af6fbeeac33382a384fe4dc0))
+* added confidential-nodes flag for node-pools ([#2110](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2110)) ([b2a597b](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b2a597b8a7f7fded526a8000940efaea852437bc))
+* enable L4 ILB subsetting support for safer clusters ([#2105](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2105)) ([0733908](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/073390897e38310124646e56a39c305809fbded4))
+
+
+### Bug Fixes
+
+* **acm:** correct membership location ([#2128](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2128)) ([7cf9894](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7cf9894f40e76ad8bc787fbcfa9d06f1e658f855))
+* **acm:** use membership registration location ([#2123](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2123)) ([caa194f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/caa194fd73720dd5ffea1ac36817a4601a700735))
+* allow changing `enable_identity_service` value in place ([#2132](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2132)) ([9c2191e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9c2191eca6582f9f2be3fe941afdf26eb03d78e4))
+* allow null `enable_gcfs` setting in defined nodepools ([#2111](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2111)) ([700a01d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/700a01d56f063d2aeec97c30cd03abdfbf1ca312))
+* **autopilot:** narrow version exclusion ([#2112](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2112)) ([620bf32](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/620bf32e877201af5a7e575af61b9590431991ef))
+* ignore control plane network when private endpoint subnet is set ([#2122](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2122)) ([a4b130d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a4b130d2bba7db0caa9a2339f016d9d880fbac9a))
+
 ## [33.0.4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.0.3...v33.0.4) (2024-09-18)
 
 

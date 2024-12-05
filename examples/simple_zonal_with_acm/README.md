@@ -1,6 +1,6 @@
 # Simple Zonal Cluster
 
-This example illustrates how to create a simple cluster and install [Anthos Config Management](https://cloud.google.com/anthos-config-management/docs/)'s [Config Sync](https://cloud.google.com/anthos-config-management/docs/config-sync-overview) and [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) with the [Policy Essentials v2022 policy bundle](https://cloud.google.com/anthos-config-management/docs/how-to/using-policy-essentials-v2022).
+This example illustrates how to create a simple cluster and install [Anthos Config Management](https://cloud.google.com/anthos-config-management/docs/)'s [Config Sync](https://cloud.google.com/anthos-config-management/docs/config-sync-overview).
 
 It incorporates the standard cluster module and the [ACM install module](../../modules/acm).
 
@@ -25,12 +25,6 @@ After applying the Terraform configuration, you can run the following commands t
 
     ```
     kubectl describe ns shipping-dev
-    ```
-
-4. You can also use `kubectl` to view any policy violations on the cluster:
-
-    ```
-    kubectl get constraint -l policycontroller.gke.io/bundleName=policy-essentials-v2022 -o json | jq -cC '.items[]| [.metadata.name,.status.totalViolations]'
     ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -72,6 +72,21 @@ resource "google_container_cluster" "primary" {
 
   min_master_version = var.release_channel == null || var.release_channel == "UNSPECIFIED" ? local.master_version : var.kubernetes_version == "latest" ? null : var.kubernetes_version
 
+  dynamic "logging_config" {
+    for_each = length(var.logging_enabled_components) > 0 ? [1] : []
+
+    content {
+      enable_components = var.logging_enabled_components
+    }
+  }
+
+  dynamic "monitoring_config" {
+    for_each = length(var.monitoring_enabled_components) > 0 ? [1] : []
+    content {
+      enable_components = var.monitoring_enabled_components
+    }
+  }
+
   cluster_autoscaling {
     dynamic "auto_provisioning_defaults" {
       for_each = (var.create_service_account || var.service_account != "") ? [1] : []
@@ -106,8 +121,9 @@ resource "google_container_cluster" "primary" {
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   enable_autopilot           = true
   dynamic "master_authorized_networks_config" {
-    for_each = var.enable_private_endpoint || length(var.master_authorized_networks) > 0 ? [true] : []
+    for_each = var.enable_private_endpoint || var.gcp_public_cidrs_access_enabled != null || length(var.master_authorized_networks) > 0 ? [true] : []
     content {
+      gcp_public_cidrs_access_enabled = var.gcp_public_cidrs_access_enabled
       dynamic "cidr_blocks" {
         for_each = var.master_authorized_networks
         content {
@@ -147,6 +163,10 @@ resource "google_container_cluster" "primary" {
 
     horizontal_pod_autoscaling {
       disabled = !var.horizontal_pod_autoscaling
+    }
+
+    gcp_filestore_csi_driver_config {
+      enabled = var.filestore_csi_driver
     }
 
 
@@ -295,7 +315,7 @@ resource "google_container_cluster" "primary" {
     content {
       enable_private_endpoint     = private_cluster_config.value.enable_private_endpoint
       enable_private_nodes        = private_cluster_config.value.enable_private_nodes
-      master_ipv4_cidr_block      = private_cluster_config.value.master_ipv4_cidr_block
+      master_ipv4_cidr_block      = var.private_endpoint_subnetwork == null ? private_cluster_config.value.master_ipv4_cidr_block : null
       private_endpoint_subnetwork = private_cluster_config.value.private_endpoint_subnetwork
       dynamic "master_global_access_config" {
         for_each = var.master_global_access_enabled ? [var.master_global_access_enabled] : []

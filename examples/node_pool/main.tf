@@ -28,7 +28,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
-  version = "~> 33.0"
+  version = "~> 34.0"
 
   project_id                        = var.project_id
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -67,20 +67,21 @@ module "gke" {
       service_account   = var.compute_engine_service_account
     },
     {
-      name                      = "pool-03"
-      machine_type              = "n1-standard-2"
-      node_locations            = "${var.region}-b,${var.region}-c"
-      autoscaling               = false
-      node_count                = 2
-      disk_type                 = "pd-standard"
-      auto_upgrade              = true
-      service_account           = var.compute_engine_service_account
-      pod_range                 = "test"
-      sandbox_enabled           = true
-      cpu_manager_policy        = "static"
-      cpu_cfs_quota             = true
-      local_ssd_ephemeral_count = 2
-      pod_pids_limit            = 4096
+      name                                   = "pool-03"
+      machine_type                           = "n1-standard-2"
+      node_locations                         = "${var.region}-b,${var.region}-c"
+      autoscaling                            = false
+      node_count                             = 2
+      disk_type                              = "pd-standard"
+      auto_upgrade                           = true
+      service_account                        = var.compute_engine_service_account
+      pod_range                              = "test"
+      sandbox_enabled                        = true
+      cpu_manager_policy                     = "static"
+      cpu_cfs_quota                          = true
+      insecure_kubelet_readonly_port_enabled = false
+      local_ssd_ephemeral_count              = 2
+      pod_pids_limit                         = 4096
     },
     {
       name                = "pool-04"

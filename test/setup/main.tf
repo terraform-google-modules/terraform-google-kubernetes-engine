@@ -45,7 +45,7 @@ locals {
 
 module "gke-project-1" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 16.0"
+  version = "~> 17.0"
 
   name                     = "ci-gke-${random_id.random_project_id_suffix.hex}"
   random_project_id        = true
@@ -69,7 +69,7 @@ module "gke-project-1" {
 
 module "gke-project-2" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 16.0"
+  version = "~> 17.0"
 
   name              = "ci-gke-${random_id.random_project_id_suffix.hex}"
   random_project_id = true
@@ -91,7 +91,7 @@ module "gke-project-2" {
 # apis as documented https://cloud.google.com/service-mesh/docs/scripted-install/reference#setting_up_your_project
 module "gke-project-asm" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 16.0"
+  version = "~> 17.0"
 
   name              = "ci-gke-asm-${random_id.random_project_id_suffix.hex}"
   random_project_id = true
@@ -106,7 +106,7 @@ module "gke-project-asm" {
 
 module "gke-project-fleet" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 16.0"
+  version = "~> 17.0"
 
   name              = "ci-gke-fleet-${random_id.random_project_id_suffix.hex}"
   random_project_id = true

@@ -78,6 +78,12 @@ variable "master_authorized_networks" {
   default     = []
 }
 
+variable "gcp_public_cidrs_access_enabled" {
+  type        = bool
+  description = "Allow access through Google Cloud public IP addresses"
+  default     = null
+}
+
 variable "enable_vertical_pod_autoscaling" {
   type        = bool
   description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
@@ -103,6 +109,12 @@ variable "service_external_ips" {
 }
 
 {% if autopilot_cluster != true %}
+variable "insecure_kubelet_readonly_port_enabled" {
+  type = bool
+  description = "Whether or not to set `insecure_kubelet_readonly_port_enabled` for node pool defaults and autopilot clusters. Note: this can be set at the node pool level separately within `node_pools`."
+  default     = null
+}
+
 variable "datapath_provider" {
   type        = string
   description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
@@ -345,6 +357,7 @@ variable "network_tags" {
   default = []
 }
 
+{% if autopilot_cluster != true %}
 variable "stub_domains" {
   type        = map(list(string))
   description = "Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server"
@@ -356,6 +369,7 @@ variable "upstream_nameservers" {
   description = "If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf"
   default     = []
 }
+{% endif %}
 
 variable "non_masquerade_cidrs" {
   type        = list(string)
@@ -599,6 +613,23 @@ variable "enable_confidential_nodes" {
   description = "An optional flag to enable confidential node config."
   default = false
 }
+
+variable "enable_gcfs" {
+  type        = bool
+  description = "Enable image streaming on cluster level."
+  {% if autopilot_cluster != true %}
+  default     = false
+  {% endif %}
+  {% if autopilot_cluster %}
+  default     = true
+  {% endif %}
+}
+
+variable "enable_secret_manager_addon" {
+  description = "Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
 {% if beta_cluster %}
 
 variable "workload_vulnerability_mode" {
@@ -617,12 +648,6 @@ variable "enable_fqdn_network_policy" {
   type        = bool
   description = "Enable FQDN Network Policies on the cluster"
   default     = null
-}
-
-variable "enable_secret_manager_addon" {
-  description = "(Beta) Enable the Secret Manager add-on for this cluster"
-  type        = bool
-  default     = false
 }
 {% endif %}
 
@@ -682,6 +707,12 @@ variable "enable_tpu" {
   default     = false
 }
 
+variable "filestore_csi_driver" {
+  type        = bool
+  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
+  default     = false
+}
+
 {% if autopilot_cluster != true %}
 variable "network_policy" {
   type        = bool
@@ -704,12 +735,6 @@ variable "initial_node_count" {
 variable "remove_default_node_pool" {
   type        = bool
   description = "Remove default node pool while setting up the cluster"
-  default     = false
-}
-
-variable "filestore_csi_driver" {
-  type        = bool
-  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
   default     = false
 }
 
@@ -782,13 +807,12 @@ variable "cluster_dns_domain" {
   default     = ""
 }
 
-{% if beta_cluster %}
 variable "additive_vpc_scope_dns_domain" {
   type        = string
-  description = "(Beta) This will enable Cloud DNS additive VPC scope. Must provide a domain name that is unique within the VPC. For this to work cluster_dns = `CLOUD_DNS` and cluster_dns_scope = `CLUSTER_SCOPE` must both be set as well."
+  description = "This will enable Cloud DNS additive VPC scope. Must provide a domain name that is unique within the VPC. For this to work cluster_dns = `CLOUD_DNS` and cluster_dns_scope = `CLUSTER_SCOPE` must both be set as well."
   default     = ""
 }
-{% endif %}
+
 variable "gce_pd_csi_driver" {
   type        = bool
   description = "Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
@@ -838,11 +862,60 @@ variable "timeouts" {
   }
 }
 
+variable "monitoring_enabled_components" {
+  type        = list(string)
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET, KUBELET, CADVISOR and DCGM. In beta provider, WORKLOADS is supported on top of those 12 values. (WORKLOADS is deprecated and removed in GKE 1.24.) KUBELET and CADVISOR are only supported in GKE 1.29.3-gke.1093000 and above. Empty list is default GKE configuration."
+  default     = []
+  validation {
+    condition     = alltrue([
+      for c in var.monitoring_enabled_components:
+      contains([
+        "SYSTEM_COMPONENTS",
+        "APISERVER",
+        "SCHEDULER",
+        "CONTROLLER_MANAGER",
+        "STORAGE",
+        "HPA",
+        "POD",
+        "DAEMONSET",
+        "DEPLOYMENT",
+        "STATEFULSET",
+        "WORKLOADS",
+        "KUBELET",
+        "CADVISOR",
+        "DCGM"
+      ], c)
+    ])
+    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET, WORKLOADS, KUBELET, CADVISOR and DCGM."
+  }
+}
+
+variable "logging_enabled_components" {
+  type        = list(string)
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, KCP_CONNECTION, KCP_SSHD, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
+  default     = []
+  validation {
+    condition     = alltrue([
+      for c in var.logging_enabled_components:
+      contains([
+        "SYSTEM_COMPONENTS",
+        "APISERVER",
+        "CONTROLLER_MANAGER",
+        "SCHEDULER",
+        "KCP_CONNECTION",
+        "KCP_SSHD",
+        "WORKLOADS"
+      ], c)
+    ])
+    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, KCP_CONNECTION, KCP_SSHD and WORKLOADS."
+  }
+}
+
 {% if autopilot_cluster != true %}
 variable "monitoring_enable_managed_prometheus" {
   type        = bool
   description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
-  default     = false
+  default     = null
 }
 
 variable "monitoring_enable_observability_metrics" {
@@ -855,18 +928,6 @@ variable "monitoring_enable_observability_relay" {
   type        = bool
   description = "Whether or not the advanced datapath relay is enabled."
   default     = false
-}
-
-variable "monitoring_enabled_components" {
-  type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET, KUBELET, CADVISOR and DCGM. In beta provider, WORKLOADS is supported on top of those 12 values. (WORKLOADS is deprecated and removed in GKE 1.24.) KUBELET and CADVISOR are only supported in GKE 1.29.3-gke.1093000 and above. Empty list is default GKE configuration."
-  default     = []
-}
-
-variable "logging_enabled_components" {
-  type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
-  default     = []
 }
 
 variable "enable_kubernetes_alpha" {
@@ -938,23 +999,12 @@ variable "sandbox_enabled" {
   default     = false
 }
   {% endif %}
-
-variable "enable_gcfs" {
-  type        = bool
-  description = "(Beta) Enable image streaming on cluster level."
-  {% if autopilot_cluster != true %}
-  default     = false
-  {% endif %}
-  {% if autopilot_cluster %}
-  default     = true
-  {% endif %}
-}
 {% endif %}
 
 {% if autopilot_cluster != true %}
 variable "enable_identity_service" {
   type        = bool
-  description = "Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
+  description = "(Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
   default     = false
 }
 {% endif %}

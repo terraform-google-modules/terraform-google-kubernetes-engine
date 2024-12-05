@@ -21,7 +21,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 3.39.0, < 7"
+      version = ">= 5.12.0, < 7"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -30,6 +30,6 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:workload-identity/v33.0.4"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:workload-identity/v34.0.0"
   }
 }

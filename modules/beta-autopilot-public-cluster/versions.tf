@@ -20,14 +20,12 @@ terraform {
 
   required_providers {
     google = {
-      source = "hashicorp/google"
-      # Workaround for https://github.com/hashicorp/terraform-provider-google/issues/19428
-      version = ">= 5.40.0, != 5.44.0, != 6.2.0, != 6.3.0, < 7"
+      source  = "hashicorp/google"
+      version = ">= 6.8.0, < 7"
     }
     google-beta = {
-      source = "hashicorp/google-beta"
-      # Workaround for https://github.com/hashicorp/terraform-provider-google/issues/19428
-      version = ">= 5.40.0, != 5.44.0, != 6.2.0, != 6.3.0, < 7"
+      source  = "hashicorp/google-beta"
+      version = ">= 6.8.0, < 7"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -39,6 +37,6 @@ terraform {
     }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-autopilot-public-cluster/v33.0.4"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-autopilot-public-cluster/v34.0.0"
   }
 }
