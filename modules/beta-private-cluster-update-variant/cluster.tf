@@ -456,6 +456,13 @@ resource "google_container_cluster" "primary" {
         }
       }
 
+      dynamic "fast_socket" {
+        for_each = lookup(var.node_pools[0], "enable_fast_socket", null) != null ? [var.node_pools[0].enable_fast_socket] : []
+        content {
+          enabled = fast_socket.value
+        }
+      }
+
       dynamic "kubelet_config" {
         for_each = length(setintersection(
           keys(var.node_pools[0]),
@@ -799,6 +806,12 @@ resource "google_container_node_pool" "pools" {
         enabled = gvnic.value
       }
     }
+    dynamic "fast_socket" {
+      for_each = lookup(each.value, "enable_fast_socket", null) != null ? [each.value.enable_fast_socket] : []
+      content {
+        enabled = fast_socket.value
+      }
+    }
     dynamic "reservation_affinity" {
       for_each = lookup(each.value, "queued_provisioning", false) || lookup(each.value, "consume_reservation_type", "") != "" ? [each.value] : []
       content {
@@ -1102,6 +1115,12 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "enable_gvnic", false) ? [true] : []
       content {
         enabled = gvnic.value
+      }
+    }
+    dynamic "fast_socket" {
+      for_each = lookup(each.value, "enable_fast_socket", null) != null ? [each.value.enable_fast_socket] : []
+      content {
+        enabled = fast_socket.value
       }
     }
     dynamic "reservation_affinity" {
