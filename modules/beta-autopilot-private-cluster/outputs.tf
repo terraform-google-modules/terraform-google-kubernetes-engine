@@ -165,7 +165,7 @@ output "tpu_ipv4_cidr_block" {
 
 output "master_ipv4_cidr_block" {
   description = "The IP range in CIDR notation used for the hosted master network"
-  value       = var.master_ipv4_cidr_block
+  value       = google_container_cluster.primary.private_cluster_config[0].master_ipv4_cidr_block
 }
 
 output "peering_name" {
