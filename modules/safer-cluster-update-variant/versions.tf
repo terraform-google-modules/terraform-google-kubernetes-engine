@@ -21,6 +21,6 @@ terraform {
   required_version = ">=1.3"
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:safer-cluster-update-variant/v34.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:safer-cluster-update-variant/v35.0.0"
   }
 }
