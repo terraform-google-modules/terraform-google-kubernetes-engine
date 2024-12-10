@@ -155,7 +155,7 @@ resource "google_container_cluster" "primary" {
           enable_integrity_monitoring = lookup(var.cluster_autoscaling, "enable_integrity_monitoring", true)
         }
 
-        min_cpu_platform = lookup(var.node_pools[0], "min_cpu_platform", "")
+        min_cpu_platform = lookup(var.cluster_autoscaling, "min_cpu_platform", "")
 
         image_type = lookup(var.cluster_autoscaling, "image_type", "COS_CONTAINERD")
       }
