@@ -50,3 +50,18 @@ To avoid this, it is possible to edit the remote state of the `random_id` resour
 1. Bump the serial number at the top
 2. Push the modified state to the remote `terraform state push default.tfstate`
 3. Confirm the `random_id` resource(s) no longer changes (or the corresponding `nodepool`) in a `terraform plan`
+
+### master_ipv4_cidr_block default value
+The default value for `master_ipv4_cidr_block` on private standard clusters has been changed from `"10.0.0.0/28"` to `null`.  To maintain the previous default behavior, set `master_ipv4_cidr_block` to `"10.0.0.0/28"`.
+
+```
+  module "gke" {
+    source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
+    version = "~> 35.0"
+
+    project_id  = var.project_id
+    name        = var.cluster_name
+
++   master_ipv4_cidr_block = "10.0.0.0/28"
+  }
+```
