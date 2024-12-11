@@ -6,6 +6,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [35.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v34.0.0...v35.0.0) (2024-12-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* master_ipv4_cidr_block optional for private standard clusters ([#2186](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2186))
+* **TPG>=6.11:** add endpoint_dns ([#2180](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2180))
+* **update-variant:** allow updating disk_type, disk_size_gb, machine_type, enable_gcfs in place ([#2195](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2195))
+* **TPG>=6.8.0:** add KCP log params ([#2166](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2166))
+* **private-cluster:** use private endpoint ([#2189](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2189))
+* Change the default value of "monitoring_enable_managed_prometheus" var to null ([#2188](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2188))
+* **TPG>=6.5.0:** promote `enable_gcfs` to GA ([#2178](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2178))
+* **TPG>=6.7.0:** promote `secret_manager_config` to GA ([#2159](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2159))
+* **TPG>=6.5.0:** support gcp_filestore_csi_driver_config for autopilot ([#2126](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2126))
+
+### Features
+
+* add logging_config and monitoring_config to autopilot modules ([#2155](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2155)) ([0ebdfda](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0ebdfda69591a525018ee9c4a41b353bb2777fa6))
+* Change the default value of "monitoring_enable_managed_prometheus" var to null ([#2188](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2188)) ([31a1619](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/31a1619eb34ba3e78c800c48aaf77205fac8066a))
+* **deps:** Update Terraform Google Provider to &gt;= 6.7.0, &lt; 6.11.0 ([#2184](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2184)) ([d73e2e9](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d73e2e9aa9073887b9a4e51c947321f51124c519))
+* master_ipv4_cidr_block optional for private standard clusters ([#2186](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2186)) ([e0ea8e7](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e0ea8e7d9f60b178e4f2e4537690924cc470957c))
+* Node pools can enable fast_socket ([#2200](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2200)) ([f23d52f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f23d52f0847fb48a25572eaabedd2945ee942f41))
+* promote additive_vpc_scope_dns_domain to GA ([#2194](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2194)) ([43d1c56](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/43d1c566c30cc8a799540a5be412362e6dea0aa9))
+* **TPG>=6.11:** add endpoint_dns ([#2180](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2180)) ([1f85f66](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1f85f66544051d8cdb0196ce90af11fcefdc8789))
+* **TPG>=6.5.0:** promote `enable_gcfs` to GA ([#2178](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2178)) ([eb9b0be](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/eb9b0bec0cc116e7dd6c45c11855e9f65bd9334a))
+* **TPG>=6.5.0:** support gcp_filestore_csi_driver_config for autopilot ([#2126](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2126)) ([e3f016e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e3f016e77ba4c6bc82f8eaf4e10686305d049422))
+* **TPG>=6.7.0:** promote `secret_manager_config` to GA ([#2159](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2159)) ([7931bf4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/7931bf4d7941555a6d9d881c0c5654adf3fd0c24))
+* **TPG>=6.8.0:** add KCP log params ([#2166](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2166)) ([9a1f4ea](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9a1f4eafe3abffcb89b68916a881d40b5175e57b))
+* **update-variant:** allow updating disk_type, disk_size_gb, machine_type, enable_gcfs in place ([#2195](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2195)) ([276cbdb](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/276cbdb78161e39284c4f2015b2a9964b0fb80c3))
+
+
+### Bug Fixes
+
+* enable TPG v6.11+ ([#2197](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2197)) ([e9ab0df](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e9ab0df39601ef6cf36d8324469037b6ecf2a67d))
+* limit TPG &lt; 6.10 ([#2183](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2183)) ([3122b9d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3122b9d6ef65923afa3e14eb9312099b5f5efdd5))
+* node pool options cannot be set to false ([#2187](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2187)) ([752db66](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/752db669e02796d1bd7195d8af5c33e0cac55c8e))
+* **private-cluster:** use private endpoint ([#2189](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2189)) ([4b155cd](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4b155cd90f0d2c391f6e387c46214d5bafd891fa))
+* standardize to &gt;= TF v1.3 ([#2202](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2202)) ([a99aec2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a99aec272418a034e191d60f801d17bd008a3f55))
+* **TPG>=5.12.0:** Bump for [#2142](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2142) ([#2141](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2141)) ([#2170](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2170)) ([52f8bea](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/52f8beacd2b88e60ae8fde207c4dd4b6ced4014a))
+
 ## [34.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v33.1.0...v34.0.0) (2024-10-30)
 
 
