@@ -28,7 +28,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google"
-  version = "~> 34.0"
+  version = "~> 35.0"
 
   project_id                 = var.project_id
   name                       = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
