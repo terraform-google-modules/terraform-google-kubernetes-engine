@@ -25,7 +25,7 @@ resource "google_service_account" "gke-sa" {
 
 module "net" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 9.0"
+  version = "~> 10.0"
 
   network_name                           = "gke-net-${random_id.rand.hex}"
   routing_mode                           = "GLOBAL"
