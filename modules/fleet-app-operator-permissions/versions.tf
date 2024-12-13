@@ -15,7 +15,7 @@
  */
 
 terraform {
-  required_version = ">= 1.2.0"
+  required_version = ">= 1.3.0"
 
   required_providers {
     google = {
@@ -33,7 +33,7 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:fleet-app-operator-permissions/v34.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:fleet-app-operator-permissions/v35.0.0"
   }
 }
 

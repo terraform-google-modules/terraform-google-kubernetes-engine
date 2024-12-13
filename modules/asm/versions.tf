@@ -16,7 +16,7 @@
  */
 
 terraform {
-  required_version = ">= 1.1"
+  required_version = ">= 1.3"
 
   required_providers {
     kubernetes = {
@@ -36,10 +36,10 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:asm/v34.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:asm/v35.0.0"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:asm/v34.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:asm/v35.0.0"
   }
 }

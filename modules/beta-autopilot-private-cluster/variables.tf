@@ -279,7 +279,7 @@ variable "enable_private_nodes" {
 
 variable "master_ipv4_cidr_block" {
   type        = string
-  description = "The IP range in CIDR notation to use for the hosted master network. Optional for Autopilot clusters."
+  description = "(Optional) The IP range in CIDR notation to use for the hosted master network."
   default     = null
 }
 
