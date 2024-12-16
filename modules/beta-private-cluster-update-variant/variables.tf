@@ -798,7 +798,7 @@ variable "stateful_ha" {
 variable "parallelstore_csi_driver" {
   type        = bool
   description = "Whether the Parallelstore CSI driver Addon is enabled for this cluster."
-  default     = false
+  default     = null
 }
 
 variable "ray_operator_config" {
