@@ -200,7 +200,7 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "master_authorized_networks_config" {
-    for_each = (var.enable_private_endpoint && !var.deploy_using_private_endpoint) || var.gcp_public_cidrs_access_enabled != null || length(var.master_authorized_networks) > 0 ? [true] : []
+    for_each = var.master_authorized_networks != null ? [true] : []
     content {
       gcp_public_cidrs_access_enabled = var.gcp_public_cidrs_access_enabled
       dynamic "cidr_blocks" {
