@@ -335,36 +335,36 @@ steps:
     - verify sandbox-enabled-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSandboxEnabled --stage destroy --verbose']
-- id: converge workload-identity-local
+- id: apply workload-identity-local
   waitFor:
     - create-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge workload-identity-local']
+  args: ['/bin/bash', '-c', 'cft test run TestWorkloadIdentity --stage apply --verbose']
 - id: verify workload-identity-local
   waitFor:
-    - converge workload-identity-local
+    - apply workload-identity-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify workload-identity-local']
+  args: ['/bin/bash', '-c', 'cft test run TestWorkloadIdentity --stage verify --verbose']
 - id: destroy workload-identity-local
   waitFor:
     - verify workload-identity-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy workload-identity-local']
-- id: converge safer-cluster-iap-bastion-local
+  args: ['/bin/bash', '-c', 'cft test run TestWorkloadIdentity --stage teardown --verbose']
+- id: apply safer-cluster-iap-bastion-local
   waitFor:
     - create-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge safer-cluster-iap-bastion-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSaferClusterIapBastion --stage apply --verbose']
 - id: verify safer-cluster-iap-bastion-local
   waitFor:
-    - converge safer-cluster-iap-bastion-local
+    - apply safer-cluster-iap-bastion-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify safer-cluster-iap-bastion-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSaferClusterIapBastion --stage verify --verbose']
 - id: destroy safer-cluster-iap-bastion-local
   waitFor:
     - verify safer-cluster-iap-bastion-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy safer-cluster-iap-bastion-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSaferClusterIapBastion --stage teardown --verbose']
 - id: apply simple-zonal-with-asm-local
   waitFor:
     - create-all
