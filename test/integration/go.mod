@@ -6,11 +6,9 @@ toolchain go1.23.4
 
 require (
 	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.17.3
-	github.com/gruntwork-io/terratest v0.48.0
-	github.com/hashicorp/terraform-json v0.23.0
-	github.com/itchyny/gojq v0.12.17
+	github.com/gruntwork-io/terratest v0.48.1
+	github.com/hashicorp/terraform-json v0.24.0
 	github.com/stretchr/testify v1.10.0
-	github.com/tidwall/gjson v1.18.0
 )
 
 require (
@@ -82,7 +80,6 @@ require (
 	github.com/hashicorp/hcl/v2 v2.22.0 // indirect
 	github.com/hashicorp/terraform-config-inspect v0.0.0-20241129133400-c404f8227ea6 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
-	github.com/itchyny/timefmt-go v0.1.6 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/pgx/v5 v5.7.1 // indirect
@@ -106,6 +103,7 @@ require (
 	github.com/pquerna/otp v1.4.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/tidwall/gjson v1.18.0 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tidwall/sjson v1.2.5 // indirect
@@ -113,7 +111,7 @@ require (
 	github.com/ulikunitz/xz v0.5.11 // indirect
 	github.com/urfave/cli/v2 v2.25.7 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
-	github.com/zclconf/go-cty v1.15.0 // indirect
+	github.com/zclconf/go-cty v1.15.1 // indirect
 	golang.org/x/crypto v0.29.0 // indirect
 	golang.org/x/mod v0.22.0 // indirect
 	golang.org/x/net v0.31.0 // indirect
