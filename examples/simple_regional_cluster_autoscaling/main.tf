@@ -53,6 +53,7 @@ module "gke" {
   cluster_autoscaling = {
     enabled             = true
     autoscaling_profile = "OPTIMIZE_UTILIZATION"
+    min_cpu_platform    = "Intel Skylake"
     min_cpu_cores       = 4
     max_cpu_cores       = 86
     min_memory_gb       = 16
