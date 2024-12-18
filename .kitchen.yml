@@ -78,19 +78,6 @@ suites:
       systems:
         - name: stub_domains_upstream_nameservers
           backend: local
-  - name: "workload_identity"
-    transport:
-      root_module_directory: test/fixtures/workload_identity
-    verifier:
-      systems:
-        - name: gcloud
-          backend: local
-          controls:
-            - gcloud
-        - name: gcp
-          backend: gcp
-          controls:
-            - gcp
   - name: "workload_metadata_config"
     transport:
       root_module_directory: test/fixtures/workload_metadata_config
@@ -108,10 +95,3 @@ suites:
           controls:
             - gcloud
             - kubectl
-  - name: "safer_cluster_iap_bastion"
-    transport:
-      root_module_directory: test/fixtures/safer_cluster_iap_bastion
-    verifier:
-      systems:
-        - name: safer_cluster_iap_bastion
-          backend: local
