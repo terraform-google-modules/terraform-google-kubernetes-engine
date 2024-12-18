@@ -38,7 +38,7 @@
         "strategy": "SURGE"
       }
     },
-    "autoscalingProfile": "OPTIMIZE_UTILIZATION",
+    "autoscalingProfile": "OPTIMIZE_UTILIZATIONa",
     "enableNodeAutoprovisioning": true,
     "resourceLimits": [
       {
@@ -715,7 +715,7 @@
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n1-standard-2",
+        "machineType": "n1-standard-2a",
         "metadata": {
           "cluster_name": "node-pool-cluster-RANDOM_STRING",
           "disable-legacy-endpoints": "false",
