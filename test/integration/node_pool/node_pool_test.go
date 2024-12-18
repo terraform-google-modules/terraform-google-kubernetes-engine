@@ -15,7 +15,6 @@ package node_pool
 
 import (
 	"fmt"
-	"slices"
 	"testing"
 	"time"
 
@@ -23,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
-	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
-	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
@@ -44,27 +41,22 @@ func TestNodePool(t *testing.T) {
 		clusterName := bpt.GetStringOutput("cluster_name")
 		randomString := bpt.GetStringOutput("random_string")
 		kubernetesEndpoint := bpt.GetStringOutput("kubernetes_endpoint")
+		serviceAccount := bpt.GetStringOutput("service_account")
 
 		// Retrieve Project CAI
 		projectCAI := cai.GetProjectResources(t, projectId, cai.WithAssetTypes([]string{"container.googleapis.com/Cluster", "k8s.io/Node"}))
-		t.Log(projectCAI.Raw)
+
 		// Retrieve Cluster from CAI
-		clusterResourceName := fmt.Sprintf("//container.googleapis.com/projects/%s/locations/%s/clusters/%s", projectId, location, clusterName)
-
-		if !projectCAI.Get("#(name=\"" + clusterResourceName + "\").resource.data").Exists() {
-			t.Fatalf("Cluster not found: %s", clusterResourceName)
-		}
-
-		cluster := projectCAI.Get("#(name=\"" + clusterResourceName + "\").resource.data")
-		t.Log(cluster.Raw)
+		// clusterResourceName := fmt.Sprintf("//container.googleapis.com/projects/%s/locations/%s/clusters/%s", projectId, location, clusterName)
+		// cluster := projectCAI.Get("#(name=\"" + clusterResourceName + "\").resource.data")
 		// Equivalent gcloud describe command (classic)
-		// cluster := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
+		cluster := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 
 		// Cluster Assertions (classic)
 		assert.Contains([]string{"RUNNING", "RECONCILING"}, cluster.Get("status").String(), "Cluster is Running")
 		assert.Equal("COS_CONTAINERD", cluster.Get("autoscaling.autoprovisioningNodePoolDefaults.imageType").String(), "has the expected image type")
 		assert.Equal("https://www.googleapis.com/auth/cloud-platform", cluster.Get("autoscaling.autoprovisioningNodePoolDefaults.oauthScopes.0").String(), "has the expected oauth scopes")
-		assert.Equal("default", cluster.Get("autoscaling.autoprovisioningNodePoolDefaults.serviceAccount").String(), "has the expected service account")
+		assert.Equal(serviceAccount, cluster.Get("autoscaling.autoprovisioningNodePoolDefaults.serviceAccount").String(), "has the expected service account")
 		assert.Equal("OPTIMIZE_UTILIZATION", cluster.Get("autoscaling.autoscalingProfile").String(), "has the expected autoscaling profile")
 		assert.True(cluster.Get("autoscaling.enableNodeAutoprovisioning").Bool(), "has the expected node autoprovisioning")
 		assert.JSONEq(`[
@@ -83,23 +75,13 @@ func TestNodePool(t *testing.T) {
 
 		// Cluster Assertions using golden image (TestNodePool.json) with sanitizer
 		g := golden.NewOrUpdate(t, cluster.String(),
+			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "Service_Account")),
 			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
 			golden.WithSanitizer(golden.StringSanitizer(randomString, "RANDOM_STRING")),
 			golden.WithSanitizer(golden.StringSanitizer(kubernetesEndpoint, "KUBERNETES_ENDPOINT")),
 		)
-		checkPaths := utils.GetTerminalJSONPaths(g.GetJSON())
 
-		exemptPaths := []string{"nodePools"}
-		checkPaths = slices.DeleteFunc(checkPaths, func(s string) bool {
-			return slices.Contains(exemptPaths, s)
-		})
-		g.JSONPathEqs(assert, cluster, checkPaths)
-
-		// NodePool Assertions
-		nodePools := []string{"pool-01", "pool-02", "pool-03", "pool-04", "pool-05"}
-		for _, nodePool := range nodePools {
-			g.JSONPathEqs(assert, cluster.Get(fmt.Sprintf("nodePools.#(name==%s).name", nodePool)), utils.GetTerminalJSONPaths(g.GetJSON().Get(fmt.Sprintf("nodePools.#(name==%s).name", nodePool))))
-		}
+		testutils.TGKEAssertGolden(t, assert, g, &cluster, []string{"pool-01", "pool-02", "pool-03", "pool-04", "pool-05"}, []string{"monitoringConfig.componentConfig.enableComponents"})
 
 		// nodePool-01 Assertions
 		assert.Equal("pool-01", cluster.Get("nodePools.#(name==\"pool-01\").name").String(), "pool-1 exists")
@@ -161,11 +143,14 @@ func TestNodePool(t *testing.T) {
 		assert.True(cluster.Get("nodePools.#(name==\"pool-05\").config.advancedMachineFeatures.enableNestedVirtualization").Bool(), "has enable_nested_virtualization enabled")
 
 		// K8s Assertions
-		gcloud.Runf(t, "container clusters get-credentials %s --region %s --project %s", clusterName, location, projectId)
-		k8sOpts := k8s.KubectlOptions{}
-		clusterNodesOp, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "nodes", "-o", "json")
-		assert.NoError(err)
-		clusterNodes := utils.ParseKubectlJSONResult(t, clusterNodesOp)
+
+		// Equivalent kubectl command (classic)
+		// gcloud.Runf(t, "container clusters get-credentials %s --region %s --project %s", clusterName, location, projectId)
+		// k8sOpts := k8s.KubectlOptions{}
+		// clusterNodesOp, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "nodes", "-o", "json")
+		// assert.NoError(err)
+		// clusterNodes := utils.ParseKubectlJSONResult(t, clusterNodesOp)
+
 		assert.JSONEq(`[
 				{
 					"effect": "PreferNoSchedule",
@@ -178,7 +163,7 @@ func TestNodePool(t *testing.T) {
 					"value": "true"
 				}
 			]`,
-			clusterNodes.Get("items.#(metadata.labels.node_pool==\"pool-01\").spec.taints").String(), "has the expected taints")
+			projectCAI.Get("#(resource.data.metadata.labels.node_pool==\"pool-01\").resource.data.spec.taints").String(), "has the expected taints")
 		assert.JSONEq(`[
 				{
 					"effect": "PreferNoSchedule",
@@ -191,7 +176,7 @@ func TestNodePool(t *testing.T) {
 					"value": "present"
 				}
 			]`,
-			clusterNodes.Get("items.#(metadata.labels.node_pool==\"pool-02\").spec.taints").String(), "has the expected all-pools-example taint")
+			projectCAI.Get("#(resource.data.metadata.labels.node_pool==\"pool-02\").resource.data.spec.taints").String(), "has the expected all-pools-example taint")
 		assert.JSONEq(`[
 				{
 					"effect": "PreferNoSchedule",
@@ -204,7 +189,7 @@ func TestNodePool(t *testing.T) {
 					"value": "gvisor"
 				}
 			]`,
-			clusterNodes.Get("items.#(metadata.labels.node_pool==\"pool-03\").spec.taints").String(), "has the expected all-pools-example taint")
+			projectCAI.Get("#(resource.data.metadata.labels.node_pool==\"pool-03\").resource.data.spec.taints").String(), "has the expected all-pools-example taint")
 	})
 
 	bpt.Test()
