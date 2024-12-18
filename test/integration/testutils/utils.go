@@ -15,14 +15,19 @@
 package testutils
 
 import (
+	"fmt"
 	"slices"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	tfjson "github.com/hashicorp/terraform-json"
 	"github.com/stretchr/testify/assert"
+	"github.com/tidwall/gjson"
+	"golang.org/x/sync/errgroup"
 )
 
 var (
@@ -36,6 +41,8 @@ var (
 		// API Rate limit exceeded errors can be retried.
 		".*rateLimitExceeded.*": "Rate limit exceeded.",
 	}
+
+	ClusterAlwaysExemptPaths = []string{"nodePools"} // node pools are separately checked by name
 )
 
 func GetTestProjectFromSetup(t *testing.T, idx int) string {
@@ -65,5 +72,44 @@ func TGKEVerifyExemptResources(t *testing.T, b *tft.TFBlueprintTest, assert *ass
 			continue
 		}
 		assert.Equal(tfjson.Actions{tfjson.ActionNoop}, r.Change.Actions, "Plan must be no-op for resource: %s", r.Address)
+	}
+}
+
+// TGKEAssertGolden asserts a cluster and listed node pools against paths in golden image
+func TGKEAssertGolden(assert *assert.Assertions, golden *golden.GoldenFile, clusterJson *gjson.Result, nodePools []string, exemptClusterPaths []string) {
+	// Retrieve golden paths
+	clusterCheckPaths := utils.GetTerminalJSONPaths(golden.GetJSON())
+
+	// Remove exempt cluster paths
+	exemptPaths := slices.Concat(exemptClusterPaths, ClusterAlwaysExemptPaths)
+	clusterCheckPaths = slices.DeleteFunc(clusterCheckPaths, func(s string) bool {
+		for _, exempPath := range exemptPaths {
+			if strings.HasPrefix(s, exempPath) {
+				return true
+			}
+		}
+		return false
+	})
+
+	// Cluster assertions
+	golden.JSONPathEqs(assert, *clusterJson, clusterCheckPaths)
+
+	// NodePool assertions
+	for _, nodePool := range nodePools {
+		assert.Truef(clusterJson.Get(fmt.Sprintf("nodePools.#(name==%s).name", nodePool)).Exists(), "NodePool not found: %s", nodePool)
+
+		nodeCheckPaths := utils.GetTerminalJSONPaths(golden.GetJSON().Get(fmt.Sprintf("nodePools.#(name==%s)", nodePool)))
+
+		syncGroup := new(errgroup.Group)
+		syncGroup.SetLimit(24)
+		for _, nodeCheckPath := range nodeCheckPaths {
+			nodeCheckPath := nodeCheckPath
+			syncGroup.Go(func() error {
+				gotData := golden.ApplySanitizers(clusterJson.Get(fmt.Sprintf("nodePools.#(name==%s)", nodePool)).Get(nodeCheckPath).String())
+				gfData := golden.GetJSON().Get(fmt.Sprintf("nodePools.#(name==%s)", nodePool)).Get(nodeCheckPath).String()
+				assert.Equalf(gfData, gotData, "For node %s path %q expected %q to match fixture %q", nodePool, nodeCheckPath, gotData, gfData)
+				return nil
+			})
+		}
 	}
 }

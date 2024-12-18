@@ -35,20 +35,20 @@ func TestSaferClusterIapBastion(t *testing.T) {
 		// bpt.DefaultVerify(assert)
 		testutils.TGKEVerify(t, bpt, assert) // Verify Resources
 
-		test_command, _ := strings.CutPrefix(bpt.GetStringOutput("test_command"), "gcloud ")
+		testCommand, _ := strings.CutPrefix(bpt.GetStringOutput("test_command"), "gcloud ")
 
 		// pre run ssh command so that ssh-keygen can run
-		gcloud.RunCmd(t, test_command,
+		gcloud.RunCmd(t, testCommand,
 			gcloud.WithCommonArgs([]string{}),
 		)
 
-		cluster_version := fmt.Sprintf("v%s", bpt.GetStringOutput("cluster_version"))
+		clusterVersion := fmt.Sprintf("v%s", bpt.GetStringOutput("cluster_version"))
 
-		op := gcloud.Run(t, test_command,
+		op := gcloud.Run(t, testCommand,
 			gcloud.WithCommonArgs([]string{}),
 		)
 
-		assert.Equal(cluster_version, op.Get("gitVersion").String(), "SSH into VM and verify connectivity to GKE")
+		assert.Equal(clusterVersion, op.Get("gitVersion").String(), "SSH into VM and verify connectivity to GKE")
 	})
 
 	bpt.Test()
