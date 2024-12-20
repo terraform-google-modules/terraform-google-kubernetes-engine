@@ -39,7 +39,8 @@ locals {
     "iamcredentials.googleapis.com",
     "gkeconnect.googleapis.com",
     "privateca.googleapis.com",
-    "gkehub.googleapis.com"
+    "gkehub.googleapis.com",
+    "cloudasset.googleapis.com"
   ]
 }
 

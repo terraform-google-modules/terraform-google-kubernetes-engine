@@ -305,21 +305,21 @@ steps:
     - verify deploy-service-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestDeployService --stage destroy --verbose']
-- id: converge node-pool-local
+- id: apply node-pool-local
   waitFor:
     - create-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge node-pool-local']
+  args: ['/bin/bash', '-c', 'cft test run TestNodePool --stage apply --verbose']
 - id: verify node-pool-local
   waitFor:
-    - converge node-pool-local
+    - apply node-pool-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify node-pool-local']
+  args: ['/bin/bash', '-c', 'cft test run TestNodePool --stage verify --verbose']
 - id: destroy node-pool-local
   waitFor:
     - verify node-pool-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy node-pool-local']
+  args: ['/bin/bash', '-c', 'cft test run TestNodePool --stage destroy --verbose']
 - id: apply sandbox-enabled-local
   waitFor:
     - create-all
