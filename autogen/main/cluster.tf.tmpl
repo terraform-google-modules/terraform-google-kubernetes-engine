@@ -259,9 +259,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-{% if beta_cluster %}
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
-{% endif %}
 {% if autopilot_cluster %}
   enable_autopilot = true
 {% endif %}
