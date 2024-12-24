@@ -178,14 +178,6 @@ resource "google_container_cluster" "primary" {
       }
     }
 
-    dynamic "gcs_fuse_csi_driver_config" {
-      for_each = local.gcs_fuse_csi_driver_config
-
-      content {
-        enabled = gcs_fuse_csi_driver_config.value.enabled
-      }
-    }
-
     dynamic "stateful_ha_config" {
       for_each = local.stateful_ha_config
 
