@@ -833,8 +833,7 @@ resource "google_container_node_pool" "pools" {
   }
 
   lifecycle {
-    ignore_changes = [initial_node_count]
-
+    ignore_changes = [initial_node_count, node_config.0.kubelet_config]
   }
 
   timeouts {
