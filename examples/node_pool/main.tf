@@ -150,4 +150,9 @@ module "gke" {
       "net.core.netdev_max_backlog" = "20000"
     }
   }
+
+  node_pools_cgroup_mode = {
+    all     = "CGROUP_MODE_UNSPECIFIED"
+    pool-01 = "CGROUP_MODE_V2"
+  }
 }
