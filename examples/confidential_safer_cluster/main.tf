@@ -68,6 +68,7 @@ module "gke" {
   kubernetes_version         = random_shuffle.version.result[0]
   release_channel            = "UNSPECIFIED"
   deletion_protection        = false
+  enable_private_endpoint    = true
   enable_confidential_nodes  = true
 
   master_authorized_networks = [
