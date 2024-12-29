@@ -954,7 +954,7 @@ resource "google_container_node_pool" "pools" {
           local.node_pools_linux_node_configs_sysctls["all"],
           local.node_pools_linux_node_configs_sysctls[each.value["name"]]
         )
-        cgroup_mode = local.node_pools_cgroup_mode["all"] == "" ? local.node_pools_cgroup_mode[each.value["name"]] == "" ? null : local.node_pools_cgroup_mode[each.value["name"]] : local.node_pools_cgroup_mode["all"]
+        cgroup_mode = local.node_pools_cgroup_mode[each.value["name"]] == "" ? local.node_pools_cgroup_mode["all"] == "" ? null : local.node_pools_cgroup_mode["all"] : local.node_pools_cgroup_mode[each.value["name"]]
       }
     }
 
