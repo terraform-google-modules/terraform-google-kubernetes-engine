@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [35.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v35.0.0...v35.0.1) (2025-01-02)
+
+
+### Bug Fixes
+
+* min_cpu_platform ref in cluster autoscaling ([#2208](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2208)) ([f48e732](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f48e7322c757e3cca5f0849ad36bc23474452939))
+* node_pools_cgroup_mode var does not correctly handle the "all" map key  ([#2224](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2224)) ([53b1a50](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/53b1a50b0e7e736cb352ec1a523934a39faf65bf))
+
 ## [35.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v34.0.0...v35.0.0) (2024-12-11)
 
 
