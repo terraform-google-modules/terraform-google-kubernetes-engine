@@ -38,10 +38,8 @@ module "kms" {
   key_protection_level = "HSM"
   location             = "us-central1"
   keyring              = "keyring"
-  keys                 = ["key3"]
+  keys                 = ["key"]
   prevent_destroy      = false
-  # set_owners_for = [ "key3" ]
-  # owners = ["serviceAccount:service-${data.google_project.main.number}@container-engine-robot.iam.gserviceaccount.com", "serviceAccount:${var.int_sa}", "serviceAccount:service-${data.google_project.main.number}@compute-system.iam.gserviceaccount.com"]
 }
 
 resource "google_kms_crypto_key_iam_member" "main" {
