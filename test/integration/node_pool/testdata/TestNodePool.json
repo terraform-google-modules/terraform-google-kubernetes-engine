@@ -333,6 +333,10 @@
           "sysctls": {
             "net.core.netdev_max_backlog": "10000",
             "net.core.rmem_max": "10000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "2",
+            "hugepageSize1g": "1"
           }
         },
         "loggingConfig": {
@@ -430,6 +434,10 @@
         "linuxNodeConfig": {
           "sysctls": {
             "net.core.netdev_max_backlog": "10000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "1",
+            "hugepageSize1g": "1"
           }
         },
         "loggingConfig": {
@@ -516,6 +524,10 @@
         "linuxNodeConfig": {
           "sysctls": {
             "net.core.netdev_max_backlog": "20000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "1",
+            "hugepageSize1g": "2"
           }
         },
         "loggingConfig": {
@@ -606,6 +618,10 @@
         "linuxNodeConfig": {
           "sysctls": {
             "net.core.netdev_max_backlog": "10000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "1",
+            "hugepageSize1g": "1"
           }
         },
         "loggingConfig": {
@@ -700,6 +716,10 @@
         "linuxNodeConfig": {
           "sysctls": {
             "net.core.netdev_max_backlog": "10000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "1",
+            "hugepageSize1g": "1"
           }
         },
         "loggingConfig": {

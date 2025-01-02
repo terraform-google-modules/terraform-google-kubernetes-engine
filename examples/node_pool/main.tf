@@ -164,6 +164,16 @@ module "gke" {
     all     = "CGROUP_MODE_V1"
     pool-01 = "CGROUP_MODE_V2"
   }
+
+  node_pools_hugepage_size_2m = {
+    all     = "1"
+    pool-01 = "2"
+  }
+
+  node_pools_hugepage_size_1g = {
+    all     = "1"
+    pool-03 = "2"
+  }
 }
 
 resource "google_compute_node_template" "soletenant-tmpl" {
