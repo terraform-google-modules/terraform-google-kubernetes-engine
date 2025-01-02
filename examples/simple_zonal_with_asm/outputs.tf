@@ -26,7 +26,7 @@ output "project_id" {
 }
 
 output "region" {
-  description = " Cluster Region"
+  description = "Cluster Region"
   value       = module.gke.region
 }
 
