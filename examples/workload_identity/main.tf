@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2018-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,15 @@ provider "kubernetes" {
   host                   = "https://${module.gke.endpoint}"
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+
+  ignore_annotations = [
+    "^iam.gke.io\\/.*"
+  ]
 }
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google"
-  version = "~> 34.0"
+  version = "~> 35.0"
 
   project_id               = var.project_id
   name                     = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -54,7 +58,7 @@ module "gke" {
 # example without existing KSA
 module "workload_identity" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version = "~> 34.0"
+  version = "~> 35.0"
 
   project_id          = var.project_id
   name                = "iden-${module.gke.name}"
@@ -74,7 +78,7 @@ resource "kubernetes_service_account" "test" {
 
 module "workload_identity_existing_ksa" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version = "~> 34.0"
+  version = "~> 35.0"
 
   project_id          = var.project_id
   name                = "existing-${module.gke.name}"
@@ -93,7 +97,7 @@ resource "google_service_account" "custom" {
 
 module "workload_identity_existing_gsa" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version = "~> 34.0"
+  version = "~> 35.0"
 
   project_id          = var.project_id
   name                = google_service_account.custom.account_id

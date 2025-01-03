@@ -489,12 +489,6 @@ variable "gke_backup_agent_config" {
   default     = false
 }
 
-variable "gcs_fuse_csi_driver" {
-  type        = bool
-  description = "Whether GCE FUSE CSI driver is enabled for this cluster."
-  default     = false
-}
-
 variable "stateful_ha" {
   type        = bool
   description = "Whether the Stateful HA Addon is enabled for this cluster."

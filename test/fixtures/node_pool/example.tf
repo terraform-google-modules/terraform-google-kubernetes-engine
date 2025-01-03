@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+locals {
+  compute_engine_service_account = var.compute_engine_service_accounts[0]
+}
+
 module "example" {
   source = "../../../examples/node_pool"
 
@@ -25,7 +29,7 @@ module "example" {
   subnetwork                     = google_compute_subnetwork.main.name
   ip_range_pods                  = google_compute_subnetwork.main.secondary_ip_range[0].range_name
   ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
-  compute_engine_service_account = var.compute_engine_service_accounts[0]
+  compute_engine_service_account = local.compute_engine_service_account
 
   cluster_autoscaling = {
     enabled             = true
