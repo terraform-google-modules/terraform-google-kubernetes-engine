@@ -377,7 +377,7 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "dns_config" {
-    for_each = var.cluster_dns_provider == "CLOUD_DNS" ? [1] : []
+    for_each = contains(["CLOUD_DNS", "PROVIDER_UNSPECIFIED", "PLATFORM_DEFAULT"], var.cluster_dns_provider) ? [1] : []
     content {
       additive_vpc_scope_dns_domain = var.additive_vpc_scope_dns_domain
       cluster_dns                   = var.cluster_dns_provider
