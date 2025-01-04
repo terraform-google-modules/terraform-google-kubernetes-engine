@@ -37,6 +37,6 @@ terraform {
     }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-public-cluster/v35.0.1"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-public-cluster/v36.0.0"
   }
 }
