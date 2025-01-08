@@ -64,13 +64,6 @@ suites:
   #      systems:
   #        - name: stub_domains_private
   #          backend: local
-  - name: "upstream_nameservers"
-    transport:
-      root_module_directory: test/fixtures/upstream_nameservers
-    verifier:
-      systems:
-        - name: upstream_nameservers
-          backend: local
   - name: "stub_domains_upstream_nameservers"
     transport:
       root_module_directory: test/fixtures/stub_domains_upstream_nameservers

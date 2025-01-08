@@ -215,21 +215,21 @@ steps:
     - verify stub-domains-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy stub-domains-local']
-- id: converge upstream-nameservers-local
+- id: apply upstream-nameservers-local
   waitFor:
     - create-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge upstream-nameservers-local']
+  args: ['/bin/bash', '-c', 'cft test run TestUpstreamNameservers --stage apply --verbose --test-dir test/integration']
 - id: verify upstream-nameservers-local
   waitFor:
-    - converge upstream-nameservers-local
+    - apply upstream-nameservers-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify upstream-nameservers-local']
+  args: ['/bin/bash', '-c', 'cft test run TestUpstreamNameservers --stage verify --verbose --test-dir test/integration']
 - id: destroy upstream-nameservers-local
   waitFor:
     - verify upstream-nameservers-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy upstream-nameservers-local']
+  args: ['/bin/bash', '-c', 'cft test run TestUpstreamNameservers --stage destroy --verbose --test-dir test/integration']
 - id: converge stub-domains-upstream-nameservers-local
   waitFor:
     - create-all
