@@ -144,6 +144,12 @@ variable "maintenance_recurrence" {
   default     = ""
 }
 
+variable "monitoring_metric_writer_role" {
+  type        = string
+  description = "Custom monitoring metrics writer role for the GKE node service account"
+  default     = "roles/monitoring.metricWriter"
+}
+
 variable "ip_range_pods" {
   type        = string
   description = "The _name_ of the secondary subnet ip range to use for pods"
