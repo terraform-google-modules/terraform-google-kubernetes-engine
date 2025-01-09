@@ -19,8 +19,11 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/cai"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
+	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
@@ -59,51 +62,29 @@ func TestUpstreamNameservers(t *testing.T) {
 			golden.WithSanitizer(golden.StringSanitizer(kubernetesEndpoint, "KUBERNETES_ENDPOINT")),
 		)
 
-		// Cluster (and listed node pools) Assertions
+		// Cluster Assertions
 		testutils.TGKEAssertGolden(assert, g, &cluster, []string{}, []string{"monitoringConfig.componentConfig.enableComponents"}) // TODO: enableComponents is UL
 
 		// K8s Assertions
 		// CAI does not include k8s.io/ConfigMap
-		// assert.JSONEq(`[
-		// 		{
-		// 			"effect": "PreferNoSchedule",
-		// 			"key": "all-pools-example",
-		// 			"value": "true"
-		// 		},
-		// 		{
-		// 			"effect": "PreferNoSchedule",
-		// 			"key": "pool-01-example",
-		// 			"value": "true"
-		// 		}
-		// 	]`,
-		// 	projectCAI.Get("#(resource.data.metadata.labels.node_pool==\"pool-01\").resource.data.spec.taints").String(), "has the expected taints")
-		// assert.JSONEq(`[
-		// 		{
-		// 			"effect": "PreferNoSchedule",
-		// 			"key": "all-pools-example",
-		// 			"value": "true"
-		// 		},
-		// 		{
-		// 			"effect": "NoSchedule",
-		// 			"key": "nvidia.com/gpu",
-		// 			"value": "present"
-		// 		}
-		// 	]`,
-		// 	projectCAI.Get("#(resource.data.metadata.labels.node_pool==\"pool-02\").resource.data.spec.taints").String(), "has the expected all-pools-example taint")
-		// assert.JSONEq(`[
-		// 		{
-		// 			"effect": "PreferNoSchedule",
-		// 			"key": "all-pools-example",
-		// 			"value": "true"
-		// 		},
-		// 		{
-		// 			"effect": "NoSchedule",
-		// 			"key": "sandbox.gke.io/runtime",
-		// 			"value": "gvisor"
-		// 		}
-		// 	]`,
-		// 	projectCAI.Get("#(resource.data.metadata.labels.node_pool==\"pool-03\").resource.data.spec.taints").String(), "has the expected all-pools-example taint")
-	})
+		gcloud.Runf(t, "container clusters get-credentials %s --region %s --project %s", clusterName, location, projectId)
+		k8sOpts := k8s.KubectlOptions{}
 
+		// kube-dns
+		listKubeDnsConfigMap, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "configmap", "kube-dns", "-n", "kube-system", "-o", "json", "--show-managed-fields")
+		assert.NoError(err)
+		kubeDnsCM := utils.ParseKubectlJSONResult(t, listKubeDnsConfigMap)
+		assert.Contains("kube-dns", kubeDnsCM.Get("metadata.name").String(), "kube-dns configmap is present")
+		assert.Equal("Terraform", kubeDnsCM.Get("metadata.managedFields.0.manager").String(), "kube-dns configmap is managed by Terraform")
+		assert.Equal("[\"8.8.8.8\",\"8.8.4.4\"]\n", kubeDnsCM.Get("data.upstreamNameservers").String(), "kube-dns configmap reflects the upstream_nameservers configuration")
+
+		// ip-masq-agent
+		listIpMasqAgentConfigMap, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "configmap", "ip-masq-agent", "-n", "kube-system", "-o", "json", "--show-managed-fields")
+		assert.NoError(err)
+		ipMasqAgentConfigMap := utils.ParseKubectlJSONResult(t, listIpMasqAgentConfigMap)
+		assert.Contains("ip-masq-agent", ipMasqAgentConfigMap.Get("metadata.name").String(), "ip-masq-agent configmap is present")
+		assert.Equal("terraform", ipMasqAgentConfigMap.Get("metadata.labels.maintained_by").String(), "ip-masq-agent configmap is maintained_by Terraform")
+		assert.Equal("nonMasqueradeCIDRs:\n  - 10.0.0.0/8\n  - 172.16.0.0/12\n  - 192.168.0.0/16\nresyncInterval: 60s\nmasqLinkLocal: false\n", ipMasqAgentConfigMap.Get("data.config").String(), "ip-masq-agent configmap is configured properly")
+	})
 	bpt.Test()
 }
