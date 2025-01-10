@@ -968,3 +968,9 @@ variable "fleet_project_grant_service_agent" {
   type        = bool
   default     = false
 }
+
+variable "monitoring_metric_writer_role" {
+  description = "The monitoring metrics writer role to assign to the GKE node service account"
+  type        = string
+  default     = "roles/monitoring.metricWriter"
+}
