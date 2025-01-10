@@ -46,24 +46,6 @@ suites:
       systems:
         - name: simple_regional_with_ipv6
           backend: local
-  - name: "stub_domains"
-    transport:
-      root_module_directory: test/fixtures/stub_domains
-    verifier:
-      systems:
-        - name: stub_domains
-          backend: local
-          controls:
-            - gcloud
-            - kubectl
-  # Disabled due to issue #264
-  # (https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/264)
-  #  - name: stub_domains_private
-  #    transport:
-  #      root_module_directory: test/fixtures/stub_domains_private
-  #      systems:
-  #        - name: stub_domains_private
-  #          backend: local
   - name: "stub_domains_upstream_nameservers"
     transport:
       root_module_directory: test/fixtures/stub_domains_upstream_nameservers

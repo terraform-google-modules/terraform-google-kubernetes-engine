@@ -200,21 +200,37 @@ steps:
     - verify simple-zonal-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalPrivate --stage teardown --verbose']
-- id: converge stub-domains-local
+- id: apply stub-domains-local
   waitFor:
     - create-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge stub-domains-local']
+  args: ['/bin/bash', '-c', 'cft test run TestStubDomains --stage apply --verbose --test-dir test/integration']
 - id: verify stub-domains-local
   waitFor:
-    - converge stub-domains-local
+    - apply stub-domains-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify stub-domains-local']
+  args: ['/bin/bash', '-c', 'cft test run TestStubDomains --stage verify --verbose --test-dir test/integration']
 - id: destroy stub-domains-local
   waitFor:
     - verify stub-domains-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy stub-domains-local']
+  args: ['/bin/bash', '-c', 'cft test run TestStubDomains --stage destroy --verbose --test-dir test/integration']
+# Disabled: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/264
+# - id: apply stub-domains-private-local
+#   waitFor:
+#     - create-all
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'cft test run TestStubDomainsPrivate --stage apply --verbose --test-dir test/integration']
+# - id: verify stub-domains-private-local
+#   waitFor:
+#     - apply stub-domains-private-local
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'cft test run TestStubDomainsPrivate --stage verify --verbose --test-dir test/integration']
+# - id: destroy stub-domains-private-local
+#   waitFor:
+#     - verify stub-domains-private-local
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'cft test run TestStubDomainsPrivate --stage destroy --verbose --test-dir test/integration']
 - id: apply upstream-nameservers-local
   waitFor:
     - create-all
