@@ -68,10 +68,10 @@ func TestStubDomains(t *testing.T) {
 		// K8s Assertions
 		// CAI does not include k8s.io/ConfigMap
 		gcloud.Runf(t, "container clusters get-credentials %s --region %s --project %s", clusterName, location, projectId)
-		k8sOpts := k8s.KubectlOptions{}
+		k8sOpts := k8s.NewKubectlOptions(fmt.Sprintf("gke_%s_%s_%s", projectId, location, clusterName), "", "")
 
 		// kube-dns
-		listKubeDnsConfigMap, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "configmap", "kube-dns", "-n", "kube-system", "-o", "json", "--show-managed-fields")
+		listKubeDnsConfigMap, err := k8s.RunKubectlAndGetOutputE(t, k8sOpts, "get", "configmap", "kube-dns", "-n", "kube-system", "-o", "json", "--show-managed-fields")
 		assert.NoError(err)
 		kubeDnsCM := utils.ParseKubectlJSONResult(t, listKubeDnsConfigMap)
 		assert.Contains("kube-dns", kubeDnsCM.Get("metadata.name").String(), "kube-dns configmap is present")
@@ -91,7 +91,7 @@ func TestStubDomains(t *testing.T) {
 		kubeDnsCM.Get("data.stubDomains").String(), "kube-dns configmap the expected stubdomains")
 
 		// ip-masq-agent
-		listIpMasqAgentConfigMap, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "configmap", "ip-masq-agent", "-n", "kube-system", "-o", "json", "--show-managed-fields")
+		listIpMasqAgentConfigMap, err := k8s.RunKubectlAndGetOutputE(t, k8sOpts, "get", "configmap", "ip-masq-agent", "-n", "kube-system", "-o", "json", "--show-managed-fields")
 		assert.NoError(err)
 		ipMasqAgentConfigMap := utils.ParseKubectlJSONResult(t, listIpMasqAgentConfigMap)
 		assert.Contains("ip-masq-agent", ipMasqAgentConfigMap.Get("metadata.name").String(), "ip-masq-agent configmap is present")
