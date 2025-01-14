@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2018-2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,4 +55,13 @@ output "ca_certificate" {
 output "service_account" {
   description = "The service account to default running nodes as if not overridden in `node_pools`."
   value       = module.example.service_account
+}
+
+output "random_string" {
+  value = random_string.suffix.result
+}
+
+output "registry_project_ids" {
+  description = "Projects to use for granting access to GCR registries, if requested"
+  value       = var.registry_project_ids
 }
