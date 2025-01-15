@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2018-2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+locals {
+  compute_engine_service_account = var.compute_engine_service_accounts[1]
+}
 
 resource "random_string" "suffix" {
   length  = 4
@@ -49,7 +53,7 @@ resource "google_compute_subnetwork" "main" {
 module "example" {
   source = "../../../examples/stub_domains_private"
 
-  compute_engine_service_account = var.compute_engine_service_accounts[1]
+  compute_engine_service_account = local.compute_engine_service_account
   ip_range_pods                  = google_compute_subnetwork.main.secondary_ip_range[0].range_name
   ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
   network                        = google_compute_network.main.name
