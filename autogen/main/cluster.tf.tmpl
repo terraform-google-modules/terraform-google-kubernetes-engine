@@ -1153,9 +1153,12 @@ resource "google_container_node_pool" "windows_pools" {
     delete = lookup(var.timeouts, "delete", "45m")
   }
 
-  {% if i == 1 %}
-  depends_on = [google_container_node_pool.pools[0]]
-  {% endif %}
+  depends_on = [
+    google_compute_firewall.intra_egress,
+    {% if i == 1 %}
+    google_container_node_pool.pools[0],
+    {% endif %}
+  ]
 }
 {% endfor %}
 {% endif %}
