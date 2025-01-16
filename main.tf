@@ -21,16 +21,11 @@
  *****************************************/
 data "google_compute_zones" "available" {
   count = local.zone_count == 0 ? 1 : 0
-}
 
-provider "google" {
-  project = "rare-style-447407-s1"
-  region  = "us-central1"
-}
+  provider = google
 
-provider "google-beta" {
-  project = "rare-style-447407-s1"
-  region  = "us-central1"
+  project = var.project_id
+  region  = local.region
 }
 
 resource "random_shuffle" "available_zones" {
