@@ -1016,6 +1016,9 @@ resource "google_container_node_pool" "pools" {
     delete = lookup(var.timeouts, "delete", "45m")
   }
 
+  depends_on = [
+    google_compute_firewall.intra_egress,
+  ]
 }
 resource "google_container_node_pool" "windows_pools" {
   provider = google-beta
@@ -1312,5 +1315,8 @@ resource "google_container_node_pool" "windows_pools" {
     delete = lookup(var.timeouts, "delete", "45m")
   }
 
-  depends_on = [google_container_node_pool.pools[0]]
+  depends_on = [
+    google_compute_firewall.intra_egress,
+    google_container_node_pool.pools[0],
+  ]
 }
