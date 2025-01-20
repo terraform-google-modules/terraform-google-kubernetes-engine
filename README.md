@@ -167,6 +167,7 @@ Then perform the following commands on the root folder:
 | enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
 | enable\_cost\_allocation | Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery | `bool` | `false` | no |
 | enable\_default\_node\_pools\_metadata | Whether to enable the default node pools metadata key-value pairs such as `cluster_name` and `node_pool` | `bool` | `true` | no |
+| enable\_fqdn\_network\_policy | Enable FQDN Network Policies on the cluster | `bool` | `null` | no |
 | enable\_gcfs | Enable image streaming on cluster level. | `bool` | `false` | no |
 | enable\_identity\_service | (Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API. | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
@@ -211,6 +212,7 @@ Then perform the following commands on the root folder:
 | monitoring\_enable\_observability\_metrics | Whether or not the advanced datapath metrics are enabled. | `bool` | `false` | no |
 | monitoring\_enable\_observability\_relay | Whether or not the advanced datapath relay is enabled. | `bool` | `false` | no |
 | monitoring\_enabled\_components | List of services to monitor: SYSTEM\_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER\_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET, KUBELET, CADVISOR and DCGM. In beta provider, WORKLOADS is supported on top of those 12 values. (WORKLOADS is deprecated and removed in GKE 1.24.) KUBELET and CADVISOR are only supported in GKE 1.29.3-gke.1093000 and above. Empty list is default GKE configuration. | `list(string)` | `[]` | no |
+| monitoring\_metric\_writer\_role | The monitoring metrics writer role to assign to the GKE node service account | `string` | `"roles/monitoring.metricWriter"` | no |
 | monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | `string` | `"monitoring.googleapis.com/kubernetes"` | no |
 | name | The name of the cluster (required) | `string` | n/a | yes |
 | network | The VPC network to host the cluster in (required) | `string` | n/a | yes |
@@ -391,7 +393,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
-- [Terraform Provider for GCP][terraform-provider-google] v6.11+
+- [Terraform Provider for GCP][terraform-provider-google] v6.14+
 #### gcloud
 Some submodules use the [terraform-google-gcloud](https://github.com/terraform-google-modules/terraform-google-gcloud) module. By default, this module assumes you already have gcloud installed in your $PATH.
 See the [module](https://github.com/terraform-google-modules/terraform-google-gcloud#downloading) documentation for more information.

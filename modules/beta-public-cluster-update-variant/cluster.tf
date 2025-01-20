@@ -282,19 +282,19 @@ resource "google_container_cluster" "primary" {
       enabled = var.config_connector
     }
 
-    dynamic "gke_backup_agent_config" {
-      for_each = local.gke_backup_agent_config
-
-      content {
-        enabled = gke_backup_agent_config.value.enabled
-      }
-    }
-
     dynamic "gcs_fuse_csi_driver_config" {
       for_each = local.gcs_fuse_csi_driver_config
 
       content {
         enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
+
+    dynamic "gke_backup_agent_config" {
+      for_each = local.gke_backup_agent_config
+
+      content {
+        enabled = gke_backup_agent_config.value.enabled
       }
     }
 
@@ -986,6 +986,9 @@ resource "google_container_node_pool" "pools" {
     delete = lookup(var.timeouts, "delete", "45m")
   }
 
+  depends_on = [
+    google_compute_firewall.intra_egress,
+  ]
 }
 resource "google_container_node_pool" "windows_pools" {
   provider = google-beta
@@ -1282,5 +1285,8 @@ resource "google_container_node_pool" "windows_pools" {
     delete = lookup(var.timeouts, "delete", "45m")
   }
 
-  depends_on = [google_container_node_pool.pools[0]]
+  depends_on = [
+    google_compute_firewall.intra_egress,
+    google_container_node_pool.pools[0],
+  ]
 }
