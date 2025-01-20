@@ -456,6 +456,21 @@ steps:
     - verify simple-autopilot-private-non-default-sa
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivateNonDefaultSA --stage teardown --verbose']
+- id: apply simple-autopilot-private-cmek
+  waitFor:
+    - create-all
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivateCMEK --stage apply --verbose']
+- id: verify simple-autopilot-private-cmek
+  waitFor:
+    - apply simple-autopilot-private-cmek
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivateCMEK --stage verify --verbose']
+- id: teardown simple-autopilot-private-cmek
+  waitFor:
+    - verify simple-autopilot-private-cmek
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivateCMEK --stage teardown --verbose']
 - id: apply simple-fleet-app-operator-permissions
   waitFor:
     - create-all
