@@ -594,6 +594,12 @@ variable "enable_secret_manager_addon" {
   default     = false
 }
 
+variable "enable_fqdn_network_policy" {
+  type        = bool
+  description = "Enable FQDN Network Policies on the cluster"
+  default     = null
+}
+
 variable "enable_cilium_clusterwide_network_policy" {
   type        = bool
   description = "Enable Cilium Cluster Wide Network Policies on the cluster"
@@ -753,15 +759,14 @@ variable "gce_pd_csi_driver" {
   default     = true
 }
 
-variable "gke_backup_agent_config" {
-  type        = bool
-  description = "Whether Backup for GKE agent is enabled for this cluster."
-  default     = false
-}
-
 variable "gcs_fuse_csi_driver" {
   type        = bool
   description = "Whether GCE FUSE CSI driver is enabled for this cluster."
+  default     = false
+}
+variable "gke_backup_agent_config" {
+  type        = bool
+  description = "Whether Backup for GKE agent is enabled for this cluster."
   default     = false
 }
 
@@ -896,4 +901,14 @@ variable "fleet_project" {
   description = "(Optional) Register the cluster with the fleet in this project."
   type        = string
   default     = null
+}
+
+variable "monitoring_metric_writer_role" {
+  description = "The monitoring metrics writer role to assign to the GKE node service account"
+  type        = string
+  default     = "roles/monitoring.metricWriter"
+  validation {
+    condition     = can(regex("^(roles/[a-zA-Z0-9_.]+|projects/[a-zA-Z0-9-]+/roles/[a-zA-Z0-9_.]+)$", var.monitoring_metric_writer_role))
+    error_message = "The monitoring_metric_writer_role must be either a predefined role (roles/*) or a custom role (projects/*/roles/*)."
+  }
 }
