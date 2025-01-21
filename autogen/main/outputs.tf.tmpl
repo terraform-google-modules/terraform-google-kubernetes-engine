@@ -59,7 +59,6 @@ output "zones" {
 }
 
 output "endpoint" {
-  sensitive   = true
   description = "Cluster endpoint"
   value       = local.cluster_endpoint
   depends_on = [
