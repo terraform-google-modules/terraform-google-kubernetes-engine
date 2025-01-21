@@ -15,7 +15,7 @@
  */
 
 output "kubernetes_endpoint" {
-  value     = module.gke.endpoint
+  value = module.gke.endpoint
 }
 
 output "client_token" {
