@@ -200,9 +200,6 @@
           "mode": "GKE_METADATA"
         }
       },
-      "locations": [
-        "us-central1-a"
-      ],
       "management": {
         "autoRepair": true,
         "autoUpgrade": true
