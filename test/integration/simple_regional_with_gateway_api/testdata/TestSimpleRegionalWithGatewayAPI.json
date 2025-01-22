@@ -213,7 +213,7 @@
         "podRange": "cft-gke-test-pods-RANDOM_STRING"
       },
       "podIpv4CidrSize": 24,
-      "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/us-central1/clusters/gke-simple-regional-gatewayapi-cluster-RANDOM_STRING/nodePools/default-pool",
+      "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/us-central1/clusters/simple-regional-gatewayapi-cluster-RANDOM_STRING/nodePools/default-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
