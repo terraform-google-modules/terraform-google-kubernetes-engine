@@ -69,7 +69,6 @@
       "publicEndpoint": "KUBERNETES_ENDPOINT"
     }
   },
-  "currentNodeCount": 8,
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -86,7 +85,6 @@
     "clusterIpv4Cidr": "192.168.0.0/18",
     "clusterIpv4CidrBlock": "192.168.0.0/18",
     "clusterSecondaryRangeName": "cft-gke-test-pods-RANDOM_STRING",
-    "defaultPodIpv4RangeUtilization": 0.0624,
     "podCidrOverprovisionConfig": {},
     "servicesIpv4Cidr": "192.168.64.0/18",
     "servicesIpv4CidrBlock": "192.168.64.0/18",
@@ -249,7 +247,6 @@
       "name": "default-pool",
       "networkConfig": {
         "podIpv4CidrBlock": "192.168.0.0/18",
-        "podIpv4RangeUtilization": 0.0624,
         "podRange": "cft-gke-test-pods-RANDOM_STRING"
       },
       "podIpv4CidrSize": 24,
@@ -302,7 +299,6 @@
       "name": "nap-e2-medium-1d469r1p",
       "networkConfig": {
         "podIpv4CidrBlock": "192.168.0.0/18",
-        "podIpv4RangeUtilization": 0.0624,
         "podRange": "cft-gke-test-pods-RANDOM_STRING"
       },
       "placementPolicy": {},
@@ -395,7 +391,6 @@
       "name": "pool-01",
       "networkConfig": {
         "podIpv4CidrBlock": "192.168.0.0/18",
-        "podIpv4RangeUtilization": 0.0624,
         "podRange": "cft-gke-test-pods-RANDOM_STRING"
       },
       "podIpv4CidrSize": 24,
@@ -490,7 +485,6 @@
       "name": "pool-02",
       "networkConfig": {
         "podIpv4CidrBlock": "192.168.0.0/18",
-        "podIpv4RangeUtilization": 0.0624,
         "podRange": "cft-gke-test-pods-RANDOM_STRING"
       },
       "podIpv4CidrSize": 24,
@@ -583,7 +577,6 @@
       "networkConfig": {
         "enablePrivateNodes": false,
         "podIpv4CidrBlock": "172.16.0.0/18",
-        "podIpv4RangeUtilization": 0.0625,
         "podRange": "test"
       },
       "podIpv4CidrSize": 24,
@@ -671,7 +664,6 @@
       "name": "pool-04",
       "networkConfig": {
         "podIpv4CidrBlock": "192.168.0.0/18",
-        "podIpv4RangeUtilization": 0.0624,
         "podRange": "cft-gke-test-pods-RANDOM_STRING"
       },
       "podIpv4CidrSize": 24,
@@ -759,7 +751,6 @@
       "name": "pool-05",
       "networkConfig": {
         "podIpv4CidrBlock": "192.168.0.0/18",
-        "podIpv4RangeUtilization": 0.0624,
         "podRange": "cft-gke-test-pods-RANDOM_STRING"
       },
       "podIpv4CidrSize": 24,

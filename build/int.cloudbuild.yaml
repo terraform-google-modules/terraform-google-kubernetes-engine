@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2019-2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,44 +29,39 @@ steps:
     - prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run all --stage init --verbose']
-- id: create-all
+- id: apply disable-client-cert
   waitFor:
     - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do create']
-- id: apply disable-client-cert
-  waitFor:
-    - create-all
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestDisableClientCert --stage apply --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestDisableClientCert --stage apply --verbose']
 - id: verify disable-client-cert
   waitFor:
     - apply disable-client-cert
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestDisableClientCert --stage verify --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestDisableClientCert --stage verify --verbose']
 - id: teardown disable-client-cert
   waitFor:
     - verify disable-client-cert
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestDisableClientCert --stage teardown --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestDisableClientCert --stage teardown --verbose']
 - id: apply shared-vpc-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSharedVPC --stage apply --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestSharedVPC --stage apply --verbose']
 - id: verify shared-vpc-local
   waitFor:
     - apply shared-vpc-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSharedVPC --stage verify --verbose --test-dir test/integration']
-- id: destroy shared-vpc-local
+  args: ['/bin/bash', '-c', 'cft test run TestSharedVPC --stage verify --verbose']
+- id: teardown shared-vpc-local
   waitFor:
     - verify shared-vpc-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSharedVPC --stage teardown --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestSharedVPC --stage teardown --verbose']
 - id: apply safer-cluster-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSaferCluster --stage apply --verbose']
 - id: verify safer-cluster-local
@@ -74,14 +69,14 @@ steps:
     - apply safer-cluster-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSaferCluster --stage verify --verbose']
-- id: destroy safer-cluster-local
+- id: teardown safer-cluster-local
   waitFor:
     - verify safer-cluster-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSaferCluster --stage destroy --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestSaferCluster --stage teardown --verbose']
 - id: apply simple-regional-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegional --stage apply --verbose']
 - id: verify simple-regional-local
@@ -89,14 +84,14 @@ steps:
     - apply simple-regional-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegional --stage verify --verbose']
-- id: destroy simple-regional-local
+- id: teardown simple-regional-local
   waitFor:
     - verify simple-regional-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegional --stage teardown --verbose']
 - id: apply simple-regional-private-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalPrivate --stage apply --verbose']
 - id: verify simple-regional-private-local
@@ -104,15 +99,14 @@ steps:
     - apply simple-regional-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalPrivate --stage verify --verbose']
-- id: destroy simple-regional-private-local
+- id: teardown simple-regional-private-local
   waitFor:
     - verify simple-regional-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalPrivate --stage teardown --verbose']
 - id: apply simple-regional-cluster-autoscaling
   waitFor:
-    - create-all
-    - destroy simple-regional-private-local
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalClusterAutoscaling --stage apply --verbose']
 - id: verify simple-regional-cluster-autoscaling
@@ -120,14 +114,14 @@ steps:
     - apply simple-regional-cluster-autoscaling
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalClusterAutoscaling --stage verify --verbose']
-- id: destroy simple-regional-cluster-autoscaling
+- id: teardown simple-regional-cluster-autoscaling
   waitFor:
     - verify simple-regional-cluster-autoscaling
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalClusterAutoscaling --stage teardown --verbose']
 - id: apply simple-regional-with-kubeconfig-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalWithKubeConfig --stage apply --verbose']
 - id: verify simple-regional-with-kubeconfig-local
@@ -135,29 +129,29 @@ steps:
     - apply simple-regional-with-kubeconfig-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalWithKubeConfig --stage verify --verbose']
-- id: destroy simple-regional-with-kubeconfig-local
+- id: teardown simple-regional-with-kubeconfig-local
   waitFor:
     - verify simple-regional-with-kubeconfig-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalWithKubeConfig --stage teardown --verbose']
-- id: converge simple-regional-with-gateway-api-local
+- id: apply simple-regional-with-gateway-api-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge simple-regional-with-gateway-api-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalWithGatewayAPI --stage apply --verbose']
 - id: verify simple-regional-with-gateway-api-local
   waitFor:
-    - converge simple-regional-with-gateway-api-local
+    - apply simple-regional-with-gateway-api-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify simple-regional-with-gateway-api-local']
-- id: destroy simple-regional-with-gateway-api-local
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalWithGatewayAPI --stage verify --verbose']
+- id: teardown simple-regional-with-gateway-api-local
   waitFor:
     - verify simple-regional-with-gateway-api-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy simple-regional-with-gateway-api-local']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalWithGatewayAPI --stage teardown --verbose']
 - id: apply simple-regional-with-networking-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalWithNetworking --stage apply --verbose']
 - id: verify simple-regional-with-networking-local
@@ -165,14 +159,14 @@ steps:
     - apply simple-regional-with-networking-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalWithNetworking --stage verify --verbose']
-- id: destroy simple-regional-with-networking-local
+- id: teardown simple-regional-with-networking-local
   waitFor:
     - verify simple-regional-with-networking-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalWithNetworking --stage teardown --verbose']
 - id: apply simple-zonal-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleZonal --stage apply --verbose']
 - id: verify simple-zonal-local
@@ -180,14 +174,14 @@ steps:
     - apply simple-zonal-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleZonal --stage verify --verbose']
-- id: destroy simple-zonal-local
+- id: teardown simple-zonal-local
   waitFor:
     - verify simple-zonal-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleZonal --stage teardown --verbose']
 - id: apply simple-zonal-private-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalPrivate --stage apply --verbose']
 - id: verify simple-zonal-private-local
@@ -195,104 +189,120 @@ steps:
     - apply simple-zonal-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalPrivate --stage verify --verbose']
-- id: destroy simple-zonal-private-local
+- id: teardown simple-zonal-private-local
   waitFor:
     - verify simple-zonal-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalPrivate --stage teardown --verbose']
-- id: converge stub-domains-local
+- id: apply stub-domains-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge stub-domains-local']
+  args: ['/bin/bash', '-c', 'cft test run TestStubDomains --stage apply --verbose']
 - id: verify stub-domains-local
   waitFor:
-    - converge stub-domains-local
+    - apply stub-domains-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify stub-domains-local']
-- id: destroy stub-domains-local
+  args: ['/bin/bash', '-c', 'cft test run TestStubDomains --stage verify --verbose']
+- id: teardown stub-domains-local
   waitFor:
     - verify stub-domains-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy stub-domains-local']
-- id: converge upstream-nameservers-local
+  args: ['/bin/bash', '-c', 'cft test run TestStubDomains --stage teardown --verbose']
+# Disabled: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/264
+# - id: apply stub-domains-private-local
+#   waitFor:
+#     - init-all
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'cft test run TestStubDomainsPrivate --stage apply --verbose']
+# - id: verify stub-domains-private-local
+#   waitFor:
+#     - apply stub-domains-private-local
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'cft test run TestStubDomainsPrivate --stage verify --verbose']
+# - id: teardown stub-domains-private-local
+#   waitFor:
+#     - verify stub-domains-private-local
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'cft test run TestStubDomainsPrivate --stage teardown --verbose']
+- id: apply upstream-nameservers-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge upstream-nameservers-local']
+  args: ['/bin/bash', '-c', 'cft test run TestUpstreamNameservers --stage apply --verbose']
 - id: verify upstream-nameservers-local
   waitFor:
-    - converge upstream-nameservers-local
+    - apply upstream-nameservers-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify upstream-nameservers-local']
-- id: destroy upstream-nameservers-local
+  args: ['/bin/bash', '-c', 'cft test run TestUpstreamNameservers --stage verify --verbose']
+- id: teardown upstream-nameservers-local
   waitFor:
     - verify upstream-nameservers-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy upstream-nameservers-local']
-- id: converge stub-domains-upstream-nameservers-local
+  args: ['/bin/bash', '-c', 'cft test run TestUpstreamNameservers --stage teardown --verbose']
+- id: apply stub-domains-upstream-nameservers-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge stub-domains-upstream-nameservers-local']
+  args: ['/bin/bash', '-c', 'cft test run TestStubDomainsUpstreamNameservers --stage apply --verbose']
 - id: verify stub-domains-upstream-nameservers-local
   waitFor:
-    - converge stub-domains-upstream-nameservers-local
+    - apply stub-domains-upstream-nameservers-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify stub-domains-upstream-nameservers-local']
-- id: destroy stub-domains-upstream-nameservers-local
+  args: ['/bin/bash', '-c', 'cft test run TestStubDomainsUpstreamNameservers --stage verify --verbose']
+- id: teardown stub-domains-upstream-nameservers-local
   waitFor:
     - verify stub-domains-upstream-nameservers-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy stub-domains-upstream-nameservers-local']
-- id: converge workload-metadata-config-local
+  args: ['/bin/bash', '-c', 'cft test run TestStubDomainsUpstreamNameservers --stage teardown --verbose']
+- id: apply workload-metadata-config-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge workload-metadata-config-local']
+  args: ['/bin/bash', '-c', 'cft test run TestWorkloadMetadataConfig --stage apply --verbose']
 - id: verify workload-metadata-config-local
   waitFor:
-    - converge workload-metadata-config-local
+    - apply workload-metadata-config-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify workload-metadata-config-local']
-- id: destroy workload-metadata-config-local
+  args: ['/bin/bash', '-c', 'cft test run TestWorkloadMetadataConfig --stage verify --verbose']
+- id: teardown workload-metadata-config-local
   waitFor:
     - verify workload-metadata-config-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy workload-metadata-config-local']
+  args: ['/bin/bash', '-c', 'cft test run TestWorkloadMetadataConfig --stage teardown --verbose']
 - id: apply beta-cluster
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage apply --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage apply --verbose']
 - id: verify beta-cluster
   waitFor:
     - apply beta-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage verify --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage verify --verbose']
 - id: teardown beta-cluster
   waitFor:
     - verify beta-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage teardown --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage teardown --verbose']
 - id: apply simple-windows-node-pool-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSimpleWindowsNodePool --stage apply --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleWindowsNodePool --stage apply --verbose']
 - id: verify simple-windows-node-pool-local
   waitFor:
     - apply simple-windows-node-pool-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSimpleWindowsNodePool --stage verify --verbose --test-dir test/integration']
-- id: destroy simple-windows-node-pool-local
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleWindowsNodePool --stage verify --verbose']
+- id: teardown simple-windows-node-pool-local
   waitFor:
     - verify simple-windows-node-pool-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSimpleWindowsNodePool --stage teardown --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleWindowsNodePool --stage teardown --verbose']
 - id: apply deploy-service-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestDeployService --stage apply --verbose']
 - id: verify deploy-service-local
@@ -300,14 +310,14 @@ steps:
     - apply deploy-service-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestDeployService --stage verify --verbose']
-- id: destroy deploy-service-local
+- id: teardown deploy-service-local
   waitFor:
     - verify deploy-service-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestDeployService --stage destroy --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestDeployService --stage teardown --verbose']
 - id: apply node-pool-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestNodePool --stage apply --verbose']
 - id: verify node-pool-local
@@ -315,14 +325,14 @@ steps:
     - apply node-pool-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestNodePool --stage verify --verbose']
-- id: destroy node-pool-local
+- id: teardown node-pool-local
   waitFor:
     - verify node-pool-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestNodePool --stage destroy --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestNodePool --stage teardown --verbose']
 - id: apply sandbox-enabled-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSandboxEnabled --stage apply --verbose']
 - id: verify sandbox-enabled-local
@@ -330,14 +340,14 @@ steps:
     - apply sandbox-enabled-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSandboxEnabled --stage verify --verbose']
-- id: destroy sandbox-enabled-local
+- id: teardown sandbox-enabled-local
   waitFor:
     - verify sandbox-enabled-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSandboxEnabled --stage destroy --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestSandboxEnabled --stage teardown --verbose']
 - id: apply workload-identity-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestWorkloadIdentity --stage apply --verbose']
 - id: verify workload-identity-local
@@ -345,14 +355,14 @@ steps:
     - apply workload-identity-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestWorkloadIdentity --stage verify --verbose']
-- id: destroy workload-identity-local
+- id: teardown workload-identity-local
   waitFor:
     - verify workload-identity-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestWorkloadIdentity --stage teardown --verbose']
 - id: apply safer-cluster-iap-bastion-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSaferClusterIapBastion --stage apply --verbose']
 - id: verify safer-cluster-iap-bastion-local
@@ -360,14 +370,14 @@ steps:
     - apply safer-cluster-iap-bastion-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSaferClusterIapBastion --stage verify --verbose']
-- id: destroy safer-cluster-iap-bastion-local
+- id: teardown safer-cluster-iap-bastion-local
   waitFor:
     - verify safer-cluster-iap-bastion-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSaferClusterIapBastion --stage teardown --verbose']
 - id: apply simple-zonal-with-asm-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalWithASM --stage apply --verbose']
 - id: verify simple-zonal-with-asm-local
@@ -375,14 +385,14 @@ steps:
     - apply simple-zonal-with-asm-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalWithASM --stage verify --verbose']
-- id: destroy simple-zonal-with-asm-local
+- id: teardown simple-zonal-with-asm-local
   waitFor:
     - verify simple-zonal-with-asm-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleZonalWithASM --stage teardown --verbose']
 - id: apply simple-autopilot-private-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivate --stage apply --verbose']
 - id: verify simple-autopilot-private-local
@@ -390,15 +400,15 @@ steps:
     - apply simple-autopilot-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivate --stage verify --verbose']
-- id: destroy simple-autopilot-private-local
+- id: teardown simple-autopilot-private-local
   waitFor:
     - verify simple-autopilot-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivate --stage teardown --verbose']
 - id: apply autopilot-private-firewalls
   waitFor:
-    - create-all
-    - destroy simple-autopilot-private-local
+    - init-all
+    - teardown simple-autopilot-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage apply --verbose']
 - id: verify autopilot-private-firewalls
@@ -406,14 +416,14 @@ steps:
     - apply autopilot-private-firewalls
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage verify --verbose']
-- id: destroy autopilot-private-firewalls
+- id: teardown autopilot-private-firewalls
   waitFor:
     - verify autopilot-private-firewalls
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage destroy --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestAutopilotPrivateFirewalls --stage teardown --verbose']
 - id: apply simple-autopilot-public-local
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPublic --stage apply --verbose']
 - id: verify simple-autopilot-public-local
@@ -421,29 +431,29 @@ steps:
     - apply simple-autopilot-public-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPublic --stage verify --verbose']
-- id: destroy simple-autopilot-public-local
+- id: teardown simple-autopilot-public-local
   waitFor:
     - verify simple-autopilot-public-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPublic --stage teardown --verbose']
 - id: apply private-zonal-with-networking
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage apply --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage apply --verbose']
 - id: verify private-zonal-with-networking
   waitFor:
     - apply private-zonal-with-networking
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage verify --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage verify --verbose']
 - id: teardown private-zonal-with-networking
   waitFor:
     - verify private-zonal-with-networking
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage teardown --verbose --test-dir test/integration']
+  args: ['/bin/bash', '-c', 'cft test run TestPrivateZonalWithNetworking --stage teardown --verbose']
 - id: apply simple-autopilot-private-non-default-sa
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivateNonDefaultSA --stage apply --verbose']
 - id: verify simple-autopilot-private-non-default-sa
@@ -458,7 +468,7 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestSimpleAutopilotPrivateNonDefaultSA --stage teardown --verbose']
 - id: apply simple-fleet-app-operator-permissions
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleFleetAppOperatorPermissions --stage apply --verbose']
 - id: verify simple-fleet-app-operator-permissions
@@ -478,4 +488,4 @@ substitutions:
   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
   _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.23'
 options:
-  machineType: 'N1_HIGHCPU_8'
+  machineType: 'E2_HIGHCPU_32'
