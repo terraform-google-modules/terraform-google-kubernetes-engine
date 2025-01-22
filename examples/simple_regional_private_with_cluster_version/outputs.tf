@@ -15,8 +15,7 @@
  */
 
 output "kubernetes_endpoint" {
-  sensitive = true
-  value     = module.gke.endpoint
+  value = module.gke.endpoint
 }
 
 output "client_token" {
