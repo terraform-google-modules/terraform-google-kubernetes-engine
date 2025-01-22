@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2018-2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,4 +82,12 @@ output "service_account" {
 
 output "registry_project_ids" {
   value = var.registry_project_ids
+}
+
+output "random_string" {
+  value = random_string.suffix.result
+}
+
+output "compute_engine_service_account" {
+  value = var.compute_engine_service_accounts[local.cluster_index]
 }
