@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,6 @@
  * limitations under the License.
  */
 
-output "kubernetes_endpoint" {
-  value = module.gke.endpoint
+variable "project_id" {
+  description = "The project ID to host the cluster in"
 }
-
-output "client_token" {
-  sensitive = true
-  value     = base64encode(data.google_client_config.default.access_token)
-}
-
-output "ca_certificate" {
-  value = module.gke.ca_certificate
-}
-
-output "service_account" {
-  description = "The default service account used for running nodes."
-  value       = module.gke.service_account
-}
-
