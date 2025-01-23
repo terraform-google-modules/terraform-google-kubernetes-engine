@@ -56,7 +56,6 @@ output "zones" {
 }
 
 output "endpoint" {
-  sensitive   = true
   description = "Cluster endpoint"
   value       = local.cluster_endpoint
   depends_on = [
@@ -165,7 +164,7 @@ output "tpu_ipv4_cidr_block" {
 
 output "master_ipv4_cidr_block" {
   description = "The IP range in CIDR notation used for the hosted master network"
-  value       = google_container_cluster.primary.private_cluster_config[0].master_ipv4_cidr_block
+  value       = var.enable_private_nodes ? google_container_cluster.primary.private_cluster_config[0].master_ipv4_cidr_block : null
 }
 
 output "peering_name" {

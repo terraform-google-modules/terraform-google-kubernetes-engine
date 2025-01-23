@@ -60,8 +60,7 @@ output "master_kubernetes_version" {
 }
 
 output "kubernetes_endpoint" {
-  sensitive = true
-  value     = module.this.kubernetes_endpoint
+  value = module.this.kubernetes_endpoint
 }
 
 output "service_account" {
