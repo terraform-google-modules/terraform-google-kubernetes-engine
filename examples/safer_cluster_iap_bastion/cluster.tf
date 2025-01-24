@@ -25,7 +25,7 @@ module "gke" {
   subnetwork              = module.vpc.subnets_names[0]
   ip_range_pods           = module.vpc.subnets_secondary_ranges[0][0].range_name
   ip_range_services       = module.vpc.subnets_secondary_ranges[0][1].range_name
-  enable_private_endpoint = false
+  enable_private_endpoint = true
   deletion_protection     = false
   master_authorized_networks = [{
     cidr_block   = "${module.bastion.ip_address}/32"
