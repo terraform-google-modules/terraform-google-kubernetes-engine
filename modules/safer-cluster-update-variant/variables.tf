@@ -521,6 +521,12 @@ variable "enable_gcfs" {
   default     = false
 }
 
+variable "enable_secret_manager_addon" {
+  description = "Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
+
 variable "enable_mesh_certificates" {
   type        = bool
   default     = false
