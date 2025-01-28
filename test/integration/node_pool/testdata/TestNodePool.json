@@ -191,7 +191,7 @@
       "gcfsConfig": {},
       "loggingConfig": {
         "variantConfig": {
-          "variant": "DEFAULT"
+          "variant": "MAX_THROUGHPUT"
         }
       },
       "nodeKubeletConfig": {}

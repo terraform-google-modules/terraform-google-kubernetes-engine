@@ -612,6 +612,7 @@ resource "google_container_cluster" "primary" {
 
   node_pool_defaults {
     node_config_defaults {
+      logging_variant = var.logging_variant
       gcfs_config {
         enabled = var.enable_gcfs
       }

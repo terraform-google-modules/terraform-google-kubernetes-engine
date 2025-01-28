@@ -36,7 +36,6 @@
       "publicEndpoint": "KUBERNETES_ENDPOINT"
     }
   },
-  "currentNodeCount": 3,
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"

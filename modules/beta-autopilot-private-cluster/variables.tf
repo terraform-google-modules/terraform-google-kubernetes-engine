@@ -394,12 +394,6 @@ variable "enable_confidential_nodes" {
   default     = false
 }
 
-variable "enable_gcfs" {
-  type        = bool
-  description = "Enable image streaming on cluster level."
-  default     = true
-}
-
 variable "enable_secret_manager_addon" {
   description = "Enable the Secret Manager add-on for this cluster"
   type        = bool
@@ -602,12 +596,6 @@ variable "fleet_project_grant_service_agent" {
   description = "(Optional) Grant the fleet project service identity the `roles/gkehub.serviceAgent` and `roles/gkehub.crossProjectServiceAgent` roles."
   type        = bool
   default     = false
-}
-
-variable "logging_variant" {
-  description = "(Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT."
-  type        = string
-  default     = null
 }
 
 variable "monitoring_metric_writer_role" {
