@@ -607,17 +607,14 @@ variable "enable_confidential_nodes" {
   description = "An optional flag to enable confidential node config."
   default = false
 }
+{% if autopilot_cluster != true %}
 
 variable "enable_gcfs" {
   type        = bool
   description = "Enable image streaming on cluster level."
-  {% if autopilot_cluster != true %}
   default     = false
-  {% endif %}
-  {% if autopilot_cluster %}
-  default     = true
-  {% endif %}
 }
+{% endif %}
 
 variable "enable_secret_manager_addon" {
   description = "Enable the Secret Manager add-on for this cluster"
@@ -1022,7 +1019,7 @@ variable "fleet_project_grant_service_agent" {
   default = false
 }
 {% endif %}
-{% if beta_cluster and autopilot_cluster %}
+{% if autopilot_cluster != true %}
 
 variable "logging_variant" {
   description = "(Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT."

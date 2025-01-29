@@ -65,7 +65,6 @@ module "gke" {
       disk_size_gb              = 100
       disk_type                 = "pd-standard"
       image_type                = "COS_CONTAINERD"
-      logging_variant           = "DEFAULT"
       auto_repair               = true
       auto_upgrade              = true
       service_account           = google_service_account.gke-sa[each.key].email

@@ -44,6 +44,7 @@ module "gke" {
   cluster_autoscaling               = var.cluster_autoscaling
   deletion_protection               = false
   service_account                   = "default"
+  logging_variant                   = "MAX_THROUGHPUT"
 
   node_pools = [
     {
@@ -53,6 +54,7 @@ module "gke" {
       service_account = var.compute_engine_service_account
       auto_upgrade    = true
       enable_gcfs     = false
+      logging_variant = "DEFAULT"
     },
     {
       name              = "pool-02"
