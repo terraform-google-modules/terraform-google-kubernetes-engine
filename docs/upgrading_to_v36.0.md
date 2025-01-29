@@ -14,7 +14,7 @@ The variable `enable_gcfs` has been removed from the Autopilot sub-modules. Auto
 ```
 
 ### var.logging_variant removed from Autopilot
-The variable `logging_variant` has been removed from the Autopilot sub-modules. It is only applicable to Standard clusters.
+The variable `logging_variant` has been removed from the Autopilot sub-modules. It is only [applicable](https://cloud.google.com/kubernetes-engine/docs/how-to/adjust-log-throughput) to Standard clusters.
 
 ```diff
   module "cluster" {
