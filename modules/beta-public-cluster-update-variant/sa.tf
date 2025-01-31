@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2022-2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,6 +78,13 @@ resource "google_project_iam_member" "cluster_service_account_artifact_registry"
   for_each = var.create_service_account && var.grant_registry_access ? toset(local.registry_projects_list) : []
   project  = each.key
   role     = "roles/artifactregistry.reader"
+  member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
+}
+
+resource "google_project_iam_member" "cluster_service_account_service_usage_consumer" {
+  for_each = var.create_service_account && var.enable_gcfs ? toset(local.registry_projects_list) : []
+  project  = each.key
+  role     = "roles/serviceusage.serviceUsageConsumer"
   member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
 }
 
