@@ -214,4 +214,6 @@ module "gke" {
   // Enabling security posture
   security_posture_mode               = var.security_posture_mode
   security_posture_vulnerability_mode = var.security_posture_vulnerability_mode
+
+  enable_secret_manager_addon = var.enable_secret_manager_addon
 }
