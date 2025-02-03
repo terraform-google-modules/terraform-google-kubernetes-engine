@@ -27,7 +27,7 @@ The variable `logging_variant` has been removed from the Autopilot sub-modules. 
 
 ### ASM Sub-Module Removal
 The ASM Sub-Module has been removed in v36.0.  Please use the [google_gke_hub_feature](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature#example-usage---enable-fleet-default-member-config-service-mesh) and [google_gke_hub_feature_membership](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature_membership#example-usage---service-mesh) resources.  For another example, see [terraform-docs-samples/gke/autopilot
-/mesh](https://github.com/terraform-google-modules/terraform-docs-samples/tree/main/gke/autopilot/basic).
+/mesh](https://github.com/terraform-google-modules/terraform-docs-samples/tree/main/gke/autopilot/mesh).
 
 
 ```diff
