@@ -1,6 +1,9 @@
 # Upgrading to v36.0
 The v36.0 release of *kubernetes-engine* is a backwards incompatible release.
 
+### Google Cloud Platform Provider upgrade
+The Terraform Kubernetes Engine Module now requires version 6.14 or higher of the Google Cloud Platform Providers.
+
 ### var.enable_gcfs removed from Autopilot sub-modules
 The variable `enable_gcfs` has been removed from the Autopilot sub-modules. Autopilot clusters that run GKE version `1.25.5-gke.1000` and later use [Image streaming](https://cloud.google.com/kubernetes-engine/docs/how-to/image-streaming).
 
