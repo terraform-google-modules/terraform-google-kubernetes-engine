@@ -40,7 +40,7 @@ The ACM Sub-Module has been removed in v36.0.  Please use the [google_gke_hub_fe
 -  # Config Sync
 -  enable_config_sync = true
 -  sync_repo   = "git@github.com:GoogleCloudPlatform/anthos-config-management-samples.git"
--  sync_branch = "1.0.0"
+-  sync_branch = "main"
 -  policy_dir  = "foo-corp"
 
 -  # Policy Controller
@@ -71,7 +71,7 @@ The ACM Sub-Module has been removed in v36.0.  Please use the [google_gke_hub_fe
 +      enabled = true
 +      git {
 +        sync_repo = "git@github.com:GoogleCloudPlatform/anthos-config-management-samples.git"
-+        sync_branch = "1.0.0"
++        sync_branch = "main"
 +        policy_dir = "foo-corp"
 +      }
 +    }
