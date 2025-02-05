@@ -6,6 +6,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [36.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v35.0.1...v36.0.0) (2025-02-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove ACM sub-module ([#2236](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2236))
+* remove ASM sub-module ([#2168](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2168))
+* re-align node_config_defaults to cluster types ([#2256](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2256))
+* **TPG>=6.14:** promote enable_fqdn_network_policy to GA ([#2225](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2225))
+
+### Features
+
+* add serviceUsageConsumer to SA for GCFS ([#2262](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2262)) ([bb7ec93](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/bb7ec931140daba62f5fb90fe7735aed496d39d4))
+* Add support for CMEK in Autopilot GKE module ([#2230](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2230)) ([1c08b99](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1c08b9915b7a3f9fe3d358ff0958666bc595155e))
+* add support for custom monitoring metrics writer role ([#2239](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2239)) ([4aad5e9](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4aad5e9e72d2d48706c0244395adab69602119d7))
+* **autopilot:** add insecure_kubelet_readonly_port_enabled ([#2252](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2252)) ([47a49ac](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/47a49ac3471a4318cb7384c1e612cc6ea037c134))
+* remove ACM sub-module ([#2236](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2236)) ([6734dc7](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6734dc7db8fb1c1c23fd77cb0ed5869394f36fd9))
+* remove ASM sub-module ([#2168](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2168)) ([010e034](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/010e0340551af933b9bf4344cc82019b14c46918))
+* **TPG>=6.14:** promote enable_fqdn_network_policy to GA ([#2225](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2225)) ([2c32408](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2c3240874f2917364fda17587b21fe6616976173))
+
+
+### Bug Fixes
+
+* apply all valid configurations for cluster_dns_provider ([#1805](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1805)) ([c7faa01](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c7faa01d4cbc7adbc07591f000354d9fe906b6a8))
+* dns endpoint for external traffic ([#2244](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2244)) ([4726ab2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4726ab25579565c6d4057457903fab8f80db80ef))
+* **main:** unmark `endpoint` as sensitive ([#2249](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2249)) ([2566fec](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2566fecfe78a4fe8b202fcf8a83c3e402d46ba71))
+* node pool creation should depend on necessary firewall rules ([#2245](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2245)) ([8098489](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8098489b17bdcadc6ca0f197a771cb1448c63776))
+* **private-cluster:** master_ipv4_cidr_block on enable_private_nodes ([#2250](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2250)) ([3ecf473](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3ecf473fea8d4b8e1e4bf0c40a97ac540f041721))
+* re-align node_config_defaults to cluster types ([#2256](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2256)) ([4df226d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4df226de3f67f45f6832ada361e70dba6550c5f0))
+* remove fuse csi driver from autopilot ([#2218](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2218)) ([271af34](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/271af340c26fd4d790337aeccadd7bd354c8cfcd))
+
 ## [35.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v35.0.0...v35.0.1) (2025-01-02)
 
 
