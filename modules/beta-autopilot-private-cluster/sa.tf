@@ -82,7 +82,7 @@ resource "google_project_iam_member" "cluster_service_account_artifact_registry"
 }
 
 resource "google_project_iam_member" "cluster_service_account_service_usage_consumer" {
-  for_each = var.create_service_account ? toset(local.registry_projects_list) : []
+  for_each = var.create_service_account && var.grant_registry_access ? toset(local.registry_projects_list) : []
   project  = each.key
   role     = "roles/serviceusage.serviceUsageConsumer"
   member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
