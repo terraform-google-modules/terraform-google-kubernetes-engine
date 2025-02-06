@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [36.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.0.0...v36.0.1) (2025-02-06)
+
+
+### Bug Fixes
+
+* grant_registry_access gate serviceUsageConsumer ([#2266](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2266)) ([69eca65](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/69eca655edcf5dbd49d5b724ed284ef63bcf6f8c))
+
 ## [36.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v35.0.1...v36.0.0) (2025-02-03)
 
 
