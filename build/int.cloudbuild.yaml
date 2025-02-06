@@ -468,7 +468,7 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestSimpleFleetAppOperatorPermissions --stage teardown --verbose']
 - id: apply test-confidential-safer-cluster
   waitFor:
-    - create-all
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestConfidentialSaferCluster --stage apply --verbose']
 - id: verify test-confidential-safer-cluster
