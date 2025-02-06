@@ -466,6 +466,21 @@ steps:
     - verify simple-fleet-app-operator-permissions
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleFleetAppOperatorPermissions --stage teardown --verbose']
+- id: apply test-confidential-safer-cluster
+  waitFor:
+    - init-all
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestConfidentialSaferCluster --stage apply --verbose']
+- id: verify test-confidential-safer-cluster
+  waitFor:
+    - apply test-confidential-safer-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestConfidentialSaferCluster --stage verify --verbose']
+- id: teardown test-confidential-safer-cluster
+  waitFor:
+    - verify test-confidential-safer-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestConfidentialSaferCluster --stage teardown --verbose']
 tags:
 - 'ci'
 - 'integration'
