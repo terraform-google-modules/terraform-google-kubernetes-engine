@@ -203,10 +203,11 @@ resource "google_container_cluster" "primary" {
   {% if autopilot_cluster == true %}
   cluster_autoscaling {
     dynamic "auto_provisioning_defaults" {
-      for_each = (var.create_service_account || var.service_account != "") ? [1] : []
+      for_each = (var.create_service_account || var.service_account != "" || var.boot_disk_kms_key != null) ? [1] : []
 
       content {
-        service_account = local.service_account
+        service_account   = local.service_account
+        boot_disk_kms_key = var.boot_disk_kms_key
       }
     }
   }
@@ -259,9 +260,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-{% if beta_cluster %}
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
-{% endif %}
 {% if autopilot_cluster %}
   enable_autopilot = true
 {% endif %}
@@ -280,10 +279,17 @@ resource "google_container_cluster" "primary" {
   }
 {% if autopilot_cluster %}
   dynamic "node_pool_auto_config" {
-    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? [1] : []
+    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
     content {
       network_tags {
-        tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : var.network_tags
+        tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : length(var.network_tags) > 0 ? var.network_tags : null
+      }
+
+      dynamic "node_kubelet_config" {
+        for_each = var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
+        content {
+          insecure_kubelet_readonly_port_enabled = upper(tostring(var.insecure_kubelet_readonly_port_enabled))
+        }
       }
     }
   }
@@ -346,6 +352,14 @@ resource "google_container_cluster" "primary" {
     config_connector_config {
       enabled = var.config_connector
     }
+
+    dynamic "gcs_fuse_csi_driver_config" {
+      for_each = local.gcs_fuse_csi_driver_config
+
+      content {
+        enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
     {% endif %}
 
     dynamic "gke_backup_agent_config" {
@@ -353,14 +367,6 @@ resource "google_container_cluster" "primary" {
 
       content {
         enabled = gke_backup_agent_config.value.enabled
-      }
-    }
-
-    dynamic "gcs_fuse_csi_driver_config" {
-      for_each = local.gcs_fuse_csi_driver_config
-
-      content {
-        enabled = gcs_fuse_csi_driver_config.value.enabled
       }
     }
 
@@ -493,7 +499,7 @@ resource "google_container_cluster" "primary" {
 
   {% if autopilot_cluster != true %}
   dynamic "dns_config" {
-    for_each = var.cluster_dns_provider == "CLOUD_DNS" ? [1] : []
+    for_each = !(var.cluster_dns_provider == "PROVIDER_UNSPECIFIED" && var.cluster_dns_scope == "DNS_SCOPE_UNSPECIFIED" && var.cluster_dns_domain == "" ) ? [1] : []
     content {
       additive_vpc_scope_dns_domain = var.additive_vpc_scope_dns_domain
       cluster_dns                   = var.cluster_dns_provider
@@ -639,7 +645,7 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.enable_private_endpoint && var.deploy_using_private_endpoint ? [1] : [0]
+    for_each = var.enable_private_endpoint && var.deploy_using_private_endpoint ? [1] : []
     content {
       dns_endpoint_config {
         allow_external_traffic = var.deploy_using_private_endpoint
@@ -700,26 +706,18 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  {% if autopilot_cluster != true %}
   node_pool_defaults {
     node_config_defaults {
-      {% if autopilot_cluster %}
       logging_variant = var.logging_variant
-      dynamic "gcfs_config" {
-        for_each = var.enable_gcfs != null ? [true] : []
-        content {
-          enabled = var.enable_gcfs
-        }
-      }
-      {% endif %}
-      {% if autopilot_cluster != true %}
       gcfs_config {
         enabled = var.enable_gcfs
       }
       insecure_kubelet_readonly_port_enabled = var.insecure_kubelet_readonly_port_enabled != null ? upper(tostring(var.insecure_kubelet_readonly_port_enabled)) : null
-      {% endif %}
     }
   }
 
+  {% endif %}
   {% if beta_cluster %}
   depends_on = [google_project_iam_member.service_agent]
   {% endif %}
@@ -1111,6 +1109,7 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = length(merge(
         local.node_pools_linux_node_configs_sysctls["all"],
         local.node_pools_linux_node_configs_sysctls[each.value["name"]],
+        local.node_pools_cgroup_mode["all"] == "" ? {} : { cgroup = local.node_pools_cgroup_mode["all"] },
         local.node_pools_cgroup_mode[each.value["name"]] == "" ? {} : {cgroup = local.node_pools_cgroup_mode[each.value["name"]]}
       )) != 0 ? [1] : []
 
@@ -1119,7 +1118,7 @@ resource "google_container_node_pool" "windows_pools" {
           local.node_pools_linux_node_configs_sysctls["all"],
           local.node_pools_linux_node_configs_sysctls[each.value["name"]]
         )
-        cgroup_mode = local.node_pools_cgroup_mode[each.value["name"]] == "" ? null : local.node_pools_cgroup_mode[each.value["name"]]
+        cgroup_mode = coalesce(local.node_pools_cgroup_mode[each.value["name"]], local.node_pools_cgroup_mode["all"], null)
       }
     }
     {% endif %}
@@ -1154,9 +1153,12 @@ resource "google_container_node_pool" "windows_pools" {
     delete = lookup(var.timeouts, "delete", "45m")
   }
 
-  {% if i == 1 %}
-  depends_on = [google_container_node_pool.pools[0]]
-  {% endif %}
+  depends_on = [
+    google_compute_firewall.intra_egress,
+    {% if i == 1 %}
+    google_container_node_pool.pools[0],
+    {% endif %}
+  ]
 }
 {% endfor %}
 {% endif %}

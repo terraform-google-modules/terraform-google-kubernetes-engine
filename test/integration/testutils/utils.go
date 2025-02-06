@@ -1,4 +1,4 @@
-// Copyright 2022-2024 Google LLC
+// Copyright 2022-2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ import (
 	tfjson "github.com/hashicorp/terraform-json"
 	"github.com/stretchr/testify/assert"
 	"github.com/tidwall/gjson"
-	"golang.org/x/sync/errgroup"
 )
 
 var (
@@ -40,6 +39,9 @@ var (
 
 		// API Rate limit exceeded errors can be retried.
 		".*rateLimitExceeded.*": "Rate limit exceeded.",
+
+		// Internal errors can be retried
+		".*Error code 13, message: an internal error has occurred": "Internal error.",
 	}
 
 	ClusterAlwaysExemptPaths = []string{"nodePools"} // node pools are separately checked by name
@@ -100,16 +102,10 @@ func TGKEAssertGolden(assert *assert.Assertions, golden *golden.GoldenFile, clus
 
 		nodeCheckPaths := utils.GetTerminalJSONPaths(golden.GetJSON().Get(fmt.Sprintf("nodePools.#(name==%s)", nodePool)))
 
-		syncGroup := new(errgroup.Group)
-		syncGroup.SetLimit(24)
 		for _, nodeCheckPath := range nodeCheckPaths {
-			nodeCheckPath := nodeCheckPath
-			syncGroup.Go(func() error {
-				gotData := golden.ApplySanitizers(clusterJson.Get(fmt.Sprintf("nodePools.#(name==%s)", nodePool)).Get(nodeCheckPath).String())
-				gfData := golden.GetJSON().Get(fmt.Sprintf("nodePools.#(name==%s)", nodePool)).Get(nodeCheckPath).String()
-				assert.Equalf(gfData, gotData, "For node %s path %q expected %q to match fixture %q", nodePool, nodeCheckPath, gotData, gfData)
-				return nil
-			})
+			gotData := golden.ApplySanitizers(clusterJson.Get(fmt.Sprintf("nodePools.#(name==%s)", nodePool)).Get(nodeCheckPath).String())
+			gfData := golden.GetJSON().Get(fmt.Sprintf("nodePools.#(name==%s)", nodePool)).Get(nodeCheckPath).String()
+			assert.Equalf(gfData, gotData, "For node %q path %q expected %q to match fixture %q", nodePool, nodeCheckPath, gotData, gfData)
 		}
 	}
 }

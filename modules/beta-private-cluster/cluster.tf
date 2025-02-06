@@ -282,19 +282,19 @@ resource "google_container_cluster" "primary" {
       enabled = var.config_connector
     }
 
-    dynamic "gke_backup_agent_config" {
-      for_each = local.gke_backup_agent_config
-
-      content {
-        enabled = gke_backup_agent_config.value.enabled
-      }
-    }
-
     dynamic "gcs_fuse_csi_driver_config" {
       for_each = local.gcs_fuse_csi_driver_config
 
       content {
         enabled = gcs_fuse_csi_driver_config.value.enabled
+      }
+    }
+
+    dynamic "gke_backup_agent_config" {
+      for_each = local.gke_backup_agent_config
+
+      content {
+        enabled = gke_backup_agent_config.value.enabled
       }
     }
 
@@ -414,7 +414,7 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "dns_config" {
-    for_each = var.cluster_dns_provider == "CLOUD_DNS" ? [1] : []
+    for_each = !(var.cluster_dns_provider == "PROVIDER_UNSPECIFIED" && var.cluster_dns_scope == "DNS_SCOPE_UNSPECIFIED" && var.cluster_dns_domain == "") ? [1] : []
     content {
       additive_vpc_scope_dns_domain = var.additive_vpc_scope_dns_domain
       cluster_dns                   = var.cluster_dns_provider
@@ -554,7 +554,7 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.enable_private_endpoint && var.deploy_using_private_endpoint ? [1] : [0]
+    for_each = var.enable_private_endpoint && var.deploy_using_private_endpoint ? [1] : []
     content {
       dns_endpoint_config {
         allow_external_traffic = var.deploy_using_private_endpoint
@@ -612,6 +612,7 @@ resource "google_container_cluster" "primary" {
 
   node_pool_defaults {
     node_config_defaults {
+      logging_variant = var.logging_variant
       gcfs_config {
         enabled = var.enable_gcfs
       }
@@ -894,6 +895,7 @@ resource "google_container_node_pool" "pools" {
       for_each = length(merge(
         local.node_pools_linux_node_configs_sysctls["all"],
         local.node_pools_linux_node_configs_sysctls[each.value["name"]],
+        local.node_pools_cgroup_mode["all"] == "" ? {} : { cgroup = local.node_pools_cgroup_mode["all"] },
         local.node_pools_cgroup_mode[each.value["name"]] == "" ? {} : { cgroup = local.node_pools_cgroup_mode[each.value["name"]] }
       )) != 0 ? [1] : []
 
@@ -902,7 +904,7 @@ resource "google_container_node_pool" "pools" {
           local.node_pools_linux_node_configs_sysctls["all"],
           local.node_pools_linux_node_configs_sysctls[each.value["name"]]
         )
-        cgroup_mode = local.node_pools_cgroup_mode[each.value["name"]] == "" ? null : local.node_pools_cgroup_mode[each.value["name"]]
+        cgroup_mode = coalesce(local.node_pools_cgroup_mode[each.value["name"]], local.node_pools_cgroup_mode["all"], null)
       }
     }
 
@@ -933,6 +935,9 @@ resource "google_container_node_pool" "pools" {
     delete = lookup(var.timeouts, "delete", "45m")
   }
 
+  depends_on = [
+    google_compute_firewall.intra_egress,
+  ]
 }
 resource "google_container_node_pool" "windows_pools" {
   provider = google-beta
@@ -1228,5 +1233,8 @@ resource "google_container_node_pool" "windows_pools" {
     delete = lookup(var.timeouts, "delete", "45m")
   }
 
-  depends_on = [google_container_node_pool.pools[0]]
+  depends_on = [
+    google_compute_firewall.intra_egress,
+    google_container_node_pool.pools[0],
+  ]
 }

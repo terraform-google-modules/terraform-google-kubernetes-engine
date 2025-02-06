@@ -29,8 +29,7 @@ output "cluster_name" {
 }
 
 output "kubernetes_endpoint" {
-  sensitive = true
-  value     = module.example.kubernetes_endpoint
+  value = module.example.kubernetes_endpoint
 }
 
 output "client_token" {

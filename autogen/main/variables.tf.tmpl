@@ -108,13 +108,13 @@ variable "service_external_ips" {
   default     = false
 }
 
-{% if autopilot_cluster != true %}
 variable "insecure_kubelet_readonly_port_enabled" {
   type = bool
-  description = "Whether or not to set `insecure_kubelet_readonly_port_enabled` for node pool defaults and autopilot clusters. Note: this can be set at the node pool level separately within `node_pools`."
+  description = "Whether or not to set `insecure_kubelet_readonly_port_enabled` for node pool defaults and autopilot clusters.{% if autopilot_cluster != true %} Note: this can be set at the node pool level separately within `node_pools`.{% endif %}"
   default     = null
 }
 
+{% if autopilot_cluster != true %}
 variable "datapath_provider" {
   type        = string
   description = "The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature."
@@ -447,14 +447,12 @@ variable "service_account_name" {
   default     = ""
 }
 
-{% if autopilot_cluster != true %}
 variable "boot_disk_kms_key" {
   type        = string
   description = "The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool, if not overridden in `node_pools`. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. For more information about protecting resources with Cloud KMS Keys please see: https://cloud.google.com/compute/docs/disks/customer-managed-encryption"
   default     = null
 }
 
-{% endif %}
 variable "issue_client_certificate" {
   type        = bool
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
@@ -609,17 +607,14 @@ variable "enable_confidential_nodes" {
   description = "An optional flag to enable confidential node config."
   default = false
 }
+{% if autopilot_cluster != true %}
 
 variable "enable_gcfs" {
   type        = bool
   description = "Enable image streaming on cluster level."
-  {% if autopilot_cluster != true %}
   default     = false
-  {% endif %}
-  {% if autopilot_cluster %}
-  default     = true
-  {% endif %}
 }
+{% endif %}
 
 variable "enable_secret_manager_addon" {
   description = "Enable the Secret Manager add-on for this cluster"
@@ -639,13 +634,13 @@ variable "workload_config_audit_mode" {
   type        = string
   default     = "DISABLED"
 }
+{% endif %}
 
 variable "enable_fqdn_network_policy" {
   type        = bool
   description = "Enable FQDN Network Policies on the cluster"
   default     = null
 }
-{% endif %}
 
 variable "enable_cilium_clusterwide_network_policy" {
   type          = bool
@@ -815,16 +810,15 @@ variable "gce_pd_csi_driver" {
   default     = true
 }
 
+variable "gcs_fuse_csi_driver" {
+  type        = bool
+  description = "Whether GCE FUSE CSI driver is enabled for this cluster."
+  default     = false
+}
 {% endif %}
 variable "gke_backup_agent_config" {
   type        = bool
   description = "Whether Backup for GKE agent is enabled for this cluster."
-  default     = false
-}
-
-variable "gcs_fuse_csi_driver" {
-  type        = bool
-  description = "Whether GCE FUSE CSI driver is enabled for this cluster."
   default     = false
 }
 
@@ -1025,7 +1019,7 @@ variable "fleet_project_grant_service_agent" {
   default = false
 }
 {% endif %}
-{% if beta_cluster and autopilot_cluster %}
+{% if autopilot_cluster != true %}
 
 variable "logging_variant" {
   description = "(Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT."
@@ -1033,3 +1027,13 @@ variable "logging_variant" {
   default     = null
 }
 {% endif %}
+
+variable "monitoring_metric_writer_role" {
+  description = "The monitoring metrics writer role to assign to the GKE node service account"
+  type        = string
+  default     = "roles/monitoring.metricWriter"
+  validation {
+    condition     = can(regex("^(roles/[a-zA-Z0-9_.]+|projects/[a-zA-Z0-9-]+/roles/[a-zA-Z0-9_.]+)$", var.monitoring_metric_writer_role))
+    error_message = "The monitoring_metric_writer_role must be either a predefined role (roles/*) or a custom role (projects/*/roles/*)."
+  }
+}
