@@ -770,6 +770,44 @@ variable "gke_backup_agent_config" {
   default     = false
 }
 
+variable "backup_cron_schedule" {
+  description = "Defines the GKE backup schedule. Mutually exclusive with backup_rpo_target_in_minutes; backup_cron_schedule takes precedence if both are set. Configure at least one to enable backup."
+  type        = string
+  default     = null
+}
+
+variable "backup_rpo_target_in_minutes" {
+  description = "Configuration for Recovery Point Objective (RPO), specifying the target RPO in minutes. Must be between 60 and 86400. Mutually exclusive with backup_cron_schedule; backup_cron_schedule takes precedence if both are set. Configure at least one to enable backup."
+  type        = number
+  default     = null
+  validation {
+    condition     = var.backup_rpo_target_in_minutes == null || try(var.backup_rpo_target_in_minutes >= 60 && var.backup_rpo_target_in_minutes <= 86400, false)
+    error_message = "backup_rpo_target_in_minutes must be between 60 and 86400."
+  }
+}
+
+variable "backup_config" {
+  description = "Defines the backup configuration settings, including volume data and secrets backup options."
+  type = object({
+    include_volume_data = optional(bool)
+    include_secrets     = optional(bool)
+  })
+  default = {
+    include_volume_data = true
+    include_secrets     = true
+  }
+}
+
+variable "backup_retain_days" {
+  description = "The number of days to retain backups. Must be between 1 and 35. Defaults to 7."
+  type        = number
+  default     = 7
+  validation {
+    condition     = var.backup_retain_days >= 1 && var.backup_retain_days <= 35
+    error_message = "backup_retain_days must be between 1 and 35."
+  }
+}
+
 variable "stateful_ha" {
   type        = bool
   description = "Whether the Stateful HA Addon is enabled for this cluster."
