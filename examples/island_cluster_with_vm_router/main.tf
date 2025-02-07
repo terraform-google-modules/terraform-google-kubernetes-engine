@@ -143,7 +143,7 @@ module "net" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
-  version = "~> 35.0"
+  version = "~> 36.0"
 
   depends_on = [google_compute_instance.vm]
 
