@@ -135,7 +135,7 @@ resource "google_container_cluster" "primary" {
     }
   }
   dynamic "node_pool_auto_config" {
-    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
+    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null || var.linux_cgroup_mode != null ? [1] : []
     content {
       network_tags {
         tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : length(var.network_tags) > 0 ? var.network_tags : null
@@ -145,6 +145,12 @@ resource "google_container_cluster" "primary" {
         for_each = var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
         content {
           insecure_kubelet_readonly_port_enabled = upper(tostring(var.insecure_kubelet_readonly_port_enabled))
+        }
+      }
+      dynamic "linux_node_config" {
+        for_each = var.linux_cgroup_mode != null ? [1] : []
+        content {
+          cgroup_mode = var.linux_cgroup_mode
         }
       }
     }

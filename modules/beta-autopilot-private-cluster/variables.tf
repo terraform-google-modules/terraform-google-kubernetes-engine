@@ -114,6 +114,16 @@ variable "insecure_kubelet_readonly_port_enabled" {
   default     = null
 }
 
+variable "linux_cgroup_mode" {
+  type        = string
+  description = "Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management."
+  validation {
+    condition     = var.linux_cgroup_mode == null || contains(["", "CGROUP_MODE_UNSPECIFIED", "CGROUP_MODE_V1", "CGROUP_MODE_V2"], var.linux_cgroup_mode != null ? var.linux_cgroup_mode : "")
+    error_message = "The linux_cgroup_mode must be one of CGROUP_MODE_UNSPECIFIED, CGROUP_MODE_V1, or CGROUP_MODE_V2."
+  }
+  default = null
+}
+
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
