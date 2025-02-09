@@ -147,6 +147,14 @@ resource "google_container_cluster" "primary" {
           insecure_kubelet_readonly_port_enabled = upper(tostring(var.insecure_kubelet_readonly_port_enabled))
         }
       }
+
+      dynamic "linux_node_config" {
+        for_each = (var.node_pools_cgroup_mode != null) ? [1] : []
+
+        content {
+          cgroup_mode = var.node_pools_cgroup_mode
+        }
+      }
     }
   }
 
