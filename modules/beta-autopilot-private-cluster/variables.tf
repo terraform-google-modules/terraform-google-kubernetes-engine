@@ -325,6 +325,24 @@ variable "identity_namespace" {
   default     = "enabled"
 }
 
+variable "node_pools_cgroup_mode" {
+  type        = string
+  description = "String contains cgroup node config for Autopilot node pools"
+
+  default = ""
+
+  validation {
+    condition = var.node_pools_cgroup_mode == "" || contains(
+      [
+        "CGROUP_MODE_UNSPECIFIED",
+        "CGROUP_MODE_V1",
+        "CGROUP_MODE_V2"
+      ],
+      var.node_pools_cgroup_mode
+    )
+    error_message = "The value for node_pools_cgroup_mode must be one of: CGROUP_MODE_UNSPECIFIED, CGROUP_MODE_V1, CGROUP_MODE_V2"
+  }
+}
 
 variable "release_channel" {
   type        = string
