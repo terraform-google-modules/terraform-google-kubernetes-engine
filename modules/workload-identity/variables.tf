@@ -84,6 +84,12 @@ variable "automount_service_account_token" {
   default     = false
 }
 
+variable "image_pull_secrets" {
+  description = "A list of references to secrets in the same namespace to use for pulling any images in pods that reference this Service Account"
+  type        = list(string)
+  default     = []
+}
+
 variable "roles" {
   description = "A list of roles to be added to the created service account"
   type        = list(string)
