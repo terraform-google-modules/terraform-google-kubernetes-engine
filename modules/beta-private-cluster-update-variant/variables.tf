@@ -480,8 +480,8 @@ variable "enable_private_nodes" {
 
 variable "master_ipv4_cidr_block" {
   type        = string
-  description = "The IP range in CIDR notation to use for the hosted master network. Optional for Autopilot clusters."
-  default     = "10.0.0.0/28"
+  description = "(Optional) The IP range in CIDR notation to use for the hosted master network."
+  default     = null
 }
 
 variable "private_endpoint_subnetwork" {
@@ -777,15 +777,14 @@ variable "gce_pd_csi_driver" {
   default     = true
 }
 
-variable "gke_backup_agent_config" {
-  type        = bool
-  description = "Whether Backup for GKE agent is enabled for this cluster."
-  default     = false
-}
-
 variable "gcs_fuse_csi_driver" {
   type        = bool
   description = "Whether GCE FUSE CSI driver is enabled for this cluster."
+  default     = false
+}
+variable "gke_backup_agent_config" {
+  type        = bool
+  description = "Whether Backup for GKE agent is enabled for this cluster."
   default     = false
 }
 
@@ -968,4 +967,20 @@ variable "fleet_project_grant_service_agent" {
   description = "(Optional) Grant the fleet project service identity the `roles/gkehub.serviceAgent` and `roles/gkehub.crossProjectServiceAgent` roles."
   type        = bool
   default     = false
+}
+
+variable "logging_variant" {
+  description = "(Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT."
+  type        = string
+  default     = null
+}
+
+variable "monitoring_metric_writer_role" {
+  description = "The monitoring metrics writer role to assign to the GKE node service account"
+  type        = string
+  default     = "roles/monitoring.metricWriter"
+  validation {
+    condition     = can(regex("^(roles/[a-zA-Z0-9_.]+|projects/[a-zA-Z0-9-]+/roles/[a-zA-Z0-9_.]+)$", var.monitoring_metric_writer_role))
+    error_message = "The monitoring_metric_writer_role must be either a predefined role (roles/*) or a custom role (projects/*/roles/*)."
+  }
 }

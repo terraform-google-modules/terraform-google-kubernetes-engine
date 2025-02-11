@@ -25,7 +25,7 @@ resource "google_service_account" "gke-sa" {
 
 module "net" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 9.0"
+  version = "~> 10.0"
 
   network_name                           = "gke-net-${random_id.rand.hex}"
   routing_mode                           = "GLOBAL"
@@ -143,7 +143,7 @@ module "net" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
-  version = "~> 34.0"
+  version = "~> 36.0"
 
   depends_on = [google_compute_instance.vm]
 
@@ -181,7 +181,6 @@ module "gke" {
       disk_size_gb              = 100
       disk_type                 = "pd-standard"
       image_type                = "COS_CONTAINERD"
-      logging_variant           = "DEFAULT"
       auto_repair               = true
       auto_upgrade              = true
       service_account           = google_service_account.gke-sa.email

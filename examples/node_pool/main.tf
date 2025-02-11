@@ -28,7 +28,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
-  version = "~> 34.0"
+  version = "~> 36.0"
 
   project_id                        = var.project_id
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -43,6 +43,8 @@ module "gke" {
   disable_legacy_metadata_endpoints = false
   cluster_autoscaling               = var.cluster_autoscaling
   deletion_protection               = false
+  service_account                   = "default"
+  logging_variant                   = "MAX_THROUGHPUT"
 
   node_pools = [
     {
@@ -52,6 +54,7 @@ module "gke" {
       service_account = var.compute_engine_service_account
       auto_upgrade    = true
       enable_gcfs     = false
+      logging_variant = "DEFAULT"
     },
     {
       name              = "pool-02"
@@ -148,5 +151,10 @@ module "gke" {
     pool-03 = {
       "net.core.netdev_max_backlog" = "20000"
     }
+  }
+
+  node_pools_cgroup_mode = {
+    all     = "CGROUP_MODE_V1"
+    pool-01 = "CGROUP_MODE_V2"
   }
 }

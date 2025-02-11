@@ -64,10 +64,9 @@ locals {
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
   pod_all_ip_ranges         = var.add_cluster_firewall_rules ? compact(concat([local.cluster_alias_ranges_cidr[var.ip_range_pods]], [for range in var.additional_ip_range_pods : local.cluster_alias_ranges_cidr[range] if length(range) > 0])) : []
 
-  gke_backup_agent_config    = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
-  gcs_fuse_csi_driver_config = var.gcs_fuse_csi_driver ? [{ enabled = true }] : []
-  stateful_ha_config         = var.stateful_ha ? [{ enabled = true }] : []
-  ray_operator_config        = length(var.ray_operator_config) > 0 && lookup(var.ray_operator_config, "enabled", false) ? [var.ray_operator_config] : []
+  gke_backup_agent_config = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
+  stateful_ha_config      = var.stateful_ha ? [{ enabled = true }] : []
+  ray_operator_config     = length(var.ray_operator_config) > 0 && lookup(var.ray_operator_config, "enabled", false) ? [var.ray_operator_config] : []
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
@@ -79,7 +78,7 @@ locals {
 
   cluster_endpoint           = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (var.enable_private_endpoint || var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config[0].private_endpoint : google_container_cluster.primary.private_cluster_config[0].public_endpoint) : google_container_cluster.primary.endpoint
   cluster_peering_name       = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? google_container_cluster.primary.private_cluster_config[0].peering_name : null
-  cluster_endpoint_for_nodes = var.master_ipv4_cidr_block
+  cluster_endpoint_for_nodes = google_container_cluster.primary.private_cluster_config[0].master_ipv4_cidr_block
 
   cluster_output_master_auth                        = concat(google_container_cluster.primary[*].master_auth, [])
   cluster_output_master_version                     = google_container_cluster.primary.master_version

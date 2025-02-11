@@ -89,10 +89,11 @@ resource "google_container_cluster" "primary" {
 
   cluster_autoscaling {
     dynamic "auto_provisioning_defaults" {
-      for_each = (var.create_service_account || var.service_account != "") ? [1] : []
+      for_each = (var.create_service_account || var.service_account != "" || var.boot_disk_kms_key != null) ? [1] : []
 
       content {
-        service_account = local.service_account
+        service_account   = local.service_account
+        boot_disk_kms_key = var.boot_disk_kms_key
       }
     }
   }
@@ -134,10 +135,17 @@ resource "google_container_cluster" "primary" {
     }
   }
   dynamic "node_pool_auto_config" {
-    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? [1] : []
+    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
     content {
       network_tags {
-        tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : var.network_tags
+        tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : length(var.network_tags) > 0 ? var.network_tags : null
+      }
+
+      dynamic "node_kubelet_config" {
+        for_each = var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
+        content {
+          insecure_kubelet_readonly_port_enabled = upper(tostring(var.insecure_kubelet_readonly_port_enabled))
+        }
       }
     }
   }
@@ -175,14 +183,6 @@ resource "google_container_cluster" "primary" {
 
       content {
         enabled = gke_backup_agent_config.value.enabled
-      }
-    }
-
-    dynamic "gcs_fuse_csi_driver_config" {
-      for_each = local.gcs_fuse_csi_driver_config
-
-      content {
-        enabled = gcs_fuse_csi_driver_config.value.enabled
       }
     }
 
@@ -327,7 +327,7 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.enable_private_endpoint && var.deploy_using_private_endpoint ? [1] : [0]
+    for_each = var.enable_private_endpoint && var.deploy_using_private_endpoint ? [1] : []
     content {
       dns_endpoint_config {
         allow_external_traffic = var.deploy_using_private_endpoint
@@ -370,18 +370,6 @@ resource "google_container_cluster" "primary" {
         for_each = length(var.notification_filter_event_type) > 0 ? [1] : []
         content {
           event_type = var.notification_filter_event_type
-        }
-      }
-    }
-  }
-
-  node_pool_defaults {
-    node_config_defaults {
-      logging_variant = var.logging_variant
-      dynamic "gcfs_config" {
-        for_each = var.enable_gcfs != null ? [true] : []
-        content {
-          enabled = var.enable_gcfs
         }
       }
     }

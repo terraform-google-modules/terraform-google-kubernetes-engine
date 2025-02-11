@@ -108,6 +108,12 @@ variable "service_external_ips" {
   default     = false
 }
 
+variable "insecure_kubelet_readonly_port_enabled" {
+  type        = bool
+  description = "Whether or not to set `insecure_kubelet_readonly_port_enabled` for node pool defaults and autopilot clusters."
+  default     = null
+}
+
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
@@ -240,6 +246,12 @@ variable "service_account_name" {
   default     = ""
 }
 
+variable "boot_disk_kms_key" {
+  type        = string
+  description = "The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool, if not overridden in `node_pools`. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. For more information about protecting resources with Cloud KMS Keys please see: https://cloud.google.com/compute/docs/disks/customer-managed-encryption"
+  default     = null
+}
+
 variable "issue_client_certificate" {
   type        = bool
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"
@@ -346,12 +358,6 @@ variable "enable_confidential_nodes" {
   default     = false
 }
 
-variable "enable_gcfs" {
-  type        = bool
-  description = "Enable image streaming on cluster level."
-  default     = true
-}
-
 variable "enable_secret_manager_addon" {
   description = "Enable the Secret Manager add-on for this cluster"
   type        = bool
@@ -450,12 +456,6 @@ variable "enable_binary_authorization" {
 variable "gke_backup_agent_config" {
   type        = bool
   description = "Whether Backup for GKE agent is enabled for this cluster."
-  default     = false
-}
-
-variable "gcs_fuse_csi_driver" {
-  type        = bool
-  description = "Whether GCE FUSE CSI driver is enabled for this cluster."
   default     = false
 }
 
@@ -562,8 +562,12 @@ variable "fleet_project_grant_service_agent" {
   default     = false
 }
 
-variable "logging_variant" {
-  description = "(Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT."
+variable "monitoring_metric_writer_role" {
+  description = "The monitoring metrics writer role to assign to the GKE node service account"
   type        = string
-  default     = null
+  default     = "roles/monitoring.metricWriter"
+  validation {
+    condition     = can(regex("^(roles/[a-zA-Z0-9_.]+|projects/[a-zA-Z0-9-]+/roles/[a-zA-Z0-9_.]+)$", var.monitoring_metric_writer_role))
+    error_message = "The monitoring_metric_writer_role must be either a predefined role (roles/*) or a custom role (projects/*/roles/*)."
+  }
 }

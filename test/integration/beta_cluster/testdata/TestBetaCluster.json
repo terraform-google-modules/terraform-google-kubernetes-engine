@@ -60,7 +60,6 @@
     "clusterIpv4Cidr": "192.168.0.0/18",
     "clusterIpv4CidrBlock": "192.168.0.0/18",
     "clusterSecondaryRangeName": "cft-gke-test-pods-qwc4",
-    "defaultPodIpv4RangeUtilization": 0.0156,
     "podCidrOverprovisionConfig": {},
     "servicesIpv4Cidr": "192.168.64.0/18",
     "servicesIpv4CidrBlock": "192.168.64.0/18",

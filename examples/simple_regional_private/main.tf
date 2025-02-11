@@ -34,7 +34,7 @@ data "google_compute_subnetwork" "subnetwork" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
-  version = "~> 34.0"
+  version = "~> 36.0"
 
   project_id                  = var.project_id
   name                        = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -49,7 +49,6 @@ module "gke" {
   enable_private_endpoint     = true
   enable_private_nodes        = true
   enable_secret_manager_addon = true
-  master_ipv4_cidr_block      = "172.16.0.0/28"
   default_max_pods_per_node   = 20
   remove_default_node_pool    = true
   deletion_protection         = false

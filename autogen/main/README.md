@@ -42,7 +42,7 @@ The implications of this are that:
 {% endif %}
 ## Compatibility
 
-This module is meant for use with Terraform 1.3+ and tested using Terraform 1.0+.
+This module is meant for use with Terraform 1.3+ and tested using Terraform 1.10+.
 If you find incompatibilities using Terraform `>=1.3`, please open an issue.
 
 If you haven't [upgraded to 1.3][terraform-1.3-upgrade] and need a Terraform
@@ -85,7 +85,6 @@ module "gke" {
   {% if private_cluster %}
   enable_private_endpoint    = true
   enable_private_nodes       = true
-  master_ipv4_cidr_block     = "10.0.0.0/28"
   {% endif %}
   {% if beta_cluster and autopilot_cluster != true  %}
   istio                      = true
@@ -290,9 +289,9 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
 {% if beta_cluster %}
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v5.9+
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.14+
 {% else %}
-- [Terraform Provider for GCP][terraform-provider-google] v5.9+
+- [Terraform Provider for GCP][terraform-provider-google] v6.14+
 {% endif %}
 #### gcloud
 Some submodules use the [terraform-google-gcloud](https://github.com/terraform-google-modules/terraform-google-gcloud) module. By default, this module assumes you already have gcloud installed in your $PATH.
