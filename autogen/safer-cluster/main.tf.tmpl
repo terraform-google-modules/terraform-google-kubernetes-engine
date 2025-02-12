@@ -110,6 +110,8 @@ module "gke" {
   monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
   monitoring_enabled_components        = var.monitoring_enabled_components
 
+  enable_confidential_nodes = var.enable_confidential_nodes
+
   // We never use the default service account for the cluster. The default
   // project/editor permissions can create problems if nodes were to be ever
   // compromised.
