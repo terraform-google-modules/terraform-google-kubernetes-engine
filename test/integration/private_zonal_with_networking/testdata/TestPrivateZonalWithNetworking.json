@@ -236,6 +236,9 @@
         "oauthScopes": [
           "https://www.googleapis.com/auth/cloud-platform"
         ],
+        "resourceLabels": {
+          "goog-gke-node-pool-provisioning-model": "on-demand"
+        },
         "serviceAccount": "SERVICE_ACCOUNT",
         "shieldedInstanceConfig": {
           "enableIntegrityMonitoring": true
