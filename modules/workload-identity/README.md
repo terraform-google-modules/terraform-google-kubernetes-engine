@@ -152,6 +152,7 @@ Error: Get "http://localhost/api/v1/namespaces/default/serviceaccounts/your-serv
 | gcp\_sa\_description | The Service Google service account desciption; if null, will be left out | `string` | `null` | no |
 | gcp\_sa\_display\_name | The Google service account display name; if null, a default string will be used | `string` | `null` | no |
 | gcp\_sa\_name | Name for the Google service account; overrides `var.name`. | `string` | `null` | no |
+| image\_pull\_secrets | A list of references to secrets in the same namespace to use for pulling any images in pods that reference this Service Account | `list(string)` | `[]` | no |
 | impersonate\_service\_account | An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials. | `string` | `""` | no |
 | k8s\_sa\_name | Name for the Kubernetes service account; overrides `var.name`. `cluster_name` and `location` must be set when this input is specified. | `string` | `null` | no |
 | k8s\_sa\_project\_id | GCP project ID of the k8s service account; overrides `var.project_id`. | `string` | `null` | no |
