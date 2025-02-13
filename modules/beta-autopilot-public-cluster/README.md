@@ -112,7 +112,6 @@ Then perform the following commands on the root folder:
 | ip\_range\_services | The _name_ of the secondary subnet range to use for services | `string` | n/a | yes |
 | issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | `bool` | `false` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | `string` | `"latest"` | no |
-| linux\_cgroup\_mode | Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management. | `string` | `null` | no |
 | logging\_enabled\_components | List of services to monitor: SYSTEM\_COMPONENTS, APISERVER, CONTROLLER\_MANAGER, KCP\_CONNECTION, KCP\_SSHD, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration. | `list(string)` | `[]` | no |
 | maintenance\_end\_time | Time window specified for recurring maintenance operations in RFC3339 format | `string` | `""` | no |
 | maintenance\_exclusions | List of maintenance exclusions. A cluster can have up to three | `list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string }))` | `[]` | no |
@@ -125,6 +124,7 @@ Then perform the following commands on the root folder:
 | network | The VPC network to host the cluster in (required) | `string` | n/a | yes |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | `string` | `""` | no |
 | network\_tags | (Optional) - List of network tags applied to auto-provisioned node pools. | `list(string)` | `[]` | no |
+| node\_pools\_cgroup\_mode | Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management. | `string` | `null` | no |
 | non\_masquerade\_cidrs | List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading. | `list(string)` | <pre>[<br>  "10.0.0.0/8",<br>  "172.16.0.0/12",<br>  "192.168.0.0/16"<br>]</pre> | no |
 | notification\_config\_topic | The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}. | `string` | `""` | no |
 | notification\_filter\_event\_type | Choose what type of notifications you want to receive. If no filters are applied, you'll receive all notification types. Can be used to filter what notifications are sent. Accepted values are UPGRADE\_AVAILABLE\_EVENT, UPGRADE\_EVENT, and SECURITY\_BULLETIN\_EVENT. | `list(string)` | `[]` | no |
