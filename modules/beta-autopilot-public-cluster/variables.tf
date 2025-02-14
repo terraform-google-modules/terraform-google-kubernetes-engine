@@ -123,7 +123,7 @@ variable "node_pools_cgroup_mode" {
       "CGROUP_MODE_UNSPECIFIED",
       "CGROUP_MODE_V1",
       "CGROUP_MODE_V2"
-    ], coalesce(var.node_pools_cgroup_mode, ""))
+    ], var.node_pools_cgroup_mode != null ? var.node_pools_cgroup_mode : "")
     error_message = "The node_pools_cgroup_mode must be one of CGROUP_MODE_UNSPECIFIED, CGROUP_MODE_V1, or CGROUP_MODE_V2."
   }
   default = null
