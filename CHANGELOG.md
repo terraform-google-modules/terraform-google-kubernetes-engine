@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [36.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.0.2...v36.1.0) (2025-02-14)
+
+
+### Features
+
+* add confidential nodes example ([#2227](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2227)) ([2ae739b](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2ae739be0e7a3f71c2e613260c096d46eeaebed7))
+* workload_identity - add image pull secrets ([#2276](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2276)) ([8d5c9a4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8d5c9a4c9e434438af86aca64fd58ee3f96ef3a4))
+
 ## [36.0.2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.0.1...v36.0.2) (2025-02-11)
 
 
