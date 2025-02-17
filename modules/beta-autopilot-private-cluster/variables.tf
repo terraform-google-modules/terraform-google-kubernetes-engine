@@ -329,16 +329,16 @@ variable "node_pools_cgroup_mode" {
   type        = string
   description = "String contains cgroup node config for Autopilot node pools"
 
-  default = ""
+  default = null
 
   validation {
-    condition = var.node_pools_cgroup_mode == "" || contains(
+    condition = var.node_pools_cgroup_mode == null || contains(
       [
         "CGROUP_MODE_UNSPECIFIED",
         "CGROUP_MODE_V1",
         "CGROUP_MODE_V2"
       ],
-      var.node_pools_cgroup_mode
+      var.node_pools_cgroup_mode != null ? var.node_pools_cgroup_mode : ""
     )
     error_message = "The value for node_pools_cgroup_mode must be one of: CGROUP_MODE_UNSPECIFIED, CGROUP_MODE_V1, CGROUP_MODE_V2"
   }
