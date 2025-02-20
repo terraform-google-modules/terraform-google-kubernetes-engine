@@ -54,12 +54,6 @@ resource "google_kms_crypto_key_iam_member" "main" {
   member        = "serviceAccount:service-${data.google_project.main.number}@compute-system.iam.gserviceaccount.com"
 }
 
-provider "kubernetes" {
-  host                   = "https://${module.gke.endpoint}"
-  token                  = data.google_client_config.default.access_token
-  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
-}
-
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster"
   version = "~> 36.0"
