@@ -15,7 +15,7 @@
 # Please note that this file was generated from [terraform-google-module-template](https://github.com/terraform-google-modules/terraform-google-module-template).
 # Please make sure to contribute relevant changes upstream!
 
-# Make will use bash instead of sh
+# Make will use bash instead of sh1
 SHELL := /usr/bin/env bash
 
 DOCKER_TAG_VERSION_DEVELOPER_TOOLS := 1.23
