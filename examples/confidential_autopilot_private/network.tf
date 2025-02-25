@@ -16,7 +16,7 @@
 
 module "gcp-network" {
   source  = "terraform-google-modules/network/google"
-  version = ">= 7.5"
+  version = "~= 10.0"
 
   project_id   = var.project_id
   network_name = local.network_name
@@ -25,13 +25,13 @@ module "gcp-network" {
     {
       subnet_name           = local.subnet_name
       subnet_ip             = "10.0.0.0/17"
-      subnet_region         = "us-central1"
+      subnet_region         = var.region
       subnet_private_access = true
     },
     {
       subnet_name   = local.master_auth_subnetwork
       subnet_ip     = "10.60.0.0/17"
-      subnet_region = "us-central1"
+      subnet_region = var.region
     },
   ]
 

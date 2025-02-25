@@ -26,7 +26,8 @@ output "cluster_name" {
 }
 
 output "location" {
-  value = module.gke.location
+  description = "Cluster location (region if regional cluster, zone if zonal cluster)"
+  value       = module.gke.location
 }
 
 output "master_kubernetes_version" {

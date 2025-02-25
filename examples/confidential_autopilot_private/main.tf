@@ -40,7 +40,7 @@ module "kms" {
 
   project_id           = var.project_id
   key_protection_level = "HSM"
-  location             = "us-central1"
+  location             = var.region
   keyring              = "keyring-${random_string.suffix.result}"
   keys                 = ["key"]
   prevent_destroy      = false
@@ -59,7 +59,7 @@ module "gke" {
   project_id                      = var.project_id
   name                            = "${local.cluster_type}-cluster"
   regional                        = true
-  region                          = "us-central1"
+  region                          = var.region
   network                         = module.gcp-network.network_name
   subnetwork                      = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
   ip_range_pods                   = local.pods_range_name

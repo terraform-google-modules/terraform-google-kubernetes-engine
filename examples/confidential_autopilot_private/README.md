@@ -1,7 +1,7 @@
 # Confidential Autopilot Private Cluster
 
-This example illustrates how to create a autopilot cluster with beta features,
-using Confidential Nodes and a Customer Managed Encryption Keys (CMEK).
+This example illustrates how to create an Autopilot cluster with beta features,
+using Confidential GKE nodes and a Customer Managed Encryption Keys (CMEK).
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -17,7 +17,7 @@ using Confidential Nodes and a Customer Managed Encryption Keys (CMEK).
 | cluster\_name | Cluster name |
 | kms\_key | CMEK used for disk and database encryption |
 | kubernetes\_endpoint | The cluster endpoint |
-| location | n/a |
+| location | Cluster location (region if regional cluster, zone if zonal cluster) |
 | master\_kubernetes\_version | Kubernetes version of the master |
 | network\_name | The name of the VPC being created |
 | region | The region in which the cluster resides |
