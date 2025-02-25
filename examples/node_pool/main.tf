@@ -98,6 +98,11 @@ module "gke" {
       node_count                   = 1
       enable_nested_virtualization = true
     },
+    {
+      name          = "pool-06"
+      node_count    = 1
+      node_affinity = "{\"key\": \"compute.googleapis.com/node-group-name\", \"operator\": \"IN\", \"values\": [\"node-group-name\"]}"
+    },
   ]
 
   node_pools_metadata = {
