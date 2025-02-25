@@ -8,7 +8,8 @@ using Confidential GKE nodes and a Customer Managed Encryption Keys (CMEK).
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| project\_id | The project ID to host the cluster in | `any` | n/a | yes |
+| project\_id | The project ID to host the cluster in | `string` | n/a | yes |
+| region | The region to host the cluster in | `string` | `"us-central1"` | no |
 
 ## Outputs
 
