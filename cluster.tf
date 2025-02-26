@@ -448,9 +448,9 @@ resource "google_container_cluster" "primary" {
           dynamic "node_affinity" {
             for_each = lookup(var.node_pools[0], "node_affinity", null) != null ? [lookup(var.node_pools[0], "node_affinity", null)] : []
             content {
-              key      = jsondecode(node_affinity.value)["key"]
-              operator = jsondecode(node_affinity.value)["operator"]
-              values   = jsondecode(node_affinity.value)["values"]
+              key      = lookup(jsondecode(node_affinity.value), "key", null)
+              operator = lookup(jsondecode(node_affinity.value), "operator", null)
+              values   = lookup(jsondecode(node_affinity.value), "values", [])
             }
           }
         }
@@ -824,9 +824,9 @@ resource "google_container_node_pool" "pools" {
         dynamic "node_affinity" {
           for_each = lookup(each.value, "node_affinity", null) != null ? [lookup(each.value, "node_affinity", null)] : []
           content {
-            key      = jsondecode(node_affinity.value)["key"]
-            operator = jsondecode(node_affinity.value)["operator"]
-            values   = jsondecode(node_affinity.value)["values"]
+            key      = lookup(jsondecode(node_affinity.value), "key", null)
+            operator = lookup(jsondecode(node_affinity.value), "operator", null)
+            values   = lookup(jsondecode(node_affinity.value), "values", [])
           }
         }
       }
@@ -1140,9 +1140,9 @@ resource "google_container_node_pool" "windows_pools" {
         dynamic "node_affinity" {
           for_each = lookup(each.value, "node_affinity", null) != null ? [lookup(each.value, "node_affinity", null)] : []
           content {
-            key      = jsondecode(node_affinity.value)["key"]
-            operator = jsondecode(node_affinity.value)["operator"]
-            values   = jsondecode(node_affinity.value)["values"]
+            key      = lookup(jsondecode(node_affinity.value), "key", null)
+            operator = lookup(jsondecode(node_affinity.value), "operator", null)
+            values   = lookup(jsondecode(node_affinity.value), "values", [])
           }
         }
       }
