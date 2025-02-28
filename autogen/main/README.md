@@ -245,6 +245,7 @@ The node_pools variable takes the following parameters:
 {% if not private_cluster %}
 | enable_private_nodes |  Whether nodes have internal IP addresses only. |  | Optional |
 {% endif %}
+| node_affinity | The node affinty in the format `"{\"key\": \"compute.googleapis.com/node-group-name\", \"operator\": \"IN\", \"values\": [\"node-group-name\"]}"`. |  | Optional |
 | node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusters |  | Required |
 | node_locations | The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. Defaults to cluster level node locations if nothing is specified | " " | Optional |
 | node_metadata | Options to expose the node metadata to the workload running on the node | | Optional |
