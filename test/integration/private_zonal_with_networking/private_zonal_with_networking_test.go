@@ -34,6 +34,7 @@ func TestPrivateZonalWithNetworking(t *testing.T) {
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		// Commenting Default Verify due to issue 1478 for location Policy
 		// bpt.DefaultVerify(assert)
+		testutils.TGKEVerify(t, bpt, assert) // Verify Resources
 
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")

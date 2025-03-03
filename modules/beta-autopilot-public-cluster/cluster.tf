@@ -119,6 +119,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "enterprise_config" {
+    for_each = var.enterprise_config != null ? [1] : []
+    content {
+      desired_tier = var.enterprise_config
+    }
+  }
+
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   enable_autopilot           = true
   dynamic "master_authorized_networks_config" {
