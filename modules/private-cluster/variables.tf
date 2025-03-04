@@ -918,3 +918,9 @@ variable "monitoring_metric_writer_role" {
     error_message = "The monitoring_metric_writer_role must be either a predefined role (roles/*) or a custom role (projects/*/roles/*)."
   }
 }
+
+variable "enterprise_config" {
+  description = "(Optional) Enable or disable GKE enterprise. Valid values are DEFAULT and ENTERPRISE."
+  type        = string
+  default     = null
+}

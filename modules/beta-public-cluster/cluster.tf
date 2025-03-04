@@ -212,6 +212,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "enterprise_config" {
+    for_each = var.enterprise_config != null ? [1] : []
+    content {
+      desired_tier = var.enterprise_config
+    }
+  }
+
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   dynamic "master_authorized_networks_config" {
     for_each = var.gcp_public_cidrs_access_enabled != null || length(var.master_authorized_networks) > 0 ? [true] : []
