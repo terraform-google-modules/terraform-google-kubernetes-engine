@@ -212,6 +212,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "enterprise_config" {
+    for_each = var.enterprise_config != null ? [1] : []
+    content {
+      desired_tier = var.enterprise_config
+    }
+  }
+
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   dynamic "master_authorized_networks_config" {
     for_each = var.enable_private_endpoint || var.gcp_public_cidrs_access_enabled != null || length(var.master_authorized_networks) > 0 ? [true] : []
@@ -478,6 +485,21 @@ resource "google_container_cluster" "primary" {
         }
       }
 
+      dynamic "sole_tenant_config" {
+        # node_affinity is currently the only member of sole_tenant_config
+        for_each = lookup(var.node_pools[0], "node_affinity", null) != null ? [true] : []
+        content {
+          dynamic "node_affinity" {
+            for_each = lookup(var.node_pools[0], "node_affinity", null) != null ? [lookup(var.node_pools[0], "node_affinity", null)] : []
+            content {
+              key      = lookup(jsondecode(node_affinity.value), "key", null)
+              operator = lookup(jsondecode(node_affinity.value), "operator", null)
+              values   = lookup(jsondecode(node_affinity.value), "values", [])
+            }
+          }
+        }
+      }
+
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
 
       tags = concat(
@@ -671,10 +693,10 @@ resource "google_container_node_pool" "pools" {
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
-      enable_private_nodes = var.enable_private_nodes
+      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", var.enable_private_nodes)
     }
   }
 
@@ -881,6 +903,21 @@ resource "google_container_node_pool" "pools" {
         cpu_cfs_quota_period                   = lookup(each.value, "cpu_cfs_quota_period", null)
         insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null) != null ? upper(tostring(each.value.insecure_kubelet_readonly_port_enabled)) : null
         pod_pids_limit                         = lookup(each.value, "pod_pids_limit", null)
+      }
+    }
+
+    dynamic "sole_tenant_config" {
+      # node_affinity is currently the only member of sole_tenant_config
+      for_each = lookup(each.value, "node_affinity", null) != null ? [true] : []
+      content {
+        dynamic "node_affinity" {
+          for_each = lookup(each.value, "node_affinity", null) != null ? [lookup(each.value, "node_affinity", null)] : []
+          content {
+            key      = lookup(jsondecode(node_affinity.value), "key", null)
+            operator = lookup(jsondecode(node_affinity.value), "operator", null)
+            values   = lookup(jsondecode(node_affinity.value), "values", [])
+          }
+        }
       }
     }
 
@@ -985,10 +1022,10 @@ resource "google_container_node_pool" "windows_pools" {
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
-      enable_private_nodes = var.enable_private_nodes
+      enable_private_nodes = lookup(network_config.value, "enable_private_nodes", var.enable_private_nodes)
     }
   }
 
@@ -1195,6 +1232,21 @@ resource "google_container_node_pool" "windows_pools" {
         cpu_cfs_quota_period                   = lookup(each.value, "cpu_cfs_quota_period", null)
         insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null) != null ? upper(tostring(each.value.insecure_kubelet_readonly_port_enabled)) : null
         pod_pids_limit                         = lookup(each.value, "pod_pids_limit", null)
+      }
+    }
+
+    dynamic "sole_tenant_config" {
+      # node_affinity is currently the only member of sole_tenant_config
+      for_each = lookup(each.value, "node_affinity", null) != null ? [true] : []
+      content {
+        dynamic "node_affinity" {
+          for_each = lookup(each.value, "node_affinity", null) != null ? [lookup(each.value, "node_affinity", null)] : []
+          content {
+            key      = lookup(jsondecode(node_affinity.value), "key", null)
+            operator = lookup(jsondecode(node_affinity.value), "operator", null)
+            values   = lookup(jsondecode(node_affinity.value), "values", [])
+          }
+        }
       }
     }
 
