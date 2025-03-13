@@ -45,9 +45,19 @@ data "google_container_engine_versions" "current" {
   location = var.region
 }
 
+data "google_project" "main" {
+  project_id = var.project_id
+}
+
 resource "random_shuffle" "version" {
   input        = data.google_container_engine_versions.current.valid_master_versions
   result_count = 1
+}
+
+resource "google_kms_crypto_key_iam_member" "main" {
+  crypto_key_id = module.kms.keys[local.key_name]
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member        = "serviceAccount:service-${data.google_project.main.number}@compute-system.iam.gserviceaccount.com"
 }
 
 module "gke" {
@@ -87,9 +97,11 @@ module "gke" {
 
   node_pools = [
     {
-      name               = "default"
-      machine_type       = "n2d-standard-2"
-      enable_secure_boot = true
+      name                        = "default"
+      machine_type                = "n2d-standard-4"
+      disk_type                   = "hyperdisk-balanced"
+      boot_disk_kms_key           = module.kms.keys[local.key_name]
+      enable_confidential_storage = true
     },
   ]
 
