@@ -167,7 +167,7 @@
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n2d-standard-4",
+    "machineType": "n2d-standard-2",
     "metadata": {
       "cluster_name": "CLUSTER_NAME",
       "disable-legacy-endpoints": "true",
@@ -230,7 +230,7 @@
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n2d-standard-4",
+        "machineType": "n2d-standard-2",
         "metadata": {
           "cluster_name": "CLUSTER_NAME",
           "disable-legacy-endpoints": "true",

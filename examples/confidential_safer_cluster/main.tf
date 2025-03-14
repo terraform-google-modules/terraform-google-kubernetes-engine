@@ -98,7 +98,7 @@ module "gke" {
   node_pools = [
     {
       name                        = "default"
-      machine_type                = "n2d-standard-4"
+      machine_type                = "n2d-standard-2"
       disk_type                   = "hyperdisk-balanced"
       boot_disk_kms_key           = module.kms.keys[local.key_name]
       enable_confidential_storage = true
