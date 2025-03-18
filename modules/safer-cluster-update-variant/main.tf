@@ -103,8 +103,10 @@ module "gke" {
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
-  monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
-  monitoring_enabled_components        = var.monitoring_enabled_components
+  monitoring_enable_managed_prometheus    = var.monitoring_enable_managed_prometheus
+  monitoring_enable_observability_metrics = var.monitoring_enable_observability_metrics
+  monitoring_enable_observability_relay   = var.monitoring_enable_observability_relay
+  monitoring_enabled_components           = var.monitoring_enabled_components
 
   enable_confidential_nodes = var.enable_confidential_nodes
 
