@@ -45,6 +45,7 @@ module "gke" {
   deletion_protection               = false
   service_account                   = "default"
   logging_variant                   = "MAX_THROUGHPUT"
+  dns_allow_external_traffic        = true
 
   node_pools = [
     {

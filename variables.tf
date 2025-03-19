@@ -892,3 +892,9 @@ variable "enterprise_config" {
     error_message = "The enterprise_config variable must be either null, STANDARD, or ENTERPRISE."
   }
 }
+
+variable "dns_allow_external_traffic" {
+  description = "(Optional) Controls whether external traffic is allowed over the dns endpoint."
+  type        = bool
+  default     = null
+}
