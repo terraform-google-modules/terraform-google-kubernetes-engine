@@ -888,3 +888,9 @@ variable "enterprise_config" {
   type        = string
   default     = null
 }
+
+variable "dns_allow_external_traffic" {
+  description = "(Optional) Controls whether external traffic is allowed over the dns endpoint."
+  type        = bool
+  default     = null
+}
