@@ -954,7 +954,7 @@ variable "enterprise_config" {
   type        = string
   default     = null
   validation {
-    condition     = var.enterprise_config == null || contains(["STANDARD", "ENTERPRISE"], var.enterprise_config)
+    condition     = var.enterprise_config == null ? true : contains(["STANDARD", "ENTERPRISE"], var.enterprise_config)
     error_message = "The enterprise_config variable must be either null, STANDARD, or ENTERPRISE."
   }
 }
