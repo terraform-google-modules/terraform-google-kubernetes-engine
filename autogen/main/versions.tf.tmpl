@@ -63,6 +63,6 @@ terraform {
     }
   }
   provider_meta "{% if beta_cluster %}google-beta{% else %}google{% endif %}" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v36.1.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v36.2.0"
   }
 }
