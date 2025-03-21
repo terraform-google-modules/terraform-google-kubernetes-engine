@@ -1,0 +1,72 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-kubernetes-engine-hub-legacy-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Hub Submodule
+    source:
+      repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
+      sourceType: git
+      dir: /modules/hub-legacy
+  ui:
+    input:
+      variables:
+        cluster_endpoint:
+          name: cluster_endpoint
+          title: Cluster Endpoint
+        cluster_name:
+          name: cluster_name
+          title: Cluster Name
+        gcloud_sdk_version:
+          name: gcloud_sdk_version
+          title: Gcloud Sdk Version
+        gke_hub_membership_name:
+          name: gke_hub_membership_name
+          title: Gke Hub Membership Name
+        gke_hub_sa_name:
+          name: gke_hub_sa_name
+          title: Gke Hub Sa Name
+        hub_project_id:
+          name: hub_project_id
+          title: Hub Project Id
+        labels:
+          name: labels
+          title: Labels
+        location:
+          name: location
+          title: Location
+        module_depends_on:
+          name: module_depends_on
+          title: Module Depends On
+        project_id:
+          name: project_id
+          title: Project Id
+        sa_private_key:
+          name: sa_private_key
+          title: Sa Private Key
+        use_existing_sa:
+          name: use_existing_sa
+          title: Use Existing Sa
+        use_kubeconfig:
+          name: use_kubeconfig
+          title: Use Kubeconfig
+        use_tf_google_credentials_env_var:
+          name: use_tf_google_credentials_env_var
+          title: Use Tf Google Credentials Env Var
