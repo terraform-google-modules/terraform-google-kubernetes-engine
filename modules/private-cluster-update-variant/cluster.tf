@@ -531,10 +531,11 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.dns_allow_external_traffic != null ? [1] : []
+    for_each = var.dns_allow_external_traffic != null || (var.enable_private_endpoint && var.deploy_using_private_endpoint) ? [1] : []
     content {
       dns_endpoint_config {
-        allow_external_traffic = var.dns_allow_external_traffic
+        # TODO: Migrate to only dns_allow_external_traffic in next breaking release
+        allow_external_traffic = var.dns_allow_external_traffic == true || var.deploy_using_private_endpoint
       }
     }
   }
