@@ -1,3 +1,4 @@
+self(shutdown content)
 # Terraform Kubernetes Engine Module
 
 This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.
