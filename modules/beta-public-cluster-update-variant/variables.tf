@@ -950,7 +950,11 @@ variable "monitoring_metric_writer_role" {
 }
 
 variable "enterprise_config" {
-  description = "(Optional) Enable or disable GKE enterprise. Valid values are DEFAULT and ENTERPRISE."
+  description = "(Optional) Enable or disable GKE enterprise. Valid values are STANDARD and ENTERPRISE."
   type        = string
   default     = null
+  validation {
+    condition     = var.enterprise_config == null ? true : contains(["STANDARD", "ENTERPRISE"], var.enterprise_config)
+    error_message = "The enterprise_config variable must be either null, STANDARD, or ENTERPRISE."
+  }
 }
