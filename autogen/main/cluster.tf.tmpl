@@ -667,15 +667,20 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+{% endif %}
   dynamic "control_plane_endpoints_config" {
-    for_each = var.enable_private_endpoint && var.deploy_using_private_endpoint ? [1] : []
+    for_each = var.dns_allow_external_traffic != null {% if private_cluster %}|| (var.enable_private_endpoint && var.deploy_using_private_endpoint) {% endif %}? [1] : []
     content {
       dns_endpoint_config {
-        allow_external_traffic = var.deploy_using_private_endpoint
+ {% if private_cluster %}
+        # TODO: Migrate to only dns_allow_external_traffic in next breaking release
+        allow_external_traffic = var.dns_allow_external_traffic == true || var.deploy_using_private_endpoint
+{% else %}
+        allow_external_traffic = var.dns_allow_external_traffic
+{% endif %}
       }
     }
   }
-{% endif %}
 
   {% if autopilot_cluster != true %}
   remove_default_node_pool = var.remove_default_node_pool
