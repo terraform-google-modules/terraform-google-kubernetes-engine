@@ -1,0 +1,16 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'storage'
+      - 'rsync'
+      - '-r'
+      - '.'
+      - 'gs://${_BUCKET_NAME}/${_SUBFOLDER_NAME}/'
+    id: 'Copy to Cloud Storage'
+    dir: '.'
+    entrypoint: 'gcloud'
+substitutions:
+  _BUCKET_NAME: 'code-archive-vertex' # Replace with your bucket name
+  _SUBFOLDER_NAME: $REPO_NAME # Replace with your desired subfolder name
+options:
+  logging: CLOUD_LOGGING_ONLY
