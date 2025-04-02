@@ -412,6 +412,7 @@ resource "google_container_cluster" "primary" {
       machine_type                = lookup(var.node_pools[0], "machine_type", "e2-medium")
       min_cpu_platform            = lookup(var.node_pools[0], "min_cpu_platform", "")
       enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
+      disk_type                   = lookup(var.node_pools[0], "disk_type", null)
       dynamic "gcfs_config" {
         for_each = lookup(var.node_pools[0], "enable_gcfs", null) != null ? [var.node_pools[0].enable_gcfs] : []
         content {
@@ -852,7 +853,10 @@ resource "google_container_node_pool" "pools" {
         local.node_pools_linux_node_configs_sysctls["all"],
         local.node_pools_linux_node_configs_sysctls[each.value["name"]],
         local.node_pools_cgroup_mode["all"] == "" ? {} : { cgroup = local.node_pools_cgroup_mode["all"] },
-        local.node_pools_cgroup_mode[each.value["name"]] == "" ? {} : { cgroup = local.node_pools_cgroup_mode[each.value["name"]] }
+        local.node_pools_cgroup_mode[each.value["name"]] == "" ? {} : { cgroup = local.node_pools_cgroup_mode[each.value["name"]] },
+        local.node_pools_linux_node_hugepages_configs["all"],
+        local.node_pools_linux_node_hugepages_configs[each.value["name"]],
+
       )) != 0 ? [1] : []
 
       content {
@@ -861,6 +865,13 @@ resource "google_container_node_pool" "pools" {
           local.node_pools_linux_node_configs_sysctls[each.value["name"]]
         )
         cgroup_mode = coalesce(local.node_pools_cgroup_mode[each.value["name"]], local.node_pools_cgroup_mode["all"], null)
+
+        hugepages_config {
+          hugepage_size_2m = try(local.node_pools_linux_node_hugepages_configs[each.value["name"]]["hugepage_size_2m"], try(local.node_pools_linux_node_hugepages_configs["all"]["hugepage_size_2m"], null))
+          hugepage_size_1g = try(local.node_pools_linux_node_hugepages_configs[each.value["name"]]["hugepage_size_1g"], try(local.node_pools_linux_node_hugepages_configs["all"]["hugepage_size_1g"], null))
+
+        }
+
       }
     }
 
