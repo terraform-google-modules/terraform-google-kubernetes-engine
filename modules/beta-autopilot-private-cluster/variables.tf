@@ -607,3 +607,19 @@ variable "monitoring_metric_writer_role" {
     error_message = "The monitoring_metric_writer_role must be either a predefined role (roles/*) or a custom role (projects/*/roles/*)."
   }
 }
+
+variable "enterprise_config" {
+  description = "(Optional) Enable or disable GKE enterprise. Valid values are STANDARD and ENTERPRISE."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.enterprise_config == null ? true : contains(["STANDARD", "ENTERPRISE"], var.enterprise_config)
+    error_message = "The enterprise_config variable must be either null, STANDARD, or ENTERPRISE."
+  }
+}
+
+variable "dns_allow_external_traffic" {
+  description = "(Optional) Controls whether external traffic is allowed over the dns endpoint."
+  type        = bool
+  default     = null
+}

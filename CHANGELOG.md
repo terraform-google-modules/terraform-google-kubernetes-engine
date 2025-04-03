@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [36.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.0.2...v36.1.0) (2025-03-10)
+
+
+### Features
+
+* add confidential nodes example ([#2227](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2227)) ([2ae739b](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2ae739be0e7a3f71c2e613260c096d46eeaebed7))
+* add enterprise config ([#2298](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2298)) ([adaabbf](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/adaabbfbc2e6449719e19402f73886e906f45f86))
+* add node_affinity ([#2295](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2295)) ([0e7a249](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0e7a2493e74721cd3a8e946ba30248904b180825))
+* Add possibility to setup private nodes pool if global configuration is different ([#2290](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2290)) ([aadc860](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/aadc8605be10db5d50b06b943573adb9df0d5dce))
+* Make autoscaling resource limits optional ([#2301](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2301)) ([99fc4ce](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/99fc4ced63cde4793db69425e7126db1396a64f1))
+* workload_identity - add image pull secrets ([#2276](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2276)) ([8d5c9a4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8d5c9a4c9e434438af86aca64fd58ee3f96ef3a4))
+
+
+### Bug Fixes
+
+* network_config with just enable_private_nodes ([#2292](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2292)) ([d49c3bf](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d49c3bf156365c0bf8ba6525197cafd930e0da15))
+
 ## [36.0.2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.0.1...v36.0.2) (2025-02-11)
 
 

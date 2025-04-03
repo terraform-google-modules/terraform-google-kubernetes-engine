@@ -295,10 +295,10 @@ variable "cluster_autoscaling" {
   type = object({
     enabled                     = bool
     autoscaling_profile         = string
-    min_cpu_cores               = number
-    max_cpu_cores               = number
-    min_memory_gb               = number
-    max_memory_gb               = number
+    min_cpu_cores               = optional(number)
+    max_cpu_cores               = optional(number)
+    min_memory_gb               = optional(number)
+    max_memory_gb               = optional(number)
     gpu_resources               = list(object({ resource_type = string, minimum = number, maximum = number }))
     auto_repair                 = bool
     auto_upgrade                = bool
@@ -939,4 +939,20 @@ variable "monitoring_metric_writer_role" {
     condition     = can(regex("^(roles/[a-zA-Z0-9_.]+|projects/[a-zA-Z0-9-]+/roles/[a-zA-Z0-9_.]+)$", var.monitoring_metric_writer_role))
     error_message = "The monitoring_metric_writer_role must be either a predefined role (roles/*) or a custom role (projects/*/roles/*)."
   }
+}
+
+variable "enterprise_config" {
+  description = "(Optional) Enable or disable GKE enterprise. Valid values are STANDARD and ENTERPRISE."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.enterprise_config == null ? true : contains(["STANDARD", "ENTERPRISE"], var.enterprise_config)
+    error_message = "The enterprise_config variable must be either null, STANDARD, or ENTERPRISE."
+  }
+}
+
+variable "dns_allow_external_traffic" {
+  description = "(Optional) Controls whether external traffic is allowed over the dns endpoint."
+  type        = bool
+  default     = null
 }

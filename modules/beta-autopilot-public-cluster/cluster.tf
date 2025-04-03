@@ -119,6 +119,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "enterprise_config" {
+    for_each = var.enterprise_config != null ? [1] : []
+    content {
+      desired_tier = var.enterprise_config
+    }
+  }
+
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
   enable_autopilot           = true
   dynamic "master_authorized_networks_config" {
@@ -304,6 +311,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "control_plane_endpoints_config" {
+    for_each = var.dns_allow_external_traffic != null ? [1] : []
+    content {
+      dns_endpoint_config {
+        allow_external_traffic = var.dns_allow_external_traffic
+      }
+    }
+  }
 
 
   dynamic "database_encryption" {

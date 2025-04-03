@@ -45,6 +45,7 @@ module "gke" {
   deletion_protection               = false
   service_account                   = "default"
   logging_variant                   = "MAX_THROUGHPUT"
+  dns_allow_external_traffic        = true
 
   node_pools = [
     {
@@ -97,6 +98,12 @@ module "gke" {
       machine_type                 = "c3-standard-4"
       node_count                   = 1
       enable_nested_virtualization = true
+    },
+    {
+      name          = "pool-06"
+      node_count    = 1
+      machine_type  = "n1-highmem-96"
+      node_affinity = "{\"key\": \"compute.googleapis.com/node-group-name\", \"operator\": \"IN\", \"values\": [\"${google_compute_node_group.soletenant-nodes.name}\"]}"
     },
   ]
 
@@ -166,4 +173,19 @@ module "gke" {
   node_pools_hugepage_size_1g = {
     pool-05 = "2"
   }
+}
+
+resource "google_compute_node_template" "soletenant-tmpl" {
+  name   = "soletenant-tmpl-${var.cluster_name_suffix}"
+  region = var.region
+
+  node_type = "n1-node-96-624"
+}
+
+resource "google_compute_node_group" "soletenant-nodes" {
+  name = "soletenant-node-group-${var.cluster_name_suffix}"
+  zone = var.zones[0]
+
+  initial_size  = 1
+  node_template = google_compute_node_template.soletenant-tmpl.id
 }
