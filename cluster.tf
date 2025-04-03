@@ -412,6 +412,7 @@ resource "google_container_cluster" "primary" {
       machine_type                = lookup(var.node_pools[0], "machine_type", "e2-medium")
       min_cpu_platform            = lookup(var.node_pools[0], "min_cpu_platform", "")
       enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
+      disk_type                   = lookup(var.node_pools[0], "disk_type", null)
       dynamic "gcfs_config" {
         for_each = lookup(var.node_pools[0], "enable_gcfs", null) != null ? [var.node_pools[0].enable_gcfs] : []
         content {
@@ -508,6 +509,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "control_plane_endpoints_config" {
+    for_each = var.dns_allow_external_traffic != null ? [1] : []
+    content {
+      dns_endpoint_config {
+        allow_external_traffic = var.dns_allow_external_traffic
+      }
+    }
+  }
 
   remove_default_node_pool = var.remove_default_node_pool
 

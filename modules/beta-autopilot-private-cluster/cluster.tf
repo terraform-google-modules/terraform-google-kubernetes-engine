@@ -142,16 +142,25 @@ resource "google_container_cluster" "primary" {
     }
   }
   dynamic "node_pool_auto_config" {
-    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
+    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null || var.node_pools_cgroup_mode != null ? [1] : []
     content {
-      network_tags {
-        tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : length(var.network_tags) > 0 ? var.network_tags : null
+      dynamic "network_tags" {
+        for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
+        content {
+          tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : length(var.network_tags) > 0 ? var.network_tags : null
+        }
       }
 
       dynamic "node_kubelet_config" {
         for_each = var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
         content {
           insecure_kubelet_readonly_port_enabled = upper(tostring(var.insecure_kubelet_readonly_port_enabled))
+        }
+      }
+      dynamic "linux_node_config" {
+        for_each = var.node_pools_cgroup_mode != null ? [1] : []
+        content {
+          cgroup_mode = var.node_pools_cgroup_mode
         }
       }
     }
@@ -334,10 +343,11 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.enable_private_endpoint && var.deploy_using_private_endpoint ? [1] : []
+    for_each = var.dns_allow_external_traffic != null || (var.enable_private_endpoint && var.deploy_using_private_endpoint) ? [1] : []
     content {
       dns_endpoint_config {
-        allow_external_traffic = var.deploy_using_private_endpoint
+        # TODO: Migrate to only dns_allow_external_traffic in next breaking release
+        allow_external_traffic = var.dns_allow_external_traffic == true || var.deploy_using_private_endpoint
       }
     }
   }
