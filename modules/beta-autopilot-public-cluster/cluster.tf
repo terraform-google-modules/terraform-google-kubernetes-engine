@@ -320,6 +320,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "control_plane_endpoints_config" {
+    for_each = var.dns_allow_external_traffic != null ? [1] : []
+    content {
+      dns_endpoint_config {
+        allow_external_traffic = var.dns_allow_external_traffic
+      }
+    }
+  }
 
 
   dynamic "database_encryption" {
