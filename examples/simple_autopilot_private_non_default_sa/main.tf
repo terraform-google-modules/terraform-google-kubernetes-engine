@@ -49,6 +49,7 @@ module "gke" {
   enable_vertical_pod_autoscaling = true
   enable_private_endpoint         = true
   enable_private_nodes            = true
+  node_pools_cgroup_mode          = "CGROUP_MODE_V2"
   deletion_protection             = false
 
   master_authorized_networks = [
