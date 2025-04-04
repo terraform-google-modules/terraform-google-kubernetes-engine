@@ -164,6 +164,8 @@ module "gke" {
     all     = "CGROUP_MODE_V1"
     pool-01 = "CGROUP_MODE_V2"
   }
+
+
 }
 
 resource "google_compute_node_template" "soletenant-tmpl" {

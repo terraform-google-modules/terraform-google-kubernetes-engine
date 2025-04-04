@@ -912,7 +912,10 @@ resource "google_container_node_pool" "pools" {
         local.node_pools_linux_node_configs_sysctls["all"],
         local.node_pools_linux_node_configs_sysctls[each.value["name"]],
         local.node_pools_cgroup_mode["all"] == "" ? {} : { cgroup = local.node_pools_cgroup_mode["all"] },
-        local.node_pools_cgroup_mode[each.value["name"]] == "" ? {} : { cgroup = local.node_pools_cgroup_mode[each.value["name"]] }
+        local.node_pools_cgroup_mode[each.value["name"]] == "" ? {} : { cgroup = local.node_pools_cgroup_mode[each.value["name"]] },
+        local.node_pools_linux_node_hugepages_configs["all"],
+        local.node_pools_linux_node_hugepages_configs[each.value["name"]],
+
       )) != 0 ? [1] : []
 
       content {
@@ -921,6 +924,13 @@ resource "google_container_node_pool" "pools" {
           local.node_pools_linux_node_configs_sysctls[each.value["name"]]
         )
         cgroup_mode = coalesce(local.node_pools_cgroup_mode[each.value["name"]], local.node_pools_cgroup_mode["all"], null)
+
+        hugepages_config {
+          hugepage_size_2m = try(local.node_pools_linux_node_hugepages_configs[each.value["name"]]["hugepage_size_2m"], try(local.node_pools_linux_node_hugepages_configs["all"]["hugepage_size_2m"], null))
+          hugepage_size_1g = try(local.node_pools_linux_node_hugepages_configs[each.value["name"]]["hugepage_size_1g"], try(local.node_pools_linux_node_hugepages_configs["all"]["hugepage_size_1g"], null))
+
+        }
+
       }
     }
 

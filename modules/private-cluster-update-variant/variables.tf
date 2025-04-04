@@ -246,6 +246,17 @@ variable "node_pools_cgroup_mode" {
   }
 }
 
+variable "node_pools_hugepages_configs" {
+  type        = map(map(string))
+  description = "Map of maps containing hugepage config by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
 variable "enable_cost_allocation" {
   type        = bool
   description = "Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery"
