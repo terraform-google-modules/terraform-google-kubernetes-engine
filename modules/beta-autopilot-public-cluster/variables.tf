@@ -480,6 +480,7 @@ variable "stateful_ha" {
   default     = false
 }
 
+
 variable "ray_operator_config" {
   type = object({
     enabled            = bool
