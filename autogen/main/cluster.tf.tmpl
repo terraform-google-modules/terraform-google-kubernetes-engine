@@ -410,6 +410,16 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    {% if autopilot_cluster != true %}
+    dynamic "parallelstore_csi_driver_config" {
+      for_each = local.parallelstore_csi_driver_config
+
+      content {
+        enabled = parallelstore_csi_driver_config.value.enabled
+      }
+    }
+    {% endif %}
+
     {% if beta_cluster and autopilot_cluster != true %}
     istio_config {
       disabled = !var.istio
