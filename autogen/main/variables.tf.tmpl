@@ -625,11 +625,13 @@ variable "enable_confidential_nodes" {
   default = false
 }
 
+{% if beta_cluster %}
 variable "hpa_profile" {
   description = "Enable the Horizontal Pod Autoscaling profile for this cluster. Values are \"NONE\" and \"PERFORMANCE\"."
   type        = string
   default     = ""
 }
+{% endif %}
 {% if autopilot_cluster != true %}
 
 variable "enable_gcfs" {

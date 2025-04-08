@@ -260,12 +260,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  {% if beta_cluster %}
   dynamic "pod_autoscaling" {
     for_each = length(var.hpa_profile) > 0 ? [1] : []
     content {
       hpa_profile = var.hpa_profile
     }
   }
+  {% endif %}
 
   dynamic "enterprise_config" {
     for_each = var.enterprise_config != null ? [1] : []
