@@ -504,6 +504,8 @@ resource "google_container_cluster" "primary" {
       metadata = local.node_pools_metadata["all"]
 
 
+      storage_pools = lookup(var.node_pools[0], "storage_pools", [])
+
       shielded_instance_config {
         enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
         enable_integrity_monitoring = lookup(var.node_pools[0], "enable_integrity_monitoring", true)
@@ -647,7 +649,11 @@ locals {
     "reservation_affinity_key",
     "reservation_affinity_values",
     "secondary_boot_disk",
+<<<<<<< HEAD
     "local_ssd_encryption_mode",
+=======
+    "storage_pools",
+>>>>>>> 856b2d447db (storage-pools)
   ]
 }
 
@@ -1021,6 +1027,7 @@ resource "google_container_node_pool" "pools" {
     }
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
+    storage_pools     = lookup(each.value, "storage_pools", [])
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
@@ -1340,6 +1347,7 @@ resource "google_container_node_pool" "windows_pools" {
 
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
+    storage_pools     = lookup(each.value, "storage_pools", [])
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
