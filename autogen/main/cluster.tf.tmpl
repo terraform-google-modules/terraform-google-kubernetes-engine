@@ -931,6 +931,13 @@ resource "google_container_node_pool" "windows_pools" {
       {% else %}
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
       {% endif %}
+
+      dynamic "network_performance_config" {
+        for_each = lookup(each.value, "total_egress_bandwidth_tier", "") != "" ? [1] : []
+        content {
+          total_egress_bandwidth_tier = lookup(each.value, "total_egress_bandwidth_tier", null)
+        }
+      }
     }
   }
 

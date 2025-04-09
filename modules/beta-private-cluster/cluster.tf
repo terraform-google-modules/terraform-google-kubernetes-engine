@@ -707,6 +707,13 @@ resource "google_container_node_pool" "pools" {
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", var.enable_private_nodes)
+
+      dynamic "network_performance_config" {
+        for_each = lookup(each.value, "total_egress_bandwidth_tier", "") != "" ? [1] : []
+        content {
+          total_egress_bandwidth_tier = lookup(each.value, "total_egress_bandwidth_tier", null)
+        }
+      }
     }
   }
 
@@ -1036,6 +1043,13 @@ resource "google_container_node_pool" "windows_pools" {
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", var.enable_private_nodes)
+
+      dynamic "network_performance_config" {
+        for_each = lookup(each.value, "total_egress_bandwidth_tier", "") != "" ? [1] : []
+        content {
+          total_egress_bandwidth_tier = lookup(each.value, "total_egress_bandwidth_tier", null)
+        }
+      }
     }
   }
 
