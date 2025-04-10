@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [36.3.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.2.0...v36.3.0) (2025-04-10)
+
+
+### Features
+
+* support parallelstore csi driver ([#2203](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2203)) ([ab9d4cb](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ab9d4cb6887af22c861e5c2db58b4f401f9625f6))
+* support total_egress_bandwidth_tier ([#2207](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2207)) ([2bd9cbd](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2bd9cbd9c7b281dc21935fe52addb2bba87474e0))
+
 ## [36.2.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.1.0...v36.2.0) (2025-04-03)
 
 
