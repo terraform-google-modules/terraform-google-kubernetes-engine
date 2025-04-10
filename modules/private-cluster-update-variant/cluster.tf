@@ -199,6 +199,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+
   dynamic "enterprise_config" {
     for_each = var.enterprise_config != null ? [1] : []
     content {

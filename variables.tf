@@ -546,6 +546,7 @@ variable "enable_confidential_nodes" {
   default     = false
 }
 
+
 variable "enable_gcfs" {
   type        = bool
   description = "Enable image streaming on cluster level."
@@ -800,7 +801,7 @@ variable "monitoring_enabled_components" {
 
 variable "logging_enabled_components" {
   type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, KCP_CONNECTION, KCP_SSHD, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, KCP_CONNECTION, KCP_SSHD, KCP_HPA, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
   default     = []
   validation {
     condition = alltrue([
@@ -812,10 +813,11 @@ variable "logging_enabled_components" {
         "SCHEDULER",
         "KCP_CONNECTION",
         "KCP_SSHD",
+        "KCP_HPA",
         "WORKLOADS"
       ], c)
     ])
-    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, KCP_CONNECTION, KCP_SSHD and WORKLOADS."
+    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, KCP_CONNECTION, KCP_SSHD, KCP_HPA and WORKLOADS."
   }
 }
 
