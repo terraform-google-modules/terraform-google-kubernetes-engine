@@ -761,10 +761,17 @@ resource "google_container_node_pool" "pools" {
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+
+      dynamic "network_performance_config" {
+        for_each = lookup(network_config.value, "total_egress_bandwidth_tier", "") != "" ? [1] : []
+        content {
+          total_egress_bandwidth_tier = lookup(network_config.value, "total_egress_bandwidth_tier", null)
+        }
+      }
     }
   }
 
@@ -1091,10 +1098,17 @@ resource "google_container_node_pool" "windows_pools" {
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+
+      dynamic "network_performance_config" {
+        for_each = lookup(network_config.value, "total_egress_bandwidth_tier", "") != "" ? [1] : []
+        content {
+          total_egress_bandwidth_tier = lookup(network_config.value, "total_egress_bandwidth_tier", null)
+        }
+      }
     }
   }
 
