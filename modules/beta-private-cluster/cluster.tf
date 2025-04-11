@@ -980,8 +980,8 @@ resource "google_container_node_pool" "pools" {
           )) != 0 ? [1] : []
 
           content {
-            hugepage_size_2m = try(coalesce(local.node_pools_hugepage_size_2m[each.value["name"]], local.node_pools_hugepage_size_2m["all"], null))
-            hugepage_size_1g = try(coalesce(local.node_pools_hugepage_size_1g[each.value["name"]], local.node_pools_hugepage_size_1g["all"], null))
+            hugepage_size_2m = coalesce(local.node_pools_hugepage_size_2m[each.value["name"]], local.node_pools_hugepage_size_2m["all"], null)
+            hugepage_size_1g = coalesce(local.node_pools_hugepage_size_1g[each.value["name"]], local.node_pools_hugepage_size_1g["all"], null)
           }
         }
       }
