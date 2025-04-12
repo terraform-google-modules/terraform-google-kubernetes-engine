@@ -441,12 +441,6 @@ variable "boot_disk_kms_key" {
   default     = null
 }
 
-variable "local_ssd_encryption_mode" {
-  type        = string
-  description = "specifies the method used for encrypting the local SSDs attached to the node. Valid values are: `STANDARD_ENCRYPTION` and `EPHEMERAL_KEY_ENCRYPTION`"
-  default     = null
-}
-
 variable "issue_client_certificate" {
   type        = bool
   description = "Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive!"

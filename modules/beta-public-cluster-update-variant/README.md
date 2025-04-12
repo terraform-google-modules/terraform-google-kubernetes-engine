@@ -238,7 +238,6 @@ Then perform the following commands on the root folder:
 | istio\_auth | (Beta) The authentication type between services in Istio. | `string` | `"AUTH_MUTUAL_TLS"` | no |
 | kalm\_config | (Beta) Whether KALM is enabled for this cluster. | `bool` | `false` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | `string` | `"latest"` | no |
-| local\_ssd\_encryption\_mode | specifies the method used for encrypting the local SSDs attached to the node. Valid values are: `STANDARD_ENCRYPTION` and `EPHEMERAL_KEY_ENCRYPTION` | `string` | `null` | no |
 | logging\_enabled\_components | List of services to monitor: SYSTEM\_COMPONENTS, APISERVER, CONTROLLER\_MANAGER, KCP\_CONNECTION, KCP\_SSHD, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration. | `list(string)` | `[]` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | `string` | `"logging.googleapis.com/kubernetes"` | no |
 | logging\_variant | (Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX\_THROUGHPUT. | `string` | `null` | no |
