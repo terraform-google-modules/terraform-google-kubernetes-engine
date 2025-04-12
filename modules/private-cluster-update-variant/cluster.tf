@@ -650,10 +650,13 @@ locals {
     "reservation_affinity_values",
     "secondary_boot_disk",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "local_ssd_encryption_mode",
 =======
     "storage_pools",
 >>>>>>> 856b2d447db (storage-pools)
+=======
+>>>>>>> b1624ae53eb (dont require recreate)
   ]
 }
 
