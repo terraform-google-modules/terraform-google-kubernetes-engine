@@ -2,6 +2,7 @@
 
 This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.Beta features are enabled in this submodule.
 The resources/services/activations/deletions that this module will create/trigger are:
+
 - Create a GKE cluster with the provided addons
 - Create GKE Node Pool(s) with provided configuration and attach to cluster
 - Replace the default kube-dns configmap if `stub_domains` are provided
@@ -24,6 +25,7 @@ If you haven't [upgraded to 0.13][terraform-0.13-upgrade] and need a Terraform
 intended for Terraform 0.12.x is [12.3.0].
 
 ## Usage
+
 There are multiple examples included in the [examples](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/examples) folder but simple usage is as follows:
 
 ```hcl
@@ -203,18 +205,26 @@ Before this module can be used on a project, you must ensure that the following 
 The [project factory](https://github.com/terraform-google-modules/terraform-google-project-factory) can be used to provision projects with the correct APIs active and the necessary Shared VPC connections.
 
 ### Software Dependencies
+
 #### Kubectl
+
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
+
 #### Terraform and Plugins
+
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
 - [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.27+
+
 #### gcloud
+
 Some submodules use the [terraform-google-gcloud](https://github.com/terraform-google-modules/terraform-google-gcloud) module. By default, this module assumes you already have gcloud installed in your $PATH.
 See the [module](https://github.com/terraform-google-modules/terraform-google-gcloud#downloading) documentation for more information.
 
 ### Configure a Service Account
+
 In order to execute this module you must have a Service Account with the
 following project roles:
+
 - roles/compute.viewer
 - roles/compute.securityAdmin (only required if `add_cluster_firewall_rules` is set to `true`)
 - roles/container.clusterAdmin
@@ -224,15 +234,17 @@ following project roles:
 - roles/resourcemanager.projectIamAdmin (only required if `service_account` is set to `create`)
 
 Additionally, if `service_account` is set to `create` and `grant_registry_access` is requested, the service account requires the following role on the `registry_project_ids` projects:
+
 - roles/resourcemanager.projectIamAdmin
 
 ### Enable APIs
+
 In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:
 
 - Compute Engine API - compute.googleapis.com
 - Kubernetes Engine API - container.googleapis.com
 
-[terraform-provider-google-beta]: https://github.com/terraform-providers/terraform-provider-google-beta
-[12.3.0]: https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/12.3.0
-[terraform-0.13-upgrade]: https://www.terraform.io/upgrade-guides/0-13.html
-[terraform-1.3-upgrade]: https://developer.hashicorp.com/terraform/language/v1.3.x/upgrade-guides
+[terraform-provider-google-beta]: <https://github.com/terraform-providers/terraform-provider-google-beta>
+[12.3.0]: <https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/12.3.0>
+[terraform-0.13-upgrade]: <https://www.terraform.io/upgrade-guides/0-13.html>
+[terraform-1.3-upgrade]: <https://developer.hashicorp.com/terraform/language/v1.3.x/upgrade-guides>
