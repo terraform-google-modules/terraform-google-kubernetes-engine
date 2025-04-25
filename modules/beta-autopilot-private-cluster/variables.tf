@@ -409,6 +409,12 @@ variable "enable_confidential_nodes" {
   default     = false
 }
 
+variable "hpa_profile" {
+  description = "Enable the Horizontal Pod Autoscaling profile for this cluster. Values are \"NONE\" and \"PERFORMANCE\"."
+  type        = string
+  default     = ""
+}
+
 variable "enable_secret_manager_addon" {
   description = "Enable the Secret Manager add-on for this cluster"
   type        = bool
@@ -571,7 +577,7 @@ variable "monitoring_enabled_components" {
 
 variable "logging_enabled_components" {
   type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, KCP_CONNECTION, KCP_SSHD, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, KCP_CONNECTION, KCP_SSHD, KCP_HPA, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
   default     = []
   validation {
     condition = alltrue([
@@ -583,10 +589,11 @@ variable "logging_enabled_components" {
         "SCHEDULER",
         "KCP_CONNECTION",
         "KCP_SSHD",
+        "KCP_HPA",
         "WORKLOADS"
       ], c)
     ])
-    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, KCP_CONNECTION, KCP_SSHD and WORKLOADS."
+    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, KCP_CONNECTION, KCP_SSHD, KCP_HPA and WORKLOADS."
   }
 }
 
