@@ -356,7 +356,7 @@ The node_pools variable takes the following parameters:
 | image_gc_high_threshold_percent | Defines the percent of disk usage after which image garbage collection is always run. | null | Optional |
 | image_minimum_gc_age | Defines the minimum age for an unused image before it is garbage collected. | null | Optional |
 | image_maximum_gc_age | Defines the maximum age an image can be unused before it is garbage collected. | null | Optional |
-| allowed_unsafe_sysctls | Defines a comma-separated allowlist of unsafe sysctls or sysctl patterns which can be set on the Pods. | null | Optional |
+| allowed_unsafe_sysctls | Defines a comma-separated allowlist of unsafe sysctls or sysctl patterns which can be set on the Pods. This should be passed as comma separated string. | null | Optional |
 | enable_confidential_nodes | An optional flag to enable confidential node config. | false | Optional |
 | disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100 | Optional |
 | disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |

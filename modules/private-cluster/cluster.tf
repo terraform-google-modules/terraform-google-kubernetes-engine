@@ -461,7 +461,7 @@ resource "google_container_cluster" "primary" {
           image_gc_high_threshold_percent        = lookup(var.node_pools[0], "image_gc_high_threshold_percent", null)
           image_minimum_gc_age                   = lookup(var.node_pools[0], "image_minimum_gc_age", null)
           image_maximum_gc_age                   = lookup(var.node_pools[0], "image_maximum_gc_age", null)
-          allowed_unsafe_sysctls                 = lookup(var.node_pools[0], "allowed_unsafe_sysctls", null)
+          allowed_unsafe_sysctls                 = lookup(var.node_pools[0], "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(var.node_pools[0], "allowed_unsafe_sysctls", null)) : trimspace(s)]
         }
       }
 
@@ -881,7 +881,7 @@ resource "google_container_node_pool" "pools" {
         image_gc_high_threshold_percent        = lookup(each.value, "image_gc_high_threshold_percent", null)
         image_minimum_gc_age                   = lookup(each.value, "image_minimum_gc_age", null)
         image_maximum_gc_age                   = lookup(each.value, "image_maximum_gc_age", null)
-        allowed_unsafe_sysctls                 = lookup(each.value, "allowed_unsafe_sysctls", null)
+        allowed_unsafe_sysctls                 = lookup(each.value, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(each.value, "allowed_unsafe_sysctls", null)) : trimspace(s)]
       }
     }
 
@@ -1211,7 +1211,7 @@ resource "google_container_node_pool" "windows_pools" {
         image_gc_high_threshold_percent        = lookup(each.value, "image_gc_high_threshold_percent", null)
         image_minimum_gc_age                   = lookup(each.value, "image_minimum_gc_age", null)
         image_maximum_gc_age                   = lookup(each.value, "image_maximum_gc_age", null)
-        allowed_unsafe_sysctls                 = lookup(each.value, "allowed_unsafe_sysctls", null)
+        allowed_unsafe_sysctls                 = lookup(each.value, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(each.value, "allowed_unsafe_sysctls", null)) : trimspace(s)]
       }
     }
 
