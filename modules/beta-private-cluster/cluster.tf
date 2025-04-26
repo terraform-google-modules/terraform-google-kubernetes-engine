@@ -489,7 +489,7 @@ resource "google_container_cluster" "primary" {
       dynamic "kubelet_config" {
         for_each = length(setintersection(
           keys(var.node_pools[0]),
-          ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit"]
+          ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls"]
         )) != 0 || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
 
         content {
@@ -498,6 +498,13 @@ resource "google_container_cluster" "primary" {
           cpu_cfs_quota_period                   = lookup(var.node_pools[0], "cpu_cfs_quota_period", null)
           insecure_kubelet_readonly_port_enabled = lookup(var.node_pools[0], "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled) != null ? upper(tostring(lookup(var.node_pools[0], "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled))) : null
           pod_pids_limit                         = lookup(var.node_pools[0], "pod_pids_limit", null)
+          container_log_max_size                 = lookup(var.node_pools[0], "container_log_max_size", null)
+          container_log_max_files                = lookup(var.node_pools[0], "container_log_max_files", null)
+          image_gc_low_threshold_percent         = lookup(var.node_pools[0], "image_gc_low_threshold_percent", null)
+          image_gc_high_threshold_percent        = lookup(var.node_pools[0], "image_gc_high_threshold_percent", null)
+          image_minimum_gc_age                   = lookup(var.node_pools[0], "image_minimum_gc_age", null)
+          image_maximum_gc_age                   = lookup(var.node_pools[0], "image_maximum_gc_age", null)
+          allowed_unsafe_sysctls                 = lookup(var.node_pools[0], "allowed_unsafe_sysctls", null)
         }
       }
 
@@ -917,7 +924,7 @@ resource "google_container_node_pool" "pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls"]
       )) != 0 ? [1] : []
 
       content {
@@ -926,6 +933,13 @@ resource "google_container_node_pool" "pools" {
         cpu_cfs_quota_period                   = lookup(each.value, "cpu_cfs_quota_period", null)
         insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null) != null ? upper(tostring(each.value.insecure_kubelet_readonly_port_enabled)) : null
         pod_pids_limit                         = lookup(each.value, "pod_pids_limit", null)
+        container_log_max_size                 = lookup(each.value, "container_log_max_size", null)
+        container_log_max_files                = lookup(each.value, "container_log_max_files", null)
+        image_gc_low_threshold_percent         = lookup(each.value, "image_gc_low_threshold_percent", null)
+        image_gc_high_threshold_percent        = lookup(each.value, "image_gc_high_threshold_percent", null)
+        image_minimum_gc_age                   = lookup(each.value, "image_minimum_gc_age", null)
+        image_maximum_gc_age                   = lookup(each.value, "image_maximum_gc_age", null)
+        allowed_unsafe_sysctls                 = lookup(each.value, "allowed_unsafe_sysctls", null)
       }
     }
 
@@ -1253,7 +1267,7 @@ resource "google_container_node_pool" "windows_pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls"]
       )) != 0 ? [1] : []
 
       content {
@@ -1262,6 +1276,13 @@ resource "google_container_node_pool" "windows_pools" {
         cpu_cfs_quota_period                   = lookup(each.value, "cpu_cfs_quota_period", null)
         insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null) != null ? upper(tostring(each.value.insecure_kubelet_readonly_port_enabled)) : null
         pod_pids_limit                         = lookup(each.value, "pod_pids_limit", null)
+        container_log_max_size                 = lookup(each.value, "container_log_max_size", null)
+        container_log_max_files                = lookup(each.value, "container_log_max_files", null)
+        image_gc_low_threshold_percent         = lookup(each.value, "image_gc_low_threshold_percent", null)
+        image_gc_high_threshold_percent        = lookup(each.value, "image_gc_high_threshold_percent", null)
+        image_minimum_gc_age                   = lookup(each.value, "image_minimum_gc_age", null)
+        image_maximum_gc_age                   = lookup(each.value, "image_maximum_gc_age", null)
+        allowed_unsafe_sysctls                 = lookup(each.value, "allowed_unsafe_sysctls", null)
       }
     }
 
