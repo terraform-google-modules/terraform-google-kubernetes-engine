@@ -557,6 +557,8 @@ resource "google_container_cluster" "primary" {
         enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
         enable_integrity_monitoring = lookup(var.node_pools[0], "enable_integrity_monitoring", true)
       }
+
+      local_ssd_encryption_mode = lookup(var.node_pools[0], "local_ssd_encryption_mode", null)
     }
   }
 
@@ -698,6 +700,7 @@ locals {
     "reservation_affinity_values",
     "enable_confidential_nodes",
     "secondary_boot_disk",
+    "local_ssd_encryption_mode",
   ]
 }
 
@@ -1077,6 +1080,7 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    local_ssd_encryption_mode = lookup(each.value, "local_ssd_encryption_mode", null)
   }
 
   lifecycle {
@@ -1405,6 +1409,7 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
+    local_ssd_encryption_mode = lookup(each.value, "local_ssd_encryption_mode", null)
   }
 
   lifecycle {
