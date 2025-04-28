@@ -2,6 +2,7 @@
 
 This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc. This particular submodule creates a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters)
 The resources/services/activations/deletions that this module will create/trigger are:
+
 - Create a GKE cluster with the provided addons
 - Create GKE Node Pool(s) with provided configuration and attach to cluster
 - Replace the default kube-dns configmap if `stub_domains` are provided
@@ -11,6 +12,7 @@ The resources/services/activations/deletions that this module will create/trigge
 Sub modules are provided for creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
 
 ## Private Cluster Details
+
 For details on configuring private clusters with this module, check the [troubleshooting guide](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/blob/master/docs/private_clusters.md).
 
 ## Compatibility
@@ -27,6 +29,7 @@ If you haven't [upgraded to 0.13][terraform-0.13-upgrade] and need a Terraform
 intended for Terraform 0.12.x is [12.3.0].
 
 ## Usage
+
 There are multiple examples included in the [examples](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/examples) folder but simple usage is as follows:
 
 ```hcl
@@ -390,8 +393,10 @@ The node_pools variable takes the following parameters:
 | consume_reservation_type | The type of reservation consumption. Accepted values are: "UNSPECIFIED": Default value (should not be specified). "NO_RESERVATION": Do not consume from any reserved capacity, "ANY_RESERVATION": Consume any reservation available, "SPECIFIC_RESERVATION": Must consume from a specific reservation. Must specify key value fields for specifying the reservations. | | Optional |
 | reservation_affinity_key | The label key of a reservation resource. To target a SPECIFIC_RESERVATION by name, specify "compute.googleapis.com/reservation-name" as the key and specify the name of your reservation as its value. | | Optional |
 | reservation_affinity_values | The list of label values of reservation resources. For example: the name of the specific reservation when using a key of "compute.googleapis.com/reservation-name". This should be passed as comma separated string. | | Optional |
+| local_ssd_encryption_mode | specifies the method used for encrypting the local SSDs attached to the node. Valid values are: "STANDARD_ENCRYPTION" and "EPHEMERAL_KEY_ENCRYPTION" | | Optional |
 
 ## windows_node_pools variable
+
 The windows_node_pools variable takes the same parameters as [node_pools](#node\_pools-variable) but is reserved for provisioning Windows based node pools only. This variable is introduced to satisfy a [specific requirement](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster-windows#create_a_cluster_and_node_pools) for the presence of at least one linux based node pool in the cluster before a windows based node pool can be created.
 
 
@@ -407,18 +412,26 @@ Before this module can be used on a project, you must ensure that the following 
 The [project factory](https://github.com/terraform-google-modules/terraform-google-project-factory) can be used to provision projects with the correct APIs active and the necessary Shared VPC connections.
 
 ### Software Dependencies
+
 #### Kubectl
+
 - [kubectl](https://github.com/kubernetes/kubernetes/releases) 1.9.x
+
 #### Terraform and Plugins
+
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
 - [Terraform Provider for GCP][terraform-provider-google] v6.27+
+
 #### gcloud
+
 Some submodules use the [terraform-google-gcloud](https://github.com/terraform-google-modules/terraform-google-gcloud) module. By default, this module assumes you already have gcloud installed in your $PATH.
 See the [module](https://github.com/terraform-google-modules/terraform-google-gcloud#downloading) documentation for more information.
 
 ### Configure a Service Account
+
 In order to execute this module you must have a Service Account with the
 following project roles:
+
 - roles/compute.viewer
 - roles/compute.securityAdmin (only required if `add_cluster_firewall_rules` is set to `true`)
 - roles/container.clusterAdmin
@@ -428,15 +441,17 @@ following project roles:
 - roles/resourcemanager.projectIamAdmin (only required if `service_account` is set to `create`)
 
 Additionally, if `service_account` is set to `create` and `grant_registry_access` is requested, the service account requires the following role on the `registry_project_ids` projects:
+
 - roles/resourcemanager.projectIamAdmin
 
 ### Enable APIs
+
 In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:
 
 - Compute Engine API - compute.googleapis.com
 - Kubernetes Engine API - container.googleapis.com
 
-[terraform-provider-google]: https://github.com/terraform-providers/terraform-provider-google
-[12.3.0]: https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/12.3.0
-[terraform-0.13-upgrade]: https://www.terraform.io/upgrade-guides/0-13.html
-[terraform-1.3-upgrade]: https://developer.hashicorp.com/terraform/language/v1.3.x/upgrade-guides
+[terraform-provider-google]: <https://github.com/terraform-providers/terraform-provider-google>
+[12.3.0]: <https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/12.3.0>
+[terraform-0.13-upgrade]: <https://www.terraform.io/upgrade-guides/0-13.html>
+[terraform-1.3-upgrade]: <https://developer.hashicorp.com/terraform/language/v1.3.x/upgrade-guides>
