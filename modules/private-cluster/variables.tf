@@ -273,10 +273,10 @@ variable "cluster_autoscaling" {
   type = object({
     enabled                     = bool
     autoscaling_profile         = string
-    min_cpu_cores               = number
-    max_cpu_cores               = number
-    min_memory_gb               = number
-    max_memory_gb               = number
+    min_cpu_cores               = optional(number)
+    max_cpu_cores               = optional(number)
+    min_memory_gb               = optional(number)
+    max_memory_gb               = optional(number)
     gpu_resources               = list(object({ resource_type = string, minimum = number, maximum = number }))
     auto_repair                 = bool
     auto_upgrade                = bool
@@ -582,6 +582,7 @@ variable "enable_confidential_nodes" {
   default     = false
 }
 
+
 variable "enable_gcfs" {
   type        = bool
   description = "Enable image streaming on cluster level."
@@ -776,6 +777,12 @@ variable "stateful_ha" {
   default     = false
 }
 
+variable "parallelstore_csi_driver" {
+  type        = bool
+  description = "Whether the Parallelstore CSI driver Addon is enabled for this cluster."
+  default     = null
+}
+
 variable "ray_operator_config" {
   type = object({
     enabled            = bool
@@ -802,7 +809,7 @@ variable "timeouts" {
 
 variable "monitoring_enabled_components" {
   type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET, KUBELET, CADVISOR and DCGM. In beta provider, WORKLOADS is supported on top of those 12 values. (WORKLOADS is deprecated and removed in GKE 1.24.) KUBELET and CADVISOR are only supported in GKE 1.29.3-gke.1093000 and above. Empty list is default GKE configuration."
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET, KUBELET, CADVISOR, DCGM, and JOBSET. In beta provider, WORKLOADS is supported on top of those 12 values. (WORKLOADS is deprecated and removed in GKE 1.24.) KUBELET and CADVISOR are only supported in GKE 1.29.3-gke.1093000 and above. JOBSET is only supported in GKE 1.32.1-gke.1357001 and above. Empty list is default GKE configuration."
   default     = []
   validation {
     condition = alltrue([
@@ -821,16 +828,17 @@ variable "monitoring_enabled_components" {
         "WORKLOADS",
         "KUBELET",
         "CADVISOR",
-        "DCGM"
+        "DCGM",
+        "JOBSET"
       ], c)
     ])
-    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET, WORKLOADS, KUBELET, CADVISOR and DCGM."
+    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET, WORKLOADS, KUBELET, CADVISOR, DCGM and JOBSET."
   }
 }
 
 variable "logging_enabled_components" {
   type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, KCP_CONNECTION, KCP_SSHD, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, KCP_CONNECTION, KCP_SSHD, KCP_HPA, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
   default     = []
   validation {
     condition = alltrue([
@@ -842,10 +850,11 @@ variable "logging_enabled_components" {
         "SCHEDULER",
         "KCP_CONNECTION",
         "KCP_SSHD",
+        "KCP_HPA",
         "WORKLOADS"
       ], c)
     ])
-    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, KCP_CONNECTION, KCP_SSHD and WORKLOADS."
+    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, KCP_CONNECTION, KCP_SSHD, KCP_HPA and WORKLOADS."
   }
 }
 
@@ -920,7 +929,17 @@ variable "monitoring_metric_writer_role" {
 }
 
 variable "enterprise_config" {
-  description = "(Optional) Enable or disable GKE enterprise. Valid values are DEFAULT and ENTERPRISE."
+  description = "(Optional) Enable or disable GKE enterprise. Valid values are STANDARD and ENTERPRISE."
   type        = string
+  default     = null
+  validation {
+    condition     = var.enterprise_config == null ? true : contains(["STANDARD", "ENTERPRISE"], var.enterprise_config)
+    error_message = "The enterprise_config variable must be either null, STANDARD, or ENTERPRISE."
+  }
+}
+
+variable "dns_allow_external_traffic" {
+  description = "(Optional) Controls whether external traffic is allowed over the dns endpoint."
+  type        = bool
   default     = null
 }

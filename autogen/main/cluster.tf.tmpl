@@ -260,6 +260,15 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  {% if beta_cluster %}
+  dynamic "pod_autoscaling" {
+    for_each = length(var.hpa_profile) > 0 ? [1] : []
+    content {
+      hpa_profile = var.hpa_profile
+    }
+  }
+  {% endif %}
+
   dynamic "enterprise_config" {
     for_each = var.enterprise_config != null ? [1] : []
       content {
@@ -286,16 +295,25 @@ resource "google_container_cluster" "primary" {
   }
 {% if autopilot_cluster %}
   dynamic "node_pool_auto_config" {
-    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
+    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null || var.node_pools_cgroup_mode != null ? [1] : []
     content {
-      network_tags {
-        tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : length(var.network_tags) > 0 ? var.network_tags : null
+      dynamic "network_tags" {
+        for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
+        content {
+          tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : length(var.network_tags) > 0 ? var.network_tags : null
+        }
       }
 
       dynamic "node_kubelet_config" {
         for_each = var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
         content {
           insecure_kubelet_readonly_port_enabled = upper(tostring(var.insecure_kubelet_readonly_port_enabled))
+        }
+      }
+      dynamic "linux_node_config" {
+        for_each = var.node_pools_cgroup_mode != null ? [1] : []
+        content {
+          cgroup_mode = var.node_pools_cgroup_mode
         }
       }
     }
@@ -400,6 +418,16 @@ resource "google_container_cluster" "primary" {
         }
       }
     }
+
+    {% if autopilot_cluster != true %}
+    dynamic "parallelstore_csi_driver_config" {
+      for_each = local.parallelstore_csi_driver_config
+
+      content {
+        enabled = parallelstore_csi_driver_config.value.enabled
+      }
+    }
+    {% endif %}
 
     {% if beta_cluster and autopilot_cluster != true %}
     istio_config {
@@ -536,6 +564,7 @@ resource "google_container_cluster" "primary" {
       machine_type                = lookup(var.node_pools[0], "machine_type", "e2-medium")
       min_cpu_platform            = lookup(var.node_pools[0], "min_cpu_platform", "")
       enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
+      disk_type                   = lookup(var.node_pools[0], "disk_type", null)
       dynamic "gcfs_config" {
         for_each = lookup(var.node_pools[0], "enable_gcfs", null) != null ? [var.node_pools[0].enable_gcfs] : []
         content {
@@ -623,6 +652,8 @@ resource "google_container_cluster" "primary" {
         enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
         enable_integrity_monitoring = lookup(var.node_pools[0], "enable_integrity_monitoring", true)
       }
+
+      local_ssd_encryption_mode = lookup(var.node_pools[0], "local_ssd_encryption_mode", null)
     }
   }
   {% endif %}
@@ -666,15 +697,15 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+{% endif %}
   dynamic "control_plane_endpoints_config" {
-    for_each = var.enable_private_endpoint && var.deploy_using_private_endpoint ? [1] : []
+    for_each = var.dns_allow_external_traffic != null ? [1] : []
     content {
       dns_endpoint_config {
-        allow_external_traffic = var.deploy_using_private_endpoint
+        allow_external_traffic = var.dns_allow_external_traffic
       }
     }
   }
-{% endif %}
 
   {% if autopilot_cluster != true %}
   remove_default_node_pool = var.remove_default_node_pool
@@ -780,6 +811,7 @@ locals {
     "reservation_affinity_values",
     "enable_confidential_nodes",
     "secondary_boot_disk",
+    "local_ssd_encryption_mode",
   ]
 }
 
@@ -898,7 +930,7 @@ resource "google_container_node_pool" "windows_pools" {
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       {% if private_cluster %}
@@ -906,6 +938,13 @@ resource "google_container_node_pool" "windows_pools" {
       {% else %}
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
       {% endif %}
+
+      dynamic "network_performance_config" {
+        for_each = lookup(network_config.value, "total_egress_bandwidth_tier", "") != "" ? [1] : []
+        content {
+          total_egress_bandwidth_tier = lookup(network_config.value, "total_egress_bandwidth_tier", null)
+        }
+      }
     }
   }
 
@@ -1174,6 +1213,7 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
+    local_ssd_encryption_mode = lookup(each.value, "local_ssd_encryption_mode", null)
   }
 
   lifecycle {

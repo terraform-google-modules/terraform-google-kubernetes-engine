@@ -212,6 +212,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "pod_autoscaling" {
+    for_each = length(var.hpa_profile) > 0 ? [1] : []
+    content {
+      hpa_profile = var.hpa_profile
+    }
+  }
+
   dynamic "enterprise_config" {
     for_each = var.enterprise_config != null ? [1] : []
     content {
@@ -326,6 +333,14 @@ resource "google_container_cluster" "primary" {
         ray_cluster_monitoring_config {
           enabled = ray_operator_config.value.monitoring_enabled
         }
+      }
+    }
+
+    dynamic "parallelstore_csi_driver_config" {
+      for_each = local.parallelstore_csi_driver_config
+
+      content {
+        enabled = parallelstore_csi_driver_config.value.enabled
       }
     }
 
@@ -449,6 +464,7 @@ resource "google_container_cluster" "primary" {
       machine_type                = lookup(var.node_pools[0], "machine_type", "e2-medium")
       min_cpu_platform            = lookup(var.node_pools[0], "min_cpu_platform", "")
       enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
+      disk_type                   = lookup(var.node_pools[0], "disk_type", null)
       dynamic "gcfs_config" {
         for_each = lookup(var.node_pools[0], "enable_gcfs", null) != null ? [var.node_pools[0].enable_gcfs] : []
         content {
@@ -534,6 +550,8 @@ resource "google_container_cluster" "primary" {
         enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
         enable_integrity_monitoring = lookup(var.node_pools[0], "enable_integrity_monitoring", true)
       }
+
+      local_ssd_encryption_mode = lookup(var.node_pools[0], "local_ssd_encryption_mode", null)
     }
   }
 
@@ -576,10 +594,10 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.enable_private_endpoint && var.deploy_using_private_endpoint ? [1] : []
+    for_each = var.dns_allow_external_traffic != null ? [1] : []
     content {
       dns_endpoint_config {
-        allow_external_traffic = var.deploy_using_private_endpoint
+        allow_external_traffic = var.dns_allow_external_traffic
       }
     }
   }
@@ -693,10 +711,17 @@ resource "google_container_node_pool" "pools" {
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", var.enable_private_nodes)
+
+      dynamic "network_performance_config" {
+        for_each = lookup(network_config.value, "total_egress_bandwidth_tier", "") != "" ? [1] : []
+        content {
+          total_egress_bandwidth_tier = lookup(network_config.value, "total_egress_bandwidth_tier", null)
+        }
+      }
     }
   }
 
@@ -959,6 +984,7 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    local_ssd_encryption_mode = lookup(each.value, "local_ssd_encryption_mode", null)
   }
 
   lifecycle {
@@ -1022,10 +1048,17 @@ resource "google_container_node_pool" "windows_pools" {
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", var.enable_private_nodes)
+
+      dynamic "network_performance_config" {
+        for_each = lookup(network_config.value, "total_egress_bandwidth_tier", "") != "" ? [1] : []
+        content {
+          total_egress_bandwidth_tier = lookup(network_config.value, "total_egress_bandwidth_tier", null)
+        }
+      }
     }
   }
 
@@ -1272,6 +1305,7 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
+    local_ssd_encryption_mode = lookup(each.value, "local_ssd_encryption_mode", null)
   }
 
   lifecycle {

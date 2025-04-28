@@ -137,4 +137,12 @@ module "gke" {
     ]
     pool-02 = []
   }
+
+  cluster_autoscaling = {
+    enabled             = true
+    autoscaling_profile = "OPTIMIZE_UTILIZATION"
+    gpu_resources       = []
+    auto_repair         = true
+    auto_upgrade        = true
+  }
 }
