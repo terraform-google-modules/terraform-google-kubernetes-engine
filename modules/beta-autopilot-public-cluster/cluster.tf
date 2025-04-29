@@ -110,6 +110,8 @@ resource "google_container_cluster" "primary" {
 
   enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
 
+  disable_l4_lb_firewall_reconciliation = var.disable_l4_lb_firewall_reconciliation
+
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
   dynamic "secret_manager_config" {
