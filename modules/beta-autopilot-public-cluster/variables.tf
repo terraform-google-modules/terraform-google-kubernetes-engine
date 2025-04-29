@@ -568,6 +568,12 @@ variable "enable_l4_ilb_subsetting" {
   default     = false
 }
 
+variable "disable_l4_lb_firewall_reconciliation" {
+  type        = bool
+  description = "Disable L4 Load Balancer firewall reconciliation"
+  default     = false
+}
+
 variable "allow_net_admin" {
   description = "(Optional) Enable NET_ADMIN for the cluster."
   type        = bool
