@@ -95,6 +95,7 @@ module "gke" {
     },
     {
       name                         = "pool-05"
+      disk_type                    = "pd-balanced"
       machine_type                 = "c3-standard-4"
       node_count                   = 1
       enable_nested_virtualization = true

@@ -701,7 +701,7 @@
           "enableNestedVirtualization": true
         },
         "diskSizeGb": 100,
-        "diskType": "pd-standard",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
         "imageType": "COS_CONTAINERD",
         "labels": {
