@@ -47,7 +47,8 @@ module "gke" {
   release_channel                 = "RAPID"
   enable_vertical_pod_autoscaling = true
   network_tags                    = [local.cluster_type]
-  node_pools_cgroup_mode          = "CGROUP_MODE_V2"
+  # TODO: b/413643369
+  # node_pools_cgroup_mode          = "CGROUP_MODE_V2"
   deletion_protection             = false
   enable_l4_ilb_subsetting        = true
   stateful_ha                     = false
