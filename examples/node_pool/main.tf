@@ -95,7 +95,8 @@ module "gke" {
     },
     {
       name                         = "pool-05"
-      machine_type                 = "n1-standard-2"
+      disk_type                    = "pd-balanced"
+      machine_type                 = "c3-standard-4"
       node_count                   = 1
       enable_nested_virtualization = true
     },
@@ -163,6 +164,15 @@ module "gke" {
   node_pools_cgroup_mode = {
     all     = "CGROUP_MODE_V1"
     pool-01 = "CGROUP_MODE_V2"
+  }
+
+  node_pools_hugepage_size_2m = {
+    all     = "1"
+    pool-01 = "2"
+  }
+
+  node_pools_hugepage_size_1g = {
+    pool-05 = "2"
   }
 }
 
