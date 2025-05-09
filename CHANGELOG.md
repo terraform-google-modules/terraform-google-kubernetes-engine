@@ -6,6 +6,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [37.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.3.0...v37.0.0) (2025-05-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* dns_allow_external_traffic on private clusters ([#2334](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2334))
+* **TPG>=6.27:** add support for HPA profile + logs ([#2323](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2323))
+
+### Features
+
+* add JOBSET to monitoring_enabled_components ([#2336](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2336)) ([e55529d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e55529db6df48075887b997702fdc993fc2406ee))
+* add local_ssd_encryption_mode ([#2328](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2328)) ([95171f6](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/95171f6f2b3c9ddd8e77dbd35a4b4741af2eef42))
+* **TPG>=6.27:** add support for HPA profile + logs ([#2323](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2323)) ([8e33d19](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8e33d1952706137849b79f7b84cd8d3da85cec88))
+
+
+### Bug Fixes
+
+* dns_allow_external_traffic on private clusters ([#2334](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2334)) ([1c6ff12](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1c6ff12b9c01fe77633bae942e9c8ff8ff38f17a))
+
 ## [36.3.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.2.0...v36.3.0) (2025-04-10)
 
 
