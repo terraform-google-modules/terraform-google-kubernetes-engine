@@ -163,7 +163,7 @@ resource "google_compute_network_attachment" "router_net_attachment" {
 
 module "cloud_router" {
   source   = "terraform-google-modules/cloud-router/google"
-  version  = "~> 6.0"
+  version  = "~> 7.0"
   for_each = { for k, v in var.gke_spokes : k => v }
 
   name    = "router-${each.value["cluster_name"]}-${random_id.rand.hex}"
