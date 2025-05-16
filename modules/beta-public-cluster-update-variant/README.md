@@ -363,6 +363,13 @@ The node_pools variable takes the following parameters:
 | cpu_cfs_quota | Enforces the Pod's CPU limit. Setting this value to false means that the CPU limits for Pods are ignored | null | Optional |
 | cpu_cfs_quota_period | The CPU CFS quota period value, which specifies the period of how often a cgroup's access to CPU resources should be reallocated | null | Optional |
 | pod_pids_limit | Controls the maximum number of processes allowed to run in a pod. The value must be greater than or equal to 1024 and less than 4194304. | null | Optional |
+| container_log_max_size | Defines the maximum size of the container log file before it is rotated. | null | Optional |
+| container_log_max_files | Defines the maximum number of container log files that can be present for a container. | null | Optional |
+| image_gc_low_threshold_percent | Defines the percent of disk usage before which image garbage collection is never run. Lowest disk usage to garbage collect to. | null | Optional |
+| image_gc_high_threshold_percent | Defines the percent of disk usage after which image garbage collection is always run. | null | Optional |
+| image_minimum_gc_age | Defines the minimum age for an unused image before it is garbage collected. | null | Optional |
+| image_maximum_gc_age | Defines the maximum age an image can be unused before it is garbage collected. | null | Optional |
+| allowed_unsafe_sysctls | Defines a comma-separated allowlist of unsafe sysctls or sysctl patterns which can be set on the Pods. This should be passed as comma separated string. | null | Optional |
 | enable_confidential_nodes | An optional flag to enable confidential node config. | false | Optional |
 | disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100 | Optional |
 | disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |
