@@ -890,7 +890,7 @@ variable "enable_l4_ilb_subsetting" {
 variable "disable_l4_lb_firewall_reconciliation" {
   type        = bool
   description = "Disable L4 Load Balancer firewall reconciliation"
-  default     = false
+  default     = null
 }
 
 variable "istio" {

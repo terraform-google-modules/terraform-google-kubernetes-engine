@@ -90,7 +90,7 @@ Then perform the following commands on the root folder:
 | deploy\_using\_private\_endpoint | A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | `bool` | `false` | no |
 | description | The description of the cluster | `string` | `""` | no |
 | disable\_default\_snat | Whether to disable the default SNAT to support the private use of public IP addresses | `bool` | `false` | no |
-| disable\_l4\_lb\_firewall\_reconciliation | Disable L4 Load Balancer firewall reconciliation | `bool` | `false` | no |
+| disable\_l4\_lb\_firewall\_reconciliation | Disable L4 Load Balancer firewall reconciliation | `bool` | `null` | no |
 | dns\_allow\_external\_traffic | (Optional) Controls whether external traffic is allowed over the dns endpoint. | `bool` | `null` | no |
 | dns\_cache | The status of the NodeLocal DNSCache addon. | `bool` | `true` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
