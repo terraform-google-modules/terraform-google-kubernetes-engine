@@ -887,6 +887,12 @@ variable "enable_l4_ilb_subsetting" {
   default     = false
 }
 
+variable "disable_l4_lb_firewall_reconciliation" {
+  type        = bool
+  description = "Disable L4 Load Balancer firewall reconciliation"
+  default     = null
+}
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   type        = bool

@@ -306,9 +306,9 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
 {% if beta_cluster %}
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.27+
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.28+
 {% else %}
-- [Terraform Provider for GCP][terraform-provider-google] v6.27+
+- [Terraform Provider for GCP][terraform-provider-google] v6.28+
 {% endif %}
 
 #### gcloud
