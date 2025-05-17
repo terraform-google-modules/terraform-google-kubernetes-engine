@@ -715,7 +715,7 @@
           },
           "hugepages": {
             "hugepageSize2m": "1",
-            "hugepageSize1g": "1"
+            "hugepageSize1g": "2"
           }
         },
         "loggingConfig": {
