@@ -71,8 +71,9 @@ module "gke" {
   enable_private_endpoint         = true
   enable_private_nodes            = true
   network_tags                    = [local.cluster_type]
-  node_pools_cgroup_mode          = "CGROUP_MODE_V2"
-  deletion_protection             = false
-  boot_disk_kms_key               = values(module.kms.keys)[0]
-  depends_on                      = [google_kms_crypto_key_iam_member.main]
+  # TODO: b/413643369
+  # node_pools_cgroup_mode          = "CGROUP_MODE_V2"
+  deletion_protection = false
+  boot_disk_kms_key   = values(module.kms.keys)[0]
+  depends_on          = [google_kms_crypto_key_iam_member.main]
 }
