@@ -673,8 +673,7 @@
       "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/europe-west4/clusters/node-pool-cluster-RANDOM_STRING/nodePools/pool-04",
       "status": "RUNNING",
       "upgradeSettings": {
-        "maxSurge": 1,
-        "strategy": "SURGE"
+        "strategy": "SHORT_LIVED"
       }
     },
     {
