@@ -112,7 +112,7 @@ locals {
 
   cluster_endpoint           = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (var.enable_private_endpoint || var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config[0].private_endpoint : google_container_cluster.primary.private_cluster_config[0].public_endpoint) : google_container_cluster.primary.endpoint
   cluster_peering_name       = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? google_container_cluster.primary.private_cluster_config[0].peering_name : null
-  cluster_endpoint_for_nodes = google_container_cluster.primary.private_cluster_config[0].master_ipv4_cidr_block
+  cluster_endpoint_for_nodes = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? google_container_cluster.primary.private_cluster_config[0].master_ipv4_cidr_block : null
 
   cluster_output_master_auth                        = concat(google_container_cluster.primary[*].master_auth, [])
   cluster_output_master_version                     = google_container_cluster.primary.master_version
