@@ -94,10 +94,13 @@ func TGKEAssertGolden(assert *assert.Assertions, golden *golden.GoldenFile, clus
 	})
 
 	// Cluster assertions
+	fmt.Sprintf("DEBUG: Cluster assertions")
 	golden.JSONPathEqs(assert, *clusterJson, clusterCheckPaths)
 
 	// NodePool assertions
+	fmt.Sprintf("DEBUG: NodePool assertions")
 	for _, nodePool := range nodePools {
+		fmt.Sprintf("DEBUG: NodePool assertions for %s", nodePool)
 		assert.Truef(clusterJson.Get(fmt.Sprintf("nodePools.#(name==%s).name", nodePool)).Exists(), "NodePool not found: %s", nodePool)
 
 		nodeCheckPaths := utils.GetTerminalJSONPaths(golden.GetJSON().Get(fmt.Sprintf("nodePools.#(name==%s)", nodePool)))
