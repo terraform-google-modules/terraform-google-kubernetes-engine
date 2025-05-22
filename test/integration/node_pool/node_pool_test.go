@@ -43,6 +43,7 @@ func TestNodePool(t *testing.T) {
 		nodeServiceAccount := bpt.GetStringOutput("compute_engine_service_account")
 
 		// Retrieve Project CAI
+		time.Sleep(5 * time.Minute)
 		projectCAI := cai.GetProjectResources(t, projectId, cai.WithAssetTypes([]string{"container.googleapis.com/Cluster", "k8s.io/Node"}))
 
 		// Retrieve Cluster from CAI
@@ -61,8 +62,9 @@ func TestNodePool(t *testing.T) {
 
 		// Cluster (and listed node pools) Assertions
 		testutils.TGKEAssertGolden(assert, g, &cluster, []string{"pool-01", "pool-02", "pool-03", "pool-04", "pool-05"}, []string{"monitoringConfig.componentConfig.enableComponents"}) // TODO: enableComponents is UL
-
+		fmt.Println("DEBUG: K8s Assertions")
 		// K8s Assertions
+		assert.True(projectCAI.Get("#(resource.data.metadata.labels.node_pool==\"pool-01\").resource.data.spec.taints").Exists(), "pool-01 taints do not exist")
 		assert.JSONEq(`[
 				{
 					"effect": "PreferNoSchedule",
@@ -76,6 +78,7 @@ func TestNodePool(t *testing.T) {
 				}
 			]`,
 			projectCAI.Get("#(resource.data.metadata.labels.node_pool==\"pool-01\").resource.data.spec.taints").String(), "has the expected taints")
+		assert.True(projectCAI.Get("#(resource.data.metadata.labels.node_pool==\"pool-02\").resource.data.spec.taints").Exists(), "pool-02 taints do not exist")
 		assert.JSONEq(`[
 				{
 					"effect": "PreferNoSchedule",
@@ -89,6 +92,7 @@ func TestNodePool(t *testing.T) {
 				}
 			]`,
 			projectCAI.Get("#(resource.data.metadata.labels.node_pool==\"pool-02\").resource.data.spec.taints").String(), "has the expected all-pools-example taint")
+		assert.True(projectCAI.Get("#(resource.data.metadata.labels.node_pool==\"pool-03\").resource.data.spec.taints").Exists(), "pool-03 taints do not exist")
 		assert.JSONEq(`[
 				{
 					"effect": "PreferNoSchedule",
