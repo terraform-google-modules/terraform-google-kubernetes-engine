@@ -50,8 +50,7 @@ module "gke" {
   enable_private_endpoint                = true
   enable_private_nodes                   = true
   network_tags                           = [local.cluster_type]
-  # TODO: b/413643369
-  # node_pools_cgroup_mode                 = "CGROUP_MODE_V2"
+  node_pools_cgroup_mode                 = "CGROUP_MODE_V2"
   deletion_protection                    = false
   insecure_kubelet_readonly_port_enabled = false
 }
