@@ -30,7 +30,7 @@ module "bastion" {
   name           = local.bastion_name
   zone           = local.bastion_zone
   image_project  = "debian-cloud"
-  machine_type   = "g1-small"
+  machine_type   = "e2-small"
   startup_script = templatefile("${path.module}/templates/startup-script.tftpl", {})
   members        = var.bastion_members
   shielded_vm    = "false"
