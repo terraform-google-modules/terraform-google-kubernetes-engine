@@ -715,20 +715,23 @@ resource "google_container_node_pool" "pools" {
     auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
   }
 
-  upgrade_settings {
-    strategy        = lookup(each.value, "strategy", "SURGE")
-    max_surge       = lookup(each.value, "strategy", "SURGE") == "SURGE" ? lookup(each.value, "max_surge", 1) : null
-    max_unavailable = lookup(each.value, "strategy", "SURGE") == "SURGE" ? lookup(each.value, "max_unavailable", 0) : null
+  dynamic "upgrade_settings" {
+    for_each = contains(["SURGE", "BLUE_GREEN"], lookup(each.value, "strategy", "SURGE")) ? [1] : []
+    content {
+      strategy        = lookup(each.value, "strategy", "SURGE")
+      max_surge       = lookup(each.value, "strategy", "SURGE") == "SURGE" ? lookup(each.value, "max_surge", 1) : null
+      max_unavailable = lookup(each.value, "strategy", "SURGE") == "SURGE" ? lookup(each.value, "max_unavailable", 0) : null
 
-    dynamic "blue_green_settings" {
-      for_each = lookup(each.value, "strategy", "SURGE") == "BLUE_GREEN" ? [1] : []
-      content {
-        node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", null)
+      dynamic "blue_green_settings" {
+        for_each = lookup(each.value, "strategy", "SURGE") == "BLUE_GREEN" ? [1] : []
+        content {
+          node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", null)
 
-        standard_rollout_policy {
-          batch_soak_duration = lookup(each.value, "batch_soak_duration", null)
-          batch_percentage    = lookup(each.value, "batch_percentage", null)
-          batch_node_count    = lookup(each.value, "batch_node_count", null)
+          standard_rollout_policy {
+            batch_soak_duration = lookup(each.value, "batch_soak_duration", null)
+            batch_percentage    = lookup(each.value, "batch_percentage", null)
+            batch_node_count    = lookup(each.value, "batch_node_count", null)
+          }
         }
       }
     }
@@ -1059,20 +1062,23 @@ resource "google_container_node_pool" "windows_pools" {
     auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
   }
 
-  upgrade_settings {
-    strategy        = lookup(each.value, "strategy", "SURGE")
-    max_surge       = lookup(each.value, "strategy", "SURGE") == "SURGE" ? lookup(each.value, "max_surge", 1) : null
-    max_unavailable = lookup(each.value, "strategy", "SURGE") == "SURGE" ? lookup(each.value, "max_unavailable", 0) : null
+  dynamic "upgrade_settings" {
+    for_each = contains(["SURGE", "BLUE_GREEN"], lookup(each.value, "strategy", "SURGE")) ? [1] : []
+    content {
+      strategy        = lookup(each.value, "strategy", "SURGE")
+      max_surge       = lookup(each.value, "strategy", "SURGE") == "SURGE" ? lookup(each.value, "max_surge", 1) : null
+      max_unavailable = lookup(each.value, "strategy", "SURGE") == "SURGE" ? lookup(each.value, "max_unavailable", 0) : null
 
-    dynamic "blue_green_settings" {
-      for_each = lookup(each.value, "strategy", "SURGE") == "BLUE_GREEN" ? [1] : []
-      content {
-        node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", null)
+      dynamic "blue_green_settings" {
+        for_each = lookup(each.value, "strategy", "SURGE") == "BLUE_GREEN" ? [1] : []
+        content {
+          node_pool_soak_duration = lookup(each.value, "node_pool_soak_duration", null)
 
-        standard_rollout_policy {
-          batch_soak_duration = lookup(each.value, "batch_soak_duration", null)
-          batch_percentage    = lookup(each.value, "batch_percentage", null)
-          batch_node_count    = lookup(each.value, "batch_node_count", null)
+          standard_rollout_policy {
+            batch_soak_duration = lookup(each.value, "batch_soak_duration", null)
+            batch_percentage    = lookup(each.value, "batch_percentage", null)
+            batch_node_count    = lookup(each.value, "batch_node_count", null)
+          }
         }
       }
     }
