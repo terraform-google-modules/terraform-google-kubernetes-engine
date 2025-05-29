@@ -369,7 +369,7 @@ The node_pools variable takes the following parameters:
 | max_count | Maximum number of nodes in the NodePool. Must be >= min_count. Cannot be used with total limits. | 100 | Optional |
 | total_max_count | Total maximum number of nodes in the NodePool. Must be >= min_count. Cannot be used with per zone limits. | null | Optional |
 | max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |
-| strategy | The upgrade stragey to be used for upgrading the nodes. Valid values of state are: `SURGE` or `BLUE_GREEN` | "SURGE" | Optional |
+| strategy | The upgrade stragey to be used for upgrading the nodes. Valid values of state are: `SURGE`, `BLUE_GREEN`, or for flex-start and queued provisioning `SHORT_LIVED` | "SURGE" | Optional |
 | threads_per_core | Optional The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed | null | Optional |
 | enable_nested_virtualization | Whether the node should have nested virtualization | null | Optional |
 | max_surge | The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. Only works with `SURGE` strategy. | 1 | Optional |
