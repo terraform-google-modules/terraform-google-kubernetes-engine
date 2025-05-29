@@ -88,12 +88,13 @@ locals {
     enabled  = false
     provider = null
   }]
-  cluster_gce_pd_csi_config  = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
-  logmon_config_is_set       = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus != null
-  gcs_fuse_csi_driver_config = var.gcs_fuse_csi_driver ? [{ enabled = true }] : []
-  gke_backup_agent_config    = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
-  stateful_ha_config         = var.stateful_ha ? [{ enabled = true }] : []
-  ray_operator_config        = length(var.ray_operator_config) > 0 && lookup(var.ray_operator_config, "enabled", false) ? [var.ray_operator_config] : []
+  cluster_gce_pd_csi_config       = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
+  logmon_config_is_set            = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus != null
+  gcs_fuse_csi_driver_config      = var.gcs_fuse_csi_driver ? [{ enabled = true }] : []
+  parallelstore_csi_driver_config = var.parallelstore_csi_driver != null ? [{ enabled = var.parallelstore_csi_driver }] : []
+  gke_backup_agent_config         = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
+  stateful_ha_config              = var.stateful_ha ? [{ enabled = true }] : []
+  ray_operator_config             = length(var.ray_operator_config) > 0 && lookup(var.ray_operator_config, "enabled", false) ? [var.ray_operator_config] : []
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group

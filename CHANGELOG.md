@@ -6,6 +6,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [36.3.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.2.0...v36.3.0) (2025-04-10)
+
+
+### Features
+
+* support parallelstore csi driver ([#2203](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2203)) ([ab9d4cb](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ab9d4cb6887af22c861e5c2db58b4f401f9625f6))
+* support total_egress_bandwidth_tier ([#2207](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2207)) ([2bd9cbd](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2bd9cbd9c7b281dc21935fe52addb2bba87474e0))
+
+## [36.2.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.1.0...v36.2.0) (2025-04-03)
+
+
+### Features
+
+* add dns_allow_external_traffic ([#2313](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2313)) ([9124dbe](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9124dbe9a6a10ade74dd117d647b86e1e0513f75))
+* add hyperdisk confidential node pool to the confidential safer cluster example ([#2311](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2311)) ([260be87](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/260be87a9d52177d6fb761ad54d7280f340d796d))
+* **cgroup:** add support for configuring Linux cgroup mode in autopilot clusters ([#2282](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2282)) ([5069034](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5069034b5aed09b3a9f49b8e3b470fe240322f5f))
+* **safer-cluster:** add support for observability_metrics and _relay ([#2291](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2291)) ([3cd930c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3cd930c053fb7c56a5f74b14f7a056846068fd93))
+
+
+### Bug Fixes
+
+* Update files with correct values for enterprise config ([#2314](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2314)) ([cf4cee7](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/cf4cee7a06ba04ee19794ccf9d90437c57e1500c))
+
 ## [36.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.0.2...v36.1.0) (2025-03-10)
 
 

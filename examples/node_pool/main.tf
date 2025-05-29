@@ -92,6 +92,7 @@ module "gke" {
       min_count           = 0
       service_account     = var.compute_engine_service_account
       queued_provisioning = true
+      strategy            = "SHORT_LIVED"
     },
     {
       name                         = "pool-05"
@@ -102,7 +103,7 @@ module "gke" {
     {
       name          = "pool-06"
       node_count    = 1
-      machine_type  = "n1-highmem-96"
+      machine_type  = "c2-standard-30"
       node_affinity = "{\"key\": \"compute.googleapis.com/node-group-name\", \"operator\": \"IN\", \"values\": [\"${google_compute_node_group.soletenant-nodes.name}\"]}"
     },
   ]
@@ -170,7 +171,7 @@ resource "google_compute_node_template" "soletenant-tmpl" {
   name   = "soletenant-tmpl-${var.cluster_name_suffix}"
   region = var.region
 
-  node_type = "n1-node-96-624"
+  node_type = "c2-node-60-240"
 }
 
 resource "google_compute_node_group" "soletenant-nodes" {

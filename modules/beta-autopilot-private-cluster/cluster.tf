@@ -119,6 +119,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "pod_autoscaling" {
+    for_each = length(var.hpa_profile) > 0 ? [1] : []
+    content {
+      hpa_profile = var.hpa_profile
+    }
+  }
+
   dynamic "enterprise_config" {
     for_each = var.enterprise_config != null ? [1] : []
     content {
@@ -225,6 +232,7 @@ resource "google_container_cluster" "primary" {
         }
       }
     }
+
 
   }
 
@@ -343,11 +351,10 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.dns_allow_external_traffic != null || (var.enable_private_endpoint && var.deploy_using_private_endpoint) ? [1] : []
+    for_each = var.dns_allow_external_traffic != null ? [1] : []
     content {
       dns_endpoint_config {
-        # TODO: Migrate to only dns_allow_external_traffic in next breaking release
-        allow_external_traffic = var.dns_allow_external_traffic == true || var.deploy_using_private_endpoint
+        allow_external_traffic = var.dns_allow_external_traffic
       }
     }
   }

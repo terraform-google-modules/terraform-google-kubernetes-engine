@@ -1,0 +1,93 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-kubernetes-engine-workload-identity-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: terraform-google-workload-identity
+    source:
+      repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
+      sourceType: git
+      dir: /modules/workload-identity
+  ui:
+    input:
+      variables:
+        additional_projects:
+          name: additional_projects
+          title: Additional Projects
+        annotate_k8s_sa:
+          name: annotate_k8s_sa
+          title: Annotate K8s Sa
+        automount_service_account_token:
+          name: automount_service_account_token
+          title: Automount Service Account Token
+        cluster_name:
+          name: cluster_name
+          title: Cluster Name
+        gcp_sa_create_ignore_already_exists:
+          name: gcp_sa_create_ignore_already_exists
+          title: Gcp Sa Create Ignore Already Exists
+        gcp_sa_description:
+          name: gcp_sa_description
+          title: Gcp Sa Description
+        gcp_sa_display_name:
+          name: gcp_sa_display_name
+          title: Gcp Sa Display Name
+        gcp_sa_name:
+          name: gcp_sa_name
+          title: Gcp Sa Name
+        image_pull_secrets:
+          name: image_pull_secrets
+          title: Image Pull Secrets
+        impersonate_service_account:
+          name: impersonate_service_account
+          title: Impersonate Service Account
+        k8s_sa_name:
+          name: k8s_sa_name
+          title: K8s Sa Name
+        k8s_sa_project_id:
+          name: k8s_sa_project_id
+          title: K8s Sa Project Id
+        location:
+          name: location
+          title: Location
+        module_depends_on:
+          name: module_depends_on
+          title: Module Depends On
+        name:
+          name: name
+          title: Name
+        namespace:
+          name: namespace
+          title: Namespace
+        project_id:
+          name: project_id
+          title: Project Id
+        roles:
+          name: roles
+          title: Roles
+        use_existing_context:
+          name: use_existing_context
+          title: Use Existing Context
+        use_existing_gcp_sa:
+          name: use_existing_gcp_sa
+          title: Use Existing Gcp Sa
+        use_existing_k8s_sa:
+          name: use_existing_k8s_sa
+          title: Use Existing K8s Sa
