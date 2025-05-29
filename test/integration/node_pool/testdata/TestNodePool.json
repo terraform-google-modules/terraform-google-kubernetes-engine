@@ -598,6 +598,9 @@
         "diskType": "pd-standard",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
         "imageType": "COS_CONTAINERD",
+        "kubeletConfig": {
+          "insecureKubeletReadonlyPortEnabled": false
+        },
         "labels": {
           "all-pools-example": "true",
           "cluster_name": "node-pool-cluster-RANDOM_STRING",
@@ -673,8 +676,7 @@
       "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/europe-west4/clusters/node-pool-cluster-RANDOM_STRING/nodePools/pool-04",
       "status": "RUNNING",
       "upgradeSettings": {
-        "maxSurge": 1,
-        "strategy": "SURGE"
+        "strategy": "SHORT_LIVED"
       }
     },
     {
