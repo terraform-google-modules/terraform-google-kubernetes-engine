@@ -886,6 +886,12 @@ variable "enable_l4_ilb_subsetting" {
   default     = false
 }
 
+variable "disable_l4_lb_firewall_reconciliation" {
+  type        = bool
+  description = "Disable L4 Load Balancer firewall reconciliation"
+  default     = null
+}
+
 variable "enable_identity_service" {
   type        = bool
   description = "(Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."

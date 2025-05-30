@@ -97,6 +97,9 @@ spec:
         disable_default_snat:
           name: disable_default_snat
           title: Disable Default Snat
+        disable_l4_lb_firewall_reconciliation:
+          name: disable_l4_lb_firewall_reconciliation
+          title: Disable L4 Lb Firewall Reconciliation
         disable_legacy_metadata_endpoints:
           name: disable_legacy_metadata_endpoints
           title: Disable Legacy Metadata Endpoints
