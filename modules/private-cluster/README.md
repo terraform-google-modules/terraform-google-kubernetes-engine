@@ -142,10 +142,6 @@ Then perform the following commands on the root folder:
 - `terraform destroy` to destroy the built infrastructure
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 6926112c387 (storage-pools)
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -219,11 +215,7 @@ Then perform the following commands on the root folder:
 | ip\_range\_services | The _name_ of the secondary subnet range to use for services | `string` | n/a | yes |
 | issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | `bool` | `false` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | `string` | `"latest"` | no |
-<<<<<<< HEAD
 | logging\_enabled\_components | List of services to monitor: SYSTEM\_COMPONENTS, APISERVER, CONTROLLER\_MANAGER, KCP\_CONNECTION, KCP\_SSHD, KCP\_HPA, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration. | `list(string)` | `[]` | no |
-=======
-| logging\_enabled\_components | List of services to monitor: SYSTEM\_COMPONENTS, APISERVER, CONTROLLER\_MANAGER, KCP\_CONNECTION, KCP\_SSHD, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration. | `list(string)` | `[]` | no |
->>>>>>> 6926112c387 (storage-pools)
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | `string` | `"logging.googleapis.com/kubernetes"` | no |
 | logging\_variant | (Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX\_THROUGHPUT. | `string` | `null` | no |
 | maintenance\_end\_time | Time window specified for recurring maintenance operations in RFC3339 format | `string` | `""` | no |
@@ -236,11 +228,7 @@ Then perform the following commands on the root folder:
 | monitoring\_enable\_managed\_prometheus | Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled. | `bool` | `null` | no |
 | monitoring\_enable\_observability\_metrics | Whether or not the advanced datapath metrics are enabled. | `bool` | `false` | no |
 | monitoring\_enable\_observability\_relay | Whether or not the advanced datapath relay is enabled. | `bool` | `false` | no |
-<<<<<<< HEAD
 | monitoring\_enabled\_components | List of services to monitor: SYSTEM\_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER\_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET, KUBELET, CADVISOR, DCGM, and JOBSET. In beta provider, WORKLOADS is supported on top of those 12 values. (WORKLOADS is deprecated and removed in GKE 1.24.) KUBELET and CADVISOR are only supported in GKE 1.29.3-gke.1093000 and above. JOBSET is only supported in GKE 1.32.1-gke.1357001 and above. Empty list is default GKE configuration. | `list(string)` | `[]` | no |
-=======
-| monitoring\_enabled\_components | List of services to monitor: SYSTEM\_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER\_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET, KUBELET, CADVISOR and DCGM. In beta provider, WORKLOADS is supported on top of those 12 values. (WORKLOADS is deprecated and removed in GKE 1.24.) KUBELET and CADVISOR are only supported in GKE 1.29.3-gke.1093000 and above. Empty list is default GKE configuration. | `list(string)` | `[]` | no |
->>>>>>> 6926112c387 (storage-pools)
 | monitoring\_metric\_writer\_role | The monitoring metrics writer role to assign to the GKE node service account | `string` | `"roles/monitoring.metricWriter"` | no |
 | monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | `string` | `"monitoring.googleapis.com/kubernetes"` | no |
 | name | The name of the cluster (required) | `string` | n/a | yes |
@@ -330,11 +318,6 @@ Then perform the following commands on the root folder:
 | vertical\_pod\_autoscaling\_enabled | Whether vertical pod autoscaling enabled |
 | zones | List of zones in which the cluster resides |
 
-<<<<<<< HEAD
-=======
->>>>>>> 856b2d447db (storage-pools)
-=======
->>>>>>> 6926112c387 (storage-pools)
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## node_pools variable
