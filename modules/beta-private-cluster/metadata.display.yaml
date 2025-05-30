@@ -334,6 +334,12 @@ spec:
         node_pools_cgroup_mode:
           name: node_pools_cgroup_mode
           title: Node Pools Cgroup Mode
+        node_pools_hugepage_size_1g:
+          name: node_pools_hugepage_size_1g
+          title: Node Pools Hugepage Size 1G
+        node_pools_hugepage_size_2m:
+          name: node_pools_hugepage_size_2m
+          title: Node Pools Hugepage Size 2M
         node_pools_labels:
           name: node_pools_labels
           title: Node Pools Labels
