@@ -300,6 +300,18 @@ spec:
         defaultValue:
           all: ""
           default-node-pool: ""
+      - name: node_pools_hugepage_size_2m
+        description: Map of strings containing hugepage size 2m node config by node-pool name
+        varType: map(string)
+        defaultValue:
+          all: ""
+          default-node-pool: ""
+      - name: node_pools_hugepage_size_1g
+        description: Map of strings containing hugepage size 1g config by node-pool name
+        varType: map(string)
+        defaultValue:
+          all: ""
+          default-node-pool: ""
       - name: enable_cost_allocation
         description: Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery
         varType: bool
