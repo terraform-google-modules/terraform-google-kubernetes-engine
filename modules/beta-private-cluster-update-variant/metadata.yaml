@@ -692,6 +692,9 @@ spec:
         description: Enable L4 ILB Subsetting on the cluster
         varType: bool
         defaultValue: false
+      - name: disable_l4_lb_firewall_reconciliation
+        description: Disable L4 Load Balancer firewall reconciliation
+        varType: bool
       - name: istio
         description: (Beta) Enable Istio addon
         varType: bool

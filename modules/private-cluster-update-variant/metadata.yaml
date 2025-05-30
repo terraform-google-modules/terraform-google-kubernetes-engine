@@ -677,6 +677,9 @@ spec:
         description: Enable L4 ILB Subsetting on the cluster
         varType: bool
         defaultValue: false
+      - name: disable_l4_lb_firewall_reconciliation
+        description: Disable L4 Load Balancer firewall reconciliation
+        varType: bool
       - name: enable_identity_service
         description: (Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API.
         varType: bool
