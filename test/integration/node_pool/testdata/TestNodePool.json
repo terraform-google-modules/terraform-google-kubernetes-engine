@@ -333,6 +333,9 @@
           "sysctls": {
             "net.core.netdev_max_backlog": "10000",
             "net.core.rmem_max": "10000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "2"
           }
         },
         "loggingConfig": {
@@ -430,6 +433,9 @@
         "linuxNodeConfig": {
           "sysctls": {
             "net.core.netdev_max_backlog": "10000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "1"
           }
         },
         "loggingConfig": {
@@ -516,6 +522,9 @@
         "linuxNodeConfig": {
           "sysctls": {
             "net.core.netdev_max_backlog": "20000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "1"
           }
         },
         "loggingConfig": {
@@ -609,6 +618,9 @@
         "linuxNodeConfig": {
           "sysctls": {
             "net.core.netdev_max_backlog": "10000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "1"
           }
         },
         "loggingConfig": {
@@ -691,7 +703,7 @@
           "enableNestedVirtualization": true
         },
         "diskSizeGb": 100,
-        "diskType": "pd-standard",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
         "imageType": "COS_CONTAINERD",
         "labels": {
@@ -702,6 +714,10 @@
         "linuxNodeConfig": {
           "sysctls": {
             "net.core.netdev_max_backlog": "10000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "1",
+            "hugepageSize1g": "2"
           }
         },
         "loggingConfig": {
@@ -709,7 +725,7 @@
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n1-standard-2",
+        "machineType": "c3-standard-4",
         "metadata": {
           "cluster_name": "node-pool-cluster-RANDOM_STRING",
           "disable-legacy-endpoints": "false",
