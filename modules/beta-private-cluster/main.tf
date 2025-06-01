@@ -77,8 +77,8 @@ locals {
   // When a release channel is used, node auto-upgrade is enabled and cannot be disabled.
   default_auto_upgrade = var.regional || var.release_channel != "UNSPECIFIED" ? true : false
 
-  cluster_subnet_cidr       = data.google_compute_subnetwork.gke_subnetwork.ip_cidr_range
-  cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork.secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
+  cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
+  cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
   pod_all_ip_ranges         = var.add_cluster_firewall_rules ? compact(concat([local.cluster_alias_ranges_cidr[var.ip_range_pods]], [for range in var.additional_ip_range_pods : local.cluster_alias_ranges_cidr[range] if length(range) > 0], [for k, v in merge(local.node_pools, local.windows_node_pools) : local.cluster_alias_ranges_cidr[v.pod_range] if length(lookup(v, "pod_range", "")) > 0])) : []
 
   cluster_network_policy = var.network_policy ? [{
