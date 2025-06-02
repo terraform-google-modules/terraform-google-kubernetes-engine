@@ -452,7 +452,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
-- [Terraform Provider for GCP][terraform-provider-google] v6.28+
+- [Terraform Provider for GCP][terraform-provider-google] v6.33+
 
 #### gcloud
 
