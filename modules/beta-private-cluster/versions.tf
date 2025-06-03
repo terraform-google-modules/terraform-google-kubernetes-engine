@@ -21,19 +21,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-<<<<<<< HEAD
-      version = ">= 6.33.0, < 7"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 6.33.0, < 7"
-=======
       version = ">= 6.36.0, < 7"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
       version = ">= 6.36.0, < 7"
->>>>>>> bfd359e342b (rebase)
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
