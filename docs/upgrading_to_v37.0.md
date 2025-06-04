@@ -2,7 +2,7 @@
 The v37.0 release of *kubernetes-engine* is a backwards incompatible release.
 
 ### Google Cloud Platform Provider upgrade
-The Terraform Kubernetes Engine Module now requires version 6.27 or higher of the Google Cloud Platform Providers.
+The Terraform Kubernetes Engine Module now requires version 6.36 or higher of the Google Cloud Platform Providers.
 
 ### Private Cluster DNS Allow External Traffic
 DNS allow external traffic is now controlled solely by `dns_allow_external_traffic` for private clusters.
