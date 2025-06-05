@@ -510,6 +510,10 @@ spec:
         description: An optional flag to enable confidential node config.
         varType: bool
         defaultValue: false
+      - name: hpa_profile
+        description: Enable the Horizontal Pod Autoscaling profile for this cluster. Values are "NONE" and "PERFORMANCE".
+        varType: string
+        defaultValue: ""
       - name: enable_gcfs
         description: Enable image streaming on cluster level.
         varType: bool
