@@ -24,3 +24,4 @@ data "google_compute_subnetwork" "gke_subnetwork" {
   region  = local.region
   project = local.network_project_id
 }
+
