@@ -410,6 +410,7 @@ variable "upstream_nameservers" {
 }
 {% endif %}
 
+{% if autopilot_cluster != true%}
 variable "non_masquerade_cidrs" {
   type        = list(string)
   description = "List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading."
@@ -433,6 +434,7 @@ variable "configure_ip_masq" {
   description = "Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server."
   default     = false
 }
+{% endif %}
 
 {% if beta_cluster and autopilot_cluster != true%}
 variable "cluster_telemetry_type" {

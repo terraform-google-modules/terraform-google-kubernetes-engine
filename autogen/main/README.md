@@ -1,6 +1,6 @@
 # Terraform Kubernetes Engine Module
 
-This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.{% if private_cluster %} This particular submodule creates a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters){% endif %}{% if beta_cluster %}Beta features are enabled in this submodule.{% endif %}
+This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, {% if autopilot_cluster != true%}IP MASQ, {% endif %}Network Policy, etc.{% if private_cluster %} This particular submodule creates a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters){% endif %}{% if beta_cluster %}Beta features are enabled in this submodule.{% endif %}
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
@@ -8,7 +8,9 @@ The resources/services/activations/deletions that this module will create/trigge
 - Create GKE Node Pool(s) with provided configuration and attach to cluster
 - Replace the default kube-dns configmap if `stub_domains` are provided
 - Activate network policy if `network_policy` is true
+{% if autopilot_cluster != true%}
 - Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `configure_ip_masq` is true
+{% endif %}
 
 Sub modules are provided for creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
 
