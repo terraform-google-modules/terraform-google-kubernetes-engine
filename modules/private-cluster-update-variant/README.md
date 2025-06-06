@@ -407,6 +407,8 @@ The node_pools variable takes the following parameters:
 | total_min_count | Total minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true. Cannot be used with per zone limits. | null | Optional |
 | name | The name of the node pool |  | Required |
 | placement_policy | Placement type to set for nodes in a node pool. Can be set as [COMPACT](https://cloud.google.com/kubernetes-engine/docs/how-to/compact-placement#overview) if desired |  | Optional |
+| policy_name | If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. |  | Optional |
+| tpu_topology | TPU placement topology for pod slice node pool.  For detail see [documentation](https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies) |  | Optional |
 | pod_range |  The name of the secondary range for pod IPs. |  | Optional |
 | node_affinity | The node affinty in the format `"{\"key\": \"compute.googleapis.com/node-group-name\", \"operator\": \"IN\", \"values\": [\"node-group-name\"]}"`. |  | Optional |
 | node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusters |  | Required |
