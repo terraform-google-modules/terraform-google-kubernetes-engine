@@ -604,6 +604,11 @@ variable "enable_confidential_nodes" {
   default     = false
 }
 
+variable "hpa_profile" {
+  description = "Enable the Horizontal Pod Autoscaling profile for this cluster. Values are \"NONE\" and \"PERFORMANCE\"."
+  type        = string
+  default     = ""
+}
 
 variable "enable_gcfs" {
   type        = bool

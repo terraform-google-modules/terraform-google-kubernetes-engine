@@ -195,6 +195,9 @@ spec:
         horizontal_pod_autoscaling:
           name: horizontal_pod_autoscaling
           title: Horizontal Pod Autoscaling
+        hpa_profile:
+          name: hpa_profile
+          title: Hpa Profile
         http_load_balancing:
           name: http_load_balancing
           title: Http Load Balancing
