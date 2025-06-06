@@ -667,6 +667,8 @@ locals {
     "local_ssd_count",
     "local_ssd_ephemeral_count",
     "placement_policy",
+    "policy_name",
+    "tpu_topology",
     "max_pods_per_node",
     "min_cpu_platform",
     "pod_range",
@@ -775,7 +777,9 @@ resource "google_container_node_pool" "pools" {
   dynamic "placement_policy" {
     for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
     content {
-      type = lookup(placement_policy.value, "placement_policy", null)
+      type         = lookup(placement_policy.value, "placement_policy", null)
+      policy_name  = lookup(placement_policy.value, "policy_name", null)
+      tpu_topology = lookup(placement_policy.value, "tpu_topology", null)
     }
   }
 
@@ -1141,7 +1145,9 @@ resource "google_container_node_pool" "windows_pools" {
   dynamic "placement_policy" {
     for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
     content {
-      type = lookup(placement_policy.value, "placement_policy", null)
+      type         = lookup(placement_policy.value, "placement_policy", null)
+      policy_name  = lookup(placement_policy.value, "policy_name", null)
+      tpu_topology = lookup(placement_policy.value, "tpu_topology", null)
     }
   }
 
