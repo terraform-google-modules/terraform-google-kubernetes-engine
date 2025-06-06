@@ -240,25 +240,6 @@ spec:
         description: (Optional) - List of network tags applied to auto-provisioned node pools.
         varType: list(string)
         defaultValue: []
-      - name: non_masquerade_cidrs
-        description: List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading.
-        varType: list(string)
-        defaultValue:
-          - 10.0.0.0/8
-          - 172.16.0.0/12
-          - 192.168.0.0/16
-      - name: ip_masq_resync_interval
-        description: The interval at which the agent attempts to sync its ConfigMap file from the disk.
-        varType: string
-        defaultValue: 60s
-      - name: ip_masq_link_local
-        description: Whether to masquerade traffic to the link-local prefix (169.254.0.0/16).
-        varType: bool
-        defaultValue: false
-      - name: configure_ip_masq
-        description: Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server.
-        varType: bool
-        defaultValue: false
       - name: create_service_account
         description: Defines if service account specified to run nodes should be created.
         varType: bool
