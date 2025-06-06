@@ -33,6 +33,6 @@ terraform {
     }
   }
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine/v36.3.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine/v37.0.0"
   }
 }
