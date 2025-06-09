@@ -15,6 +15,7 @@
  */
 
 {{ autogeneration_note }}
+{% if autopilot_cluster != true%}
 
 /******************************************
   Create ip-masq-agent confimap
@@ -47,3 +48,4 @@ EOF
     {% endif %}
   ]
 }
+{% endif %}
