@@ -207,29 +207,6 @@ variable "network_tags" {
 }
 
 
-variable "non_masquerade_cidrs" {
-  type        = list(string)
-  description = "List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading."
-  default     = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-}
-
-variable "ip_masq_resync_interval" {
-  type        = string
-  description = "The interval at which the agent attempts to sync its ConfigMap file from the disk."
-  default     = "60s"
-}
-
-variable "ip_masq_link_local" {
-  type        = bool
-  description = "Whether to masquerade traffic to the link-local prefix (169.254.0.0/16)."
-  default     = false
-}
-
-variable "configure_ip_masq" {
-  type        = bool
-  description = "Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server."
-  default     = false
-}
 
 variable "create_service_account" {
   type        = bool
@@ -566,6 +543,12 @@ variable "enable_l4_ilb_subsetting" {
   type        = bool
   description = "Enable L4 ILB Subsetting on the cluster"
   default     = false
+}
+
+variable "disable_l4_lb_firewall_reconciliation" {
+  type        = bool
+  description = "Disable L4 Load Balancer firewall reconciliation"
+  default     = null
 }
 
 variable "allow_net_admin" {

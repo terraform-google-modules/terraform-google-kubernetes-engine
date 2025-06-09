@@ -175,6 +175,7 @@ Then perform the following commands on the root folder:
 | deploy\_using\_private\_endpoint | A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment. | `bool` | `false` | no |
 | description | The description of the cluster | `string` | `""` | no |
 | disable\_default\_snat | Whether to disable the default SNAT to support the private use of public IP addresses | `bool` | `false` | no |
+| disable\_l4\_lb\_firewall\_reconciliation | Disable L4 Load Balancer firewall reconciliation | `bool` | `null` | no |
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | `bool` | `true` | no |
 | dns\_allow\_external\_traffic | (Optional) Controls whether external traffic is allowed over the dns endpoint. | `bool` | `null` | no |
 | dns\_cache | The status of the NodeLocal DNSCache addon. | `bool` | `false` | no |
@@ -251,6 +252,8 @@ Then perform the following commands on the root folder:
 | node\_metadata | Specifies how node metadata is exposed to the workload running on the node | `string` | `"GKE_METADATA"` | no |
 | node\_pools | List of maps containing node pools | `list(map(any))` | <pre>[<br>  {<br>    "name": "default-node-pool"<br>  }<br>]</pre> | no |
 | node\_pools\_cgroup\_mode | Map of strings containing cgroup node config by node-pool name | `map(string)` | <pre>{<br>  "all": "",<br>  "default-node-pool": ""<br>}</pre> | no |
+| node\_pools\_hugepage\_size\_1g | Map of strings containing hugepage size 1g config by node-pool name | `map(string)` | <pre>{<br>  "all": "",<br>  "default-node-pool": ""<br>}</pre> | no |
+| node\_pools\_hugepage\_size\_2m | Map of strings containing hugepage size 2m node config by node-pool name | `map(string)` | <pre>{<br>  "all": "",<br>  "default-node-pool": ""<br>}</pre> | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | `map(map(string))` | <pre>{<br>  "all": {},<br>  "default-node-pool": {}<br>}</pre> | no |
 | node\_pools\_linux\_node\_configs\_sysctls | Map of maps containing linux node config sysctls by node-pool name | `map(map(string))` | <pre>{<br>  "all": {},<br>  "default-node-pool": {}<br>}</pre> | no |
 | node\_pools\_metadata | Map of maps containing node metadata by node-pool name | `map(map(string))` | <pre>{<br>  "all": {},<br>  "default-node-pool": {}<br>}</pre> | no |
@@ -348,6 +351,7 @@ The node_pools variable takes the following parameters:
 | auto_repair | Whether the nodes will be automatically repaired | true | Optional |
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
 | auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
+| storage_pools | The list of Storage Pools where boot disks are provisioned. | | Optional |
 | boot_disk_kms_key | The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. | " " | Optional |
 | cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". | "static" | Optional |
 | cpu_cfs_quota | Enforces the Pod's CPU limit. Setting this value to false means that the CPU limits for Pods are ignored | null | Optional |
@@ -399,6 +403,8 @@ The node_pools variable takes the following parameters:
 | total_min_count | Total minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true. Cannot be used with per zone limits. | null | Optional |
 | name | The name of the node pool |  | Required |
 | placement_policy | Placement type to set for nodes in a node pool. Can be set as [COMPACT](https://cloud.google.com/kubernetes-engine/docs/how-to/compact-placement#overview) if desired |  | Optional |
+| policy_name | If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. |  | Optional |
+| tpu_topology | TPU placement topology for pod slice node pool.  For detail see [documentation](https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies) |  | Optional |
 | pod_range |  The name of the secondary range for pod IPs. |  | Optional |
 | node_affinity | The node affinty in the format `"{\"key\": \"compute.googleapis.com/node-group-name\", \"operator\": \"IN\", \"values\": [\"node-group-name\"]}"`. |  | Optional |
 | node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusters |  | Required |
@@ -447,7 +453,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.27+
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.38+
 
 #### gcloud
 

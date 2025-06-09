@@ -93,6 +93,9 @@ spec:
         disable_default_snat:
           name: disable_default_snat
           title: Disable Default Snat
+        disable_l4_lb_firewall_reconciliation:
+          name: disable_l4_lb_firewall_reconciliation
+          title: Disable L4 Lb Firewall Reconciliation
         disable_legacy_metadata_endpoints:
           name: disable_legacy_metadata_endpoints
           title: Disable Legacy Metadata Endpoints
@@ -192,6 +195,9 @@ spec:
         horizontal_pod_autoscaling:
           name: horizontal_pod_autoscaling
           title: Horizontal Pod Autoscaling
+        hpa_profile:
+          name: hpa_profile
+          title: Hpa Profile
         http_load_balancing:
           name: http_load_balancing
           title: Http Load Balancing
@@ -291,6 +297,12 @@ spec:
         node_pools_cgroup_mode:
           name: node_pools_cgroup_mode
           title: Node Pools Cgroup Mode
+        node_pools_hugepage_size_1g:
+          name: node_pools_hugepage_size_1g
+          title: Node Pools Hugepage Size 1G
+        node_pools_hugepage_size_2m:
+          name: node_pools_hugepage_size_2m
+          title: Node Pools Hugepage Size 2M
         node_pools_labels:
           name: node_pools_labels
           title: Node Pools Labels

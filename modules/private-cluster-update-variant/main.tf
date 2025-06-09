@@ -110,9 +110,15 @@ locals {
   cluster_output_regional_zones = google_container_cluster.primary.node_locations
   cluster_output_zones          = local.cluster_output_regional_zones
 
-  cluster_endpoint           = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (var.enable_private_endpoint || var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config[0].private_endpoint : google_container_cluster.primary.private_cluster_config[0].public_endpoint) : google_container_cluster.primary.endpoint
-  cluster_peering_name       = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? google_container_cluster.primary.private_cluster_config[0].peering_name : null
-  cluster_endpoint_for_nodes = google_container_cluster.primary.private_cluster_config[0].master_ipv4_cidr_block
+  cluster_endpoint     = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (var.enable_private_endpoint || var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config[0].private_endpoint : google_container_cluster.primary.private_cluster_config[0].public_endpoint) : google_container_cluster.primary.endpoint
+  cluster_peering_name = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? google_container_cluster.primary.private_cluster_config[0].peering_name : null
+  cluster_endpoint_for_nodes = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (
+    var.private_endpoint_subnetwork != null ?
+    data.google_compute_subnetwork.private_endpoint_subnetwork[0].ip_cidr_range :
+    var.master_ipv4_cidr_block != null ?
+    google_container_cluster.primary.private_cluster_config[0].master_ipv4_cidr_block :
+    local.cluster_subnet_cidr
+  ) : local.cluster_subnet_cidr
 
   cluster_output_master_auth                        = concat(google_container_cluster.primary[*].master_auth, [])
   cluster_output_master_version                     = google_container_cluster.primary.master_version

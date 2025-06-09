@@ -1,6 +1,6 @@
 # Terraform Kubernetes Engine Module
 
-This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.{% if private_cluster %} This particular submodule creates a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters){% endif %}{% if beta_cluster %}Beta features are enabled in this submodule.{% endif %}
+This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, {% if autopilot_cluster != true%}IP MASQ, {% endif %}Network Policy, etc.{% if private_cluster %} This particular submodule creates a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters){% endif %}{% if beta_cluster %}Beta features are enabled in this submodule.{% endif %}
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
@@ -8,7 +8,9 @@ The resources/services/activations/deletions that this module will create/trigge
 - Create GKE Node Pool(s) with provided configuration and attach to cluster
 - Replace the default kube-dns configmap if `stub_domains` are provided
 - Activate network policy if `network_policy` is true
+{% if autopilot_cluster != true%}
 - Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `configure_ip_masq` is true
+{% endif %}
 
 Sub modules are provided for creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
 
@@ -198,6 +200,7 @@ The node_pools variable takes the following parameters:
 | auto_repair | Whether the nodes will be automatically repaired | true | Optional |
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
 | auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
+| storage_pools | The list of Storage Pools where boot disks are provisioned. | | Optional |
 | boot_disk_kms_key | The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. | " " | Optional |
 | cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". | "static" | Optional |
 | cpu_cfs_quota | Enforces the Pod's CPU limit. Setting this value to false means that the CPU limits for Pods are ignored | null | Optional |
@@ -251,6 +254,8 @@ The node_pools variable takes the following parameters:
 | total_min_count | Total minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true. Cannot be used with per zone limits. | null | Optional |
 | name | The name of the node pool |  | Required |
 | placement_policy | Placement type to set for nodes in a node pool. Can be set as [COMPACT](https://cloud.google.com/kubernetes-engine/docs/how-to/compact-placement#overview) if desired |  | Optional |
+| policy_name | If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. |  | Optional |
+| tpu_topology | TPU placement topology for pod slice node pool.  For detail see [documentation](https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies) |  | Optional |
 | pod_range |  The name of the secondary range for pod IPs. |  | Optional |
 {% if not private_cluster %}
 | enable_private_nodes |  Whether nodes have internal IP addresses only. |  | Optional |
@@ -306,9 +311,9 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
 {% if beta_cluster %}
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.27+
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.38+
 {% else %}
-- [Terraform Provider for GCP][terraform-provider-google] v6.27+
+- [Terraform Provider for GCP][terraform-provider-google] v6.38+
 {% endif %}
 
 #### gcloud
