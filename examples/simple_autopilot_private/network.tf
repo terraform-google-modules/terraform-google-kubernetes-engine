@@ -41,10 +41,6 @@ module "gcp-network" {
         range_name    = local.pods_range_name
         ip_cidr_range = "192.168.0.0/18"
       },
-      {
-        range_name    = local.svc_range_name
-        ip_cidr_range = "192.168.64.0/18"
-      },
     ]
   }
 }
