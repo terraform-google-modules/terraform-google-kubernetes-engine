@@ -213,9 +213,8 @@ spec:
         varType: list(string)
         defaultValue: []
       - name: ip_range_services
-        description: The _name_ of the secondary subnet range to use for services
+        description: The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used.
         varType: string
-        required: true
       - name: stack_type
         description: The stack type to use for this cluster. Either `IPV4` or `IPV4_IPV6`. Defaults to `IPV4`.
         varType: string
