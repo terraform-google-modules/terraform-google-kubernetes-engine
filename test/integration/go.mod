@@ -2,11 +2,11 @@ module github.com/terraform-google-modules/terraform-google-kubernetes-engine/te
 
 go 1.23.0
 
-toolchain go1.24.3
+toolchain go1.24.4
 
 require (
 	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.17.7
-	github.com/gruntwork-io/terratest v0.49.0
+	github.com/gruntwork-io/terratest v0.50.0
 	github.com/hashicorp/terraform-json v0.25.0
 	github.com/stretchr/testify v1.10.0
 	github.com/tidwall/gjson v1.18.0
