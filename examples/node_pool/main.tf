@@ -163,7 +163,7 @@ module "gke" {
   }
 
   node_pools_cgroup_mode = {
-    all     = "CGROUP_MODE_V2"
+    all = "CGROUP_MODE_V2"
   }
 
   node_pools_hugepage_size_2m = {
