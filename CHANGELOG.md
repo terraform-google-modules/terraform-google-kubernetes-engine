@@ -6,6 +6,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [37.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.3.0...v37.0.0) (2025-06-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* **autopilot:** remove ip-masq configmap ([#2364](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2364))
+* **TPG>=6.38:** bump hpa_profile to GA ([#2362](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2362))
+* **TPG>=6.36:** add storage_pools support ([#2326](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2326))
+* **TPG>=6.33:** allow update in-place for `enable_gvnic` and `enable_confidential_nodes` ([#2359](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2359))
+* **TPG>=6.28:** add support for disable_l4_lb_firewall_reconciliation ([#2338](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2338))
+* dns_allow_external_traffic on private clusters ([#2334](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2334))
+* **TPG>=6.27:** add support for HPA profile + logs ([#2323](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2323))
+
+### Features
+
+* add JOBSET to monitoring_enabled_components ([#2336](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2336)) ([e55529d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e55529db6df48075887b997702fdc993fc2406ee))
+* add local_ssd_encryption_mode ([#2328](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2328)) ([95171f6](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/95171f6f2b3c9ddd8e77dbd35a4b4741af2eef42))
+* add new kubelet params ([#2337](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2337)) ([17e1c71](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/17e1c71554f1a2658cac1efe845567f06c2c2462))
+* add support for hugepages_config ([#2223](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2223)) ([cf71718](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/cf717187dd54564fc384adc401771848c26cfb0d))
+* add tpu_topology and policy_name args in placement_policy ([#2363](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2363)) ([8fdfd20](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8fdfd20b572528a635d91d0db2971213bdc29942))
+* **TPG>=6.27:** add support for HPA profile + logs ([#2323](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2323)) ([8e33d19](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8e33d1952706137849b79f7b84cd8d3da85cec88))
+* **TPG>=6.28:** add support for disable_l4_lb_firewall_reconciliation ([#2338](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2338)) ([132a981](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/132a9819c75f2a2cf7d2835098f96732cb7f8ac6))
+* **TPG>=6.33:** allow update in-place for `enable_gvnic` and `enable_confidential_nodes` ([#2359](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2359)) ([380fa36](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/380fa36ab12ca9caf7937ab4722a98a0b6175128))
+* **TPG>=6.36:** add storage_pools support ([#2326](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2326)) ([85efdc1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/85efdc1695812ddf077074db959d35db6501a00c))
+* **TPG>=6.38:** bump hpa_profile to GA ([#2362](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2362)) ([c80e88f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c80e88f2bc27882aa0448b6d4aa50492341d7265))
+
+
+### Bug Fixes
+
+* **autopilot:** remove ip-masq configmap ([#2364](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2364)) ([9dce230](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/9dce230539a2c2ddee452489d604df34006a625f))
+* dns_allow_external_traffic on private clusters ([#2334](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2334)) ([1c6ff12](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1c6ff12b9c01fe77633bae942e9c8ff8ff38f17a))
+* Invalid index for `google_container_cluster.primary.private_cluster_config[0]` ([#2354](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2354)) ([552b3f4](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/552b3f46d861244f076159e7e16be9f80ba2d6b9))
+* support for SHORT_LIVED strategy ([#2352](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2352)) ([f3417b1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f3417b125b537797f979028252a3b9555810e7fb))
+
 ## [36.3.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.2.0...v36.3.0) (2025-04-10)
 
 

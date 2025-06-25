@@ -307,6 +307,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  lifecycle {
+    precondition {
+      condition     = var.ip_range_services == null && var.kubernetes_version != "latest" ? tonumber(split(".", var.kubernetes_version)[0]) >= 1 && tonumber(split(".", var.kubernetes_version)[1]) >= 27 : true
+      error_message = "Setting ip_range_services is required for this GKE version. Please set ip_range_services or use kubernetes_version 1.27 or later."
+    }
+
+  }
 
   timeouts {
     create = lookup(var.timeouts, "create", "45m")

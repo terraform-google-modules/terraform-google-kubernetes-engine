@@ -47,11 +47,6 @@ output "ip_range_pods" {
   value       = var.ip_range_pods
 }
 
-output "ip_range_services" {
-  description = "The secondary IP range used for services"
-  value       = var.ip_range_services
-}
-
 output "zones" {
   description = "List of zones in which the cluster resides"
   value       = module.gke.zones

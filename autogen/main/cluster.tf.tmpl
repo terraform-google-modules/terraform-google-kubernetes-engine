@@ -526,11 +526,21 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  {% if autopilot_cluster != true %}
   lifecycle {
+    precondition {
+      {% if autopilot_cluster %}
+      condition     = var.ip_range_services == null && var.kubernetes_version != "latest" ? tonumber(split(".", var.kubernetes_version)[0]) >= 1 && tonumber(split(".", var.kubernetes_version)[1]) >= 27 : true
+      error_message = "Setting ip_range_services is required for this GKE version. Please set ip_range_services or use kubernetes_version 1.27 or later."
+      {% else %}
+      condition     = var.ip_range_services == null && var.kubernetes_version != "latest" ? tonumber(split(".", var.kubernetes_version)[0]) >= 1 && tonumber(split(".", var.kubernetes_version)[1]) >= 29 : true
+      error_message = "Setting ip_range_services is required for this GKE version. Please set ip_range_services or use kubernetes_version 1.29 or later."
+      {% endif %}
+    }
+
+    {% if autopilot_cluster != true %}
     ignore_changes = [node_pool, initial_node_count, resource_labels["asmv"]]
+    {% endif %}
   }
-  {% endif %}
 
   {% if autopilot_cluster != true %}
   dynamic "dns_config" {
