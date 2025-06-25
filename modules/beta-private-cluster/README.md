@@ -216,6 +216,7 @@ Then perform the following commands on the root folder:
 | hpa\_profile | Enable the Horizontal Pod Autoscaling profile for this cluster. Values are "NONE" and "PERFORMANCE". | `string` | `""` | no |
 | http\_load\_balancing | Enable httpload balancer addon | `bool` | `true` | no |
 | identity\_namespace | The workload pool to attach all Kubernetes service accounts to. (Default value of `enabled` automatically sets project-based pool `[project_id].svc.id.goog`) | `string` | `"enabled"` | no |
+| in\_transit\_encryption\_config | Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`. | `string` | `null` | no |
 | initial\_node\_count | The number of nodes to create in this cluster's default node pool. | `number` | `0` | no |
 | insecure\_kubelet\_readonly\_port\_enabled | Whether or not to set `insecure_kubelet_readonly_port_enabled` for node pool defaults and autopilot clusters. Note: this can be set at the node pool level separately within `node_pools`. | `bool` | `null` | no |
 | ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | `bool` | `false` | no |

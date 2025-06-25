@@ -387,6 +387,12 @@ variable "enable_cilium_clusterwide_network_policy" {
   default     = false
 }
 
+variable "in_transit_encryption_config" {
+  type        = string
+  description = "Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`."
+  default     = null
+}
+
 variable "security_posture_mode" {
   description = "Security posture mode. Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
   type        = string

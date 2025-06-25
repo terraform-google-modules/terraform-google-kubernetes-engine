@@ -118,6 +118,7 @@ Then perform the following commands on the root folder:
 | hpa\_profile | Enable the Horizontal Pod Autoscaling profile for this cluster. Values are "NONE" and "PERFORMANCE". | `string` | `""` | no |
 | http\_load\_balancing | Enable httpload balancer addon | `bool` | `true` | no |
 | identity\_namespace | The workload pool to attach all Kubernetes service accounts to. (Default value of `enabled` automatically sets project-based pool `[project_id].svc.id.goog`) | `string` | `"enabled"` | no |
+| in\_transit\_encryption\_config | Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`. | `string` | `null` | no |
 | insecure\_kubelet\_readonly\_port\_enabled | Whether or not to set `insecure_kubelet_readonly_port_enabled` for node pool defaults and autopilot clusters. | `bool` | `null` | no |
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | `string` | n/a | yes |
 | ip\_range\_services | The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used. | `string` | `null` | no |
