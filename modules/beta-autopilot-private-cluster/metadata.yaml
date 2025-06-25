@@ -34,6 +34,8 @@ spec:
     examples:
       - name: autopilot_private_firewalls
         location: examples/autopilot_private_firewalls
+      - name: confidential_autopilot_private
+        location: examples/confidential_autopilot_private
       - name: confidential_safer_cluster
         location: examples/confidential_safer_cluster
       - name: deploy_service
