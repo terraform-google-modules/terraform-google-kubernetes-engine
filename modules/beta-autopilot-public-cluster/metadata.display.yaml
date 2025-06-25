@@ -157,6 +157,9 @@ spec:
         identity_namespace:
           name: identity_namespace
           title: Identity Namespace
+        in_transit_encryption_config:
+          name: in_transit_encryption_config
+          title: In Transit Encryption Config
         insecure_kubelet_readonly_port_enabled:
           name: insecure_kubelet_readonly_port_enabled
           title: Insecure Kubelet Readonly Port Enabled

@@ -204,6 +204,9 @@ spec:
         identity_namespace:
           name: identity_namespace
           title: Identity Namespace
+        in_transit_encryption_config:
+          name: in_transit_encryption_config
+          title: In Transit Encryption Config
         initial_node_count:
           name: initial_node_count
           title: Initial Node Count

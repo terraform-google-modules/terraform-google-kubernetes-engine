@@ -194,6 +194,8 @@ resource "google_container_cluster" "primary" {
 
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
+  in_transit_encryption_config = var.in_transit_encryption_config
+
   dynamic "secret_manager_config" {
     for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
     content {
