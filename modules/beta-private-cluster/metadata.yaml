@@ -539,6 +539,9 @@ spec:
         description: Enable Cilium Cluster Wide Network Policies on the cluster
         varType: bool
         defaultValue: false
+      - name: in_transit_encryption_config
+        description: Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`.
+        varType: string
       - name: security_posture_mode
         description: Security posture mode. Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`.
         varType: string
