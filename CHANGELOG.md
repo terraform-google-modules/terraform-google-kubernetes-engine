@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [37.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v37.0.0...v37.1.0) (2025-06-26)
+
+
+### Features
+
+* add autopilot confidential nodes example ([#2289](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2289)) ([486d17a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/486d17a5b4140144df84d9bcea47936ff2697831))
+* add support for in_transit_encryption_config ([#2370](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2370)) ([e89d29b](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e89d29ba706612c2f4f9dd253f4072cca5f5f156))
+* ip_range_services to optional value ([#1949](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1949)) ([#2365](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2365)) ([b62bd0b](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b62bd0bcd3a3910b4230e4d55f68299aa708badf))
+
 ## [37.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v36.3.0...v37.0.0) (2025-06-17)
 
 
