@@ -1213,6 +1213,14 @@ resource "google_container_node_pool" "windows_pools" {
     }
     {% endif %}
 
+    dynamic "windows_node_config" {
+      for_each = lookup(each.value, "windows_node_config_os_version", null) != null ? [true] : []
+
+      content {
+        osversion = lookup(each.value, "windows_node_config_os_version", null)
+      }
+    }
+
     {% if i == 0 %}
     dynamic "linux_node_config" {
       for_each = length(merge(
