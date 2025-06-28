@@ -570,6 +570,7 @@ resource "google_container_cluster" "primary" {
       }
 
       local_ssd_encryption_mode = lookup(var.node_pools[0], "local_ssd_encryption_mode", null)
+      max_run_duration          = lookup(var.node_pools[0], "max_run_duration", null)
     }
   }
 
@@ -1011,6 +1012,7 @@ resource "google_container_node_pool" "pools" {
     }
 
     local_ssd_encryption_mode = lookup(each.value, "local_ssd_encryption_mode", null)
+    max_run_duration          = lookup(each.value, "max_run_duration", null)
   }
 
   lifecycle {
@@ -1345,6 +1347,7 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     local_ssd_encryption_mode = lookup(each.value, "local_ssd_encryption_mode", null)
+    max_run_duration          = lookup(each.value, "max_run_duration", null)
   }
 
   lifecycle {
