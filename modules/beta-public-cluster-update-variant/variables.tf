@@ -1013,3 +1013,21 @@ variable "dns_allow_external_traffic" {
   type        = bool
   default     = null
 }
+
+variable "enable_private_registry_access" {
+  description = "(Optional) Enable private registry access for the cluster."
+  type        = bool
+  default     = false
+}
+
+variable "private_registry_access_certificate_authority_fqdns" {
+  description = "(Optional) FQDNs of the certificate authority for private registry access."
+  type        = list(string)
+  default     = []
+}
+
+variable "private_registry_access_certificate_secret_uri" {
+  description = "(Optional) The secret manager URI of the certificate secret for private registry access."
+  type        = string
+  default     = ""
+}

@@ -720,6 +720,18 @@ spec:
       - name: dns_allow_external_traffic
         description: (Optional) Controls whether external traffic is allowed over the dns endpoint.
         varType: bool
+      - name: enable_private_registry_access
+        description: (Optional) Enable private registry access for the cluster.
+        varType: bool
+        defaultValue: false
+      - name: private_registry_access_certificate_authority_fqdns
+        description: (Optional) FQDNs of the certificate authority for private registry access.
+        varType: list(string)
+        defaultValue: []
+      - name: private_registry_access_certificate_secret_uri
+        description: (Optional) The secret manager URI of the certificate secret for private registry access.
+        varType: string
+        defaultValue: ""
     outputs:
       - name: ca_certificate
         description: Cluster ca certificate (base64 encoded)

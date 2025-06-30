@@ -112,6 +112,9 @@ spec:
         enable_private_nodes:
           name: enable_private_nodes
           title: Enable Private Nodes
+        enable_private_registry_access:
+          name: enable_private_registry_access
+          title: Enable Private Registry Access
         enable_resource_consumption_export:
           name: enable_resource_consumption_export
           title: Enable Resource Consumption Export
@@ -247,6 +250,12 @@ spec:
         private_endpoint_subnetwork:
           name: private_endpoint_subnetwork
           title: Private Endpoint Subnetwork
+        private_registry_access_certificate_authority_fqdns:
+          name: private_registry_access_certificate_authority_fqdns
+          title: Private Registry Access Certificate Authority Fqdns
+        private_registry_access_certificate_secret_uri:
+          name: private_registry_access_certificate_secret_uri
+          title: Private Registry Access Certificate Secret Uri
         project_id:
           name: project_id
           title: Project Id
