@@ -257,20 +257,7 @@ resource "google_container_cluster" "primary" {
   
   in_transit_encryption_config = var.in_transit_encryption_config
 
-  containerd_config {
-  private_registry_access_config {
-    enabled = var.enable_private_registry_access
-    dynamic "certificate_authority_domain_config" {
-    for_each = var.enable_private_registry_access == true ? [1] : []
-    content {
-          fqdns = var.private_registry_access_certificate_authority_fqdns
-          gcp_secret_manager_certificate_config {
-           secret_uri = var.private_registry_access_certificate_secret_uri
-           }
-       }
-    }
-  }
-  }
+
 
   dynamic "secret_manager_config" {
     for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
@@ -690,6 +677,20 @@ resource "google_container_cluster" "primary" {
       }
 
       local_ssd_encryption_mode = lookup(var.node_pools[0], "local_ssd_encryption_mode", null)
+      containerd_config {
+        private_registry_access_config {
+          enabled = var.enable_private_registry_access
+          dynamic "certificate_authority_domain_config" {
+          for_each = var.enable_private_registry_access == true ? [1] : []
+          content {
+                fqdns = var.private_registry_access_certificate_authority_fqdns
+                gcp_secret_manager_certificate_config {
+                 secret_uri = var.private_registry_access_certificate_secret_uri
+                 }
+             }
+          }
+        }
+        }
     }
   }
   {% endif %}
