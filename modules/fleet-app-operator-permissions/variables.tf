@@ -43,10 +43,12 @@ variable "role" {
     condition     = contains(["VIEW", "EDIT", "ADMIN"], var.role)
     error_message = "Allowed values for role are VIEW, EDIT, or ADMIN."
   }
+  default     = ""
 }
 
 variable "custom_role" {
   description = "The principal's role for the Fleet Scope which is a custom Kubernetes ClusterRole."
   type        = string
+  default     = ""
 }
 
