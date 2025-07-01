@@ -1044,6 +1044,20 @@ resource "google_container_node_pool" "windows_pools" {
         enabled = fast_socket.value
       }
     }
+    containerd_config {
+            private_registry_access_config {
+              enabled = var.enable_private_registry_access
+              dynamic "certificate_authority_domain_config" {
+              for_each = var.enable_private_registry_access == true ? [1] : []
+              content {
+                    fqdns = var.private_registry_access_certificate_authority_fqdns
+                    gcp_secret_manager_certificate_config {
+                     secret_uri = var.private_registry_access_certificate_secret_uri
+                     }
+                 }
+              }
+            }
+            }
     dynamic "reservation_affinity" {
       for_each = lookup(each.value, "queued_provisioning", false) || lookup(each.value, "consume_reservation_type", "") != "" ? [each.value] : []
       content {
