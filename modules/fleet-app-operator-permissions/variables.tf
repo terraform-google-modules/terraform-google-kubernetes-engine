@@ -37,11 +37,16 @@ variable "groups" {
 }
 
 variable "role" {
-  description = "The principals role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`)."
+  description = "The principal's role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`)."
   type        = string
   validation {
     condition     = contains(["VIEW", "EDIT", "ADMIN"], var.role)
     error_message = "Allowed values for role are VIEW, EDIT, or ADMIN."
   }
+}
+
+variable "custom_role" {
+  description = "The principal's role for the Fleet Scope which is a custom Kubernetes ClusterRole."
+  type        = string
 }
 
