@@ -18,6 +18,7 @@ locals {
   app_operator_id   = "app-operator-id"
   app_operator_team = "app-operator-team"
   app_operator_role = "VIEW"
+  app_operator_custom_role = "my-custom-role"
 }
 
 # Create a Service Account, which can be used as an app operator.
@@ -33,6 +34,17 @@ resource "google_gke_hub_scope" "scope" {
   scope_id = local.app_operator_team
 }
 
+# Allowlist custom roles for usage in Scope RBAC
+resource "google_gke_hub_feature" "rbacrolebindingactuation" {
+  name = "rbacrolebindingactuation"
+  location = "global"
+  spec {
+    rbacrolebindingactuation {
+      allowed_custom_roles = [local.app_operator_custom_role]
+    }
+  }
+}
+
 # Grant permissions to the app operator to work with the Fleet Scope.
 module "permissions" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
@@ -45,6 +57,22 @@ module "permissions" {
 
   depends_on = [
     google_service_account.service_account
+  ]
+}
+
+# Grant custom role permissions to the app operator to work with the Fleet Scope.
+module "permissions" {
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
+  version = "~> 37.0"
+
+  fleet_project_id = var.fleet_project_id
+  scope_id         = google_gke_hub_scope.scope.scope_id
+  users            = ["${local.app_operator_id}@${var.fleet_project_id}.iam.gserviceaccount.com"]
+  custom_role      = local.app_operator_custom_role
+
+  depends_on = [
+    google_service_account.service_account,
+    google_gke_hub_feature.rbacrolebindingactuation,
   ]
 }
 
