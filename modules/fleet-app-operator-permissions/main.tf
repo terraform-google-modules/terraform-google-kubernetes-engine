@@ -56,14 +56,22 @@ resource "google_project_iam_member" "log_view_permissions" {
 resource "google_project_iam_member" "project_level_scope_permissions" {
   project  = var.fleet_project_id
   for_each = toset(concat(local.user_principals, local.group_principals))
-  role     = local.project_level_scope_role[var.role]
+  {% if var.custom_role != "" %}
+    role  = local.resource_level_scope_role["CUSTOM"]
+  {% else %}
+    role  = local.resource_level_scope_role[var.role]
+  {% endif %}
   member   = each.value
 }
 
 resource "google_gke_hub_scope_iam_binding" "resource_level_scope_permissions" {
   project  = var.fleet_project_id
   scope_id = var.scope_id
-  role     = local.resource_level_scope_role[var.role]
+  {% if var.custom_role != "" %}
+    role  = local.resource_level_scope_role["CUSTOM"]
+  {% else %}
+    role  = local.resource_level_scope_role[var.role]
+  {% endif %}
   members  = concat(local.user_principals, local.group_principals)
 }
 
