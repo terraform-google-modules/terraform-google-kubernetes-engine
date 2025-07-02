@@ -61,7 +61,7 @@ module "permissions" {
 }
 
 # Grant custom role permissions to the app operator to work with the Fleet Scope.
-module "permissions" {
+module "custom_permissions" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
   version = "~> 37.0"
 
