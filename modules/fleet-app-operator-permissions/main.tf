@@ -79,7 +79,11 @@ resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_user_role_bindings
   scope_id                   = var.scope_id
   user                       = each.key
   role {
+  {% if var.custom_role != "" %}
+    custom_role = var.custom_role
+  {% else %}
     predefined_role = var.role
+  {% endif %}
   }
 }
 
@@ -95,7 +99,11 @@ resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_group_role_binding
   scope_id                   = var.scope_id
   group                      = each.key
   role {
+  {% if var.custom_role != "" %}
+    custom_role = var.custom_role
+  {% else %}
     predefined_role = var.role
+  {% endif %}
   }
 }
 
