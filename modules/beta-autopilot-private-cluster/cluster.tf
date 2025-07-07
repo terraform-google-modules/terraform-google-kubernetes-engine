@@ -362,10 +362,19 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.dns_allow_external_traffic != null ? [1] : []
+    for_each = var.dns_allow_external_traffic != null || var.ip_endpoints_enabled != null ? [1] : []
     content {
-      dns_endpoint_config {
-        allow_external_traffic = var.dns_allow_external_traffic
+      dynamic "dns_endpoint_config" {
+        for_each = var.dns_allow_external_traffic != null ? [1] : []
+        content {
+          allow_external_traffic = var.dns_allow_external_traffic
+        }
+      }
+      dynamic "ip_endpoints_config" {
+        for_each = var.ip_endpoints_enabled != null ? [1] : []
+        content {
+          enabled = var.ip_endpoints_enabled
+        }
       }
     }
   }
