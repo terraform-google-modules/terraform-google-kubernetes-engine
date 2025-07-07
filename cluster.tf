@@ -903,6 +903,14 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    dynamic "windows_node_config" {
+      for_each = lookup(each.value, "windows_node_config_os_version", null) != null ? [true] : []
+
+      content {
+        osversion = lookup(each.value, "windows_node_config_os_version", null)
+      }
+    }
+
     dynamic "linux_node_config" {
       for_each = length(merge(
         local.node_pools_linux_node_configs_sysctls["all"],
@@ -1255,6 +1263,14 @@ resource "google_container_node_pool" "windows_pools" {
             values   = lookup(jsondecode(node_affinity.value), "values", [])
           }
         }
+      }
+    }
+
+    dynamic "windows_node_config" {
+      for_each = lookup(each.value, "windows_node_config_os_version", null) != null ? [true] : []
+
+      content {
+        osversion = lookup(each.value, "windows_node_config_os_version", null)
       }
     }
 
