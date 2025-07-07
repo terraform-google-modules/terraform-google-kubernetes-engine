@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ variable "groups" {
 }
 
 variable "role" {
-  description = "The principal's role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`)."
+  description = "The principal's predefined role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`). Either a predefined role or a custom role should be set"
   type        = string
   validation {
     condition     = contains(["VIEW", "EDIT", "ADMIN"], var.role)
@@ -47,7 +47,7 @@ variable "role" {
 }
 
 variable "custom_role" {
-  description = "The principal's role for the Fleet Scope which is a custom Kubernetes ClusterRole."
+  description = "The principal's role for the Fleet Scope which is a custom Kubernetes ClusterRole. Either a predefined role or a custom role should be set"
   type        = string
   default     = ""
 }
