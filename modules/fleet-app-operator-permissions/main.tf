@@ -56,22 +56,14 @@ resource "google_project_iam_member" "log_view_permissions" {
 resource "google_project_iam_member" "project_level_scope_permissions" {
   project  = var.fleet_project_id
   for_each = toset(concat(local.user_principals, local.group_principals))
-  {% if var.custom_role != "" %}
-    role  = local.resource_level_scope_role["CUSTOM"]
-  {% else %}
-    role  = local.resource_level_scope_role[var.role]
-  {% endif %}
+  role = (var.custom_role != "" ? local.project_level_scope_role["CUSTOM"] : local.project_level_scope_role[var.role])
   member   = each.value
 }
 
 resource "google_gke_hub_scope_iam_binding" "resource_level_scope_permissions" {
   project  = var.fleet_project_id
   scope_id = var.scope_id
-  {% if var.custom_role != "" %}
-    role  = local.resource_level_scope_role["CUSTOM"]
-  {% else %}
-    role  = local.resource_level_scope_role[var.role]
-  {% endif %}
+  role = (var.custom_role != "" ? local.resource_level_scope_role["CUSTOM"] : local.resource_level_scope_role[var.role])
   members  = concat(local.user_principals, local.group_principals)
 }
 
@@ -87,11 +79,7 @@ resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_user_role_bindings
   scope_id                   = var.scope_id
   user                       = each.key
   role {
-  {% if var.custom_role != "" %}
-    custom_role = var.custom_role
-  {% else %}
-    predefined_role = var.role
-  {% endif %}
+    var.custom_role != "" ? custom_role = var.custom_role : predefined_role = var.role
   }
 }
 
@@ -107,11 +95,7 @@ resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_group_role_binding
   scope_id                   = var.scope_id
   group                      = each.key
   role {
-  {% if var.custom_role != "" %}
-    custom_role = var.custom_role
-  {% else %}
-    predefined_role = var.role
-  {% endif %}
+    var.custom_role != "" ? custom_role = var.custom_role : predefined_role = var.role
   }
 }
 
