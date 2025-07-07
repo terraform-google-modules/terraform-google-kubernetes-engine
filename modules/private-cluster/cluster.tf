@@ -516,6 +516,7 @@ resource "google_container_cluster" "primary" {
 
       metadata = local.node_pools_metadata["all"]
 
+      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", var.boot_disk_kms_key)
 
       storage_pools = lookup(var.node_pools[0], "storage_pools", null) != null ? [var.node_pools[0].storage_pools] : []
 
