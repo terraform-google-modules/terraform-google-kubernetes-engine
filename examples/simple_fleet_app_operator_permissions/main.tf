@@ -18,7 +18,8 @@ locals {
   app_operator_id   = "app-operator-id"
   app_operator_team = "app-operator-team"
   app_operator_role = "VIEW"
-  app_operator_custom_role = "my-custom-role"
+  custom_app_operator_id = "custom-app-operator-id"
+  custom_app_operator_role = "my-custom-role"
 }
 
 # Create a Service Account, which can be used as an app operator.
@@ -40,7 +41,7 @@ resource "google_gke_hub_feature" "rbacrolebindingactuation" {
   location = "global"
   spec {
     rbacrolebindingactuation {
-      allowed_custom_roles = [local.app_operator_custom_role]
+      allowed_custom_roles = [local.custom_app_operator_role]
     }
   }
 }
@@ -67,8 +68,8 @@ module "custom_permissions" {
 
   fleet_project_id = var.fleet_project_id
   scope_id         = google_gke_hub_scope.scope.scope_id
-  users            = ["${local.app_operator_id}@${var.fleet_project_id}.iam.gserviceaccount.com"]
-  custom_role      = local.app_operator_custom_role
+  users            = ["${local.custom_app_operator_id}@${var.fleet_project_id}.iam.gserviceaccount.com"]
+  custom_role      = local.custom_app_operator_role
 
   depends_on = [
     google_service_account.service_account,
