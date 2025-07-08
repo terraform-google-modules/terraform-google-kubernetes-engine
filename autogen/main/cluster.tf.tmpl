@@ -254,7 +254,7 @@ resource "google_container_cluster" "primary" {
   disable_l4_lb_firewall_reconciliation = var.disable_l4_lb_firewall_reconciliation
 
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
-  
+
   in_transit_encryption_config = var.in_transit_encryption_config
 
   dynamic "secret_manager_config" {
@@ -664,8 +664,8 @@ resource "google_container_cluster" "primary" {
         }
       }
 
-      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", var.boot_disk_kms_key)
       {% endif %}
+      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", var.boot_disk_kms_key)
 
       storage_pools = lookup(var.node_pools[0], "storage_pools", null) != null ? [var.node_pools[0].storage_pools] : []
 
@@ -1215,6 +1215,14 @@ resource "google_container_node_pool" "windows_pools" {
     }
     {% endif %}
 
+    dynamic "windows_node_config" {
+      for_each = lookup(each.value, "windows_node_config_os_version", null) != null ? [true] : []
+
+      content {
+        osversion = lookup(each.value, "windows_node_config_os_version", null)
+      }
+    }
+
     {% if i == 0 %}
     dynamic "linux_node_config" {
       for_each = length(merge(
@@ -1245,7 +1253,7 @@ resource "google_container_node_pool" "windows_pools" {
           content {
             hugepage_size_2m = try(coalesce(local.node_pools_hugepage_size_2m[each.value["name"]], local.node_pools_hugepage_size_2m["all"]), null)
             hugepage_size_1g = try(coalesce(local.node_pools_hugepage_size_1g[each.value["name"]], local.node_pools_hugepage_size_1g["all"]), null)
-          }  
+          }
         }
       }
     }

@@ -443,6 +443,10 @@ The node_pools variable takes the following parameters:
 
 The windows_node_pools variable takes the same parameters as [node_pools](#node\_pools-variable) but is reserved for provisioning Windows based node pools only. This variable is introduced to satisfy a [specific requirement](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster-windows#create_a_cluster_and_node_pools) for the presence of at least one linux based node pool in the cluster before a windows based node pool can be created.
 
+| Name | Description | Default | Requirement |
+| --- | --- | --- | --- |
+| windows_node_config_os_version | The Windows OS version to use for the windows node pool. Valid values are OS_VERSION_UNSPECIFIED, OS_VERSION_LTSC2019 and OS_VERSION_LTSC2022. | null | Optional |
+
 
 ## Requirements
 

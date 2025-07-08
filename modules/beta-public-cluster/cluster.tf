@@ -962,6 +962,14 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    dynamic "windows_node_config" {
+      for_each = lookup(each.value, "windows_node_config_os_version", null) != null ? [true] : []
+
+      content {
+        osversion = lookup(each.value, "windows_node_config_os_version", null)
+      }
+    }
+
     dynamic "linux_node_config" {
       for_each = length(merge(
         local.node_pools_linux_node_configs_sysctls["all"],
@@ -1327,6 +1335,14 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
       content {
         sandbox_type = sandbox_config.value
+      }
+    }
+
+    dynamic "windows_node_config" {
+      for_each = lookup(each.value, "windows_node_config_os_version", null) != null ? [true] : []
+
+      content {
+        osversion = lookup(each.value, "windows_node_config_os_version", null)
       }
     }
 
