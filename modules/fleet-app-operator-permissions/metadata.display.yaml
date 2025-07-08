@@ -28,6 +28,9 @@ spec:
   ui:
     input:
       variables:
+        custom_role:
+          name: custom_role
+          title: Custom Role
         fleet_project_id:
           name: fleet_project_id
           title: Fleet Project Id

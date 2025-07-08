@@ -28,9 +28,10 @@ To deploy this config, run:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| custom\_role | The principal's role for the Fleet Scope which is a custom Kubernetes ClusterRole. Either a predefined role or a custom role should be set | `string` | `null` | no |
 | fleet\_project\_id | The project to which the Fleet belongs. | `string` | n/a | yes |
 | groups | The list of app operator group principals, e.g., `people@google.com`, `principalSet://iam.googleapis.com/locations/global/workforcePools/my-pool/group/people`. | `list(string)` | `[]` | no |
-| role | The principals role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`). | `string` | n/a | yes |
+| role | The principal's predefined role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`). Either a predefined role or a custom role should be set | `string` | `null` | no |
 | scope\_id | The scope for which IAM and RBAC role bindings are created. | `string` | n/a | yes |
 | users | The list of app operator user principals, e.g., `person@google.com`, `principal://iam.googleapis.com/locations/global/workforcePools/my-pool/subject/person`, `serviceAccount:my-service-account@my-project.iam.gserviceaccount.com`. | `list(string)` | `[]` | no |
 

@@ -43,7 +43,7 @@ variable "role" {
     condition     = contains(["VIEW", "EDIT", "ADMIN"], var.role)
     error_message = "Allowed values for role are VIEW, EDIT, or ADMIN."
   }
-  default     = null
+  default = null
 }
 
 variable "custom_role" {

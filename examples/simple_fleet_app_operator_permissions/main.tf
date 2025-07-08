@@ -15,10 +15,10 @@
  */
 
 locals {
-  app_operator_id   = "app-operator-id"
-  app_operator_team = "app-operator-team"
-  app_operator_role = "VIEW"
-  custom_app_operator_id = "custom-app-operator-id"
+  app_operator_id          = "app-operator-id"
+  app_operator_team        = "app-operator-team"
+  app_operator_role        = "VIEW"
+  custom_app_operator_id   = "custom-app-operator-id"
   custom_app_operator_role = "my-custom-role"
 }
 
@@ -37,7 +37,7 @@ resource "google_gke_hub_scope" "scope" {
 
 # Allowlist custom roles for usage in Scope RBAC
 resource "google_gke_hub_feature" "rbacrolebindingactuation" {
-  name = "rbacrolebindingactuation"
+  name     = "rbacrolebindingactuation"
   location = "global"
   spec {
     rbacrolebindingactuation {
