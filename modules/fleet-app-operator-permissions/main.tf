@@ -1,5 +1,5 @@
 /**
- * Copyright 2025 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,7 +79,8 @@ resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_user_role_bindings
   scope_id                   = var.scope_id
   user                       = each.key
   role {
-    var.custom_role != "" ? custom_role = var.custom_role : predefined_role = var.role
+    custom_role = (var.custom_role != "" ? var.custom_role : null)  
+    predefined_role = (var.custom_role != "" ? null : var.role)
   }
 }
 
@@ -95,7 +96,8 @@ resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_group_role_binding
   scope_id                   = var.scope_id
   group                      = each.key
   role {
-    var.custom_role != "" ? custom_role = var.custom_role : predefined_role = var.role
+    custom_role = (var.custom_role != "" ? var.custom_role : null)  
+    predefined_role = (var.custom_role != "" ? null : var.role)
   }
 }
 

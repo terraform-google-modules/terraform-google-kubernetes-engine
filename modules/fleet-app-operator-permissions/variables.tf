@@ -1,5 +1,5 @@
 /**
- * Copyright 2025 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,12 +43,12 @@ variable "role" {
     condition     = contains(["VIEW", "EDIT", "ADMIN"], var.role)
     error_message = "Allowed values for role are VIEW, EDIT, or ADMIN."
   }
-  default     = ""
+  default     = null
 }
 
 variable "custom_role" {
   description = "The principal's role for the Fleet Scope which is a custom Kubernetes ClusterRole. Either a predefined role or a custom role should be set"
   type        = string
-  default     = ""
+  default     = null
 }
 
