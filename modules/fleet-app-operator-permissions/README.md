@@ -14,6 +14,17 @@ module "fleet_app_operator_permissions" {
   groups           = ["people@company.com"]
   role             = "EDIT"
 }
+
+Example:
+module "fleet_app_operator_permissions" {
+  source = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
+
+  fleet_project_id = "my-project-id"
+  scope_id         = "frontend-team"
+  users            = ["person1@company.com", "person2@company.com"]
+  groups           = ["people@company.com"]
+  custom_role      = "my-custom-role"
+}
 ```
 
 To deploy this config, run:
