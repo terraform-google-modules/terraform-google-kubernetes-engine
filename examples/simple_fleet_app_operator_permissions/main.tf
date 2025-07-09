@@ -29,6 +29,13 @@ resource "google_service_account" "service_account" {
   display_name = "Test App Operator Service Account"
 }
 
+# Create another Service Account, which can be used as a custom role app operator.
+resource "google_service_account" "custom_service_account" {
+  project      = var.fleet_project_id
+  account_id   = local.custom_app_operator_id
+  display_name = "Test App Operator Custom Role Service Account"
+}
+
 # Create a Fleet Scope for the app operator's team.
 resource "google_gke_hub_scope" "scope" {
   project  = var.fleet_project_id
@@ -73,7 +80,7 @@ module "custom_permissions" {
   custom_role      = local.custom_app_operator_role
 
   depends_on = [
-    google_service_account.service_account,
+    google_service_account.custom_service_account,
     google_gke_hub_feature.rbacrolebindingactuation,
   ]
 }
