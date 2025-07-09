@@ -51,7 +51,7 @@ resource "google_gke_hub_feature" "rbacrolebindingactuation" {
       allowed_custom_roles = [local.custom_app_operator_role]
     }
   }
-  project  = var.fleet_project_id
+  project = var.fleet_project_id
 }
 
 # Grant permissions to the app operator to work with the Fleet Scope.
