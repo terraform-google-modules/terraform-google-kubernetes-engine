@@ -985,3 +985,9 @@ variable "dns_allow_external_traffic" {
   type        = bool
   default     = null
 }
+
+variable "ip_endpoints_enabled" {
+  description = "(Optional) Controls whether to allow direct IP access. Defaults to `true`."
+  type        = bool
+  default     = null
+}
