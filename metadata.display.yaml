@@ -141,6 +141,9 @@ spec:
         enable_mesh_certificates:
           name: enable_mesh_certificates
           title: Enable Mesh Certificates
+        enable_multi_networking:
+          name: enable_multi_networking
+          title: Enable Multi Networking
         enable_network_egress_export:
           name: enable_network_egress_export
           title: Enable Network Egress Export

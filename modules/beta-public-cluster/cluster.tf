@@ -205,6 +205,8 @@ resource "google_container_cluster" "primary" {
 
   disable_l4_lb_firewall_reconciliation = var.disable_l4_lb_firewall_reconciliation
 
+  enable_multi_networking = var.enable_multi_networking
+
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
   in_transit_encryption_config = var.in_transit_encryption_config

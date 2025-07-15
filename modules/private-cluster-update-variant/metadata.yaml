@@ -700,6 +700,9 @@ spec:
       - name: disable_l4_lb_firewall_reconciliation
         description: Disable L4 Load Balancer firewall reconciliation
         varType: bool
+      - name: enable_multi_networking
+        description: Whether multi-networking is enabled for this cluster
+        varType: bool
       - name: enable_identity_service
         description: (Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API.
         varType: bool
