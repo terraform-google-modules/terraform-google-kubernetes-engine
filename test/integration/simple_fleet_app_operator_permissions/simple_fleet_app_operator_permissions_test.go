@@ -66,10 +66,10 @@ func TestSimpleFleetAppOperatorPermissions(t *testing.T) {
 		assert.Equal(strings.Contains(projectIam, logViewPodBucket), true, "app operator log view pod bucket should be in the project IAM policy")
 
 		customProjectIam := gcloud.Runf(t, "projects get-iam-policy %s --filter %s --flatten %s", projectId, fmt.Sprintf(filterFormat, customAppOperatorPrincipal), flattenOpt).String()
-		assert.Equal(strings.Contains(projectIam, customProjectLevelRole), true, "custom app operator Scope role should be in the project IAM policy")
-		assert.Equal(strings.Contains(projectIam, logViewRole), true, "custom app operator log view role should be in the project IAM policy")
-		assert.Equal(strings.Contains(projectIam, logViewContainerBucket), true, "custom app operator log view container bucket should be in the project IAM policy")
-		assert.Equal(strings.Contains(projectIam, logViewPodBucket), true, "custom app operator log view pod bucket should be in the project IAM policy")
+		assert.Equal(strings.Contains(customProjectIam, customProjectLevelRole), true, "custom app operator Scope role should be in the project IAM policy")
+		assert.Equal(strings.Contains(customProjectIam, logViewRole), true, "custom app operator log view role should be in the project IAM policy")
+		assert.Equal(strings.Contains(customProjectIam, logViewContainerBucket), true, "custom app operator log view container bucket should be in the project IAM policy")
+		assert.Equal(strings.Contains(customProjectIam, logViewPodBucket), true, "custom app operator log view pod bucket should be in the project IAM policy")
 	})
 
 	appOppT.Test()
