@@ -236,6 +236,7 @@ variable "node_pools_linux_node_configs_sysctls" {
     default-node-pool = {}
   }
 }
+
 variable "node_pools_cgroup_mode" {
   type        = map(string)
   description = "Map of strings containing cgroup node config by node-pool name"
@@ -274,6 +275,7 @@ variable "enable_cost_allocation" {
   description = "Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery"
   default     = false
 }
+
 variable "resource_usage_export_dataset_id" {
   type        = string
   description = "The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export."
@@ -950,6 +952,12 @@ variable "enterprise_config" {
 
 variable "dns_allow_external_traffic" {
   description = "(Optional) Controls whether external traffic is allowed over the dns endpoint."
+  type        = bool
+  default     = null
+}
+
+variable "ip_endpoints_enabled" {
+  description = "(Optional) Controls whether to allow direct IP access. Defaults to `true`."
   type        = bool
   default     = null
 }

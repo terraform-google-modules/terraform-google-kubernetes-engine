@@ -283,10 +283,15 @@ The node_pools variable takes the following parameters:
 | reservation_affinity_key | The label key of a reservation resource. To target a SPECIFIC_RESERVATION by name, specify "compute.googleapis.com/reservation-name" as the key and specify the name of your reservation as its value. | | Optional |
 | reservation_affinity_values | The list of label values of reservation resources. For example: the name of the specific reservation when using a key of "compute.googleapis.com/reservation-name". This should be passed as comma separated string. | | Optional |
 | local_ssd_encryption_mode | specifies the method used for encrypting the local SSDs attached to the node. Valid values are: "STANDARD_ENCRYPTION" and "EPHEMERAL_KEY_ENCRYPTION" | | Optional |
+| max_run_duration | The runtime of each node in the node pool in seconds, terminated by 's'. Example: "3600s". | null | Optional |
 
 ## windows_node_pools variable
 
 The windows_node_pools variable takes the same parameters as [node_pools](#node\_pools-variable) but is reserved for provisioning Windows based node pools only. This variable is introduced to satisfy a [specific requirement](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster-windows#create_a_cluster_and_node_pools) for the presence of at least one linux based node pool in the cluster before a windows based node pool can be created.
+
+| Name | Description | Default | Requirement |
+| --- | --- | --- | --- |
+| windows_node_config_os_version | The Windows OS version to use for the windows node pool. Valid values are OS_VERSION_UNSPECIFIED, OS_VERSION_LTSC2019 and OS_VERSION_LTSC2022. | null | Optional |
 
 {% endif %}
 

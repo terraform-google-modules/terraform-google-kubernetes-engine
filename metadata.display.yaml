@@ -216,6 +216,9 @@ spec:
         insecure_kubelet_readonly_port_enabled:
           name: insecure_kubelet_readonly_port_enabled
           title: Insecure Kubelet Readonly Port Enabled
+        ip_endpoints_enabled:
+          name: ip_endpoints_enabled
+          title: Ip Endpoints Enabled
         ip_masq_link_local:
           name: ip_masq_link_local
           title: Ip Masq Link Local

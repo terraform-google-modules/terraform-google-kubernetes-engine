@@ -766,6 +766,9 @@ spec:
       - name: dns_allow_external_traffic
         description: (Optional) Controls whether external traffic is allowed over the dns endpoint.
         varType: bool
+      - name: ip_endpoints_enabled
+        description: (Optional) Controls whether to allow direct IP access. Defaults to `true`.
+        varType: bool
     outputs:
       - name: ca_certificate
         description: Cluster ca certificate (base64 encoded)

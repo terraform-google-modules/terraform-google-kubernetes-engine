@@ -572,6 +572,7 @@ resource "google_container_cluster" "primary" {
       }
 
       local_ssd_encryption_mode = lookup(var.node_pools[0], "local_ssd_encryption_mode", null)
+      max_run_duration          = lookup(var.node_pools[0], "max_run_duration", null)
     }
   }
 
@@ -614,10 +615,19 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.dns_allow_external_traffic != null ? [1] : []
+    for_each = var.dns_allow_external_traffic != null || var.ip_endpoints_enabled != null ? [1] : []
     content {
-      dns_endpoint_config {
-        allow_external_traffic = var.dns_allow_external_traffic
+      dynamic "dns_endpoint_config" {
+        for_each = var.dns_allow_external_traffic != null ? [1] : []
+        content {
+          allow_external_traffic = var.dns_allow_external_traffic
+        }
+      }
+      dynamic "ip_endpoints_config" {
+        for_each = var.ip_endpoints_enabled != null ? [1] : []
+        content {
+          enabled = var.ip_endpoints_enabled
+        }
       }
     }
   }
@@ -985,6 +995,14 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    dynamic "windows_node_config" {
+      for_each = lookup(each.value, "windows_node_config_os_version", null) != null ? [true] : []
+
+      content {
+        osversion = lookup(each.value, "windows_node_config_os_version", null)
+      }
+    }
+
     dynamic "linux_node_config" {
       for_each = length(merge(
         local.node_pools_linux_node_configs_sysctls["all"],
@@ -1035,6 +1053,7 @@ resource "google_container_node_pool" "pools" {
     }
 
     local_ssd_encryption_mode = lookup(each.value, "local_ssd_encryption_mode", null)
+    max_run_duration          = lookup(each.value, "max_run_duration", null)
   }
 
   lifecycle {
@@ -1352,6 +1371,14 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
+    dynamic "windows_node_config" {
+      for_each = lookup(each.value, "windows_node_config_os_version", null) != null ? [true] : []
+
+      content {
+        osversion = lookup(each.value, "windows_node_config_os_version", null)
+      }
+    }
+
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
     storage_pools     = lookup(each.value, "storage_pools", null) != null ? [each.value.storage_pools] : []
@@ -1369,6 +1396,7 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     local_ssd_encryption_mode = lookup(each.value, "local_ssd_encryption_mode", null)
+    max_run_duration          = lookup(each.value, "max_run_duration", null)
   }
 
   lifecycle {
