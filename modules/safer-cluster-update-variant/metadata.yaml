@@ -422,6 +422,10 @@ spec:
         description: The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes
         varType: bool
         defaultValue: false
+      - name: gcs_fuse_csi_driver
+        description: Whether GCE FUSE CSI driver is enabled for this cluster.
+        varType: bool
+        defaultValue: false
       - name: add_cluster_firewall_rules
         description: Create additional firewall rules
         varType: bool
