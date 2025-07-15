@@ -594,6 +594,12 @@ variable "disable_l4_lb_firewall_reconciliation" {
   default     = null
 }
 
+variable "enable_multi_networking" {
+  type        = bool
+  description = "Whether multi-networking is enabled for this cluster"
+  default     = null
+}
+
 variable "allow_net_admin" {
   description = "(Optional) Enable NET_ADMIN for the cluster."
   type        = bool

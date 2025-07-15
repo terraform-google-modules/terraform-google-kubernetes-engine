@@ -439,6 +439,9 @@ spec:
       - name: disable_l4_lb_firewall_reconciliation
         description: Disable L4 Load Balancer firewall reconciliation
         varType: bool
+      - name: enable_multi_networking
+        description: Whether multi-networking is enabled for this cluster
+        varType: bool
       - name: allow_net_admin
         description: (Optional) Enable NET_ADMIN for the cluster.
         varType: bool

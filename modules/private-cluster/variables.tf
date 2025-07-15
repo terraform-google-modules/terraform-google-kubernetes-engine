@@ -940,6 +940,12 @@ variable "disable_l4_lb_firewall_reconciliation" {
   default     = null
 }
 
+variable "enable_multi_networking" {
+  type        = bool
+  description = "Whether multi-networking is enabled for this cluster"
+  default     = null
+}
+
 variable "enable_identity_service" {
   type        = bool
   description = "(Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
