@@ -40,7 +40,7 @@ func TestSimpleFleetAppOperatorPermissions(t *testing.T) {
 		scopeLevelRole := "roles/gkehub.scopeViewer"
 		projectLevelRole := "roles/gkehub.scopeViewerProjectLevel"
 		customAppOperatorEmail := fmt.Sprintf("custom-app-operator-id@%s.iam.gserviceaccount.com", projectId)
-		customAppOperatorPrincipal := fmt.Sprintf("serviceAccount:%s", appOperatorEmail)
+		customAppOperatorPrincipal := fmt.Sprintf("serviceAccount:%s", customAppOperatorEmail)
 		customScopeLevelRole := "roles/gkehub.scopeViewer"
 		customProjectLevelRole := "roles/gkehub.scopeEditorProjectLevel"
 		logViewRole := "roles/logging.viewAccessor"
