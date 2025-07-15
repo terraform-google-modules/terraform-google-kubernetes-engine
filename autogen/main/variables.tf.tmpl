@@ -1016,6 +1016,12 @@ variable "disable_l4_lb_firewall_reconciliation" {
   description = "Disable L4 Load Balancer firewall reconciliation"
   default     = null
 }
+
+variable "enable_multi_networking" {
+  type        = bool
+  description = "Whether multi-networking is enabled for this cluster"
+  default     = null
+}
 {% if beta_cluster %}
   {% if autopilot_cluster != true %}
 
