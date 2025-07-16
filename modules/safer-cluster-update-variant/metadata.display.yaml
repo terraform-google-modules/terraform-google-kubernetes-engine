@@ -127,6 +127,9 @@ spec:
         gce_pd_csi_driver:
           name: gce_pd_csi_driver
           title: Gce Pd Csi Driver
+        gcs_fuse_csi_driver:
+          name: gcs_fuse_csi_driver
+          title: Gcs Fuse Csi Driver
         gke_backup_agent_config:
           name: gke_backup_agent_config
           title: Gke Backup Agent Config
