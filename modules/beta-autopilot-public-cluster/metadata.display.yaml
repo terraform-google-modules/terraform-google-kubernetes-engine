@@ -100,6 +100,9 @@ spec:
         enable_l4_ilb_subsetting:
           name: enable_l4_ilb_subsetting
           title: Enable L4 Ilb Subsetting
+        enable_multi_networking:
+          name: enable_multi_networking
+          title: Enable Multi Networking
         enable_network_egress_export:
           name: enable_network_egress_export
           title: Enable Network Egress Export
