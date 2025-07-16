@@ -204,6 +204,7 @@ module "gke" {
 
   gce_pd_csi_driver    = var.gce_pd_csi_driver
   filestore_csi_driver = var.filestore_csi_driver
+  gcs_fuse_csi_driver  = var.gcs_fuse_csi_driver
 
   notification_config_topic = var.notification_config_topic
 
