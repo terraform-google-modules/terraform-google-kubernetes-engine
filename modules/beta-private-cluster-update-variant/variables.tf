@@ -960,6 +960,12 @@ variable "disable_l4_lb_firewall_reconciliation" {
   default     = null
 }
 
+variable "enable_multi_networking" {
+  type        = bool
+  description = "Whether multi-networking is enabled for this cluster"
+  default     = null
+}
+
 variable "istio" {
   description = "(Beta) Enable Istio addon"
   type        = bool
