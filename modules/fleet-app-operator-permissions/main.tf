@@ -62,9 +62,10 @@ resource "google_project_iam_member" "project_level_scope_permissions" {
 
 resource "google_gke_hub_scope_iam_member" "resource_level_scope_permissions" {
   project  = var.fleet_project_id
+  for_each = toset(concat(local.user_principals, local.group_principals))
   scope_id = var.scope_id
   role     = (var.custom_role != null ? local.resource_level_scope_role["CUSTOM"] : local.resource_level_scope_role[var.role])
-  members  = concat(local.user_principals, local.group_principals)
+  member   = each.value
 }
 
 resource "random_id" "user_rand_suffix" {
