@@ -1,4 +1,4 @@
-# Terrafrom Module for Fleet App Operator Permissions
+# Terraform Module for Fleet App Operator Permissions
 
 This module bundles different permissions (IAM and RBAC Role Bindings) required for [Fleet team management](https://cloud.google.com/kubernetes-engine/fleet-management/docs/team-management). A platform admin can use this module to set up permissions for an app operator (user or group) in a team--including usage of Fleet Scopes, Connect Gateway, logging, and metrics--based on predefined roles (VIEW, EDIT, ADMIN).
 
