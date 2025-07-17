@@ -393,6 +393,10 @@ spec:
         description: (Optional) - List of network tags applied to auto-provisioned node pools.
         varType: list(string)
         defaultValue: []
+      - name: enable_k8s_beta_apis
+        description: (Optional) - List of Kubernetes Beta APIs to enable in cluster.
+        varType: list(string)
+        defaultValue: []
       - name: stub_domains
         description: Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server
         varType: map(list(string))
