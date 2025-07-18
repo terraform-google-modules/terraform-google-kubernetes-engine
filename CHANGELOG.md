@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [38.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v37.1.0...v38.0.0) (2025-07-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=6.39:** Fleet app operator permissions custom roles ([#2377](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2377))
+
+### Features
+
+* **TPG>=6.39:** Fleet app operator permissions custom roles ([#2377](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2377)) ([c008237](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c008237839c4a29779f893f51baabdc92846b07a))
+
 ## [37.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v37.0.0...v37.1.0) (2025-07-17)
 
 
