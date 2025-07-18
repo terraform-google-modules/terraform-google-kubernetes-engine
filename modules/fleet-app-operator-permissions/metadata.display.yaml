@@ -20,7 +20,7 @@ metadata:
     config.kubernetes.io/local-config: "true"
 spec:
   info:
-    title: Terrafrom Module for Fleet App Operator Permissions
+    title: Terraform Module for Fleet App Operator Permissions
     source:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
@@ -28,6 +28,9 @@ spec:
   ui:
     input:
       variables:
+        custom_role:
+          name: custom_role
+          title: Custom Role
         fleet_project_id:
           name: fleet_project_id
           title: Fleet Project Id

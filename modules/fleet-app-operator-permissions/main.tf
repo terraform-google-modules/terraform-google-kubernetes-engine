@@ -27,15 +27,17 @@ locals {
   ))]
 
   project_level_scope_role = {
-    "VIEW"  = "roles/gkehub.scopeViewerProjectLevel"
-    "EDIT"  = "roles/gkehub.scopeEditorProjectLevel"
-    "ADMIN" = "roles/gkehub.scopeEditorProjectLevel" # Same as EDIT
+    "VIEW"   = "roles/gkehub.scopeViewerProjectLevel"
+    "EDIT"   = "roles/gkehub.scopeEditorProjectLevel"
+    "ADMIN"  = "roles/gkehub.scopeEditorProjectLevel" # Same as EDIT
+    "CUSTOM" = "roles/gkehub.scopeEditorProjectLevel" # Same as EDIT
   }
 
   resource_level_scope_role = {
-    "VIEW"  = "roles/gkehub.scopeViewer"
-    "EDIT"  = "roles/gkehub.scopeEditor"
-    "ADMIN" = "roles/gkehub.scopeAdmin"
+    "VIEW"   = "roles/gkehub.scopeViewer"
+    "EDIT"   = "roles/gkehub.scopeEditor"
+    "ADMIN"  = "roles/gkehub.scopeAdmin"
+    "CUSTOM" = "roles/gkehub.scopeViewer" # Same as VIEW
   }
 }
 
@@ -54,15 +56,16 @@ resource "google_project_iam_member" "log_view_permissions" {
 resource "google_project_iam_member" "project_level_scope_permissions" {
   project  = var.fleet_project_id
   for_each = toset(concat(local.user_principals, local.group_principals))
-  role     = local.project_level_scope_role[var.role]
+  role     = (var.custom_role != null ? local.project_level_scope_role["CUSTOM"] : local.project_level_scope_role[var.role])
   member   = each.value
 }
 
-resource "google_gke_hub_scope_iam_binding" "resource_level_scope_permissions" {
+resource "google_gke_hub_scope_iam_member" "resource_level_scope_permissions" {
   project  = var.fleet_project_id
+  for_each = toset(concat(local.user_principals, local.group_principals))
   scope_id = var.scope_id
-  role     = local.resource_level_scope_role[var.role]
-  members  = concat(local.user_principals, local.group_principals)
+  role     = (var.custom_role != null ? local.resource_level_scope_role["CUSTOM"] : local.resource_level_scope_role[var.role])
+  member   = each.value
 }
 
 resource "random_id" "user_rand_suffix" {
@@ -77,6 +80,8 @@ resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_user_role_bindings
   scope_id                   = var.scope_id
   user                       = each.key
   role {
+    # Setting both types of roles will return an error when creating the resource.
+    custom_role     = var.custom_role
     predefined_role = var.role
   }
 }
@@ -93,6 +98,8 @@ resource "google_gke_hub_scope_rbac_role_binding" "scope_rbac_group_role_binding
   scope_id                   = var.scope_id
   group                      = each.key
   role {
+    # Setting both types of roles will return an error when creating the resource.
+    custom_role     = var.custom_role
     predefined_role = var.role
   }
 }
