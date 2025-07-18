@@ -211,6 +211,10 @@
         "minNodeCount": 1
       },
       "config": {
+        "bootDisk": {
+          "diskType": "pd-standard",
+          "sizeGb": "100"
+        },
         "diskSizeGb": 100,
         "diskType": "pd-standard",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
