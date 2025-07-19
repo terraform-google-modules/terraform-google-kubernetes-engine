@@ -241,6 +241,10 @@ spec:
         description: (Optional) - List of network tags applied to auto-provisioned node pools.
         varType: list(string)
         defaultValue: []
+      - name: enable_k8s_beta_apis
+        description: (Optional) - List of Kubernetes Beta APIs to enable in cluster.
+        varType: list(string)
+        defaultValue: []
       - name: create_service_account
         description: Defines if service account specified to run nodes should be created.
         varType: bool
