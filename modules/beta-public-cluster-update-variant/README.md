@@ -403,7 +403,8 @@ The node_pools variable takes the following parameters:
 | max_pods_per_node | The maximum number of pods per node in this cluster | null | Optional |
 | strategy | The upgrade stragey to be used for upgrading the nodes. Valid values of state are: `SURGE`, `BLUE_GREEN`, or for flex-start and queued provisioning `SHORT_LIVED` | "SURGE" | Optional |
 | threads_per_core | Optional The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed | null | Optional |
-| enable_nested_virtualization | Whether the node should have nested virtualization | null | Optional |
+| enable_nested_virtualization | Level of Performance Monitoring Unit (PMU) requested. If unset, no access to the PMU is assumed. | null | Optional |
+| performance_monitoring_unit | The performance monitoring unit to be used for the node pool. Valid values are: `UNSPECIFIED`, `PMU_V1`, `PMU_V2`. | null | Optional |
 | max_surge | The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. Only works with `SURGE` strategy. | 1 | Optional |
 | max_unavailable | The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater. Only works with `SURGE` strategy. | 0 | Optional |
 | node_pool_soak_duration | Time needed after draining the entire blue pool. After this period, the blue pool will be cleaned up. By default, it is set to one hour (3600 seconds). The maximum length of the soak time is 7 days (604,800 seconds). Only works with `BLUE_GREEN` strategy. | "3600s" | Optional |
@@ -470,7 +471,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.38+
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.41+
 
 #### gcloud
 
