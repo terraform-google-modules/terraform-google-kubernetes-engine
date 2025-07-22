@@ -1019,10 +1019,11 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "advanced_machine_features" {
-      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) ? [1] : []
+      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) || lookup(each.value, "performance_monitoring_unit", null) != null ? [1] : []
       content {
         threads_per_core             = lookup(each.value, "threads_per_core", 0)
         enable_nested_virtualization = lookup(each.value, "enable_nested_virtualization", null)
+        performance_monitoring_unit  = lookup(each.value, "performance_monitoring_unit", null)
       }
     }
 
@@ -1396,10 +1397,11 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     dynamic "advanced_machine_features" {
-      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) ? [1] : []
+      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) || lookup(each.value, "performance_monitoring_unit", null) != null ? [1] : []
       content {
         threads_per_core             = lookup(each.value, "threads_per_core", 0)
         enable_nested_virtualization = lookup(each.value, "enable_nested_virtualization", null)
+        performance_monitoring_unit  = lookup(each.value, "performance_monitoring_unit", null)
       }
     }
 
