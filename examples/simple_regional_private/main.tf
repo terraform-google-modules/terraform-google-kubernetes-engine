@@ -51,6 +51,7 @@ module "gke" {
   default_max_pods_per_node   = 20
   remove_default_node_pool    = true
   deletion_protection         = false
+  enable_k8s_beta_apis        = var.enable_k8s_beta_apis
 
   node_pools = [
     {
