@@ -97,6 +97,9 @@ spec:
         enable_fqdn_network_policy:
           name: enable_fqdn_network_policy
           title: Enable Fqdn Network Policy
+        enable_k8s_beta_apis:
+          name: enable_k8s_beta_apis
+          title: Enable K8s Beta Apis
         enable_l4_ilb_subsetting:
           name: enable_l4_ilb_subsetting
           title: Enable L4 Ilb Subsetting
