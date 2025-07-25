@@ -229,7 +229,7 @@ resource "google_container_cluster" "primary" {
   {% if autopilot_cluster != true %}
 
   dynamic "identity_service_config" {
-    for_each = var.enable_identity_service !=null ? [var.enable_identity_service] : []
+    for_each = var.enable_identity_service != null ? [var.enable_identity_service] : []
     content {
       enabled = identity_service_config.value
     }
@@ -258,6 +258,13 @@ resource "google_container_cluster" "primary" {
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
   in_transit_encryption_config = var.in_transit_encryption_config
+
+  dynamic "network_performance_config" {
+    for_each = var.total_egress_bandwidth_tier != null ? [1] : []
+    content {
+      total_egress_bandwidth_tier = var.total_egress_bandwidth_tier
+    }
+  }
 
   dynamic "secret_manager_config" {
     for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []

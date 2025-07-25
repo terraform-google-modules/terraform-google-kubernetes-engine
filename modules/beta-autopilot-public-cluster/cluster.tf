@@ -118,6 +118,13 @@ resource "google_container_cluster" "primary" {
 
   in_transit_encryption_config = var.in_transit_encryption_config
 
+  dynamic "network_performance_config" {
+    for_each = var.total_egress_bandwidth_tier != null ? [1] : []
+    content {
+      total_egress_bandwidth_tier = var.total_egress_bandwidth_tier
+    }
+  }
+
   dynamic "secret_manager_config" {
     for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
     content {
