@@ -270,6 +270,36 @@ steps:
     - verify beta-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage teardown --verbose']
+- id: apply gke-standard-cluster
+  waitFor:
+    - init-all
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGKEStandardCluster --stage apply --verbose']
+- id: verify gke-standard-cluster
+  waitFor:
+    - apply gke-standard-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGKEStandardCluster --stage verify --verbose']
+- id: teardown gke-standard-cluster
+  waitFor:
+    - verify gke-standard-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGKEStandardCluster --stage teardown --verbose']
+- id: apply gke-autopilot-cluster
+  waitFor:
+    - init-all
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGKEAutopilotCluster --stage apply --verbose']
+- id: verify gke-autopilot-cluster
+  waitFor:
+    - apply gke-autopilot-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGKEAutopilotCluster --stage verify --verbose']
+- id: teardown gke-autopilot-cluster
+  waitFor:
+    - verify gke-autopilot-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGKEAutopilotCluster --stage teardown --verbose']
 - id: apply simple-windows-node-pool-local
   waitFor:
     - init-all
