@@ -272,7 +272,7 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage teardown --verbose']
 - id: apply gke-standard-cluster
   waitFor:
-    - init-all
+    - teardown beta-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestGKEStandardCluster --stage apply --verbose']
 - id: verify gke-standard-cluster
@@ -287,7 +287,7 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestGKEStandardCluster --stage teardown --verbose']
 - id: apply gke-autopilot-cluster
   waitFor:
-    - init-all
+    - teardown gke-standard-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestGKEAutopilotCluster --stage apply --verbose']
 - id: verify gke-autopilot-cluster
