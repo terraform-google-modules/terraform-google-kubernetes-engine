@@ -112,7 +112,11 @@ resource "google_container_cluster" "primary" {
 
   disable_l4_lb_firewall_reconciliation = var.disable_l4_lb_firewall_reconciliation
 
+  enable_multi_networking = var.enable_multi_networking
+
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+
+  in_transit_encryption_config = var.in_transit_encryption_config
 
   dynamic "secret_manager_config" {
     for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
@@ -307,6 +311,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  lifecycle {
+    precondition {
+      condition     = var.ip_range_services == null && var.kubernetes_version != "latest" ? tonumber(split(".", var.kubernetes_version)[0]) >= 1 && tonumber(split(".", var.kubernetes_version)[1]) >= 27 : true
+      error_message = "Setting ip_range_services is required for this GKE version. Please set ip_range_services or use kubernetes_version 1.27 or later."
+    }
+
+  }
 
   timeouts {
     create = lookup(var.timeouts, "create", "45m")
@@ -353,10 +364,19 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.dns_allow_external_traffic != null ? [1] : []
+    for_each = var.dns_allow_external_traffic != null || var.ip_endpoints_enabled != null ? [1] : []
     content {
-      dns_endpoint_config {
-        allow_external_traffic = var.dns_allow_external_traffic
+      dynamic "dns_endpoint_config" {
+        for_each = var.dns_allow_external_traffic != null ? [1] : []
+        content {
+          allow_external_traffic = var.dns_allow_external_traffic
+        }
+      }
+      dynamic "ip_endpoints_config" {
+        for_each = var.ip_endpoints_enabled != null ? [1] : []
+        content {
+          enabled = var.ip_endpoints_enabled
+        }
       }
     }
   }

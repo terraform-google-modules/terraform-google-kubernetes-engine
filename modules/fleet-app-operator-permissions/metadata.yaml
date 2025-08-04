@@ -20,12 +20,12 @@ metadata:
     config.kubernetes.io/local-config: "true"
 spec:
   info:
-    title: Terrafrom Module for Fleet App Operator Permissions
+    title: Terraform Module for Fleet App Operator Permissions
     source:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/fleet-app-operator-permissions
-    version: 36.3.0
+    version: 37.1.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.3.0"
@@ -34,6 +34,8 @@ spec:
     examples:
       - name: autopilot_private_firewalls
         location: examples/autopilot_private_firewalls
+      - name: confidential_autopilot_private
+        location: examples/confidential_autopilot_private
       - name: confidential_safer_cluster
         location: examples/confidential_safer_cluster
       - name: deploy_service
@@ -141,9 +143,11 @@ spec:
         varType: list(string)
         defaultValue: []
       - name: role
-        description: The principals role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`).
+        description: The principal's predefined role for the Fleet Scope (`VIEW`/`EDIT`/`ADMIN`). Either a predefined role or a custom role should be set
         varType: string
-        required: true
+      - name: custom_role
+        description: The principal's role for the Fleet Scope which is a custom Kubernetes ClusterRole. Either a predefined role or a custom role should be set
+        varType: string
     outputs:
       - name: fleet_project_id
         description: The project to which the Fleet belongs.

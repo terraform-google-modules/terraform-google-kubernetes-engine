@@ -511,6 +511,21 @@ steps:
     - verify test-confidential-safer-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestConfidentialSaferCluster --stage teardown --verbose']
+- id: apply test-confidential-autopilot-private
+  waitFor:
+    - init-all
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestConfidentialAutopilotPrivate --stage apply --verbose']
+- id: verify test-confidential-autopilot-private
+  waitFor:
+    - apply test-confidential-autopilot-private
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestConfidentialAutopilotPrivate --stage verify --verbose']
+- id: teardown test-confidential-autopilot-private
+  waitFor:
+    - verify test-confidential-autopilot-private
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestConfidentialAutopilotPrivate --stage teardown --verbose']
 tags:
 - 'ci'
 - 'integration'

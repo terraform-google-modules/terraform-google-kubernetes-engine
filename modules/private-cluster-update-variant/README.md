@@ -207,6 +207,7 @@ Then perform the following commands on the root folder:
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | `bool` | `false` | no |
 | enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
 | enable\_mesh\_certificates | Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity. | `bool` | `false` | no |
+| enable\_multi\_networking | Whether multi-networking is enabled for this cluster | `bool` | `null` | no |
 | enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | `bool` | `false` | no |
 | enable\_private\_endpoint | Whether the master's internal IP address is used as the cluster endpoint | `bool` | `false` | no |
 | enable\_private\_nodes | Whether nodes have internal IP addresses only | `bool` | `true` | no |
@@ -227,14 +228,17 @@ Then perform the following commands on the root folder:
 | gke\_backup\_agent\_config | Whether Backup for GKE agent is enabled for this cluster. | `bool` | `false` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles. | `bool` | `false` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | `bool` | `true` | no |
+| hpa\_profile | Enable the Horizontal Pod Autoscaling profile for this cluster. Values are "NONE" and "PERFORMANCE". | `string` | `""` | no |
 | http\_load\_balancing | Enable httpload balancer addon | `bool` | `true` | no |
 | identity\_namespace | The workload pool to attach all Kubernetes service accounts to. (Default value of `enabled` automatically sets project-based pool `[project_id].svc.id.goog`) | `string` | `"enabled"` | no |
+| in\_transit\_encryption\_config | Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`. | `string` | `null` | no |
 | initial\_node\_count | The number of nodes to create in this cluster's default node pool. | `number` | `0` | no |
 | insecure\_kubelet\_readonly\_port\_enabled | Whether or not to set `insecure_kubelet_readonly_port_enabled` for node pool defaults and autopilot clusters. Note: this can be set at the node pool level separately within `node_pools`. | `bool` | `null` | no |
+| ip\_endpoints\_enabled | (Optional) Controls whether to allow direct IP access. Defaults to `true`. | `bool` | `null` | no |
 | ip\_masq\_link\_local | Whether to masquerade traffic to the link-local prefix (169.254.0.0/16). | `bool` | `false` | no |
 | ip\_masq\_resync\_interval | The interval at which the agent attempts to sync its ConfigMap file from the disk. | `string` | `"60s"` | no |
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | `string` | n/a | yes |
-| ip\_range\_services | The _name_ of the secondary subnet range to use for services | `string` | n/a | yes |
+| ip\_range\_services | The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used. | `string` | `null` | no |
 | issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | `bool` | `false` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | `string` | `"latest"` | no |
 | logging\_enabled\_components | List of services to monitor: SYSTEM\_COMPONENTS, APISERVER, CONTROLLER\_MANAGER, KCP\_CONNECTION, KCP\_SSHD, KCP\_HPA, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration. | `list(string)` | `[]` | no |
@@ -355,6 +359,7 @@ The node_pools variable takes the following parameters:
 | auto_repair | Whether the nodes will be automatically repaired | true | Optional |
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
 | auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
+| storage_pools | The list of Storage Pools where boot disks are provisioned. | | Optional |
 | boot_disk_kms_key | The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. | " " | Optional |
 | cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". | "static" | Optional |
 | cpu_cfs_quota | Enforces the Pod's CPU limit. Setting this value to false means that the CPU limits for Pods are ignored | null | Optional |
@@ -395,6 +400,7 @@ The node_pools variable takes the following parameters:
 | strategy | The upgrade stragey to be used for upgrading the nodes. Valid values of state are: `SURGE`, `BLUE_GREEN`, or for flex-start and queued provisioning `SHORT_LIVED` | "SURGE" | Optional |
 | threads_per_core | Optional The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed | null | Optional |
 | enable_nested_virtualization | Whether the node should have nested virtualization | null | Optional |
+| performance_monitoring_unit | Level of Performance Monitoring Unit (PMU) requested. If unset, no access to the PMU is assumed. Values values are: `ARCHITECTURAL`, `STANDARD`, and `ENHANCED` | null | Optional |
 | max_surge | The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. Only works with `SURGE` strategy. | 1 | Optional |
 | max_unavailable | The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater. Only works with `SURGE` strategy. | 0 | Optional |
 | node_pool_soak_duration | Time needed after draining the entire blue pool. After this period, the blue pool will be cleaned up. By default, it is set to one hour (3600 seconds). The maximum length of the soak time is 7 days (604,800 seconds). Only works with `BLUE_GREEN` strategy. | "3600s" | Optional |
@@ -405,6 +411,8 @@ The node_pools variable takes the following parameters:
 | total_min_count | Total minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true. Cannot be used with per zone limits. | null | Optional |
 | name | The name of the node pool |  | Required |
 | placement_policy | Placement type to set for nodes in a node pool. Can be set as [COMPACT](https://cloud.google.com/kubernetes-engine/docs/how-to/compact-placement#overview) if desired |  | Optional |
+| policy_name | If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. |  | Optional |
+| tpu_topology | TPU placement topology for pod slice node pool.  For detail see [documentation](https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies) |  | Optional |
 | pod_range |  The name of the secondary range for pod IPs. |  | Optional |
 | node_affinity | The node affinty in the format `"{\"key\": \"compute.googleapis.com/node-group-name\", \"operator\": \"IN\", \"values\": [\"node-group-name\"]}"`. |  | Optional |
 | node_count | The number of nodes in the nodepool when autoscaling is false. Otherwise defaults to 1. Only valid for non-autoscaling clusters |  | Required |
@@ -426,10 +434,15 @@ The node_pools variable takes the following parameters:
 | reservation_affinity_key | The label key of a reservation resource. To target a SPECIFIC_RESERVATION by name, specify "compute.googleapis.com/reservation-name" as the key and specify the name of your reservation as its value. | | Optional |
 | reservation_affinity_values | The list of label values of reservation resources. For example: the name of the specific reservation when using a key of "compute.googleapis.com/reservation-name". This should be passed as comma separated string. | | Optional |
 | local_ssd_encryption_mode | specifies the method used for encrypting the local SSDs attached to the node. Valid values are: "STANDARD_ENCRYPTION" and "EPHEMERAL_KEY_ENCRYPTION" | | Optional |
+| max_run_duration | The runtime of each node in the node pool in seconds, terminated by 's'. Example: "3600s". | null | Optional |
 
 ## windows_node_pools variable
 
 The windows_node_pools variable takes the same parameters as [node_pools](#node\_pools-variable) but is reserved for provisioning Windows based node pools only. This variable is introduced to satisfy a [specific requirement](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster-windows#create_a_cluster_and_node_pools) for the presence of at least one linux based node pool in the cluster before a windows based node pool can be created.
+
+| Name | Description | Default | Requirement |
+| --- | --- | --- | --- |
+| windows_node_config_os_version | The Windows OS version to use for the windows node pool. Valid values are OS_VERSION_UNSPECIFIED, OS_VERSION_LTSC2019 and OS_VERSION_LTSC2022. | null | Optional |
 
 
 ## Requirements
@@ -452,7 +465,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
-- [Terraform Provider for GCP][terraform-provider-google] v6.33+
+- [Terraform Provider for GCP][terraform-provider-google] v6.41+
 
 #### gcloud
 

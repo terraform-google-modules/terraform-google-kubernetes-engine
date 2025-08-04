@@ -103,6 +103,9 @@ spec:
         enable_l4_ilb_subsetting:
           name: enable_l4_ilb_subsetting
           title: Enable L4 Ilb Subsetting
+        enable_multi_networking:
+          name: enable_multi_networking
+          title: Enable Multi Networking
         enable_network_egress_export:
           name: enable_network_egress_export
           title: Enable Network Egress Export
@@ -166,9 +169,15 @@ spec:
         identity_namespace:
           name: identity_namespace
           title: Identity Namespace
+        in_transit_encryption_config:
+          name: in_transit_encryption_config
+          title: In Transit Encryption Config
         insecure_kubelet_readonly_port_enabled:
           name: insecure_kubelet_readonly_port_enabled
           title: Insecure Kubelet Readonly Port Enabled
+        ip_endpoints_enabled:
+          name: ip_endpoints_enabled
+          title: Ip Endpoints Enabled
         ip_masq_link_local:
           name: ip_masq_link_local
           title: Ip Masq Link Local

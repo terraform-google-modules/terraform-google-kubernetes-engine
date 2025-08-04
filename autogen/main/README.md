@@ -1,6 +1,6 @@
 # Terraform Kubernetes Engine Module
 
-This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, IP MASQ, Network Policy, etc.{% if private_cluster %} This particular submodule creates a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters){% endif %}{% if beta_cluster %}Beta features are enabled in this submodule.{% endif %}
+This module handles opinionated Google Cloud Platform Kubernetes Engine cluster creation and configuration with Node Pools, {% if autopilot_cluster != true%}IP MASQ, {% endif %}Network Policy, etc.{% if private_cluster %} This particular submodule creates a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters){% endif %}{% if beta_cluster %}Beta features are enabled in this submodule.{% endif %}
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
@@ -8,7 +8,9 @@ The resources/services/activations/deletions that this module will create/trigge
 - Create GKE Node Pool(s) with provided configuration and attach to cluster
 - Replace the default kube-dns configmap if `stub_domains` are provided
 - Activate network policy if `network_policy` is true
+{% if autopilot_cluster != true%}
 - Add `ip-masq-agent` configmap with provided `non_masquerade_cidrs` if `configure_ip_masq` is true
+{% endif %}
 
 Sub modules are provided for creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
 
@@ -198,6 +200,7 @@ The node_pools variable takes the following parameters:
 | auto_repair | Whether the nodes will be automatically repaired | true | Optional |
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
 | auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
+| storage_pools | The list of Storage Pools where boot disks are provisioned. | | Optional |
 | boot_disk_kms_key | The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. | " " | Optional |
 | cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". | "static" | Optional |
 | cpu_cfs_quota | Enforces the Pod's CPU limit. Setting this value to false means that the CPU limits for Pods are ignored | null | Optional |
@@ -241,6 +244,7 @@ The node_pools variable takes the following parameters:
 | strategy | The upgrade stragey to be used for upgrading the nodes. Valid values of state are: `SURGE`, `BLUE_GREEN`, or for flex-start and queued provisioning `SHORT_LIVED` | "SURGE" | Optional |
 | threads_per_core | Optional The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed | null | Optional |
 | enable_nested_virtualization | Whether the node should have nested virtualization | null | Optional |
+| performance_monitoring_unit | Level of Performance Monitoring Unit (PMU) requested. If unset, no access to the PMU is assumed. Values values are: `ARCHITECTURAL`, `STANDARD`, and `ENHANCED` | null | Optional |
 | max_surge | The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. Only works with `SURGE` strategy. | 1 | Optional |
 | max_unavailable | The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater. Only works with `SURGE` strategy. | 0 | Optional |
 | node_pool_soak_duration | Time needed after draining the entire blue pool. After this period, the blue pool will be cleaned up. By default, it is set to one hour (3600 seconds). The maximum length of the soak time is 7 days (604,800 seconds). Only works with `BLUE_GREEN` strategy. | "3600s" | Optional |
@@ -251,6 +255,8 @@ The node_pools variable takes the following parameters:
 | total_min_count | Total minimum number of nodes in the NodePool. Must be >=0 and <= max_count. Should be used when autoscaling is true. Cannot be used with per zone limits. | null | Optional |
 | name | The name of the node pool |  | Required |
 | placement_policy | Placement type to set for nodes in a node pool. Can be set as [COMPACT](https://cloud.google.com/kubernetes-engine/docs/how-to/compact-placement#overview) if desired |  | Optional |
+| policy_name | If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. |  | Optional |
+| tpu_topology | TPU placement topology for pod slice node pool.  For detail see [documentation](https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies) |  | Optional |
 | pod_range |  The name of the secondary range for pod IPs. |  | Optional |
 {% if not private_cluster %}
 | enable_private_nodes |  Whether nodes have internal IP addresses only. |  | Optional |
@@ -278,10 +284,15 @@ The node_pools variable takes the following parameters:
 | reservation_affinity_key | The label key of a reservation resource. To target a SPECIFIC_RESERVATION by name, specify "compute.googleapis.com/reservation-name" as the key and specify the name of your reservation as its value. | | Optional |
 | reservation_affinity_values | The list of label values of reservation resources. For example: the name of the specific reservation when using a key of "compute.googleapis.com/reservation-name". This should be passed as comma separated string. | | Optional |
 | local_ssd_encryption_mode | specifies the method used for encrypting the local SSDs attached to the node. Valid values are: "STANDARD_ENCRYPTION" and "EPHEMERAL_KEY_ENCRYPTION" | | Optional |
+| max_run_duration | The runtime of each node in the node pool in seconds, terminated by 's'. Example: "3600s". | null | Optional |
 
 ## windows_node_pools variable
 
 The windows_node_pools variable takes the same parameters as [node_pools](#node\_pools-variable) but is reserved for provisioning Windows based node pools only. This variable is introduced to satisfy a [specific requirement](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster-windows#create_a_cluster_and_node_pools) for the presence of at least one linux based node pool in the cluster before a windows based node pool can be created.
+
+| Name | Description | Default | Requirement |
+| --- | --- | --- | --- |
+| windows_node_config_os_version | The Windows OS version to use for the windows node pool. Valid values are OS_VERSION_UNSPECIFIED, OS_VERSION_LTSC2019 and OS_VERSION_LTSC2022. | null | Optional |
 
 {% endif %}
 
@@ -306,9 +317,9 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
 {% if beta_cluster %}
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.33+
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.41+
 {% else %}
-- [Terraform Provider for GCP][terraform-provider-google] v6.33+
+- [Terraform Provider for GCP][terraform-provider-google] v6.41+
 {% endif %}
 
 #### gcloud

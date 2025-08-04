@@ -192,7 +192,11 @@ resource "google_container_cluster" "primary" {
 
   disable_l4_lb_firewall_reconciliation = var.disable_l4_lb_firewall_reconciliation
 
+  enable_multi_networking = var.enable_multi_networking
+
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+
+  in_transit_encryption_config = var.in_transit_encryption_config
 
   dynamic "secret_manager_config" {
     for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
@@ -201,6 +205,12 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "pod_autoscaling" {
+    for_each = length(var.hpa_profile) > 0 ? [1] : []
+    content {
+      hpa_profile = var.hpa_profile
+    }
+  }
 
   dynamic "enterprise_config" {
     for_each = var.enterprise_config != null ? [1] : []
@@ -391,6 +401,11 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
+    precondition {
+      condition     = var.ip_range_services == null && var.kubernetes_version != "latest" ? tonumber(split(".", var.kubernetes_version)[0]) >= 1 && tonumber(split(".", var.kubernetes_version)[1]) >= 29 : true
+      error_message = "Setting ip_range_services is required for this GKE version. Please set ip_range_services or use kubernetes_version 1.29 or later."
+    }
+
     ignore_changes = [node_pool, initial_node_count, resource_labels["asmv"]]
   }
 
@@ -503,6 +518,9 @@ resource "google_container_cluster" "primary" {
 
       metadata = local.node_pools_metadata["all"]
 
+      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", var.boot_disk_kms_key)
+
+      storage_pools = lookup(var.node_pools[0], "storage_pools", null) != null ? [var.node_pools[0].storage_pools] : []
 
       shielded_instance_config {
         enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
@@ -510,6 +528,7 @@ resource "google_container_cluster" "primary" {
       }
 
       local_ssd_encryption_mode = lookup(var.node_pools[0], "local_ssd_encryption_mode", null)
+      max_run_duration          = lookup(var.node_pools[0], "max_run_duration", null)
     }
   }
 
@@ -530,10 +549,19 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.dns_allow_external_traffic != null ? [1] : []
+    for_each = var.dns_allow_external_traffic != null || var.ip_endpoints_enabled != null ? [1] : []
     content {
-      dns_endpoint_config {
-        allow_external_traffic = var.dns_allow_external_traffic
+      dynamic "dns_endpoint_config" {
+        for_each = var.dns_allow_external_traffic != null ? [1] : []
+        content {
+          allow_external_traffic = var.dns_allow_external_traffic
+        }
+      }
+      dynamic "ip_endpoints_config" {
+        for_each = var.ip_endpoints_enabled != null ? [1] : []
+        content {
+          enabled = var.ip_endpoints_enabled
+        }
       }
     }
   }
@@ -641,7 +669,9 @@ resource "google_container_node_pool" "pools" {
   dynamic "placement_policy" {
     for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
     content {
-      type = lookup(placement_policy.value, "placement_policy", null)
+      type         = lookup(placement_policy.value, "placement_policy", null)
+      policy_name  = lookup(placement_policy.value, "policy_name", null)
+      tpu_topology = lookup(placement_policy.value, "tpu_topology", null)
     }
   }
 
@@ -833,10 +863,11 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "advanced_machine_features" {
-      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) ? [1] : []
+      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) || lookup(each.value, "performance_monitoring_unit", null) != null ? [1] : []
       content {
         threads_per_core             = lookup(each.value, "threads_per_core", 0)
         enable_nested_virtualization = lookup(each.value, "enable_nested_virtualization", null)
+        performance_monitoring_unit  = lookup(each.value, "performance_monitoring_unit", null)
       }
     }
 
@@ -885,6 +916,14 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    dynamic "windows_node_config" {
+      for_each = lookup(each.value, "windows_node_config_os_version", null) != null ? [true] : []
+
+      content {
+        osversion = lookup(each.value, "windows_node_config_os_version", null)
+      }
+    }
+
     dynamic "linux_node_config" {
       for_each = length(merge(
         local.node_pools_linux_node_configs_sysctls["all"],
@@ -920,6 +959,7 @@ resource "google_container_node_pool" "pools" {
     }
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
+    storage_pools     = lookup(each.value, "storage_pools", null) != null ? [each.value.storage_pools] : []
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
@@ -934,6 +974,7 @@ resource "google_container_node_pool" "pools" {
     }
 
     local_ssd_encryption_mode = lookup(each.value, "local_ssd_encryption_mode", null)
+    max_run_duration          = lookup(each.value, "max_run_duration", null)
   }
 
   lifecycle {
@@ -992,7 +1033,9 @@ resource "google_container_node_pool" "windows_pools" {
   dynamic "placement_policy" {
     for_each = length(lookup(each.value, "placement_policy", "")) > 0 ? [each.value] : []
     content {
-      type = lookup(placement_policy.value, "placement_policy", null)
+      type         = lookup(placement_policy.value, "placement_policy", null)
+      policy_name  = lookup(placement_policy.value, "policy_name", null)
+      tpu_topology = lookup(placement_policy.value, "tpu_topology", null)
     }
   }
 
@@ -1184,10 +1227,11 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     dynamic "advanced_machine_features" {
-      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) ? [1] : []
+      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) || lookup(each.value, "performance_monitoring_unit", null) != null ? [1] : []
       content {
         threads_per_core             = lookup(each.value, "threads_per_core", 0)
         enable_nested_virtualization = lookup(each.value, "enable_nested_virtualization", null)
+        performance_monitoring_unit  = lookup(each.value, "performance_monitoring_unit", null)
       }
     }
 
@@ -1236,8 +1280,17 @@ resource "google_container_node_pool" "windows_pools" {
       }
     }
 
+    dynamic "windows_node_config" {
+      for_each = lookup(each.value, "windows_node_config_os_version", null) != null ? [true] : []
+
+      content {
+        osversion = lookup(each.value, "windows_node_config_os_version", null)
+      }
+    }
+
 
     boot_disk_kms_key = lookup(each.value, "boot_disk_kms_key", "")
+    storage_pools     = lookup(each.value, "storage_pools", null) != null ? [each.value.storage_pools] : []
 
     shielded_instance_config {
       enable_secure_boot          = lookup(each.value, "enable_secure_boot", false)
@@ -1252,6 +1305,7 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     local_ssd_encryption_mode = lookup(each.value, "local_ssd_encryption_mode", null)
+    max_run_duration          = lookup(each.value, "max_run_duration", null)
   }
 
   lifecycle {

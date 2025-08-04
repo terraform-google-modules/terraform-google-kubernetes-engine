@@ -166,7 +166,8 @@ variable "additional_ip_range_pods" {
 
 variable "ip_range_services" {
   type        = string
-  description = "The _name_ of the secondary subnet range to use for services"
+  description = "The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used."
+  default     = null
 }
 
 variable "stack_type" {
@@ -181,6 +182,7 @@ variable "enable_cost_allocation" {
   description = "Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery"
   default     = false
 }
+
 variable "resource_usage_export_dataset_id" {
   type        = string
   description = "The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export."
@@ -207,29 +209,6 @@ variable "network_tags" {
 }
 
 
-variable "non_masquerade_cidrs" {
-  type        = list(string)
-  description = "List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading."
-  default     = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-}
-
-variable "ip_masq_resync_interval" {
-  type        = string
-  description = "The interval at which the agent attempts to sync its ConfigMap file from the disk."
-  default     = "60s"
-}
-
-variable "ip_masq_link_local" {
-  type        = bool
-  description = "Whether to masquerade traffic to the link-local prefix (169.254.0.0/16)."
-  default     = false
-}
-
-variable "configure_ip_masq" {
-  type        = bool
-  description = "Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server."
-  default     = false
-}
 
 variable "create_service_account" {
   type        = bool
@@ -445,6 +424,12 @@ variable "enable_cilium_clusterwide_network_policy" {
   default     = false
 }
 
+variable "in_transit_encryption_config" {
+  type        = string
+  description = "Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`."
+  default     = null
+}
+
 variable "security_posture_mode" {
   description = "Security posture mode. Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
   type        = string
@@ -610,6 +595,12 @@ variable "disable_l4_lb_firewall_reconciliation" {
   default     = null
 }
 
+variable "enable_multi_networking" {
+  type        = bool
+  description = "Whether multi-networking is enabled for this cluster"
+  default     = null
+}
+
 variable "allow_net_admin" {
   description = "(Optional) Enable NET_ADMIN for the cluster."
   type        = bool
@@ -650,6 +641,12 @@ variable "enterprise_config" {
 
 variable "dns_allow_external_traffic" {
   description = "(Optional) Controls whether external traffic is allowed over the dns endpoint."
+  type        = bool
+  default     = null
+}
+
+variable "ip_endpoints_enabled" {
+  description = "(Optional) Controls whether to allow direct IP access. Defaults to `true`."
   type        = bool
   default     = null
 }

@@ -157,7 +157,8 @@ variable "additional_ip_range_pods" {
 
 variable "ip_range_services" {
   type        = string
-  description = "The _name_ of the secondary subnet range to use for services"
+  description = "The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used."
+  default     = null
 }
 
 variable "stack_type" {
@@ -235,6 +236,7 @@ variable "node_pools_linux_node_configs_sysctls" {
     default-node-pool = {}
   }
 }
+
 variable "node_pools_cgroup_mode" {
   type        = map(string)
   description = "Map of strings containing cgroup node config by node-pool name"
@@ -273,6 +275,7 @@ variable "enable_cost_allocation" {
   description = "Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery"
   default     = false
 }
+
 variable "resource_usage_export_dataset_id" {
   type        = string
   description = "The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export."
@@ -568,6 +571,11 @@ variable "enable_confidential_nodes" {
   default     = false
 }
 
+variable "hpa_profile" {
+  description = "Enable the Horizontal Pod Autoscaling profile for this cluster. Values are \"NONE\" and \"PERFORMANCE\"."
+  type        = string
+  default     = ""
+}
 
 variable "enable_gcfs" {
   type        = bool
@@ -591,6 +599,12 @@ variable "enable_cilium_clusterwide_network_policy" {
   type        = bool
   description = "Enable Cilium Cluster Wide Network Policies on the cluster"
   default     = false
+}
+
+variable "in_transit_encryption_config" {
+  type        = string
+  description = "Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`."
+  default     = null
 }
 
 variable "security_posture_mode" {
@@ -892,6 +906,12 @@ variable "disable_l4_lb_firewall_reconciliation" {
   default     = null
 }
 
+variable "enable_multi_networking" {
+  type        = bool
+  description = "Whether multi-networking is enabled for this cluster"
+  default     = null
+}
+
 variable "enable_identity_service" {
   type        = bool
   description = "(Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
@@ -932,6 +952,12 @@ variable "enterprise_config" {
 
 variable "dns_allow_external_traffic" {
   description = "(Optional) Controls whether external traffic is allowed over the dns endpoint."
+  type        = bool
+  default     = null
+}
+
+variable "ip_endpoints_enabled" {
+  description = "(Optional) Controls whether to allow direct IP access. Defaults to `true`."
   type        = bool
   default     = null
 }

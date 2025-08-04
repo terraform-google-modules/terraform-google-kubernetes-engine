@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/safer-cluster
-    version: 36.3.0
+    version: 37.1.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -34,6 +34,8 @@ spec:
     examples:
       - name: autopilot_private_firewalls
         location: examples/autopilot_private_firewalls
+      - name: confidential_autopilot_private
+        location: examples/confidential_autopilot_private
       - name: confidential_safer_cluster
         location: examples/confidential_safer_cluster
       - name: deploy_service
@@ -207,9 +209,8 @@ spec:
         varType: string
         required: true
       - name: ip_range_services
-        description: The _name_ of the secondary subnet range to use for services
+        description: The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used.
         varType: string
-        required: true
       - name: initial_node_count
         description: The number of nodes to create in this cluster's default node pool.
         varType: number
@@ -423,6 +424,10 @@ spec:
         defaultValue: true
       - name: filestore_csi_driver
         description: The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes
+        varType: bool
+        defaultValue: false
+      - name: gcs_fuse_csi_driver
+        description: Whether GCE FUSE CSI driver is enabled for this cluster.
         varType: bool
         defaultValue: false
       - name: add_cluster_firewall_rules

@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-autopilot-public-cluster
-    version: 36.3.0
+    version: 37.1.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -34,6 +34,8 @@ spec:
     examples:
       - name: autopilot_private_firewalls
         location: examples/autopilot_private_firewalls
+      - name: confidential_autopilot_private
+        location: examples/confidential_autopilot_private
       - name: confidential_safer_cluster
         location: examples/confidential_safer_cluster
       - name: deploy_service
@@ -217,9 +219,8 @@ spec:
         varType: list(string)
         defaultValue: []
       - name: ip_range_services
-        description: The _name_ of the secondary subnet range to use for services
+        description: The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used.
         varType: string
-        required: true
       - name: stack_type
         description: The stack type to use for this cluster. Either `IPV4` or `IPV4_IPV6`. Defaults to `IPV4`.
         varType: string
@@ -244,25 +245,6 @@ spec:
         description: (Optional) - List of network tags applied to auto-provisioned node pools.
         varType: list(string)
         defaultValue: []
-      - name: non_masquerade_cidrs
-        description: List of strings in CIDR notation that specify the IP address ranges that do not use IP masquerading.
-        varType: list(string)
-        defaultValue:
-          - 10.0.0.0/8
-          - 172.16.0.0/12
-          - 192.168.0.0/16
-      - name: ip_masq_resync_interval
-        description: The interval at which the agent attempts to sync its ConfigMap file from the disk.
-        varType: string
-        defaultValue: 60s
-      - name: ip_masq_link_local
-        description: Whether to masquerade traffic to the link-local prefix (169.254.0.0/16).
-        varType: bool
-        defaultValue: false
-      - name: configure_ip_masq
-        description: Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server.
-        varType: bool
-        defaultValue: false
       - name: create_service_account
         description: Defines if service account specified to run nodes should be created.
         varType: bool
@@ -377,6 +359,9 @@ spec:
         description: Enable Cilium Cluster Wide Network Policies on the cluster
         varType: bool
         defaultValue: false
+      - name: in_transit_encryption_config
+        description: Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`.
+        varType: string
       - name: security_posture_mode
         description: Security posture mode. Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`.
         varType: string
@@ -458,6 +443,9 @@ spec:
       - name: disable_l4_lb_firewall_reconciliation
         description: Disable L4 Load Balancer firewall reconciliation
         varType: bool
+      - name: enable_multi_networking
+        description: Whether multi-networking is enabled for this cluster
+        varType: bool
       - name: allow_net_admin
         description: (Optional) Enable NET_ADMIN for the cluster.
         varType: bool
@@ -477,6 +465,9 @@ spec:
         varType: string
       - name: dns_allow_external_traffic
         description: (Optional) Controls whether external traffic is allowed over the dns endpoint.
+        varType: bool
+      - name: ip_endpoints_enabled
+        description: (Optional) Controls whether to allow direct IP access. Defaults to `true`.
         varType: bool
     outputs:
       - name: ca_certificate

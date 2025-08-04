@@ -138,7 +138,8 @@ variable "ip_range_pods" {
 
 variable "ip_range_services" {
   type        = string
-  description = "The _name_ of the secondary subnet range to use for services"
+  description = "The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used."
+  default     = null
 }
 
 variable "initial_node_count" {
@@ -460,6 +461,12 @@ variable "gce_pd_csi_driver" {
 variable "filestore_csi_driver" {
   type        = bool
   description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
+  default     = false
+}
+
+variable "gcs_fuse_csi_driver" {
+  type        = bool
+  description = "Whether GCE FUSE CSI driver is enabled for this cluster."
   default     = false
 }
 
