@@ -83,7 +83,7 @@ variable "addons_config" {
 variable "cluster_ipv4_cidr" {
   description = "The IP address range of the Kubernetes pods in this cluster in CIDR notation (e.g. 10.96.0.0/14). Leave blank to have one automatically chosen or specify a /14 block in 10.0.0.0/8. This field will only work for routes-based clusters, where ip_allocation_policy is not defined."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "cluster_autoscaling" {

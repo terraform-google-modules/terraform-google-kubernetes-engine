@@ -41,6 +41,10 @@ module "gke" {
   network    = module.gcp-network.network_self_link
   subnetwork = module.gcp-network.subnets_self_links[index(module.gcp-network.subnets_names, local.subnet_name)]
 
+  ip_allocation_policy = {
+    cluster_secondary_range_name  = local.pods_range_name
+    services_secondary_range_name = local.svc_range_name
+  }
 
   private_cluster_config = {
     enable_private_endpoint = true
