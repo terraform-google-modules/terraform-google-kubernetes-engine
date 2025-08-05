@@ -62,6 +62,7 @@ func TestWorkloadMetadataConfig(t *testing.T) {
 
 		// Cluster Assertions
 		testutils.TGKEAssertGolden(assert, g, &cluster, []string{"default-pool"}, []string{"monitoringConfig.componentConfig.enableComponents"}) // TODO: enableComponents is UL
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, cluster.Get("status").String())
 
 		// IAM Assertions
 		// CAI IAM data can be stale
