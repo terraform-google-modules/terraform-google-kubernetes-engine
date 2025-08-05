@@ -64,6 +64,7 @@ func TestStubDomainsUpstreamNameservers(t *testing.T) {
 
 		// Cluster Assertions
 		testutils.TGKEAssertGolden(assert, g, &cluster, []string{"default-pool"}, []string{"monitoringConfig.componentConfig.enableComponents"}) // TODO: enableComponents is UL
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, cluster.Get("status").String())
 
 		// K8s Assertions
 		// CAI does not include k8s.io/ConfigMap
