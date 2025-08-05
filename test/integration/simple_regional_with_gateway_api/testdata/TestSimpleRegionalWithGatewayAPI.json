@@ -248,7 +248,6 @@
   "shieldedNodes": {
     "enabled": true
   },
-  "status": "RUNNING",
   "subnetwork": "cft-gke-test-RANDOM_STRING",
   "verticalPodAutoscaling": {},
   "workloadIdentityConfig": {
