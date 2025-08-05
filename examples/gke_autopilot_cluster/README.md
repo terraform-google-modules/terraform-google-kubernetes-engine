@@ -1,6 +1,6 @@
 # GKE Autopilot Cluster
 
-This example creates a GKR private Autopilot clusterwith beta features.
+This example creates a GKE private Autopilot clusterwith beta features.
 For a full example see [simple_autopilot_private](../simple_autopilot_private/README.md) example.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

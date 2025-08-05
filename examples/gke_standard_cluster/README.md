@@ -1,6 +1,6 @@
 # GKE Standard Cluster and Node Pool
 
-This example creates a GKR private cluster and Node Pool with beta features.
+This example creates a GKE private cluster and Node Pool with beta features.
 For a full example see [simple_regional_private_beta](../simple_regional_private_beta/README.md) example.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
