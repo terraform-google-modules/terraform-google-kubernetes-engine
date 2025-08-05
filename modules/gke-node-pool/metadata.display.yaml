@@ -1,0 +1,87 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-kubernetes-engine-gke-node-pool-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: GKE Node Pool
+    source:
+      repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
+      sourceType: git
+      dir: /modules/gke-node-pool
+  ui:
+    input:
+      variables:
+        autoscaling:
+          name: autoscaling
+          title: Autoscaling
+        cluster:
+          name: cluster
+          title: Cluster
+        initial_node_count:
+          name: initial_node_count
+          title: Initial Node Count
+        kubernetes_version:
+          name: kubernetes_version
+          title: Kubernetes Version
+        location:
+          name: location
+          title: Location
+        management:
+          name: management
+          title: Management
+        max_pods_per_node:
+          name: max_pods_per_node
+          title: Max Pods Per Node
+        name:
+          name: name
+          title: Name
+        name_prefix:
+          name: name_prefix
+          title: Name Prefix
+        network_config:
+          name: network_config
+          title: Network Config
+        node_config:
+          name: node_config
+          title: Node Config
+        node_count:
+          name: node_count
+          title: Node Count
+        node_locations:
+          name: node_locations
+          title: Node Locations
+        placement_policy:
+          name: placement_policy
+          title: Placement Policy
+        project:
+          name: project
+          title: Project
+        queue_provisioning:
+          name: queue_provisioning
+          title: Queue Provisioning
+        queued_provisioning:
+          name: queued_provisioning
+          title: Queued Provisioning
+        timeouts:
+          name: timeouts
+          title: Timeouts
+        upgrade_settings:
+          name: upgrade_settings
+          title: Upgrade Settings
