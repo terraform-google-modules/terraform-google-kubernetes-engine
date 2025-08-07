@@ -948,7 +948,7 @@ resource "google_container_node_pool" "pools" {
           local.node_pools_linux_node_configs_sysctls["all"],
           local.node_pools_linux_node_configs_sysctls[each.value["name"]]
         )
-        cgroup_mode = coalesce(local.node_pools_cgroup_mode[each.value["name"]], local.node_pools_cgroup_mode["all"], null)
+        cgroup_mode = try(coalesce(local.node_pools_cgroup_mode[each.value["name"]], local.node_pools_cgroup_mode["all"]), null)
         dynamic "hugepages_config" {
           for_each = length(merge(
             local.node_pools_hugepage_size_2m["all"] == "" ? {} : { cgroup = local.node_pools_hugepage_size_2m["all"] },
