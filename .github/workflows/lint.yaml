@@ -58,11 +58,6 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - name: 🔖Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: 📝Validate PR title with commitlint
-        uses: kevintyj/prlint@v2
-        with:
-          download-dependencies: node
+      - uses: lw-ci/action-conventional-pull-request@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
