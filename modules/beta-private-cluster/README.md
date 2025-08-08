@@ -211,6 +211,7 @@ Then perform the following commands on the root folder:
 | gce\_pd\_csi\_driver | Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. | `bool` | `true` | no |
 | gcp\_public\_cidrs\_access\_enabled | Allow access through Google Cloud public IP addresses | `bool` | `null` | no |
 | gcs\_fuse\_csi\_driver | Whether GCE FUSE CSI driver is enabled for this cluster. | `bool` | `false` | no |
+| gke\_auto\_upgrade\_config\_patch\_mode | The selected auto-upgrade patch type. Accepted values are: `ACCELERATED`: Upgrades to the latest available patch version in a given minor and release channel. | `string` | `null` | no |
 | gke\_backup\_agent\_config | Whether Backup for GKE agent is enabled for this cluster. | `bool` | `false` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles. | `bool` | `false` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | `bool` | `true` | no |

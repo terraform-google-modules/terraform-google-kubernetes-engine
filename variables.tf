@@ -601,6 +601,12 @@ variable "enable_cilium_clusterwide_network_policy" {
   default     = false
 }
 
+variable "gke_auto_upgrade_config_patch_mode" {
+  type        = string
+  description = "The selected auto-upgrade patch type. Accepted values are: `ACCELERATED`: Upgrades to the latest available patch version in a given minor and release channel."
+  default     = null
+}
+
 variable "in_transit_encryption_config" {
   type        = string
   description = "Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`."

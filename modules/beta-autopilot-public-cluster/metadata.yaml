@@ -359,6 +359,9 @@ spec:
         description: Enable Cilium Cluster Wide Network Policies on the cluster
         varType: bool
         defaultValue: false
+      - name: gke_auto_upgrade_config_patch_mode
+        description: "The selected auto-upgrade patch type. Accepted values are: `ACCELERATED`: Upgrades to the latest available patch version in a given minor and release channel."
+        varType: string
       - name: in_transit_encryption_config
         description: Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`.
         varType: string
