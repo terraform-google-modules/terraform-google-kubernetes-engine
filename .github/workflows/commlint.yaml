@@ -19,7 +19,7 @@ name: 'pull-request'
 
 on:
   pull_request:
-    types: [opened, reopened, edited]
+    types: [opened, edited, reopened, synchronize]
     branches:
       - main
 
