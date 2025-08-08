@@ -55,4 +55,9 @@ jobs:
   commitlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: ahmadnassri/action-commit-lint@v2
+      - name: 🔖Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: 📝Validate PR title with commitlint
+        uses: kevintyj/prlint@v2
