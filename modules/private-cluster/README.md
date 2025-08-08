@@ -413,6 +413,7 @@ The node_pools variable takes the following parameters:
 | reservation_affinity_values | The list of label values of reservation resources. For example: the name of the specific reservation when using a key of "compute.googleapis.com/reservation-name". This should be passed as comma separated string. | | Optional |
 | local_ssd_encryption_mode | specifies the method used for encrypting the local SSDs attached to the node. Valid values are: "STANDARD_ENCRYPTION" and "EPHEMERAL_KEY_ENCRYPTION" | | Optional |
 | max_run_duration | The runtime of each node in the node pool in seconds, terminated by 's'. Example: "3600s". | null | Optional |
+| flex_start | Enables Flex Start provisioning model for the node pool | null | Optional |
 
 ## windows_node_pools variable
 
