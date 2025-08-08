@@ -19,7 +19,7 @@ name: 'prlint'
 
 on:
   pull_request:
-    types: [edited]
+    types: [opened, reopened, edited]
     branches:
       - main
 
