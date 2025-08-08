@@ -54,7 +54,5 @@ jobs:
 
   commitlint:
     runs-on: ubuntu-latest
-    name: Conventional Commitlint
     steps:
-      - name: Conventional Commitlint
-        uses: opensource-nepal/commitlint@v1
+      - uses: ahmadnassri/action-commit-lint@v2
