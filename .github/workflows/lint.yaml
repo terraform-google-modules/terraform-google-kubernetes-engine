@@ -53,6 +53,9 @@ jobs:
           ENABLE_BPMETADATA: 1
 
   commitlint:
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: 🔖Checkout repository
