@@ -27,7 +27,7 @@ permissions:
   contents: read
 
 jobs:
-  conventional:
+  commitlint:
     runs-on: ubuntu-latest
     steps:
       - uses: lw-ci/action-conventional-pull-request@v3
