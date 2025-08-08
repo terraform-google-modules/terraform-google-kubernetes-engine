@@ -50,6 +50,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "gke_auto_upgrade_config" {
+    for_each = var.gke_auto_upgrade_config_patch_mode != null ? [1] : []
+
+    content {
+      patch_mode = var.gke_auto_upgrade_config_patch_mode
+    }
+  }
+
   dynamic "cost_management_config" {
     for_each = var.enable_cost_allocation ? [1] : []
     content {
