@@ -52,3 +52,9 @@ jobs:
         env:
           ENABLE_BPMETADATA: 1
 
+  commitlint:
+    runs-on: ubuntu-latest
+    name: Conventional Commitlint
+    steps:
+      - name: Conventional Commitlint
+        uses: opensource-nepal/commitlint@v1
