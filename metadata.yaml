@@ -51,6 +51,12 @@ spec:
         location: modules/fleet-app-operator-permissions
       - name: fleet-membership
         location: modules/fleet-membership
+      - name: gke-autopilot-cluster
+        location: modules/gke-autopilot-cluster
+      - name: gke-node-pool
+        location: modules/gke-node-pool
+      - name: gke-standard-cluster
+        location: modules/gke-standard-cluster
       - name: hub-legacy
         location: modules/hub-legacy
       - name: private-cluster
@@ -76,6 +82,10 @@ spec:
         location: examples/deploy_service
       - name: disable_client_cert
         location: examples/disable_client_cert
+      - name: gke_autopilot_cluster
+        location: examples/gke_autopilot_cluster
+      - name: gke_standard_cluster
+        location: examples/gke_standard_cluster
       - name: island_cluster_anywhere_in_gcp_design
         location: examples/island_cluster_anywhere_in_gcp_design
       - name: island_cluster_with_vm_router

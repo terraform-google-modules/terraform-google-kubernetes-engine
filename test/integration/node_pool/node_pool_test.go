@@ -61,6 +61,7 @@ func TestNodePool(t *testing.T) {
 
 		// Cluster (and listed node pools) Assertions
 		testutils.TGKEAssertGolden(assert, g, &cluster, []string{"pool-01", "pool-02", "pool-03", "pool-04", "pool-05"}, []string{"monitoringConfig.componentConfig.enableComponents"}) // TODO: enableComponents is UL
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, cluster.Get("status").String())
 
 		// K8s Assertions
 		assert.JSONEq(`[
