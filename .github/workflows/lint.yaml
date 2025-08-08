@@ -64,3 +64,5 @@ jobs:
           fetch-depth: 0
       - name: 📝Validate PR title with commitlint
         uses: kevintyj/prlint@v2
+        with:
+          download-dependencies: node
