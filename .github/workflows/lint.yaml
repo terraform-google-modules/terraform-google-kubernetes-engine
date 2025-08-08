@@ -51,13 +51,3 @@ jobs:
       - run: docker run --rm -e ENABLE_BPMETADATA -v ${{ github.workspace }}:/workspace ${{ steps.variables.outputs.dev-tools }} /usr/local/bin/test_lint.sh
         env:
           ENABLE_BPMETADATA: 1
-
-  commitlint:
-    permissions:
-      contents: read
-      pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: lw-ci/action-conventional-pull-request@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
