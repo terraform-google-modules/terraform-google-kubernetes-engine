@@ -439,6 +439,9 @@ spec:
         timeouts:
           name: timeouts
           title: Timeouts
+        total_egress_bandwidth_tier:
+          name: total_egress_bandwidth_tier
+          title: Total Egress Bandwidth Tier
         upstream_nameservers:
           name: upstream_nameservers
           title: Upstream Nameservers

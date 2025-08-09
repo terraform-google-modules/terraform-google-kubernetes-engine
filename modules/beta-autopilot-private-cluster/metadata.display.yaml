@@ -310,6 +310,9 @@ spec:
         timeouts:
           name: timeouts
           title: Timeouts
+        total_egress_bandwidth_tier:
+          name: total_egress_bandwidth_tier
+          title: Total Egress Bandwidth Tier
         workload_config_audit_mode:
           name: workload_config_audit_mode
           title: Workload Config Audit Mode

@@ -649,6 +649,12 @@ variable "in_transit_encryption_config" {
   default     = null
 }
 
+variable "total_egress_bandwidth_tier" {
+  type        = string
+  description = "Specifies the total network bandwidth tier for NodePools in the cluster. Valid values are `TIER_UNSPECIFIED` and `TIER_1`. Defaults to `TIER_UNSPECIFIED`."
+  default     = null
+}
+
 variable "security_posture_mode" {
   description = "Security posture mode. Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
   type        = string
