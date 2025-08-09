@@ -761,8 +761,8 @@ spec:
         description: RBACBindingConfig allows user to restrict ClusterRoleBindings an RoleBindings that can be created.
         varType: |-
           object({
-              enable_insecure_binding_system_unauthenticated = optional(bool, false)
-              enable_insecure_binding_system_authenticated   = optional(bool, false)
+              enable_insecure_binding_system_unauthenticated = optional(bool, null)
+              enable_insecure_binding_system_authenticated   = optional(bool, null)
             })
         required: true
     outputs:
