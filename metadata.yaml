@@ -24,7 +24,7 @@ spec:
     source:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
-    version: 37.1.0
+    version: 38.0.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
