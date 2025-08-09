@@ -145,6 +145,9 @@ spec:
         enable_intranode_visibility:
           name: enable_intranode_visibility
           title: Enable Intranode Visibility
+        enable_k8s_beta_apis:
+          name: enable_k8s_beta_apis
+          title: Enable K8s Beta Apis
         enable_kubernetes_alpha:
           name: enable_kubernetes_alpha
           title: Enable Kubernetes Alpha
