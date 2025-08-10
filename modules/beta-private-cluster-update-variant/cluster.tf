@@ -742,6 +742,8 @@ locals {
     "local_ssd_encryption_mode",
     "max_run_duration",
     "flex_start",
+    "local_ssd_ephemeral_storage_count",
+    "data_cache_count",
   ]
 }
 
@@ -970,9 +972,10 @@ resource "google_container_node_pool" "pools" {
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
     dynamic "ephemeral_storage_local_ssd_config" {
-      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 ? [each.value.local_ssd_ephemeral_storage_count] : []
+      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 || lookup(each.value, "data_cache_count", 0) > 0 ? [1] : []
       content {
-        local_ssd_count = ephemeral_storage_local_ssd_config.value
+        local_ssd_count  = lookup(each.value, "local_ssd_ephemeral_storage_count", 0)
+        data_cache_count = lookup(each.value, "data_cache_count", 0)
       }
     }
     dynamic "ephemeral_storage_config" {
@@ -1349,9 +1352,10 @@ resource "google_container_node_pool" "windows_pools" {
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
     dynamic "ephemeral_storage_local_ssd_config" {
-      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 ? [each.value.local_ssd_ephemeral_storage_count] : []
+      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 || lookup(each.value, "data_cache_count", 0) > 0 ? [1] : []
       content {
-        local_ssd_count = ephemeral_storage_local_ssd_config.value
+        local_ssd_count  = lookup(each.value, "local_ssd_ephemeral_storage_count", 0)
+        data_cache_count = lookup(each.value, "data_cache_count", 0)
       }
     }
     dynamic "ephemeral_storage_config" {
