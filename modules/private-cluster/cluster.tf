@@ -242,11 +242,9 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  dynamic "secret_manager_config" {
-    for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
-    content {
-      enabled = secret_manager_config.value
-    }
+
+  secret_manager_config {
+    enabled = var.enable_secret_manager_addon
   }
 
   dynamic "pod_autoscaling" {

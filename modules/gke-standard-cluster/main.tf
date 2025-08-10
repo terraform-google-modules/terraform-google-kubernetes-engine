@@ -1051,11 +1051,8 @@ resource "google_container_cluster" "main" {
     }
   }
 
-  dynamic "secret_manager_config" {
-    for_each = var.secret_manager_config != null ? [var.secret_manager_config] : []
-    content {
-      enabled = secret_manager_config.value.enabled
-    }
+  secret_manager_config {
+    enabled = var.secret_manager_config != null ? var.secret_manager_config.enabled : false
   }
 
   dynamic "authenticator_groups_config" {
