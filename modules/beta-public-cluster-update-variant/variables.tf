@@ -1046,4 +1046,8 @@ variable "rbac_binding_config" {
     enable_insecure_binding_system_authenticated   = optional(bool, null)
   })
   description = "RBACBindingConfig allows user to restrict ClusterRoleBindings an RoleBindings that can be created."
+  default = {
+    enable_insecure_binding_system_unauthenticated = null
+    enable_insecure_binding_system_authenticated   = null
+  }
 }
