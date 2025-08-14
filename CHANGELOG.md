@@ -6,6 +6,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [38.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v37.1.0...v38.0.0) (2025-08-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* add data cache count ([#2404](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2404))
+* **TPG>=6.42:** add support for gke_auto_upgrade_config ([#2395](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2395))
+* add support for flex start ([#2386](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2386))
+* **TPG>=6.41:** add support performance_monitoring_unit ([#2391](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2391))
+* **TPG>=6.39:** Fleet app operator permissions custom roles ([#2377](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2377))
+
+### Features
+
+* add data cache count ([#2404](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2404)) ([85c0487](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/85c0487a8e96d9f77bab5108329c6d7582b392d3))
+* add support for cluster level total_egress_bandwidth_tier ([#2394](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2394)) ([1b69e34](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1b69e34f83511f4e63d342439102acda59128c8f))
+* add support for flex start ([#2386](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2386)) ([c0c80e6](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c0c80e6c5b97e235d76285ab49d2c5808f2d42af))
+* Simple GKE modules for ADC ([#2397](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2397)) ([1859b17](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/1859b172249ec604b0e6edc8bce3cb003f9f6603))
+* **TPG>=6.39:** Fleet app operator permissions custom roles ([#2377](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2377)) ([c008237](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c008237839c4a29779f893f51baabdc92846b07a))
+* **TPG>=6.41:** add support performance_monitoring_unit ([#2391](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2391)) ([e5ade9c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e5ade9c674e5cc32022f51062ec5952eb3c2f5cb))
+* **TPG>=6.42:** add support for gke_auto_upgrade_config ([#2395](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2395)) ([19a0929](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/19a09296015c512794f13f4f6b821a4e67459870))
+
+
+### Bug Fixes
+
+* wrap cgroup_mode coalesce with try() to handle empty values ([#2396](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2396)) ([6148cb7](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6148cb7c9f15dbcffbb895bae44a9c0cad6ad660))
+
 ## [37.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v37.0.0...v37.1.0) (2025-07-17)
 
 
