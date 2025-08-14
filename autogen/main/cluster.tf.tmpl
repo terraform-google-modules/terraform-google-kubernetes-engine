@@ -237,7 +237,7 @@ resource "google_container_cluster" "primary" {
   {% if autopilot_cluster != true %}
 
   dynamic "identity_service_config" {
-    for_each = var.enable_identity_service !=null ? [var.enable_identity_service] : []
+    for_each = var.enable_identity_service != null ? [var.enable_identity_service] : []
     content {
       enabled = identity_service_config.value
     }
@@ -266,6 +266,13 @@ resource "google_container_cluster" "primary" {
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
   in_transit_encryption_config = var.in_transit_encryption_config
+
+  dynamic "network_performance_config" {
+    for_each = var.total_egress_bandwidth_tier != null ? [1] : []
+    content {
+      total_egress_bandwidth_tier = var.total_egress_bandwidth_tier
+    }
+  }
 
   dynamic "secret_manager_config" {
     for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
@@ -856,6 +863,8 @@ locals {
     "local_ssd_encryption_mode",
     "max_run_duration",
     "flex_start",
+    "local_ssd_ephemeral_storage_count",
+    "ephemeral_storage_local_ssd_data_cache_count",
   ]
 }
 
@@ -1107,14 +1116,15 @@ resource "google_container_node_pool" "windows_pools" {
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
 
     dynamic "ephemeral_storage_local_ssd_config" {
-      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 ? [each.value.local_ssd_ephemeral_storage_count] : []
+      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 || lookup(each.value, "ephemeral_storage_local_ssd_data_cache_count", 0) > 0 ? [1] : []
       content {
-        local_ssd_count = ephemeral_storage_local_ssd_config.value
+        local_ssd_count  = lookup(each.value, "local_ssd_ephemeral_storage_count", 0)
+        data_cache_count = lookup(each.value, "ephemeral_storage_local_ssd_data_cache_count", 0)
       }
     }
     {% if beta_cluster %}
     dynamic "ephemeral_storage_config" {
-      for_each = lookup(each.value, "local_ssd_ephemeral_count",0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
+      for_each = lookup(each.value, "local_ssd_ephemeral_count", 0) > 0 ? [each.value.local_ssd_ephemeral_count] : []
       content {
         local_ssd_count = ephemeral_storage_config.value
       }
