@@ -67,7 +67,7 @@ jobs:
       - name: Install commitlint
         run: |
           npm install -D @commitlint/cli @commitlint/config-conventional
-          echo "export default { extends: ['@commitlint/config-conventional'] };" > commitlint.config.js
+          echo "module.exports = { extends: ['@commitlint/config-conventional'], };" > commitlint.config.js
       - name: Print versions
         run: |
           git --version
