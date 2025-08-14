@@ -20,8 +20,8 @@ name: 'lint'
 on:
   workflow_dispatch:
   pull_request:
-    branches:
-      - main
+    types: [opened, edited, reopened, synchronize]
+    branches: [main]
 
 permissions:
   contents: read
@@ -50,7 +50,6 @@ jobs:
       - run: docker run --rm -e ENABLE_BPMETADATA -v ${{ github.workspace }}:/workspace ${{ steps.variables.outputs.dev-tools }} module-swapper
         env:
           ENABLE_BPMETADATA: 1
-
       - run: docker run --rm -e ENABLE_BPMETADATA -v ${{ github.workspace }}:/workspace ${{ steps.variables.outputs.dev-tools }} /usr/local/bin/test_lint.sh
         env:
           ENABLE_BPMETADATA: 1
