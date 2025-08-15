@@ -43,3 +43,6 @@ variable "compute_engine_service_account" {
   description = "Service account to associate to the nodes in the cluster"
 }
 
+variable "enable_k8s_beta_apis" {
+  description = "K8S beta apis to enable within the cluster"
+}
