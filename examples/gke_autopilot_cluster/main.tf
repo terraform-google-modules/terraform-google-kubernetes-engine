@@ -33,7 +33,7 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source = "../../modules/gke-autopilot-cluster"
+  source = "terraform-google-modules/kubernetes-engine/google//modules/gke-autopilot-cluster"
 
   project    = var.project_id
   name       = "${local.cluster_type}-cluster"

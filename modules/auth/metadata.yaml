@@ -151,3 +151,11 @@ spec:
         description: A kubeconfig file configured to access the GKE cluster.
       - name: token
         description: The token value for use with the kubernetes provider.
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/editor
+    providerVersions:
+      - source: hashicorp/google
+        version: ">= 4.47.0, != 4.49.0, != 4.50.0, < 7"

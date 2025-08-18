@@ -76,13 +76,14 @@ docker_test_lint:
 		/usr/local/bin/test_lint.sh
 
 # Generate documentation
+# Removed `display` for https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/issues/3140
 .PHONY: docker_generate_docs
 docker_generate_docs:
 	$(DOCKER_BIN) run --rm -it \
 		-e ENABLE_BPMETADATA=1 \
 		-v "$(CURDIR)":/workspace \
 		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
-		/bin/bash -c 'source /usr/local/bin/task_helper_functions.sh && generate_docs display'
+		/bin/bash -c 'source /usr/local/bin/task_helper_functions.sh && generate_docs --per-module-requirements'
 
 # Generate files from autogen
 .PHONY: docker_generate_modules

@@ -73,9 +73,6 @@ spec:
         project:
           name: project
           title: Project
-        queue_provisioning:
-          name: queue_provisioning
-          title: Queue Provisioning
         queued_provisioning:
           name: queued_provisioning
           title: Queued Provisioning
