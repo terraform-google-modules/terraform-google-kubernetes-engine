@@ -32,7 +32,6 @@ resource "google_container_cluster" "primary" {
   cluster_ipv4_cidr   = var.cluster_ipv4_cidr
   network             = "projects/${local.network_project_id}/global/networks/${var.network}"
   deletion_protection = var.deletion_protection
-  initial_node_count  = length(var.node_pools) == 0 ? var.initial_node_count : null
 
   dynamic "enable_k8s_beta_apis" {
     for_each = length(var.enable_k8s_beta_apis) > 0 ? [1] : []
@@ -40,6 +39,8 @@ resource "google_container_cluster" "primary" {
       enabled_apis = var.enable_k8s_beta_apis
     }
   }
+
+  initial_node_count = length(var.node_pools) == 0 ? var.initial_node_count : null
 
   dynamic "network_policy" {
     for_each = local.cluster_network_policy

@@ -265,6 +265,9 @@ spec:
         ray_operator_config:
           name: ray_operator_config
           title: Ray Operator Config
+        rbac_binding_config:
+          name: rbac_binding_config
+          title: Rbac Binding Config
         region:
           name: region
           title: Region
