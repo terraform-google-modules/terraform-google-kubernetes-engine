@@ -52,6 +52,30 @@ locals {
     "roles/gkehub.admin",
     "roles/privateca.admin",
   ]
+
+  # Includes placeholders for https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/issues/3141
+  per_module_roles = {
+    root                                = ["roles/editor"],
+    auth                                = ["roles/editor"],
+    beta-autopilot-private-cluster      = ["roles/editor"],
+    beta-autopilot-public-cluster       = ["roles/editor"],
+    beta-private-cluster                = ["roles/editor"],
+    beta-private-cluster-update-variant = ["roles/editor"],
+    beta-public-cluster                 = ["roles/editor"],
+    beta-public-cluster-update-variant  = ["roles/editor"],
+    binary-authorization                = ["roles/editor"],
+    fleet-app-operator-permissions      = ["roles/editor"],
+    fleet-membership                    = ["roles/editor"],
+    gke-autopilot-cluster               = ["roles/editor"],
+    gke-node-pool                       = ["roles/editor"],
+    gke-standard-cluster                = ["roles/editor"],
+    hub-legacy                          = ["roles/editor"],
+    private-cluster                     = ["roles/editor"],
+    private-cluster-update-variant      = ["roles/editor"],
+    safer-cluster                       = ["roles/editor"],
+    safer-cluster-update-variant        = ["roles/editor"],
+    workload-identity                   = ["roles/editor"],
+  }
 }
 
 resource "random_id" "random_suffix" {

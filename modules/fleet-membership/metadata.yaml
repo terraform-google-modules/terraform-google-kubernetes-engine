@@ -163,3 +163,13 @@ spec:
         description: The project of the hub membership.
       - name: wait
         description: An output to use when you want to depend on registration finishing
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/editor
+    providerVersions:
+      - source: hashicorp/google
+        version: ">= 5.6.0, < 7"
+      - source: hashicorp/google-beta
+        version: ">= 5.6.0, < 7"
