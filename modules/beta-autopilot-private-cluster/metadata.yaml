@@ -562,3 +562,17 @@ spec:
         description: Whether vertical pod autoscaling enabled
       - name: zones
         description: List of zones in which the cluster resides
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/editor
+    providerVersions:
+      - source: hashicorp/google
+        version: ">= 6.42.0, < 7"
+      - source: hashicorp/google-beta
+        version: ">= 6.42.0, < 7"
+      - source: hashicorp/kubernetes
+        version: ~> 2.10
+      - source: hashicorp/random
+        version: ">= 2.1"

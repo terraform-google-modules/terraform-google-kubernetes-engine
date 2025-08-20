@@ -155,3 +155,13 @@ spec:
         description: Name of the built attestor
       - name: key
         description: Name of the Key created for the attestor
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/editor
+    providerVersions:
+      - source: hashicorp/google
+        version: < 7
+      - source: hashicorp/google-beta
+        version: < 7
