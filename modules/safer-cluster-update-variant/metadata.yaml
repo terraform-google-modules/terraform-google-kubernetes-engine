@@ -543,3 +543,8 @@ spec:
         description: Cluster type (regional / zonal)
       - name: zones
         description: List of zones in which the cluster resides
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/editor

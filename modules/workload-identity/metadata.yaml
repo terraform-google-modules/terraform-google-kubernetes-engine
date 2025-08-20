@@ -217,3 +217,13 @@ spec:
         description: Name of k8s service account.
       - name: k8s_service_account_namespace
         description: Namespace of k8s service account.
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/editor
+    providerVersions:
+      - source: hashicorp/google
+        version: ">= 5.12.0, < 7"
+      - source: hashicorp/kubernetes
+        version: ~> 2.13
