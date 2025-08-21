@@ -33,7 +33,8 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source = "terraform-google-modules/kubernetes-engine/google//modules/gke-autopilot-cluster"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/gke-autopilot-cluster"
+  version = "~> 38.0"
 
   project    = var.project_id
   name       = "${local.cluster_type}-cluster"
