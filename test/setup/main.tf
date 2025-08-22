@@ -44,9 +44,18 @@ locals {
   ]
 
   per_module_services = {
-    gke-autopilot-cluster = [],
-    gke-node-pool         = [],
-    gke-autopilot-cluster = [],
+    gke-autopilot-cluster = [
+      "compute.googleapis.com",
+      "container.googleapis.com",
+    ],
+    gke-node-pool = [
+      "compute.googleapis.com",
+      "container.googleapis.com",
+    ],
+    gke-standard-cluster = [
+      "compute.googleapis.com",
+      "container.googleapis.com",
+    ],
   }
 }
 

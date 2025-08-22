@@ -1008,7 +1008,12 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/editor
+          - roles/compute.admin
+          - roles/container.admin
+          - roles/iam.serviceAccountUser
+    services:
+      - compute.googleapis.com
+      - container.googleapis.com
     providerVersions:
       - source: hashicorp/google-beta
         version: ">= 6.33.0, < 7"

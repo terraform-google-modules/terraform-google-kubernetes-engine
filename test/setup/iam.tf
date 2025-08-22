@@ -66,15 +66,27 @@ locals {
     binary-authorization                = ["roles/editor"],
     fleet-app-operator-permissions      = ["roles/editor"],
     fleet-membership                    = ["roles/editor"],
-    gke-autopilot-cluster               = ["roles/editor"],
-    gke-node-pool                       = ["roles/editor"],
-    gke-standard-cluster                = ["roles/editor"],
-    hub-legacy                          = ["roles/editor"],
-    private-cluster                     = ["roles/editor"],
-    private-cluster-update-variant      = ["roles/editor"],
-    safer-cluster                       = ["roles/editor"],
-    safer-cluster-update-variant        = ["roles/editor"],
-    workload-identity                   = ["roles/editor"],
+    gke-autopilot-cluster = [
+      "roles/compute.admin",
+      "roles/container.admin",
+      "roles/iam.serviceAccountUser",
+    ],
+    gke-node-pool = [
+      "roles/compute.admin",
+      "roles/container.admin",
+      "roles/iam.serviceAccountUser",
+    ],
+    gke-standard-cluster = [
+      "roles/compute.admin",
+      "roles/container.admin",
+      "roles/iam.serviceAccountUser",
+    ],
+    hub-legacy                     = ["roles/editor"],
+    private-cluster                = ["roles/editor"],
+    private-cluster-update-variant = ["roles/editor"],
+    safer-cluster                  = ["roles/editor"],
+    safer-cluster-update-variant   = ["roles/editor"],
+    workload-identity              = ["roles/editor"],
   }
 }
 
