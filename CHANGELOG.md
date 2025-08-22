@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [38.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v38.0.0...v38.0.1) (2025-08-22)
+
+
+### Bug Fixes
+
+* **metadata:** update ADC roles and services per module ([#2414](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2414)) ([2a78f09](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2a78f0967ca2442cd69934d6aa1149b09088d94b))
+
 ## [38.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v37.1.0...v38.0.0) (2025-08-13)
 
 
