@@ -399,3 +399,16 @@ spec:
         description: The resource URLs of the managed instance groups associated with this node pool.
       - name: managed_instance_group_urls
         description: List of instance group URLs which have been assigned to this node pool.
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/compute.admin
+          - roles/container.admin
+          - roles/iam.serviceAccountUser
+    services:
+      - compute.googleapis.com
+      - container.googleapis.com
+    providerVersions:
+      - source: hashicorp/google-beta
+        version: ">= 6.33.0, < 7"
