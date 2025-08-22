@@ -15,7 +15,7 @@
 apiVersion: blueprints.cloud.google.com/v1alpha1
 kind: BlueprintMetadata
 metadata:
-  name: terraform-google-kubernetes-engine-gke-autopilot-private-cluster-display
+  name: terraform-google-kubernetes-engine-gke-autopilot-cluster-display
   annotations:
     config.kubernetes.io/local-config: "true"
 spec:
@@ -64,9 +64,6 @@ spec:
         datapath_provider:
           name: datapath_provider
           title: Datapath Provider
-        default_max_pods_per_node:
-          name: default_max_pods_per_node
-          title: Default Max Pods Per Node
         default_snat_status:
           name: default_snat_status
           title: Default Snat Status
@@ -88,30 +85,15 @@ spec:
         enable_fqdn_network_policy:
           name: enable_fqdn_network_policy
           title: Enable Fqdn Network Policy
-        enable_intranode_visibility:
-          name: enable_intranode_visibility
-          title: Enable Intranode Visibility
         enable_k8s_beta_apis:
           name: enable_k8s_beta_apis
           title: Enable K8s Beta Apis
-        enable_kubernetes_alpha:
-          name: enable_kubernetes_alpha
-          title: Enable Kubernetes Alpha
         enable_l4_ilb_subsetting:
           name: enable_l4_ilb_subsetting
           title: Enable L4 Ilb Subsetting
-        enable_legacy_abac:
-          name: enable_legacy_abac
-          title: Enable Legacy Abac
         enable_multi_networking:
           name: enable_multi_networking
           title: Enable Multi Networking
-        enable_shielded_nodes:
-          name: enable_shielded_nodes
-          title: Enable Shielded Nodes
-        enable_tpu:
-          name: enable_tpu
-          title: Enable Tpu
         enterprise_config:
           name: enterprise_config
           title: Enterprise Config
@@ -136,9 +118,6 @@ spec:
         logging_config:
           name: logging_config
           title: Logging Config
-        logging_service:
-          name: logging_service
-          title: Logging Service
         maintenance_policy:
           name: maintenance_policy
           title: Maintenance Policy
@@ -157,36 +136,18 @@ spec:
         monitoring_config:
           name: monitoring_config
           title: Monitoring Config
-        monitoring_service:
-          name: monitoring_service
-          title: Monitoring Service
         name:
           name: name
           title: Name
         network:
           name: network
           title: Network
-        network_policy:
-          name: network_policy
-          title: Network Policy
-        networking_mode:
-          name: networking_mode
-          title: Networking Mode
-        node_config:
-          name: node_config
-          title: Node Config
         node_locations:
           name: node_locations
           title: Node Locations
         node_pool_auto_config:
           name: node_pool_auto_config
           title: Node Pool Auto Config
-        node_pool_defaults:
-          name: node_pool_defaults
-          title: Node Pool Defaults
-        node_version:
-          name: node_version
-          title: Node Version
         notification_config:
           name: notification_config
           title: Notification Config
@@ -223,9 +184,6 @@ spec:
         security_posture_config:
           name: security_posture_config
           title: Security Posture Config
-        service_account:
-          name: service_account
-          title: Service Account
         service_external_ips_config:
           name: service_external_ips_config
           title: Service External Ips Config

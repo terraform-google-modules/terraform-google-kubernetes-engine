@@ -42,6 +42,21 @@ locals {
     "gkehub.googleapis.com",
     "cloudasset.googleapis.com"
   ]
+
+  per_module_services = {
+    gke-autopilot-cluster = [
+      "compute.googleapis.com",
+      "container.googleapis.com",
+    ],
+    gke-node-pool = [
+      "compute.googleapis.com",
+      "container.googleapis.com",
+    ],
+    gke-standard-cluster = [
+      "compute.googleapis.com",
+      "container.googleapis.com",
+    ],
+  }
 }
 
 module "gke-project-1" {
