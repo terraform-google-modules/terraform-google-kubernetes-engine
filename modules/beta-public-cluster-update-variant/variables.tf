@@ -894,6 +894,23 @@ variable "monitoring_enable_managed_prometheus" {
   default     = null
 }
 
+variable "monitoring_auto_monitoring_config_scope" {
+  default     = "NONE"
+  description = "Whether or not to enable GKE Auto-Monitoring. Supported values include: ALL, NONE"
+  type        = string
+
+  validation {
+    condition = contains(
+      [
+        "ALL",
+        "NONE",
+      ],
+      var.monitoring_auto_monitoring_config_scope
+    )
+    error_message = "'monitoring_auto_monitoring_config_scope' value is invalid"
+  }
+}
+
 variable "monitoring_enable_observability_metrics" {
   type        = bool
   description = "Whether or not the advanced datapath metrics are enabled."

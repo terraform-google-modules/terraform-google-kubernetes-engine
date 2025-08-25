@@ -102,6 +102,12 @@ resource "google_container_cluster" "primary" {
       enable_components = var.monitoring_enabled_components
       managed_prometheus {
         enabled = var.monitoring_enable_managed_prometheus == null ? false : var.monitoring_enable_managed_prometheus
+        dynamic "auto_monitoring_config" {
+          for_each = var.monitoring_enable_managed_prometheus == true && var.monitoring_auto_monitoring_config_scope != null ? [1] : []
+          content {
+            scope = var.monitoring_auto_monitoring_config_scope
+          }
+        }
       }
       advanced_datapath_observability_config {
         enable_metrics = var.monitoring_enable_observability_metrics
