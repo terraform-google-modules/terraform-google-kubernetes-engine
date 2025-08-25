@@ -1022,7 +1022,7 @@ variable "sandbox_enabled" {
 
 variable "enable_identity_service" {
   type        = bool
-  description = "(Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
+  description = "(Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API. NOTE: Starting on July 1, 2025, new Google Cloud organizations that you create won't support Identity Service for GKE."
   default     = false
 }
 
