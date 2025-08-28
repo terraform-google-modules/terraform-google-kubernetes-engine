@@ -68,7 +68,8 @@ resource "google_container_cluster" "primary" {
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
-      enabled = confidential_nodes.value.enabled
+      enabled                    = confidential_nodes.value.enabled
+      confidential_instance_type = lookup(var.node_pools[0], "confidential_instance_type", null)
     }
   }
 

@@ -76,7 +76,8 @@ resource "google_container_cluster" "primary" {
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
-      enabled = confidential_nodes.value.enabled
+      enabled                    = confidential_nodes.value.enabled
+      confidential_instance_type = lookup(var.node_pools[0], "confidential_instance_type", null)
     }
   }
 
@@ -491,10 +492,36 @@ resource "google_container_cluster" "primary" {
       min_cpu_platform            = lookup(var.node_pools[0], "min_cpu_platform", "")
       enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
       disk_type                   = lookup(var.node_pools[0], "disk_type", null)
+      preemptible                 = lookup(var.node_pools[0], "preemptible", false)
+      spot                        = lookup(var.node_pools[0], "spot", false)
       dynamic "gcfs_config" {
         for_each = lookup(var.node_pools[0], "enable_gcfs", null) != null ? [var.node_pools[0].enable_gcfs] : []
         content {
           enabled = gcfs_config.value
+        }
+      }
+
+      dynamic "guest_accelerator" {
+        for_each = lookup(var.node_pools[0], "accelerator_count", 0) > 0 ? [1] : []
+        content {
+          type               = lookup(var.node_pools[0], "accelerator_type", "")
+          count              = lookup(var.node_pools[0], "accelerator_count", 0)
+          gpu_partition_size = lookup(var.node_pools[0], "gpu_partition_size", null)
+
+          dynamic "gpu_driver_installation_config" {
+            for_each = lookup(var.node_pools[0], "gpu_driver_version", "") != "" ? [1] : []
+            content {
+              gpu_driver_version = lookup(var.node_pools[0], "gpu_driver_version", "")
+            }
+          }
+
+          dynamic "gpu_sharing_config" {
+            for_each = lookup(var.node_pools[0], "gpu_sharing_strategy", "") != "" ? [1] : []
+            content {
+              gpu_sharing_strategy       = lookup(var.node_pools[0], "gpu_sharing_strategy", "")
+              max_shared_clients_per_gpu = lookup(var.node_pools[0], "max_shared_clients_per_gpu", 2)
+            }
+          }
         }
       }
 
@@ -1042,9 +1069,10 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "confidential_nodes" {
-      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.enable_confidential_nodes] : []
+      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [{ enabled = each.value.enable_confidential_nodes, confidential_instance_type = lookup(each.value, "confidential_instance_type", null) }] : []
       content {
-        enabled = confidential_nodes.value
+        enabled                    = confidential_nodes.enabled
+        confidential_instance_type = confidential_nodes.confidential_instance_type
       }
     }
 
@@ -1388,9 +1416,10 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     dynamic "confidential_nodes" {
-      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [each.value.enable_confidential_nodes] : []
+      for_each = lookup(each.value, "enable_confidential_nodes", null) != null ? [{ enabled = each.value.enable_confidential_nodes, confidential_instance_type = lookup(each.value, "confidential_instance_type", null) }] : []
       content {
-        enabled = confidential_nodes.value
+        enabled                    = confidential_nodes.enabled
+        confidential_instance_type = confidential_nodes.confidential_instance_type
       }
     }
 
