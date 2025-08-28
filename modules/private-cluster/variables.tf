@@ -709,6 +709,18 @@ variable "filestore_csi_driver" {
   default     = false
 }
 
+variable "lustre_csi_driver" {
+  type        = bool
+  description = "The status of the Lustre CSI driver addon, which allows the usage of a Lustre instances as volumes"
+  default     = null
+}
+
+variable "enable_legacy_lustre_port" {
+  type        = bool
+  description = "Set it to true for GKE cluster runs a version earlier than 1.33.2-gke.4780000. Allows the Lustre CSI driver to initialize LNet (the virtual network layer for Lustre kernel module) using port 6988. This flag is required to workaround a port conflict with the gke-metadata-server on GKE nodes"
+  default     = false
+}
+
 variable "network_policy" {
   type        = bool
   description = "Enable network policy addon"
