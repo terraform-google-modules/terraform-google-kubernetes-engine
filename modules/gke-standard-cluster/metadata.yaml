@@ -1016,4 +1016,4 @@ spec:
       - container.googleapis.com
     providerVersions:
       - source: hashicorp/google-beta
-        version: ">= 6.33.0, < 7"
+        version: ">= 6.33.0, < 8"
