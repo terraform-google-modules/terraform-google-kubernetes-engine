@@ -238,12 +238,30 @@ spec:
         defaultValue:
           all: {}
           default-node-pool: {}
+      - name: node_pools_resource_manager_tags
+        description: Map of maps containing resource manager tags by node-pool name
+        varType: map(map(string))
+        defaultValue:
+          all: {}
+          default-node-pool: {}
       - name: node_pools_metadata
         description: Map of maps containing node metadata by node-pool name
         varType: map(map(string))
         defaultValue:
           all: {}
           default-node-pool: {}
+      - name: node_pools_cgroup_mode
+        description: Map of strings containing cgroup node config by node-pool name
+        varType: map(string)
+        defaultValue:
+          all: ""
+          default-node-pool: ""
+      - name: node_pools_hugepage_size_2m
+        description: Map of strings containing hugepage size 2m node config by node-pool name
+        varType: map(string)
+        defaultValue:
+          all: ""
+          default-node-pool: ""
       - name: node_pools_taints
         description: Map of lists containing node taints by node-pool name
         varType: map(list(object({ key = string, value = string, effect = string })))
@@ -476,6 +494,10 @@ spec:
         defaultValue: {}
       - name: enable_gcfs
         description: Enable image streaming on cluster level.
+        varType: bool
+        defaultValue: false
+      - name: enable_secret_manager_addon
+        description: Enable the Secret Manager add-on for this cluster
         varType: bool
         defaultValue: false
       - name: enable_mesh_certificates
