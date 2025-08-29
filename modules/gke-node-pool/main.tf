@@ -187,7 +187,7 @@ resource "google_container_node_pool" "main" {
         content {
           effect = taint.value.effect
           key    = taint.value.key
-          value  = taint.value.values
+          value  = taint.value.value
         }
       }
 
