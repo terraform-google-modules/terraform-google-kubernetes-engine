@@ -757,6 +757,16 @@ spec:
       - name: ip_endpoints_enabled
         description: (Optional) Controls whether to allow direct IP access. Defaults to `true`.
         varType: bool
+      - name: rbac_binding_config
+        description: RBACBindingConfig allows user to restrict ClusterRoleBindings an RoleBindings that can be created.
+        varType: |-
+          object({
+              enable_insecure_binding_system_unauthenticated = optional(bool, null)
+              enable_insecure_binding_system_authenticated   = optional(bool, null)
+            })
+        defaultValue:
+          enable_insecure_binding_system_authenticated: null
+          enable_insecure_binding_system_unauthenticated: null
     outputs:
       - name: ca_certificate
         description: Cluster ca certificate (base64 encoded)
@@ -835,9 +845,9 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6.42.0, < 8"
+        version: ">= 6.47.0, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6.42.0, < 8"
+        version: ">= 6.47.0, < 8"
       - source: hashicorp/kubernetes
         version: ~> 2.10
       - source: hashicorp/random
