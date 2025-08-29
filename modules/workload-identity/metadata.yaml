@@ -226,6 +226,6 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: ">= 5.12.0, < 7"
+        version: ">= 5.12.0, < 8"
       - source: hashicorp/kubernetes
         version: ~> 2.13

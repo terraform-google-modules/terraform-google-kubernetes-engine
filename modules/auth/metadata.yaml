@@ -160,4 +160,4 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: ">= 4.47.0, != 4.49.0, != 4.50.0, < 7"
+        version: ">= 4.47.0, != 4.49.0, != 4.50.0, < 8"
