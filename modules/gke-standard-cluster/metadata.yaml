@@ -36,6 +36,8 @@ spec:
         location: examples/autopilot_private_firewalls
       - name: confidential_autopilot_private
         location: examples/confidential_autopilot_private
+      - name: confidential_gpu_public
+        location: examples/confidential_gpu_public
       - name: confidential_safer_cluster
         location: examples/confidential_safer_cluster
       - name: deploy_service
@@ -1008,9 +1010,9 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/iam.serviceAccountUser
           - roles/compute.admin
           - roles/container.admin
-          - roles/iam.serviceAccountUser
     services:
       - compute.googleapis.com
       - container.googleapis.com
