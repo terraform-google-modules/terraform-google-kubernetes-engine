@@ -76,7 +76,6 @@ docker_test_lint:
 		/usr/local/bin/test_lint.sh
 
 # Generate documentation
-# Removed `display` for https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/issues/3140
 .PHONY: docker_generate_docs
 docker_generate_docs:
 	$(DOCKER_BIN) run --rm -it \
