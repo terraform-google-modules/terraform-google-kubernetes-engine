@@ -133,6 +133,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "rbac_binding_config" {
+    for_each = var.rbac_binding_config.enable_insecure_binding_system_unauthenticated != null || var.rbac_binding_config.enable_insecure_binding_system_authenticated != null ? [var.rbac_binding_config] : []
+    content {
+      enable_insecure_binding_system_unauthenticated = rbac_binding_config.value["enable_insecure_binding_system_unauthenticated"]
+      enable_insecure_binding_system_authenticated   = rbac_binding_config.value["enable_insecure_binding_system_authenticated"]
+    }
+  }
+
   dynamic "secret_manager_config" {
     for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
     content {
