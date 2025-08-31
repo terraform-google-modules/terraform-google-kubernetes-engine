@@ -129,7 +129,12 @@ spec:
       - name: cluster
         description: The cluster to create the node pool for. Cluster must be present in location provided for clusters. May be specified in the format projects/{{project}}/locations/{{location}}/clusters/{{cluster}} or as just the name of the cluster.
         varType: string
-        required: true
+        connections:
+          - source:
+              source: github.com/Daisyprakash/terraform-google-kubernetes-engine//modules/gke-standard-cluster
+              version: ">=38.0.1"
+            spec:
+              outputExpr: cluster_id
       - name: project
         description: The ID of the project in which to create the node pool.
         varType: string
