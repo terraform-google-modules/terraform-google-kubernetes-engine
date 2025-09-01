@@ -129,6 +129,7 @@ spec:
       - name: cluster
         description: The cluster to create the node pool for. Cluster must be present in location provided for clusters. May be specified in the format projects/{{project}}/locations/{{location}}/clusters/{{cluster}} or as just the name of the cluster.
         varType: string
+        required: true
         connections:
           - source:
               source: github.com/Daisyprakash/terraform-google-kubernetes-engine//modules/gke-standard-cluster
@@ -319,7 +320,7 @@ spec:
             insecure_kubelet_readonly_port_enabled: false
           machine_type: e2-medium
           workload_metadata_config:
-            mode: GKE_METADATA
+            mode: MODE_UNSPECIFIED
       - name: network_config
         description: "  The network configuration of the pool. Such as configuration for Adding Pod IP address ranges to the node pool. Or enabling private nodes.\n    - create_pod_range: Whether to create a new range for pod IPs in this node pool. Defaults are provided for pod_range and pod_ipv4_cidr_block if they are not specified.\n    - enable_private_nodes: Whether nodes have internal IP addresses only.\n    - pod_ipv4_cidr_block: The IP address range for pod IPs in this node pool. Only applicable if createPodRange is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) to pick a specific range to use.\n    - pod_range - The ID of the secondary range for pod IPs. If create_pod_range is true, this ID is used for the new range. If create_pod_range is false, uses an existing secondary range with this ID.\n    - additional_node_network_configs - We specify the additional node networks for this node pool using this list. Each node network corresponds to an additional interface.\n      - network - Name of the VPC where the additional interface belongs.\n      - subnetwork - Name of the subnetwork where the additional interface belongs\n    - additional_pod_network_configs - We specify the additional pod networks for this node pool using this list. Each pod network corresponds to an additional alias IP range for the node.\n      - subnetwork - Name of the subnetwork where the additional pod network belongs.\n      - secondary_pod_range - The name of the secondary range on the subnet which provides IP address for this pod range.\n      - max_pods_per_node - The maximum number of pods per node which use this pod network.\n    - pod_cidr_overprovision_config  - Configuration for node-pool level pod cidr overprovision. If not set, the cluster level setting will be inherited.\n      - disabled - Whether pod cidr overprovision is disabled.\n    - network_performance_config - Network bandwidth tier configuration.\n      - total_egress_bandwidth_tier - Specifies the total network bandwidth tier for the NodePool. Valid values include: \"TIER_1\" and \"TIER_UNSPECIFIED\".\n"
         varType: |-

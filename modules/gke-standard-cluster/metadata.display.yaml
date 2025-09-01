@@ -61,6 +61,9 @@ spec:
         datapath_provider:
           name: datapath_provider
           title: Datapath Provider
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: LEGACY_DATAPATH
         default_max_pods_per_node:
           name: default_max_pods_per_node
           title: Default Max Pods Per Node
@@ -202,6 +205,9 @@ spec:
         private_ipv6_google_access:
           name: private_ipv6_google_access
           title: Private Ipv6 Google Access
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
         project:
           name: project
           title: Project
