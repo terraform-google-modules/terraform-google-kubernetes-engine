@@ -130,6 +130,9 @@ spec:
         initial_node_count:
           name: initial_node_count
           title: Initial Node Count
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: 1
         ip_allocation_policy:
           name: ip_allocation_policy
           title: Ip Allocation Policy
@@ -151,6 +154,10 @@ spec:
         master_authorized_networks_config:
           name: master_authorized_networks_config
           title: Master Authorized Networks Config
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value:
+                private_endpoint_enforcement_enabled: true
         mesh_certificates:
           name: mesh_certificates
           title: Mesh Certificates

@@ -304,7 +304,7 @@ spec:
       - name: initial_node_count
         description: The number of nodes to create in this cluster's default node pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Must be set if node_pool is not specified.
         varType: number
-        defaultValue: 1
+        defaultValue: 0
       - name: ip_allocation_policy
         description: "Configuration of cluster IP allocation for VPC-native clusters. If this block is unset during creation, it will be set by the GKE backend. "
         varType: |-
@@ -367,8 +367,6 @@ spec:
               gcp_public_cidrs_access_enabled      = optional(bool)
               private_endpoint_enforcement_enabled = optional(bool)
             })
-        defaultValue:
-          private_endpoint_enforcement_enabled: true
       - name: min_master_version
         description: The minimum version of the master. GKE will auto-update the master to new versions, so this does not guarantee the master version--use the read-only master_version field to obtain a current version. If unset, the server's default version will be used.
         varType: string
