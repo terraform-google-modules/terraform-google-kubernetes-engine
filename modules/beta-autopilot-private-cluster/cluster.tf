@@ -33,7 +33,6 @@ resource "google_container_cluster" "primary" {
   network             = "projects/${local.network_project_id}/global/networks/${var.network}"
   deletion_protection = var.deletion_protection
 
-
   dynamic "release_channel" {
     for_each = local.release_channel
 
