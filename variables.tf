@@ -973,3 +973,15 @@ variable "ip_endpoints_enabled" {
   type        = bool
   default     = null
 }
+
+variable "rbac_binding_config" {
+  type = object({
+    enable_insecure_binding_system_unauthenticated = optional(bool, null)
+    enable_insecure_binding_system_authenticated   = optional(bool, null)
+  })
+  description = "RBACBindingConfig allows user to restrict ClusterRoleBindings an RoleBindings that can be created."
+  default = {
+    enable_insecure_binding_system_unauthenticated = null
+    enable_insecure_binding_system_authenticated   = null
+  }
+}
