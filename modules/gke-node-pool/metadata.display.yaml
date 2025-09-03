@@ -62,6 +62,7 @@ spec:
         name:
           name: name
           title: Name
+          level: 1
         name_prefix:
           name: name_prefix
           title: Name Prefix

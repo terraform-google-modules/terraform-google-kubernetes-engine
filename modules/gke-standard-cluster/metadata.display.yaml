@@ -405,6 +405,8 @@ spec:
         name:
           name: name
           title: Name
+          regexValidation: ^[a-z][a-z0-9-]{0,38}[a-z0-9]$
+          validation: The cluster name must start with a lowercase letter and can contain up to 40 characters. It can include lowercase letters, numbers, and hyphens, but it cannot end with a hyphen. The name must be unique within its project and location.
         network:
           name: network
           title: Network
