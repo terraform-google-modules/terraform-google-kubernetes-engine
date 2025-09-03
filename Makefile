@@ -82,7 +82,7 @@ docker_generate_docs:
 		-e ENABLE_BPMETADATA=1 \
 		-v "$(CURDIR)":/workspace \
 		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
-		/bin/bash -c 'source /usr/local/bin/task_helper_functions.sh && generate_docs display'
+		/bin/bash -c 'source /usr/local/bin/task_helper_functions.sh && generate_docs -d --per-module-requirements'
 
 # Generate files from autogen
 .PHONY: docker_generate_modules

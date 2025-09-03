@@ -105,6 +105,7 @@ Then perform the following commands on the root folder:
 | fleet\_project\_grant\_service\_agent | (Optional) Grant the fleet project service identity the `roles/gkehub.serviceAgent` and `roles/gkehub.crossProjectServiceAgent` roles. | `bool` | `false` | no |
 | gateway\_api\_channel | The gateway api channel of this cluster. Accepted values are `CHANNEL_STANDARD` and `CHANNEL_DISABLED`. | `string` | `null` | no |
 | gcp\_public\_cidrs\_access\_enabled | Allow access through Google Cloud public IP addresses | `bool` | `null` | no |
+| gke\_auto\_upgrade\_config\_patch\_mode | The selected auto-upgrade patch type. Accepted values are: `ACCELERATED`: Upgrades to the latest available patch version in a given minor and release channel. | `string` | `null` | no |
 | gke\_backup\_agent\_config | Whether Backup for GKE agent is enabled for this cluster. | `bool` | `false` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles. | `bool` | `false` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | `bool` | `true` | no |
@@ -135,6 +136,7 @@ Then perform the following commands on the root folder:
 | notification\_filter\_event\_type | Choose what type of notifications you want to receive. If no filters are applied, you'll receive all notification types. Can be used to filter what notifications are sent. Accepted values are UPGRADE\_AVAILABLE\_EVENT, UPGRADE\_EVENT, and SECURITY\_BULLETIN\_EVENT. | `list(string)` | `[]` | no |
 | project\_id | The project ID to host the cluster in (required) | `string` | n/a | yes |
 | ray\_operator\_config | The Ray Operator Addon configuration for this cluster. | <pre>object({<br>    enabled            = bool<br>    logging_enabled    = optional(bool, false)<br>    monitoring_enabled = optional(bool, false)<br>  })</pre> | <pre>{<br>  "enabled": false,<br>  "logging_enabled": false,<br>  "monitoring_enabled": false<br>}</pre> | no |
+| rbac\_binding\_config | RBACBindingConfig allows user to restrict ClusterRoleBindings an RoleBindings that can be created. | <pre>object({<br>    enable_insecure_binding_system_unauthenticated = optional(bool, null)<br>    enable_insecure_binding_system_authenticated   = optional(bool, null)<br>  })</pre> | <pre>{<br>  "enable_insecure_binding_system_authenticated": null,<br>  "enable_insecure_binding_system_unauthenticated": null<br>}</pre> | no |
 | region | The region to host the cluster in (optional if zonal cluster / required if regional) | `string` | `null` | no |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | `bool` | `true` | no |
 | registry\_project\_ids | Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` and `artifactregsitry.reader` roles are assigned on these projects. | `list(string)` | `[]` | no |
@@ -151,6 +153,7 @@ Then perform the following commands on the root folder:
 | stateful\_ha | Whether the Stateful HA Addon is enabled for this cluster. | `bool` | `false` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | `string` | n/a | yes |
 | timeouts | Timeout for cluster operations. | `map(string)` | `{}` | no |
+| total\_egress\_bandwidth\_tier | Specifies the total network bandwidth tier for NodePools in the cluster. Valid values are `TIER_UNSPECIFIED` and `TIER_1`. Defaults to `TIER_UNSPECIFIED`. | `string` | `null` | no |
 | workload\_config\_audit\_mode | (beta) Sets which mode of auditing should be used for the cluster's workloads. Accepted values are DISABLED, BASIC. | `string` | `"DISABLED"` | no |
 | workload\_vulnerability\_mode | (beta) Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC. | `string` | `""` | no |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | `list(string)` | `[]` | no |

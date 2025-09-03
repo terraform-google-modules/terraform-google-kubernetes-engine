@@ -21,11 +21,11 @@ terraform {
     google = {
       source = "hashicorp/google"
       # Avoid v4.49 and v4.50 for https://github.com/hashicorp/terraform-provider-google/issues/13507
-      version = ">= 4.47.0, != 4.49.0, != 4.50.0, < 7"
+      version = ">= 4.47.0, != 4.49.0, != 4.50.0, < 8"
     }
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:auth/v37.1.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:auth/v38.1.0"
   }
 }

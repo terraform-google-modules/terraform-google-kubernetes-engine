@@ -186,7 +186,7 @@ Then perform the following commands on the root folder:
 | enable\_default\_node\_pools\_metadata | Whether to enable the default node pools metadata key-value pairs such as `cluster_name` and `node_pool` | `bool` | `true` | no |
 | enable\_fqdn\_network\_policy | Enable FQDN Network Policies on the cluster | `bool` | `null` | no |
 | enable\_gcfs | Enable image streaming on cluster level. | `bool` | `false` | no |
-| enable\_identity\_service | (Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API. | `bool` | `false` | no |
+| enable\_identity\_service | (Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API. NOTE: Starting on July 1, 2025, new Google Cloud organizations that you create won't support Identity Service for GKE. | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
 | enable\_k8s\_beta\_apis | (Optional) - List of Kubernetes Beta APIs to enable in cluster. | `list(string)` | `[]` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | `bool` | `false` | no |
@@ -212,6 +212,7 @@ Then perform the following commands on the root folder:
 | gce\_pd\_csi\_driver | Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. | `bool` | `true` | no |
 | gcp\_public\_cidrs\_access\_enabled | Allow access through Google Cloud public IP addresses | `bool` | `null` | no |
 | gcs\_fuse\_csi\_driver | Whether GCE FUSE CSI driver is enabled for this cluster. | `bool` | `false` | no |
+| gke\_auto\_upgrade\_config\_patch\_mode | The selected auto-upgrade patch type. Accepted values are: `ACCELERATED`: Upgrades to the latest available patch version in a given minor and release channel. | `string` | `null` | no |
 | gke\_backup\_agent\_config | Whether Backup for GKE agent is enabled for this cluster. | `bool` | `false` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer and artifactregistry.reader roles. | `bool` | `false` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | `bool` | `true` | no |
@@ -273,6 +274,7 @@ Then perform the following commands on the root folder:
 | private\_endpoint\_subnetwork | The subnetwork to use for the hosted master network. | `string` | `null` | no |
 | project\_id | The project ID to host the cluster in (required) | `string` | n/a | yes |
 | ray\_operator\_config | The Ray Operator Addon configuration for this cluster. | <pre>object({<br>    enabled            = bool<br>    logging_enabled    = optional(bool, false)<br>    monitoring_enabled = optional(bool, false)<br>  })</pre> | <pre>{<br>  "enabled": false,<br>  "logging_enabled": false,<br>  "monitoring_enabled": false<br>}</pre> | no |
+| rbac\_binding\_config | RBACBindingConfig allows user to restrict ClusterRoleBindings an RoleBindings that can be created. | <pre>object({<br>    enable_insecure_binding_system_unauthenticated = optional(bool, null)<br>    enable_insecure_binding_system_authenticated   = optional(bool, null)<br>  })</pre> | <pre>{<br>  "enable_insecure_binding_system_authenticated": null,<br>  "enable_insecure_binding_system_unauthenticated": null<br>}</pre> | no |
 | region | The region to host the cluster in (optional if zonal cluster / required if regional) | `string` | `null` | no |
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | `bool` | `true` | no |
 | registry\_project\_ids | Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` and `artifactregsitry.reader` roles are assigned on these projects. | `list(string)` | `[]` | no |
@@ -292,6 +294,7 @@ Then perform the following commands on the root folder:
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | `map(list(string))` | `{}` | no |
 | subnetwork | The subnetwork to host the cluster in (required) | `string` | n/a | yes |
 | timeouts | Timeout for cluster operations. | `map(string)` | `{}` | no |
+| total\_egress\_bandwidth\_tier | Specifies the total network bandwidth tier for NodePools in the cluster. Valid values are `TIER_UNSPECIFIED` and `TIER_1`. Defaults to `TIER_UNSPECIFIED`. | `string` | `null` | no |
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | `list(string)` | `[]` | no |
 | windows\_node\_pools | List of maps containing Windows node pools | `list(map(string))` | `[]` | no |
 | workload\_config\_audit\_mode | (beta) Sets which mode of auditing should be used for the cluster's workloads. Accepted values are DISABLED, BASIC. | `string` | `"DISABLED"` | no |
@@ -383,9 +386,10 @@ The node_pools variable takes the following parameters:
 | initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
 | insecure_kubelet_readonly_port_enabled | (boolean) Whether or not to enable the insecure Kubelet readonly port. | null | Optional |
 | key | The key required for the taint | | Required |
-| logging_variant | The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT.  | DEFAULT | Optional |
-| local_ssd_count | The amount of local SSD disks that will be attached to each cluster node and may be used as a `hostpath` volume or a `local` PersistentVolume.  | 0 | Optional |
+| logging_variant | The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT. | DEFAULT | Optional |
+| local_ssd_count | The amount of local SSD disks that will be attached to each cluster node and may be used as a `hostpath` volume or a `local` PersistentVolume. | 0 | Optional |
 | local_ssd_ephemeral_storage_count | The amount of local SSD disks that will be attached to each cluster node and assigned as scratch space as an `emptyDir` volume. If unspecified, ephemeral storage is backed by the cluster node boot disk. | 0 | Optional |
+| ephemeral_storage_local_ssd_data_cache_count | Number of raw-block local NVMe SSD disks to be attached to the node utilized for GKE Data Cache. | 0 | Optional |
 | local_ssd_ephemeral_count | The amount of local SSD disks that will be attached to each cluster node and assigned as scratch space as an `emptyDir` volume. If unspecified, ephemeral storage is backed by the cluster node boot disk. | 0 | Optional |
 | local_nvme_ssd_count | Number of raw-block local NVMe SSD disks to be attached to the node.Each local SSD is 375 GB in size. If zero, it means no raw-block local NVMe SSD disks to be attached to the node. | 0 | Optional |
 | machine_type | The name of a Google Compute Engine machine type | e2-medium | Optional |

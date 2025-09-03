@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-autopilot-private-cluster
-    version: 37.1.0
+    version: 38.1.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -385,8 +385,14 @@ spec:
         description: Enable Cilium Cluster Wide Network Policies on the cluster
         varType: bool
         defaultValue: false
+      - name: gke_auto_upgrade_config_patch_mode
+        description: "The selected auto-upgrade patch type. Accepted values are: `ACCELERATED`: Upgrades to the latest available patch version in a given minor and release channel."
+        varType: string
       - name: in_transit_encryption_config
         description: Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`.
+        varType: string
+      - name: total_egress_bandwidth_tier
+        description: Specifies the total network bandwidth tier for NodePools in the cluster. Valid values are `TIER_UNSPECIFIED` and `TIER_1`. Defaults to `TIER_UNSPECIFIED`.
         varType: string
       - name: security_posture_mode
         description: Security posture mode. Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`.
@@ -495,6 +501,16 @@ spec:
       - name: ip_endpoints_enabled
         description: (Optional) Controls whether to allow direct IP access. Defaults to `true`.
         varType: bool
+      - name: rbac_binding_config
+        description: RBACBindingConfig allows user to restrict ClusterRoleBindings an RoleBindings that can be created.
+        varType: |-
+          object({
+              enable_insecure_binding_system_unauthenticated = optional(bool, null)
+              enable_insecure_binding_system_authenticated   = optional(bool, null)
+            })
+        defaultValue:
+          enable_insecure_binding_system_authenticated: null
+          enable_insecure_binding_system_unauthenticated: null
     outputs:
       - name: ca_certificate
         description: Cluster ca certificate (base64 encoded)
@@ -560,3 +576,17 @@ spec:
         description: Whether vertical pod autoscaling enabled
       - name: zones
         description: List of zones in which the cluster resides
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/editor
+    providerVersions:
+      - source: hashicorp/google
+        version: ">= 6.47.0, < 8"
+      - source: hashicorp/google-beta
+        version: ">= 6.47.0, < 8"
+      - source: hashicorp/kubernetes
+        version: ~> 2.10
+      - source: hashicorp/random
+        version: ">= 2.1"

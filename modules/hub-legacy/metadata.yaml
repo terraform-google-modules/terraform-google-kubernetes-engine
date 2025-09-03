@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/hub-legacy
-    version: 37.1.0
+    version: 38.1.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -184,3 +184,13 @@ spec:
     outputs:
       - name: wait
         description: An output to use when you want to depend on registration finishing
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/editor
+    providerVersions:
+      - source: hashicorp/google
+        version: < 8
+      - source: hashicorp/google-beta
+        version: < 8

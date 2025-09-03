@@ -202,6 +202,9 @@ spec:
         gcs_fuse_csi_driver:
           name: gcs_fuse_csi_driver
           title: Gcs Fuse Csi Driver
+        gke_auto_upgrade_config_patch_mode:
+          name: gke_auto_upgrade_config_patch_mode
+          title: Gke Auto Upgrade Config Patch Mode
         gke_backup_agent_config:
           name: gke_backup_agent_config
           title: Gke Backup Agent Config
@@ -430,6 +433,9 @@ spec:
         timeouts:
           name: timeouts
           title: Timeouts
+        total_egress_bandwidth_tier:
+          name: total_egress_bandwidth_tier
+          title: Total Egress Bandwidth Tier
         upstream_nameservers:
           name: upstream_nameservers
           title: Upstream Nameservers

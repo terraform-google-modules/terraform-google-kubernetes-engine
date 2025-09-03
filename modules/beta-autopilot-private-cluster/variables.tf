@@ -430,9 +430,21 @@ variable "enable_cilium_clusterwide_network_policy" {
   default     = false
 }
 
+variable "gke_auto_upgrade_config_patch_mode" {
+  type        = string
+  description = "The selected auto-upgrade patch type. Accepted values are: `ACCELERATED`: Upgrades to the latest available patch version in a given minor and release channel."
+  default     = null
+}
+
 variable "in_transit_encryption_config" {
   type        = string
   description = "Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`."
+  default     = null
+}
+
+variable "total_egress_bandwidth_tier" {
+  type        = string
+  description = "Specifies the total network bandwidth tier for NodePools in the cluster. Valid values are `TIER_UNSPECIFIED` and `TIER_1`. Defaults to `TIER_UNSPECIFIED`."
   default     = null
 }
 
@@ -655,4 +667,16 @@ variable "ip_endpoints_enabled" {
   description = "(Optional) Controls whether to allow direct IP access. Defaults to `true`."
   type        = bool
   default     = null
+}
+
+variable "rbac_binding_config" {
+  type = object({
+    enable_insecure_binding_system_unauthenticated = optional(bool, null)
+    enable_insecure_binding_system_authenticated   = optional(bool, null)
+  })
+  description = "RBACBindingConfig allows user to restrict ClusterRoleBindings an RoleBindings that can be created."
+  default = {
+    enable_insecure_binding_system_unauthenticated = null
+    enable_insecure_binding_system_authenticated   = null
+  }
 }

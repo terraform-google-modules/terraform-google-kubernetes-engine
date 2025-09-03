@@ -28,7 +28,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google"
-  version = "~> 37.0"
+  version = "~> 38.0"
 
   project_id = var.project_id
   name       = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -55,7 +55,7 @@ resource "kubernetes_pod" "nginx-example" {
 
   spec {
     container {
-      image = "nginx:1.29.0"
+      image = "nginx:1.29.1"
       name  = "nginx-example"
     }
   }
