@@ -15,11 +15,11 @@
  */
 
 variable "cluster" {
-  description = "The cluster to create the node pool for. Cluster must be present in location provided for clusters. May be specified in the format projects/{{project}}/locations/{{location}}/clusters/{{cluster}} or as just the name of the cluster."
+  description = "The cluster to create the node pool for. Cluster must be present in location provided for clusters. May be specified in the format projects/{{project_id}}/locations/{{location}}/clusters/{{cluster}} or as just the name of the cluster."
   type        = string
 }
 
-variable "project" {
+variable "project_id" {
   description = "The ID of the project in which to create the node pool."
   type        = string
 }
