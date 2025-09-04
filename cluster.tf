@@ -33,6 +33,13 @@ resource "google_container_cluster" "primary" {
   network             = "projects/${local.network_project_id}/global/networks/${var.network}"
   deletion_protection = var.deletion_protection
 
+  dynamic "enable_k8s_beta_apis" {
+    for_each = length(var.enable_k8s_beta_apis) > 0 ? [1] : []
+    content {
+      enabled_apis = var.enable_k8s_beta_apis
+    }
+  }
+
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
 
