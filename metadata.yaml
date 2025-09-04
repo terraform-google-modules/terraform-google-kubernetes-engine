@@ -259,6 +259,10 @@ spec:
         description: List of _names_ of the additional secondary subnet ip ranges to use for pods
         varType: list(string)
         defaultValue: []
+      - name: additional_pod_ranges_config
+        description: the configuration for individual additional subnetworks attached to the cluster
+        varType: list(object({ subnetwork = string, pod_ipv4_range_names = list(string) }))
+        defaultValue: []
       - name: ip_range_services
         description: The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used.
         varType: string
