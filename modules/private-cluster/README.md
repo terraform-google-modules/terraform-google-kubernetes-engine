@@ -182,6 +182,7 @@ Then perform the following commands on the root folder:
 | enable\_gcfs | Enable image streaming on cluster level. | `bool` | `false` | no |
 | enable\_identity\_service | (Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API. NOTE: Starting on July 1, 2025, new Google Cloud organizations that you create won't support Identity Service for GKE. | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
+| enable\_k8s\_beta\_apis | (Optional) - List of Kubernetes Beta APIs to enable in cluster. | `list(string)` | `[]` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | `bool` | `false` | no |
 | enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
 | enable\_legacy\_lustre\_port | Set it to true for GKE cluster runs a version earlier than 1.33.2-gke.4780000. Allows the Lustre CSI driver to initialize LNet (the virtual network layer for Lustre kernel module) using port 6988. This flag is required to workaround a port conflict with the gke-metadata-server on GKE nodes | `bool` | `false` | no |

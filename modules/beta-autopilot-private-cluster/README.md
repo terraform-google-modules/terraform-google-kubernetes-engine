@@ -96,6 +96,7 @@ Then perform the following commands on the root folder:
 | enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
 | enable\_cost\_allocation | Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery | `bool` | `false` | no |
 | enable\_fqdn\_network\_policy | Enable FQDN Network Policies on the cluster | `bool` | `null` | no |
+| enable\_k8s\_beta\_apis | (Optional) - List of Kubernetes Beta APIs to enable in cluster. | `list(string)` | `[]` | no |
 | enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
 | enable\_legacy\_lustre\_port | Set it to true for GKE cluster runs a version earlier than 1.33.2-gke.4780000. Allows the Lustre CSI driver to initialize LNet (the virtual network layer for Lustre kernel module) using port 6988. This flag is required to workaround a port conflict with the gke-metadata-server on GKE nodes | `bool` | `false` | no |
 | enable\_multi\_networking | Whether multi-networking is enabled for this cluster | `bool` | `null` | no |

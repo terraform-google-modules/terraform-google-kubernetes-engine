@@ -208,6 +208,12 @@ variable "network_tags" {
   default     = []
 }
 
+variable "enable_k8s_beta_apis" {
+  description = "(Optional) - List of Kubernetes Beta APIs to enable in cluster."
+  type        = list(string)
+  default     = []
+}
+
 
 
 variable "create_service_account" {
