@@ -631,6 +631,12 @@ variable "in_transit_encryption_config" {
   default     = null
 }
 
+variable "anonymous_authentication_config_mode" {
+  description = "Allows users to restrict or enable anonymous access to the cluster. Valid values are `ENABLED` and `LIMITED`."
+  type        = string
+  default     = null
+}
+
 variable "total_egress_bandwidth_tier" {
   type        = string
   description = "Specifies the total network bandwidth tier for NodePools in the cluster. Valid values are `TIER_UNSPECIFIED` and `TIER_1`. Defaults to `TIER_UNSPECIFIED`."
