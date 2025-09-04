@@ -164,6 +164,12 @@ variable "additional_ip_range_pods" {
   default     = []
 }
 
+variable "additional_pod_ranges_config" {
+  type        = list(object({ subnetwork = string, pod_ipv4_range_names = list(string) }))
+  description = "the configuration for individual additional subnetworks attached to the cluster"
+  default     = []
+}
+
 variable "ip_range_services" {
   type        = string
   description = "The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used."

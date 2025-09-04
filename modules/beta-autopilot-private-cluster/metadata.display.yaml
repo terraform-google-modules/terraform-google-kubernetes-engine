@@ -40,6 +40,9 @@ spec:
         additional_ip_range_pods:
           name: additional_ip_range_pods
           title: Additional Ip Range Pods
+        additional_pod_ranges_config:
+          name: additional_pod_ranges_config
+          title: Additional Pod Ranges Config
         allow_net_admin:
           name: allow_net_admin
           title: Allow Net Admin
@@ -265,6 +268,9 @@ spec:
         ray_operator_config:
           name: ray_operator_config
           title: Ray Operator Config
+        rbac_binding_config:
+          name: rbac_binding_config
+          title: Rbac Binding Config
         region:
           name: region
           title: Region
