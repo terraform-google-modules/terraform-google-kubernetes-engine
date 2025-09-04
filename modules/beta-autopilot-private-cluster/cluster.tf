@@ -229,6 +229,14 @@ resource "google_container_cluster" "primary" {
       enabled = var.filestore_csi_driver
     }
 
+    dynamic "lustre_csi_driver_config" {
+      for_each = var.lustre_csi_driver == null ? [] : ["lustre_csi_driver_config"]
+      content {
+        enabled                   = var.lustre_csi_driver
+        enable_legacy_lustre_port = var.enable_legacy_lustre_port
+      }
+    }
+
 
     dynamic "gke_backup_agent_config" {
       for_each = local.gke_backup_agent_config
