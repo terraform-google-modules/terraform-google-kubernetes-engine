@@ -64,6 +64,9 @@ spec:
         database_encryption:
           name: database_encryption
           title: Database Encryption
+        default_compute_class_enabled:
+          name: default_compute_class_enabled
+          title: Default Compute Class Enabled
         deletion_protection:
           name: deletion_protection
           title: Deletion Protection
@@ -247,6 +250,9 @@ spec:
         ray_operator_config:
           name: ray_operator_config
           title: Ray Operator Config
+        rbac_binding_config:
+          name: rbac_binding_config
+          title: Rbac Binding Config
         region:
           name: region
           title: Region

@@ -128,7 +128,8 @@ resource "google_container_cluster" "primary" {
   monitoring_service = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? null : var.monitoring_service
 
   cluster_autoscaling {
-    enabled = var.cluster_autoscaling.enabled
+    enabled                       = var.cluster_autoscaling.enabled
+    default_compute_class_enabled = var.default_compute_class_enabled
     dynamic "auto_provisioning_defaults" {
       for_each = var.cluster_autoscaling.enabled ? [1] : []
 
