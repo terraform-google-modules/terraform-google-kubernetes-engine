@@ -32,15 +32,30 @@ spec:
           name: addons_config
           title: Addons Config
           properties:
-            http_load_balancing:
-              name: http_load_balancing
-              title: Http Load Balancing
+            config_connector_config:
+              name: config_connector_config
+              title: Config Connector Config
+            dns_cache_config:
+              name: dns_cache_config
+              title: Dns Cache Config
+            gce_persistent_disk_csi_driver_config:
+              name: gce_persistent_disk_csi_driver_config
+              title: Gce Persistent Disk Csi Driver Config
+            gcp_filestore_csi_driver_config:
+              name: gcp_filestore_csi_driver_config
+              title: Gcp Filestore Csi Driver Config
+            gcs_fuse_csi_driver_config:
+              name: gcs_fuse_csi_driver_config
+              title: Gcs Fuse Csi Driver Config
+            gke_backup_agent_config:
+              name: gke_backup_agent_config
+              title: Gke Backup Agent Config
             horizontal_pod_autoscaling:
               name: horizontal_pod_autoscaling
               title: Horizontal Pod Autoscaling
-            network_policy_config:
-              name: network_policy_config
-              title: Network Policy Config
+            http_load_balancing:
+              name: http_load_balancing
+              title: Http Load Balancing
             istio_config:
               name: istio_config
               title: Istio Config
@@ -51,36 +66,21 @@ spec:
                   enumValueLabels:
                     - label: MUTUAL_TLS
                       value: MUTUAL_TLS
-            dns_cache_config:
-              name: dns_cache_config
-              title: Dns Cache Config
-            config_connector_config:
-              name: config_connector_config
-              title: Config Connector Config
-            gce_persistent_disk_csi_driver_config:
-              name: gce_persistent_disk_csi_driver_config
-              title: Gce Persistent Disk Csi Driver Config
             kalm_config:
               name: kalm_config
               title: Kalm Config
-            gcp_filestore_csi_driver_config:
-              name: gcp_filestore_csi_driver_config
-              title: Gcp Filestore Csi Driver Config
-            gke_backup_agent_config:
-              name: gke_backup_agent_config
-              title: Gke Backup Agent Config
-            gcs_fuse_csi_driver_config:
-              name: gcs_fuse_csi_driver_config
-              title: Gcs Fuse Csi Driver Config
-            stateful_ha_config:
-              name: stateful_ha_config
-              title: Stateful Ha Config
+            network_policy_config:
+              name: network_policy_config
+              title: Network Policy Config
             parallelstore_csi_driver_config:
               name: parallelstore_csi_driver_config
               title: Parallelstore Csi Driver Config
             ray_operator_config:
               name: ray_operator_config
               title: Ray Operator Config
+            stateful_ha_config:
+              name: stateful_ha_config
+              title: Stateful Ha Config
         authenticator_groups_config:
           name: authenticator_groups_config
           title: Authenticator Groups Config
@@ -106,9 +106,6 @@ spec:
           name: cluster_autoscaling
           title: Cluster Autoscaling
           properties:
-            resource_limits:
-              name: resource_limits
-              title: Resource Limits
             auto_provisioning_defaults:
               name: auto_provisioning_defaults
               title: Auto Provisioning Defaults
@@ -120,6 +117,9 @@ spec:
                   name: upgrade_settings
                   title: Upgrade Settings
                   properties:
+                    blue_green_settings:
+                      name: blue_green_settings
+                      title: Blue Green Settings
                     strategy:
                       name: strategy
                       title: Strategy
@@ -128,9 +128,6 @@ spec:
                           value: SURGE
                         - label: BLUE_GREEN
                           value: BLUE_GREEN
-                    blue_green_settings:
-                      name: blue_green_settings
-                      title: Blue Green Settings
             autoscaling_profile:
               name: autoscaling_profile
               title: Autoscaling Profile
@@ -139,6 +136,9 @@ spec:
                   value: OPTIMIZE_UTILIZATION
                 - label: BALANCED
                   value: BALANCED
+            resource_limits:
+              name: resource_limits
+              title: Resource Limits
         cluster_ipv4_cidr:
           name: cluster_ipv4_cidr
           title: Cluster Ipv4 Cidr
@@ -182,14 +182,14 @@ spec:
         datapath_provider:
           name: datapath_provider
           title: Datapath Provider
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value: LEGACY_DATAPATH
           enumValueLabels:
             - label: LEGACY_DATAPATH
               value: LEGACY_DATAPATH
             - label: ADVANCED_DATAPATH
               value: ADVANCED_DATAPATH
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: LEGACY_DATAPATH
         default_max_pods_per_node:
           name: default_max_pods_per_node
           title: Default Max Pods Per Node
@@ -424,6 +424,9 @@ spec:
           name: node_config
           title: Node Config
           properties:
+            containerd_config:
+              name: containerd_config
+              title: Containerd Config
             disk_type:
               name: disk_type
               title: Disk Type
@@ -434,39 +437,10 @@ spec:
                   value: pd-balanced
                 - label: pd-ssd
                   value: pd-ssd
-            local_ssd_encryption_mode:
-              name: local_ssd_encryption_mode
-              title: Local Ssd Encryption Mode
-              enumValueLabels:
-                - label: STANDARD_ENCRYPTION
-                  value: STANDARD_ENCRYPTION
-                - label: EPHEMERAL_KEY_ENCRYPTION
-                  value: EPHEMERAL_KEY_ENCRYPTION
-            logging_variant:
-              name: logging_variant
-              title: Logging Variant
-              enumValueLabels:
-                - label: DEFAULT
-                  value: DEFAULT
-                - label: MAX_THROUGHPUT
-                  value: MAX_THROUGHPUT
-            secondary_boot_disks:
-              name: secondary_boot_disks
-              title: Secondary Boot Disks
-              properties:
-                mode:
-                  name: mode
-                  title: Mode
-                  enumValueLabels:
-                    - label: CONTAINER_IMAGE_CACHE
-                      value: CONTAINER_IMAGE_CACHE
             guest_accelerator:
               name: guest_accelerator
               title: Guest Accelerator
               properties:
-                type:
-                  name: type
-                  title: Type
                 gpu_driver_installation_config:
                   name: gpu_driver_installation_config
                   title: Gpu Driver Installation Config
@@ -495,46 +469,9 @@ spec:
                           value: TIME_SHARING
                         - label: MPS
                           value: MPS
-            reservation_affinity:
-              name: reservation_affinity
-              title: Reservation Affinity
-              properties:
-                consume_reservation_type:
-                  name: consume_reservation_type
-                  title: Consume Reservation Type
-                  enumValueLabels:
-                    - label: UNSPECIFIED
-                      value: UNSPECIFIED
-                    - label: NO_RESERVATION
-                      value: NO_RESERVATION
-                    - label: ANY_RESERVATION
-                      value: ANY_RESERVATION
-                    - label: SPECIFIC_RESERVATION
-                      value: SPECIFIC_RESERVATION
-            sandbox_config:
-              name: sandbox_config
-              title: Sandbox Config
-              properties:
-                sandbox_type:
-                  name: sandbox_type
-                  title: Sandbox Type
-                  enumValueLabels:
-                    - label: gvisor
-                      value: gvisor
-            workload_metadata_config:
-              name: workload_metadata_config
-              title: Workload Metadata Config
-              properties:
-                mode:
-                  name: mode
-                  title: Mode
-                  enumValueLabels:
-                    - label: MODE_UNSPECIFIED
-                      value: MODE_UNSPECIFIED
-                    - label: GCE_METADATA
-                      value: GCE_METADATA
-                    - label: GKE_METADATA
-                      value: GKE_METADATA
+                type:
+                  name: type
+                  title: Type
             kubelet_config:
               name: kubelet_config
               title: Kubelet Config
@@ -561,6 +498,58 @@ spec:
                       value: CGROUP_MODE_V1
                     - label: CGROUP_MODE_V2
                       value: CGROUP_MODE_V2
+            local_ssd_encryption_mode:
+              name: local_ssd_encryption_mode
+              title: Local Ssd Encryption Mode
+              enumValueLabels:
+                - label: STANDARD_ENCRYPTION
+                  value: STANDARD_ENCRYPTION
+                - label: EPHEMERAL_KEY_ENCRYPTION
+                  value: EPHEMERAL_KEY_ENCRYPTION
+            logging_variant:
+              name: logging_variant
+              title: Logging Variant
+              enumValueLabels:
+                - label: DEFAULT
+                  value: DEFAULT
+                - label: MAX_THROUGHPUT
+                  value: MAX_THROUGHPUT
+            reservation_affinity:
+              name: reservation_affinity
+              title: Reservation Affinity
+              properties:
+                consume_reservation_type:
+                  name: consume_reservation_type
+                  title: Consume Reservation Type
+                  enumValueLabels:
+                    - label: UNSPECIFIED
+                      value: UNSPECIFIED
+                    - label: NO_RESERVATION
+                      value: NO_RESERVATION
+                    - label: ANY_RESERVATION
+                      value: ANY_RESERVATION
+                    - label: SPECIFIC_RESERVATION
+                      value: SPECIFIC_RESERVATION
+            sandbox_config:
+              name: sandbox_config
+              title: Sandbox Config
+              properties:
+                sandbox_type:
+                  name: sandbox_type
+                  title: Sandbox Type
+                  enumValueLabels:
+                    - label: gvisor
+                      value: gvisor
+            secondary_boot_disks:
+              name: secondary_boot_disks
+              title: Secondary Boot Disks
+              properties:
+                mode:
+                  name: mode
+                  title: Mode
+                  enumValueLabels:
+                    - label: CONTAINER_IMAGE_CACHE
+                      value: CONTAINER_IMAGE_CACHE
             windows_node_config:
               name: windows_node_config
               title: Windows Node Config
@@ -575,9 +564,20 @@ spec:
                       value: OS_VERSION_LTSC2019
                     - label: OS_VERSION_LTSC2022
                       value: OS_VERSION_LTSC2022
-            containerd_config:
-              name: containerd_config
-              title: Containerd Config
+            workload_metadata_config:
+              name: workload_metadata_config
+              title: Workload Metadata Config
+              properties:
+                mode:
+                  name: mode
+                  title: Mode
+                  enumValueLabels:
+                    - label: MODE_UNSPECIFIED
+                      value: MODE_UNSPECIFIED
+                    - label: GCE_METADATA
+                      value: GCE_METADATA
+                    - label: GKE_METADATA
+                      value: GKE_METADATA
         node_locations:
           name: node_locations
           title: Node Locations
@@ -585,9 +585,6 @@ spec:
           name: node_pool
           title: Node Pool
           properties:
-            node_locations:
-              name: node_locations
-              title: Node Locations
             autoscaling:
               name: autoscaling
               title: Autoscaling
@@ -603,10 +600,29 @@ spec:
             management:
               name: management
               title: Management
+            network_config:
+              name: network_config
+              title: Network Config
+              properties:
+                network_performance_config:
+                  name: network_performance_config
+                  title: Network Performance Config
+                  properties:
+                    total_egress_bandwidth_tier:
+                      name: total_egress_bandwidth_tier
+                      title: Total Egress Bandwidth Tier
+                      enumValueLabels:
+                        - label: TIER_UNSPECIFIED
+                          value: TIER_UNSPECIFIED
+                        - label: TIER_1
+                          value: TIER_1
             node_config:
               name: node_config
               title: Node Config
               properties:
+                containerd_config:
+                  name: containerd_config
+                  title: Containerd Config
                 disk_type:
                   name: disk_type
                   title: Disk Type
@@ -617,39 +633,10 @@ spec:
                       value: pd-balanced
                     - label: pd-ssd
                       value: pd-ssd
-                local_ssd_encryption_mode:
-                  name: local_ssd_encryption_mode
-                  title: Local Ssd Encryption Mode
-                  enumValueLabels:
-                    - label: STANDARD_ENCRYPTION
-                      value: STANDARD_ENCRYPTION
-                    - label: EPHEMERAL_KEY_ENCRYPTION
-                      value: EPHEMERAL_KEY_ENCRYPTION
-                logging_variant:
-                  name: logging_variant
-                  title: Logging Variant
-                  enumValueLabels:
-                    - label: DEFAULT
-                      value: DEFAULT
-                    - label: MAX_THROUGHPUT
-                      value: MAX_THROUGHPUT
-                secondary_boot_disks:
-                  name: secondary_boot_disks
-                  title: Secondary Boot Disks
-                  properties:
-                    mode:
-                      name: mode
-                      title: Mode
-                      enumValueLabels:
-                        - label: CONTAINER_IMAGE_CACHE
-                          value: CONTAINER_IMAGE_CACHE
                 guest_accelerator:
                   name: guest_accelerator
                   title: Guest Accelerator
                   properties:
-                    type:
-                      name: type
-                      title: Type
                     gpu_driver_installation_config:
                       name: gpu_driver_installation_config
                       title: Gpu Driver Installation Config
@@ -678,46 +665,9 @@ spec:
                               value: TIME_SHARING
                             - label: MPS
                               value: MPS
-                reservation_affinity:
-                  name: reservation_affinity
-                  title: Reservation Affinity
-                  properties:
-                    consume_reservation_type:
-                      name: consume_reservation_type
-                      title: Consume Reservation Type
-                      enumValueLabels:
-                        - label: UNSPECIFIED
-                          value: UNSPECIFIED
-                        - label: NO_RESERVATION
-                          value: NO_RESERVATION
-                        - label: ANY_RESERVATION
-                          value: ANY_RESERVATION
-                        - label: SPECIFIC_RESERVATION
-                          value: SPECIFIC_RESERVATION
-                sandbox_config:
-                  name: sandbox_config
-                  title: Sandbox Config
-                  properties:
-                    sandbox_type:
-                      name: sandbox_type
-                      title: Sandbox Type
-                      enumValueLabels:
-                        - label: gvisor
-                          value: gvisor
-                workload_metadata_config:
-                  name: workload_metadata_config
-                  title: Workload Metadata Config
-                  properties:
-                    mode:
-                      name: mode
-                      title: Mode
-                      enumValueLabels:
-                        - label: MODE_UNSPECIFIED
-                          value: MODE_UNSPECIFIED
-                        - label: GCE_METADATA
-                          value: GCE_METADATA
-                        - label: GKE_METADATA
-                          value: GKE_METADATA
+                    type:
+                      name: type
+                      title: Type
                 kubelet_config:
                   name: kubelet_config
                   title: Kubelet Config
@@ -744,6 +694,58 @@ spec:
                           value: CGROUP_MODE_V1
                         - label: CGROUP_MODE_V2
                           value: CGROUP_MODE_V2
+                local_ssd_encryption_mode:
+                  name: local_ssd_encryption_mode
+                  title: Local Ssd Encryption Mode
+                  enumValueLabels:
+                    - label: STANDARD_ENCRYPTION
+                      value: STANDARD_ENCRYPTION
+                    - label: EPHEMERAL_KEY_ENCRYPTION
+                      value: EPHEMERAL_KEY_ENCRYPTION
+                logging_variant:
+                  name: logging_variant
+                  title: Logging Variant
+                  enumValueLabels:
+                    - label: DEFAULT
+                      value: DEFAULT
+                    - label: MAX_THROUGHPUT
+                      value: MAX_THROUGHPUT
+                reservation_affinity:
+                  name: reservation_affinity
+                  title: Reservation Affinity
+                  properties:
+                    consume_reservation_type:
+                      name: consume_reservation_type
+                      title: Consume Reservation Type
+                      enumValueLabels:
+                        - label: UNSPECIFIED
+                          value: UNSPECIFIED
+                        - label: NO_RESERVATION
+                          value: NO_RESERVATION
+                        - label: ANY_RESERVATION
+                          value: ANY_RESERVATION
+                        - label: SPECIFIC_RESERVATION
+                          value: SPECIFIC_RESERVATION
+                sandbox_config:
+                  name: sandbox_config
+                  title: Sandbox Config
+                  properties:
+                    sandbox_type:
+                      name: sandbox_type
+                      title: Sandbox Type
+                      enumValueLabels:
+                        - label: gvisor
+                          value: gvisor
+                secondary_boot_disks:
+                  name: secondary_boot_disks
+                  title: Secondary Boot Disks
+                  properties:
+                    mode:
+                      name: mode
+                      title: Mode
+                      enumValueLabels:
+                        - label: CONTAINER_IMAGE_CACHE
+                          value: CONTAINER_IMAGE_CACHE
                 windows_node_config:
                   name: windows_node_config
                   title: Windows Node Config
@@ -758,25 +760,33 @@ spec:
                           value: OS_VERSION_LTSC2019
                         - label: OS_VERSION_LTSC2022
                           value: OS_VERSION_LTSC2022
-                containerd_config:
-                  name: containerd_config
-                  title: Containerd Config
-            network_config:
-              name: network_config
-              title: Network Config
-              properties:
-                network_performance_config:
-                  name: network_performance_config
-                  title: Network Performance Config
+                workload_metadata_config:
+                  name: workload_metadata_config
+                  title: Workload Metadata Config
                   properties:
-                    total_egress_bandwidth_tier:
-                      name: total_egress_bandwidth_tier
-                      title: Total Egress Bandwidth Tier
+                    mode:
+                      name: mode
+                      title: Mode
                       enumValueLabels:
-                        - label: TIER_UNSPECIFIED
-                          value: TIER_UNSPECIFIED
-                        - label: TIER_1
-                          value: TIER_1
+                        - label: MODE_UNSPECIFIED
+                          value: MODE_UNSPECIFIED
+                        - label: GCE_METADATA
+                          value: GCE_METADATA
+                        - label: GKE_METADATA
+                          value: GKE_METADATA
+            node_locations:
+              name: node_locations
+              title: Node Locations
+            placement_policy:
+              name: placement_policy
+              title: Placement Policy
+              properties:
+                type:
+                  name: type
+                  title: Type
+                  enumValueLabels:
+                    - label: COMPACT
+                      value: COMPACT
             upgrade_settings:
               name: upgrade_settings
               title: Upgrade Settings
@@ -789,16 +799,6 @@ spec:
                       value: SURGE
                     - label: BLUE_GREEN
                       value: BLUE_GREEN
-            placement_policy:
-              name: placement_policy
-              title: Placement Policy
-              properties:
-                type:
-                  name: type
-                  title: Type
-                  enumValueLabels:
-                    - label: COMPACT
-                      value: COMPACT
         node_pool_auto_config:
           name: node_pool_auto_config
           title: Node Pool Auto Config
@@ -881,9 +881,6 @@ spec:
         private_ipv6_google_access:
           name: private_ipv6_google_access
           title: Private Ipv6 Google Access
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
           enumValueLabels:
             - label: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
               value: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
@@ -893,6 +890,9 @@ spec:
               value: PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE
             - label: PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL
               value: PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
         project_id:
           name: project_id
           title: Project Id
@@ -916,10 +916,10 @@ spec:
               name: workload_vulnerability_mode
               title: Workload Vulnerability Mode
               enumValueLabels:
-                    - label: DISABLED
-                      value: DISABLED
-                    - label: BASIC
-                      value: BASIC
+                - label: DISABLED
+                  value: DISABLED
+                - label: BASIC
+                  value: BASIC
         release_channel:
           name: release_channel
           title: Release Channel

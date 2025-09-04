@@ -96,22 +96,6 @@ spec:
                   value: pd-balanced
                 - label: pd-ssd
                   value: pd-ssd
-            local_ssd_encryption_mode:
-              name: local_ssd_encryption_mode
-              title: Local SSD Encryption Mode
-              enumValueLabels:
-                - label: STANDARD_ENCRYPTION
-                  value: STANDARD_ENCRYPTION
-                - label: EPHEMERAL_KEY_ENCRYPTION
-                  value: EPHEMERAL_KEY_ENCRYPTION
-            logging_variant:
-              name: logging_variant
-              title: Logging Variant
-              enumValueLabels:
-                - label: DEFAULT
-                  value: DEFAULT
-                - label: MAX_THROUGHPUT
-                  value: MAX_THROUGHPUT
             guest_accelerator:
               name: guest_accelerator
               title: Guest Accelerator
@@ -144,6 +128,48 @@ spec:
                           value: TIME_SHARING
                         - label: MPS
                           value: MPS
+            kubelet_config:
+              name: kubelet_config
+              title: Kubelet Config
+              properties:
+                cpu_manager_policy:
+                  name: cpu_manager_policy
+                  title: CPU Manager Policy
+                  enumValueLabels:
+                    - label: none
+                      value: none
+                    - label: static
+                      value: static
+            linux_node_config:
+              name: linux_node_config
+              title: Linux Node Config
+              properties:
+                cgroup_mode:
+                  name: cgroup_mode
+                  title: Cgroup Mode
+                  enumValueLabels:
+                    - label: CGROUP_MODE_UNSPECIFIED
+                      value: CGROUP_MODE_UNSPECIFIED
+                    - label: CGROUP_MODE_V1
+                      value: CGROUP_MODE_V1
+                    - label: CGROUP_MODE_V2
+                      value: CGROUP_MODE_V2
+            local_ssd_encryption_mode:
+              name: local_ssd_encryption_mode
+              title: Local SSD Encryption Mode
+              enumValueLabels:
+                - label: STANDARD_ENCRYPTION
+                  value: STANDARD_ENCRYPTION
+                - label: EPHEMERAL_KEY_ENCRYPTION
+                  value: EPHEMERAL_KEY_ENCRYPTION
+            logging_variant:
+              name: logging_variant
+              title: Logging Variant
+              enumValueLabels:
+                - label: DEFAULT
+                  value: DEFAULT
+                - label: MAX_THROUGHPUT
+                  value: MAX_THROUGHPUT
             oauth_scopes:
               name: oauth_scopes
               title: Oauth Scopes
@@ -188,46 +214,6 @@ spec:
                       value: PREFER_NO_SCHEDULE
                     - label: NO_EXECUTE
                       value: NO_EXECUTE
-            workload_metadata_config:
-              name: workload_metadata_config
-              title: Workload Metadata Config
-              properties:
-                mode:
-                  name: mode
-                  title: Mode
-                  enumValueLabels:
-                    - label: GCE_METADATA
-                      value: GCE_METADATA
-                    - label: GKE_METADATA
-                      value: GKE_METADATA
-                    - label: MODE_UNSPECIFIED
-                      value: MODE_UNSPECIFIED
-            kubelet_config:
-              name: kubelet_config
-              title: Kubelet Config
-              properties:
-                cpu_manager_policy:
-                  name: cpu_manager_policy
-                  title: CPU Manager Policy
-                  enumValueLabels:
-                    - label: none
-                      value: none
-                    - label: static
-                      value: static
-            linux_node_config:
-              name: linux_node_config
-              title: Linux Node Config
-              properties:
-                cgroup_mode:
-                  name: cgroup_mode
-                  title: Cgroup Mode
-                  enumValueLabels:
-                    - label: CGROUP_MODE_UNSPECIFIED
-                      value: CGROUP_MODE_UNSPECIFIED
-                    - label: CGROUP_MODE_V1
-                      value: CGROUP_MODE_V1
-                    - label: CGROUP_MODE_V2
-                      value: CGROUP_MODE_V2
             windows_node_config:
               name: windows_node_config
               title: Windows Node Config
@@ -242,6 +228,20 @@ spec:
                       value: OS_VERSION_LTSC2019
                     - label: OS_VERSION_LTSC2022
                       value: OS_VERSION_LTSC2022
+            workload_metadata_config:
+              name: workload_metadata_config
+              title: Workload Metadata Config
+              properties:
+                mode:
+                  name: mode
+                  title: Mode
+                  enumValueLabels:
+                    - label: GCE_METADATA
+                      value: GCE_METADATA
+                    - label: GKE_METADATA
+                      value: GKE_METADATA
+                    - label: MODE_UNSPECIFIED
+                      value: MODE_UNSPECIFIED
         node_count:
           name: node_count
           title: Node Count
