@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [39.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v38.1.0...v39.0.0) (2025-09-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=6.47:** add support for rbac_binding_config ([#2401](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2401))
+
+### Features
+
+* add enable_k8s_beta_apis support ([#2387](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2387)) ([090781d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/090781d4edc596cafe8a4241ea3d068e851ff0c6))
+* **TPG>=6.47:** add support for rbac_binding_config ([#2401](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2401)) ([2c8b78d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2c8b78dd0acfa050fd7fdb020fce4ddc4b451c32))
+
+
+### Bug Fixes
+
+* Add the nodepool cgroup mode to the NAP config ([#2356](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2356)) ([eeaf95d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/eeaf95d511a9cf500e45c1cd9c34d0e13482b0f3))
+
 ## [38.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v38.0.1...v38.1.0) (2025-08-29)
 
 
