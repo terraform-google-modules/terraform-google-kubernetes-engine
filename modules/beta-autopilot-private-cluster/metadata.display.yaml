@@ -43,6 +43,9 @@ spec:
         allow_net_admin:
           name: allow_net_admin
           title: Allow Net Admin
+        anonymous_authentication_config_mode:
+          name: anonymous_authentication_config_mode
+          title: Anonymous Authentication Config Mode
         authenticator_security_group:
           name: authenticator_security_group
           title: Authenticator Security Group
@@ -265,6 +268,9 @@ spec:
         ray_operator_config:
           name: ray_operator_config
           title: Ray Operator Config
+        rbac_binding_config:
+          name: rbac_binding_config
+          title: Rbac Binding Config
         region:
           name: region
           title: Region
