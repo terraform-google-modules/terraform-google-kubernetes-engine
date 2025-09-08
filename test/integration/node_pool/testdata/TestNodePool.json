@@ -203,7 +203,7 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-balanced",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
         "gcfsConfig": {},
         "imageType": "COS_CONTAINERD",
         "loggingConfig": {
@@ -267,7 +267,7 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-standard",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "machineType": "e2-medium",
         "metadata": {
@@ -320,7 +320,7 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-standard",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
         "gcfsConfig": {},
         "imageType": "COS_CONTAINERD",
         "labels": {
@@ -423,7 +423,7 @@
         ],
         "diskSizeGb": 30,
         "diskType": "pd-standard",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "labels": {
           "all-pools-example": "true",
@@ -505,7 +505,7 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-standard",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "cpuCfsQuota": true,
@@ -605,7 +605,7 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-standard",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "insecureKubeletReadonlyPortEnabled": false
@@ -704,7 +704,7 @@
         },
         "diskSizeGb": 100,
         "diskType": "pd-balanced",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "labels": {
           "all-pools-example": "true",
