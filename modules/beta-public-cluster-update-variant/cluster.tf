@@ -278,10 +278,20 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "node_pool_auto_config" {
-    for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
+    for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode != null) ? [1] : []
     content {
-      network_tags {
-        tags = var.add_cluster_firewall_rules ? (concat(var.network_tags, [local.cluster_network_tag])) : var.network_tags
+      dynamic "network_tags" {
+        for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
+        content {
+          tags = var.add_cluster_firewall_rules ? (concat(var.network_tags, [local.cluster_network_tag])) : var.network_tags
+        }
+      }
+
+      dynamic "linux_node_config" {
+        for_each = local.node_pools_cgroup_mode["all"] != "" ? [1] : []
+        content {
+          cgroup_mode = local.node_pools_cgroup_mode["all"]
+        }
       }
     }
   }
