@@ -33,6 +33,13 @@ resource "google_container_cluster" "primary" {
   network             = "projects/${local.network_project_id}/global/networks/${var.network}"
   deletion_protection = var.deletion_protection
 
+  dynamic "enable_k8s_beta_apis" {
+    for_each = length(var.enable_k8s_beta_apis) > 0 ? [1] : []
+    content {
+      enabled_apis = var.enable_k8s_beta_apis
+    }
+  }
+
 
   dynamic "release_channel" {
     for_each = local.release_channel
@@ -130,6 +137,14 @@ resource "google_container_cluster" "primary" {
     for_each = var.total_egress_bandwidth_tier != null ? [1] : []
     content {
       total_egress_bandwidth_tier = var.total_egress_bandwidth_tier
+    }
+  }
+
+  dynamic "rbac_binding_config" {
+    for_each = var.rbac_binding_config.enable_insecure_binding_system_unauthenticated != null || var.rbac_binding_config.enable_insecure_binding_system_authenticated != null ? [var.rbac_binding_config] : []
+    content {
+      enable_insecure_binding_system_unauthenticated = rbac_binding_config.value["enable_insecure_binding_system_unauthenticated"]
+      enable_insecure_binding_system_authenticated   = rbac_binding_config.value["enable_insecure_binding_system_authenticated"]
     }
   }
 
