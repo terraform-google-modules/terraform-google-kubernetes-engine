@@ -426,6 +426,13 @@ spec:
         description: The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes
         varType: bool
         defaultValue: false
+      - name: lustre_csi_driver
+        description: The status of the Lustre CSI driver addon, which allows the usage of a Lustre instances as volumes
+        varType: bool
+      - name: enable_legacy_lustre_port
+        description: Set it to true for GKE cluster runs a version earlier than 1.33.2-gke.4780000. Allows the Lustre CSI driver to initialize LNet (the virtual network layer for Lustre kernel module) using port 6988. This flag is required to workaround a port conflict with the gke-metadata-server on GKE nodes
+        varType: bool
+        defaultValue: false
       - name: database_encryption
         description: "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
         varType: list(object({ state = string, key_name = string }))
