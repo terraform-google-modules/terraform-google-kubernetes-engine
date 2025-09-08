@@ -148,6 +148,9 @@ spec:
         enable_l4_ilb_subsetting:
           name: enable_l4_ilb_subsetting
           title: Enable L4 Ilb Subsetting
+        enable_legacy_lustre_port:
+          name: enable_legacy_lustre_port
+          title: Enable Legacy Lustre Port
         enable_mesh_certificates:
           name: enable_mesh_certificates
           title: Enable Mesh Certificates
@@ -265,6 +268,9 @@ spec:
         logging_variant:
           name: logging_variant
           title: Logging Variant
+        lustre_csi_driver:
+          name: lustre_csi_driver
+          title: Lustre Csi Driver
         maintenance_end_time:
           name: maintenance_end_time
           title: Maintenance End Time
