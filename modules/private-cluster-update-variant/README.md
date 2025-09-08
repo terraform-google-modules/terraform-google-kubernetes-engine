@@ -207,6 +207,7 @@ Then perform the following commands on the root folder:
 | enable\_k8s\_beta\_apis | (Optional) - List of Kubernetes Beta APIs to enable in cluster. | `list(string)` | `[]` | no |
 | enable\_kubernetes\_alpha | Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. | `bool` | `false` | no |
 | enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
+| enable\_legacy\_lustre\_port | Set it to true for GKE cluster runs a version earlier than 1.33.2-gke.4780000. Allows the Lustre CSI driver to initialize LNet (the virtual network layer for Lustre kernel module) using port 6988. This flag is required to workaround a port conflict with the gke-metadata-server on GKE nodes | `bool` | `false` | no |
 | enable\_mesh\_certificates | Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity. | `bool` | `false` | no |
 | enable\_multi\_networking | Whether multi-networking is enabled for this cluster | `bool` | `null` | no |
 | enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | `bool` | `false` | no |
@@ -246,6 +247,7 @@ Then perform the following commands on the root folder:
 | logging\_enabled\_components | List of services to monitor: SYSTEM\_COMPONENTS, APISERVER, CONTROLLER\_MANAGER, KCP\_CONNECTION, KCP\_SSHD, KCP\_HPA, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration. | `list(string)` | `[]` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | `string` | `"logging.googleapis.com/kubernetes"` | no |
 | logging\_variant | (Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX\_THROUGHPUT. | `string` | `null` | no |
+| lustre\_csi\_driver | The status of the Lustre CSI driver addon, which allows the usage of a Lustre instances as volumes | `bool` | `null` | no |
 | maintenance\_end\_time | Time window specified for recurring maintenance operations in RFC3339 format | `string` | `""` | no |
 | maintenance\_exclusions | List of maintenance exclusions. A cluster can have up to three | `list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string }))` | `[]` | no |
 | maintenance\_recurrence | Frequency of the recurring maintenance window in RFC5545 format. | `string` | `""` | no |
@@ -471,7 +473,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
-- [Terraform Provider for GCP][terraform-provider-google] v6.41+
+- [Terraform Provider for GCP][terraform-provider-google] v6.47+
 
 #### gcloud
 
