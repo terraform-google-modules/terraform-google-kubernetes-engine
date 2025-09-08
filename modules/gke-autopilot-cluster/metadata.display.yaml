@@ -37,9 +37,24 @@ spec:
         authenticator_groups_config:
           name: authenticator_groups_config
           title: Authenticator Groups Config
+          properties:
+            security_group:
+              name: security_group
+              title: Security Group
+              regexValidation: ^gke-security-groups@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+              validation: Please use a valid email address with the gke-security-groups prefix.
         binary_authorization:
           name: binary_authorization
           title: Binary Authorization
+          properties:
+            evaluation_mode:
+              name: evaluation_mode
+              title: Evaluation Mode
+              enumValueLabels:
+                - label: PROJECT_SINGLETON_POLICY_ENFORCE
+                  value: PROJECT_SINGLETON_POLICY_ENFORCE
+                - label: DISABLED
+                  value: DISABLED
         cluster_autoscaling:
           name: cluster_autoscaling
           title: Cluster Autoscaling
@@ -49,6 +64,17 @@ spec:
         cluster_telemetry:
           name: cluster_telemetry
           title: Cluster Telemetry
+          properties:
+            type:
+              name: type
+              title: Type
+              enumValueLabels:
+                - label: ENABLED
+                  value: ENABLED
+                - label: DISABLED
+                  value: DISABLED
+                - label: SYSTEM_ONLY
+                  value: SYSTEM_ONLY
         confidential_nodes:
           name: confidential_nodes
           title: Confidential Nodes
@@ -61,9 +87,26 @@ spec:
         database_encryption:
           name: database_encryption
           title: Database Encryption
+          properties:
+            state:
+              name: state
+              title: State
+              enumValueLabels:
+                - label: ENCRYPTED
+                  value: ENCRYPTED
+                - label: DECRYPTED
+                  value: DECRYPTED
         datapath_provider:
           name: datapath_provider
           title: Datapath Provider
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: LEGACY_DATAPATH
+          enumValueLabels:
+            - label: LEGACY_DATAPATH
+              value: LEGACY_DATAPATH
+            - label: ADVANCED_DATAPATH
+              value: ADVANCED_DATAPATH
         default_snat_status:
           name: default_snat_status
           title: Default Snat Status
@@ -79,6 +122,15 @@ spec:
         dns_config:
           name: dns_config
           title: Dns Config
+          properties:
+            cluster_dns:
+              name: cluster_dns
+              title: Cluster Dns
+              enumValueLabels:
+                - label: CLOUD_DNS
+                  value: CLOUD_DNS
+                - label: PLATFORM_DEFAULT
+                  value: PLATFORM_DEFAULT
         enable_cilium_clusterwide_network_policy:
           name: enable_cilium_clusterwide_network_policy
           title: Enable Cilium Clusterwide Network Policy
@@ -97,36 +149,117 @@ spec:
         enterprise_config:
           name: enterprise_config
           title: Enterprise Config
+          properties:
+            desired_tier:
+              name: desired_tier
+              title: Desired Tier
+              enumValueLabels:
+                - label: STANDARD
+                  value: STANDARD
+                - label: ENTERPRISE
+                  value: ENTERPRISE
         fleet:
           name: fleet
           title: Fleet
         gateway_api_config:
           name: gateway_api_config
           title: Gateway Api Config
+          properties:
+            channel:
+              name: channel
+              title: Channel
+              enumValueLabels:
+                - label: CHANNEL_DISABLED
+                  value: CHANNEL_DISABLED
+                - label: CHANNEL_EXPERIMENTAL
+                  value: CHANNEL_EXPERIMENTAL
+                - label: CHANNEL_STANDARD
+                  value: CHANNEL_STANDARD
         identity_service_config:
           name: identity_service_config
           title: Identity Service Config
         in_transit_encryption_config:
           name: in_transit_encryption_config
           title: In Transit Encryption Config
+          enumValueLabels:
+            - label: IN_TRANSIT_ENCRYPTION_DISABLED
+              value: IN_TRANSIT_ENCRYPTION_DISABLED
+            - label: IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT
+              value: IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT
         ip_allocation_policy:
           name: ip_allocation_policy
           title: Ip Allocation Policy
+          properties:
+            stack_type:
+              name: stack_type
+              title: Stack Type
+              enumValueLabels:
+                - label: IPV4
+                  value: IPV4
+                - label: IPV4_IPV6
+                  value: IPV4_IPV6
         location:
           name: location
           title: Location
         logging_config:
           name: logging_config
           title: Logging Config
+          properties:
+            enable_components:
+              name: enable_components
+              title: Enable Components
+              enumValueLabels:
+                - label: SYSTEM_COMPONENTS
+                  value: SYSTEM_COMPONENTS
+                - label: APISERVER
+                  value: APISERVER
+                - label: CONTROLLER_MANAGER
+                  value: CONTROLLER_MANAGER
+                - label: SCHEDULER
+                  value: SCHEDULER
+                - label: WORKLOADS
+                  value: WORKLOADS
         maintenance_policy:
           name: maintenance_policy
           title: Maintenance Policy
+          properties:
+            recurring_window:
+              name: recurring_window
+              title: Recurring Window
+              properties:
+                recurrence:
+                  name: recurrence
+                  title: Recurrence
+                  regexValidation: "^(FREQ|BYDAY|BYMONTHDAY|BYMONTH|BYYEARDAY|INTERVAL|COUNT|UNTIL|WKST|BYSETPOS|BYWEEKNO|BYHOUR|BYMINUTE|BYSECOND|RRULE|DTSTART|TZID|RDATE|EXDATE|EXRULE|ACTION|ATTENDEE|CALSCALE|CATEGORIES|CLASS|COMMENT|CONTACT|CREATED|DESCRIPTION|GEO|LAST-MODIFIED|LOCATION|ORGANIZER|PRIORITY|SEQUENCE|STATUS|SUMMARY|TRANSP|URL|UID|VERSION|PRODID|X-PUBLISHED-TTL|X-WR-CALNAME|X-WR-CALDESC|X-WR-TIMEZONE|X-WR-RECURID)$"
+                  validation: The recurrence field should be a valid RFC 5545 recurrence rule.
+            maintenance_exclusion:
+              name: maintenance_exclusion
+              title: Maintenance Exclusion
+              properties:
+                exclusion_options:
+                  name: exclusion_options
+                  title: Exclusion Options
+                  properties:
+                    scope:
+                      name: scope
+                      title: Scope
+                      enumValueLabels:
+                        - label: NO_UPGRADES
+                          value: NO_UPGRADES
+                        - label: NO_MINOR_UPGRADES
+                          value: NO_MINOR_UPGRADES
+                        - label: NO_MINOR_OR_NODE_UPGRADES
+                          value: NO_MINOR_OR_NODE_UPGRADES
         master_auth:
           name: master_auth
           title: Master Auth
         master_authorized_networks_config:
           name: master_authorized_networks_config
           title: Master Authorized Networks Config
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value:
+                private_endpoint_enforcement_enabled: true
         mesh_certificates:
           name: mesh_certificates
           title: Mesh Certificates
@@ -136,9 +269,44 @@ spec:
         monitoring_config:
           name: monitoring_config
           title: Monitoring Config
+          properties:
+            enable_components:
+              name: enable_components
+              title: Enable Components
+              enumValueLabels:
+                - label: SYSTEM_COMPONENTS
+                  value: SYSTEM_COMPONENTS
+                - label: APISERVER
+                  value: APISERVER
+                - label: SCHEDULER
+                  value: SCHEDULER
+                - label: CONTROLLER_MANAGER
+                  value: CONTROLLER_MANAGER
+                - label: STORAGE
+                  value: STORAGE
+                - label: HPA
+                  value: HPA
+                - label: POD
+                  value: POD
+                - label: DAEMONSET
+                  value: DAEMONSET
+                - label: DEPLOYMENT
+                  value: DEPLOYMENT
+                - label: STATEFULSET
+                  value: STATEFULSET
+                - label: KUBELET
+                  value: KUBELET
+                - label: CADVISOR
+                  value: CADVISOR
+                - label: DCGM
+                  value: DCGM
+                - label: JOBSET
+                  value: JOBSET
         name:
           name: name
           title: Name
+          regexValidation: ^[a-z][a-z0-9-]{0,38}[a-z0-9]$
+          validation: The cluster name must start with a lowercase letter and can contain up to 40 characters. It can include lowercase letters, numbers, and hyphens, but it cannot end with a hyphen. The name must be unique within its project and location.
         network:
           name: network
           title: Network
@@ -148,12 +316,57 @@ spec:
         node_pool_auto_config:
           name: node_pool_auto_config
           title: Node Pool Auto Config
+          properties:
+            linux_node_config:
+              name: linux_node_config
+              title: Linux Node Config
+              properties:
+                cgroup_mode:
+                  name: cgroup_mode
+                  title: Cgroup Mode
+                  enumValueLabels:
+                    - label: CGROUP_MODE_UNSPECIFIED
+                      value: CGROUP_MODE_UNSPECIFIED
+                    - label: CGROUP_MODE_V1
+                      value: CGROUP_MODE_V1
+                    - label: CGROUP_MODE_V2
+                      value: CGROUP_MODE_V2
         notification_config:
           name: notification_config
           title: Notification Config
+          properties:
+            pubsub:
+              name: pubsub
+              title: Pubsub
+              properties:
+                filter:
+                  name: filter
+                  title: Filter
+                  properties:
+                    event_type:
+                      name: event_type
+                      title: Event Type
+                      enumValueLabels:
+                        - label: UPGRADE_AVAILABLE_EVENT
+                          value: UPGRADE_AVAILABLE_EVENT
+                        - label: UPGRADE_EVENT
+                          value: UPGRADE_EVENT
+                        - label: SECURITY_BULLETIN_EVENT
+                          value: SECURITY_BULLETIN_EVENT
+                        - label: UPGRADE_INFO_EVENT
+                          value: UPGRADE_INFO_EVENT
         pod_autoscaling:
           name: pod_autoscaling
           title: Pod Autoscaling
+          properties:
+            hpa_profile:
+              name: hpa_profile
+              title: Hpa Profile
+              enumValueLabels:
+                - label: NONE
+                  value: NONE
+                - label: PERFORMANCE
+                  value: PERFORMANCE
         pod_security_policy_config:
           name: pod_security_policy_config
           title: Pod Security Policy Config
@@ -163,15 +376,51 @@ spec:
         private_ipv6_google_access:
           name: private_ipv6_google_access
           title: Private Ipv6 Google Access
-        project:
-          name: project
-          title: Project
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
+          enumValueLabels:
+            - label: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
+            - label: PRIVATE_IPV6_GOOGLE_ACCESS_DISABLED
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_DISABLED
+            - label: PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE
+            - label: PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL
+        project_id:
+          name: project_id
+          title: Project Id
         protect_config:
           name: protect_config
           title: Protect Config
+          properties:
+            workload_vulnerability_mode:
+              name: workload_vulnerability_mode
+              title: Workload Vulnerability Mode
+              enumValueLabels:
+                - label: DISABLED
+                  value: DISABLED
+                - label: BASIC
+                  value: BASIC
         release_channel:
           name: release_channel
           title: Release Channel
+          properties:
+            channel:
+              name: channel
+              title: Channel
+              enumValueLabels:
+                - label: UNSPECIFIED
+                  value: UNSPECIFIED
+                - label: RAPID
+                  value: RAPID
+                - label: REGULAR
+                  value: REGULAR
+                - label: STABLE
+                  value: STABLE
+                - label: EXTENDED
+                  value: EXTENDED
         resource_labels:
           name: resource_labels
           title: Resource Labels
@@ -184,6 +433,27 @@ spec:
         security_posture_config:
           name: security_posture_config
           title: Security Posture Config
+          properties:
+            mode:
+              name: mode
+              title: Mode
+              enumValueLabels:
+                - label: DISABLED
+                  value: DISABLED
+                - label: BASIC
+                  value: BASIC
+                - label: ENTERPRISE
+                  value: ENTERPRISE
+            vulnerability_mode:
+              name: vulnerability_mode
+              title: Vulnerability Mode
+              enumValueLabels:
+                - label: VULNERABILITY_DISABLED
+                  value: VULNERABILITY_DISABLED
+                - label: VULNERABILITY_BASIC
+                  value: VULNERABILITY_BASIC
+                - label: VULNERABILITY_ENTERPRISE
+                  value: VULNERABILITY_ENTERPRISE
         service_external_ips_config:
           name: service_external_ips_config
           title: Service External Ips Config
@@ -202,3 +472,7 @@ spec:
         workload_identity_config:
           name: workload_identity_config
           title: Workload Identity Config
+    runtime:
+      outputs:
+        cluster_id:
+          visibility: VISIBILITY_ROOT
