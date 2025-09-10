@@ -33,6 +33,13 @@ resource "google_container_cluster" "primary" {
   network             = "projects/${local.network_project_id}/global/networks/${var.network}"
   deletion_protection = var.deletion_protection
 
+  dynamic "enable_k8s_beta_apis" {
+    for_each = length(var.enable_k8s_beta_apis) > 0 ? [1] : []
+    content {
+      enabled_apis = var.enable_k8s_beta_apis
+    }
+  }
+
 
   dynamic "release_channel" {
     for_each = local.release_channel
@@ -133,6 +140,14 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "rbac_binding_config" {
+    for_each = var.rbac_binding_config.enable_insecure_binding_system_unauthenticated != null || var.rbac_binding_config.enable_insecure_binding_system_authenticated != null ? [var.rbac_binding_config] : []
+    content {
+      enable_insecure_binding_system_unauthenticated = rbac_binding_config.value["enable_insecure_binding_system_unauthenticated"]
+      enable_insecure_binding_system_authenticated   = rbac_binding_config.value["enable_insecure_binding_system_authenticated"]
+    }
+  }
+
   dynamic "secret_manager_config" {
     for_each = var.enable_secret_manager_addon ? [var.enable_secret_manager_addon] : []
     content {
@@ -219,6 +234,14 @@ resource "google_container_cluster" "primary" {
 
     gcp_filestore_csi_driver_config {
       enabled = var.filestore_csi_driver
+    }
+
+    dynamic "lustre_csi_driver_config" {
+      for_each = var.lustre_csi_driver == null ? [] : ["lustre_csi_driver_config"]
+      content {
+        enabled                   = var.lustre_csi_driver
+        enable_legacy_lustre_port = var.enable_legacy_lustre_port
+      }
     }
 
 
