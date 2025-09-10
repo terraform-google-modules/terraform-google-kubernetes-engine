@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2022-2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -204,6 +204,12 @@ variable "enable_resource_consumption_export" {
 
 variable "network_tags" {
   description = "(Optional) - List of network tags applied to auto-provisioned node pools."
+  type        = list(string)
+  default     = []
+}
+
+variable "enable_k8s_beta_apis" {
+  description = "(Optional) - List of Kubernetes Beta APIs to enable in cluster."
   type        = list(string)
   default     = []
 }
@@ -454,6 +460,18 @@ variable "filestore_csi_driver" {
   default     = false
 }
 
+variable "lustre_csi_driver" {
+  type        = bool
+  description = "The status of the Lustre CSI driver addon, which allows the usage of a Lustre instances as volumes"
+  default     = null
+}
+
+variable "enable_legacy_lustre_port" {
+  type        = bool
+  description = "Set it to true for GKE cluster runs a version earlier than 1.33.2-gke.4780000. Allows the Lustre CSI driver to initialize LNet (the virtual network layer for Lustre kernel module) using port 6988. This flag is required to workaround a port conflict with the gke-metadata-server on GKE nodes"
+  default     = false
+}
+
 variable "database_encryption" {
   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
   type        = list(object({ state = string, key_name = string }))
@@ -625,4 +643,16 @@ variable "ip_endpoints_enabled" {
   description = "(Optional) Controls whether to allow direct IP access. Defaults to `true`."
   type        = bool
   default     = null
+}
+
+variable "rbac_binding_config" {
+  type = object({
+    enable_insecure_binding_system_unauthenticated = optional(bool, null)
+    enable_insecure_binding_system_authenticated   = optional(bool, null)
+  })
+  description = "RBACBindingConfig allows user to restrict ClusterRoleBindings an RoleBindings that can be created."
+  default = {
+    enable_insecure_binding_system_unauthenticated = null
+    enable_insecure_binding_system_authenticated   = null
+  }
 }

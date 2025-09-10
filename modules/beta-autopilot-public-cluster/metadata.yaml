@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-autopilot-public-cluster
-    version: 38.0.1
+    version: 38.1.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -245,6 +245,10 @@ spec:
         description: (Optional) - List of network tags applied to auto-provisioned node pools.
         varType: list(string)
         defaultValue: []
+      - name: enable_k8s_beta_apis
+        description: (Optional) - List of Kubernetes Beta APIs to enable in cluster.
+        varType: list(string)
+        defaultValue: []
       - name: create_service_account
         description: Defines if service account specified to run nodes should be created.
         varType: bool
@@ -400,6 +404,13 @@ spec:
         description: The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes
         varType: bool
         defaultValue: false
+      - name: lustre_csi_driver
+        description: The status of the Lustre CSI driver addon, which allows the usage of a Lustre instances as volumes
+        varType: bool
+      - name: enable_legacy_lustre_port
+        description: Set it to true for GKE cluster runs a version earlier than 1.33.2-gke.4780000. Allows the Lustre CSI driver to initialize LNet (the virtual network layer for Lustre kernel module) using port 6988. This flag is required to workaround a port conflict with the gke-metadata-server on GKE nodes
+        varType: bool
+        defaultValue: false
       - name: database_encryption
         description: "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
         varType: list(object({ state = string, key_name = string }))
@@ -475,6 +486,16 @@ spec:
       - name: ip_endpoints_enabled
         description: (Optional) Controls whether to allow direct IP access. Defaults to `true`.
         varType: bool
+      - name: rbac_binding_config
+        description: RBACBindingConfig allows user to restrict ClusterRoleBindings an RoleBindings that can be created.
+        varType: |-
+          object({
+              enable_insecure_binding_system_unauthenticated = optional(bool, null)
+              enable_insecure_binding_system_authenticated   = optional(bool, null)
+            })
+        defaultValue:
+          enable_insecure_binding_system_authenticated: null
+          enable_insecure_binding_system_unauthenticated: null
     outputs:
       - name: ca_certificate
         description: Cluster ca certificate (base64 encoded)
@@ -543,9 +564,9 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6.42.0, < 7"
+        version: ">= 6.47.0, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6.42.0, < 7"
+        version: ">= 6.47.0, < 8"
       - source: hashicorp/kubernetes
         version: ~> 2.10
       - source: hashicorp/random

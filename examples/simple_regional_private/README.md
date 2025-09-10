@@ -9,6 +9,7 @@ This example illustrates how to create a simple private cluster.
 |------|-------------|------|---------|:--------:|
 | cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | `any` | n/a | yes |
+| enable\_k8s\_beta\_apis | K8S beta apis to enable within the cluster | `any` | n/a | yes |
 | ip\_range\_pods | The secondary ip range to use for pods | `any` | n/a | yes |
 | network | The VPC network to host the cluster in | `any` | n/a | yes |
 | project\_id | The project ID to host the cluster in | `any` | n/a | yes |

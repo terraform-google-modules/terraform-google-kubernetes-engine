@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2022-2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -399,6 +399,12 @@ variable "network_tags" {
   default = []
 }
 
+variable "enable_k8s_beta_apis" {
+  description = "(Optional) - List of Kubernetes Beta APIs to enable in cluster."
+  type        = list(string)
+  default     = []
+}
+
 {% if autopilot_cluster != true %}
 variable "stub_domains" {
   type        = map(list(string))
@@ -772,6 +778,18 @@ variable "filestore_csi_driver" {
   default     = false
 }
 
+variable "lustre_csi_driver" {
+  type        = bool
+  description = "The status of the Lustre CSI driver addon, which allows the usage of a Lustre instances as volumes"
+  default     = null
+}
+
+variable "enable_legacy_lustre_port" {
+  type        = bool
+  description = "Set it to true for GKE cluster runs a version earlier than 1.33.2-gke.4780000. Allows the Lustre CSI driver to initialize LNet (the virtual network layer for Lustre kernel module) using port 6988. This flag is required to workaround a port conflict with the gke-metadata-server on GKE nodes"
+  default     = false
+}
+
 {% if autopilot_cluster != true %}
 variable "network_policy" {
   type        = bool
@@ -1101,7 +1119,7 @@ variable "sandbox_enabled" {
 {% if autopilot_cluster != true %}
 variable "enable_identity_service" {
   type        = bool
-  description = "(Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API."
+  description = "(Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API. NOTE: Starting on July 1, 2025, new Google Cloud organizations that you create won't support Identity Service for GKE."
   default     = false
 }
 {% endif %}
@@ -1165,4 +1183,16 @@ variable "ip_endpoints_enabled" {
   description = "(Optional) Controls whether to allow direct IP access. Defaults to `true`."
   type        = bool
   default     = null
+}
+
+variable "rbac_binding_config" {
+  type = object({
+    enable_insecure_binding_system_unauthenticated = optional(bool, null)
+    enable_insecure_binding_system_authenticated   = optional(bool, null)
+  })
+  description = "RBACBindingConfig allows user to restrict ClusterRoleBindings an RoleBindings that can be created."
+  default = {
+    enable_insecure_binding_system_unauthenticated = null
+    enable_insecure_binding_system_authenticated   = null
+  }
 }
