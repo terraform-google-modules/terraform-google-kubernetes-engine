@@ -132,7 +132,7 @@ spec:
         required: true
         connections:
           - source:
-              source: github.com/Daisyprakash/terraform-google-kubernetes-engine//modules/gke-standard-cluster
+              source: github.com/terraform-google-modules/terraform-google-kubernetes-engine//modules/gke-standard-cluster
               version: ">=38.0.1"
             spec:
               outputExpr: cluster_id
