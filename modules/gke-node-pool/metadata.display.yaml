@@ -261,6 +261,7 @@ spec:
         project_id:
           name: project_id
           title: Project Id
+          level: 1
         queued_provisioning:
           name: queued_provisioning
           title: Queued Provisioning

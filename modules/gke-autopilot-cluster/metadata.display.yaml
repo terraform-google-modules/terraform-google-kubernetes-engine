@@ -99,14 +99,14 @@ spec:
         datapath_provider:
           name: datapath_provider
           title: Datapath Provider
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value: LEGACY_DATAPATH
           enumValueLabels:
             - label: LEGACY_DATAPATH
               value: LEGACY_DATAPATH
             - label: ADVANCED_DATAPATH
               value: ADVANCED_DATAPATH
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: LEGACY_DATAPATH
         default_snat_status:
           name: default_snat_status
           title: Default Snat Status
@@ -223,15 +223,6 @@ spec:
           name: maintenance_policy
           title: Maintenance Policy
           properties:
-            recurring_window:
-              name: recurring_window
-              title: Recurring Window
-              properties:
-                recurrence:
-                  name: recurrence
-                  title: Recurrence
-                  regexValidation: "^(FREQ|BYDAY|BYMONTHDAY|BYMONTH|BYYEARDAY|INTERVAL|COUNT|UNTIL|WKST|BYSETPOS|BYWEEKNO|BYHOUR|BYMINUTE|BYSECOND|RRULE|DTSTART|TZID|RDATE|EXDATE|EXRULE|ACTION|ATTENDEE|CALSCALE|CATEGORIES|CLASS|COMMENT|CONTACT|CREATED|DESCRIPTION|GEO|LAST-MODIFIED|LOCATION|ORGANIZER|PRIORITY|SEQUENCE|STATUS|SUMMARY|TRANSP|URL|UID|VERSION|PRODID|X-PUBLISHED-TTL|X-WR-CALNAME|X-WR-CALDESC|X-WR-TIMEZONE|X-WR-RECURID)$"
-                  validation: The recurrence field should be a valid RFC 5545 recurrence rule.
             maintenance_exclusion:
               name: maintenance_exclusion
               title: Maintenance Exclusion
@@ -250,6 +241,15 @@ spec:
                           value: NO_MINOR_UPGRADES
                         - label: NO_MINOR_OR_NODE_UPGRADES
                           value: NO_MINOR_OR_NODE_UPGRADES
+            recurring_window:
+              name: recurring_window
+              title: Recurring Window
+              properties:
+                recurrence:
+                  name: recurrence
+                  title: Recurrence
+                  regexValidation: ^(FREQ|BYDAY|BYMONTHDAY|BYMONTH|BYYEARDAY|INTERVAL|COUNT|UNTIL|WKST|BYSETPOS|BYWEEKNO|BYHOUR|BYMINUTE|BYSECOND|RRULE|DTSTART|TZID|RDATE|EXDATE|EXRULE|ACTION|ATTENDEE|CALSCALE|CATEGORIES|CLASS|COMMENT|CONTACT|CREATED|DESCRIPTION|GEO|LAST-MODIFIED|LOCATION|ORGANIZER|PRIORITY|SEQUENCE|STATUS|SUMMARY|TRANSP|URL|UID|VERSION|PRODID|X-PUBLISHED-TTL|X-WR-CALNAME|X-WR-CALDESC|X-WR-TIMEZONE|X-WR-RECURID)$
+                  validation: The recurrence field should be a valid RFC 5545 recurrence rule.
         master_auth:
           name: master_auth
           title: Master Auth
@@ -376,9 +376,6 @@ spec:
         private_ipv6_google_access:
           name: private_ipv6_google_access
           title: Private Ipv6 Google Access
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
           enumValueLabels:
             - label: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
               value: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
@@ -388,6 +385,9 @@ spec:
               value: PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE
             - label: PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL
               value: PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
         project_id:
           name: project_id
           title: Project Id
