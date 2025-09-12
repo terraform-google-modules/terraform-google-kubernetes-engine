@@ -431,7 +431,7 @@ spec:
           - key_name: ""
             state: DECRYPTED
       - name: default_compute_class_enabled
-        description: Enable Spot VMs as the default compute class for Node Auto-Provisioning
+        description: Enable default compute class for Node Auto-Provisioning
         varType: bool
       - name: enable_binary_authorization
         description: Enable BinAuthZ Admission controller
