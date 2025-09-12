@@ -176,7 +176,8 @@ resource "google_container_cluster" "primary" {
         image_type = lookup(var.cluster_autoscaling, "image_type", "COS_CONTAINERD")
       }
     }
-    autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
+    autoscaling_profile           = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
+    default_compute_class_enabled = lookup(var.cluster_autoscaling, "enable_default_compute_class", false)
     dynamic "resource_limits" {
       for_each = local.autoscaling_resource_limits
       content {
