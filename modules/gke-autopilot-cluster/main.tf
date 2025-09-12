@@ -19,7 +19,7 @@ resource "google_container_cluster" "main" {
 
   name                = var.name
   description         = var.description
-  project             = var.project
+  project             = var.project_id
   resource_labels     = var.resource_labels
   location            = var.location
   node_locations      = var.node_locations
