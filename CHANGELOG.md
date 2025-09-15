@@ -6,6 +6,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [39.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v38.1.0...v39.0.0) (2025-09-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG >= 6.47:** add support for lustre csi driver ([#2433](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2433))
+* **TPG>=6.47:** add support for rbac_binding_config ([#2401](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2401))
+
+### Features
+
+* add enable_k8s_beta_apis support ([#2387](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2387)) ([090781d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/090781d4edc596cafe8a4241ea3d068e851ff0c6))
+* add support for additional_pod_ranges_config ([#2435](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2435)) ([8b6a803](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8b6a803b7c56574a13797aff892357326e9df0ad))
+* **TPG >= 6.47:** add support for lustre csi driver ([#2433](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2433)) ([b56546d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b56546d24fb83a0d34952f9b5d0fd97893fd4f8b))
+* **TPG>=6.47:** add support for rbac_binding_config ([#2401](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2401)) ([2c8b78d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2c8b78dd0acfa050fd7fdb020fce4ddc4b451c32))
+
+
+### Bug Fixes
+
+* Add the nodepool cgroup mode to the NAP config ([#2356](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2356)) ([eeaf95d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/eeaf95d511a9cf500e45c1cd9c34d0e13482b0f3))
+* Avoid flapping network_tags when insecure_kubelet_readonly_port_enabled is non-null ([#2439](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2439)) ([0ffe3f9](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0ffe3f9929f28e4d4b449fc32e67a5c30e0e12c0))
+* Make GKE components ADC compatible ([#2440](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2440)) ([74d37d8](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/74d37d8b2d489150acc839991719e0fb70f2ecdb))
+* typo in taint dynamic block in main.tf for gke-node-pools module ([#2424](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2424)) ([0848345](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0848345a65b7f5192385d79410c4a98203045f70))
+
 ## [38.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v38.0.1...v38.1.0) (2025-08-29)
 
 
