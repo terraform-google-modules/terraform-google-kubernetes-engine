@@ -412,6 +412,9 @@ spec:
         remove_default_node_pool:
           name: remove_default_node_pool
           title: Remove Default Node Pool
+        resource_manager_tags:
+          name: resource_manager_tags
+          title: Resource Manager Tags
         resource_usage_export_dataset_id:
           name: resource_usage_export_dataset_id
           title: Resource Usage Export Dataset Id

@@ -271,6 +271,9 @@ spec:
         release_channel:
           name: release_channel
           title: Release Channel
+        resource_manager_tags:
+          name: resource_manager_tags
+          title: Resource Manager Tags
         resource_usage_export_dataset_id:
           name: resource_usage_export_dataset_id
           title: Resource Usage Export Dataset Id

@@ -265,7 +265,7 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "node_pool_auto_config" {
-    for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode != null) ? [1] : []
+    for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode != null) ? [1] : []
     content {
       dynamic "network_tags" {
         for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
@@ -273,6 +273,8 @@ resource "google_container_cluster" "primary" {
           tags = var.add_cluster_firewall_rules ? (concat(var.network_tags, [local.cluster_network_tag])) : var.network_tags
         }
       }
+
+      resource_manager_tags = length(var.resource_manager_tags) > 0 ? var.resource_manager_tags : null
 
       dynamic "linux_node_config" {
         for_each = local.node_pools_cgroup_mode["all"] != "" ? [1] : []

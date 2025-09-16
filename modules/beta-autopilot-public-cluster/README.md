@@ -133,7 +133,7 @@ Then perform the following commands on the root folder:
 | name | The name of the cluster (required) | `string` | n/a | yes |
 | network | The VPC network to host the cluster in (required) | `string` | n/a | yes |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | `string` | `""` | no |
-| network\_tags | (Optional) - List of network tags applied to auto-provisioned node pools. | `list(string)` | `[]` | no |
+| network\_tags | (Optional) - List of network tags applied to autopilot and auto-provisioned node pools. | `list(string)` | `[]` | no |
 | node\_pools\_cgroup\_mode | Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management. | `string` | `null` | no |
 | notification\_config\_topic | The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}. | `string` | `""` | no |
 | notification\_filter\_event\_type | Choose what type of notifications you want to receive. If no filters are applied, you'll receive all notification types. Can be used to filter what notifications are sent. Accepted values are UPGRADE\_AVAILABLE\_EVENT, UPGRADE\_EVENT, and SECURITY\_BULLETIN\_EVENT. | `list(string)` | `[]` | no |
@@ -144,6 +144,7 @@ Then perform the following commands on the root folder:
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | `bool` | `true` | no |
 | registry\_project\_ids | Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` and `artifactregsitry.reader` roles are assigned on these projects. | `list(string)` | `[]` | no |
 | release\_channel | The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`. | `string` | `"REGULAR"` | no |
+| resource\_manager\_tags | (Optional) - List of resource manager tags applied to autopilot and auto-provisioned node pools. A maximum of 5 tags can be specified. Tags must be in one of these formats: `tagKeys/{tag_key_id}=tagValues/{tag_value_id}`, `{org_id}/{tag_key_name}={tag_value_name}`, `{project_id}/{tag_key_name}={tag_value_name}` | `map(string)` | `{}` | no |
 | resource\_usage\_export\_dataset\_id | The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export. | `string` | `""` | no |
 | security\_posture\_mode | Security posture mode. Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`. | `string` | `"DISABLED"` | no |
 | security\_posture\_vulnerability\_mode | Security posture vulnerability mode. Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`. Defaults to `VULNERABILITY_DISABLED`. | `string` | `"VULNERABILITY_DISABLED"` | no |
