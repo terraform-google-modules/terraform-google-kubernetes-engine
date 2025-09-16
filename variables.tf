@@ -383,7 +383,7 @@ variable "network_tags" {
 }
 
 variable "resource_manager_tags" {
-  description = "(Optional) - List of resource manager tags applied to autopilot and auto-provisioned node pools. A maximum of 5 tags can be specified. Tags must be in one of these formats: `tagKeys/{tag_key_id}=tagValues/{tag_value_id}`, `{org_id}/{tag_key_name}={tag_value_name}`, `{project_id}/{tag_key_name}={tag_value_name}`"
+  description = "(Optional) - List of resource manager tags applied to autopilot and auto-provisioned node pools. A maximum of 5 tags can be specified. Tags must be in one of these formats: \"tagKeys/{tag_key_id}\"=\"tagValues/{tag_value_id}\", \"{org_id}/{tag_key_name}\"=\"{tag_value_name}\", \"{project_id}/{tag_key_name}\"=\"{tag_value_name}\"."
   type        = map(string)
   default     = {}
 }
