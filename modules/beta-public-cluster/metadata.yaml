@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-public-cluster
-    version: 38.1.0
+    version: 39.0.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -218,6 +218,10 @@ spec:
       - name: additional_ip_range_pods
         description: List of _names_ of the additional secondary subnet ip ranges to use for pods
         varType: list(string)
+        defaultValue: []
+      - name: additional_pod_ranges_config
+        description: the configuration for individual additional subnetworks attached to the cluster
+        varType: list(object({ subnetwork = string, pod_ipv4_range_names = list(string) }))
         defaultValue: []
       - name: ip_range_services
         description: The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used.
