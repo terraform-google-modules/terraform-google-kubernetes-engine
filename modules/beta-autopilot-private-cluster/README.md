@@ -77,6 +77,7 @@ Then perform the following commands on the root folder:
 | add\_master\_webhook\_firewall\_rules | Create master\_webhook firewall rules for ports defined in `firewall_inbound_ports` | `bool` | `false` | no |
 | add\_shadow\_firewall\_rules | Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled). | `bool` | `false` | no |
 | additional\_ip\_range\_pods | List of _names_ of the additional secondary subnet ip ranges to use for pods | `list(string)` | `[]` | no |
+| additional\_pod\_ranges\_config | the configuration for individual additional subnetworks attached to the cluster | `list(object({ subnetwork = string, pod_ipv4_range_names = list(string) }))` | `[]` | no |
 | allow\_net\_admin | (Optional) Enable NET\_ADMIN for the cluster. | `bool` | `null` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
 | boot\_disk\_kms\_key | The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool, if not overridden in `node_pools`. This should be of the form projects/[KEY\_PROJECT\_ID]/locations/[LOCATION]/keyRings/[RING\_NAME]/cryptoKeys/[KEY\_NAME]. For more information about protecting resources with Cloud KMS Keys please see: https://cloud.google.com/compute/docs/disks/customer-managed-encryption | `string` | `null` | no |
@@ -98,6 +99,7 @@ Then perform the following commands on the root folder:
 | enable\_fqdn\_network\_policy | Enable FQDN Network Policies on the cluster | `bool` | `null` | no |
 | enable\_k8s\_beta\_apis | (Optional) - List of Kubernetes Beta APIs to enable in cluster. | `list(string)` | `[]` | no |
 | enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
+| enable\_legacy\_lustre\_port | Set it to true for GKE cluster runs a version earlier than 1.33.2-gke.4780000. Allows the Lustre CSI driver to initialize LNet (the virtual network layer for Lustre kernel module) using port 6988. This flag is required to workaround a port conflict with the gke-metadata-server on GKE nodes | `bool` | `false` | no |
 | enable\_multi\_networking | Whether multi-networking is enabled for this cluster | `bool` | `null` | no |
 | enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | `bool` | `false` | no |
 | enable\_private\_endpoint | Whether the master's internal IP address is used as the cluster endpoint | `bool` | `false` | no |
@@ -129,6 +131,7 @@ Then perform the following commands on the root folder:
 | issue\_client\_certificate | Issues a client certificate to authenticate to the cluster endpoint. To maximize the security of your cluster, leave this option disabled. Client certificates don't automatically rotate and aren't easily revocable. WARNING: changing this after cluster creation is destructive! | `bool` | `false` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | `string` | `"latest"` | no |
 | logging\_enabled\_components | List of services to monitor: SYSTEM\_COMPONENTS, APISERVER, CONTROLLER\_MANAGER, KCP\_CONNECTION, KCP\_SSHD, KCP\_HPA, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration. | `list(string)` | `[]` | no |
+| lustre\_csi\_driver | The status of the Lustre CSI driver addon, which allows the usage of a Lustre instances as volumes | `bool` | `null` | no |
 | maintenance\_end\_time | Time window specified for recurring maintenance operations in RFC3339 format | `string` | `""` | no |
 | maintenance\_exclusions | List of maintenance exclusions. A cluster can have up to three | `list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string }))` | `[]` | no |
 | maintenance\_recurrence | Frequency of the recurring maintenance window in RFC5545 format. | `string` | `""` | no |
@@ -230,7 +233,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.41+
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.47+
 
 #### gcloud
 

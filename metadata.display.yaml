@@ -39,6 +39,9 @@ spec:
         additional_ip_range_pods:
           name: additional_ip_range_pods
           title: Additional Ip Range Pods
+        additional_pod_ranges_config:
+          name: additional_pod_ranges_config
+          title: Additional Pod Ranges Config
         additive_vpc_scope_dns_domain:
           name: additive_vpc_scope_dns_domain
           title: Additive Vpc Scope Dns Domain
@@ -141,6 +144,9 @@ spec:
         enable_l4_ilb_subsetting:
           name: enable_l4_ilb_subsetting
           title: Enable L4 Ilb Subsetting
+        enable_legacy_lustre_port:
+          name: enable_legacy_lustre_port
+          title: Enable Legacy Lustre Port
         enable_mesh_certificates:
           name: enable_mesh_certificates
           title: Enable Mesh Certificates
@@ -252,6 +258,9 @@ spec:
         logging_variant:
           name: logging_variant
           title: Logging Variant
+        lustre_csi_driver:
+          name: lustre_csi_driver
+          title: Lustre Csi Driver
         maintenance_end_time:
           name: maintenance_end_time
           title: Maintenance End Time
@@ -360,6 +369,9 @@ spec:
         ray_operator_config:
           name: ray_operator_config
           title: Ray Operator Config
+        rbac_binding_config:
+          name: rbac_binding_config
+          title: Rbac Binding Config
         region:
           name: region
           title: Region

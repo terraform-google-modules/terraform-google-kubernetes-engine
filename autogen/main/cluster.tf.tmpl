@@ -332,7 +332,7 @@ resource "google_container_cluster" "primary" {
     for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null || var.node_pools_cgroup_mode != null ? [1] : []
     content {
       dynamic "network_tags" {
-        for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
+        for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? [1] : []
         content {
           tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : length(var.network_tags) > 0 ? var.network_tags : null
         }
@@ -399,6 +399,14 @@ resource "google_container_cluster" "primary" {
 
     gcp_filestore_csi_driver_config {
       enabled = var.filestore_csi_driver
+    }
+
+    dynamic "lustre_csi_driver_config" {
+      for_each = var.lustre_csi_driver == null ? [] : ["lustre_csi_driver_config"]
+      content {
+        enabled                   = var.lustre_csi_driver
+        enable_legacy_lustre_port = var.enable_legacy_lustre_port
+      }
     }
 
     {% if autopilot_cluster != true %}
@@ -531,6 +539,13 @@ resource "google_container_cluster" "primary" {
       for_each = length(var.additional_ip_range_pods) != 0 ? [1] : []
       content {
         pod_range_names = var.additional_ip_range_pods
+      }
+    }
+    dynamic "additional_pod_ranges_config" {
+      for_each = var.additional_pod_ranges_config
+      content {
+        subnetwork           = var.additional_pod_ranges_config.subnetwork
+        pod_ipv4_range_names = var.additional_pod_ranges_config.pod_ipv4_range_names
       }
     }
     stack_type                    = var.stack_type
