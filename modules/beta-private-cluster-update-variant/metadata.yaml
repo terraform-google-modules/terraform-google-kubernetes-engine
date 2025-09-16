@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-private-cluster-update-variant
-    version: 38.1.0
+    version: 39.0.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -218,6 +218,10 @@ spec:
       - name: additional_ip_range_pods
         description: List of _names_ of the additional secondary subnet ip ranges to use for pods
         varType: list(string)
+        defaultValue: []
+      - name: additional_pod_ranges_config
+        description: the configuration for individual additional subnetworks attached to the cluster
+        varType: list(object({ subnetwork = string, pod_ipv4_range_names = list(string) }))
         defaultValue: []
       - name: ip_range_services
         description: The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used.
@@ -592,6 +596,13 @@ spec:
         defaultValue: false
       - name: filestore_csi_driver
         description: The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes
+        varType: bool
+        defaultValue: false
+      - name: lustre_csi_driver
+        description: The status of the Lustre CSI driver addon, which allows the usage of a Lustre instances as volumes
+        varType: bool
+      - name: enable_legacy_lustre_port
+        description: Set it to true for GKE cluster runs a version earlier than 1.33.2-gke.4780000. Allows the Lustre CSI driver to initialize LNet (the virtual network layer for Lustre kernel module) using port 6988. This flag is required to workaround a port conflict with the gke-metadata-server on GKE nodes
         varType: bool
         defaultValue: false
       - name: network_policy

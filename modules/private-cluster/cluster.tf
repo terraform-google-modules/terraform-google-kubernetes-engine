@@ -310,6 +310,14 @@ resource "google_container_cluster" "primary" {
       enabled = var.filestore_csi_driver
     }
 
+    dynamic "lustre_csi_driver_config" {
+      for_each = var.lustre_csi_driver == null ? [] : ["lustre_csi_driver_config"]
+      content {
+        enabled                   = var.lustre_csi_driver
+        enable_legacy_lustre_port = var.enable_legacy_lustre_port
+      }
+    }
+
     network_policy_config {
       disabled = !var.network_policy
     }
@@ -402,6 +410,13 @@ resource "google_container_cluster" "primary" {
       for_each = length(var.additional_ip_range_pods) != 0 ? [1] : []
       content {
         pod_range_names = var.additional_ip_range_pods
+      }
+    }
+    dynamic "additional_pod_ranges_config" {
+      for_each = var.additional_pod_ranges_config
+      content {
+        subnetwork           = var.additional_pod_ranges_config.subnetwork
+        pod_ipv4_range_names = var.additional_pod_ranges_config.pod_ipv4_range_names
       }
     }
     stack_type = var.stack_type
