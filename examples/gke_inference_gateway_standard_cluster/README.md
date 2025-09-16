@@ -62,13 +62,12 @@ This Terraform script automates the deployment of all necessary Kubernetes resou
     ```bash
     curl -i -X POST http://${IP}:${PORT}/v1/completions \
     -H "Content-Type: application/json" \
-    -d 
-    {
+    -d '{
         "model": "food-review",
         "prompt": "What is a good recipe for a chicken curry?",
         "max_tokens": 100,
         "temperature": "0.7"
-    }
+    }'
     ```
 
 ## Cleanup
