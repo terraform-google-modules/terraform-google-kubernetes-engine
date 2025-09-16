@@ -1,41 +1,80 @@
-# GKE Standard Cluster and Node Pool
+# GKE Inference Gateway Example
 
-This example creates a GKE private cluster and Node Pool with beta features.
-For a full example see [simple_regional_private_beta](../simple_regional_private_beta/README.md) example.
+This example provisions a GKE Standard cluster and a node pool with H100 GPUs, suitable for deploying and serving Large Language Models (LLMs) using the GKE Inference Gateway.
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-## Inputs
+The cluster is configured with:
+- GKE Gateway API enabled.
+- Managed Prometheus for monitoring.
+- DCGM for GPU monitoring.
+- A dedicated node pool with NVIDIA H100 80GB GPUs.
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
-| dns\_cache | Boolean to enable / disable NodeLocal DNSCache | `bool` | `false` | no |
-| gce\_pd\_csi\_driver | (Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. | `bool` | `false` | no |
-| ip\_range\_pods | The secondary ip range to use for pods | `any` | n/a | yes |
-| ip\_range\_services | The secondary ip range to use for services | `any` | n/a | yes |
-| network | The VPC network to host the cluster in | `any` | n/a | yes |
-| project\_id | The project ID to host the cluster in | `any` | n/a | yes |
-| region | The region to host the cluster in | `any` | n/a | yes |
-| service\_account | Service account to associate to the nodes in the cluster | `any` | n/a | yes |
-| subnetwork | The subnetwork to host the cluster in | `any` | n/a | yes |
+This Terraform script automates the deployment of all necessary Kubernetes resources, including:
+- Authorization for metrics scraping.
+- A vLLM model server for a Llama3.1 model.
+- GKE Inference Gateway CRDs.
+- GKE Inference Gateway resources (`InferencePool`, `InferenceObjective`, `Gateway`, `HTTPRoute`).
 
-## Outputs
+## Usage
 
-| Name | Description |
-|------|-------------|
-| addons\_config | The configuration for addons supported by GKE Autopilot. |
-| ca\_certificate | The cluster ca certificate (base64 encoded) |
-| cluster\_name | Cluster name |
-| endpoint | The cluster endpoint |
-| location | Cluster location |
-| master\_version | The master Kubernetes version |
-| node\_locations | Cluster node locations |
-| project\_id | The project ID the cluster is in |
+1.  **Enable APIs**
 
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+    ```bash
+    gcloud services enable container.googleapis.com
+    ```
 
-To provision this example, run the following from within this directory:
-- `terraform init` to get the plugins
-- `terraform plan` to see the infrastructure plan
-- `terraform apply` to apply the infrastructure build
-- `terraform destroy` to destroy the built infrastructure
+2.  **Set up your environment**
+
+    You will need to set the following environment variables. You may also need to create a `terraform.tfvars` file to provide values for the variables in `variables.tf`.
+
+    ```bash
+    export PROJECT_ID="your-project-id"
+    export REGION="us-central1"
+    export CLUSTER_NAME="inference-gateway-cluster"
+    export HF_TOKEN="your-hugging-face-token"
+    ```
+
+3.  **Run Terraform**
+
+    The `terraform apply` command will provision the GKE cluster and deploy all the necessary Kubernetes resources.
+
+    ```bash
+    terraform init
+    terraform apply
+    ```
+
+4.  **Configure kubectl**
+
+    After the apply is complete, configure `kubectl` to communicate with your new cluster.
+
+    ```bash
+    gcloud container clusters get-credentials $(terraform output -raw cluster_name) --region $(terraform output -raw location)
+    ```
+
+5.  **Send an inference request**
+
+    Get the Gateway IP address:
+    ```bash
+    IP=$(kubectl get gateway/inference-gateway -o jsonpath='{.status.addresses[0].value}')
+    PORT=80
+    ```
+
+    Send a request:
+    ```bash
+    curl -i -X POST http://${IP}:${PORT}/v1/completions \
+    -H "Content-Type: application/json" \
+    -d 
+    {
+        "model": "food-review",
+        "prompt": "What is a good recipe for a chicken curry?",
+        "max_tokens": 100,
+        "temperature": "0.7"
+    }
+    ```
+
+## Cleanup
+
+Running `terraform destroy` will deprovision the GKE cluster and all associated Kubernetes resources.
+
+```bash
+terraform destroy
+```

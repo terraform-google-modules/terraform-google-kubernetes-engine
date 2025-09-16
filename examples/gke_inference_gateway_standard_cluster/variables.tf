@@ -16,44 +16,67 @@
 
 variable "project_id" {
   description = "The project ID to host the cluster in"
-}
-
-variable "cluster_name_suffix" {
-  description = "A suffix to append to the default cluster name"
-  default     = ""
+  type        = string
 }
 
 variable "region" {
   description = "The region to host the cluster in"
+  type        = string
+  default     = "us-central1"
+}
+
+variable "zone" {
+  description = "The zone to host the cluster in"
+  type        = string
+  default     = "us-central1-a"
 }
 
 variable "network" {
   description = "The VPC network to host the cluster in"
+  type        = string
 }
 
 variable "subnetwork" {
   description = "The subnetwork to host the cluster in"
+  type        = string
 }
 
 variable "ip_range_pods" {
-  description = "The secondary ip range to use for pods"
+  description = "The secondary ip range for pods"
+  type        = string
 }
 
 variable "ip_range_services" {
-  description = "The secondary ip range to use for services"
+  description = "The secondary ip range for services"
+  type        = string
+}
+
+variable "cluster_name_suffix" {
+  description = "A suffix to append to the cluster name"
+  type        = string
+  default     = ""
 }
 
 variable "service_account" {
-  description = "Service account to associate to the nodes in the cluster"
+  description = "Service account to attach to the node pool."
+  type        = string
+  default     = null
 }
 
 variable "dns_cache" {
-  description = "Boolean to enable / disable NodeLocal DNSCache "
+  description = "Enable DNS cache for the cluster"
+  type        = bool
   default     = false
 }
 
 variable "gce_pd_csi_driver" {
+  description = "Enable GCE Persistent Disk CSI driver"
   type        = bool
-  description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
-  default     = false
+  default     = true
+}
+
+variable "hf_token" {
+  description = "Hugging Face token"
+  type        = string
+  sensitive   = true
 }
