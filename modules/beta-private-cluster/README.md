@@ -274,6 +274,7 @@ Then perform the following commands on the root folder:
 | notification\_config\_topic | The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}. | `string` | `""` | no |
 | notification\_filter\_event\_type | Choose what type of notifications you want to receive. If no filters are applied, you'll receive all notification types. Can be used to filter what notifications are sent. Accepted values are UPGRADE\_AVAILABLE\_EVENT, UPGRADE\_EVENT, and SECURITY\_BULLETIN\_EVENT. | `list(string)` | `[]` | no |
 | parallelstore\_csi\_driver | Whether the Parallelstore CSI driver Addon is enabled for this cluster. | `bool` | `null` | no |
+| pod\_cidr\_overprovision\_config | Configuration for cluster level pod cidr overprovision. | `object({ disabled = bool })` | <pre>{<br>  "disabled": null<br>}</pre> | no |
 | private\_endpoint\_subnetwork | The subnetwork to use for the hosted master network. | `string` | `null` | no |
 | project\_id | The project ID to host the cluster in (required) | `string` | n/a | yes |
 | ray\_operator\_config | The Ray Operator Addon configuration for this cluster. | <pre>object({<br>    enabled            = bool<br>    logging_enabled    = optional(bool, false)<br>    monitoring_enabled = optional(bool, false)<br>  })</pre> | <pre>{<br>  "enabled": false,<br>  "logging_enabled": false,<br>  "monitoring_enabled": false<br>}</pre> | no |
@@ -435,6 +436,7 @@ The node_pools variable takes the following parameters:
 | queued_provisioning | Makes nodes obtainable through the ProvisioningRequest API exclusively. | | Optional |
 | gpu_sharing_strategy | The type of GPU sharing strategy to enable on the GPU node. Accepted values are: "TIME_SHARING" and "MPS". | | Optional |
 | max_shared_clients_per_gpu | The maximum number of containers that can share a GPU. | | Optional |
+| pod_cidr_overprovision_config |  Configuration for node-pool level pod cidr overprovision. If not set, the cluster level setting will be inherited. |  | Optional |
 | total_egress_bandwidth_tier |  Specifies the total network bandwidth tier. Valid values are: "TIER_1" and "TIER_UNSPECIFIED". |  | Optional |
 | consume_reservation_type | The type of reservation consumption. Accepted values are: "UNSPECIFIED": Default value (should not be specified). "NO_RESERVATION": Do not consume from any reserved capacity, "ANY_RESERVATION": Consume any reservation available, "SPECIFIC_RESERVATION": Must consume from a specific reservation. Must specify key value fields for specifying the reservations. | | Optional |
 | reservation_affinity_key | The label key of a reservation resource. To target a SPECIFIC_RESERVATION by name, specify "compute.googleapis.com/reservation-name" as the key and specify the name of your reservation as its value. | | Optional |

@@ -322,6 +322,12 @@ resource "google_container_cluster" "primary" {
       }
     }
     stack_type = var.stack_type
+    dynamic "pod_cidr_overprovision_config" {
+      for_each = var.pod_cidr_overprovision_config
+      content {
+        disabled = var.pod_cidr_overprovision_config.disabled
+      }
+    }
   }
 
   maintenance_policy {

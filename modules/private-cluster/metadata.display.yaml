@@ -382,6 +382,9 @@ spec:
         parallelstore_csi_driver:
           name: parallelstore_csi_driver
           title: Parallelstore Csi Driver
+        pod_cidr_overprovision_config:
+          name: pod_cidr_overprovision_config
+          title: Pod Cidr Overprovision Config
         private_endpoint_subnetwork:
           name: private_endpoint_subnetwork
           title: Private Endpoint Subnetwork
