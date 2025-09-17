@@ -155,7 +155,7 @@ variable "additional_ip_range_pods" {
   default     = []
 }
 
-variable "additional_pod_ranges_config" {
+variable "additional_ip_ranges_config" {
   type        = list(object({ subnetwork = string, pod_ipv4_range_names = list(string) }))
   description = "the configuration for individual additional subnetworks attached to the cluster"
   default     = []
