@@ -170,6 +170,12 @@ variable "additional_ip_ranges_config" {
   default     = []
 }
 
+variable "pod_cidr_overprovision_config" {
+  type        = object({ disabled = bool })
+  description = "Configuration for cluster level pod cidr overprovision."
+  default     = { disabled = null }
+}
+
 variable "ip_range_services" {
   type        = string
   description = "The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used."
