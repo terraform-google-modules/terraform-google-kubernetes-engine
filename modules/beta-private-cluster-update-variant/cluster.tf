@@ -792,6 +792,7 @@ locals {
     "flex_start",
     "local_ssd_ephemeral_storage_count",
     "ephemeral_storage_local_ssd_data_cache_count",
+    "pod_cidr_overprovision_config",
   ]
 }
 
