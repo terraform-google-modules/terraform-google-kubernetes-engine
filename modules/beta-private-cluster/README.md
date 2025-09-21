@@ -145,6 +145,7 @@ Then perform the following commands on the root folder:
 - `terraform destroy` to destroy the built infrastructure
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<<<<<<< HEAD
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -348,6 +349,8 @@ Then perform the following commands on the root folder:
 | vertical\_pod\_autoscaling\_enabled | Whether vertical pod autoscaling enabled |
 | zones | List of zones in which the cluster resides |
 
+=======
+>>>>>>> 631605dbecd (check)
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## node_pools variable
