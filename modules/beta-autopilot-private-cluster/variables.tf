@@ -173,7 +173,7 @@ variable "additional_ip_ranges_config" {
 variable "pod_cidr_overprovision_config" {
   type        = object({ disabled = bool })
   description = "Configuration for cluster level pod cidr overprovision."
-  default     = { disabled = null }
+  default     = { disabled = false }
 }
 
 variable "ip_range_services" {
