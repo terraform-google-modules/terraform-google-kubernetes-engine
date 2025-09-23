@@ -417,6 +417,13 @@ resource "google_container_cluster" "primary" {
         pod_range_names = var.additional_ip_range_pods
       }
     }
+    dynamic "additional_ip_ranges_config" {
+      for_each = var.additional_ip_ranges_config
+      content {
+        subnetwork           = var.additional_ip_ranges_config.subnetwork
+        pod_ipv4_range_names = var.additional_ip_ranges_config.pod_ipv4_range_names
+      }
+    }
     stack_type = var.stack_type
   }
 

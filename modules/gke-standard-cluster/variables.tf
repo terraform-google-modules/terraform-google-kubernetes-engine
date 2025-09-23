@@ -26,8 +26,8 @@ variable "description" {
   default     = null
 }
 
-variable "project" {
-  description = "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+variable "project_id" {
+  description = "The ID of the project in which the resource belongs. If it is not provided, the provider project id is used."
   type        = string
   default     = null
 }
