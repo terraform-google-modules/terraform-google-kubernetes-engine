@@ -219,7 +219,7 @@ spec:
         description: List of _names_ of the additional secondary subnet ip ranges to use for pods
         varType: list(string)
         defaultValue: []
-      - name: additional_pod_ranges_config
+      - name: additional_ip_ranges_config
         description: the configuration for individual additional subnetworks attached to the cluster
         varType: list(object({ subnetwork = string, pod_ipv4_range_names = list(string) }))
         defaultValue: []

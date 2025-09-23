@@ -39,6 +39,9 @@ spec:
         additional_ip_range_pods:
           name: additional_ip_range_pods
           title: Additional Ip Range Pods
+        additional_ip_ranges_config:
+          name: additional_ip_ranges_config
+          title: Additional Ip Ranges Config
         additional_pod_ranges_config:
           name: additional_pod_ranges_config
           title: Additional Pod Ranges Config
