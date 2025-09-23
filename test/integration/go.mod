@@ -7,7 +7,7 @@ toolchain go1.24.7
 require (
 	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.17.9
 	github.com/gruntwork-io/terratest v0.50.0
-	github.com/hashicorp/terraform-json v0.26.0
+	github.com/hashicorp/terraform-json v0.27.0
 	github.com/stretchr/testify v1.11.1
 	github.com/tidwall/gjson v1.18.0
 )
@@ -115,7 +115,7 @@ require (
 	github.com/urfave/cli/v2 v2.25.7 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
-	github.com/zclconf/go-cty v1.16.3 // indirect
+	github.com/zclconf/go-cty v1.16.4 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	go.yaml.in/yaml/v3 v3.0.3 // indirect
 	golang.org/x/crypto v0.40.0 // indirect
