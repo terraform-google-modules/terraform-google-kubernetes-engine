@@ -37,7 +37,7 @@ module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/gke-standard-cluster"
   version = "~> 38.0"
 
-  project_id    = var.project_id
+  project_id = var.project_id
   name       = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   location   = var.region
   network    = var.network
@@ -87,9 +87,9 @@ module "node_pool" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/gke-node-pool"
   version = "~> 38.0"
 
-  project_id  = var.project_id
-  location = var.region
-  cluster  = module.gke.cluster_name
+  project_id = var.project_id
+  location   = var.region
+  cluster    = module.gke.cluster_name
   node_config = {
     disk_size_gb    = 100
     disk_type       = "pd-standard"
