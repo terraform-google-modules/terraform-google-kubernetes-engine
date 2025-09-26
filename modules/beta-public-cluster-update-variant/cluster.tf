@@ -456,6 +456,12 @@ resource "google_container_cluster" "primary" {
       }
     }
     stack_type = var.stack_type
+    dynamic "pod_cidr_overprovision_config" {
+      for_each = var.pod_cidr_overprovision_config
+      content {
+        disabled = var.pod_cidr_overprovision_config.disabled
+      }
+    }
   }
 
   maintenance_policy {
@@ -762,6 +768,7 @@ locals {
     "flex_start",
     "local_ssd_ephemeral_storage_count",
     "ephemeral_storage_local_ssd_data_cache_count",
+    "pod_cidr_overprovision_config",
   ]
 }
 
@@ -867,6 +874,13 @@ resource "google_container_node_pool" "pools" {
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+
+      dynamic "pod_cidr_overprovision_config" {
+        for_each = lookup(network_config.value, "pod_cidr_overprovision_config", "") != "" ? [1] : []
+        content {
+          disabled = lookup(network_config.value, "pod_cidr_overprovision_config", null)
+        }
+      }
 
       dynamic "network_performance_config" {
         for_each = lookup(network_config.value, "total_egress_bandwidth_tier", "") != "" ? [1] : []
@@ -1247,6 +1261,13 @@ resource "google_container_node_pool" "windows_pools" {
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
+
+      dynamic "pod_cidr_overprovision_config" {
+        for_each = lookup(network_config.value, "pod_cidr_overprovision_config", "") != "" ? [1] : []
+        content {
+          disabled = lookup(network_config.value, "pod_cidr_overprovision_config", null)
+        }
+      }
 
       dynamic "network_performance_config" {
         for_each = lookup(network_config.value, "total_egress_bandwidth_tier", "") != "" ? [1] : []

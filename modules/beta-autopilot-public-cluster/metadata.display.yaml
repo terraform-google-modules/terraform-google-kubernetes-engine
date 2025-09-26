@@ -253,6 +253,9 @@ spec:
         notification_filter_event_type:
           name: notification_filter_event_type
           title: Notification Filter Event Type
+        pod_cidr_overprovision_config:
+          name: pod_cidr_overprovision_config
+          title: Pod Cidr Overprovision Config
         project_id:
           name: project_id
           title: Project Id
