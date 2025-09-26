@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-private-cluster
-    version: 39.0.0
+    version: 40.0.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -364,9 +364,13 @@ spec:
             - https://www.googleapis.com/auth/cloud-platform
           default-node-pool: []
       - name: network_tags
-        description: (Optional) - List of network tags applied to auto-provisioned node pools.
+        description: (Optional) - List of network tags applied to autopilot and auto-provisioned node pools.
         varType: list(string)
         defaultValue: []
+      - name: resource_manager_tags
+        description: "(Optional) - List of resource manager tags applied to autopilot and auto-provisioned node pools. A maximum of 5 tags can be specified. Tags must be in one of these formats: \"tagKeys/{tag_key_id}\"=\"tagValues/{tag_value_id}\", \"{org_id}/{tag_key_name}\"=\"{tag_value_name}\", \"{project_id}/{tag_key_name}\"=\"{tag_value_name}\"."
+        varType: map(string)
+        defaultValue: {}
       - name: enable_k8s_beta_apis
         description: (Optional) - List of Kubernetes Beta APIs to enable in cluster.
         varType: list(string)

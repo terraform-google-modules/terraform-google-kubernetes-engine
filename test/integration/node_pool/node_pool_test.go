@@ -63,6 +63,11 @@ func TestNodePool(t *testing.T) {
 		testutils.TGKEAssertGolden(assert, g, &cluster, []string{"pool-01", "pool-02", "pool-03", "pool-04", "pool-05"}, []string{"monitoringConfig.componentConfig.enableComponents"}) // TODO: enableComponents is UL
 		assert.Contains([]string{"RUNNING", "RECONCILING"}, cluster.Get("status").String())
 
+		// Resource Manager Tag Assertions
+		// TGKEAssertGolden doesn't work work with sanitized keys
+		tagKeyPath := fmt.Sprintf("nodePoolAutoConfig.resourceManagerTags.tags.%s/key-%s", projectId, randomString)
+		assert.Equal("value-"+randomString, cluster.Get(tagKeyPath).String())
+
 		// K8s Assertions
 		assert.JSONEq(`[
 				{
