@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [40.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v40.0.0...v40.1.0) (2025-09-26)
+
+
+### Features
+
+* add support for NAP/autopilot resource manager tags ([#2447](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2447)) ([3a1945f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3a1945f75479af7e694ec5f1a32f5a61265f2e44))
+
 ## [40.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v39.0.0...v40.0.0) (2025-09-23)
 
 
