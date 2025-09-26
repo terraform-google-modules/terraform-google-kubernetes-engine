@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [40.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v39.0.0...v40.0.0) (2025-09-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* properly implement additional_ip_ranges_config ([#2451](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2451))
+* **deps:** Update Terraform terraform-google-modules/gcloud/google to v4 ([#2446](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2446))
+
+### Bug Fixes
+
+* **deps:** Update Terraform terraform-google-modules/gcloud/google to v4 ([#2446](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2446)) ([d30964c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d30964c496f5b33acb81762edfc33d41653ebf61))
+* properly implement additional_ip_ranges_config ([#2451](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2451)) ([57c366a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/57c366a7de88a051a59e6a081b19e980cad899b9))
+
 ## [39.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v38.1.0...v39.0.0) (2025-09-15)
 
 
