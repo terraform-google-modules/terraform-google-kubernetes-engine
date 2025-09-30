@@ -156,6 +156,7 @@ resource "google_container_cluster" "primary" {
 
   cluster_autoscaling {
     enabled = var.cluster_autoscaling.enabled
+    default_compute_class_enabled = var.default_compute_class_enabled
     dynamic "auto_provisioning_defaults" {
       for_each = var.cluster_autoscaling.enabled ? [1] : []
 
@@ -217,6 +218,7 @@ resource "google_container_cluster" "primary" {
 {% endif %}
   {% if autopilot_cluster == true %}
   cluster_autoscaling {
+    default_compute_class_enabled = var.default_compute_class_enabled
     dynamic "auto_provisioning_defaults" {
       for_each = (var.create_service_account || var.service_account != "" || var.boot_disk_kms_key != null) ? [1] : []
 

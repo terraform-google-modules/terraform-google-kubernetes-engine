@@ -87,6 +87,9 @@ spec:
         datapath_provider:
           name: datapath_provider
           title: Datapath Provider
+        default_compute_class_enabled:
+          name: default_compute_class_enabled
+          title: Default Compute Class Enabled
         default_max_pods_per_node:
           name: default_max_pods_per_node
           title: Default Max Pods Per Node
