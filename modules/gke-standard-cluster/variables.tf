@@ -27,7 +27,7 @@ variable "description" {
 }
 
 variable "project_id" {
-  description = "The ID of the project in which the resource belongs. If it is not provided, the provider project id is used."
+  description = "The ID of the project in which the resource belongs."
   type        = string
 }
 
@@ -40,13 +40,11 @@ variable "location" {
 variable "network" {
   description = "The name or self_link of the Google Compute Engine network to which the cluster is connected. For Shared VPC, this network must be in the host project."
   type        = string
-  default     = null
 }
 
 variable "subnetwork" {
   description = "The name or self_link of the Google Compute Engine subnetwork in which the cluster's instances are launched."
   type        = string
-  default     = null
 }
 
 variable "node_locations" {

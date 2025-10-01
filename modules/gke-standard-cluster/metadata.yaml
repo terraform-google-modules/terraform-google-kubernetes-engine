@@ -134,7 +134,7 @@ spec:
         description: Description of the cluster.
         varType: string
       - name: project_id
-        description: The ID of the project in which the resource belongs. If it is not provided, the provider project id is used.
+        description: The ID of the project in which the resource belongs.
         varType: string
         required: true
       - name: location
@@ -143,9 +143,11 @@ spec:
       - name: network
         description: The name or self_link of the Google Compute Engine network to which the cluster is connected. For Shared VPC, this network must be in the host project.
         varType: string
+        required: true
       - name: subnetwork
         description: The name or self_link of the Google Compute Engine subnetwork in which the cluster's instances are launched.
         varType: string
+        required: true
       - name: node_locations
         description: The list of zones in which the cluster's nodes are located. Nodes are created in the region's zones by default. This list must be a subset of the compute/zones in the region to which the cluster belongs. This field is optional for Zonal clusters and required for Regional clusters.
         varType: list(string)
