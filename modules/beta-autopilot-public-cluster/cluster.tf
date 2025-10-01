@@ -134,6 +134,13 @@ resource "google_container_cluster" "primary" {
 
   in_transit_encryption_config = var.in_transit_encryption_config
 
+  dynamic "anonymous_authentication_config" {
+    for_each = var.anonymous_authentication_config_mode != null ? [1] : []
+    content {
+      mode = var.anonymous_authentication_config_mode
+    }
+  }
+
   dynamic "network_performance_config" {
     for_each = var.total_egress_bandwidth_tier != null ? [1] : []
     content {
