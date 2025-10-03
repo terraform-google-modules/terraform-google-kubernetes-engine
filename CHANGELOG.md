@@ -6,6 +6,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [41.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v40.0.0...v41.0.0) (2025-10-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=7.0:** adding default_compute_class_enabled ([#2434](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2434))
+
+### Features
+
+* add support for anonymous_authentication_config ([#2436](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2436)) ([f27a2dd](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f27a2ddab530a5952a3e3466174bac20623a5f71))
+* add support for NAP/autopilot resource manager tags ([#2447](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2447)) ([3a1945f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3a1945f75479af7e694ec5f1a32f5a61265f2e44))
+* **TPG>=7.0:** adding default_compute_class_enabled ([#2434](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2434)) ([b61584c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b61584c78076e6bf4dabdf5c2964f2ffcc6a9c77))
+
+
+### Bug Fixes
+
+* add required fields for GKE autopilot and standard cluster ([#2461](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2461)) ([a3da13d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a3da13d2dc773b574a1d7b71e406d0265a11d965))
+
 ## [40.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v39.0.0...v40.0.0) (2025-09-23)
 
 
