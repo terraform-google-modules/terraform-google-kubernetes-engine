@@ -256,10 +256,6 @@ spec:
         master_authorized_networks_config:
           name: master_authorized_networks_config
           title: Master Authorized Networks Config
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value:
-                private_endpoint_enforcement_enabled: true
         mesh_certificates:
           name: mesh_certificates
           title: Mesh Certificates

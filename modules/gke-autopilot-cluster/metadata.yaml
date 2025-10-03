@@ -135,7 +135,7 @@ spec:
         varType: string
         defaultValue: ""
       - name: project_id
-        description: The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
+        description: The ID of the project in which the resource belongs.
         varType: string
         required: true
       - name: location
@@ -277,13 +277,14 @@ spec:
         description: The desired configuration options for master authorized networks.
         varType: |-
           object({
-              cidr_blocks = optional(list(object({
-                display_name = optional(string)
-                cidr_block   = optional(string)
-              })))
+              cidr_blocks = list(object({
+                display_name = string
+                cidr_block   = string
+              }))
               gcp_public_cidrs_access_enabled      = optional(bool)
               private_endpoint_enforcement_enabled = optional(bool)
             })
+        required: true
       - name: min_master_version
         description: The minimum version of the master. GKE will auto-update the master to new versions, so this does not guarantee the master version--use the read-only master_version field to obtain a current version. If unset, the server's default version will be used.
         varType: string
@@ -426,8 +427,9 @@ spec:
         description: Configuration for the use of Kubernetes Service Accounts in GCP IAM policies.
         varType: |-
           object({
-              workload_pool = optional(string)
+              workload_pool = string
             })
+        required: true
       - name: identity_service_config
         description: Whether to enable the Identity Service component. It is disabled by default. Set enabled=true to enable.
         varType: |-
