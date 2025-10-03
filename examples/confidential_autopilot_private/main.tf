@@ -54,7 +54,7 @@ resource "google_kms_crypto_key_iam_member" "main" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster"
-  version = "~> 39.0"
+  version = "~> 40.0"
 
   project_id                      = var.project_id
   name                            = "${local.cluster_type}-cluster"
