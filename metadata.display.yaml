@@ -360,6 +360,12 @@ spec:
         node_pools_taints:
           name: node_pools_taints
           title: Node Pools Taints
+        node_pools_transparent_hugepage_defrag:
+          name: node_pools_transparent_hugepage_defrag
+          title: Node Pools Transparent Hugepage Defrag
+        node_pools_transparent_hugepage_enabled:
+          name: node_pools_transparent_hugepage_enabled
+          title: Node Pools Transparent Hugepage Enabled
         non_masquerade_cidrs:
           name: non_masquerade_cidrs
           title: Non Masquerade Cidrs
