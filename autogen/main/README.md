@@ -280,6 +280,7 @@ The node_pools variable takes the following parameters:
 | queued_provisioning | Makes nodes obtainable through the ProvisioningRequest API exclusively. | | Optional |
 | gpu_sharing_strategy | The type of GPU sharing strategy to enable on the GPU node. Accepted values are: "TIME_SHARING" and "MPS". | | Optional |
 | max_shared_clients_per_gpu | The maximum number of containers that can share a GPU. | | Optional |
+| pod_cidr_overprovision_config |  Configuration for node-pool level pod cidr overprovision. If not set, the cluster level setting will be inherited. |  | Optional |
 | total_egress_bandwidth_tier |  Specifies the total network bandwidth tier. Valid values are: "TIER_1" and "TIER_UNSPECIFIED". |  | Optional |
 | consume_reservation_type | The type of reservation consumption. Accepted values are: "UNSPECIFIED": Default value (should not be specified). "NO_RESERVATION": Do not consume from any reserved capacity, "ANY_RESERVATION": Consume any reservation available, "SPECIFIC_RESERVATION": Must consume from a specific reservation. Must specify key value fields for specifying the reservations. | | Optional |
 | reservation_affinity_key | The label key of a reservation resource. To target a SPECIFIC_RESERVATION by name, specify "compute.googleapis.com/reservation-name" as the key and specify the name of your reservation as its value. | | Optional |
