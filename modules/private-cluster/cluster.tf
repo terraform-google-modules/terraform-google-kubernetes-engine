@@ -122,7 +122,8 @@ resource "google_container_cluster" "primary" {
   monitoring_service = local.logmon_config_is_set ? null : var.monitoring_service
 
   cluster_autoscaling {
-    enabled = var.cluster_autoscaling.enabled
+    enabled                       = var.cluster_autoscaling.enabled
+    default_compute_class_enabled = var.default_compute_class_enabled
     dynamic "auto_provisioning_defaults" {
       for_each = var.cluster_autoscaling.enabled ? [1] : []
 
@@ -212,6 +213,13 @@ resource "google_container_cluster" "primary" {
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
   in_transit_encryption_config = var.in_transit_encryption_config
+
+  dynamic "anonymous_authentication_config" {
+    for_each = var.anonymous_authentication_config_mode != null ? [1] : []
+    content {
+      mode = var.anonymous_authentication_config_mode
+    }
+  }
 
   dynamic "network_performance_config" {
     for_each = var.total_egress_bandwidth_tier != null ? [1] : []

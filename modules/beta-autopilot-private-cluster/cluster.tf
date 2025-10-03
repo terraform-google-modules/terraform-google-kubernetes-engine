@@ -103,6 +103,7 @@ resource "google_container_cluster" "primary" {
   }
 
   cluster_autoscaling {
+    default_compute_class_enabled = var.default_compute_class_enabled
     dynamic "auto_provisioning_defaults" {
       for_each = (var.create_service_account || var.service_account != "" || var.boot_disk_kms_key != null) ? [1] : []
 
@@ -132,6 +133,13 @@ resource "google_container_cluster" "primary" {
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
   in_transit_encryption_config = var.in_transit_encryption_config
+
+  dynamic "anonymous_authentication_config" {
+    for_each = var.anonymous_authentication_config_mode != null ? [1] : []
+    content {
+      mode = var.anonymous_authentication_config_mode
+    }
+  }
 
   dynamic "network_performance_config" {
     for_each = var.total_egress_bandwidth_tier != null ? [1] : []
