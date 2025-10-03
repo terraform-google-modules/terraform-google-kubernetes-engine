@@ -29,6 +29,7 @@ module "example" {
   subnetwork                     = google_compute_subnetwork.main.name
   ip_range_pods                  = google_compute_subnetwork.main.secondary_ip_range[0].range_name
   ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
+  additional_ip_pod_range        = google_compute_subnetwork.main.secondary_ip_range[2].range_name
   compute_engine_service_account = local.compute_engine_service_account
 
   cluster_autoscaling = {
