@@ -90,7 +90,13 @@
     "servicesIpv4CidrBlock": "192.168.64.0/18",
     "servicesSecondaryRangeName": "cft-gke-test-services-RANDOM_STRING",
     "stackType": "IPV4",
-    "useIpAliases": true
+    "useIpAliases": true,
+    "additionalIpRangesConfigs": [
+      {
+        "subnetwork": "projects/PROJECT_ID/regions/europe-west4/subnetworks/cft-gke-test-RANDOM_STRING",
+        "podIpv4RangeNames": ["test"]
+      }
+    ]
   },
   "labelFingerprint": "78cdf2f6",
   "legacyAbac": {},
