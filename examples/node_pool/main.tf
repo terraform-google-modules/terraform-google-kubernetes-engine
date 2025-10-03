@@ -61,6 +61,13 @@ module "gke" {
   logging_variant                   = "MAX_THROUGHPUT"
   dns_allow_external_traffic        = true
 
+  additional_ip_ranges_config = [
+    {
+      subnetwork           = var.subnetwork
+      pod_ipv4_range_names = [var.additional_ip_pod_range]
+    }
+  ]
+
   resource_manager_tags = {
     "${var.project_id}/${google_tags_tag_key.key.short_name}" = google_tags_tag_value.value.short_name
   }

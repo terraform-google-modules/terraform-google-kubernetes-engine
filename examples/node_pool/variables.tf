@@ -48,6 +48,10 @@ variable "ip_range_services" {
   description = "The secondary ip range to use for services"
 }
 
+variable "additional_ip_pod_range" {
+  description = "The secondary ip range to use for pods in the additional range"
+}
+
 variable "compute_engine_service_account" {
   description = "Service account to associate to the nodes in the cluster"
 }
