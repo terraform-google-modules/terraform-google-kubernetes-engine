@@ -138,6 +138,26 @@ locals {
     var.node_pools_cgroup_mode
   )
 
+  node_pools_transparent_hugepage_enabled = merge(
+    { all = "" },
+    { default-node-pool = "" },
+    zipmap(
+      [for node_pool in var.node_pools : node_pool["name"]],
+      [for node_pool in var.node_pools : ""]
+    ),
+    var.node_pools_transparent_hugepage_enabled
+  )
+
+  node_pools_transparent_hugepage_defrag = merge(
+    { all = "" },
+    { default-node-pool = "" },
+    zipmap(
+      [for node_pool in var.node_pools : node_pool["name"]],
+      [for node_pool in var.node_pools : ""]
+    ),
+    var.node_pools_transparent_hugepage_defrag
+  )
+
   node_pools_hugepage_size_2m = merge(
     { all = "" },
     { default-node-pool = "" },

@@ -1055,6 +1055,10 @@ resource "google_container_node_pool" "pools" {
         local.node_pools_linux_node_configs_sysctls[each.value["name"]],
         local.node_pools_cgroup_mode["all"] == "" ? {} : { cgroup = local.node_pools_cgroup_mode["all"] },
         local.node_pools_cgroup_mode[each.value["name"]] == "" ? {} : { cgroup = local.node_pools_cgroup_mode[each.value["name"]] },
+        local.node_pools_transparent_hugepage_enabled["all"] == "" ? {} : { transparent_hugepage = local.node_pools_transparent_hugepage_enabled["all"] },
+        local.node_pools_transparent_hugepage_enabled[each.value["name"]] == "" ? {} : { transparent_hugepage = local.node_pools_transparent_hugepage_enabled[each.value["name"]] },
+        local.node_pools_transparent_hugepage_defrag["all"] == "" ? {} : { transparent_hugepage_defrag = local.node_pools_transparent_hugepage_defrag["all"] },
+        local.node_pools_transparent_hugepage_defrag[each.value["name"]] == "" ? {} : { transparent_hugepage_defrag = local.node_pools_transparent_hugepage_defrag[each.value["name"]] },
         local.node_pools_hugepage_size_2m["all"] == "" ? {} : { cgroup = local.node_pools_hugepage_size_2m["all"] },
         local.node_pools_hugepage_size_2m[each.value["name"]] == "" ? {} : { cgroup = local.node_pools_hugepage_size_2m[each.value["name"]] },
         local.node_pools_hugepage_size_1g["all"] == "" ? {} : { cgroup = local.node_pools_hugepage_size_1g["all"] },
@@ -1066,7 +1070,9 @@ resource "google_container_node_pool" "pools" {
           local.node_pools_linux_node_configs_sysctls["all"],
           local.node_pools_linux_node_configs_sysctls[each.value["name"]]
         )
-        cgroup_mode = try(coalesce(local.node_pools_cgroup_mode[each.value["name"]], local.node_pools_cgroup_mode["all"]), null)
+        cgroup_mode                  = try(coalesce(local.node_pools_cgroup_mode[each.value["name"]], local.node_pools_cgroup_mode["all"]), null)
+        transparent_hugepage_enabled = try(coalesce(local.node_pools_transparent_hugepage_enabled[each.value["name"]], local.node_pools_transparent_hugepage_enabled["all"]), null)
+        transparent_hugepage_defrag  = try(coalesce(local.node_pools_transparent_hugepage_defrag[each.value["name"]], local.node_pools_transparent_hugepage_defrag["all"]), null)
         dynamic "hugepages_config" {
           for_each = length(merge(
             local.node_pools_hugepage_size_2m["all"] == "" ? {} : { cgroup = local.node_pools_hugepage_size_2m["all"] },
