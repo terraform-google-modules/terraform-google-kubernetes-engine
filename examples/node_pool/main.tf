@@ -63,7 +63,7 @@ module "gke" {
 
   additional_ip_ranges_config = [
     {
-      subnetwork           = "projects/${var.project_id}/regions/${var.region}/subnetworks/${var.subnetwork}"
+      subnetwork           = "projects/${var.project_id}/regions/${var.region}/subnetworks/${var.additional_ip_pod_range_subnetwork}"
       pod_ipv4_range_names = [var.additional_ip_pod_range]
     }
   ]

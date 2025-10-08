@@ -48,6 +48,10 @@ variable "ip_range_services" {
   description = "The secondary ip range to use for services"
 }
 
+variable "additional_ip_pod_range_subnetwork" {
+  description = "The subnetwork to host the additional pod range in"
+}
+
 variable "additional_ip_pod_range" {
   description = "The secondary ip range to use for pods in the additional range"
 }
