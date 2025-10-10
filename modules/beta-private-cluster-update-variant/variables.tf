@@ -631,9 +631,30 @@ variable "gce_pd_csi_driver" {
 }
 
 variable "gke_backup_agent_config" {
-  type        = bool
-  description = "Whether Backup for GKE agent is enabled for this cluster."
-  default     = false
+  description = "Config for Backup for GKE add-on and backup plans"
+  type = object({
+    enabled      = bool
+    backup_plans = optional(list(object({
+      name        = string
+      location    = string
+      cluster     = string
+      description = optional(string)
+      labels      = optional(map(string))
+      retention_policy = optional(object({
+        backup_delete_lock_days = optional(number)
+        backup_retain_days      = optional(number)
+        locked                  = optional(bool)
+      }))
+      schedule = optional(object({
+        cron_schedule = string
+        paused        = optional(bool)
+      }))
+    })), [])
+  })
+  default = {
+    enabled      = false
+    backup_plans = []
+  }
 }
 
 variable "timeouts" {

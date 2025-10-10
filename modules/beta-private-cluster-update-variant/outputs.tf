@@ -205,3 +205,18 @@ output "tpu_ipv4_cidr_block" {
   description = "The IP range in CIDR notation used for the TPUs"
   value       = var.enable_tpu ? google_container_cluster.primary.tpu_ipv4_cidr_block : null
 }
+
+output "gke_backup_agent_config_enabled" {
+  value = var.gke_backup_agent_config.enabled
+  description = "Whether the Backup for GKE agent is enabled."
+}
+
+output "gke_backup_backup_plan_ids" {
+  value = { for k, v in google_gke_backup_backup_plan.this : k => v.id }
+  description = "IDs of created Backup for GKE backup plans."
+}
+
+output "gke_backup_backup_plan_names" {
+  value = { for k, v in google_gke_backup_backup_plan.this : k => v.name }
+  description = "Names of created Backup for GKE backup plans."
+}
