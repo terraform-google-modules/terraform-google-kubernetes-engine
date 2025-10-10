@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2022-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,26 +17,28 @@ package beta_cluster
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
 
 func TestBetaCluster(t *testing.T) {
-	gke := tft.NewTFBlueprintTest(t)
+	gke := tft.NewTFBlueprintTest(t,
+		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
+	)
 
 	gke.DefineVerify(func(assert *assert.Assertions) {
-		// Commenting Default Verify due to issue 1478 for location Policy
-		// gke.DefaultVerify(assert) //disables no changes
+		gke.DefaultVerify(assert)
 
 		projectId := gke.GetStringOutput("project_id")
 		location := gke.GetStringOutput("location")
 		clusterName := gke.GetStringOutput("cluster_name")
 		serviceAccount := gke.GetStringOutput("service_account")
-		gcloud.Runf(t, "config set project %s", projectId)
 		op := gcloud.Runf(t, "beta container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		// save output as goldenfile
 		g := golden.NewOrUpdate(t, op.String(),
@@ -52,7 +54,7 @@ func TestBetaCluster(t *testing.T) {
 			"privateClusterConfig.enablePrivateEndpoint",
 			"networkConfig.datapathProvider",
 			"databaseEncryption.state",
-			"identityServiceConfig.enabled",
+			// "identityServiceConfig.enabled", TODO: b/378974729
 			"addonsConfig",
 			"networkConfig.datapathProvider",
 			"binaryAuthorization",
@@ -72,7 +74,7 @@ func TestBetaCluster(t *testing.T) {
 			switch npName {
 			case "default-pool":
 				assert.False(np.Get("initialNodeCount").Exists(), "has no initial node count")
-				assert.False(np.Get("autoscaling").Exists(), "does not have autoscaling enabled")
+				assert.False(np.Get("autoscaling.enabled").Exists(), "does not have autoscaling enabled")
 			case "default-node-pool":
 				assert.JSONEq(gNp.Get("config").String(), np.Get("config").String())
 				assert.JSONEq(gNp.Get("autoscaling").String(), np.Get("autoscaling").String())

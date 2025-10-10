@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2022-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 
 terraform {
-  required_version = ">=0.13"
+  required_version = ">=1.3"
 
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 4.51.0, < 5.0, !=4.65.0, !=4.65.1"
+      version = ">= 7.0.0, < 8"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 4.51.0, < 5.0, !=4.65.0, !=4.65.1"
+      version = ">= 7.0.0, < 8"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -37,6 +37,6 @@ terraform {
     }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-private-cluster-update-variant/v27.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:beta-private-cluster-update-variant/v40.0.0"
   }
 }

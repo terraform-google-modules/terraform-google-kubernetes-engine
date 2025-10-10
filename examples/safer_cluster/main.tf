@@ -51,7 +51,9 @@ resource "random_shuffle" "version" {
 }
 
 module "gke" {
-  source                     = "../../modules/safer-cluster/"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/safer-cluster"
+  version = "~> 40.0"
+
   project_id                 = var.project_id
   name                       = "${local.cluster_type}-cluster-${random_string.suffix.result}"
   regional                   = true
@@ -65,6 +67,7 @@ module "gke" {
   firewall_inbound_ports     = ["9443", "15017"]
   kubernetes_version         = random_shuffle.version.result[0]
   release_channel            = "UNSPECIFIED"
+  deletion_protection        = false
 
   master_authorized_networks = [
     {

@@ -60,6 +60,7 @@ To deploy this example:
 | ca\_certificate | Cluster ca certificate (base64 encoded) |
 | cluster\_name | Cluster name |
 | endpoint | Cluster endpoint |
+| endpoint\_dns | Cluster endpoint DNS |
 | get\_credentials\_command | gcloud get-credentials command to generate kubeconfig for the private cluster |
 | keyring | The name of the keyring. |
 | keyring\_resource | The location of the keyring. |
@@ -71,4 +72,4 @@ To deploy this example:
 | router\_name | Name of the router that was created |
 | subnet\_name | The name of the VPC subnet being created |
 
- <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

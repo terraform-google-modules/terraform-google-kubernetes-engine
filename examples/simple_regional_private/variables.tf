@@ -39,11 +39,10 @@ variable "ip_range_pods" {
   description = "The secondary ip range to use for pods"
 }
 
-variable "ip_range_services" {
-  description = "The secondary ip range to use for services"
-}
-
 variable "compute_engine_service_account" {
   description = "Service account to associate to the nodes in the cluster"
 }
 
+variable "enable_k8s_beta_apis" {
+  description = "K8S beta apis to enable within the cluster"
+}

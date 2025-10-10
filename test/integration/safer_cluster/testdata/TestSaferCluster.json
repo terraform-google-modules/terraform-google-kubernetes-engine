@@ -29,6 +29,7 @@
   "currentNodeCount": 3,
   "currentNodeVersion": "1.23.14-gke.401",
   "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
   },
   "defaultMaxPodsConstraint": {
@@ -90,12 +91,16 @@
     ],
     "enabled": true
   },
+  "meshCertificates": {
+    "enableCertificates": false
+  },
   "monitoringConfig": {
     "componentConfig": {
       "enableComponents": [
         "SYSTEM_COMPONENTS"
       ]
-    }
+    },
+    "managedPrometheusConfig": {}
   },
   "monitoringService": "monitoring.googleapis.com/kubernetes",
   "name": "CLUSTER_NAME",

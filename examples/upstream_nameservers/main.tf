@@ -27,7 +27,9 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                 = "../../"
+  source  = "terraform-google-modules/kubernetes-engine/google"
+  version = "~> 40.0"
+
   project_id             = var.project_id
   name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   region                 = var.region
@@ -40,4 +42,5 @@ module "gke" {
 
   configure_ip_masq    = true
   upstream_nameservers = ["8.8.8.8", "8.8.4.4"]
+  deletion_protection  = false
 }

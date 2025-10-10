@@ -19,15 +19,16 @@
 // The safer-cluster module is based on a private cluster, with a several
 // settings set to recommended values by default.
 module "gke" {
-  source             = "../beta-private-cluster-update-variant/"
-  project_id         = var.project_id
-  name               = var.name
-  description        = var.description
-  regional           = var.regional
-  region             = var.region
-  zones              = var.zones
-  network            = var.network
-  network_project_id = var.network_project_id
+  source              = "../beta-private-cluster-update-variant/"
+  project_id          = var.project_id
+  name                = var.name
+  description         = var.description
+  regional            = var.regional
+  region              = var.region
+  zones               = var.zones
+  network             = var.network
+  network_project_id  = var.network_project_id
+  deletion_protection = var.deletion_protection
 
   // We need to enforce a minimum Kubernetes Version to ensure
   // that the necessary security features are enabled.
@@ -102,7 +103,12 @@ module "gke" {
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
-  monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
+  monitoring_enable_managed_prometheus    = var.monitoring_enable_managed_prometheus
+  monitoring_enable_observability_metrics = var.monitoring_enable_observability_metrics
+  monitoring_enable_observability_relay   = var.monitoring_enable_observability_relay
+  monitoring_enabled_components           = var.monitoring_enabled_components
+
+  enable_confidential_nodes = var.enable_confidential_nodes
 
   // We never use the default service account for the cluster. The default
   // project/editor permissions can create problems if nodes were to be ever
@@ -113,10 +119,15 @@ module "gke" {
   //   All applications should run with an identity defined via Workload Identity anyway.
   // - Use a service account passed as a parameter to the module, in case the user
   //   wants to maintain control of their service accounts.
-  create_service_account = var.compute_engine_service_account == "" ? true : false
-  service_account        = var.compute_engine_service_account
-  registry_project_ids   = var.registry_project_ids
-  grant_registry_access  = var.grant_registry_access
+  service_account       = var.compute_engine_service_account
+  registry_project_ids  = var.registry_project_ids
+  grant_registry_access = var.grant_registry_access
+
+  // If create_service_account is explicitly set to false we short-circuit the
+  // compute_engine_service_account check to potentially avoid an error (see variables.tf documentation).
+  // Otherwise if true (the default), we check if compute_engine_service_account is set for backwards compatability
+  // before the create_service_account variable was added.
+  create_service_account = var.create_service_account == false ? var.create_service_account : (var.compute_engine_service_account == "" ? true : false)
 
   issue_client_certificate = false
 
@@ -163,6 +174,9 @@ module "gke" {
   // Enable cost allocation support
   enable_cost_allocation = var.enable_cost_allocation
 
+  // Enable L4 ILB subsetting on the cluster
+  enable_l4_ilb_subsetting = var.enable_l4_ilb_subsetting
+
   // Use of PodSecurityPolicy admission controller
   // https://cloud.google.com/kubernetes-engine/docs/how-to/pod-security-policies
   enable_pod_security_policy = var.enable_pod_security_policy
@@ -181,14 +195,28 @@ module "gke" {
   // We enable Workload Identity by default.
   identity_namespace = "${var.project_id}.svc.id.goog"
 
+  // Enabling mesh certificates requires Workload Identity
+  enable_mesh_certificates = var.enable_mesh_certificates
+
   authenticator_security_group = var.authenticator_security_group
 
   enable_shielded_nodes = var.enable_shielded_nodes
 
   gce_pd_csi_driver    = var.gce_pd_csi_driver
   filestore_csi_driver = var.filestore_csi_driver
+  gcs_fuse_csi_driver  = var.gcs_fuse_csi_driver
 
   notification_config_topic = var.notification_config_topic
 
   timeouts = var.timeouts
+
+  enable_gcfs = var.enable_gcfs
+
+  // Enabling vulnerability and audit for workloads
+  workload_vulnerability_mode = var.workload_vulnerability_mode
+  workload_config_audit_mode  = var.workload_config_audit_mode
+
+  // Enabling security posture
+  security_posture_mode               = var.security_posture_mode
+  security_posture_vulnerability_mode = var.security_posture_vulnerability_mode
 }

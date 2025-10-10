@@ -6,6 +6,15 @@
       "gcePersistentDiskCsiDriverConfig": {
         "enabled": true
       },
+      "rayOperatorConfig": {
+        "enabled": true,
+        "rayClusterLoggingConfig": {
+          "enabled": true
+        },
+        "rayClusterMonitoringConfig": {
+          "enabled": true
+        }
+      },
       "gcpFilestoreCsiDriverConfig": {
         "enabled": true
       },
@@ -70,6 +79,7 @@
     "currentNodeCount": 2,
     "currentNodeVersion": "1.24.7-gke.900",
     "databaseEncryption": {
+      "currentState": "CURRENT_STATE_DECRYPTED",
       "state": "DECRYPTED"
     },
     "defaultMaxPodsConstraint": {
@@ -130,6 +140,8 @@
         "enableComponents": [
           "SYSTEM_COMPONENTS"
         ]
+      },
+      "managedPrometheusConfig": {
       }
     },
     "monitoringService": "monitoring.googleapis.com/kubernetes",
@@ -176,6 +188,9 @@
           "variantConfig": {
             "variant": "DEFAULT"
           }
+        },
+        "gcfsConfig": {
+          "enabled": true
         }
       }
     },

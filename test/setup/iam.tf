@@ -34,6 +34,9 @@ locals {
     "roles/iam.roleAdmin",
     "roles/iap.admin",
     "roles/gkehub.admin",
+    "roles/cloudasset.viewer",
+    "roles/serviceusage.serviceUsageConsumer",
+    "roles/resourcemanager.tagAdmin",
   ]
 
   # roles as documented https://cloud.google.com/service-mesh/docs/installation-permissions
@@ -50,6 +53,42 @@ locals {
     "roles/gkehub.admin",
     "roles/privateca.admin",
   ]
+
+  # Includes placeholders for https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/issues/3141
+  per_module_roles = {
+    root                                = ["roles/editor"],
+    auth                                = ["roles/editor"],
+    beta-autopilot-private-cluster      = ["roles/editor"],
+    beta-autopilot-public-cluster       = ["roles/editor"],
+    beta-private-cluster                = ["roles/editor"],
+    beta-private-cluster-update-variant = ["roles/editor"],
+    beta-public-cluster                 = ["roles/editor"],
+    beta-public-cluster-update-variant  = ["roles/editor"],
+    binary-authorization                = ["roles/editor"],
+    fleet-app-operator-permissions      = ["roles/editor"],
+    fleet-membership                    = ["roles/editor"],
+    gke-autopilot-cluster = [
+      "roles/compute.admin",
+      "roles/container.admin",
+      "roles/iam.serviceAccountUser",
+    ],
+    gke-node-pool = [
+      "roles/compute.admin",
+      "roles/container.admin",
+      "roles/iam.serviceAccountUser",
+    ],
+    gke-standard-cluster = [
+      "roles/compute.admin",
+      "roles/container.admin",
+      "roles/iam.serviceAccountUser",
+    ],
+    hub-legacy                     = ["roles/editor"],
+    private-cluster                = ["roles/editor"],
+    private-cluster-update-variant = ["roles/editor"],
+    safer-cluster                  = ["roles/editor"],
+    safer-cluster-update-variant   = ["roles/editor"],
+    workload-identity              = ["roles/editor"],
+  }
 }
 
 resource "random_id" "random_suffix" {
@@ -100,6 +139,14 @@ resource "google_project_iam_member" "int_test_asm" {
   for_each = toset(concat(local.int_required_roles, local.int_asm_required_roles))
 
   project = module.gke-project-asm.project_id
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.int_test.email}"
+}
+
+resource "google_project_iam_member" "int_test_fleet" {
+  for_each = toset(local.int_required_roles)
+
+  project = module.gke-project-fleet.project_id
   role    = each.value
   member  = "serviceAccount:${google_service_account.int_test.email}"
 }

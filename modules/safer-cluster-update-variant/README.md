@@ -209,16 +209,22 @@ For simplicity, we suggest using `roles/container.admin` and
 | cluster\_dns\_provider | Which in-cluster DNS provider should be used. PROVIDER\_UNSPECIFIED (default) or PLATFORM\_DEFAULT or CLOUD\_DNS. | `string` | `"PROVIDER_UNSPECIFIED"` | no |
 | cluster\_dns\_scope | The scope of access to cluster DNS records. DNS\_SCOPE\_UNSPECIFIED (default) or CLUSTER\_SCOPE or VPC\_SCOPE. | `string` | `"DNS_SCOPE_UNSPECIFIED"` | no |
 | cluster\_resource\_labels | The GCE resource labels (a map of key/value pairs) to be applied to the cluster | `map(string)` | `{}` | no |
-| compute\_engine\_service\_account | Use the given service account for nodes rather than creating a new dedicated service account. | `string` | `""` | no |
-| config\_connector | (Beta) Whether ConfigConnector is enabled for this cluster. | `bool` | `false` | no |
+| compute\_engine\_service\_account | Use the given service account for nodes rather than creating a new dedicated service account. If set then also set var.create\_service\_account to false to avoid 'value depends on resource attributes that cannot be determined until apply' errors. | `string` | `""` | no |
+| config\_connector | Whether ConfigConnector is enabled for this cluster. | `bool` | `false` | no |
+| create\_service\_account | Defines if service account specified to run nodes should be created. Explicitly set to false if var.compute\_engine\_service\_account is set to avoid 'value depends on resource attributes that cannot be determined until apply' errors. | `bool` | `true` | no |
 | database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key\_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key\_name is the name of a CloudKMS key. | `list(object({ state = string, key_name = string }))` | <pre>[<br>  {<br>    "key_name": "",<br>    "state": "DECRYPTED"<br>  }<br>]</pre> | no |
 | datapath\_provider | The desired datapath provider for this cluster. By default, `ADVANCED_DATAPATH` enables Dataplane-V2 feature. `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation as a fallback since upgrading to V2 requires a cluster re-creation. | `string` | `"ADVANCED_DATAPATH"` | no |
 | default\_max\_pods\_per\_node | The maximum number of pods to schedule per node | `number` | `110` | no |
+| deletion\_protection | Whether or not to allow Terraform to destroy the cluster. | `bool` | `true` | no |
 | description | The description of the cluster | `string` | `""` | no |
 | disable\_default\_snat | Whether to disable the default SNAT to support the private use of public IP addresses | `bool` | `false` | no |
 | dns\_cache | (Beta) The status of the NodeLocal DNSCache addon. | `bool` | `false` | no |
+| enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
 | enable\_cost\_allocation | Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery | `bool` | `false` | no |
+| enable\_gcfs | Enable image streaming on cluster level. | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
+| enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
+| enable\_mesh\_certificates | Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity. | `bool` | `false` | no |
 | enable\_pod\_security\_policy | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | `bool` | `false` | no |
 | enable\_private\_endpoint | When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable\_private\_nodes is true | `bool` | `true` | no |
 | enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster. | `bool` | `true` | no |
@@ -228,13 +234,14 @@ For simplicity, we suggest using `roles/container.admin` and
 | firewall\_priority | Priority rule for firewall rules | `number` | `1000` | no |
 | gateway\_api\_channel | The gateway api channel of this cluster. Accepted values are `CHANNEL_STANDARD` and `CHANNEL_DISABLED`. | `string` | `null` | no |
 | gce\_pd\_csi\_driver | (Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. | `bool` | `true` | no |
+| gcs\_fuse\_csi\_driver | Whether GCE FUSE CSI driver is enabled for this cluster. | `bool` | `false` | no |
 | gke\_backup\_agent\_config | (Beta) Whether Backup for GKE agent is enabled for this cluster. | `bool` | `false` | no |
 | grant\_registry\_access | Grants created cluster-specific service account storage.objectViewer role. | `bool` | `true` | no |
 | horizontal\_pod\_autoscaling | Enable horizontal pod autoscaling addon | `bool` | `true` | no |
 | http\_load\_balancing | Enable httpload balancer addon. The addon allows whoever can create Ingress objects to expose an application to a public IP. Network policies or Gatekeeper policies should be used to verify that only authorized applications are exposed. | `bool` | `true` | no |
 | initial\_node\_count | The number of nodes to create in this cluster's default node pool. | `number` | `0` | no |
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | `string` | n/a | yes |
-| ip\_range\_services | The _name_ of the secondary subnet range to use for services | `string` | n/a | yes |
+| ip\_range\_services | The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used. | `string` | `null` | no |
 | istio | (Beta) Enable Istio addon | `bool` | `false` | no |
 | istio\_auth | (Beta) The authentication type between services in Istio. | `string` | `"AUTH_MUTUAL_TLS"` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. The module enforces certain minimum versions to ensure that specific features are available. | `string` | `null` | no |
@@ -246,6 +253,9 @@ For simplicity, we suggest using `roles/container.admin` and
 | master\_authorized\_networks | List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically whitelists). | `list(object({ cidr_block = string, display_name = string }))` | `[]` | no |
 | master\_ipv4\_cidr\_block | The IP range in CIDR notation to use for the hosted master network | `string` | `"10.0.0.0/28"` | no |
 | monitoring\_enable\_managed\_prometheus | (Beta) Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled. | `bool` | `false` | no |
+| monitoring\_enable\_observability\_metrics | Whether or not the advanced datapath metrics are enabled. | `bool` | `false` | no |
+| monitoring\_enable\_observability\_relay | Whether or not the advanced datapath relay is enabled. | `bool` | `false` | no |
+| monitoring\_enabled\_components | List of services to monitor: SYSTEM\_COMPONENTS, WORKLOADS. Empty list is default GKE configuration. | `list(string)` | `[]` | no |
 | monitoring\_service | The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none | `string` | `"monitoring.googleapis.com/kubernetes"` | no |
 | name | The name of the cluster | `string` | n/a | yes |
 | network | The VPC network to host the cluster in | `string` | n/a | yes |
@@ -265,11 +275,15 @@ For simplicity, we suggest using `roles/container.admin` and
 | release\_channel | The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`. | `string` | `"REGULAR"` | no |
 | resource\_usage\_export\_dataset\_id | The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | `string` | `""` | no |
 | sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it). | `bool` | `false` | no |
+| security\_posture\_mode | Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`. | `string` | `"DISABLED"` | no |
+| security\_posture\_vulnerability\_mode | Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE` | `string` | `null` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | `map(list(string))` | `{}` | no |
 | subnetwork | The subnetwork to host the cluster in | `string` | n/a | yes |
 | timeouts | Timeout for cluster operations. | `map(string)` | `{}` | no |
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | `list(string)` | `[]` | no |
 | windows\_node\_pools | List of maps containing node pools | `list(map(string))` | `[]` | no |
+| workload\_config\_audit\_mode | (beta) Workload config audit mode. | `string` | `"DISABLED"` | no |
+| workload\_vulnerability\_mode | (beta) Vulnerability mode. | `string` | `""` | no |
 | zones | The zones to host the cluster in | `list(string)` | `[]` | no |
 
 ## Outputs
@@ -278,7 +292,9 @@ For simplicity, we suggest using `roles/container.admin` and
 |------|-------------|
 | ca\_certificate | Cluster ca certificate (base64 encoded) |
 | cluster\_id | Cluster ID |
+| enable\_mesh\_certificates | Mesh certificate configuration value |
 | endpoint | Cluster endpoint |
+| endpoint\_dns | Cluster endpoint DNS |
 | horizontal\_pod\_autoscaling\_enabled | Whether horizontal pod autoscaling enabled |
 | http\_load\_balancing\_enabled | Whether http load balancing enabled |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |

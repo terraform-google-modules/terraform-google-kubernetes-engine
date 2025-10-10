@@ -27,7 +27,9 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                     = "../../"
+  source  = "terraform-google-modules/kubernetes-engine/google"
+  version = "~> 40.0"
+
   project_id                 = var.project_id
   name                       = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   region                     = var.region
@@ -40,4 +42,5 @@ module "gke" {
   service_account            = var.compute_engine_service_account
   add_cluster_firewall_rules = true
   firewall_inbound_ports     = ["9443", "15017"]
+  deletion_protection        = false
 }

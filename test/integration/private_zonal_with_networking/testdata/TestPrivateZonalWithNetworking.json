@@ -1,5 +1,6 @@
 {
   "addonsConfig": {
+    "configConnectorConfig": {},
     "dnsCacheConfig": {},
     "gcePersistentDiskCsiDriverConfig": {
       "enabled": true
@@ -26,6 +27,7 @@
   "currentNodeCount": 1,
   "currentNodeVersion": "1.24.7-gke.900",
   "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
   },
   "defaultMaxPodsConstraint": {
@@ -89,7 +91,8 @@
       "enableComponents": [
         "SYSTEM_COMPONENTS"
       ]
-    }
+    },
+    "managedPrometheusConfig": {}
   },
   "monitoringService": "monitoring.googleapis.com/kubernetes",
   "name": "CLUSTER_NAME",
@@ -104,6 +107,10 @@
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
     "imageType": "COS_CONTAINERD",
+    "kubeletConfig": {
+      "insecureKubeletReadonlyPortEnabled": false,
+      "maxParallelImagePulls": 2
+    },
     "loggingConfig": {
       "variantConfig": {
         "variant": "DEFAULT"
@@ -205,9 +212,18 @@
         "minNodeCount": 1
       },
       "config": {
+        "bootDisk": {
+          "diskType": "pd-standard",
+          "sizeGb": "100"
+        },
         "diskSizeGb": 100,
         "diskType": "pd-standard",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
+        "kubeletConfig": {
+          "insecureKubeletReadonlyPortEnabled": false,
+          "maxParallelImagePulls": 2
+        },
         "labels": {
           "cluster_name": "CLUSTER_NAME",
           "node_pool": "default-node-pool"
@@ -226,6 +242,9 @@
         "oauthScopes": [
           "https://www.googleapis.com/auth/cloud-platform"
         ],
+        "resourceLabels": {
+          "goog-gke-node-pool-provisioning-model": "on-demand"
+        },
         "serviceAccount": "SERVICE_ACCOUNT",
         "shieldedInstanceConfig": {
           "enableIntegrityMonitoring": true

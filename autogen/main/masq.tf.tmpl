@@ -15,11 +15,12 @@
  */
 
 {{ autogeneration_note }}
+{% if autopilot_cluster != true%}
 
 /******************************************
   Create ip-masq-agent confimap
  *****************************************/
-resource "kubernetes_config_map" "ip-masq-agent" {
+resource "kubernetes_config_map" "ip_masq_agent" {
   count = var.configure_ip_masq ? 1 : 0
 
   metadata {
@@ -47,3 +48,4 @@ EOF
     {% endif %}
   ]
 }
+{% endif %}

@@ -29,6 +29,7 @@ To deploy this config:
 | enable\_fleet\_registration | Enables GKE Hub Registration when set to true | `bool` | `true` | no |
 | hub\_project\_id | The project in which the GKE Hub belongs. Defaults to GKE cluster project\_id. | `string` | `""` | no |
 | location | The location (zone or region) this cluster has been created in. | `string` | n/a | yes |
+| membership\_location | Membership location for the cluster. Defaults to global. | `string` | `"global"` | no |
 | membership\_name | Membership name that uniquely represents the cluster being registered. Defaults to `$project_id-$location-$cluster_name`. | `string` | `""` | no |
 | project\_id | The project in which the GKE cluster belongs. | `string` | n/a | yes |
 
@@ -37,6 +38,8 @@ To deploy this config:
 | Name | Description |
 |------|-------------|
 | cluster\_membership\_id | The ID of the hub membership |
+| location | The location of the hub membership. |
+| project\_id | The project of the hub membership. |
 | wait | An output to use when you want to depend on registration finishing |
 
- <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

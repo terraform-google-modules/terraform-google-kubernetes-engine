@@ -33,7 +33,9 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                  = "../../modules/private-cluster-update-variant"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster-update-variant"
+  version = "~> 40.0"
+
   project_id              = var.project_id
   name                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   regional                = false
@@ -48,6 +50,7 @@ module "gke" {
   enable_private_endpoint = true
   enable_private_nodes    = true
   master_ipv4_cidr_block  = "172.16.0.0/28"
+  deletion_protection     = false
 
   master_authorized_networks = [
     {
@@ -58,11 +61,12 @@ module "gke" {
 
   node_pools = [
     {
-      name            = "pool-01"
-      min_count       = 1
-      max_count       = 2
-      service_account = var.compute_engine_service_account
-      auto_upgrade    = true
+      name                                   = "pool-01"
+      min_count                              = 1
+      max_count                              = 2
+      service_account                        = var.compute_engine_service_account
+      auto_upgrade                           = true
+      insecure_kubelet_readonly_port_enabled = false
     },
     {
       name              = "pool-02"

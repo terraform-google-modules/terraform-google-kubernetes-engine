@@ -1,0 +1,282 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-kubernetes-engine-safer-cluster-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: "Safer Cluster: How to setup a GKE Kubernetes cluster with reduced exposure"
+    source:
+      repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
+      sourceType: git
+      dir: /modules/safer-cluster
+  ui:
+    input:
+      variables:
+        add_cluster_firewall_rules:
+          name: add_cluster_firewall_rules
+          title: Add Cluster Firewall Rules
+        authenticator_security_group:
+          name: authenticator_security_group
+          title: Authenticator Security Group
+        cloudrun:
+          name: cloudrun
+          title: Cloudrun
+        cluster_autoscaling:
+          name: cluster_autoscaling
+          title: Cluster Autoscaling
+        cluster_dns_domain:
+          name: cluster_dns_domain
+          title: Cluster Dns Domain
+        cluster_dns_provider:
+          name: cluster_dns_provider
+          title: Cluster Dns Provider
+        cluster_dns_scope:
+          name: cluster_dns_scope
+          title: Cluster Dns Scope
+        cluster_resource_labels:
+          name: cluster_resource_labels
+          title: Cluster Resource Labels
+        compute_engine_service_account:
+          name: compute_engine_service_account
+          title: Compute Engine Service Account
+        config_connector:
+          name: config_connector
+          title: Config Connector
+        create_service_account:
+          name: create_service_account
+          title: Create Service Account
+        database_encryption:
+          name: database_encryption
+          title: Database Encryption
+        datapath_provider:
+          name: datapath_provider
+          title: Datapath Provider
+        default_max_pods_per_node:
+          name: default_max_pods_per_node
+          title: Default Max Pods Per Node
+        deletion_protection:
+          name: deletion_protection
+          title: Deletion Protection
+        description:
+          name: description
+          title: Description
+        disable_default_snat:
+          name: disable_default_snat
+          title: Disable Default Snat
+        dns_cache:
+          name: dns_cache
+          title: Dns Cache
+        enable_confidential_nodes:
+          name: enable_confidential_nodes
+          title: Enable Confidential Nodes
+        enable_cost_allocation:
+          name: enable_cost_allocation
+          title: Enable Cost Allocation
+        enable_gcfs:
+          name: enable_gcfs
+          title: Enable Gcfs
+        enable_intranode_visibility:
+          name: enable_intranode_visibility
+          title: Enable Intranode Visibility
+        enable_l4_ilb_subsetting:
+          name: enable_l4_ilb_subsetting
+          title: Enable L4 Ilb Subsetting
+        enable_mesh_certificates:
+          name: enable_mesh_certificates
+          title: Enable Mesh Certificates
+        enable_pod_security_policy:
+          name: enable_pod_security_policy
+          title: Enable Pod Security Policy
+        enable_private_endpoint:
+          name: enable_private_endpoint
+          title: Enable Private Endpoint
+        enable_shielded_nodes:
+          name: enable_shielded_nodes
+          title: Enable Shielded Nodes
+        enable_vertical_pod_autoscaling:
+          name: enable_vertical_pod_autoscaling
+          title: Enable Vertical Pod Autoscaling
+        filestore_csi_driver:
+          name: filestore_csi_driver
+          title: Filestore Csi Driver
+        firewall_inbound_ports:
+          name: firewall_inbound_ports
+          title: Firewall Inbound Ports
+        firewall_priority:
+          name: firewall_priority
+          title: Firewall Priority
+        gateway_api_channel:
+          name: gateway_api_channel
+          title: Gateway Api Channel
+        gce_pd_csi_driver:
+          name: gce_pd_csi_driver
+          title: Gce Pd Csi Driver
+        gcs_fuse_csi_driver:
+          name: gcs_fuse_csi_driver
+          title: Gcs Fuse Csi Driver
+        gke_backup_agent_config:
+          name: gke_backup_agent_config
+          title: Gke Backup Agent Config
+        grant_registry_access:
+          name: grant_registry_access
+          title: Grant Registry Access
+        horizontal_pod_autoscaling:
+          name: horizontal_pod_autoscaling
+          title: Horizontal Pod Autoscaling
+        http_load_balancing:
+          name: http_load_balancing
+          title: Http Load Balancing
+        initial_node_count:
+          name: initial_node_count
+          title: Initial Node Count
+        ip_range_pods:
+          name: ip_range_pods
+          title: Ip Range Pods
+        ip_range_services:
+          name: ip_range_services
+          title: Ip Range Services
+        istio:
+          name: istio
+          title: Istio
+        istio_auth:
+          name: istio_auth
+          title: Istio Auth
+        kubernetes_version:
+          name: kubernetes_version
+          title: Kubernetes Version
+        logging_service:
+          name: logging_service
+          title: Logging Service
+        maintenance_end_time:
+          name: maintenance_end_time
+          title: Maintenance End Time
+        maintenance_exclusions:
+          name: maintenance_exclusions
+          title: Maintenance Exclusions
+        maintenance_recurrence:
+          name: maintenance_recurrence
+          title: Maintenance Recurrence
+        maintenance_start_time:
+          name: maintenance_start_time
+          title: Maintenance Start Time
+        master_authorized_networks:
+          name: master_authorized_networks
+          title: Master Authorized Networks
+        master_ipv4_cidr_block:
+          name: master_ipv4_cidr_block
+          title: Master Ipv4 Cidr Block
+        monitoring_enable_managed_prometheus:
+          name: monitoring_enable_managed_prometheus
+          title: Monitoring Enable Managed Prometheus
+        monitoring_enable_observability_metrics:
+          name: monitoring_enable_observability_metrics
+          title: Monitoring Enable Observability Metrics
+        monitoring_enable_observability_relay:
+          name: monitoring_enable_observability_relay
+          title: Monitoring Enable Observability Relay
+        monitoring_enabled_components:
+          name: monitoring_enabled_components
+          title: Monitoring Enabled Components
+        monitoring_service:
+          name: monitoring_service
+          title: Monitoring Service
+        name:
+          name: name
+          title: Name
+        network:
+          name: network
+          title: Network
+        network_project_id:
+          name: network_project_id
+          title: Network Project Id
+        node_pools:
+          name: node_pools
+          title: Node Pools
+        node_pools_labels:
+          name: node_pools_labels
+          title: Node Pools Labels
+        node_pools_metadata:
+          name: node_pools_metadata
+          title: Node Pools Metadata
+        node_pools_oauth_scopes:
+          name: node_pools_oauth_scopes
+          title: Node Pools Oauth Scopes
+        node_pools_resource_labels:
+          name: node_pools_resource_labels
+          title: Node Pools Resource Labels
+        node_pools_tags:
+          name: node_pools_tags
+          title: Node Pools Tags
+        node_pools_taints:
+          name: node_pools_taints
+          title: Node Pools Taints
+        notification_config_topic:
+          name: notification_config_topic
+          title: Notification Config Topic
+        project_id:
+          name: project_id
+          title: Project Id
+        region:
+          name: region
+          title: Region
+        regional:
+          name: regional
+          title: Regional
+        registry_project_ids:
+          name: registry_project_ids
+          title: Registry Project Ids
+        release_channel:
+          name: release_channel
+          title: Release Channel
+        resource_usage_export_dataset_id:
+          name: resource_usage_export_dataset_id
+          title: Resource Usage Export Dataset Id
+        sandbox_enabled:
+          name: sandbox_enabled
+          title: Sandbox Enabled
+        security_posture_mode:
+          name: security_posture_mode
+          title: Security Posture Mode
+        security_posture_vulnerability_mode:
+          name: security_posture_vulnerability_mode
+          title: Security Posture Vulnerability Mode
+        stub_domains:
+          name: stub_domains
+          title: Stub Domains
+        subnetwork:
+          name: subnetwork
+          title: Subnetwork
+        timeouts:
+          name: timeouts
+          title: Timeouts
+        upstream_nameservers:
+          name: upstream_nameservers
+          title: Upstream Nameservers
+        windows_node_pools:
+          name: windows_node_pools
+          title: Windows Node Pools
+        workload_config_audit_mode:
+          name: workload_config_audit_mode
+          title: Workload Config Audit Mode
+        workload_vulnerability_mode:
+          name: workload_vulnerability_mode
+          title: Workload Vulnerability Mode
+        zones:
+          name: zones
+          title: Zones

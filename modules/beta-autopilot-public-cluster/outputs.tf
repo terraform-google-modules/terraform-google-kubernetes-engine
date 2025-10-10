@@ -56,9 +56,22 @@ output "zones" {
 }
 
 output "endpoint" {
-  sensitive   = true
   description = "Cluster endpoint"
   value       = local.cluster_endpoint
+  depends_on = [
+    /* Nominally, the endpoint is populated as soon as it is known to Terraform.
+    * However, the cluster may not be in a usable state yet.  Therefore any
+    * resources dependent on the cluster being up will fail to deploy.  With
+    * this explicit dependency, dependent resources can wait for the cluster
+    * to be up.
+    */
+    google_container_cluster.primary,
+  ]
+}
+
+output "endpoint_dns" {
+  description = "Cluster endpoint DNS"
+  value       = google_container_cluster.primary.control_plane_endpoints_config[0].dns_endpoint_config[0].endpoint
   depends_on = [
     /* Nominally, the endpoint is populated as soon as it is known to Terraform.
     * However, the cluster may not be in a usable state yet.  Therefore any
@@ -142,6 +155,18 @@ output "identity_namespace" {
   ]
 }
 
+output "tpu_ipv4_cidr_block" {
+  description = "The IP range in CIDR notation used for the TPUs"
+  value       = var.enable_tpu ? google_container_cluster.primary.tpu_ipv4_cidr_block : null
+}
+
+
+
+output "dns_cache_enabled" {
+  description = "Whether DNS Cache enabled"
+  value       = local.cluster_dns_cache_enabled
+}
+
 output "cloudrun_enabled" {
   description = "Whether CloudRun enabled"
   value       = false
@@ -152,14 +177,14 @@ output "istio_enabled" {
   value       = local.cluster_istio_enabled
 }
 
-output "dns_cache_enabled" {
-  description = "Whether DNS Cache enabled"
-  value       = local.cluster_dns_cache_enabled
-}
-
 output "pod_security_policy_enabled" {
   description = "Whether pod security policy is enabled"
   value       = local.cluster_pod_security_policy_enabled
+}
+
+output "identity_service_enabled" {
+  description = "Whether Identity Service is enabled"
+  value       = local.cluster_identity_service_enabled
 }
 
 output "intranode_visibility_enabled" {
@@ -167,12 +192,12 @@ output "intranode_visibility_enabled" {
   value       = local.cluster_intranode_visibility_enabled
 }
 
-output "identity_service_enabled" {
-  description = "Whether Identity Service is enabled"
-  value       = local.cluster_pod_security_policy_enabled
+output "secret_manager_addon_enabled" {
+  description = "Whether Secret Manager add-on is enabled"
+  value       = local.cluster_secret_manager_addon_enabled
 }
 
-output "tpu_ipv4_cidr_block" {
-  description = "The IP range in CIDR notation used for the TPUs"
-  value       = var.enable_tpu ? google_container_cluster.primary.tpu_ipv4_cidr_block : null
+output "fleet_membership" {
+  description = "Fleet membership (if registered)"
+  value       = local.fleet_membership
 }

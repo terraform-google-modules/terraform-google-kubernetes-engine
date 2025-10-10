@@ -27,7 +27,9 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source     = "../../"
+  source  = "terraform-google-modules/kubernetes-engine/google"
+  version = "~> 40.0"
+
   project_id = var.project_id
   name       = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   region     = var.region
@@ -38,6 +40,7 @@ module "gke" {
   ip_range_services      = var.ip_range_services
   create_service_account = false
   service_account        = var.compute_engine_service_account
+  deletion_protection    = false
 }
 
 resource "kubernetes_pod" "nginx-example" {
@@ -52,7 +55,7 @@ resource "kubernetes_pod" "nginx-example" {
 
   spec {
     container {
-      image = "nginx:1.25.1"
+      image = "nginx:1.29.1"
       name  = "nginx-example"
     }
   }

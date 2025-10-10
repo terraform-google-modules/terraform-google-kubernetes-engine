@@ -42,15 +42,26 @@ data "google_service_account" "cluster_service_account" {
 resource "google_service_account" "cluster_service_account" {
   count = var.use_existing_gcp_sa ? 0 : 1
 
-  account_id   = local.gcp_given_name
-  display_name = substr("GCP SA bound to K8S SA ${local.k8s_sa_project_id}[${local.k8s_given_name}]", 0, 100)
-  project      = var.project_id
+  account_id                   = local.gcp_given_name
+  display_name                 = coalesce(var.gcp_sa_display_name, substr("GCP SA bound to K8S SA ${local.k8s_sa_project_id}[${local.k8s_given_name}]", 0, 100))
+  description                  = var.gcp_sa_description
+  project                      = var.project_id
+  create_ignore_already_exists = var.gcp_sa_create_ignore_already_exists
 }
 
 resource "kubernetes_service_account" "main" {
   count = var.use_existing_k8s_sa ? 0 : 1
 
   automount_service_account_token = var.automount_service_account_token
+
+  dynamic "image_pull_secret" {
+    for_each = var.image_pull_secrets
+
+    content {
+      name = image_pull_secret.value
+    }
+  }
+
   metadata {
     name      = local.k8s_given_name
     namespace = var.namespace
@@ -62,7 +73,7 @@ resource "kubernetes_service_account" "main" {
 
 module "annotate-sa" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "~> 3.1"
+  version = "~> 4.0"
 
   enabled                     = var.use_existing_k8s_sa && var.annotate_k8s_sa
   skip_download               = true

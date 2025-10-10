@@ -24,3 +24,12 @@ data "google_compute_subnetwork" "gke_subnetwork" {
   region  = local.region
   project = local.network_project_id
 }
+
+data "google_compute_subnetwork" "private_endpoint_subnetwork" {
+  provider = google
+
+  count   = var.private_endpoint_subnetwork != null ? 1 : 0
+  name    = var.private_endpoint_subnetwork
+  region  = local.region
+  project = local.network_project_id
+}

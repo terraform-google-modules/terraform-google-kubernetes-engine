@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2022-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,19 +15,24 @@ package simple_zonal_private
 
 import (
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
 
 func TestSimpleZonalPrivate(t *testing.T) {
-	bpt := tft.NewTFBlueprintTest(t)
+	bpt := tft.NewTFBlueprintTest(t,
+		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
+	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
 		// bpt.DefaultVerify(assert)
+		testutils.TGKEVerify(t, bpt, assert) // Verify Resources
 
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
@@ -60,6 +65,7 @@ func TestSimpleZonalPrivate(t *testing.T) {
 			"nodePools.config.labels",
 			"nodePools.config.tags",
 			"nodePools.management.autoRepair",
+			"masterAuthorizedNetworksConfig",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)

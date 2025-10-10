@@ -27,7 +27,9 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                 = "../../"
+  source  = "terraform-google-modules/kubernetes-engine/google"
+  version = "~> 40.0"
+
   project_id             = var.project_id
   name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   region                 = var.region
@@ -37,6 +39,7 @@ module "gke" {
   ip_range_services      = var.ip_range_services
   service_account        = var.compute_engine_service_account
   create_service_account = false
+  deletion_protection    = false
 
   configure_ip_masq = true
 

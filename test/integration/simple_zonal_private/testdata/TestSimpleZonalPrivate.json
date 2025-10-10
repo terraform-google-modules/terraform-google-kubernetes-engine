@@ -25,6 +25,7 @@
   "currentNodeCount": 1,
   "currentNodeVersion": "1.25.5-gke.1500",
   "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
   },
   "defaultMaxPodsConstraint": {
@@ -82,14 +83,16 @@
         "displayName": "VPC"
       }
     ],
-    "enabled": true
+    "enabled": true,
+    "privateEndpointEnforcementEnabled": true
   },
   "monitoringConfig": {
     "componentConfig": {
       "enableComponents": [
         "SYSTEM_COMPONENTS"
       ]
-    }
+    },
+    "managedPrometheusConfig": {}
   },
   "monitoringService": "monitoring.googleapis.com/kubernetes",
   "name": "CLUSTER_NAME",

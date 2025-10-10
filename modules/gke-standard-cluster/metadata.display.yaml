@@ -1,0 +1,995 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-kubernetes-engine-gke-standard-cluster-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: GKE Standard Cluster
+    source:
+      repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
+      sourceType: git
+      dir: /modules/gke-standard-cluster
+  ui:
+    input:
+      variables:
+        addons_config:
+          name: addons_config
+          title: Addons Config
+          properties:
+            config_connector_config:
+              name: config_connector_config
+              title: Config Connector Config
+            dns_cache_config:
+              name: dns_cache_config
+              title: Dns Cache Config
+            gce_persistent_disk_csi_driver_config:
+              name: gce_persistent_disk_csi_driver_config
+              title: Gce Persistent Disk Csi Driver Config
+            gcp_filestore_csi_driver_config:
+              name: gcp_filestore_csi_driver_config
+              title: Gcp Filestore Csi Driver Config
+            gcs_fuse_csi_driver_config:
+              name: gcs_fuse_csi_driver_config
+              title: Gcs Fuse Csi Driver Config
+            gke_backup_agent_config:
+              name: gke_backup_agent_config
+              title: Gke Backup Agent Config
+            horizontal_pod_autoscaling:
+              name: horizontal_pod_autoscaling
+              title: Horizontal Pod Autoscaling
+            http_load_balancing:
+              name: http_load_balancing
+              title: Http Load Balancing
+            istio_config:
+              name: istio_config
+              title: Istio Config
+              properties:
+                auth:
+                  name: auth
+                  title: Auth
+                  enumValueLabels:
+                    - label: MUTUAL_TLS
+                      value: MUTUAL_TLS
+            kalm_config:
+              name: kalm_config
+              title: Kalm Config
+            network_policy_config:
+              name: network_policy_config
+              title: Network Policy Config
+            parallelstore_csi_driver_config:
+              name: parallelstore_csi_driver_config
+              title: Parallelstore Csi Driver Config
+            ray_operator_config:
+              name: ray_operator_config
+              title: Ray Operator Config
+            stateful_ha_config:
+              name: stateful_ha_config
+              title: Stateful Ha Config
+        authenticator_groups_config:
+          name: authenticator_groups_config
+          title: Authenticator Groups Config
+          properties:
+            security_group:
+              name: security_group
+              title: Security Group
+              regexValidation: ^gke-security-groups@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+              validation: Please use a valid email address with the gke-security-groups prefix.
+        binary_authorization:
+          name: binary_authorization
+          title: Binary Authorization
+          properties:
+            evaluation_mode:
+              name: evaluation_mode
+              title: Evaluation Mode
+              enumValueLabels:
+                - label: DISABLED
+                  value: DISABLED
+                - label: POLICY_BINDINGS
+                  value: POLICY_BINDINGS
+        cluster_autoscaling:
+          name: cluster_autoscaling
+          title: Cluster Autoscaling
+          properties:
+            auto_provisioning_defaults:
+              name: auto_provisioning_defaults
+              title: Auto Provisioning Defaults
+              properties:
+                management:
+                  name: management
+                  title: Management
+                upgrade_settings:
+                  name: upgrade_settings
+                  title: Upgrade Settings
+                  properties:
+                    blue_green_settings:
+                      name: blue_green_settings
+                      title: Blue Green Settings
+                    strategy:
+                      name: strategy
+                      title: Strategy
+                      enumValueLabels:
+                        - label: SURGE
+                          value: SURGE
+                        - label: BLUE_GREEN
+                          value: BLUE_GREEN
+            autoscaling_profile:
+              name: autoscaling_profile
+              title: Autoscaling Profile
+              enumValueLabels:
+                - label: OPTIMIZE_UTILIZATION
+                  value: OPTIMIZE_UTILIZATION
+                - label: BALANCED
+                  value: BALANCED
+            resource_limits:
+              name: resource_limits
+              title: Resource Limits
+        cluster_ipv4_cidr:
+          name: cluster_ipv4_cidr
+          title: Cluster Ipv4 Cidr
+          regexValidation: ^10\.(?:[0-9]{1,2}|1(?:[0-9]{2})?|2(?:[0-4][0-9]|5[0-5]))\.(?:[0-9]{1,2}|1(?:[0-9]{2})?|2(?:[0-4][0-9]|5[0-5]))\.0\/14$
+          validation: Must be a /14 CIDR block in the 10.0.0.0/8 range. Example - 10.10.0.0/14. Invalid examples - 10.10.0.0/16, 172.16.0.0/14.
+        cluster_telemetry:
+          name: cluster_telemetry
+          title: Cluster Telemetry
+          properties:
+            type:
+              name: type
+              title: Type
+              enumValueLabels:
+                - label: ENABLED
+                  value: ENABLED
+                - label: DISABLED
+                  value: DISABLED
+                - label: SYSTEM_ONLY
+                  value: SYSTEM_ONLY
+        confidential_nodes:
+          name: confidential_nodes
+          title: Confidential Nodes
+        control_plane_endpoints_config:
+          name: control_plane_endpoints_config
+          title: Control Plane Endpoints Config
+        cost_management_config:
+          name: cost_management_config
+          title: Cost Management Config
+        database_encryption:
+          name: database_encryption
+          title: Database Encryption
+          properties:
+            state:
+              name: state
+              title: State
+              enumValueLabels:
+                - label: ENCRYPTED
+                  value: ENCRYPTED
+                - label: DECRYPTED
+                  value: DECRYPTED
+        datapath_provider:
+          name: datapath_provider
+          title: Datapath Provider
+          enumValueLabels:
+            - label: LEGACY_DATAPATH
+              value: LEGACY_DATAPATH
+            - label: ADVANCED_DATAPATH
+              value: ADVANCED_DATAPATH
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: LEGACY_DATAPATH
+        default_max_pods_per_node:
+          name: default_max_pods_per_node
+          title: Default Max Pods Per Node
+        default_snat_status:
+          name: default_snat_status
+          title: Default Snat Status
+        deletion_protection:
+          name: deletion_protection
+          title: Deletion Protection
+        description:
+          name: description
+          title: Description
+        disable_l4_lb_firewall_reconciliation:
+          name: disable_l4_lb_firewall_reconciliation
+          title: Disable L4 Lb Firewall Reconciliation
+        dns_config:
+          name: dns_config
+          title: Dns Config
+          properties:
+            cluster_dns:
+              name: cluster_dns
+              title: Cluster Dns
+              enumValueLabels:
+                - label: CLOUD_DNS
+                  value: CLOUD_DNS
+                - label: PLATFORM_DEFAULT
+                  value: PLATFORM_DEFAULT
+            cluster_dns_scope:
+              name: cluster_dns_scope
+              title: Cluster Dns Scope
+              enumValueLabels:
+                - label: DNS_SCOPE_UNSPECIFIED
+                  value: DNS_SCOPE_UNSPECIFIED
+                - label: CLUSTER_SCOPE
+                  value: CLUSTER_SCOPE
+                - label: VPC_SCOPE
+                  value: VPC_SCOPE
+        enable_cilium_clusterwide_network_policy:
+          name: enable_cilium_clusterwide_network_policy
+          title: Enable Cilium Clusterwide Network Policy
+        enable_fqdn_network_policy:
+          name: enable_fqdn_network_policy
+          title: Enable Fqdn Network Policy
+        enable_intranode_visibility:
+          name: enable_intranode_visibility
+          title: Enable Intranode Visibility
+        enable_k8s_beta_apis:
+          name: enable_k8s_beta_apis
+          title: Enable K8s Beta Apis
+        enable_kubernetes_alpha:
+          name: enable_kubernetes_alpha
+          title: Enable Kubernetes Alpha
+        enable_l4_ilb_subsetting:
+          name: enable_l4_ilb_subsetting
+          title: Enable L4 Ilb Subsetting
+        enable_legacy_abac:
+          name: enable_legacy_abac
+          title: Enable Legacy Abac
+        enable_multi_networking:
+          name: enable_multi_networking
+          title: Enable Multi Networking
+        enable_shielded_nodes:
+          name: enable_shielded_nodes
+          title: Enable Shielded Nodes
+        enable_tpu:
+          name: enable_tpu
+          title: Enable Tpu
+        enterprise_config:
+          name: enterprise_config
+          title: Enterprise Config
+          properties:
+            desired_tier:
+              name: desired_tier
+              title: Desired Tier
+              enumValueLabels:
+                - label: STANDARD
+                  value: STANDARD
+                - label: ENTERPRISE
+                  value: ENTERPRISE
+        fleet:
+          name: fleet
+          title: Fleet
+        gateway_api_config:
+          name: gateway_api_config
+          title: Gateway Api Config
+          properties:
+            channel:
+              name: channel
+              title: Channel
+              enumValueLabels:
+                - label: CHANNEL_DISABLED
+                  value: CHANNEL_DISABLED
+                - label: CHANNEL_EXPERIMENTAL
+                  value: CHANNEL_EXPERIMENTAL
+                - label: CHANNEL_STANDARD
+                  value: CHANNEL_STANDARD
+        identity_service_config:
+          name: identity_service_config
+          title: Identity Service Config
+        in_transit_encryption_config:
+          name: in_transit_encryption_config
+          title: In Transit Encryption Config
+          enumValueLabels:
+            - label: IN_TRANSIT_ENCRYPTION_DISABLED
+              value: IN_TRANSIT_ENCRYPTION_DISABLED
+            - label: IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT
+              value: IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT
+        initial_node_count:
+          name: initial_node_count
+          title: Initial Node Count
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: 1
+        ip_allocation_policy:
+          name: ip_allocation_policy
+          title: Ip Allocation Policy
+          properties:
+            stack_type:
+              name: stack_type
+              title: Stack Type
+              enumValueLabels:
+                - label: IPV4
+                  value: IPV4
+                - label: IPV4_IPV6
+                  value: IPV4_IPV6
+        location:
+          name: location
+          title: Location
+          level: 1
+        logging_config:
+          name: logging_config
+          title: Logging Config
+          properties:
+            enable_components:
+              name: enable_components
+              title: Enable Components
+              enumValueLabels:
+                - label: SYSTEM_COMPONENTS
+                  value: SYSTEM_COMPONENTS
+                - label: WORKLOADS
+                  value: WORKLOADS
+                - label: APISERVER
+                  value: APISERVER
+                - label: CONTROLLER_MANAGER
+                  value: CONTROLLER_MANAGER
+                - label: SCHEDULER
+                  value: SCHEDULER
+        logging_service:
+          name: logging_service
+          title: Logging Service
+          enumValueLabels:
+            - label: logging.googleapis.com
+              value: logging.googleapis.com
+            - label: logging.googleapis.com/kubernetes
+              value: logging.googleapis.com/kubernetes
+            - label: none
+              value: none
+        maintenance_policy:
+          name: maintenance_policy
+          title: Maintenance Policy
+          properties:
+            maintenance_exclusion:
+              name: maintenance_exclusion
+              title: Maintenance Exclusion
+              properties:
+                exclusion_options:
+                  name: exclusion_options
+                  title: Exclusion Options
+                  properties:
+                    scope:
+                      name: scope
+                      title: Scope
+                      enumValueLabels:
+                        - label: NO_UPGRADES
+                          value: NO_UPGRADES
+                        - label: NO_MINOR_UPGRADES
+                          value: NO_MINOR_UPGRADES
+                        - label: NO_MINOR_OR_NODE_UPGRADES
+                          value: NO_MINOR_OR_NODE_UPGRADES
+        master_auth:
+          name: master_auth
+          title: Master Auth
+        master_authorized_networks_config:
+          name: master_authorized_networks_config
+          title: Master Authorized Networks Config
+        mesh_certificates:
+          name: mesh_certificates
+          title: Mesh Certificates
+        min_master_version:
+          name: min_master_version
+          title: Min Master Version
+        monitoring_config:
+          name: monitoring_config
+          title: Monitoring Config
+          properties:
+            enable_components:
+              name: enable_components
+              title: Enable Components
+        monitoring_service:
+          name: monitoring_service
+          title: Monitoring Service
+          enumValueLabels:
+            - label: monitoring.googleapis.com
+              value: monitoring.googleapis.com
+            - label: monitoring.googleapis.com/kubernetes
+              value: monitoring.googleapis.com/kubernetes
+            - label: none
+              value: none
+        name:
+          name: name
+          title: Name
+          regexValidation: ^[a-z][a-z0-9-]{0,38}[a-z0-9]$
+          validation: The cluster name must start with a lowercase letter and can contain up to 40 characters. It can include lowercase letters, numbers, and hyphens, but it cannot end with a hyphen. The name must be unique within its project and location.
+        network:
+          name: network
+          title: Network
+        network_policy:
+          name: network_policy
+          title: Network Policy
+          properties:
+            provider:
+              name: provider
+              title: Provider
+              enumValueLabels:
+                - label: PROVIDER_UNSPECIFIED
+                  value: PROVIDER_UNSPECIFIED
+        node_config:
+          name: node_config
+          title: Node Config
+          properties:
+            containerd_config:
+              name: containerd_config
+              title: Containerd Config
+            disk_type:
+              name: disk_type
+              title: Disk Type
+              enumValueLabels:
+                - label: pd-standard
+                  value: pd-standard
+                - label: pd-balanced
+                  value: pd-balanced
+                - label: pd-ssd
+                  value: pd-ssd
+            guest_accelerator:
+              name: guest_accelerator
+              title: Guest Accelerator
+              properties:
+                gpu_driver_installation_config:
+                  name: gpu_driver_installation_config
+                  title: Gpu Driver Installation Config
+                  properties:
+                    gpu_driver_version:
+                      name: gpu_driver_version
+                      title: Gpu Driver Version
+                      enumValueLabels:
+                        - label: GPU_DRIVER_VERSION_UNSPECIFIED
+                          value: GPU_DRIVER_VERSION_UNSPECIFIED
+                        - label: DEFAULT
+                          value: DEFAULT
+                        - label: LATEST
+                          value: LATEST
+                        - label: INSTALLATION_DISABLED
+                          value: INSTALLATION_DISABLED
+                gpu_sharing_config:
+                  name: gpu_sharing_config
+                  title: Gpu Sharing Config
+                  properties:
+                    gpu_sharing_strategy:
+                      name: gpu_sharing_strategy
+                      title: Gpu Sharing Strategy
+                      enumValueLabels:
+                        - label: TIME_SHARING
+                          value: TIME_SHARING
+                        - label: MPS
+                          value: MPS
+                type:
+                  name: type
+                  title: Type
+            kubelet_config:
+              name: kubelet_config
+              title: Kubelet Config
+              properties:
+                cpu_manager_policy:
+                  name: cpu_manager_policy
+                  title: Cpu Manager Policy
+                  enumValueLabels:
+                    - label: none
+                      value: none
+                    - label: static
+                      value: static
+            linux_node_config:
+              name: linux_node_config
+              title: Linux Node Config
+              properties:
+                cgroup_mode:
+                  name: cgroup_mode
+                  title: Cgroup Mode
+                  enumValueLabels:
+                    - label: CGROUP_MODE_UNSPECIFIED
+                      value: CGROUP_MODE_UNSPECIFIED
+                    - label: CGROUP_MODE_V1
+                      value: CGROUP_MODE_V1
+                    - label: CGROUP_MODE_V2
+                      value: CGROUP_MODE_V2
+            local_ssd_encryption_mode:
+              name: local_ssd_encryption_mode
+              title: Local Ssd Encryption Mode
+              enumValueLabels:
+                - label: STANDARD_ENCRYPTION
+                  value: STANDARD_ENCRYPTION
+                - label: EPHEMERAL_KEY_ENCRYPTION
+                  value: EPHEMERAL_KEY_ENCRYPTION
+            logging_variant:
+              name: logging_variant
+              title: Logging Variant
+              enumValueLabels:
+                - label: DEFAULT
+                  value: DEFAULT
+                - label: MAX_THROUGHPUT
+                  value: MAX_THROUGHPUT
+            reservation_affinity:
+              name: reservation_affinity
+              title: Reservation Affinity
+              properties:
+                consume_reservation_type:
+                  name: consume_reservation_type
+                  title: Consume Reservation Type
+                  enumValueLabels:
+                    - label: UNSPECIFIED
+                      value: UNSPECIFIED
+                    - label: NO_RESERVATION
+                      value: NO_RESERVATION
+                    - label: ANY_RESERVATION
+                      value: ANY_RESERVATION
+                    - label: SPECIFIC_RESERVATION
+                      value: SPECIFIC_RESERVATION
+            sandbox_config:
+              name: sandbox_config
+              title: Sandbox Config
+              properties:
+                sandbox_type:
+                  name: sandbox_type
+                  title: Sandbox Type
+                  enumValueLabels:
+                    - label: gvisor
+                      value: gvisor
+            secondary_boot_disks:
+              name: secondary_boot_disks
+              title: Secondary Boot Disks
+              properties:
+                mode:
+                  name: mode
+                  title: Mode
+                  enumValueLabels:
+                    - label: CONTAINER_IMAGE_CACHE
+                      value: CONTAINER_IMAGE_CACHE
+            windows_node_config:
+              name: windows_node_config
+              title: Windows Node Config
+              properties:
+                osversion:
+                  name: osversion
+                  title: Osversion
+                  enumValueLabels:
+                    - label: OS_VERSION_UNSPECIFIED
+                      value: OS_VERSION_UNSPECIFIED
+                    - label: OS_VERSION_LTSC2019
+                      value: OS_VERSION_LTSC2019
+                    - label: OS_VERSION_LTSC2022
+                      value: OS_VERSION_LTSC2022
+            workload_metadata_config:
+              name: workload_metadata_config
+              title: Workload Metadata Config
+              properties:
+                mode:
+                  name: mode
+                  title: Mode
+                  enumValueLabels:
+                    - label: MODE_UNSPECIFIED
+                      value: MODE_UNSPECIFIED
+                    - label: GCE_METADATA
+                      value: GCE_METADATA
+                    - label: GKE_METADATA
+                      value: GKE_METADATA
+        node_locations:
+          name: node_locations
+          title: Node Locations
+        node_pool:
+          name: node_pool
+          title: Node Pool
+          properties:
+            autoscaling:
+              name: autoscaling
+              title: Autoscaling
+              properties:
+                location_policy:
+                  name: location_policy
+                  title: Location Policy
+                  enumValueLabels:
+                    - label: BALANCED
+                      value: BALANCED
+                    - label: ANY
+                      value: ANY
+            management:
+              name: management
+              title: Management
+            network_config:
+              name: network_config
+              title: Network Config
+              properties:
+                network_performance_config:
+                  name: network_performance_config
+                  title: Network Performance Config
+                  properties:
+                    total_egress_bandwidth_tier:
+                      name: total_egress_bandwidth_tier
+                      title: Total Egress Bandwidth Tier
+                      enumValueLabels:
+                        - label: TIER_UNSPECIFIED
+                          value: TIER_UNSPECIFIED
+                        - label: TIER_1
+                          value: TIER_1
+            node_config:
+              name: node_config
+              title: Node Config
+              properties:
+                containerd_config:
+                  name: containerd_config
+                  title: Containerd Config
+                disk_type:
+                  name: disk_type
+                  title: Disk Type
+                  enumValueLabels:
+                    - label: pd-standard
+                      value: pd-standard
+                    - label: pd-balanced
+                      value: pd-balanced
+                    - label: pd-ssd
+                      value: pd-ssd
+                guest_accelerator:
+                  name: guest_accelerator
+                  title: Guest Accelerator
+                  properties:
+                    gpu_driver_installation_config:
+                      name: gpu_driver_installation_config
+                      title: Gpu Driver Installation Config
+                      properties:
+                        gpu_driver_version:
+                          name: gpu_driver_version
+                          title: Gpu Driver Version
+                          enumValueLabels:
+                            - label: GPU_DRIVER_VERSION_UNSPECIFIED
+                              value: GPU_DRIVER_VERSION_UNSPECIFIED
+                            - label: DEFAULT
+                              value: DEFAULT
+                            - label: LATEST
+                              value: LATEST
+                            - label: INSTALLATION_DISABLED
+                              value: INSTALLATION_DISABLED
+                    gpu_sharing_config:
+                      name: gpu_sharing_config
+                      title: Gpu Sharing Config
+                      properties:
+                        gpu_sharing_strategy:
+                          name: gpu_sharing_strategy
+                          title: Gpu Sharing Strategy
+                          enumValueLabels:
+                            - label: TIME_SHARING
+                              value: TIME_SHARING
+                            - label: MPS
+                              value: MPS
+                    type:
+                      name: type
+                      title: Type
+                kubelet_config:
+                  name: kubelet_config
+                  title: Kubelet Config
+                  properties:
+                    cpu_manager_policy:
+                      name: cpu_manager_policy
+                      title: Cpu Manager Policy
+                      enumValueLabels:
+                        - label: none
+                          value: none
+                        - label: static
+                          value: static
+                linux_node_config:
+                  name: linux_node_config
+                  title: Linux Node Config
+                  properties:
+                    cgroup_mode:
+                      name: cgroup_mode
+                      title: Cgroup Mode
+                      enumValueLabels:
+                        - label: CGROUP_MODE_UNSPECIFIED
+                          value: CGROUP_MODE_UNSPECIFIED
+                        - label: CGROUP_MODE_V1
+                          value: CGROUP_MODE_V1
+                        - label: CGROUP_MODE_V2
+                          value: CGROUP_MODE_V2
+                local_ssd_encryption_mode:
+                  name: local_ssd_encryption_mode
+                  title: Local Ssd Encryption Mode
+                  enumValueLabels:
+                    - label: STANDARD_ENCRYPTION
+                      value: STANDARD_ENCRYPTION
+                    - label: EPHEMERAL_KEY_ENCRYPTION
+                      value: EPHEMERAL_KEY_ENCRYPTION
+                logging_variant:
+                  name: logging_variant
+                  title: Logging Variant
+                  enumValueLabels:
+                    - label: DEFAULT
+                      value: DEFAULT
+                    - label: MAX_THROUGHPUT
+                      value: MAX_THROUGHPUT
+                reservation_affinity:
+                  name: reservation_affinity
+                  title: Reservation Affinity
+                  properties:
+                    consume_reservation_type:
+                      name: consume_reservation_type
+                      title: Consume Reservation Type
+                      enumValueLabels:
+                        - label: UNSPECIFIED
+                          value: UNSPECIFIED
+                        - label: NO_RESERVATION
+                          value: NO_RESERVATION
+                        - label: ANY_RESERVATION
+                          value: ANY_RESERVATION
+                        - label: SPECIFIC_RESERVATION
+                          value: SPECIFIC_RESERVATION
+                sandbox_config:
+                  name: sandbox_config
+                  title: Sandbox Config
+                  properties:
+                    sandbox_type:
+                      name: sandbox_type
+                      title: Sandbox Type
+                      enumValueLabels:
+                        - label: gvisor
+                          value: gvisor
+                secondary_boot_disks:
+                  name: secondary_boot_disks
+                  title: Secondary Boot Disks
+                  properties:
+                    mode:
+                      name: mode
+                      title: Mode
+                      enumValueLabels:
+                        - label: CONTAINER_IMAGE_CACHE
+                          value: CONTAINER_IMAGE_CACHE
+                windows_node_config:
+                  name: windows_node_config
+                  title: Windows Node Config
+                  properties:
+                    osversion:
+                      name: osversion
+                      title: Osversion
+                      enumValueLabels:
+                        - label: OS_VERSION_UNSPECIFIED
+                          value: OS_VERSION_UNSPECIFIED
+                        - label: OS_VERSION_LTSC2019
+                          value: OS_VERSION_LTSC2019
+                        - label: OS_VERSION_LTSC2022
+                          value: OS_VERSION_LTSC2022
+                workload_metadata_config:
+                  name: workload_metadata_config
+                  title: Workload Metadata Config
+                  properties:
+                    mode:
+                      name: mode
+                      title: Mode
+                      enumValueLabels:
+                        - label: MODE_UNSPECIFIED
+                          value: MODE_UNSPECIFIED
+                        - label: GCE_METADATA
+                          value: GCE_METADATA
+                        - label: GKE_METADATA
+                          value: GKE_METADATA
+            node_locations:
+              name: node_locations
+              title: Node Locations
+            placement_policy:
+              name: placement_policy
+              title: Placement Policy
+              properties:
+                type:
+                  name: type
+                  title: Type
+                  enumValueLabels:
+                    - label: COMPACT
+                      value: COMPACT
+            upgrade_settings:
+              name: upgrade_settings
+              title: Upgrade Settings
+              properties:
+                strategy:
+                  name: strategy
+                  title: Strategy
+                  enumValueLabels:
+                    - label: SURGE
+                      value: SURGE
+                    - label: BLUE_GREEN
+                      value: BLUE_GREEN
+        node_pool_auto_config:
+          name: node_pool_auto_config
+          title: Node Pool Auto Config
+          properties:
+            linux_node_config:
+              name: linux_node_config
+              title: Linux Node Config
+              properties:
+                cgroup_mode:
+                  name: cgroup_mode
+                  title: Cgroup Mode
+                  enumValueLabels:
+                    - label: CGROUP_MODE_UNSPECIFIED
+                      value: CGROUP_MODE_UNSPECIFIED
+                    - label: CGROUP_MODE_V1
+                      value: CGROUP_MODE_V1
+                    - label: CGROUP_MODE_V2
+                      value: CGROUP_MODE_V2
+        node_pool_defaults:
+          name: node_pool_defaults
+          title: Node Pool Defaults
+          properties:
+            node_config_defaults:
+              name: node_config_defaults
+              title: Node Config Defaults
+              properties:
+                logging_variant:
+                  name: logging_variant
+                  title: Logging Variant
+                  enumValueLabels:
+                    - label: DEFAULT
+                      value: DEFAULT
+                    - label: MAX_THROUGHPUT
+                      value: MAX_THROUGHPUT
+        node_version:
+          name: node_version
+          title: Node Version
+        notification_config:
+          name: notification_config
+          title: Notification Config
+          properties:
+            pubsub:
+              name: pubsub
+              title: Pubsub
+              properties:
+                filter:
+                  name: filter
+                  title: Filter
+                  properties:
+                    event_type:
+                      name: event_type
+                      title: Event Type
+                      enumValueLabels:
+                        - label: UPGRADE_AVAILABLE_EVENT
+                          value: UPGRADE_AVAILABLE_EVENT
+                        - label: UPGRADE_EVENT
+                          value: UPGRADE_EVENT
+                        - label: SECURITY_BULLETIN_EVENT
+                          value: SECURITY_BULLETIN_EVENT
+                        - label: UPGRADE_INFO_EVENT
+                          value: UPGRADE_INFO_EVENT
+        pod_autoscaling:
+          name: pod_autoscaling
+          title: Pod Autoscaling
+          properties:
+            hpa_profile:
+              name: hpa_profile
+              title: Hpa Profile
+              enumValueLabels:
+                - label: NONE
+                  value: NONE
+                - label: PERFORMANCE
+                  value: PERFORMANCE
+        pod_security_policy_config:
+          name: pod_security_policy_config
+          title: Pod Security Policy Config
+        private_cluster_config:
+          name: private_cluster_config
+          title: Private Cluster Config
+        private_ipv6_google_access:
+          name: private_ipv6_google_access
+          title: Private Ipv6 Google Access
+          enumValueLabels:
+            - label: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
+            - label: PRIVATE_IPV6_GOOGLE_ACCESS_DISABLED
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_DISABLED
+            - label: PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE
+            - label: PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED
+        project_id:
+          name: project_id
+          title: Project Id
+          level: 1
+        protect_config:
+          name: protect_config
+          title: Protect Config
+          properties:
+            workload_config:
+              name: workload_config
+              title: Workload Config
+              properties:
+                audit_mode:
+                  name: audit_mode
+                  title: Audit Mode
+                  enumValueLabels:
+                    - label: DISABLED
+                      value: DISABLED
+                    - label: BASIC
+                      value: BASIC
+            workload_vulnerability_mode:
+              name: workload_vulnerability_mode
+              title: Workload Vulnerability Mode
+              enumValueLabels:
+                - label: DISABLED
+                  value: DISABLED
+                - label: BASIC
+                  value: BASIC
+        release_channel:
+          name: release_channel
+          title: Release Channel
+          properties:
+            channel:
+              name: channel
+              title: Channel
+              enumValueLabels:
+                - label: UNSPECIFIED
+                  value: UNSPECIFIED
+                - label: RAPID
+                  value: RAPID
+                - label: REGULAR
+                  value: REGULAR
+                - label: STABLE
+                  value: STABLE
+                - label: EXTENDED
+                  value: EXTENDED
+        remove_default_node_pool:
+          name: remove_default_node_pool
+          title: Remove Default Node Pool
+        resource_labels:
+          name: resource_labels
+          title: Resource Labels
+        resource_usage_export_config:
+          name: resource_usage_export_config
+          title: Resource Usage Export Config
+        secret_manager_config:
+          name: secret_manager_config
+          title: Secret Manager Config
+        security_posture_config:
+          name: security_posture_config
+          title: Security Posture Config
+          properties:
+            mode:
+              name: mode
+              title: Mode
+              enumValueLabels:
+                - label: DISABLED
+                  value: DISABLED
+                - label: BASIC
+                  value: BASIC
+                - label: ENTERPRISE
+                  value: ENTERPRISE
+            vulnerability_mode:
+              name: vulnerability_mode
+              title: Vulnerability Mode
+              enumValueLabels:
+                - label: VULNERABILITY_DISABLED
+                  value: VULNERABILITY_DISABLED
+                - label: VULNERABILITY_BASIC
+                  value: VULNERABILITY_BASIC
+                - label: VULNERABILITY_ENTERPRISE
+                  value: VULNERABILITY_ENTERPRISE
+        service_external_ips_config:
+          name: service_external_ips_config
+          title: Service External Ips Config
+        subnetwork:
+          name: subnetwork
+          title: Subnetwork
+        timeouts:
+          name: timeouts
+          title: Timeouts
+        vertical_pod_autoscaling:
+          name: vertical_pod_autoscaling
+          title: Vertical Pod Autoscaling
+        workload_alts_config:
+          name: workload_alts_config
+          title: Workload Alts Config
+        workload_identity_config:
+          name: workload_identity_config
+          title: Workload Identity Config
+    runtime:
+      outputs:
+        cluster_id:
+          visibility: VISIBILITY_ROOT

@@ -16,22 +16,20 @@
  */
 
 terraform {
-  required_version = ">= 0.13.0"
+  required_version = ">= 1.3"
 
   required_providers {
     google = {
-      source = "hashicorp/google"
-      # Avoid v4.49 and v4.50 for https://github.com/hashicorp/terraform-provider-google/issues/13507
-      version = ">= 4.47.0, != 4.49.0, != 4.50.0, < 5.0"
+      source  = "hashicorp/google"
+      version = ">= 5.6.0, < 8"
     }
     google-beta = {
-      source = "hashicorp/google-beta"
-      # Avoid v4.49 and v4.50 for https://github.com/hashicorp/terraform-provider-google/issues/13507
-      version = ">= 4.47.0, != 4.49.0, != 4.50.0, < 5.0"
+      source  = "hashicorp/google-beta"
+      version = ">= 5.6.0, < 8"
     }
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:hub/v27.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:hub/v40.0.0"
   }
 }

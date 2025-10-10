@@ -16,7 +16,7 @@
 
 module "enabled_google_apis" {
   source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 14.0"
+  version = "~> 18.0"
 
   project_id                  = var.project
   disable_services_on_destroy = false
@@ -33,7 +33,7 @@ module "enabled_google_apis" {
 
 module "gke" {
   source             = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
-  version            = "~> 26.0"
+  version            = "~> 40.0"
   project_id         = module.enabled_google_apis.project_id
   name               = "sfl-acm-part3"
   region             = var.region
@@ -48,7 +48,7 @@ module "gke" {
 
 module "wi" {
   source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version             = "~> 26.0"
+  version             = "~> 40.0"
   gcp_sa_name         = "cnrmsa"
   cluster_name        = module.gke.name
   name                = "cnrm-controller-manager"

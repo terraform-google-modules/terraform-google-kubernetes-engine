@@ -27,7 +27,8 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source = "../../"
+  source  = "terraform-google-modules/kubernetes-engine/google"
+  version = "~> 40.0"
 
   project_id               = var.project_id
   name                     = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -40,4 +41,5 @@ module "gke" {
   create_service_account   = false
   service_account          = var.compute_engine_service_account
   issue_client_certificate = false
+  deletion_protection      = false
 }

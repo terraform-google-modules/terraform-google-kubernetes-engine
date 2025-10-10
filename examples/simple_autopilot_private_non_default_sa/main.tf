@@ -34,7 +34,9 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                          = "../../modules/beta-autopilot-private-cluster/"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster"
+  version = "~> 40.0"
+
   project_id                      = var.project_id
   name                            = "${local.cluster_type}-cluster"
   regional                        = true
@@ -47,7 +49,8 @@ module "gke" {
   enable_vertical_pod_autoscaling = true
   enable_private_endpoint         = true
   enable_private_nodes            = true
-  master_ipv4_cidr_block          = "172.16.0.0/28"
+  node_pools_cgroup_mode          = "CGROUP_MODE_V2"
+  deletion_protection             = false
 
   master_authorized_networks = [
     {

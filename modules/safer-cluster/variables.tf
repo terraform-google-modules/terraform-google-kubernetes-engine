@@ -138,7 +138,8 @@ variable "ip_range_pods" {
 
 variable "ip_range_services" {
   type        = string
-  description = "The _name_ of the secondary subnet range to use for services"
+  description = "The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used."
+  default     = null
 }
 
 variable "initial_node_count" {
@@ -280,6 +281,24 @@ variable "monitoring_enable_managed_prometheus" {
   default     = false
 }
 
+variable "monitoring_enable_observability_metrics" {
+  type        = bool
+  description = "Whether or not the advanced datapath metrics are enabled."
+  default     = false
+}
+
+variable "monitoring_enable_observability_relay" {
+  type        = bool
+  description = "Whether or not the advanced datapath relay is enabled."
+  default     = false
+}
+
+variable "monitoring_enabled_components" {
+  type        = list(string)
+  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS. Empty list is default GKE configuration."
+  default     = []
+}
+
 variable "grant_registry_access" {
   type        = bool
   description = "Grants created cluster-specific service account storage.objectViewer role."
@@ -385,6 +404,12 @@ variable "enable_intranode_visibility" {
   default     = false
 }
 
+variable "enable_l4_ilb_subsetting" {
+  type        = bool
+  description = "Enable L4 ILB Subsetting on the cluster"
+  default     = false
+}
+
 variable "enable_vertical_pod_autoscaling" {
   type        = bool
   description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it"
@@ -399,8 +424,14 @@ variable "authenticator_security_group" {
 
 variable "compute_engine_service_account" {
   type        = string
-  description = "Use the given service account for nodes rather than creating a new dedicated service account."
+  description = "Use the given service account for nodes rather than creating a new dedicated service account. If set then also set var.create_service_account to false to avoid 'value depends on resource attributes that cannot be determined until apply' errors."
   default     = ""
+}
+
+variable "create_service_account" {
+  type        = bool
+  description = "Defines if service account specified to run nodes should be created. Explicitly set to false if var.compute_engine_service_account is set to avoid 'value depends on resource attributes that cannot be determined until apply' errors."
+  default     = true
 }
 
 variable "enable_shielded_nodes" {
@@ -433,6 +464,12 @@ variable "filestore_csi_driver" {
   default     = false
 }
 
+variable "gcs_fuse_csi_driver" {
+  type        = bool
+  description = "Whether GCE FUSE CSI driver is enabled for this cluster."
+  default     = false
+}
+
 variable "add_cluster_firewall_rules" {
   type        = bool
   description = "Create additional firewall rules"
@@ -453,7 +490,7 @@ variable "firewall_inbound_ports" {
 
 variable "config_connector" {
   type        = bool
-  description = "(Beta) Whether ConfigConnector is enabled for this cluster."
+  description = "Whether ConfigConnector is enabled for this cluster."
   default     = false
 }
 
@@ -461,6 +498,18 @@ variable "gke_backup_agent_config" {
   type        = bool
   description = "(Beta) Whether Backup for GKE agent is enabled for this cluster."
   default     = false
+}
+
+variable "security_posture_mode" {
+  description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
+  type        = string
+  default     = "DISABLED"
+}
+
+variable "security_posture_vulnerability_mode" {
+  description = "Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`"
+  type        = string
+  default     = null
 }
 
 variable "disable_default_snat" {
@@ -483,4 +532,40 @@ variable "timeouts" {
     condition     = !contains([for t in keys(var.timeouts) : contains(["create", "update", "delete"], t)], false)
     error_message = "Only create, update, delete timeouts can be specified."
   }
+}
+
+variable "enable_gcfs" {
+  type        = bool
+  description = "Enable image streaming on cluster level."
+  default     = false
+}
+
+variable "enable_mesh_certificates" {
+  type        = bool
+  default     = false
+  description = "Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity."
+}
+
+variable "workload_vulnerability_mode" {
+  description = "(beta) Vulnerability mode."
+  type        = string
+  default     = ""
+}
+
+variable "workload_config_audit_mode" {
+  description = "(beta) Workload config audit mode."
+  type        = string
+  default     = "DISABLED"
+}
+
+variable "deletion_protection" {
+  type        = bool
+  description = "Whether or not to allow Terraform to destroy the cluster."
+  default     = true
+}
+
+variable "enable_confidential_nodes" {
+  type        = bool
+  description = "An optional flag to enable confidential node config."
+  default     = false
 }

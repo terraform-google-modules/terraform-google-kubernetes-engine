@@ -38,7 +38,9 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                  = "../../modules/beta-private-cluster-update-variant"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster-update-variant"
+  version = "~> 40.0"
+
   project_id              = var.project_id
   name                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
   regional                = false
@@ -53,6 +55,7 @@ module "gke" {
   enable_private_endpoint = true
   enable_private_nodes    = true
   master_ipv4_cidr_block  = "172.16.0.0/28"
+  deletion_protection     = false
 
   master_authorized_networks = [
     {
@@ -133,5 +136,13 @@ module "gke" {
       "pool-01-example",
     ]
     pool-02 = []
+  }
+
+  cluster_autoscaling = {
+    enabled             = true
+    autoscaling_profile = "OPTIMIZE_UTILIZATION"
+    gpu_resources       = []
+    auto_repair         = true
+    auto_upgrade        = true
   }
 }

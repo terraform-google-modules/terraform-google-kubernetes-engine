@@ -52,6 +52,11 @@ output "endpoint" {
   value       = module.gke.endpoint
 }
 
+output "endpoint_dns" {
+  description = "Cluster endpoint DNS"
+  value       = module.gke.endpoint_dns
+}
+
 output "min_master_version" {
   description = "Minimum master kubernetes version"
   value       = module.gke.min_master_version
@@ -121,4 +126,9 @@ output "master_ipv4_cidr_block" {
 output "peering_name" {
   description = "The name of the peering between this cluster and the Google owned VPC."
   value       = module.gke.peering_name
+}
+
+output "enable_mesh_certificates" {
+  description = "Mesh certificate configuration value"
+  value       = var.enable_mesh_certificates
 }

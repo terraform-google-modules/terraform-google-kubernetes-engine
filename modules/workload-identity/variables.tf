@@ -84,6 +84,12 @@ variable "automount_service_account_token" {
   default     = false
 }
 
+variable "image_pull_secrets" {
+  description = "A list of references to secrets in the same namespace to use for pulling any images in pods that reference this Service Account"
+  type        = list(string)
+  default     = []
+}
+
 variable "roles" {
   description = "A list of roles to be added to the created service account"
   type        = list(string)
@@ -112,4 +118,34 @@ variable "additional_projects" {
   description = "A list of roles to be added to the created service account for additional projects"
   type        = map(list(string))
   default     = {}
+}
+
+variable "gcp_sa_display_name" {
+  description = "The Google service account display name; if null, a default string will be used"
+  type        = string
+  nullable    = true
+  default     = null
+
+  validation {
+    condition     = var.gcp_sa_display_name == null ? true : length(var.gcp_sa_display_name) <= 100
+    error_message = "The Google service account display name must be at most 100 characters"
+  }
+}
+
+variable "gcp_sa_description" {
+  description = "The Service Google service account desciption; if null, will be left out"
+  type        = string
+  nullable    = true
+  default     = null
+
+  validation {
+    condition     = var.gcp_sa_description == null ? true : length(var.gcp_sa_description) <= 256
+    error_message = "The Google service account description must be at most 256 characters"
+  }
+}
+
+variable "gcp_sa_create_ignore_already_exists" {
+  description = "If set to true, skip service account creation if a service account with the same email already exists."
+  type        = bool
+  default     = null
 }

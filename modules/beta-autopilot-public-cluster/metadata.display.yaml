@@ -1,0 +1,333 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-kubernetes-engine-beta-autopilot-public-cluster-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Terraform Kubernetes Engine Module
+    source:
+      repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
+      sourceType: git
+      dir: /modules/beta-autopilot-public-cluster
+  ui:
+    input:
+      variables:
+        add_cluster_firewall_rules:
+          name: add_cluster_firewall_rules
+          title: Add Cluster Firewall Rules
+        add_master_webhook_firewall_rules:
+          name: add_master_webhook_firewall_rules
+          title: Add Master Webhook Firewall Rules
+        add_shadow_firewall_rules:
+          name: add_shadow_firewall_rules
+          title: Add Shadow Firewall Rules
+        additional_ip_range_pods:
+          name: additional_ip_range_pods
+          title: Additional Ip Range Pods
+        additional_ip_ranges_config:
+          name: additional_ip_ranges_config
+          title: Additional Ip Ranges Config
+        additional_pod_ranges_config:
+          name: additional_pod_ranges_config
+          title: Additional Pod Ranges Config
+        allow_net_admin:
+          name: allow_net_admin
+          title: Allow Net Admin
+        anonymous_authentication_config_mode:
+          name: anonymous_authentication_config_mode
+          title: Anonymous Authentication Config Mode
+        authenticator_security_group:
+          name: authenticator_security_group
+          title: Authenticator Security Group
+        boot_disk_kms_key:
+          name: boot_disk_kms_key
+          title: Boot Disk Kms Key
+        cluster_ipv4_cidr:
+          name: cluster_ipv4_cidr
+          title: Cluster Ipv4 Cidr
+        cluster_resource_labels:
+          name: cluster_resource_labels
+          title: Cluster Resource Labels
+        configure_ip_masq:
+          name: configure_ip_masq
+          title: Configure Ip Masq
+        create_service_account:
+          name: create_service_account
+          title: Create Service Account
+        database_encryption:
+          name: database_encryption
+          title: Database Encryption
+        default_compute_class_enabled:
+          name: default_compute_class_enabled
+          title: Default Compute Class Enabled
+        deletion_protection:
+          name: deletion_protection
+          title: Deletion Protection
+        description:
+          name: description
+          title: Description
+        disable_default_snat:
+          name: disable_default_snat
+          title: Disable Default Snat
+        disable_l4_lb_firewall_reconciliation:
+          name: disable_l4_lb_firewall_reconciliation
+          title: Disable L4 Lb Firewall Reconciliation
+        dns_allow_external_traffic:
+          name: dns_allow_external_traffic
+          title: Dns Allow External Traffic
+        dns_cache:
+          name: dns_cache
+          title: Dns Cache
+        enable_binary_authorization:
+          name: enable_binary_authorization
+          title: Enable Binary Authorization
+        enable_cilium_clusterwide_network_policy:
+          name: enable_cilium_clusterwide_network_policy
+          title: Enable Cilium Clusterwide Network Policy
+        enable_confidential_nodes:
+          name: enable_confidential_nodes
+          title: Enable Confidential Nodes
+        enable_cost_allocation:
+          name: enable_cost_allocation
+          title: Enable Cost Allocation
+        enable_fqdn_network_policy:
+          name: enable_fqdn_network_policy
+          title: Enable Fqdn Network Policy
+        enable_k8s_beta_apis:
+          name: enable_k8s_beta_apis
+          title: Enable K8s Beta Apis
+        enable_l4_ilb_subsetting:
+          name: enable_l4_ilb_subsetting
+          title: Enable L4 Ilb Subsetting
+        enable_legacy_lustre_port:
+          name: enable_legacy_lustre_port
+          title: Enable Legacy Lustre Port
+        enable_multi_networking:
+          name: enable_multi_networking
+          title: Enable Multi Networking
+        enable_network_egress_export:
+          name: enable_network_egress_export
+          title: Enable Network Egress Export
+        enable_resource_consumption_export:
+          name: enable_resource_consumption_export
+          title: Enable Resource Consumption Export
+        enable_secret_manager_addon:
+          name: enable_secret_manager_addon
+          title: Enable Secret Manager Addon
+        enable_tpu:
+          name: enable_tpu
+          title: Enable Tpu
+        enable_vertical_pod_autoscaling:
+          name: enable_vertical_pod_autoscaling
+          title: Enable Vertical Pod Autoscaling
+        enterprise_config:
+          name: enterprise_config
+          title: Enterprise Config
+        filestore_csi_driver:
+          name: filestore_csi_driver
+          title: Filestore Csi Driver
+        firewall_inbound_ports:
+          name: firewall_inbound_ports
+          title: Firewall Inbound Ports
+        firewall_priority:
+          name: firewall_priority
+          title: Firewall Priority
+        fleet_project:
+          name: fleet_project
+          title: Fleet Project
+        fleet_project_grant_service_agent:
+          name: fleet_project_grant_service_agent
+          title: Fleet Project Grant Service Agent
+        gateway_api_channel:
+          name: gateway_api_channel
+          title: Gateway Api Channel
+        gcp_public_cidrs_access_enabled:
+          name: gcp_public_cidrs_access_enabled
+          title: Gcp Public Cidrs Access Enabled
+        gke_auto_upgrade_config_patch_mode:
+          name: gke_auto_upgrade_config_patch_mode
+          title: Gke Auto Upgrade Config Patch Mode
+        gke_backup_agent_config:
+          name: gke_backup_agent_config
+          title: Gke Backup Agent Config
+        grant_registry_access:
+          name: grant_registry_access
+          title: Grant Registry Access
+        horizontal_pod_autoscaling:
+          name: horizontal_pod_autoscaling
+          title: Horizontal Pod Autoscaling
+        hpa_profile:
+          name: hpa_profile
+          title: Hpa Profile
+        http_load_balancing:
+          name: http_load_balancing
+          title: Http Load Balancing
+        identity_namespace:
+          name: identity_namespace
+          title: Identity Namespace
+        in_transit_encryption_config:
+          name: in_transit_encryption_config
+          title: In Transit Encryption Config
+        insecure_kubelet_readonly_port_enabled:
+          name: insecure_kubelet_readonly_port_enabled
+          title: Insecure Kubelet Readonly Port Enabled
+        ip_endpoints_enabled:
+          name: ip_endpoints_enabled
+          title: Ip Endpoints Enabled
+        ip_masq_link_local:
+          name: ip_masq_link_local
+          title: Ip Masq Link Local
+        ip_masq_resync_interval:
+          name: ip_masq_resync_interval
+          title: Ip Masq Resync Interval
+        ip_range_pods:
+          name: ip_range_pods
+          title: Ip Range Pods
+        ip_range_services:
+          name: ip_range_services
+          title: Ip Range Services
+        issue_client_certificate:
+          name: issue_client_certificate
+          title: Issue Client Certificate
+        kubernetes_version:
+          name: kubernetes_version
+          title: Kubernetes Version
+        logging_enabled_components:
+          name: logging_enabled_components
+          title: Logging Enabled Components
+        lustre_csi_driver:
+          name: lustre_csi_driver
+          title: Lustre Csi Driver
+        maintenance_end_time:
+          name: maintenance_end_time
+          title: Maintenance End Time
+        maintenance_exclusions:
+          name: maintenance_exclusions
+          title: Maintenance Exclusions
+        maintenance_recurrence:
+          name: maintenance_recurrence
+          title: Maintenance Recurrence
+        maintenance_start_time:
+          name: maintenance_start_time
+          title: Maintenance Start Time
+        master_authorized_networks:
+          name: master_authorized_networks
+          title: Master Authorized Networks
+        monitoring_enabled_components:
+          name: monitoring_enabled_components
+          title: Monitoring Enabled Components
+        monitoring_metric_writer_role:
+          name: monitoring_metric_writer_role
+          title: Monitoring Metric Writer Role
+        name:
+          name: name
+          title: Name
+        network:
+          name: network
+          title: Network
+        network_project_id:
+          name: network_project_id
+          title: Network Project Id
+        network_tags:
+          name: network_tags
+          title: Network Tags
+        node_pools_cgroup_mode:
+          name: node_pools_cgroup_mode
+          title: Node Pools Cgroup Mode
+        non_masquerade_cidrs:
+          name: non_masquerade_cidrs
+          title: Non Masquerade Cidrs
+        notification_config_topic:
+          name: notification_config_topic
+          title: Notification Config Topic
+        notification_filter_event_type:
+          name: notification_filter_event_type
+          title: Notification Filter Event Type
+        project_id:
+          name: project_id
+          title: Project Id
+        ray_operator_config:
+          name: ray_operator_config
+          title: Ray Operator Config
+        rbac_binding_config:
+          name: rbac_binding_config
+          title: Rbac Binding Config
+        region:
+          name: region
+          title: Region
+        regional:
+          name: regional
+          title: Regional
+        registry_project_ids:
+          name: registry_project_ids
+          title: Registry Project Ids
+        release_channel:
+          name: release_channel
+          title: Release Channel
+        resource_manager_tags:
+          name: resource_manager_tags
+          title: Resource Manager Tags
+        resource_usage_export_dataset_id:
+          name: resource_usage_export_dataset_id
+          title: Resource Usage Export Dataset Id
+        security_posture_mode:
+          name: security_posture_mode
+          title: Security Posture Mode
+        security_posture_vulnerability_mode:
+          name: security_posture_vulnerability_mode
+          title: Security Posture Vulnerability Mode
+        service_account:
+          name: service_account
+          title: Service Account
+        service_account_name:
+          name: service_account_name
+          title: Service Account Name
+        service_external_ips:
+          name: service_external_ips
+          title: Service External Ips
+        shadow_firewall_rules_log_config:
+          name: shadow_firewall_rules_log_config
+          title: Shadow Firewall Rules Log Config
+        shadow_firewall_rules_priority:
+          name: shadow_firewall_rules_priority
+          title: Shadow Firewall Rules Priority
+        stack_type:
+          name: stack_type
+          title: Stack Type
+        stateful_ha:
+          name: stateful_ha
+          title: Stateful Ha
+        subnetwork:
+          name: subnetwork
+          title: Subnetwork
+        timeouts:
+          name: timeouts
+          title: Timeouts
+        total_egress_bandwidth_tier:
+          name: total_egress_bandwidth_tier
+          title: Total Egress Bandwidth Tier
+        workload_config_audit_mode:
+          name: workload_config_audit_mode
+          title: Workload Config Audit Mode
+        workload_vulnerability_mode:
+          name: workload_vulnerability_mode
+          title: Workload Vulnerability Mode
+        zones:
+          name: zones
+          title: Zones

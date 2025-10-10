@@ -37,6 +37,9 @@ Session.vim
 # tf lock file
 .terraform.lock.hcl
 
+# Top level lock used by the test tooling
+/.terraform.lock
+
 # Crash log files
 crash.log
 
@@ -47,7 +50,8 @@ crash.log
 **/.kitchen.local.yml
 **/Gemfile.lock
 
-test/fixtures/shared/terraform.tfvars
+test/fixtures/**/terraform.tfvars
+modules/**/terraform.tfvars
 
 test/integration/gcloud/config.sh
 test/integration/tmp

@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2022-2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@
 locals {
   service_account_list = compact(
     concat(
-      google_service_account.cluster_service_account.*.email,
+      google_service_account.cluster_service_account[*].email,
       ["dummy"],
     ),
   )
-  service_account_default_name = "tf-gke-${substr(var.name, 0, min(15, length(var.name)))}-${random_string.cluster_service_account_suffix.result}"
+  service_account_default_name = var.create_service_account && var.service_account_name == "" ? "tf-gke-${substr(var.name, 0, min(15, length(var.name)))}-${random_string.cluster_service_account_suffix[0].result}" : null
 
   // if user set var.service_account it will be used even if var.create_service_account==true, so service account will be created but not used
   service_account = (var.service_account == "" || var.service_account == "create") && var.create_service_account ? local.service_account_list[0] : var.service_account
@@ -32,6 +32,7 @@ locals {
 }
 
 resource "random_string" "cluster_service_account_suffix" {
+  count   = var.create_service_account && var.service_account_name == "" ? 1 : 0
   upper   = false
   lower   = true
   special = false
@@ -45,44 +46,60 @@ resource "google_service_account" "cluster_service_account" {
   display_name = "Terraform-managed service account for cluster ${var.name}"
 }
 
-resource "google_project_iam_member" "cluster_service_account-log_writer" {
+resource "google_project_iam_member" "cluster_service_account_node_service_account" {
   count   = var.create_service_account ? 1 : 0
   project = google_service_account.cluster_service_account[0].project
-  role    = "roles/logging.logWriter"
+  role    = "roles/container.defaultNodeServiceAccount"
   member  = google_service_account.cluster_service_account[0].member
 }
 
-resource "google_project_iam_member" "cluster_service_account-metric_writer" {
+resource "google_project_iam_member" "cluster_service_account_metric_writer" {
   count   = var.create_service_account ? 1 : 0
-  project = google_project_iam_member.cluster_service_account-log_writer[0].project
-  role    = "roles/monitoring.metricWriter"
+  project = google_service_account.cluster_service_account[0].project
+  role    = var.monitoring_metric_writer_role
   member  = google_service_account.cluster_service_account[0].member
 }
 
-resource "google_project_iam_member" "cluster_service_account-monitoring_viewer" {
+resource "google_project_iam_member" "cluster_service_account_resource_metadata_writer" {
   count   = var.create_service_account ? 1 : 0
-  project = google_project_iam_member.cluster_service_account-metric_writer[0].project
-  role    = "roles/monitoring.viewer"
-  member  = google_service_account.cluster_service_account[0].member
-}
-
-resource "google_project_iam_member" "cluster_service_account-resourceMetadata-writer" {
-  count   = var.create_service_account ? 1 : 0
-  project = google_project_iam_member.cluster_service_account-monitoring_viewer[0].project
+  project = google_service_account.cluster_service_account[0].project
   role    = "roles/stackdriver.resourceMetadata.writer"
   member  = google_service_account.cluster_service_account[0].member
 }
 
-resource "google_project_iam_member" "cluster_service_account-gcr" {
+resource "google_project_iam_member" "cluster_service_account_gcr" {
   for_each = var.create_service_account && var.grant_registry_access ? toset(local.registry_projects_list) : []
   project  = each.key
   role     = "roles/storage.objectViewer"
   member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
 }
 
-resource "google_project_iam_member" "cluster_service_account-artifact-registry" {
+resource "google_project_iam_member" "cluster_service_account_artifact_registry" {
   for_each = var.create_service_account && var.grant_registry_access ? toset(local.registry_projects_list) : []
   project  = each.key
   role     = "roles/artifactregistry.reader"
   member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
 }
+
+resource "google_project_iam_member" "cluster_service_account_service_usage_consumer" {
+  for_each = var.create_service_account && var.grant_registry_access {% if autopilot_cluster != true %}&& var.enable_gcfs {% endif %}? toset(local.registry_projects_list) : []
+  project  = each.key
+  role     = "roles/serviceusage.serviceUsageConsumer"
+  member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
+}
+{% if beta_cluster %}
+
+resource "google_project_service_identity" "fleet_project" {
+  count    = var.fleet_project_grant_service_agent ? 1 : 0
+  provider = google-beta
+  project  = var.fleet_project
+  service  = "gkehub.googleapis.com"
+}
+
+resource "google_project_iam_member" "service_agent" {
+  for_each = var.fleet_project_grant_service_agent ? toset(["roles/gkehub.serviceAgent", "roles/gkehub.crossProjectServiceAgent"]) : []
+  project  = var.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_project_service_identity.fleet_project[0].email}"
+}
+{% endif %}
