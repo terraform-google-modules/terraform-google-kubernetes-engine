@@ -134,17 +134,20 @@ spec:
         description: Description of the cluster.
         varType: string
       - name: project_id
-        description: The ID of the project in which the resource belongs. If it is not provided, the provider project id is used.
+        description: The ID of the project in which the resource belongs.
         varType: string
+        required: true
       - name: location
         description: The location (region or zone) in which the cluster master will be created, as well as the default node location. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region, and with default node locations in those zones as well.
         varType: string
       - name: network
         description: The name or self_link of the Google Compute Engine network to which the cluster is connected. For Shared VPC, this network must be in the host project.
         varType: string
+        required: true
       - name: subnetwork
         description: The name or self_link of the Google Compute Engine subnetwork in which the cluster's instances are launched.
         varType: string
+        required: true
       - name: node_locations
         description: The list of zones in which the cluster's nodes are located. Nodes are created in the region's zones by default. This list must be a subset of the compute/zones in the region to which the cluster belongs. This field is optional for Zonal clusters and required for Regional clusters.
         varType: list(string)
@@ -359,13 +362,14 @@ spec:
         description: The desired configuration options for master authorized networks.
         varType: |-
           object({
-              cidr_blocks = optional(list(object({
-                display_name = optional(string)
-                cidr_block   = optional(string)
-              })))
+              cidr_blocks = list(object({
+                display_name = string
+                cidr_block   = string
+              }))
               gcp_public_cidrs_access_enabled      = optional(bool)
               private_endpoint_enforcement_enabled = optional(bool)
             })
+        required: true
       - name: min_master_version
         description: The minimum version of the master. GKE will auto-update the master to new versions, so this does not guarantee the master version--use the read-only master_version field to obtain a current version. If unset, the server's default version will be used.
         varType: string
@@ -861,8 +865,9 @@ spec:
         description: Configuration for the use of Kubernetes Service Accounts in GCP IAM policies.
         varType: |-
           object({
-              workload_pool = optional(string)
+              workload_pool = string
             })
+        required: true
       - name: identity_service_config
         description: Whether to enable the Identity Service component. It is disabled by default. Set enabled=true to enable.
         varType: |-

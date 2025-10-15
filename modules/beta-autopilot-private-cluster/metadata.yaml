@@ -404,6 +404,9 @@ spec:
       - name: in_transit_encryption_config
         description: Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`.
         varType: string
+      - name: anonymous_authentication_config_mode
+        description: Allows users to restrict or enable anonymous access to the cluster. Valid values are `ENABLED` and `LIMITED`.
+        varType: string
       - name: total_egress_bandwidth_tier
         description: Specifies the total network bandwidth tier for NodePools in the cluster. Valid values are `TIER_UNSPECIFIED` and `TIER_1`. Defaults to `TIER_UNSPECIFIED`.
         varType: string
@@ -452,6 +455,9 @@ spec:
         defaultValue:
           - key_name: ""
             state: DECRYPTED
+      - name: default_compute_class_enabled
+        description: Enable Spot VMs as the default compute class for Node Auto-Provisioning
+        varType: bool
       - name: enable_binary_authorization
         description: Enable BinAuthZ Admission controller
         varType: bool
@@ -603,9 +609,9 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6.47.0, < 8"
+        version: ">= 7.0.0, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6.47.0, < 8"
+        version: ">= 7.0.0, < 8"
       - source: hashicorp/kubernetes
         version: ~> 2.10
       - source: hashicorp/random

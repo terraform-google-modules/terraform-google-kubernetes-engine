@@ -30,7 +30,7 @@ data "google_compute_subnetwork" "subnetwork" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
-  version = "~> 39.0"
+  version = "~> 40.0"
 
   ip_range_pods     = var.ip_range_pods
   ip_range_services = var.ip_range_services
