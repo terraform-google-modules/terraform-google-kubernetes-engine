@@ -42,6 +42,9 @@ var (
 
 		// Internal errors can be retried
 		".*Error code 13, message: an internal error has occurred": "Internal error.",
+
+		// Incompatible operation in progress
+		".*Error 400: Cluster is running incompatible operation.*": "Incompatible operation.",
 	}
 
 	ClusterAlwaysExemptPaths = []string{"nodePools"} // node pools are separately checked by name
