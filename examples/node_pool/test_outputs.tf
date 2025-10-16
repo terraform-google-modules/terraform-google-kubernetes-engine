@@ -52,6 +52,11 @@ output "ip_range_services" {
   value       = var.ip_range_services
 }
 
+output "additional_ip_range_pods" {
+  description = "The secondary IP range used for pods in the additional range"
+  value       = var.additional_ip_pod_range
+}
+
 output "zones" {
   description = "List of zones in which the cluster resides"
   value       = module.gke.zones
