@@ -68,7 +68,7 @@
     "useIpAliases": true,
     "additionalIpRangesConfigs": [
       {
-        "subnetwork": "projects/PROJECT_ID/regions/europe-west1/subnetworks/cft-gke-test-2-RANDOM_STRING",
+        "subnetwork": "projects/PROJECT_ID/regions/us-west1/subnetworks/cft-gke-test-2-RANDOM_STRING",
         "podIpv4RangeNames": ["test2"]
       }
     ]

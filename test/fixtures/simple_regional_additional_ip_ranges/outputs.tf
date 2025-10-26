@@ -85,5 +85,5 @@ output "registry_project_ids" {
 
 output "additional_ip_range_pods" {
   description = "The secondary IP range used for pods in the additional range"
-  value       = google_compute_subnetwork.main.secondary_ip_range[2].range_name
+  value       = google_compute_subnetwork.secondary.secondary_ip_range[0].range_name
 }

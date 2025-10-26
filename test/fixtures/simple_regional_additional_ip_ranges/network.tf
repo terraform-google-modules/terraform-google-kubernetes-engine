@@ -49,7 +49,7 @@ resource "google_compute_subnetwork" "main" {
 resource "google_compute_subnetwork" "secondary" {
   name          = "cft-gke-test-2-${random_string.suffix.result}"
   ip_cidr_range = "10.1.0.0/17"
-  region        = "europe-west4"
+  region        = "us-west1"
   network       = google_compute_network.main.self_link
 
   secondary_ip_range {

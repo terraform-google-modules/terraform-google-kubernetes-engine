@@ -15,7 +15,7 @@
  */
 
 locals {
-  cluster_type = "simple-regional"
+  cluster_type = "simple-regional-add-ip"
 }
 
 data "google_client_config" "default" {}
