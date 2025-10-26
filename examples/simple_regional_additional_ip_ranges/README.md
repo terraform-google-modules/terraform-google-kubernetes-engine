@@ -7,9 +7,10 @@ This example illustrates how to create a simple cluster.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| additional\_ip\_pod\_range | The secondary ip range to use for pods in the additional range | `any` | n/a | yes |
+| additional\_ip\_pod\_range\_subnetwork | The subnetwork to host the additional pod range in | `any` | n/a | yes |
 | cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | `any` | n/a | yes |
-| enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
 | ip\_range\_pods | The secondary ip range to use for pods | `any` | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for services | `any` | n/a | yes |
 | network | The VPC network to host the cluster in | `any` | n/a | yes |

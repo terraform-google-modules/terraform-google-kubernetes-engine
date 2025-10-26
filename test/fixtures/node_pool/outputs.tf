@@ -49,11 +49,6 @@ output "ip_range_services" {
   value       = google_compute_subnetwork.main.secondary_ip_range[1].range_name
 }
 
-output "additional_ip_range_pods" {
-  description = "The secondary IP range used for pods in the additional range"
-  value       = google_compute_subnetwork.main.secondary_ip_range[2].range_name
-}
-
 output "zones" {
   description = "List of zones in which the cluster resides"
   value       = module.example.zones

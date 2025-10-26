@@ -7,8 +7,6 @@ This example illustrates how to create a cluster with multiple custom node-pool 
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| additional\_ip\_pod\_range | The secondary ip range to use for pods in the additional range | `any` | n/a | yes |
-| additional\_ip\_pod\_range\_subnetwork | The subnetwork to host the additional pod range in | `any` | n/a | yes |
 | cluster\_autoscaling | Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling) | <pre>object({<br>    enabled             = bool<br>    autoscaling_profile = string<br>    min_cpu_cores       = number<br>    max_cpu_cores       = number<br>    min_memory_gb       = number<br>    max_memory_gb       = number<br>    gpu_resources = list(object({<br>      resource_type = string<br>      minimum       = number<br>      maximum       = number<br>    }))<br>    auto_repair  = bool<br>    auto_upgrade = bool<br>  })</pre> | <pre>{<br>  "auto_repair": true,<br>  "auto_upgrade": true,<br>  "autoscaling_profile": "BALANCED",<br>  "enabled": false,<br>  "gpu_resources": [],<br>  "max_cpu_cores": 0,<br>  "max_memory_gb": 0,<br>  "min_cpu_cores": 0,<br>  "min_memory_gb": 0<br>}</pre> | no |
 | cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | `any` | n/a | yes |
@@ -24,7 +22,6 @@ This example illustrates how to create a cluster with multiple custom node-pool 
 
 | Name | Description |
 |------|-------------|
-| additional\_ip\_range\_pods | The secondary IP range used for pods in the additional range |
 | ca\_certificate | n/a |
 | client\_token | n/a |
 | cluster\_name | Cluster name |
