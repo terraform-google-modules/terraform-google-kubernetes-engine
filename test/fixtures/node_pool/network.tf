@@ -50,4 +50,3 @@ resource "google_compute_subnetwork" "main" {
     ip_cidr_range = "172.16.0.0/18"
   }
 }
-  
