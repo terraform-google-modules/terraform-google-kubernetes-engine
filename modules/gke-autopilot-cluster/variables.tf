@@ -201,7 +201,7 @@ variable "master_auth" {
 }
 
 variable "master_authorized_networks_config" {
-  description = "The desired configuration options for master authorized networks."
+  description = "The desired configuration options for master authorized networks. Cidr Block must follow [Cidr notation](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation)"
   type = object({
     cidr_blocks = list(object({
       display_name = string
