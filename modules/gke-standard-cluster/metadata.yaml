@@ -359,7 +359,7 @@ spec:
               }))
             })
       - name: master_authorized_networks_config
-        description: The desired configuration options for master authorized networks.
+        description: The desired configuration options for master authorized networks. Cidr Block must follow [Cidr notation](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation)
         varType: |-
           object({
               cidr_blocks = list(object({
@@ -1013,9 +1013,9 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/iam.serviceAccountUser
           - roles/compute.admin
           - roles/container.admin
+          - roles/iam.serviceAccountUser
     services:
       - compute.googleapis.com
       - container.googleapis.com
