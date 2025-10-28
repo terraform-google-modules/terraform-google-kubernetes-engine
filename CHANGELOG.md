@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [41.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.0...v41.0.1) (2025-10-28)
+
+
+### Bug Fixes
+
+* Regex for network, subnetwork, CIDR block and Workload Pool in standard and autopilot cluster ([#2479](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2479)) ([4f47d6a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4f47d6a4b258300c64c1ae45191ec1b3b96d1ad2))
+
 ## [41.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v40.0.0...v41.0.0) (2025-10-16)
 
 
