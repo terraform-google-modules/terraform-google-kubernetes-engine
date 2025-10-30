@@ -49,6 +49,9 @@ spec:
         allow_net_admin:
           name: allow_net_admin
           title: Allow Net Admin
+        anonymous_authentication_config_mode:
+          name: anonymous_authentication_config_mode
+          title: Anonymous Authentication Config Mode
         authenticator_security_group:
           name: authenticator_security_group
           title: Authenticator Security Group
@@ -70,6 +73,9 @@ spec:
         database_encryption:
           name: database_encryption
           title: Database Encryption
+        default_compute_class_enabled:
+          name: default_compute_class_enabled
+          title: Default Compute Class Enabled
         deletion_protection:
           name: deletion_protection
           title: Deletion Protection
@@ -274,6 +280,9 @@ spec:
         release_channel:
           name: release_channel
           title: Release Channel
+        resource_manager_tags:
+          name: resource_manager_tags
+          title: Resource Manager Tags
         resource_usage_export_dataset_id:
           name: resource_usage_export_dataset_id
           title: Resource Usage Export Dataset Id

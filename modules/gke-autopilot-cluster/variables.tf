@@ -27,7 +27,7 @@ variable "description" {
 }
 
 variable "project_id" {
-  description = "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+  description = "The ID of the project in which the resource belongs."
   type        = string
 }
 
@@ -201,16 +201,15 @@ variable "master_auth" {
 }
 
 variable "master_authorized_networks_config" {
-  description = "The desired configuration options for master authorized networks."
+  description = "The desired configuration options for master authorized networks. Cidr Block must follow [Cidr notation](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation)"
   type = object({
-    cidr_blocks = optional(list(object({
-      display_name = optional(string)
-      cidr_block   = optional(string)
-    })))
+    cidr_blocks = list(object({
+      display_name = string
+      cidr_block   = string
+    }))
     gcp_public_cidrs_access_enabled      = optional(bool)
     private_endpoint_enforcement_enabled = optional(bool)
   })
-  default = null
 }
 
 variable "min_master_version" {
@@ -394,9 +393,8 @@ variable "resource_usage_export_config" {
 variable "workload_identity_config" {
   description = "Configuration for the use of Kubernetes Service Accounts in GCP IAM policies."
   type = object({
-    workload_pool = optional(string)
+    workload_pool = string
   })
-  default = null
 }
 
 variable "identity_service_config" {

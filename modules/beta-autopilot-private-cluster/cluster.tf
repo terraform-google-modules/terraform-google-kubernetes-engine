@@ -103,6 +103,7 @@ resource "google_container_cluster" "primary" {
   }
 
   cluster_autoscaling {
+    default_compute_class_enabled = var.default_compute_class_enabled
     dynamic "auto_provisioning_defaults" {
       for_each = (var.create_service_account || var.service_account != "" || var.boot_disk_kms_key != null) ? [1] : []
 
@@ -132,6 +133,13 @@ resource "google_container_cluster" "primary" {
   enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 
   in_transit_encryption_config = var.in_transit_encryption_config
+
+  dynamic "anonymous_authentication_config" {
+    for_each = var.anonymous_authentication_config_mode != null ? [1] : []
+    content {
+      mode = var.anonymous_authentication_config_mode
+    }
+  }
 
   dynamic "network_performance_config" {
     for_each = var.total_egress_bandwidth_tier != null ? [1] : []
@@ -185,7 +193,7 @@ resource "google_container_cluster" "primary" {
     }
   }
   dynamic "node_pool_auto_config" {
-    for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null || var.node_pools_cgroup_mode != null ? [1] : []
+    for_each = length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules || var.insecure_kubelet_readonly_port_enabled != null || var.node_pools_cgroup_mode != null ? [1] : []
     content {
       dynamic "network_tags" {
         for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? [1] : []
@@ -193,6 +201,8 @@ resource "google_container_cluster" "primary" {
           tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : length(var.network_tags) > 0 ? var.network_tags : null
         }
       }
+
+      resource_manager_tags = length(var.resource_manager_tags) > 0 ? var.resource_manager_tags : null
 
       dynamic "node_kubelet_config" {
         for_each = var.insecure_kubelet_readonly_port_enabled != null ? [1] : []

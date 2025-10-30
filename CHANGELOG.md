@@ -6,6 +6,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [41.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.0...v41.0.1) (2025-10-28)
+
+
+### Bug Fixes
+
+* Regex for network, subnetwork, CIDR block and Workload Pool in standard and autopilot cluster ([#2479](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2479)) ([4f47d6a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4f47d6a4b258300c64c1ae45191ec1b3b96d1ad2))
+
+## [41.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v40.0.0...v41.0.0) (2025-10-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=7.0:** adding default_compute_class_enabled ([#2434](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2434))
+
+### Features
+
+* add support for anonymous_authentication_config ([#2436](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2436)) ([f27a2dd](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f27a2ddab530a5952a3e3466174bac20623a5f71))
+* add support for NAP/autopilot resource manager tags ([#2447](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2447)) ([3a1945f](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3a1945f75479af7e694ec5f1a32f5a61265f2e44))
+* **TPG>=7.0:** adding default_compute_class_enabled ([#2434](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2434)) ([b61584c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b61584c78076e6bf4dabdf5c2964f2ffcc6a9c77))
+
+
+### Bug Fixes
+
+* add required fields for GKE autopilot and standard cluster ([#2461](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2461)) ([a3da13d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a3da13d2dc773b574a1d7b71e406d0265a11d965))
+* syntax in main.tf for field cost_management_config ([#2466](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2466)) ([6a9b284](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6a9b28408b342cfc423320b02f10cc96b9dad51b))
+* updated description in nodepool field ([#2471](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2471)) ([f43ad46](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/f43ad4686ac68f58024b72c04e7d716c1af1a971))
+
+## [40.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v39.0.0...v40.0.0) (2025-09-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* properly implement additional_ip_ranges_config ([#2451](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2451))
+* **deps:** Update Terraform terraform-google-modules/gcloud/google to v4 ([#2446](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2446))
+
+### Bug Fixes
+
+* **deps:** Update Terraform terraform-google-modules/gcloud/google to v4 ([#2446](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2446)) ([d30964c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d30964c496f5b33acb81762edfc33d41653ebf61))
+* properly implement additional_ip_ranges_config ([#2451](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2451)) ([57c366a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/57c366a7de88a051a59e6a081b19e980cad899b9))
+
 ## [39.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v38.1.0...v39.0.0) (2025-09-15)
 
 

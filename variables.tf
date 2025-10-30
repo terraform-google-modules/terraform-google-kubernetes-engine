@@ -377,9 +377,15 @@ variable "node_pools_oauth_scopes" {
 }
 
 variable "network_tags" {
-  description = "(Optional) - List of network tags applied to auto-provisioned node pools."
+  description = "(Optional) - List of network tags applied to autopilot and auto-provisioned node pools."
   type        = list(string)
   default     = []
+}
+
+variable "resource_manager_tags" {
+  description = "(Optional) - List of resource manager tags applied to autopilot and auto-provisioned node pools. A maximum of 5 tags can be specified. Tags must be in one of these formats: \"tagKeys/{tag_key_id}\"=\"tagValues/{tag_value_id}\", \"{org_id}/{tag_key_name}\"=\"{tag_value_name}\", \"{project_id}/{tag_key_name}\"=\"{tag_value_name}\"."
+  type        = map(string)
+  default     = {}
 }
 
 variable "enable_k8s_beta_apis" {
@@ -625,6 +631,12 @@ variable "in_transit_encryption_config" {
   default     = null
 }
 
+variable "anonymous_authentication_config_mode" {
+  description = "Allows users to restrict or enable anonymous access to the cluster. Valid values are `ENABLED` and `LIMITED`."
+  type        = string
+  default     = null
+}
+
 variable "total_egress_bandwidth_tier" {
   type        = string
   description = "Specifies the total network bandwidth tier for NodePools in the cluster. Valid values are `TIER_UNSPECIFIED` and `TIER_1`. Defaults to `TIER_UNSPECIFIED`."
@@ -747,6 +759,13 @@ variable "enable_shielded_nodes" {
   type        = bool
   description = "Enable Shielded Nodes features on all nodes in this cluster"
   default     = true
+}
+
+
+variable "default_compute_class_enabled" {
+  type        = bool
+  description = "Enable Spot VMs as the default compute class for Node Auto-Provisioning"
+  default     = null
 }
 
 variable "enable_binary_authorization" {

@@ -128,7 +128,8 @@ resource "google_container_cluster" "primary" {
   monitoring_service = local.logmon_config_is_set ? null : var.monitoring_service
 
   cluster_autoscaling {
-    enabled = var.cluster_autoscaling.enabled
+    enabled                       = var.cluster_autoscaling.enabled
+    default_compute_class_enabled = var.default_compute_class_enabled
     dynamic "auto_provisioning_defaults" {
       for_each = var.cluster_autoscaling.enabled ? [1] : []
 
@@ -219,6 +220,13 @@ resource "google_container_cluster" "primary" {
 
   in_transit_encryption_config = var.in_transit_encryption_config
 
+  dynamic "anonymous_authentication_config" {
+    for_each = var.anonymous_authentication_config_mode != null ? [1] : []
+    content {
+      mode = var.anonymous_authentication_config_mode
+    }
+  }
+
   dynamic "network_performance_config" {
     for_each = var.total_egress_bandwidth_tier != null ? [1] : []
     content {
@@ -271,7 +279,7 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "node_pool_auto_config" {
-    for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode != null) ? [1] : []
+    for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode != null) ? [1] : []
     content {
       dynamic "network_tags" {
         for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
@@ -279,6 +287,8 @@ resource "google_container_cluster" "primary" {
           tags = var.add_cluster_firewall_rules ? (concat(var.network_tags, [local.cluster_network_tag])) : var.network_tags
         }
       }
+
+      resource_manager_tags = length(var.resource_manager_tags) > 0 ? var.resource_manager_tags : null
 
       dynamic "linux_node_config" {
         for_each = local.node_pools_cgroup_mode["all"] != "" ? [1] : []
