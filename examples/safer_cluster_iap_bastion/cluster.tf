@@ -16,7 +16,7 @@
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/safer-cluster"
-  version = "~> 38.0"
+  version = "~> 41.0"
 
   project_id              = module.enabled_google_apis.project_id
   name                    = var.cluster_name

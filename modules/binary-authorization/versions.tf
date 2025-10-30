@@ -28,6 +28,6 @@ terraform {
     }
   }
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:binary-authorization/v39.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:binary-authorization/v41.0.1"
   }
 }

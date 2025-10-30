@@ -80,7 +80,7 @@ module "gke-project-1" {
   activate_api_identities = [
     {
       api   = "container.googleapis.com"
-      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent"]
+      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent", "roles/resourcemanager.tagUser", "roles/resourcemanager.tagHoldAdmin"]
     },
   ]
 }

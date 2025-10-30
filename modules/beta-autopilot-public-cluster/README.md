@@ -71,14 +71,16 @@ Then perform the following commands on the root folder:
 | add\_master\_webhook\_firewall\_rules | Create master\_webhook firewall rules for ports defined in `firewall_inbound_ports` | `bool` | `false` | no |
 | add\_shadow\_firewall\_rules | Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled). | `bool` | `false` | no |
 | additional\_ip\_range\_pods | List of _names_ of the additional secondary subnet ip ranges to use for pods | `list(string)` | `[]` | no |
-| additional\_pod\_ranges\_config | the configuration for individual additional subnetworks attached to the cluster | `list(object({ subnetwork = string, pod_ipv4_range_names = list(string) }))` | `[]` | no |
+| additional\_ip\_ranges\_config | the configuration for individual additional subnetworks attached to the cluster | `list(object({ subnetwork = string, pod_ipv4_range_names = list(string) }))` | `[]` | no |
 | allow\_net\_admin | (Optional) Enable NET\_ADMIN for the cluster. | `bool` | `null` | no |
+| anonymous\_authentication\_config\_mode | Allows users to restrict or enable anonymous access to the cluster. Valid values are `ENABLED` and `LIMITED`. | `string` | `null` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
 | boot\_disk\_kms\_key | The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool, if not overridden in `node_pools`. This should be of the form projects/[KEY\_PROJECT\_ID]/locations/[LOCATION]/keyRings/[RING\_NAME]/cryptoKeys/[KEY\_NAME]. For more information about protecting resources with Cloud KMS Keys please see: https://cloud.google.com/compute/docs/disks/customer-managed-encryption | `string` | `null` | no |
 | cluster\_ipv4\_cidr | The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR. | `string` | `null` | no |
 | cluster\_resource\_labels | The GCE resource labels (a map of key/value pairs) to be applied to the cluster | `map(string)` | `{}` | no |
 | create\_service\_account | Defines if service account specified to run nodes should be created. | `bool` | `true` | no |
 | database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key\_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key\_name is the name of a CloudKMS key. | `list(object({ state = string, key_name = string }))` | <pre>[<br>  {<br>    "key_name": "",<br>    "state": "DECRYPTED"<br>  }<br>]</pre> | no |
+| default\_compute\_class\_enabled | Enable Spot VMs as the default compute class for Node Auto-Provisioning | `bool` | `null` | no |
 | deletion\_protection | Whether or not to allow Terraform to destroy the cluster. | `bool` | `true` | no |
 | description | The description of the cluster | `string` | `""` | no |
 | disable\_default\_snat | Whether to disable the default SNAT to support the private use of public IP addresses | `bool` | `false` | no |
@@ -133,7 +135,7 @@ Then perform the following commands on the root folder:
 | name | The name of the cluster (required) | `string` | n/a | yes |
 | network | The VPC network to host the cluster in (required) | `string` | n/a | yes |
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | `string` | `""` | no |
-| network\_tags | (Optional) - List of network tags applied to auto-provisioned node pools. | `list(string)` | `[]` | no |
+| network\_tags | (Optional) - List of network tags applied to autopilot and auto-provisioned node pools. | `list(string)` | `[]` | no |
 | node\_pools\_cgroup\_mode | Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management. | `string` | `null` | no |
 | notification\_config\_topic | The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}. | `string` | `""` | no |
 | notification\_filter\_event\_type | Choose what type of notifications you want to receive. If no filters are applied, you'll receive all notification types. Can be used to filter what notifications are sent. Accepted values are UPGRADE\_AVAILABLE\_EVENT, UPGRADE\_EVENT, and SECURITY\_BULLETIN\_EVENT. | `list(string)` | `[]` | no |
@@ -144,6 +146,7 @@ Then perform the following commands on the root folder:
 | regional | Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!) | `bool` | `true` | no |
 | registry\_project\_ids | Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` and `artifactregsitry.reader` roles are assigned on these projects. | `list(string)` | `[]` | no |
 | release\_channel | The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`. | `string` | `"REGULAR"` | no |
+| resource\_manager\_tags | (Optional) - List of resource manager tags applied to autopilot and auto-provisioned node pools. A maximum of 5 tags can be specified. Tags must be in one of these formats: "tagKeys/{tag\_key\_id}"="tagValues/{tag\_value\_id}", "{org\_id}/{tag\_key\_name}"="{tag\_value\_name}", "{project\_id}/{tag\_key\_name}"="{tag\_value\_name}". | `map(string)` | `{}` | no |
 | resource\_usage\_export\_dataset\_id | The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export. | `string` | `""` | no |
 | security\_posture\_mode | Security posture mode. Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`. | `string` | `"DISABLED"` | no |
 | security\_posture\_vulnerability\_mode | Security posture vulnerability mode. Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`. Defaults to `VULNERABILITY_DISABLED`. | `string` | `"VULNERABILITY_DISABLED"` | no |

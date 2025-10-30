@@ -15,7 +15,7 @@
  */
 
 variable "cluster" {
-  description = "The cluster to create the node pool for. Cluster must be present in location provided for clusters. May be specified in the format projects/{{project_id}}/locations/{{location}}/clusters/{{cluster}} or as just the name of the cluster."
+  description = "The cluster to create the node pool for. Cluster must be present in location provided for clusters. May be specified in the format projects/{project_id}/locations/{location}/clusters/{cluster} or as just the name of the cluster."
   type        = string
 }
 

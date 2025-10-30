@@ -26,9 +26,23 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(module.gke.ca_certificate)
 }
 
+resource "google_tags_tag_key" "key" {
+  parent     = "projects/${var.project_id}"
+  short_name = "key${var.cluster_name_suffix}"
+  purpose    = "GCE_FIREWALL"
+  purpose_data = {
+    network = "${var.project_id}/${var.network}"
+  }
+}
+
+resource "google_tags_tag_value" "value" {
+  parent     = google_tags_tag_key.key.id
+  short_name = "value${var.cluster_name_suffix}"
+}
+
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
-  version = "~> 38.0"
+  version = "~> 41.0"
 
   project_id                        = var.project_id
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -46,6 +60,10 @@ module "gke" {
   service_account                   = "default"
   logging_variant                   = "MAX_THROUGHPUT"
   dns_allow_external_traffic        = true
+
+  resource_manager_tags = {
+    "${var.project_id}/${google_tags_tag_key.key.short_name}" = google_tags_tag_value.value.short_name
+  }
 
   node_pools = [
     {
@@ -163,7 +181,7 @@ module "gke" {
   }
 
   node_pools_cgroup_mode = {
-    all = "CGROUP_MODE_V2"
+    all     = "CGROUP_MODE_V2"
     pool-01 = "CGROUP_MODE_V1"
   }
 
