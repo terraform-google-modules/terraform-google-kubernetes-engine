@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/gke-autopilot-cluster
-    version: 38.1.0
+    version: 41.0.1
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -134,8 +134,8 @@ spec:
         description: Description of the cluster.
         varType: string
         defaultValue: ""
-      - name: project
-        description: The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
+      - name: project_id
+        description: The ID of the project in which the resource belongs.
         varType: string
         required: true
       - name: location
@@ -274,16 +274,17 @@ spec:
               }))
             })
       - name: master_authorized_networks_config
-        description: The desired configuration options for master authorized networks.
+        description: The desired configuration options for master authorized networks. Cidr Block must follow [Cidr notation](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation)
         varType: |-
           object({
-              cidr_blocks = optional(list(object({
-                display_name = optional(string)
-                cidr_block   = optional(string)
-              })))
+              cidr_blocks = list(object({
+                display_name = string
+                cidr_block   = string
+              }))
               gcp_public_cidrs_access_enabled      = optional(bool)
               private_endpoint_enforcement_enabled = optional(bool)
             })
+        required: true
       - name: min_master_version
         description: The minimum version of the master. GKE will auto-update the master to new versions, so this does not guarantee the master version--use the read-only master_version field to obtain a current version. If unset, the server's default version will be used.
         varType: string
@@ -426,8 +427,9 @@ spec:
         description: Configuration for the use of Kubernetes Service Accounts in GCP IAM policies.
         varType: |-
           object({
-              workload_pool = optional(string)
+              workload_pool = string
             })
+        required: true
       - name: identity_service_config
         description: Whether to enable the Identity Service component. It is disabled by default. Set enabled=true to enable.
         varType: |-
@@ -569,9 +571,9 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/compute.admin
           - roles/container.admin
           - roles/iam.serviceAccountUser
-          - roles/compute.admin
     services:
       - compute.googleapis.com
       - container.googleapis.com

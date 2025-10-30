@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-private-cluster-update-variant
-    version: 38.1.0
+    version: 41.0.1
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -219,6 +219,10 @@ spec:
         description: List of _names_ of the additional secondary subnet ip ranges to use for pods
         varType: list(string)
         defaultValue: []
+      - name: additional_ip_ranges_config
+        description: the configuration for individual additional subnetworks attached to the cluster
+        varType: list(object({ subnetwork = string, pod_ipv4_range_names = list(string) }))
+        defaultValue: []
       - name: ip_range_services
         description: The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used.
         varType: string
@@ -360,9 +364,13 @@ spec:
             - https://www.googleapis.com/auth/cloud-platform
           default-node-pool: []
       - name: network_tags
-        description: (Optional) - List of network tags applied to auto-provisioned node pools.
+        description: (Optional) - List of network tags applied to autopilot and auto-provisioned node pools.
         varType: list(string)
         defaultValue: []
+      - name: resource_manager_tags
+        description: "(Optional) - List of resource manager tags applied to autopilot and auto-provisioned node pools. A maximum of 5 tags can be specified. Tags must be in one of these formats: \"tagKeys/{tag_key_id}\"=\"tagValues/{tag_value_id}\", \"{org_id}/{tag_key_name}\"=\"{tag_value_name}\", \"{project_id}/{tag_key_name}\"=\"{tag_value_name}\"."
+        varType: map(string)
+        defaultValue: {}
       - name: enable_k8s_beta_apis
         description: (Optional) - List of Kubernetes Beta APIs to enable in cluster.
         varType: list(string)
@@ -555,6 +563,9 @@ spec:
       - name: in_transit_encryption_config
         description: Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`.
         varType: string
+      - name: anonymous_authentication_config_mode
+        description: Allows users to restrict or enable anonymous access to the cluster. Valid values are `ENABLED` and `LIMITED`.
+        varType: string
       - name: total_egress_bandwidth_tier
         description: Specifies the total network bandwidth tier for NodePools in the cluster. Valid values are `TIER_UNSPECIFIED` and `TIER_1`. Defaults to `TIER_UNSPECIFIED`.
         varType: string
@@ -635,6 +646,9 @@ spec:
         description: Enable Shielded Nodes features on all nodes in this cluster
         varType: bool
         defaultValue: true
+      - name: default_compute_class_enabled
+        description: Enable Spot VMs as the default compute class for Node Auto-Provisioning
+        varType: bool
       - name: enable_binary_authorization
         description: Enable BinAuthZ Admission controller
         varType: bool
@@ -882,9 +896,9 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6.47.0, < 8"
+        version: ">= 7.0.0, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6.47.0, < 8"
+        version: ">= 7.0.0, < 8"
       - source: hashicorp/kubernetes
         version: ~> 2.10
       - source: hashicorp/random

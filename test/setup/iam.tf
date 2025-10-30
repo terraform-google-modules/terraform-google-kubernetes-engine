@@ -35,7 +35,8 @@ locals {
     "roles/iap.admin",
     "roles/gkehub.admin",
     "roles/cloudasset.viewer",
-    "roles/serviceusage.serviceUsageConsumer"
+    "roles/serviceusage.serviceUsageConsumer",
+    "roles/resourcemanager.tagAdmin",
   ]
 
   # roles as documented https://cloud.google.com/service-mesh/docs/installation-permissions
