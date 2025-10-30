@@ -31,6 +31,15 @@ spec:
         autoscaling:
           name: autoscaling
           title: Autoscaling
+          properties:
+            location_policy:
+              name: location_policy
+              title: Location Policy
+              enumValueLabels:
+                - label: ANY
+                  value: ANY
+                - label: BALANCED
+                  value: BALANCED
         cluster:
           name: cluster
           title: Cluster
@@ -43,6 +52,7 @@ spec:
         location:
           name: location
           title: Location
+          level: 1
         management:
           name: management
           title: Management
@@ -52,15 +62,188 @@ spec:
         name:
           name: name
           title: Name
+          level: 1
+          regexValidation: ^[a-z]([a-z0-9-]{0,38}[a-z0-9])?$
+          validation: Node pool name must start with a lowercase letter followed by up to 39 lowercase letters, numbers, or hyphens and cannot end with a hyphen.
         name_prefix:
           name: name_prefix
           title: Name Prefix
         network_config:
           name: network_config
           title: Network Config
+          properties:
+            network_performance_config:
+              name: network_performance_config
+              title: Network Performance Config
+              properties:
+                total_egress_bandwidth_tier:
+                  name: total_egress_bandwidth_tier
+                  title: Total Egress Bandwidth Tier
+                  enumValueLabels:
+                    - label: TIER_UNSPECIFIED
+                      value: TIER_UNSPECIFIED
+                    - label: TIER_1
+                      value: TIER_1
         node_config:
           name: node_config
           title: Node Config
+          properties:
+            disk_type:
+              name: disk_type
+              title: Disk Type
+              enumValueLabels:
+                - label: pd-standard
+                  value: pd-standard
+                - label: pd-balanced
+                  value: pd-balanced
+                - label: pd-ssd
+                  value: pd-ssd
+            guest_accelerator:
+              name: guest_accelerator
+              title: Guest Accelerator
+              properties:
+                gpu_driver_installation_config:
+                  name: gpu_driver_installation_config
+                  title: GPU Driver Installation Config
+                  properties:
+                    gpu_driver_version:
+                      name: gpu_driver_version
+                      title: GPU Driver Version
+                      enumValueLabels:
+                        - label: DEFAULT
+                          value: DEFAULT
+                        - label: INSTALLATION_DISABLED
+                          value: INSTALLATION_DISABLED
+                        - label: LATEST
+                          value: LATEST
+                        - label: GPU_DRIVER_VERSION_UNSPECIFIED
+                          value: GPU_DRIVER_VERSION_UNSPECIFIED
+                gpu_sharing_config:
+                  name: gpu_sharing_config
+                  title: GPU Sharing Config
+                  properties:
+                    gpu_sharing_strategy:
+                      name: gpu_sharing_strategy
+                      title: GPU Sharing Strategy
+                      enumValueLabels:
+                        - label: TIME_SHARING
+                          value: TIME_SHARING
+                        - label: MPS
+                          value: MPS
+            kubelet_config:
+              name: kubelet_config
+              title: Kubelet Config
+              properties:
+                cpu_manager_policy:
+                  name: cpu_manager_policy
+                  title: CPU Manager Policy
+                  enumValueLabels:
+                    - label: none
+                      value: none
+                    - label: static
+                      value: static
+            linux_node_config:
+              name: linux_node_config
+              title: Linux Node Config
+              properties:
+                cgroup_mode:
+                  name: cgroup_mode
+                  title: Cgroup Mode
+                  enumValueLabels:
+                    - label: CGROUP_MODE_UNSPECIFIED
+                      value: CGROUP_MODE_UNSPECIFIED
+                    - label: CGROUP_MODE_V1
+                      value: CGROUP_MODE_V1
+                    - label: CGROUP_MODE_V2
+                      value: CGROUP_MODE_V2
+            local_ssd_encryption_mode:
+              name: local_ssd_encryption_mode
+              title: Local SSD Encryption Mode
+              enumValueLabels:
+                - label: STANDARD_ENCRYPTION
+                  value: STANDARD_ENCRYPTION
+                - label: EPHEMERAL_KEY_ENCRYPTION
+                  value: EPHEMERAL_KEY_ENCRYPTION
+            logging_variant:
+              name: logging_variant
+              title: Logging Variant
+              enumValueLabels:
+                - label: DEFAULT
+                  value: DEFAULT
+                - label: MAX_THROUGHPUT
+                  value: MAX_THROUGHPUT
+            oauth_scopes:
+              name: oauth_scopes
+              title: Oauth Scopes
+              subtext: A list of Google API scopes to be made available on all of the node VMs under the "default" service account. Use the "https://www.googleapis.com/auth/cloud-platform" scope to grant access to all APIs.
+            reservation_affinity:
+              name: reservation_affinity
+              title: Reservation Affinity
+              properties:
+                consume_reservation_type:
+                  name: consume_reservation_type
+                  title: Consume Reservation Type
+                  enumValueLabels:
+                    - label: UNSPECIFIED
+                      value: UNSPECIFIED
+                    - label: NO_RESERVATION
+                      value: NO_RESERVATION
+                    - label: ANY_RESERVATION
+                      value: ANY_RESERVATION
+                    - label: SPECIFIC_RESERVATION
+                      value: SPECIFIC_RESERVATION
+            sandbox_config:
+              name: sandbox_config
+              title: Sandbox Config
+              properties:
+                sandbox_type:
+                  name: sandbox_type
+                  title: Sandbox Type
+                  enumValueLabels:
+                    - label: gvisor
+                      value: gvisor
+            taint:
+              name: taint
+              title: Taint
+              properties:
+                effect:
+                  name: effect
+                  title: Effect
+                  enumValueLabels:
+                    - label: NO_SCHEDULE
+                      value: NO_SCHEDULE
+                    - label: PREFER_NO_SCHEDULE
+                      value: PREFER_NO_SCHEDULE
+                    - label: NO_EXECUTE
+                      value: NO_EXECUTE
+            windows_node_config:
+              name: windows_node_config
+              title: Windows Node Config
+              properties:
+                osversion:
+                  name: osversion
+                  title: OS Version
+                  enumValueLabels:
+                    - label: OS_VERSION_UNSPECIFIED
+                      value: OS_VERSION_UNSPECIFIED
+                    - label: OS_VERSION_LTSC2019
+                      value: OS_VERSION_LTSC2019
+                    - label: OS_VERSION_LTSC2022
+                      value: OS_VERSION_LTSC2022
+            workload_metadata_config:
+              name: workload_metadata_config
+              title: Workload Metadata Config
+              properties:
+                mode:
+                  name: mode
+                  title: Mode
+                  enumValueLabels:
+                    - label: GCE_METADATA
+                      value: GCE_METADATA
+                    - label: GKE_METADATA
+                      value: GKE_METADATA
+                    - label: MODE_UNSPECIFIED
+                      value: MODE_UNSPECIFIED
         node_count:
           name: node_count
           title: Node Count
@@ -70,9 +253,17 @@ spec:
         placement_policy:
           name: placement_policy
           title: Placement Policy
-        project:
-          name: project
-          title: Project
+          properties:
+            type:
+              name: type
+              title: Type
+              enumValueLabels:
+                - label: COMPACT
+                  value: COMPACT
+        project_id:
+          name: project_id
+          title: Project Id
+          level: 1
         queued_provisioning:
           name: queued_provisioning
           title: Queued Provisioning
@@ -82,3 +273,16 @@ spec:
         upgrade_settings:
           name: upgrade_settings
           title: Upgrade Settings
+          properties:
+            strategy:
+              name: strategy
+              title: Strategy
+              enumValueLabels:
+                - label: SURGE
+                  value: SURGE
+                - label: BLUE_GREEN
+                  value: BLUE_GREEN
+    runtime:
+      outputs:
+        id:
+          visibility: VISIBILITY_ROOT

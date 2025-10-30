@@ -72,13 +72,15 @@ module "gke-project-1" {
   # due to https://github.com/hashicorp/terraform-provider-google/issues/9505 for AP
   default_service_account = "keep"
 
+  deletion_policy = "DELETE"
+
   auto_create_network = true
 
   activate_apis = local.apis
   activate_api_identities = [
     {
       api   = "container.googleapis.com"
-      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent"]
+      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent", "roles/resourcemanager.tagUser", "roles/resourcemanager.tagHoldAdmin"]
     },
   ]
 }
@@ -94,6 +96,9 @@ module "gke-project-2" {
   billing_account   = var.billing_account
   # due to https://github.com/hashicorp/terraform-provider-google/issues/9505 for AP
   default_service_account = "keep"
+
+  deletion_policy = "DELETE"
+
 
   activate_apis = local.apis
   activate_api_identities = [
@@ -131,6 +136,9 @@ module "gke-project-fleet" {
   billing_account   = var.billing_account
   # due to https://github.com/hashicorp/terraform-provider-google/issues/9505 for AP
   default_service_account = "keep"
+
+  deletion_policy = "DELETE"
+
 
   activate_apis = local.apis
 }

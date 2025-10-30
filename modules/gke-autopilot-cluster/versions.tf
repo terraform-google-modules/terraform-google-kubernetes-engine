@@ -24,6 +24,6 @@ terraform {
     }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:gke-node-pool/v38.0.1"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:gke-node-pool/v41.0.1"
   }
 }

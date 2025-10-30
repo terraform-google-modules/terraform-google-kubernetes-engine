@@ -33,6 +33,13 @@ resource "google_container_cluster" "primary" {
   network             = "projects/${local.network_project_id}/global/networks/${var.network}"
   deletion_protection = var.deletion_protection
 
+  dynamic "enable_k8s_beta_apis" {
+    for_each = length(var.enable_k8s_beta_apis) > 0 ? [1] : []
+    content {
+      enabled_apis = var.enable_k8s_beta_apis
+    }
+  }
+
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
 
@@ -116,7 +123,8 @@ resource "google_container_cluster" "primary" {
   monitoring_service = local.logmon_config_is_set ? null : var.monitoring_service
 
   cluster_autoscaling {
-    enabled = var.cluster_autoscaling.enabled
+    enabled                       = var.cluster_autoscaling.enabled
+    default_compute_class_enabled = var.default_compute_class_enabled
     dynamic "auto_provisioning_defaults" {
       for_each = var.cluster_autoscaling.enabled ? [1] : []
 
@@ -207,10 +215,25 @@ resource "google_container_cluster" "primary" {
 
   in_transit_encryption_config = var.in_transit_encryption_config
 
+  dynamic "anonymous_authentication_config" {
+    for_each = var.anonymous_authentication_config_mode != null ? [1] : []
+    content {
+      mode = var.anonymous_authentication_config_mode
+    }
+  }
+
   dynamic "network_performance_config" {
     for_each = var.total_egress_bandwidth_tier != null ? [1] : []
     content {
       total_egress_bandwidth_tier = var.total_egress_bandwidth_tier
+    }
+  }
+
+  dynamic "rbac_binding_config" {
+    for_each = var.rbac_binding_config.enable_insecure_binding_system_unauthenticated != null || var.rbac_binding_config.enable_insecure_binding_system_authenticated != null ? [var.rbac_binding_config] : []
+    content {
+      enable_insecure_binding_system_unauthenticated = rbac_binding_config.value["enable_insecure_binding_system_unauthenticated"]
+      enable_insecure_binding_system_authenticated   = rbac_binding_config.value["enable_insecure_binding_system_authenticated"]
     }
   }
 
@@ -251,10 +274,22 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "node_pool_auto_config" {
-    for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
+    for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode != null) ? [1] : []
     content {
-      network_tags {
-        tags = var.add_cluster_firewall_rules ? (concat(var.network_tags, [local.cluster_network_tag])) : var.network_tags
+      dynamic "network_tags" {
+        for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
+        content {
+          tags = var.add_cluster_firewall_rules ? (concat(var.network_tags, [local.cluster_network_tag])) : var.network_tags
+        }
+      }
+
+      resource_manager_tags = length(var.resource_manager_tags) > 0 ? var.resource_manager_tags : null
+
+      dynamic "linux_node_config" {
+        for_each = local.node_pools_cgroup_mode["all"] != "" ? [1] : []
+        content {
+          cgroup_mode = local.node_pools_cgroup_mode["all"]
+        }
       }
     }
   }
@@ -283,6 +318,14 @@ resource "google_container_cluster" "primary" {
 
     gcp_filestore_csi_driver_config {
       enabled = var.filestore_csi_driver
+    }
+
+    dynamic "lustre_csi_driver_config" {
+      for_each = var.lustre_csi_driver == null ? [] : ["lustre_csi_driver_config"]
+      content {
+        enabled                   = var.lustre_csi_driver
+        enable_legacy_lustre_port = var.enable_legacy_lustre_port
+      }
     }
 
     network_policy_config {
@@ -377,6 +420,13 @@ resource "google_container_cluster" "primary" {
       for_each = length(var.additional_ip_range_pods) != 0 ? [1] : []
       content {
         pod_range_names = var.additional_ip_range_pods
+      }
+    }
+    dynamic "additional_ip_ranges_config" {
+      for_each = var.additional_ip_ranges_config
+      content {
+        subnetwork           = var.additional_ip_ranges_config.subnetwork
+        pod_ipv4_range_names = var.additional_ip_ranges_config.pod_ipv4_range_names
       }
     }
     stack_type = var.stack_type

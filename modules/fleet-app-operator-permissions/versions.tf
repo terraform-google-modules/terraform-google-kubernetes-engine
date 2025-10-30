@@ -20,11 +20,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 6.39.0"
+      version = ">= 7.0.0"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 6.39.0"
+      version = ">= 7.0.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -33,7 +33,7 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:fleet-app-operator-permissions/v38.0.1"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:fleet-app-operator-permissions/v41.0.1"
   }
 }
 

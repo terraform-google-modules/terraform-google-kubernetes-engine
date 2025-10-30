@@ -40,9 +40,18 @@ spec:
         additional_ip_range_pods:
           name: additional_ip_range_pods
           title: Additional Ip Range Pods
+        additional_ip_ranges_config:
+          name: additional_ip_ranges_config
+          title: Additional Ip Ranges Config
+        additional_pod_ranges_config:
+          name: additional_pod_ranges_config
+          title: Additional Pod Ranges Config
         allow_net_admin:
           name: allow_net_admin
           title: Allow Net Admin
+        anonymous_authentication_config_mode:
+          name: anonymous_authentication_config_mode
+          title: Anonymous Authentication Config Mode
         authenticator_security_group:
           name: authenticator_security_group
           title: Authenticator Security Group
@@ -64,6 +73,9 @@ spec:
         database_encryption:
           name: database_encryption
           title: Database Encryption
+        default_compute_class_enabled:
+          name: default_compute_class_enabled
+          title: Default Compute Class Enabled
         deletion_protection:
           name: deletion_protection
           title: Deletion Protection
@@ -97,9 +109,15 @@ spec:
         enable_fqdn_network_policy:
           name: enable_fqdn_network_policy
           title: Enable Fqdn Network Policy
+        enable_k8s_beta_apis:
+          name: enable_k8s_beta_apis
+          title: Enable K8s Beta Apis
         enable_l4_ilb_subsetting:
           name: enable_l4_ilb_subsetting
           title: Enable L4 Ilb Subsetting
+        enable_legacy_lustre_port:
+          name: enable_legacy_lustre_port
+          title: Enable Legacy Lustre Port
         enable_multi_networking:
           name: enable_multi_networking
           title: Enable Multi Networking
@@ -193,6 +211,9 @@ spec:
         logging_enabled_components:
           name: logging_enabled_components
           title: Logging Enabled Components
+        lustre_csi_driver:
+          name: lustre_csi_driver
+          title: Lustre Csi Driver
         maintenance_end_time:
           name: maintenance_end_time
           title: Maintenance End Time
@@ -244,6 +265,9 @@ spec:
         ray_operator_config:
           name: ray_operator_config
           title: Ray Operator Config
+        rbac_binding_config:
+          name: rbac_binding_config
+          title: Rbac Binding Config
         region:
           name: region
           title: Region
@@ -256,6 +280,9 @@ spec:
         release_channel:
           name: release_channel
           title: Release Channel
+        resource_manager_tags:
+          name: resource_manager_tags
+          title: Resource Manager Tags
         resource_usage_export_dataset_id:
           name: resource_usage_export_dataset_id
           title: Resource Usage Export Dataset Id
