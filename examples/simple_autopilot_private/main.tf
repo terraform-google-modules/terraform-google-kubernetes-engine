@@ -34,7 +34,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster"
-  version = "~> 40.0"
+  version = "~> 41.0"
 
   project_id                             = var.project_id
   name                                   = "${local.cluster_type}-cluster"
