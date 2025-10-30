@@ -15,9 +15,11 @@
  */
 
 locals {
-  app_operator_id   = "app-operator-id"
-  app_operator_team = "app-operator-team"
-  app_operator_role = "VIEW"
+  app_operator_id          = "app-operator-id"
+  app_operator_team        = "app-operator-team"
+  app_operator_role        = "VIEW"
+  custom_app_operator_id   = "custom-app-operator-id"
+  custom_app_operator_role = "my-custom-role"
 }
 
 # Create a Service Account, which can be used as an app operator.
@@ -27,16 +29,35 @@ resource "google_service_account" "service_account" {
   display_name = "Test App Operator Service Account"
 }
 
+# Create another Service Account, which can be used as a custom role app operator.
+resource "google_service_account" "custom_service_account" {
+  project      = var.fleet_project_id
+  account_id   = local.custom_app_operator_id
+  display_name = "Test App Operator Custom Role Service Account"
+}
+
 # Create a Fleet Scope for the app operator's team.
 resource "google_gke_hub_scope" "scope" {
   project  = var.fleet_project_id
   scope_id = local.app_operator_team
 }
 
+# Allowlist custom roles for usage in Scope RBAC
+resource "google_gke_hub_feature" "rbacrolebindingactuation" {
+  name     = "rbacrolebindingactuation"
+  location = "global"
+  spec {
+    rbacrolebindingactuation {
+      allowed_custom_roles = [local.custom_app_operator_role]
+    }
+  }
+  project = var.fleet_project_id
+}
+
 # Grant permissions to the app operator to work with the Fleet Scope.
 module "permissions" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
-  version = "~> 36.0"
+  version = "~> 41.0"
 
   fleet_project_id = var.fleet_project_id
   scope_id         = google_gke_hub_scope.scope.scope_id
@@ -45,6 +66,22 @@ module "permissions" {
 
   depends_on = [
     google_service_account.service_account
+  ]
+}
+
+# Grant custom role permissions to the app operator to work with the Fleet Scope.
+module "custom_permissions" {
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
+  version = "~> 41.0"
+
+  fleet_project_id = var.fleet_project_id
+  scope_id         = google_gke_hub_scope.scope.scope_id
+  users            = ["${local.custom_app_operator_id}@${var.fleet_project_id}.iam.gserviceaccount.com"]
+  custom_role      = local.custom_app_operator_role
+
+  depends_on = [
+    google_service_account.custom_service_account,
+    google_gke_hub_feature.rbacrolebindingactuation,
   ]
 }
 

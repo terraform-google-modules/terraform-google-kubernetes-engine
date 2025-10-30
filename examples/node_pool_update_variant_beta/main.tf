@@ -39,7 +39,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster-update-variant"
-  version = "~> 36.0"
+  version = "~> 41.0"
 
   project_id              = var.project_id
   name                    = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -136,5 +136,13 @@ module "gke" {
       "pool-01-example",
     ]
     pool-02 = []
+  }
+
+  cluster_autoscaling = {
+    enabled             = true
+    autoscaling_profile = "OPTIMIZE_UTILIZATION"
+    gpu_resources       = []
+    auto_repair         = true
+    auto_upgrade        = true
   }
 }

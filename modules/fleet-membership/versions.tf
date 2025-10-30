@@ -21,15 +21,15 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 5.6.0, < 7"
+      version = ">= 5.6.0, < 8"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 5.6.0, < 7"
+      version = ">= 5.6.0, < 8"
     }
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:hub/v36.0.2"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:hub/v41.0.1"
   }
 }

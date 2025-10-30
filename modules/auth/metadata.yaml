@@ -1,0 +1,161 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-kubernetes-engine-auth
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Terraform Kubernetes Engine Auth Module
+    source:
+      repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
+      sourceType: git
+      dir: /modules/auth
+    version: 41.0.1
+    actuationTool:
+      flavor: Terraform
+      version: ">= 1.3"
+    description: {}
+  content:
+    examples:
+      - name: autopilot_private_firewalls
+        location: examples/autopilot_private_firewalls
+      - name: confidential_autopilot_private
+        location: examples/confidential_autopilot_private
+      - name: confidential_safer_cluster
+        location: examples/confidential_safer_cluster
+      - name: deploy_service
+        location: examples/deploy_service
+      - name: disable_client_cert
+        location: examples/disable_client_cert
+      - name: gke_autopilot_cluster
+        location: examples/gke_autopilot_cluster
+      - name: gke_standard_cluster
+        location: examples/gke_standard_cluster
+      - name: island_cluster_anywhere_in_gcp_design
+        location: examples/island_cluster_anywhere_in_gcp_design
+      - name: island_cluster_with_vm_router
+        location: examples/island_cluster_with_vm_router
+      - name: node_pool
+        location: examples/node_pool
+      - name: node_pool_update_variant
+        location: examples/node_pool_update_variant
+      - name: node_pool_update_variant_beta
+        location: examples/node_pool_update_variant_beta
+      - name: node_pool_update_variant_public_beta
+        location: examples/node_pool_update_variant_public_beta
+      - name: private_zonal_with_networking
+        location: examples/private_zonal_with_networking
+      - name: regional_private_node_pool_oauth_scopes
+        location: examples/regional_private_node_pool_oauth_scopes
+      - name: safer_cluster
+        location: examples/safer_cluster
+      - name: safer_cluster_iap_bastion
+        location: examples/safer_cluster_iap_bastion
+      - name: shared_vpc
+        location: examples/shared_vpc
+      - name: simple_autopilot_private
+        location: examples/simple_autopilot_private
+      - name: simple_autopilot_private_cmek
+        location: examples/simple_autopilot_private_cmek
+      - name: simple_autopilot_private_non_default_sa
+        location: examples/simple_autopilot_private_non_default_sa
+      - name: simple_autopilot_public
+        location: examples/simple_autopilot_public
+      - name: simple_fleet_app_operator_permissions
+        location: examples/simple_fleet_app_operator_permissions
+      - name: simple_regional
+        location: examples/simple_regional
+      - name: simple_regional_beta
+        location: examples/simple_regional_beta
+      - name: simple_regional_cluster_autoscaling
+        location: examples/simple_regional_cluster_autoscaling
+      - name: simple_regional_private
+        location: examples/simple_regional_private
+      - name: simple_regional_private_beta
+        location: examples/simple_regional_private_beta
+      - name: simple_regional_private_with_cluster_version
+        location: examples/simple_regional_private_with_cluster_version
+      - name: simple_regional_with_gateway_api
+        location: examples/simple_regional_with_gateway_api
+      - name: simple_regional_with_ipv6
+        location: examples/simple_regional_with_ipv6
+      - name: simple_regional_with_kubeconfig
+        location: examples/simple_regional_with_kubeconfig
+      - name: simple_regional_with_networking
+        location: examples/simple_regional_with_networking
+      - name: simple_windows_node_pool
+        location: examples/simple_windows_node_pool
+      - name: simple_zonal_private
+        location: examples/simple_zonal_private
+      - name: simple_zonal_with_hub
+        location: examples/simple_zonal_with_hub
+      - name: simple_zonal_with_hub_kubeconfig
+        location: examples/simple_zonal_with_hub_kubeconfig
+      - name: stub_domains
+        location: examples/stub_domains
+      - name: stub_domains_private
+        location: examples/stub_domains_private
+      - name: stub_domains_upstream_nameservers
+        location: examples/stub_domains_upstream_nameservers
+      - name: terraform
+        location: examples/acm-terraform-blog-part1/terraform
+      - name: terraform
+        location: examples/acm-terraform-blog-part2/terraform
+      - name: terraform
+        location: examples/acm-terraform-blog-part3/terraform
+      - name: upstream_nameservers
+        location: examples/upstream_nameservers
+      - name: workload_identity
+        location: examples/workload_identity
+      - name: workload_metadata_config
+        location: examples/workload_metadata_config
+  interfaces:
+    variables:
+      - name: project_id
+        description: The GCP project of the GKE cluster.
+        varType: string
+        required: true
+      - name: location
+        description: The location (region or zone) of the GKE cluster.
+        varType: string
+        required: true
+      - name: cluster_name
+        description: The name of the GKE cluster.
+        varType: string
+        required: true
+      - name: use_private_endpoint
+        description: Connect on the private GKE cluster endpoint
+        varType: bool
+        defaultValue: false
+    outputs:
+      - name: cluster_ca_certificate
+        description: The cluster_ca_certificate value for use with the kubernetes provider.
+      - name: host
+        description: The host value for use with the kubernetes provider.
+      - name: kubeconfig_raw
+        description: A kubeconfig file configured to access the GKE cluster.
+      - name: token
+        description: The token value for use with the kubernetes provider.
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/editor
+    providerVersions:
+      - source: hashicorp/google
+        version: ">= 4.47.0, != 4.49.0, != 4.50.0, < 8"

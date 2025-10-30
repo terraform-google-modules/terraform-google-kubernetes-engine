@@ -103,8 +103,10 @@ module "gke" {
   logging_service    = var.logging_service
   monitoring_service = var.monitoring_service
 
-  monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
-  monitoring_enabled_components        = var.monitoring_enabled_components
+  monitoring_enable_managed_prometheus    = var.monitoring_enable_managed_prometheus
+  monitoring_enable_observability_metrics = var.monitoring_enable_observability_metrics
+  monitoring_enable_observability_relay   = var.monitoring_enable_observability_relay
+  monitoring_enabled_components           = var.monitoring_enabled_components
 
   enable_confidential_nodes = var.enable_confidential_nodes
 
@@ -202,6 +204,7 @@ module "gke" {
 
   gce_pd_csi_driver    = var.gce_pd_csi_driver
   filestore_csi_driver = var.filestore_csi_driver
+  gcs_fuse_csi_driver  = var.gcs_fuse_csi_driver
 
   notification_config_topic = var.notification_config_topic
 

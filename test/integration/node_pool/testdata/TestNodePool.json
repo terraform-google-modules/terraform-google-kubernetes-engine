@@ -57,7 +57,7 @@
   "clusterIpv4Cidr": "192.168.0.0/18",
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
-      "allowExternalTraffic": false
+      "allowExternalTraffic": true
     },
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
@@ -203,7 +203,7 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-balanced",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
         "gcfsConfig": {},
         "imageType": "COS_CONTAINERD",
         "loggingConfig": {
@@ -267,7 +267,7 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-standard",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "machineType": "e2-medium",
         "metadata": {
@@ -320,7 +320,7 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-standard",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
         "gcfsConfig": {},
         "imageType": "COS_CONTAINERD",
         "labels": {
@@ -333,6 +333,9 @@
           "sysctls": {
             "net.core.netdev_max_backlog": "10000",
             "net.core.rmem_max": "10000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "2"
           }
         },
         "loggingConfig": {
@@ -420,7 +423,7 @@
         ],
         "diskSizeGb": 30,
         "diskType": "pd-standard",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "labels": {
           "all-pools-example": "true",
@@ -430,6 +433,9 @@
         "linuxNodeConfig": {
           "sysctls": {
             "net.core.netdev_max_backlog": "10000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "1"
           }
         },
         "loggingConfig": {
@@ -499,7 +505,7 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-standard",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "cpuCfsQuota": true,
@@ -516,6 +522,9 @@
         "linuxNodeConfig": {
           "sysctls": {
             "net.core.netdev_max_backlog": "20000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "1"
           }
         },
         "loggingConfig": {
@@ -596,8 +605,11 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-standard",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
+        "kubeletConfig": {
+          "insecureKubeletReadonlyPortEnabled": false
+        },
         "labels": {
           "all-pools-example": "true",
           "cluster_name": "node-pool-cluster-RANDOM_STRING",
@@ -606,6 +618,9 @@
         "linuxNodeConfig": {
           "sysctls": {
             "net.core.netdev_max_backlog": "10000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "1"
           }
         },
         "loggingConfig": {
@@ -673,8 +688,7 @@
       "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/europe-west4/clusters/node-pool-cluster-RANDOM_STRING/nodePools/pool-04",
       "status": "RUNNING",
       "upgradeSettings": {
-        "maxSurge": 1,
-        "strategy": "SURGE"
+        "strategy": "SHORT_LIVED"
       }
     },
     {
@@ -689,8 +703,8 @@
           "enableNestedVirtualization": true
         },
         "diskSizeGb": 100,
-        "diskType": "pd-standard",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
+        "diskType": "pd-balanced",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "labels": {
           "all-pools-example": "true",
@@ -700,6 +714,10 @@
         "linuxNodeConfig": {
           "sysctls": {
             "net.core.netdev_max_backlog": "10000"
+          },
+          "hugepages": {
+            "hugepageSize2m": "1",
+            "hugepageSize1g": "2"
           }
         },
         "loggingConfig": {
@@ -707,7 +725,7 @@
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n1-standard-2",
+        "machineType": "c3-standard-4",
         "metadata": {
           "cluster_name": "node-pool-cluster-RANDOM_STRING",
           "disable-legacy-endpoints": "false",
@@ -788,7 +806,6 @@
   "shieldedNodes": {
     "enabled": true
   },
-  "status": "RUNNING",
   "subnetwork": "cft-gke-test-RANDOM_STRING",
   "verticalPodAutoscaling": {},
   "workloadIdentityConfig": {

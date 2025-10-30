@@ -88,12 +88,13 @@ locals {
     enabled  = false
     provider = null
   }]
-  cluster_gce_pd_csi_config  = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
-  logmon_config_is_set       = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus != null
-  gcs_fuse_csi_driver_config = var.gcs_fuse_csi_driver ? [{ enabled = true }] : []
-  gke_backup_agent_config    = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
-  stateful_ha_config         = var.stateful_ha ? [{ enabled = true }] : []
-  ray_operator_config        = length(var.ray_operator_config) > 0 && lookup(var.ray_operator_config, "enabled", false) ? [var.ray_operator_config] : []
+  cluster_gce_pd_csi_config       = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
+  logmon_config_is_set            = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus != null
+  gcs_fuse_csi_driver_config      = var.gcs_fuse_csi_driver ? [{ enabled = true }] : []
+  parallelstore_csi_driver_config = var.parallelstore_csi_driver != null ? [{ enabled = var.parallelstore_csi_driver }] : []
+  gke_backup_agent_config         = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
+  stateful_ha_config              = var.stateful_ha ? [{ enabled = true }] : []
+  ray_operator_config             = length(var.ray_operator_config) > 0 && lookup(var.ray_operator_config, "enabled", false) ? [var.ray_operator_config] : []
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{
     security_group = var.authenticator_security_group
@@ -109,9 +110,15 @@ locals {
   cluster_output_regional_zones = google_container_cluster.primary.node_locations
   cluster_output_zones          = local.cluster_output_regional_zones
 
-  cluster_endpoint           = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (var.enable_private_endpoint || var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config[0].private_endpoint : google_container_cluster.primary.private_cluster_config[0].public_endpoint) : google_container_cluster.primary.endpoint
-  cluster_peering_name       = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? google_container_cluster.primary.private_cluster_config[0].peering_name : null
-  cluster_endpoint_for_nodes = google_container_cluster.primary.private_cluster_config[0].master_ipv4_cidr_block
+  cluster_endpoint     = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (var.enable_private_endpoint || var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config[0].private_endpoint : google_container_cluster.primary.private_cluster_config[0].public_endpoint) : google_container_cluster.primary.endpoint
+  cluster_peering_name = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? google_container_cluster.primary.private_cluster_config[0].peering_name : null
+  cluster_endpoint_for_nodes = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (
+    var.private_endpoint_subnetwork != null ?
+    data.google_compute_subnetwork.private_endpoint_subnetwork[0].ip_cidr_range :
+    var.master_ipv4_cidr_block != null ?
+    google_container_cluster.primary.private_cluster_config[0].master_ipv4_cidr_block :
+    local.cluster_subnet_cidr
+  ) : local.cluster_subnet_cidr
 
   cluster_output_master_auth                        = concat(google_container_cluster.primary[*].master_auth, [])
   cluster_output_master_version                     = google_container_cluster.primary.master_version

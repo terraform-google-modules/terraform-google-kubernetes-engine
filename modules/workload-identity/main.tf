@@ -53,6 +53,15 @@ resource "kubernetes_service_account" "main" {
   count = var.use_existing_k8s_sa ? 0 : 1
 
   automount_service_account_token = var.automount_service_account_token
+
+  dynamic "image_pull_secret" {
+    for_each = var.image_pull_secrets
+
+    content {
+      name = image_pull_secret.value
+    }
+  }
+
   metadata {
     name      = local.k8s_given_name
     namespace = var.namespace
@@ -64,7 +73,7 @@ resource "kubernetes_service_account" "main" {
 
 module "annotate-sa" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "~> 3.1"
+  version = "~> 4.0"
 
   enabled                     = var.use_existing_k8s_sa && var.annotate_k8s_sa
   skip_download               = true

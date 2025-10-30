@@ -20,7 +20,7 @@ locals {
 
 module "kms" {
   source          = "terraform-google-modules/kms/google"
-  version         = "~> 3.0"
+  version         = "~> 4.0"
   project_id      = var.project_id
   location        = var.region
   keyring         = "gke-keyring-${random_string.suffix.result}"

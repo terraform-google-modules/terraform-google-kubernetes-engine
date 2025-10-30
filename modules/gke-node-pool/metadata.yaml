@@ -1,0 +1,420 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-kubernetes-engine-gke-node-pool
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: GKE Node Pool
+    source:
+      repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
+      sourceType: git
+      dir: /modules/gke-node-pool
+    version: 41.0.1
+    actuationTool:
+      flavor: Terraform
+      version: ">=1.3"
+    description: {}
+  content:
+    examples:
+      - name: autopilot_private_firewalls
+        location: examples/autopilot_private_firewalls
+      - name: confidential_autopilot_private
+        location: examples/confidential_autopilot_private
+      - name: confidential_safer_cluster
+        location: examples/confidential_safer_cluster
+      - name: deploy_service
+        location: examples/deploy_service
+      - name: disable_client_cert
+        location: examples/disable_client_cert
+      - name: gke_autopilot_cluster
+        location: examples/gke_autopilot_cluster
+      - name: gke_standard_cluster
+        location: examples/gke_standard_cluster
+      - name: island_cluster_anywhere_in_gcp_design
+        location: examples/island_cluster_anywhere_in_gcp_design
+      - name: island_cluster_with_vm_router
+        location: examples/island_cluster_with_vm_router
+      - name: node_pool
+        location: examples/node_pool
+      - name: node_pool_update_variant
+        location: examples/node_pool_update_variant
+      - name: node_pool_update_variant_beta
+        location: examples/node_pool_update_variant_beta
+      - name: node_pool_update_variant_public_beta
+        location: examples/node_pool_update_variant_public_beta
+      - name: private_zonal_with_networking
+        location: examples/private_zonal_with_networking
+      - name: regional_private_node_pool_oauth_scopes
+        location: examples/regional_private_node_pool_oauth_scopes
+      - name: safer_cluster
+        location: examples/safer_cluster
+      - name: safer_cluster_iap_bastion
+        location: examples/safer_cluster_iap_bastion
+      - name: shared_vpc
+        location: examples/shared_vpc
+      - name: simple_autopilot_private
+        location: examples/simple_autopilot_private
+      - name: simple_autopilot_private_cmek
+        location: examples/simple_autopilot_private_cmek
+      - name: simple_autopilot_private_non_default_sa
+        location: examples/simple_autopilot_private_non_default_sa
+      - name: simple_autopilot_public
+        location: examples/simple_autopilot_public
+      - name: simple_fleet_app_operator_permissions
+        location: examples/simple_fleet_app_operator_permissions
+      - name: simple_regional
+        location: examples/simple_regional
+      - name: simple_regional_beta
+        location: examples/simple_regional_beta
+      - name: simple_regional_cluster_autoscaling
+        location: examples/simple_regional_cluster_autoscaling
+      - name: simple_regional_private
+        location: examples/simple_regional_private
+      - name: simple_regional_private_beta
+        location: examples/simple_regional_private_beta
+      - name: simple_regional_private_with_cluster_version
+        location: examples/simple_regional_private_with_cluster_version
+      - name: simple_regional_with_gateway_api
+        location: examples/simple_regional_with_gateway_api
+      - name: simple_regional_with_ipv6
+        location: examples/simple_regional_with_ipv6
+      - name: simple_regional_with_kubeconfig
+        location: examples/simple_regional_with_kubeconfig
+      - name: simple_regional_with_networking
+        location: examples/simple_regional_with_networking
+      - name: simple_windows_node_pool
+        location: examples/simple_windows_node_pool
+      - name: simple_zonal_private
+        location: examples/simple_zonal_private
+      - name: simple_zonal_with_hub
+        location: examples/simple_zonal_with_hub
+      - name: simple_zonal_with_hub_kubeconfig
+        location: examples/simple_zonal_with_hub_kubeconfig
+      - name: stub_domains
+        location: examples/stub_domains
+      - name: stub_domains_private
+        location: examples/stub_domains_private
+      - name: stub_domains_upstream_nameservers
+        location: examples/stub_domains_upstream_nameservers
+      - name: terraform
+        location: examples/acm-terraform-blog-part1/terraform
+      - name: terraform
+        location: examples/acm-terraform-blog-part2/terraform
+      - name: terraform
+        location: examples/acm-terraform-blog-part3/terraform
+      - name: upstream_nameservers
+        location: examples/upstream_nameservers
+      - name: workload_identity
+        location: examples/workload_identity
+      - name: workload_metadata_config
+        location: examples/workload_metadata_config
+  interfaces:
+    variables:
+      - name: cluster
+        description: The cluster to create the node pool for. Cluster must be present in location provided for clusters. May be specified in the format projects/{project_id}/locations/{location}/clusters/{cluster} or as just the name of the cluster.
+        varType: string
+        required: true
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-kubernetes-engine//modules/gke-standard-cluster
+              version: ">=38.0.1"
+            spec:
+              outputExpr: cluster_id
+      - name: project_id
+        description: The ID of the project in which to create the node pool.
+        varType: string
+        required: true
+      - name: location
+        description: The location (region or zone) of the cluster.
+        varType: string
+      - name: autoscaling
+        description: Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage.
+        varType: |-
+          object({
+              min_node_count       = optional(number)
+              max_node_count       = optional(number)
+              total_min_node_count = optional(number)
+              total_max_node_count = optional(number)
+              location_policy      = optional(string)
+            })
+        defaultValue:
+          max_node_count: 100
+          min_node_count: 1
+      - name: initial_node_count
+        description: The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone.
+        varType: number
+      - name: management
+        description: |
+          Node management configuration, wherein auto-repair and auto-upgrade is configured.
+            - auto_repair: Whether the nodes will be automatically repaired. Enabled by default.
+            - auto_upgrade : Whether the nodes will be automatically upgraded. Enabled by default.
+        varType: |-
+          object({
+              auto_repair  = optional(bool)
+              auto_upgrade = optional(bool)
+            })
+        defaultValue:
+          auto_repair: true
+          auto_upgrade: true
+      - name: max_pods_per_node
+        description: The maximum number of pods per node in this node pool. Note that this does not work on node pools which are 'route-based' - that is, node pools belonging to clusters that do not have IP Aliasing enabled. See the [official documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr) for more information.
+        varType: number
+      - name: node_locations
+        description: "The list of zones in which the node pool's nodes should be located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If unspecified, the cluster-level node_locations will be used. Note: node_locations will not revert to the cluster's default set of zones upon being unset. You must manually reconcile the list of zones with your cluster."
+        varType: list(string)
+      - name: name
+        description: The name of the node pool. If left blank, Terraform will auto-generate a unique name.
+        varType: string
+      - name: name_prefix
+        description: Creates a unique name for the node pool beginning with the specified prefix. Conflicts with name.
+        varType: string
+      - name: node_config
+        description: Parameters used in creating the node pool.
+        varType: |-
+          object({
+              confidential_nodes = optional(object({
+                enabled = bool
+              }))
+              disk_size_gb                = optional(number)
+              disk_type                   = optional(string)
+              enable_confidential_storage = optional(bool)
+              local_ssd_encryption_mode   = optional(string)
+              ephemeral_storage_config = optional(object({
+                local_ssd_count = number
+              }))
+              ephemeral_storage_local_ssd_config = optional(object({
+                local_ssd_count  = number
+                data_cache_count = optional(number)
+              }))
+              fast_socket = optional(object({
+                enabled = bool
+              }))
+              local_nvme_ssd_block_config = optional(object({
+                local_ssd_count = number
+              }))
+              logging_variant = optional(string)
+              secondary_boot_disks = optional(object({
+                disk_image = string
+                mode       = optional(string)
+              }))
+              gcfs_config = optional(object({
+                enabled = bool
+              }))
+              gvnic = optional(object({
+                enabled = bool
+              }))
+              guest_accelerator = optional(object({
+                type  = string
+                count = number
+                gpu_driver_installation_config = optional(object({
+                  gpu_driver_version = string
+                }))
+                gpu_partition_size = optional(string)
+                gpu_sharing_config = optional(object({
+                  gpu_sharing_strategy       = string
+                  max_shared_clients_per_gpu = number
+                }))
+              }))
+              image_type       = optional(string)
+              labels           = optional(map(string))
+              resource_labels  = optional(map(string))
+              max_run_duration = optional(string)
+              flex_start       = optional(bool)
+              local_ssd_count  = optional(number)
+              machine_type     = optional(string)
+              metadata         = optional(map(string))
+              min_cpu_platform = optional(string)
+              oauth_scopes     = optional(list(string))
+              preemptible      = optional(bool)
+              reservation_affinity = optional(object({
+                consume_reservation_type = string
+                key                      = optional(string)
+                values                   = optional(list(string))
+              }))
+              spot = optional(bool)
+              sandbox_config = optional(object({
+                sandbox_type = string
+              }))
+              boot_disk_kms_key = optional(string)
+              service_account   = optional(string)
+              shielded_instance_config = optional(object({
+                enable_secure_boot          = optional(bool)
+                enable_integrity_monitoring = optional(bool)
+              }))
+              storage_pools         = optional(list(string))
+              tags                  = optional(list(string))
+              resource_manager_tags = optional(map(string))
+              taint = optional(list(object({
+                key    = string
+                value  = string
+                effect = string
+              })))
+              workload_metadata_config = optional(object({
+                mode = optional(string)
+              }))
+              kubelet_config = optional(object({
+                cpu_manager_policy                     = optional(string)
+                cpu_cfs_quota                          = optional(bool)
+                cpu_cfs_quota_period                   = optional(string)
+                insecure_kubelet_readonly_port_enabled = optional(bool)
+                pod_pids_limit                         = optional(number)
+                container_log_max_size                 = optional(string)
+                container_log_max_files                = optional(number)
+                image_gc_low_threshold_percent         = optional(number)
+                image_gc_high_threshold_percent        = optional(number)
+                image_minimum_gc_age                   = optional(string)
+                allowed_unsafe_sysctls                 = optional(list(string))
+              }))
+              linux_node_config = optional(object({
+                sysctls     = optional(map(string))
+                cgroup_mode = optional(string)
+                hugepages_config = optional(object({
+                  hugepage_size_2m = optional(number)
+                  hugepage_size_1g = optional(number)
+                }))
+              }))
+              windows_node_config = optional(object({
+                osversion = string
+              }))
+              containerd_config = optional(object({
+                private_registry_access_config = optional(object({
+                  enabled = bool
+                  certificate_authority_domain_config = optional(object({
+                    fqdns = list(string)
+                    gcp_secret_manager_certificate_config = object({
+                      secret_uri = string
+                    })
+                  }))
+                }))
+              }))
+              node_group = optional(string)
+              sole_tenant_config = optional(object({
+                node_affinity = optional(object({
+                  key      = string
+                  operator = string
+                  values   = list(string)
+                }))
+              }))
+            })
+        defaultValue:
+          disk_size_gb: 100
+          disk_type: pd-standard
+          image_type: COS_CONTAINERD
+          kubelet_config:
+            insecure_kubelet_readonly_port_enabled: false
+          machine_type: e2-medium
+          workload_metadata_config:
+            mode: GKE_METADATA
+      - name: network_config
+        description: The network configuration of the pool.
+        varType: |-
+          object({
+              create_pod_range     = optional(bool)
+              enable_private_nodes = optional(bool)
+              pod_ipv4_cidr_block  = optional(string)
+              pod_range            = optional(string)
+              additional_node_network_configs = optional(object({
+                network    = string
+                subnetwork = string
+              }))
+              additional_pod_network_configs = optional(object({
+                subnetwork          = string
+                secondary_pod_range = string
+                max_pods_per_node   = number
+              }))
+              pod_cidr_overprovision_config = optional(object({
+                disabled = bool
+              }))
+              network_performance_config = optional(object({
+                total_egress_bandwidth_tier = string
+              }))
+            })
+      - name: node_count
+        description: The number of nodes per instance group. This field can be used to update the number of nodes per instance group but should not be used alongside autoscaling.
+        varType: number
+        defaultValue: 1
+      - name: upgrade_settings
+        description: Specify node upgrade settings to change how GKE upgrades nodes.
+        varType: |-
+          object({
+              max_surge       = optional(number)
+              max_unavailable = optional(number)
+              strategy        = optional(string)
+              blue_green_settings = optional(object({
+                standard_rollout_policy = object({
+                  batch_percentage    = optional(number)
+                  batch_node_count    = optional(number)
+                  batch_soak_duration = optional(string)
+                })
+                node_pool_soak_duration = optional(string)
+              }))
+            })
+        defaultValue:
+          max_surge: 1
+          max_unavailable: 0
+          strategy: SURGE
+      - name: kubernetes_version
+        description: The Kubernetes version for the nodes in this pool. Note that if this field and auto_upgrade are both specified, they will fight each other for what the node version should be, so setting both is highly discouraged. While a fuzzy version can be specified, it's recommended that you specify explicit versions as Terraform will see spurious diffs when fuzzy versions are used. See the google_container_engine_versions data source's version_prefix field to approximate fuzzy versions in a Terraform-compatible way.
+        varType: string
+      - name: placement_policy
+        description: "  Specifies a custom placement policy for the nodes.\n    - type: The type of the policy. Supports a single value: COMPACT. Specifying COMPACT placement policy type places node pool's nodes in a closer physical proximity in order to reduce network latency between nodes.\n    - policy_name: If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. If not found, InvalidArgument error is returned.\n    - tpu_topology: The TPU topology like \"2x4\" or \"2x2x2\".\n"
+        varType: |-
+          object({
+              type         = string
+              policy_name  = optional(string)
+              tpu_topology = optional(string)
+            })
+      - name: queued_provisioning
+        description: "  Specifies node pool-level settings of queued provisioning.\n    - enabled (Required) - Makes nodes obtainable through the ProvisioningRequest API exclusively.\n"
+        varType: |-
+          object({
+              enabled = bool
+            })
+      - name: timeouts
+        description: Timeout for cluster operations.
+        varType: |-
+          object({
+              create = optional(string)
+              update = optional(string)
+              delete = optional(string)
+            })
+        defaultValue:
+          create: 45m
+          delete: 45m
+          update: 45m
+    outputs:
+      - name: id
+        description: an identifier for the resource with format {{project_id}}/{{location}}/{{cluster}}/{{name}}
+      - name: instance_group_urls
+        description: The resource URLs of the managed instance groups associated with this node pool.
+      - name: managed_instance_group_urls
+        description: List of instance group URLs which have been assigned to this node pool.
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/compute.admin
+          - roles/container.admin
+          - roles/iam.serviceAccountUser
+    services:
+      - compute.googleapis.com
+      - container.googleapis.com
+    providerVersions:
+      - source: hashicorp/google-beta
+        version: ">= 6.33.0, < 8"

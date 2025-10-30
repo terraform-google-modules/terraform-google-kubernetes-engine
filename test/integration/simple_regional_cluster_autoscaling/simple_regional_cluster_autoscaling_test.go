@@ -42,7 +42,6 @@ func TestSimpleRegionalClusterAutoscaling(t *testing.T) {
 			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
 		)
 		validateJSONPaths := []string{
-			"status",
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
@@ -58,6 +57,7 @@ func TestSimpleRegionalClusterAutoscaling(t *testing.T) {
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
 
 	})
 

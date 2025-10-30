@@ -32,7 +32,7 @@ data "google_project" "main" {
 
 module "kms" {
   source  = "terraform-google-modules/kms/google"
-  version = "~> 3.2"
+  version = "~> 4.0"
 
   project_id           = var.project_id
   key_protection_level = "HSM"
@@ -56,7 +56,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster"
-  version = "~> 36.0"
+  version = "~> 41.0"
 
   project_id                      = var.project_id
   name                            = "${local.cluster_type}-cluster"
@@ -71,6 +71,7 @@ module "gke" {
   enable_private_endpoint         = true
   enable_private_nodes            = true
   network_tags                    = [local.cluster_type]
+  node_pools_cgroup_mode          = "CGROUP_MODE_V2"
   deletion_protection             = false
   boot_disk_kms_key               = values(module.kms.keys)[0]
   depends_on                      = [google_kms_crypto_key_iam_member.main]

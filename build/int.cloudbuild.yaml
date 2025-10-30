@@ -270,6 +270,36 @@ steps:
     - verify beta-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestBetaCluster --stage teardown --verbose']
+- id: apply gke-standard-cluster
+  waitFor:
+    - teardown beta-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGKEStandardCluster --stage apply --verbose']
+- id: verify gke-standard-cluster
+  waitFor:
+    - apply gke-standard-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGKEStandardCluster --stage verify --verbose']
+- id: teardown gke-standard-cluster
+  waitFor:
+    - verify gke-standard-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGKEStandardCluster --stage teardown --verbose']
+- id: apply gke-autopilot-cluster
+  waitFor:
+    - teardown gke-standard-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGKEAutopilotCluster --stage apply --verbose']
+- id: verify gke-autopilot-cluster
+  waitFor:
+    - apply gke-autopilot-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGKEAutopilotCluster --stage verify --verbose']
+- id: teardown gke-autopilot-cluster
+  waitFor:
+    - verify gke-autopilot-cluster
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGKEAutopilotCluster --stage teardown --verbose']
 - id: apply simple-windows-node-pool-local
   waitFor:
     - init-all
@@ -481,11 +511,26 @@ steps:
     - verify test-confidential-safer-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestConfidentialSaferCluster --stage teardown --verbose']
+- id: apply test-confidential-autopilot-private
+  waitFor:
+    - init-all
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestConfidentialAutopilotPrivate --stage apply --verbose']
+- id: verify test-confidential-autopilot-private
+  waitFor:
+    - apply test-confidential-autopilot-private
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestConfidentialAutopilotPrivate --stage verify --verbose']
+- id: teardown test-confidential-autopilot-private
+  waitFor:
+    - verify test-confidential-autopilot-private
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestConfidentialAutopilotPrivate --stage teardown --verbose']
 tags:
 - 'ci'
 - 'integration'
 substitutions:
   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.23'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.25'
 options:
-  machineType: 'E2_HIGHCPU_32'
+  machineType: 'E2_HIGHCPU_8'
