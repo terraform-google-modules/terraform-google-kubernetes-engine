@@ -34,7 +34,7 @@ data "google_compute_subnetwork" "subnetwork" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
-  version = "~> 38.0"
+  version = "~> 41.0"
 
   project_id                  = var.project_id
   name                        = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -51,6 +51,7 @@ module "gke" {
   default_max_pods_per_node   = 20
   remove_default_node_pool    = true
   deletion_protection         = false
+  enable_k8s_beta_apis        = var.enable_k8s_beta_apis
 
   node_pools = [
     {

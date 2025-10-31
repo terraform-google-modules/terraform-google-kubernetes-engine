@@ -19,7 +19,7 @@ resource "google_container_node_pool" "main" {
 
   name        = var.name
   name_prefix = var.name_prefix
-  project     = var.project
+  project     = var.project_id
   cluster     = var.cluster
   location    = var.location
 
@@ -187,7 +187,7 @@ resource "google_container_node_pool" "main" {
         content {
           effect = taint.value.effect
           key    = taint.value.key
-          value  = taint.value.values
+          value  = taint.value.value
         }
       }
 

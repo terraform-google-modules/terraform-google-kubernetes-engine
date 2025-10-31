@@ -19,7 +19,7 @@ resource "google_container_cluster" "main" {
 
   name                = var.name
   description         = var.description
-  project             = var.project
+  project             = var.project_id
   resource_labels     = var.resource_labels
   location            = var.location
   node_locations      = var.node_locations
@@ -64,7 +64,7 @@ resource "google_container_cluster" "main" {
   dynamic "cost_management_config" {
     for_each = var.cost_management_config != null ? [var.cost_management_config] : []
     content {
-      enabled = cost_management_config.enabled
+      enabled = cost_management_config.value.enabled
     }
   }
 

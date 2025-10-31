@@ -40,6 +40,12 @@ variable "registry_project_ids" {
   type        = list(string)
 }
 
+variable "enable_k8s_beta_apis" {
+  description = "(Optional) - List of Kubernetes Beta APIs to enable in cluster."
+  type        = list(string)
+  default     = ["networking.k8s.io/v1beta1/ipaddresses", "networking.k8s.io/v1beta1/servicecidrs"]
+}
+
 variable "kubernetes_version" {
   type        = string
   description = "The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region."

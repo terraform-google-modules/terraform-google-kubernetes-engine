@@ -15,7 +15,7 @@
  */
 
 output "id" {
-  description = "an identifier for the resource with format {{project}}/{{location}}/{{cluster}}/{{name}}"
+  description = "an identifier for the resource with format {{project_id}}/{{location}}/{{cluster}}/{{name}}"
   value       = google_container_node_pool.main.id
 }
 
