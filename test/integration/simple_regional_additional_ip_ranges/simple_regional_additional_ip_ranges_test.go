@@ -24,7 +24,7 @@ import (
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
 
-func TestSimpleRegional(t *testing.T) {
+func TestSimpleRegionalAdditionalIPRanges(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t,
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
 	)
