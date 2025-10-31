@@ -256,6 +256,16 @@ spec:
         master_authorized_networks_config:
           name: master_authorized_networks_config
           title: Master Authorized Networks Config
+          properties:
+            cidr_blocks:
+              name: cidr_blocks
+              title: Cidr Blocks
+              properties:
+                cidr_block:
+                  name: cidr_block
+                  title: Cidr Block
+                  regexValidation: ^((((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/(3[0-2]|[12]?[0-9]))|((((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\/(12[0-8]|1[01][0-9]|[1-9]?[0-9]))))$
+                  validation: Enter the valid CIDR notation.
         mesh_certificates:
           name: mesh_certificates
           title: Mesh Certificates
@@ -306,6 +316,11 @@ spec:
         network:
           name: network
           title: Network
+          regexValidation: ^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$
+          validation: Network name must start with a lowercase letter followed by up to 62 lowercase letters, numbers, or hyphens and cannot end with a hyphen.
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: default
         node_locations:
           name: node_locations
           title: Node Locations
@@ -456,6 +471,11 @@ spec:
         subnetwork:
           name: subnetwork
           title: Subnetwork
+          regexValidation: ^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$
+          validation: Subnetwork name must start with a lowercase letter followed by up to 62 lowercase letters, numbers, or hyphens and cannot end with a hyphen.
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: default
         timeouts:
           name: timeouts
           title: Timeouts
@@ -468,6 +488,12 @@ spec:
         workload_identity_config:
           name: workload_identity_config
           title: Workload Identity Config
+          properties:
+            workload_pool:
+              name: workload_pool
+              title: Workload Pool
+              regexValidation: ^[a-z]([-a-z0-9]{4,28}[a-z0-9])\.svc\.id\.goog$
+              validation: Workload pool must be in the format <project_id>.svc.id.goog. project_id must be between 6 and 30 characters can have lowercase letters, digits, or hyphens. It must start with a lowercase letter and end with a letter or number.
     runtime:
       outputs:
         cluster_id:
