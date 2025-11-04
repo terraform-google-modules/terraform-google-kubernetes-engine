@@ -98,13 +98,13 @@ module "gke" {
 
 module "kubectl" {
   source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   project_id              = var.project_id
   cluster_name            = module.gke.name
   cluster_location        = module.gke.location
   module_depends_on       = [module.gke.endpoint]
-  kubectl_create_command  = "kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/refs/heads/master/nvidia-driver-installer/cos/daemonset-confidential.yaml"
-  kubectl_destroy_command = "kubectl delete -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/refs/heads/master/nvidia-driver-installer/cos/daemonset-confidential.yaml"
+  kubectl_create_command  = "kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/5619568e366f5ea5de4431bbe8e68934c5f582da/nvidia-driver-installer/cos/daemonset-confidential.yaml"
+  kubectl_destroy_command = "kubectl delete -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/5619568e366f5ea5de4431bbe8e68934c5f582da/nvidia-driver-installer/cos/daemonset-confidential.yaml"
   skip_download           = true
 }
