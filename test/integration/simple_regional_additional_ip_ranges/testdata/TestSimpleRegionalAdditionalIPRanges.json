@@ -6,9 +6,6 @@
       "enabled": true
     },
     "gcpFilestoreCsiDriverConfig": {},
-    "gcsFuseCsiDriverConfig": {
-      "enabled": true
-    },
     "gkeBackupAgentConfig": {},
     "horizontalPodAutoscaling": {},
     "httpLoadBalancing": {},
@@ -17,18 +14,13 @@
     },
     "networkPolicyConfig": {
       "disabled": true
-    },
-    "statefulHaConfig": {
-      "enabled": true
     }
   },
   "autopilot": {},
   "autoscaling": {
     "autoscalingProfile": "BALANCED"
   },
-  "binaryAuthorization": {
-    "evaluationMode": "PROJECT_SINGLETON_POLICY_ENFORCE"
-  },
+  "binaryAuthorization": {},
   "clusterIpv4Cidr": "192.168.0.0/18",
   "costManagementConfig": {
     "enabled": true
