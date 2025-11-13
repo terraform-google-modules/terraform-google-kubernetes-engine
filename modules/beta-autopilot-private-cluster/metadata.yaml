@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-autopilot-private-cluster
-    version: 41.0.1
+    version: 41.0.2
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
