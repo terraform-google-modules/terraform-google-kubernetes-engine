@@ -80,6 +80,8 @@ spec:
         location: examples/simple_fleet_app_operator_permissions
       - name: simple_regional
         location: examples/simple_regional
+      - name: simple_regional_additional_ip_ranges
+        location: examples/simple_regional_additional_ip_ranges
       - name: simple_regional_beta
         location: examples/simple_regional_beta
       - name: simple_regional_cluster_autoscaling

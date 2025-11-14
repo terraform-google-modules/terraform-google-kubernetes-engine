@@ -89,6 +89,22 @@ steps:
     - verify simple-regional-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegional --stage teardown --verbose']
+- id: apply simple-regional-additional-local
+  waitFor:
+    - init-all
+    - teardown simple-regional-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalAdditionalIPRanges --stage apply --verbose']
+- id: verify simple-regional-additional-local
+  waitFor:
+    - apply simple-regional-additional-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalAdditionalIPRanges --stage verify --verbose']
+- id: teardown simple-regional-additional-local
+  waitFor:
+    - verify simple-regional-additional-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalAdditionalIPRanges --stage teardown --verbose']
 - id: apply simple-regional-private-local
   waitFor:
     - init-all
