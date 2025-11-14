@@ -255,7 +255,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-
   secret_manager_config {
     enabled = var.enable_secret_manager_addon
   }

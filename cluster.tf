@@ -233,6 +233,7 @@ resource "google_container_cluster" "primary" {
       total_egress_bandwidth_tier = var.total_egress_bandwidth_tier
     }
   }
+
   dynamic "rbac_binding_config" {
     for_each = var.rbac_binding_config.enable_insecure_binding_system_unauthenticated != null || var.rbac_binding_config.enable_insecure_binding_system_authenticated != null ? [var.rbac_binding_config] : []
     content {
@@ -240,7 +241,6 @@ resource "google_container_cluster" "primary" {
       enable_insecure_binding_system_authenticated   = rbac_binding_config.value["enable_insecure_binding_system_authenticated"]
     }
   }
-
 
   secret_manager_config {
     enabled = var.enable_secret_manager_addon
