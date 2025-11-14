@@ -166,10 +166,10 @@ module "cloud_router" {
   version  = "~> 8.0"
   for_each = { for k, v in var.gke_spokes : k => v }
 
-  name    = "router-${each.value["cluster_name"]}-${random_id.rand.hex}"
-  project = each.value["project_id"]
-  network = module.net[each.key].network_name
-  region  = var.region
+  name       = "router-${each.value["cluster_name"]}-${random_id.rand.hex}"
+  project_id = each.value["project_id"]
+  network    = module.net[each.key].network_name
+  region     = var.region
 }
 
 resource "google_compute_router_nat" "nat_type" {
