@@ -38,7 +38,7 @@ func TestSimpleRegionalAdditionalIPRanges(t *testing.T) {
 		clusterName := bpt.GetStringOutput("cluster_name")
 		serviceAccount := bpt.GetStringOutput("service_account")
 
-		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
+		op := gcloud.Runf(t, "container clusters describe %s --region %s --project %s", clusterName, location, projectId)
 		g := golden.NewOrUpdate(t, op.String(),
 			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
 			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
