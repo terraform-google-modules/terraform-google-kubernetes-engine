@@ -463,8 +463,8 @@ resource "google_container_cluster" "primary" {
     dynamic "additional_ip_ranges_config" {
       for_each = var.additional_ip_ranges_config
       content {
-        subnetwork           = var.additional_ip_ranges_config.subnetwork
-        pod_ipv4_range_names = var.additional_ip_ranges_config.pod_ipv4_range_names
+        subnetwork           = additional_ip_ranges_config.value.subnetwork
+        pod_ipv4_range_names = additional_ip_ranges_config.value.pod_ipv4_range_names
       }
     }
     stack_type = var.stack_type
