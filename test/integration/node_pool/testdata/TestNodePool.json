@@ -722,7 +722,7 @@
             "hugepageSize2m": "1",
             "hugepageSize1g": "2"
           },
-          "transparentHugepageEnabled": "TRANSPARENT_HUGEPAGE_DEFRAG_ALWAYS",
+          "transparentHugepageEnabled": "TRANSPARENT_HUGEPAGE_ENABLED_NEVER",
           "transparentHugepageDefrag": "TRANSPARENT_HUGEPAGE_DEFRAG_ALWAYS"
         },
         "loggingConfig": {
