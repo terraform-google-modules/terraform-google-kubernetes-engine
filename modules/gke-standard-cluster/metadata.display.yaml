@@ -100,8 +100,8 @@ spec:
               enumValueLabels:
                 - label: DISABLED
                   value: DISABLED
-                - label: POLICY_BINDINGS
-                  value: POLICY_BINDINGS
+                - label: PROJECT_SINGLETON_POLICY_ENFORCE
+                  value: PROJECT_SINGLETON_POLICY_ENFORCE
         cluster_autoscaling:
           name: cluster_autoscaling
           title: Cluster Autoscaling

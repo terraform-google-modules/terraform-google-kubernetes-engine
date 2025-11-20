@@ -65,7 +65,6 @@
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "privateEndpoint": "10.0.0.2",
       "publicEndpoint": "KUBERNETES_ENDPOINT"
     }
   },
@@ -784,7 +783,6 @@
     "pubsub": {}
   },
   "privateClusterConfig": {
-    "privateEndpoint": "10.0.0.2",
     "publicEndpoint": "KUBERNETES_ENDPOINT"
   },
   "rbacBindingConfig": {

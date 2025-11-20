@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-{{ autogeneration_note }}
-
-{% set module_path_str =  module_path|string %}
-{% set module_registry_name = module_path_str.split('/')[-1] %}
-
 terraform {
-  required_version = ">=1.3"
-
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v41.0.2"
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+    }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+    }
   }
+  required_version = ">= 0.13"
 }

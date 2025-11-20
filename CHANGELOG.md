@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [41.0.2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.1...v41.0.2) (2025-11-07)
+
+
+### Bug Fixes
+
+* updated the option for evaluation mode ([#2482](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2482)) ([3d577fb](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3d577fb8936782bf40075434155743283e640878))
+
 ## [41.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.0...v41.0.1) (2025-10-28)
 
 
