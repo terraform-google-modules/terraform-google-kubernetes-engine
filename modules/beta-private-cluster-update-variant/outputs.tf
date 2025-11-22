@@ -238,3 +238,18 @@ output "fleet_membership" {
   description = "Fleet membership (if registered)"
   value       = local.fleet_membership
 }
+
+output "gke_backup_agent_config_enabled" {
+  value = var.gke_backup_agent_config.enabled
+  description = "Whether the Backup for GKE agent is enabled."
+}
+
+output "gke_backup_backup_plan_ids" {
+  value = { for k, v in google_gke_backup_backup_plan.this : k => v.id }
+  description = "IDs of created Backup for GKE backup plans."
+}
+
+output "gke_backup_backup_plan_names" {
+  value = { for k, v in google_gke_backup_backup_plan.this : k => v.name }
+  description = "Names of created Backup for GKE backup plans."
+}
