@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [41.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.2...v41.1.0) (2025-11-22)
+
+
+### Features
+
+* add auto_monitoring_config in GKE managed_prometheus ([#2420](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2420)) ([04c88e6](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/04c88e647f676f23530d6cbc43e38840592aa6d1))
+
+
+### Bug Fixes
+
+* additional_ip_ranges_config ([#2458](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2458)) ([839093c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/839093c484f34c0276240bf8a299b2dc5f5602f6))
+
 ## [41.0.2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.1...v41.0.2) (2025-11-07)
 
 
