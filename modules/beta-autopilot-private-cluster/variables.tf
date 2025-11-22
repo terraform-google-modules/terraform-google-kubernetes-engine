@@ -536,10 +536,9 @@ variable "database_encryption" {
   }]
 }
 
-
 variable "default_compute_class_enabled" {
   type        = bool
-  description = "Enable Spot VMs as the default compute class for Node Auto-Provisioning"
+  description = "Enable default compute class for Node Auto-Provisioning"
   default     = null
 }
 
