@@ -22,10 +22,10 @@ spec:
   info:
     title: GKE Standard Cluster
     source:
-      repo: https://github.com/Saranya3/terraform-google-kubernetes-engine.git
+      repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/gke-standard-cluster
-    version: 41.0.4
+    version: 41.0.2
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -973,8 +973,87 @@ spec:
     outputs:
       - name: addons_config
         description: The configuration for addons supported by GKE Autopilot.
+        type:
+          - list
+          - - object
+            - cloudrun_config:
+                - list
+                - - object
+                  - disabled: bool
+                    load_balancer_type: string
+              config_connector_config:
+                - list
+                - - object
+                  - enabled: bool
+              dns_cache_config:
+                - list
+                - - object
+                  - enabled: bool
+              gce_persistent_disk_csi_driver_config:
+                - list
+                - - object
+                  - enabled: bool
+              gcp_filestore_csi_driver_config:
+                - list
+                - - object
+                  - enabled: bool
+              gcs_fuse_csi_driver_config:
+                - list
+                - - object
+                  - enabled: bool
+              gke_backup_agent_config:
+                - list
+                - - object
+                  - enabled: bool
+              horizontal_pod_autoscaling:
+                - list
+                - - object
+                  - disabled: bool
+              http_load_balancing:
+                - list
+                - - object
+                  - disabled: bool
+              istio_config:
+                - list
+                - - object
+                  - auth: string
+                    disabled: bool
+              kalm_config:
+                - list
+                - - object
+                  - enabled: bool
+              lustre_csi_driver_config:
+                - list
+                - - object
+                  - enable_legacy_lustre_port: bool
+                    enabled: bool
+              network_policy_config:
+                - list
+                - - object
+                  - disabled: bool
+              parallelstore_csi_driver_config:
+                - list
+                - - object
+                  - enabled: bool
+              ray_operator_config:
+                - list
+                - - object
+                  - enabled: bool
+                    ray_cluster_logging_config:
+                      - list
+                      - - object
+                        - enabled: bool
+                    ray_cluster_monitoring_config:
+                      - list
+                      - - object
+                        - enabled: bool
+              stateful_ha_config:
+                - list
+                - - object
+                  - enabled: bool
       - name: ca_certificate
         description: Cluster ca certificate (base64 encoded)
+        type: string
       - name: cluster_id
         description: Cluster ID
         type: string
@@ -983,36 +1062,62 @@ spec:
         type: string
       - name: endpoint
         description: Cluster endpoint
+        type: string
       - name: endpoint_dns
         description: Cluster endpoint DNS
+        type: string
       - name: horizontal_pod_autoscaling_enabled
         description: Whether horizontal pod autoscaling enabled
+        type: bool
       - name: http_load_balancing_enabled
         description: Whether http load balancing enabled
+        type: bool
       - name: identity_service_enabled
         description: Whether Identity Service is enabled
+        type: bool
       - name: intranode_visibility_enabled
         description: Whether intra-node visibility is enabled
+        type: bool
       - name: location
         description: Cluster location (region if regional cluster, zone if zonal cluster)
+        type: string
       - name: logging_service
         description: Logging service used
+        type: string
       - name: master_authorized_networks_config
         description: Networks from which access to master is permitted
+        type:
+          - list
+          - - object
+            - cidr_blocks:
+                - list
+                - - object
+                  - cidr_block: string
+                    display_name: string
+              gcp_public_cidrs_access_enabled: bool
       - name: master_version
         description: Current master kubernetes version
+        type: string
       - name: min_master_version
         description: Minimum master kubernetes version
+        type: string
       - name: monitoring_service
         description: Monitoring service used
+        type: string
       - name: network_policy_enabled
         description: Whether network policy enabled
+        type: bool
       - name: node_locations
         description: The list of zones in which the cluster's nodes are located.
+        type:
+          - list
+          - string
       - name: secret_manager_addon_enabled
         description: Whether Secret Manager add-on is enabled
+        type: bool
       - name: vertical_pod_autoscaling_enabled
         description: Whether vertical pod autoscaling enabled
+        type: bool
   requirements:
     roles:
       - level: Project
