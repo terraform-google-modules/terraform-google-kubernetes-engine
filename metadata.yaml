@@ -740,6 +740,10 @@ spec:
       - name: monitoring_enable_managed_prometheus
         description: Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled.
         varType: bool
+      - name: monitoring_auto_monitoring_config_scope
+        description: "Whether or not to enable GKE Auto-Monitoring. Supported values include: ALL, NONE"
+        varType: string
+        defaultValue: NONE
       - name: monitoring_enable_observability_metrics
         description: Whether or not the advanced datapath metrics are enabled.
         varType: bool
