@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-public-cluster
-    version: 41.0.1
+    version: 41.0.2
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -82,6 +82,8 @@ spec:
         location: examples/simple_fleet_app_operator_permissions
       - name: simple_regional
         location: examples/simple_regional
+      - name: simple_regional_additional_ip_ranges
+        location: examples/simple_regional_additional_ip_ranges
       - name: simple_regional_beta
         location: examples/simple_regional_beta
       - name: simple_regional_cluster_autoscaling
@@ -699,6 +701,10 @@ spec:
       - name: monitoring_enable_managed_prometheus
         description: Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled.
         varType: bool
+      - name: monitoring_auto_monitoring_config_scope
+        description: "Whether or not to enable GKE Auto-Monitoring. Supported values include: ALL, NONE"
+        varType: string
+        defaultValue: NONE
       - name: monitoring_enable_observability_metrics
         description: Whether or not the advanced datapath metrics are enabled.
         varType: bool
