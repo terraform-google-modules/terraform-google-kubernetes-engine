@@ -527,6 +527,21 @@ steps:
     - verify test-confidential-safer-cluster
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestConfidentialSaferCluster --stage teardown --verbose']
+- id: apply test-confidential-gpu-public
+  waitFor:
+    - init-all
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestConfidentialGpuPublic --stage apply --verbose']
+- id: verify test-confidential-gpu-public
+  waitFor:
+    - apply test-confidential-gpu-public
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestConfidentialGpuPublic --stage verify --verbose']
+- id: teardown test-confidential-gpu-public
+  waitFor:
+    - verify test-confidential-gpu-public
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestConfidentialGpuPublic --stage teardown --verbose']
 - id: apply test-confidential-autopilot-private
   waitFor:
     - init-all
