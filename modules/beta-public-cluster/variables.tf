@@ -254,6 +254,28 @@ variable "node_pools_cgroup_mode" {
   }
 }
 
+variable "node_pools_transparent_hugepage_enabled" {
+  type        = map(string)
+  description = "Map of strings containing transparent hugepage enabled node config by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = ""
+    default-node-pool = ""
+  }
+}
+
+variable "node_pools_transparent_hugepage_defrag" {
+  type        = map(string)
+  description = "Map of strings containing transparent hugepage defrag node config by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = ""
+    default-node-pool = ""
+  }
+}
+
 variable "node_pools_hugepage_size_2m" {
   type        = map(string)
   description = "Map of strings containing hugepage size 2m node config by node-pool name"
