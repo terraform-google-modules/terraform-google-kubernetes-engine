@@ -361,27 +361,28 @@ spec:
         description: Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)
         varType: |-
           object({
-              enabled                     = bool
-              autoscaling_profile         = string
-              min_cpu_cores               = optional(number)
-              max_cpu_cores               = optional(number)
-              min_memory_gb               = optional(number)
-              max_memory_gb               = optional(number)
-              gpu_resources               = list(object({ resource_type = string, minimum = number, maximum = number }))
-              auto_repair                 = bool
-              auto_upgrade                = bool
-              disk_size                   = optional(number)
-              disk_type                   = optional(string)
-              image_type                  = optional(string)
-              strategy                    = optional(string)
-              max_surge                   = optional(number)
-              max_unavailable             = optional(number)
-              node_pool_soak_duration     = optional(string)
-              batch_soak_duration         = optional(string)
-              batch_percentage            = optional(number)
-              batch_node_count            = optional(number)
-              enable_secure_boot          = optional(bool, false)
-              enable_integrity_monitoring = optional(bool, true)
+              enabled                      = bool
+              autoscaling_profile          = string
+              min_cpu_cores                = optional(number)
+              max_cpu_cores                = optional(number)
+              min_memory_gb                = optional(number)
+              max_memory_gb                = optional(number)
+              gpu_resources                = list(object({ resource_type = string, minimum = number, maximum = number }))
+              auto_repair                  = bool
+              auto_upgrade                 = bool
+              disk_size                    = optional(number)
+              disk_type                    = optional(string)
+              image_type                   = optional(string)
+              strategy                     = optional(string)
+              max_surge                    = optional(number)
+              max_unavailable              = optional(number)
+              node_pool_soak_duration      = optional(string)
+              batch_soak_duration          = optional(string)
+              batch_percentage             = optional(number)
+              batch_node_count             = optional(number)
+              enable_secure_boot           = optional(bool, false)
+              enable_integrity_monitoring  = optional(bool, true)
+              enable_default_compute_class = optional(bool, false)
             })
         defaultValue:
           auto_repair: true
@@ -389,6 +390,7 @@ spec:
           autoscaling_profile: BALANCED
           disk_size: 100
           disk_type: pd-standard
+          enable_default_compute_class: false
           enable_integrity_monitoring: true
           enable_secure_boot: false
           enabled: false
@@ -667,9 +669,6 @@ spec:
         description: Enable Shielded Nodes features on all nodes in this cluster
         varType: bool
         defaultValue: true
-      - name: default_compute_class_enabled
-        description: Enable Spot VMs as the default compute class for Node Auto-Provisioning
-        varType: bool
       - name: enable_binary_authorization
         description: Enable BinAuthZ Admission controller
         varType: bool
