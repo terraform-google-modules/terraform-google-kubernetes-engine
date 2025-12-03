@@ -274,6 +274,28 @@ variable "node_pools_cgroup_mode" {
   }
 }
 
+variable "node_pools_transparent_hugepage_enabled" {
+  type        = map(string)
+  description = "Map of strings containing transparent hugepage enabled node config by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = ""
+    default-node-pool = ""
+  }
+}
+
+variable "node_pools_transparent_hugepage_defrag" {
+  type        = map(string)
+  description = "Map of strings containing transparent hugepage defrag node config by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = ""
+    default-node-pool = ""
+  }
+}
+
 variable "node_pools_hugepage_size_2m" {
   type        = map(string)
   description = "Map of strings containing hugepage size 2m node config by node-pool name"
@@ -1030,6 +1052,23 @@ variable "monitoring_enable_managed_prometheus" {
   type        = bool
   description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
   default     = null
+}
+
+variable "monitoring_auto_monitoring_config_scope" {
+  default     = "NONE"
+  description = "Whether or not to enable GKE Auto-Monitoring. Supported values include: ALL, NONE"
+  type        = string
+
+  validation {
+    condition = contains(
+      [
+        "ALL",
+        "NONE",
+      ],
+      var.monitoring_auto_monitoring_config_scope
+    )
+    error_message = "'monitoring_auto_monitoring_config_scope' value is invalid"
+  }
 }
 
 variable "monitoring_enable_observability_metrics" {
