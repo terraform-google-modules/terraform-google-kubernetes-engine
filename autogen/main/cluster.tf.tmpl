@@ -567,6 +567,12 @@ resource "google_container_cluster" "primary" {
         pod_ipv4_range_names = additional_ip_ranges_config.value.pod_ipv4_range_names
       }
     }
+    dynamic "network_tier_config" {
+      for_each = var.network_tier_config != null ? [1] : []
+      content {
+        network_tier = var.network_tier_config
+      }
+    }
     stack_type                    = var.stack_type
   }
 

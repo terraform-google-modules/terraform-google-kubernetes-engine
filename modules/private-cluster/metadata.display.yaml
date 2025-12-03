@@ -301,6 +301,9 @@ spec:
         master_ipv4_cidr_block:
           name: master_ipv4_cidr_block
           title: Master Ipv4 Cidr Block
+        monitoring_auto_monitoring_config_scope:
+          name: monitoring_auto_monitoring_config_scope
+          title: Monitoring Auto Monitoring Config Scope
         monitoring_enable_managed_prometheus:
           name: monitoring_enable_managed_prometheus
           title: Monitoring Enable Managed Prometheus
@@ -337,6 +340,9 @@ spec:
         network_tags:
           name: network_tags
           title: Network Tags
+        network_tier_config:
+          name: network_tier_config
+          title: Network Tier Config
         node_metadata:
           name: node_metadata
           title: Node Metadata
