@@ -318,7 +318,6 @@ spec:
         location:
           name: location
           title: Location
-          level: 1
         logging_config:
           name: logging_config
           title: Logging Config
