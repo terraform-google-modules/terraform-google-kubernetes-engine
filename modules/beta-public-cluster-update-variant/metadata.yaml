@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-public-cluster-update-variant
-    version: 41.0.2
+    version: 42.0.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
