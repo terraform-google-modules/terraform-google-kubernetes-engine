@@ -686,7 +686,7 @@ variable "network_tier_config" {
   type        = string
   default     = null
   validation {
-    condition     = var.network_tier_config == null || contains(["NETWORK_TIER_DEFAULT", "NETWORK_TIER_STANDARD", "NETWORK_TIER_PREMIUM"], var.network_tier_config)
+    condition     = var.network_tier_config == null ? true : contains(["NETWORK_TIER_DEFAULT", "NETWORK_TIER_STANDARD", "NETWORK_TIER_PREMIUM"], var.network_tier_config)
     error_message = "Network tier allowed values are only NETWORK_TIER_DEFAULT, NETWORK_TIER_STANDARD or NETWORK_TIER_PREMIUM"
   }
 }
