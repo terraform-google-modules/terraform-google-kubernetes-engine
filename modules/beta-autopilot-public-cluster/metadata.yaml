@@ -512,6 +512,9 @@ spec:
         defaultValue:
           enable_insecure_binding_system_authenticated: null
           enable_insecure_binding_system_unauthenticated: null
+      - name: network_tier_config
+        description: Network tier configuration for the cluster
+        varType: string
     outputs:
       - name: ca_certificate
         description: Cluster ca certificate (base64 encoded)

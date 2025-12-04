@@ -1098,3 +1098,13 @@ variable "rbac_binding_config" {
     enable_insecure_binding_system_authenticated   = null
   }
 }
+
+variable "network_tier_config" {
+  description = "Network tier configuration for the cluster"
+  type        = string
+  default     = null
+  validation {
+    condition     = var.network_tier_config == null ? true : contains(["NETWORK_TIER_DEFAULT", "NETWORK_TIER_STANDARD", "NETWORK_TIER_PREMIUM"], var.network_tier_config)
+    error_message = "Network tier allowed values are only NETWORK_TIER_DEFAULT, NETWORK_TIER_STANDARD or NETWORK_TIER_PREMIUM"
+  }
+}
