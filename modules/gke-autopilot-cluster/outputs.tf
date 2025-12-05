@@ -125,5 +125,5 @@ output "intranode_visibility_enabled" {
 
 output "secret_manager_addon_enabled" {
   description = "Whether Secret Manager add-on is enabled"
-  value       = google_container_cluster.main.secret_manager_config != null && length(google_container_cluster.main.secret_manager_config) == 1 ? google_container_cluster.main.secret_manager_config[0].enabled : false
+  value       = google_container_cluster.main.secret_manager_config[0].enabled
 }
