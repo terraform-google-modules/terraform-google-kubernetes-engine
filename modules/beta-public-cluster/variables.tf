@@ -254,6 +254,28 @@ variable "node_pools_cgroup_mode" {
   }
 }
 
+variable "node_pools_transparent_hugepage_enabled" {
+  type        = map(string)
+  description = "Map of strings containing transparent hugepage enabled node config by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = ""
+    default-node-pool = ""
+  }
+}
+
+variable "node_pools_transparent_hugepage_defrag" {
+  type        = map(string)
+  description = "Map of strings containing transparent hugepage defrag node config by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = ""
+    default-node-pool = ""
+  }
+}
+
 variable "node_pools_hugepage_size_2m" {
   type        = map(string)
   description = "Map of strings containing hugepage size 2m node config by node-pool name"
@@ -302,43 +324,45 @@ variable "enable_resource_consumption_export" {
 
 variable "cluster_autoscaling" {
   type = object({
-    enabled                     = bool
-    autoscaling_profile         = string
-    min_cpu_cores               = optional(number)
-    max_cpu_cores               = optional(number)
-    min_memory_gb               = optional(number)
-    max_memory_gb               = optional(number)
-    gpu_resources               = list(object({ resource_type = string, minimum = number, maximum = number }))
-    auto_repair                 = bool
-    auto_upgrade                = bool
-    disk_size                   = optional(number)
-    disk_type                   = optional(string)
-    image_type                  = optional(string)
-    strategy                    = optional(string)
-    max_surge                   = optional(number)
-    max_unavailable             = optional(number)
-    node_pool_soak_duration     = optional(string)
-    batch_soak_duration         = optional(string)
-    batch_percentage            = optional(number)
-    batch_node_count            = optional(number)
-    enable_secure_boot          = optional(bool, false)
-    enable_integrity_monitoring = optional(bool, true)
+    enabled                      = bool
+    autoscaling_profile          = string
+    min_cpu_cores                = optional(number)
+    max_cpu_cores                = optional(number)
+    min_memory_gb                = optional(number)
+    max_memory_gb                = optional(number)
+    gpu_resources                = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair                  = bool
+    auto_upgrade                 = bool
+    disk_size                    = optional(number)
+    disk_type                    = optional(string)
+    image_type                   = optional(string)
+    strategy                     = optional(string)
+    max_surge                    = optional(number)
+    max_unavailable              = optional(number)
+    node_pool_soak_duration      = optional(string)
+    batch_soak_duration          = optional(string)
+    batch_percentage             = optional(number)
+    batch_node_count             = optional(number)
+    enable_secure_boot           = optional(bool, false)
+    enable_integrity_monitoring  = optional(bool, true)
+    enable_default_compute_class = optional(bool, false)
   })
   default = {
-    enabled                     = false
-    autoscaling_profile         = "BALANCED"
-    max_cpu_cores               = 0
-    min_cpu_cores               = 0
-    max_memory_gb               = 0
-    min_memory_gb               = 0
-    gpu_resources               = []
-    auto_repair                 = true
-    auto_upgrade                = true
-    disk_size                   = 100
-    disk_type                   = "pd-standard"
-    image_type                  = "COS_CONTAINERD"
-    enable_secure_boot          = false
-    enable_integrity_monitoring = true
+    enabled                      = false
+    autoscaling_profile          = "BALANCED"
+    max_cpu_cores                = 0
+    min_cpu_cores                = 0
+    max_memory_gb                = 0
+    min_memory_gb                = 0
+    gpu_resources                = []
+    auto_repair                  = true
+    auto_upgrade                 = true
+    disk_size                    = 100
+    disk_type                    = "pd-standard"
+    image_type                   = "COS_CONTAINERD"
+    enable_secure_boot           = false
+    enable_integrity_monitoring  = true
+    enable_default_compute_class = false
   }
   description = "Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling)"
 }
@@ -779,13 +803,6 @@ variable "enable_shielded_nodes" {
   default     = true
 }
 
-
-variable "default_compute_class_enabled" {
-  type        = bool
-  description = "Enable Spot VMs as the default compute class for Node Auto-Provisioning"
-  default     = null
-}
-
 variable "enable_binary_authorization" {
   type        = bool
   description = "Enable BinAuthZ Admission controller"
@@ -935,6 +952,23 @@ variable "monitoring_enable_managed_prometheus" {
   type        = bool
   description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
   default     = null
+}
+
+variable "monitoring_auto_monitoring_config_scope" {
+  default     = "NONE"
+  description = "Whether or not to enable GKE Auto-Monitoring. Supported values include: ALL, NONE"
+  type        = string
+
+  validation {
+    condition = contains(
+      [
+        "ALL",
+        "NONE",
+      ],
+      var.monitoring_auto_monitoring_config_scope
+    )
+    error_message = "'monitoring_auto_monitoring_config_scope' value is invalid"
+  }
 }
 
 variable "monitoring_enable_observability_metrics" {
@@ -1092,5 +1126,15 @@ variable "rbac_binding_config" {
   default = {
     enable_insecure_binding_system_unauthenticated = null
     enable_insecure_binding_system_authenticated   = null
+  }
+}
+
+variable "network_tier_config" {
+  description = "Network tier configuration for the cluster"
+  type        = string
+  default     = null
+  validation {
+    condition     = var.network_tier_config == null ? true : contains(["NETWORK_TIER_DEFAULT", "NETWORK_TIER_STANDARD", "NETWORK_TIER_PREMIUM"], var.network_tier_config)
+    error_message = "Network tier allowed values are only NETWORK_TIER_DEFAULT, NETWORK_TIER_STANDARD or NETWORK_TIER_PREMIUM"
   }
 }

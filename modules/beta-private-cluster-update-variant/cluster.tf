@@ -117,6 +117,12 @@ resource "google_container_cluster" "primary" {
       enable_components = var.monitoring_enabled_components
       managed_prometheus {
         enabled = var.monitoring_enable_managed_prometheus == null ? false : var.monitoring_enable_managed_prometheus
+        dynamic "auto_monitoring_config" {
+          for_each = var.monitoring_enable_managed_prometheus == true && var.monitoring_auto_monitoring_config_scope != null ? [1] : []
+          content {
+            scope = var.monitoring_auto_monitoring_config_scope
+          }
+        }
       }
       advanced_datapath_observability_config {
         enable_metrics = var.monitoring_enable_observability_metrics
@@ -131,7 +137,7 @@ resource "google_container_cluster" "primary" {
 
   cluster_autoscaling {
     enabled                       = var.cluster_autoscaling.enabled
-    default_compute_class_enabled = var.default_compute_class_enabled
+    default_compute_class_enabled = lookup(var.cluster_autoscaling, "enable_default_compute_class", false)
     dynamic "auto_provisioning_defaults" {
       for_each = var.cluster_autoscaling.enabled ? [1] : []
 
@@ -465,6 +471,12 @@ resource "google_container_cluster" "primary" {
       content {
         subnetwork           = additional_ip_ranges_config.value.subnetwork
         pod_ipv4_range_names = additional_ip_ranges_config.value.pod_ipv4_range_names
+      }
+    }
+    dynamic "network_tier_config" {
+      for_each = var.network_tier_config != null ? [1] : []
+      content {
+        network_tier = var.network_tier_config
       }
     }
     stack_type = var.stack_type
@@ -1168,6 +1180,10 @@ resource "google_container_node_pool" "pools" {
         local.node_pools_linux_node_configs_sysctls[each.value["name"]],
         local.node_pools_cgroup_mode["all"] == "" ? {} : { cgroup = local.node_pools_cgroup_mode["all"] },
         local.node_pools_cgroup_mode[each.value["name"]] == "" ? {} : { cgroup = local.node_pools_cgroup_mode[each.value["name"]] },
+        local.node_pools_transparent_hugepage_enabled["all"] == "" ? {} : { transparent_hugepage_enabled = local.node_pools_transparent_hugepage_enabled["all"] },
+        local.node_pools_transparent_hugepage_enabled[each.value["name"]] == "" ? {} : { transparent_hugepage_enabled = local.node_pools_transparent_hugepage_enabled[each.value["name"]] },
+        local.node_pools_transparent_hugepage_defrag["all"] == "" ? {} : { transparent_hugepage_defrag = local.node_pools_transparent_hugepage_defrag["all"] },
+        local.node_pools_transparent_hugepage_defrag[each.value["name"]] == "" ? {} : { transparent_hugepage_defrag = local.node_pools_transparent_hugepage_defrag[each.value["name"]] },
         local.node_pools_hugepage_size_2m["all"] == "" ? {} : { cgroup = local.node_pools_hugepage_size_2m["all"] },
         local.node_pools_hugepage_size_2m[each.value["name"]] == "" ? {} : { cgroup = local.node_pools_hugepage_size_2m[each.value["name"]] },
         local.node_pools_hugepage_size_1g["all"] == "" ? {} : { cgroup = local.node_pools_hugepage_size_1g["all"] },
@@ -1179,7 +1195,9 @@ resource "google_container_node_pool" "pools" {
           local.node_pools_linux_node_configs_sysctls["all"],
           local.node_pools_linux_node_configs_sysctls[each.value["name"]]
         )
-        cgroup_mode = try(coalesce(local.node_pools_cgroup_mode[each.value["name"]], local.node_pools_cgroup_mode["all"]), null)
+        cgroup_mode                  = try(coalesce(local.node_pools_cgroup_mode[each.value["name"]], local.node_pools_cgroup_mode["all"]), null)
+        transparent_hugepage_enabled = try(coalesce(local.node_pools_transparent_hugepage_enabled[each.value["name"]], local.node_pools_transparent_hugepage_enabled["all"]), null)
+        transparent_hugepage_defrag  = try(coalesce(local.node_pools_transparent_hugepage_defrag[each.value["name"]], local.node_pools_transparent_hugepage_defrag["all"]), null)
         dynamic "hugepages_config" {
           for_each = length(merge(
             local.node_pools_hugepage_size_2m["all"] == "" ? {} : { cgroup = local.node_pools_hugepage_size_2m["all"] },
