@@ -185,6 +185,16 @@ variable "node_pools_resource_labels" {
   }
 }
 
+variable "node_pools_resource_manager_tags" {
+  type        = map(map(string))
+  description = "Map of maps containing resource manager tags by node-pool name"
+
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
+
 variable "node_pools_metadata" {
   type        = map(map(string))
   description = "Map of maps containing node metadata by node-pool name"
@@ -192,6 +202,28 @@ variable "node_pools_metadata" {
   default = {
     all               = {}
     default-node-pool = {}
+  }
+}
+
+variable "node_pools_cgroup_mode" {
+  type        = map(string)
+  description = "Map of strings containing cgroup node config by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = ""
+    default-node-pool = ""
+  }
+}
+
+variable "node_pools_hugepage_size_2m" {
+  type        = map(string)
+  description = "Map of strings containing hugepage size 2m node config by node-pool name"
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = ""
+    default-node-pool = ""
   }
 }
 
@@ -537,6 +569,12 @@ variable "timeouts" {
 variable "enable_gcfs" {
   type        = bool
   description = "Enable image streaming on cluster level."
+  default     = false
+}
+
+variable "enable_secret_manager_addon" {
+  description = "Enable the Secret Manager add-on for this cluster"
+  type        = bool
   default     = false
 }
 
