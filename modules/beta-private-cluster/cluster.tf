@@ -541,7 +541,7 @@ resource "google_container_cluster" "primary" {
     delete = lookup(var.timeouts, "delete", "45m")
   }
   dynamic "node_pool" {
-    for_each = var.remove_default_node_pool || length(var.node_pools) == 0 ? [] : [1]
+    for_each = var.remove_default_node_pool ? [] : (length(var.node_pools) == 0 ? [1] : [])
     content {
       name               = "default-pool"
       initial_node_count = var.initial_node_count
