@@ -544,7 +544,7 @@ resource "google_container_cluster" "primary" {
     for_each = var.remove_default_node_pool ? [] : (length(var.node_pools) == 0 ? [1] : [])
     content {
       name               = "default-pool"
-      initial_node_count = var.initial_node_count
+      initial_node_count = max(1, var.initial_node_count)
 
       management {
         auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
