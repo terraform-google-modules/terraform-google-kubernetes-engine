@@ -40,7 +40,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  initial_node_count = var.remove_default_node_pool || length(var.node_pools) > 0 ? null : var.initial_node_count
+  initial_node_count = var.remove_default_node_pool || length(var.node_pools) > 0 ? null : max(1, var.initial_node_count)
 
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
