@@ -6,6 +6,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [42.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.2...v42.0.0) (2025-12-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* making location field as required for standard cluster ([#2495](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2495))
+* **gke-node-pool:** module to allow List configurations for fields ([#2496](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2496))
+* support enabling default compute class in cluster autoscaler ([#2442](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2442))
+
+### Features
+
+* add auto_monitoring_config in GKE managed_prometheus ([#2420](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2420)) ([04c88e6](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/04c88e647f676f23530d6cbc43e38840592aa6d1))
+* add network tier configuration ([#2497](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2497)) ([873d39e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/873d39ec26e835b7ca2c7b63082ca786f9138df4))
+* add support for transparent huge pages configs ([#2464](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2464)) ([8297521](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8297521f91715f262919a85d9c51d1a13af1d1d9))
+* support enabling default compute class in cluster autoscaler ([#2442](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2442)) ([3569f13](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3569f13ca21a2c2b4981cd708350962050ae330c))
+
+
+### Bug Fixes
+
+* additional_ip_ranges_config ([#2458](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2458)) ([839093c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/839093c484f34c0276240bf8a299b2dc5f5602f6))
+* **gke-node-pool:** module to allow List configurations for fields ([#2496](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2496)) ([dc798c1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/dc798c1dd7af055f1223915c949ac55cc23f89a4))
+* making location field as required for standard cluster ([#2495](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2495)) ([5f7d53c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5f7d53cd77dd593508856fd84472b7071bd7b779))
+
 ## [41.0.2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.1...v41.0.2) (2025-11-07)
 
 

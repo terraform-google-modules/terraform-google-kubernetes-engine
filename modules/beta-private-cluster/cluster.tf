@@ -135,7 +135,7 @@ resource "google_container_cluster" "primary" {
 
   cluster_autoscaling {
     enabled                       = var.cluster_autoscaling.enabled
-    default_compute_class_enabled = var.default_compute_class_enabled
+    default_compute_class_enabled = lookup(var.cluster_autoscaling, "enable_default_compute_class", false)
     dynamic "auto_provisioning_defaults" {
       for_each = var.cluster_autoscaling.enabled ? [1] : []
 
@@ -469,6 +469,12 @@ resource "google_container_cluster" "primary" {
       content {
         subnetwork           = additional_ip_ranges_config.value.subnetwork
         pod_ipv4_range_names = additional_ip_ranges_config.value.pod_ipv4_range_names
+      }
+    }
+    dynamic "network_tier_config" {
+      for_each = var.network_tier_config != null ? [1] : []
+      content {
+        network_tier = var.network_tier_config
       }
     }
     stack_type = var.stack_type

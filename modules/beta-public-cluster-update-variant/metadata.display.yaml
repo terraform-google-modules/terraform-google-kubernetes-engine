@@ -310,6 +310,9 @@ spec:
         master_authorized_networks:
           name: master_authorized_networks
           title: Master Authorized Networks
+        monitoring_auto_monitoring_config_scope:
+          name: monitoring_auto_monitoring_config_scope
+          title: Monitoring Auto Monitoring Config Scope
         monitoring_enable_managed_prometheus:
           name: monitoring_enable_managed_prometheus
           title: Monitoring Enable Managed Prometheus
@@ -346,6 +349,9 @@ spec:
         network_tags:
           name: network_tags
           title: Network Tags
+        network_tier_config:
+          name: network_tier_config
+          title: Network Tier Config
         node_metadata:
           name: node_metadata
           title: Node Metadata
