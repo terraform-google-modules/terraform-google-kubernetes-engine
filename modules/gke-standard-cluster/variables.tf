@@ -301,9 +301,9 @@ variable "maintenance_policy" {
 variable "master_auth" {
   description = "The authentication information for accessing the Kubernetes master."
   type = object({
-    client_certificate_config = optional(object({
-      issue_client_certificate = optional(bool)
-    }))
+    client_certificate_config = object({
+      issue_client_certificate = bool
+    })
   })
   default = null
 }
@@ -658,15 +658,15 @@ variable "node_pool" {
       enable_private_nodes = optional(bool)
       pod_ipv4_cidr_block  = optional(string)
       pod_range            = optional(string)
-      additional_node_network_configs = optional(object({
+      additional_node_network_configs = optional(list(object({
         network    = string
         subnetwork = string
-      }))
-      additional_pod_network_configs = optional(object({
+      })))
+      additional_pod_network_configs = optional(list(object({
         subnetwork          = string
         secondary_pod_range = string
         max_pods_per_node   = number
-      }))
+      })))
       pod_cidr_overprovision_config = optional(object({
         disabled = bool
       }))

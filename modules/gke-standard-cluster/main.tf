@@ -337,12 +337,10 @@ resource "google_container_cluster" "main" {
     for_each = var.master_auth != null ? [var.master_auth] : []
 
     content {
-      dynamic "client_certificate_config" {
-        for_each = master_auth.value.client_certificate_config != null ? [master_auth.value.client_certificate_config] : []
-        content {
-          issue_client_certificate = client_certificate_config.value.issue_client_certificate
-        }
+      client_certificate_config {
+        issue_client_certificate = master_auth.value.client_certificate_config.issue_client_certificate
       }
+
     }
   }
 
