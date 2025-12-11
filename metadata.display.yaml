@@ -285,6 +285,9 @@ spec:
         master_authorized_networks:
           name: master_authorized_networks
           title: Master Authorized Networks
+        monitoring_auto_monitoring_config_scope:
+          name: monitoring_auto_monitoring_config_scope
+          title: Monitoring Auto Monitoring Config Scope
         monitoring_enable_managed_prometheus:
           name: monitoring_enable_managed_prometheus
           title: Monitoring Enable Managed Prometheus
@@ -321,6 +324,9 @@ spec:
         network_tags:
           name: network_tags
           title: Network Tags
+        network_tier_config:
+          name: network_tier_config
+          title: Network Tier Config
         node_metadata:
           name: node_metadata
           title: Node Metadata
@@ -360,6 +366,12 @@ spec:
         node_pools_taints:
           name: node_pools_taints
           title: Node Pools Taints
+        node_pools_transparent_hugepage_defrag:
+          name: node_pools_transparent_hugepage_defrag
+          title: Node Pools Transparent Hugepage Defrag
+        node_pools_transparent_hugepage_enabled:
+          name: node_pools_transparent_hugepage_enabled
+          title: Node Pools Transparent Hugepage Enabled
         non_masquerade_cidrs:
           name: non_masquerade_cidrs
           title: Non Masquerade Cidrs

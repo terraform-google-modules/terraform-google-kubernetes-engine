@@ -247,6 +247,9 @@ spec:
         network_tags:
           name: network_tags
           title: Network Tags
+        network_tier_config:
+          name: network_tier_config
+          title: Network Tier Config
         node_pools_cgroup_mode:
           name: node_pools_cgroup_mode
           title: Node Pools Cgroup Mode
