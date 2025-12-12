@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [42.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v42.0.0...v42.0.1) (2025-12-11)
+
+
+### Bug Fixes
+
+* Adding output types to metadata.yaml for gke-standard-cluster ([#2492](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2492)) ([0d4b38a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0d4b38a8445ea79af36c5d506cd8be655ba41b4a))
+
 ## [42.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.2...v42.0.0) (2025-12-04)
 
 
