@@ -280,15 +280,6 @@ spec:
         issue_client_certificate:
           name: issue_client_certificate
           title: Issue Client Certificate
-        istio:
-          name: istio
-          title: Istio
-        istio_auth:
-          name: istio_auth
-          title: Istio Auth
-        kalm_config:
-          name: kalm_config
-          title: Kalm Config
         kubernetes_version:
           name: kubernetes_version
           title: Kubernetes Version
