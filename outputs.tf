@@ -58,7 +58,7 @@ output "zones" {
 
 output "endpoint" {
   description = "Cluster endpoint"
-  value       = local.cluster_endpoint
+  value       = nonsensitive(local.cluster_endpoint)
   depends_on = [
     /* Nominally, the endpoint is populated as soon as it is known to Terraform.
     * However, the cluster may not be in a usable state yet.  Therefore any
