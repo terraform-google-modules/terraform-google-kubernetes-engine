@@ -32,7 +32,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google"
-  version = "~> 41.0"
+  version = "~> 42.0"
 
   project_id               = var.project_id
   name                     = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -58,7 +58,7 @@ module "gke" {
 # example without existing KSA
 module "workload_identity" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version = "~> 41.0"
+  version = "~> 42.0"
 
   project_id          = var.project_id
   name                = "iden-${module.gke.name}"
@@ -78,7 +78,7 @@ resource "kubernetes_service_account" "test" {
 
 module "workload_identity_existing_ksa" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version = "~> 41.0"
+  version = "~> 42.0"
 
   project_id          = var.project_id
   name                = "existing-${module.gke.name}"
@@ -97,7 +97,7 @@ resource "google_service_account" "custom" {
 
 module "workload_identity_existing_gsa" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version = "~> 41.0"
+  version = "~> 42.0"
 
   project_id          = var.project_id
   name                = google_service_account.custom.account_id

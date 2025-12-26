@@ -585,6 +585,6 @@ spec:
       - source: hashicorp/google-beta
         version: ">= 7.0.0, < 8"
       - source: hashicorp/kubernetes
-        version: ~> 2.10
+        version: ">= 2.10, < 4"
       - source: hashicorp/random
         version: ">= 2.1"
