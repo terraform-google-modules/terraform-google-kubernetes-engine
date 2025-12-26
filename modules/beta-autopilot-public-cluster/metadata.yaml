@@ -542,8 +542,6 @@ spec:
         description: Whether Identity Service is enabled
       - name: intranode_visibility_enabled
         description: Whether intra-node visibility is enabled
-      - name: istio_enabled
-        description: Whether Istio is enabled
       - name: location
         description: Cluster location (region if regional cluster, zone if zonal cluster)
       - name: logging_service

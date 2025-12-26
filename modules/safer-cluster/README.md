@@ -31,8 +31,8 @@ are available for configuration, recommendations on their settings are documente
 
     -   Placing them in the same cluster will provide fast network
         communication, and the different namespaces will be configured to
-        provide some administrative isolation. Istio will be used to encrypt and
-        control communication between applications.
+        provide some administrative isolation. Cloud Service Mesh can be used to
+        encrypt and control communication between applications.
 
 -   We suggest to store user or business data persistently in managed storage
     services that are inventoried and controlled by centralized teams.
@@ -242,8 +242,6 @@ For simplicity, we suggest using `roles/container.admin` and
 | initial\_node\_count | The number of nodes to create in this cluster's default node pool. | `number` | `0` | no |
 | ip\_range\_pods | The _name_ of the secondary subnet ip range to use for pods | `string` | n/a | yes |
 | ip\_range\_services | The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used. | `string` | `null` | no |
-| istio | (Beta) Enable Istio addon | `bool` | `false` | no |
-| istio\_auth | (Beta) The authentication type between services in Istio. | `string` | `"AUTH_MUTUAL_TLS"` | no |
 | kubernetes\_version | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. The module enforces certain minimum versions to ensure that specific features are available. | `string` | `null` | no |
 | logging\_service | The logging service that the cluster should write logs to. Available options include logging.googleapis.com, logging.googleapis.com/kubernetes (beta), and none | `string` | `"logging.googleapis.com/kubernetes"` | no |
 | maintenance\_end\_time | Time window specified for recurring maintenance operations in RFC3339 format | `string` | `""` | no |

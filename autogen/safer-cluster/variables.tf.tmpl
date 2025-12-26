@@ -323,18 +323,6 @@ variable "master_ipv4_cidr_block" {
   default     = "10.0.0.0/28"
 }
 
-variable "istio" {
-  description = "(Beta) Enable Istio addon"
-  type        = bool
-  default     = false
-}
-
-variable "istio_auth" {
-  type        = string
-  description = "(Beta) The authentication type between services in Istio."
-  default     = "AUTH_MUTUAL_TLS"
-}
-
 variable "dns_cache" {
   type        = bool
   description = "(Beta) The status of the NodeLocal DNSCache addon."

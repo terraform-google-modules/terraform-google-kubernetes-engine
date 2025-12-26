@@ -92,7 +92,6 @@ module "gke" {
   enable_private_nodes       = true
   {% endif %}
   {% if beta_cluster and autopilot_cluster != true  %}
-  istio                      = true
   cloudrun                   = true
   {% endif %}
   dns_cache                  = false

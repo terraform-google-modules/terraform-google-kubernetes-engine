@@ -335,14 +335,6 @@ spec:
         description: The IP range in CIDR notation to use for the hosted master network
         varType: string
         defaultValue: 10.0.0.0/28
-      - name: istio
-        description: (Beta) Enable Istio addon
-        varType: bool
-        defaultValue: false
-      - name: istio_auth
-        description: (Beta) The authentication type between services in Istio.
-        varType: string
-        defaultValue: AUTH_MUTUAL_TLS
       - name: dns_cache
         description: (Beta) The status of the NodeLocal DNSCache addon.
         varType: bool

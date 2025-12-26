@@ -1055,24 +1055,6 @@ variable "enable_multi_networking" {
   default     = null
 }
 
-variable "istio" {
-  description = "(Beta) Enable Istio addon"
-  type        = bool
-  default     = false
-}
-
-variable "istio_auth" {
-  type        = string
-  description = "(Beta) The authentication type between services in Istio."
-  default     = "AUTH_MUTUAL_TLS"
-}
-
-variable "kalm_config" {
-  type        = bool
-  description = "(Beta) Whether KALM is enabled for this cluster."
-  default     = false
-}
-
 variable "cloudrun" {
   description = "(Beta) Enable CloudRun addon"
   type        = bool

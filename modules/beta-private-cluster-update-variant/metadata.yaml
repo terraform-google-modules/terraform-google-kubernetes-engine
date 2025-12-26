@@ -766,18 +766,6 @@ spec:
       - name: enable_multi_networking
         description: Whether multi-networking is enabled for this cluster
         varType: bool
-      - name: istio
-        description: (Beta) Enable Istio addon
-        varType: bool
-        defaultValue: false
-      - name: istio_auth
-        description: (Beta) The authentication type between services in Istio.
-        varType: string
-        defaultValue: AUTH_MUTUAL_TLS
-      - name: kalm_config
-        description: (Beta) Whether KALM is enabled for this cluster.
-        varType: bool
-        defaultValue: false
       - name: cloudrun
         description: (Beta) Enable CloudRun addon
         varType: bool
@@ -863,8 +851,6 @@ spec:
         description: List of GKE generated instance groups
       - name: intranode_visibility_enabled
         description: Whether intra-node visibility is enabled
-      - name: istio_enabled
-        description: Whether Istio is enabled
       - name: location
         description: Cluster location (region if regional cluster, zone if zonal cluster)
       - name: logging_service

@@ -99,7 +99,6 @@ locals {
   cluster_output_secret_manager_addon_enabled       = google_container_cluster.primary.secret_manager_config != null && length(google_container_cluster.primary.secret_manager_config) == 1 ? google_container_cluster.primary.secret_manager_config[0].enabled : false
 
   # BETA features
-  cluster_output_istio_disabled              = google_container_cluster.primary.addons_config[0].istio_config != null && length(google_container_cluster.primary.addons_config[0].istio_config) == 1 ? google_container_cluster.primary.addons_config[0].istio_config[0].disabled : false
   cluster_output_pod_security_policy_enabled = google_container_cluster.primary.pod_security_policy_config != null && length(google_container_cluster.primary.pod_security_policy_config) == 1 ? google_container_cluster.primary.pod_security_policy_config[0].enabled : false
 
   # /BETA features
@@ -133,7 +132,6 @@ locals {
   cluster_secret_manager_addon_enabled = local.cluster_output_secret_manager_addon_enabled
 
   # BETA features
-  cluster_istio_enabled               = !local.cluster_output_istio_disabled
   cluster_pod_security_policy_enabled = local.cluster_output_pod_security_policy_enabled
 
   # /BETA features
