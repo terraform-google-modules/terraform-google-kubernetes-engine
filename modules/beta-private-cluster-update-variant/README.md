@@ -405,6 +405,8 @@ The node_pools variable takes the following parameters:
 | enable_confidential_nodes | An optional flag to enable confidential node config. | false | Optional |
 | disk_size_gb | Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB | 100 | Optional |
 | disk_type | Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd') | pd-standard | Optional |
+| provisioned_iops | Indicates how many IOPS to provision for the disk. This sets the number of I/O operations per second that the disk can handle. For more details, see the [Hyperdisk documentation](https://cloud.google.com/compute/docs/disks/hyperdisks). | null | Optional |
+| provisioned_throughput | Indicates how much throughput to provision for the disk, in MB/s. This sets the amount of data that can be read or written to the disk per second. For more details, see the [Hyperdisk documentation](https://cloud.google.com/compute/docs/disks/hyperdisks). | null | Optional |
 | effect | Effect for the taint | | Required |
 | enable_fast_socket | Enable the NCCL Fast Socket feature. `enable_gvnic` must also be enabled. | null | Optional |
 | enable_gcfs | Google Container File System (gcfs) has to be enabled for image streaming to be active. Needs image_type to be set to COS_CONTAINERD. | false | Optional |
