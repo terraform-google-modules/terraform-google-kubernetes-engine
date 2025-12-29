@@ -17,4 +17,4 @@ Users currently including `kalm_config` should remove this variable from their m
 
 The `istio` and `istio_auth` variables have been removed.  The `istio_enabled` output has also been removed from these modules and the autopilot beta modules.
 
-Users currently using the GKE Istio addon should migrate to Cloud Service Mesh.
+Users currently using the GKE Istio addon should migrate to [Cloud Service Mesh](https://cloud.google.com/products/service-mesh).
