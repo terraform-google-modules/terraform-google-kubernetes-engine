@@ -414,21 +414,12 @@ resource "google_container_cluster" "primary" {
       }
     }
 
-    istio_config {
-      disabled = !var.istio
-      auth     = var.istio_auth
-    }
-
     dynamic "cloudrun_config" {
       for_each = local.cluster_cloudrun_config
 
       content {
         disabled = cloudrun_config.value.disabled
       }
-    }
-
-    kalm_config {
-      enabled = var.kalm_config
     }
   }
 
