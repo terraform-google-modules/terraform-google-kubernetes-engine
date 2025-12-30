@@ -31,8 +31,8 @@ are available for configuration, recommendations on their settings are documente
 
     -   Placing them in the same cluster will provide fast network
         communication, and the different namespaces will be configured to
-        provide some administrative isolation. Istio will be used to encrypt and
-        control communication between applications.
+        provide some administrative isolation. Cloud Service Mesh can be used to
+        encrypt and control communication between applications.
 
 -   We suggest to store user or business data persistently in managed storage
     services that are inventoried and controlled by centralized teams.
