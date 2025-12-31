@@ -6,6 +6,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [43.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v42.0.0...v43.0.0) (2025-12-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove istio and kalm ([#2505](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2505))
+* add sensitive endpoint for TPG v7.14 ([#2509](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2509))
+
+### Features
+
+* add support for provisioned_iops and provisioned_throughput ([#2510](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2510)) ([4579c46](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4579c46731c57d4f7f1a97b7a0abe375dc799169))
+* allow new hashicorp/kubernetes version 3.0.0 ([#2501](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2501)) ([841d889](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/841d8890c991e00f28e7d57a93ac62518a0ae61c))
+
+
+### Bug Fixes
+
+* add sensitive endpoint for TPG v7.14 ([#2509](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2509)) ([8d309be](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8d309be741a498721ef5cafc5bac0634e6d67a42))
+* Adding output types to metadata.yaml for gke-standard-cluster ([#2492](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2492)) ([0d4b38a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0d4b38a8445ea79af36c5d506cd8be655ba41b4a))
+* **deps:** Update Terraform kubernetes to v3 ([#2504](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2504)) ([6c2d800](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6c2d8003acd34bc4f02ca9b748892dc364391a10))
+* remove istio and kalm ([#2505](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2505)) ([c6947f3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c6947f36b4d6cf2915a8552ea571bf9df151dbf8))
+
 ## [42.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.2...v42.0.0) (2025-12-04)
 
 
