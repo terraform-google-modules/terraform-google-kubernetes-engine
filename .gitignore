@@ -55,6 +55,7 @@ modules/**/terraform.tfvars
 
 test/integration/gcloud/config.sh
 test/integration/tmp
+tmp
 
 credentials.json
 
