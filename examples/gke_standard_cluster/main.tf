@@ -44,7 +44,7 @@ module "gke" {
   network    = var.network
   subnetwork = var.subnetwork
 
-  # need for the Multi-Network for Pods configuration
+  # Needed for the Multi-Network for Pods configuration
   datapath_provider       = "ADVANCED_DATAPATH"
   enable_multi_networking = true
 
@@ -100,7 +100,7 @@ resource "random_string" "suffix" {
   upper   = false
 }
 
-# secondary VPC for the additional interface
+# Secondary VPC for the additional interface
 resource "google_compute_network" "additional_network" {
   name                    = "gke-additional-network-${random_string.suffix.result}"
   auto_create_subnetworks = false

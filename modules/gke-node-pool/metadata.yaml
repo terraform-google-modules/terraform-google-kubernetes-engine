@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -407,6 +407,8 @@ spec:
         description: The resource URLs of the managed instance groups associated with this node pool.
       - name: managed_instance_group_urls
         description: List of instance group URLs which have been assigned to this node pool.
+      - name: name
+        description: The name of the node pool.
   requirements:
     roles:
       - level: Project
