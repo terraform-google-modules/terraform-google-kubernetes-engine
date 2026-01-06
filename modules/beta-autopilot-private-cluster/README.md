@@ -194,7 +194,6 @@ Then perform the following commands on the root folder:
 | identity\_namespace | Workload Identity pool |
 | identity\_service\_enabled | Whether Identity Service is enabled |
 | intranode\_visibility\_enabled | Whether intra-node visibility is enabled |
-| istio\_enabled | Whether Istio is enabled |
 | location | Cluster location (region if regional cluster, zone if zonal cluster) |
 | logging\_service | Logging service used |
 | master\_authorized\_networks\_config | Networks from which access to master is permitted |

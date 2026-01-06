@@ -414,21 +414,12 @@ resource "google_container_cluster" "primary" {
       }
     }
 
-    istio_config {
-      disabled = !var.istio
-      auth     = var.istio_auth
-    }
-
     dynamic "cloudrun_config" {
       for_each = local.cluster_cloudrun_config
 
       content {
         disabled = cloudrun_config.value.disabled
       }
-    }
-
-    kalm_config {
-      enabled = var.kalm_config
     }
   }
 
@@ -553,6 +544,15 @@ resource "google_container_cluster" "primary" {
       min_cpu_platform            = lookup(var.node_pools[0], "min_cpu_platform", "")
       enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
       disk_type                   = lookup(var.node_pools[0], "disk_type", null)
+
+      dynamic "boot_disk" {
+        for_each = lookup(var.node_pools[0], "provisioned_iops", null) != null || lookup(var.node_pools[0], "provisioned_throughput", null) != null ? [1] : []
+        content {
+          provisioned_iops       = lookup(var.node_pools[0], "provisioned_iops", null)
+          provisioned_throughput = lookup(var.node_pools[0], "provisioned_throughput", null)
+        }
+      }
+
       dynamic "gcfs_config" {
         for_each = lookup(var.node_pools[0], "enable_gcfs", null) != null ? [var.node_pools[0].enable_gcfs] : []
         content {
@@ -924,6 +924,14 @@ resource "google_container_node_pool" "pools" {
     local_ssd_count = lookup(each.value, "local_ssd_count", 0)
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
+
+    dynamic "boot_disk" {
+      for_each = lookup(each.value, "provisioned_iops", null) != null || lookup(each.value, "provisioned_throughput", null) != null ? [1] : []
+      content {
+        provisioned_iops       = lookup(each.value, "provisioned_iops", null)
+        provisioned_throughput = lookup(each.value, "provisioned_throughput", null)
+      }
+    }
 
     dynamic "ephemeral_storage_local_ssd_config" {
       for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 || lookup(each.value, "ephemeral_storage_local_ssd_data_cache_count", 0) > 0 ? [1] : []
@@ -1309,6 +1317,14 @@ resource "google_container_node_pool" "windows_pools" {
     local_ssd_count = lookup(each.value, "local_ssd_count", 0)
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
+
+    dynamic "boot_disk" {
+      for_each = lookup(each.value, "provisioned_iops", null) != null || lookup(each.value, "provisioned_throughput", null) != null ? [1] : []
+      content {
+        provisioned_iops       = lookup(each.value, "provisioned_iops", null)
+        provisioned_throughput = lookup(each.value, "provisioned_throughput", null)
+      }
+    }
 
     dynamic "ephemeral_storage_local_ssd_config" {
       for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 || lookup(each.value, "ephemeral_storage_local_ssd_data_cache_count", 0) > 0 ? [1] : []

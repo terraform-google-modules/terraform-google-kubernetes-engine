@@ -55,7 +55,7 @@ terraform {
 {% endif %}
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.10"
+      version = ">= 2.10, < 4"
     }
     random = {
       source  = "hashicorp/random"
@@ -63,6 +63,6 @@ terraform {
     }
   }
   provider_meta "{% if beta_cluster %}google-beta{% else %}google{% endif %}" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v42.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v43.0.0"
   }
 }

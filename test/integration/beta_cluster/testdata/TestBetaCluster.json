@@ -11,11 +11,6 @@
     "gkeBackupAgentConfig": {},
     "horizontalPodAutoscaling": {},
     "httpLoadBalancing": {},
-    "istioConfig": {
-      "auth": "AUTH_MUTUAL_TLS",
-      "disabled": true
-    },
-    "kalmConfig": {},
     "kubernetesDashboard": {
       "disabled": true
     },
@@ -319,3 +314,4 @@
   "verticalPodAutoscaling": {},
   "zone": "us-central1"
 }
+
