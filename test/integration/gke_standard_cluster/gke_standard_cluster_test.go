@@ -37,6 +37,7 @@ func TestGKEStandardCluster(t *testing.T) {
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")
+		nodePoolName := bpt.GetStringOutput("node_pool_name")
 
 		op := gcloud.Runf(t, "container clusters describe %s --location %s --project %s", clusterName, location, projectId)
 		g := golden.NewOrUpdate(t, op.String(),
@@ -58,11 +59,17 @@ func TestGKEStandardCluster(t *testing.T) {
 			"nodePools.config.machineType",
 			"nodePools.management.autoRepair",
 			"nodePools.maxPodsConstraint.maxPodsPerNode",
+			"networkConfig.datapathProvider",
+			"networkConfig.enableMultiNetworking",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
 		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
+
+		np := gcloud.Runf(t, "container node-pools describe %s --cluster  %s --location %s --project %s", nodePoolName, clusterName, location, projectId)
+		assert.Equal(1, len(np.Get("networkConfig.additionalNodeNetworkConfigs").Array()), "should have an additional network config")
+		assert.Equal(1, len(np.Get("networkConfig.additionalPodNetworkConfigs").Array()), "should have an additional pod network config")
 
 	})
 

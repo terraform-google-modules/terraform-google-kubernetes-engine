@@ -15,8 +15,9 @@
  */
 
 locals {
-  cluster_type          = "gke-standard"
-  default_workload_pool = "${var.project_id}.svc.id.goog"
+  cluster_type             = "gke-standard"
+  default_workload_pool    = "${var.project_id}.svc.id.goog"
+  secondary_pod_range_name = "gke-additional-pods-${random_string.suffix.result}"
 }
 
 data "google_client_config" "default" {}
@@ -42,6 +43,10 @@ module "gke" {
   location   = var.region
   network    = var.network
   subnetwork = var.subnetwork
+
+  # Needed for the Multi-Network for Pods configuration
+  datapath_provider       = "ADVANCED_DATAPATH"
+  enable_multi_networking = true
 
   ip_allocation_policy = {
     cluster_secondary_range_name  = var.ip_range_pods
@@ -72,6 +77,12 @@ module "gke" {
     }]
   }
 
+  master_auth = {
+    client_certificate_config = {
+      issue_client_certificate = false
+    }
+  }
+
   addons_config = {
     dns_cache_config = {
       enabled = var.dns_cache
@@ -80,6 +91,34 @@ module "gke" {
     gce_persistent_disk_csi_driver_config = {
       enabled = var.gce_pd_csi_driver
     }
+  }
+}
+
+resource "random_string" "suffix" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
+# Secondary VPC for the additional interface
+resource "google_compute_network" "additional_network" {
+  name                    = "gke-additional-network-${random_string.suffix.result}"
+  auto_create_subnetworks = false
+  project                 = var.project_id
+}
+
+# Subnetwork with a secondary range
+resource "google_compute_subnetwork" "additional_subnetwork" {
+  name          = "gke-additional-subnet-${random_string.suffix.result}"
+  network       = google_compute_network.additional_network.id
+  region        = var.region
+  project       = var.project_id
+  ip_cidr_range = "10.100.0.0/24"
+
+  # REQUIRED for `additional_pod_network_configs`
+  secondary_ip_range {
+    range_name    = local.secondary_pod_range_name
+    ip_cidr_range = "10.101.0.0/20"
   }
 }
 
@@ -99,5 +138,25 @@ module "node_pool" {
     workload_metadata_config = {
       mode = "GKE_METADATA"
     }
+    kubelet_config = {
+      insecure_kubelet_readonly_port_enabled = false
+    }
+  }
+
+  network_config = {
+    additional_node_network_configs = [
+      {
+        network    = google_compute_network.additional_network.name
+        subnetwork = google_compute_subnetwork.additional_subnetwork.name
+      }
+    ]
+
+    additional_pod_network_configs = [
+      {
+        subnetwork          = google_compute_subnetwork.additional_subnetwork.name
+        secondary_pod_range = local.secondary_pod_range_name
+        max_pods_per_node   = 32
+      }
+    ]
   }
 }

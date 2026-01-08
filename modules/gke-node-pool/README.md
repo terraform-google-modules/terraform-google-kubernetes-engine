@@ -32,5 +32,6 @@
 | id | an identifier for the resource with format {{project\_id}}/{{location}}/{{cluster}}/{{name}} |
 | instance\_group\_urls | The resource URLs of the managed instance groups associated with this node pool. |
 | managed\_instance\_group\_urls | List of instance group URLs which have been assigned to this node pool. |
+| name | The name of the node pool. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
