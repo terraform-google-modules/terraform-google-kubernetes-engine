@@ -15,7 +15,7 @@
  */
 
 locals {
-  cluster_type = "simple-regional-private-no-pool"
+  cluster_type = "simple-reg-pri-no-pool"
 }
 
 data "google_client_config" "default" {}
