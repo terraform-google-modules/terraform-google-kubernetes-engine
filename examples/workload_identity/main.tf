@@ -60,10 +60,11 @@ module "workload_identity" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "~> 43.0"
 
-  project_id          = var.project_id
-  name                = "iden-${module.gke.name}"
-  namespace           = "default"
-  use_existing_k8s_sa = false
+  project_id    = var.project_id
+  name          = "iden-${module.gke.name}"
+  network       = var.network
+  subnetwork    = var.subnetwork
+  ip_range_pods = var.ip_range_pods
 }
 
 # example with existing KSA
@@ -80,13 +81,11 @@ module "workload_identity_existing_ksa" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "~> 43.0"
 
-  project_id          = var.project_id
-  name                = "existing-${module.gke.name}"
-  cluster_name        = module.gke.name
-  location            = module.gke.location
-  namespace           = "default"
-  use_existing_k8s_sa = true
-  k8s_sa_name         = kubernetes_service_account_v1.test.metadata[0].name
+  project_id    = var.project_id
+  name          = "existing-${module.gke.name}"
+  network       = var.network
+  subnetwork    = var.subnetwork
+  ip_range_pods = var.ip_range_pods
 }
 
 # example with existing GSA
@@ -99,9 +98,11 @@ module "workload_identity_existing_gsa" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "~> 43.0"
 
-  project_id          = var.project_id
-  name                = google_service_account.custom.account_id
-  use_existing_gcp_sa = true
+  project_id    = var.project_id
+  name          = google_service_account.custom.account_id
+  network       = var.network
+  subnetwork    = var.subnetwork
+  ip_range_pods = var.ip_range_pods
   # wait till custom GSA is created to force module data source read during apply
   # https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1059
   depends_on = [google_service_account.custom]
