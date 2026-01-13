@@ -57,7 +57,7 @@ resource "google_gke_hub_feature" "rbacrolebindingactuation" {
 # Grant permissions to the app operator to work with the Fleet Scope.
 module "permissions" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
-  version = "~> 42.0"
+  version = "~> 43.0"
 
   fleet_project_id = var.fleet_project_id
   scope_id         = google_gke_hub_scope.scope.scope_id
@@ -72,7 +72,7 @@ module "permissions" {
 # Grant custom role permissions to the app operator to work with the Fleet Scope.
 module "custom_permissions" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/fleet-app-operator-permissions"
-  version = "~> 42.0"
+  version = "~> 43.0"
 
   fleet_project_id = var.fleet_project_id
   scope_id         = google_gke_hub_scope.scope.scope_id
