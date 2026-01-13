@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [43.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v43.0.0...v43.0.1) (2026-01-13)
+
+
+### Bug Fixes
+
+* Add example for multi network configuration for gke-node-pool module ([#2514](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2514)) ([11193a5](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/11193a57ff04aa2aaf8f43a5159eb115f2df7e5e))
+
 ## [43.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v42.0.0...v43.0.0) (2025-12-30)
 
 
