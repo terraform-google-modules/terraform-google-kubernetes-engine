@@ -36,7 +36,7 @@ data "google_compute_subnetwork" "subnetwork" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/gke-standard-cluster"
-  version = "~> 42.0"
+  version = "~> 43.0"
 
   project_id = var.project_id
   name       = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -124,7 +124,7 @@ resource "google_compute_subnetwork" "additional_subnetwork" {
 
 module "node_pool" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/gke-node-pool"
-  version = "~> 42.0"
+  version = "~> 43.0"
 
   project_id = var.project_id
   location   = var.region
