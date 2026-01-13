@@ -63,7 +63,7 @@ resource "kubernetes_pod" "nginx-example" {
   depends_on = [module.gke]
 }
 
-resource "kubernetes_service" "nginx-example" {
+resource "kubernetes_service_v1" "nginx-example" {
   metadata {
     name = "terraform-example"
   }
