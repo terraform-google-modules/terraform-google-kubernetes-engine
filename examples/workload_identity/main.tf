@@ -67,7 +67,7 @@ module "workload_identity" {
 }
 
 # example with existing KSA
-resource "kubernetes_service_account" "test" {
+resource "kubernetes_service_account_v1" "test" {
   metadata {
     name = "foo-ksa"
   }
@@ -86,7 +86,7 @@ module "workload_identity_existing_ksa" {
   location            = module.gke.location
   namespace           = "default"
   use_existing_k8s_sa = true
-  k8s_sa_name         = kubernetes_service_account.test.metadata[0].name
+  k8s_sa_name         = kubernetes_service_account_v1.test.metadata[0].name
 }
 
 # example with existing GSA
