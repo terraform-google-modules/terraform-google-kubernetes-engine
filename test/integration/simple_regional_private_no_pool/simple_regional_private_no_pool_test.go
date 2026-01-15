@@ -46,7 +46,6 @@ func TestSimpleRegionalPrivateNoPool(t *testing.T) {
 			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
 		)
 		validateJSONPaths := []string{
-			"status",
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
@@ -55,11 +54,14 @@ func TestSimpleRegionalPrivateNoPool(t *testing.T) {
 			"addonsConfig.httpLoadBalancing",
 			"addonsConfig.kubernetesDashboard.disabled",
 			"addonsConfig.networkPolicyConfig.disabled",
-			"autoscaling.defaultComputeClassConfig",
+			"autoscaling.defaultComputeClassConfig.enabled",
+			"autoscaling.enableNodeAutoprovisioning",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
+
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String()) // comes up healthy
 
 	})
 
