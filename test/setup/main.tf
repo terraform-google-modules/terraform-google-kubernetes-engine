@@ -99,7 +99,6 @@ module "gke-project-2" {
 
   deletion_policy = "DELETE"
 
-
   activate_apis = local.apis
   activate_api_identities = [
     {
@@ -122,6 +121,8 @@ module "gke-project-asm" {
   # due to https://github.com/hashicorp/terraform-provider-google/issues/9505 for AP
   default_service_account = "keep"
 
+  deletion_policy = "DELETE"
+
   activate_apis = local.apis
 }
 
@@ -138,7 +139,6 @@ module "gke-project-fleet" {
   default_service_account = "keep"
 
   deletion_policy = "DELETE"
-
 
   activate_apis = local.apis
 }

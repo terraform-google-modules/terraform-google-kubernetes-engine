@@ -32,9 +32,6 @@ output "name" {
     * to be up.
     */
     google_container_cluster.primary,
-    {% if autopilot_cluster != true %}
-    google_container_node_pool.pools,
-    {% endif %}
   ]
 }
 
@@ -70,9 +67,6 @@ output "endpoint" {
     * to be up.
     */
     google_container_cluster.primary,
-    {% if autopilot_cluster != true %}
-    google_container_node_pool.pools,
-    {% endif %}
   ]
 }
 
@@ -87,9 +81,6 @@ output "endpoint_dns" {
     * to be up.
     */
     google_container_cluster.primary,
-    {% if autopilot_cluster != true %}
-    google_container_node_pool.pools,
-    {% endif %}
   ]
 }
 
