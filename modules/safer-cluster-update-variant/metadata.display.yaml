@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -151,12 +151,6 @@ spec:
         ip_range_services:
           name: ip_range_services
           title: Ip Range Services
-        istio:
-          name: istio
-          title: Istio
-        istio_auth:
-          name: istio_auth
-          title: Istio Auth
         kubernetes_version:
           name: kubernetes_version
           title: Kubernetes Version

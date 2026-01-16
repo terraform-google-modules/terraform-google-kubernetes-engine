@@ -65,7 +65,6 @@
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "privateEndpoint": "10.0.0.2",
       "publicEndpoint": "KUBERNETES_ENDPOINT"
     }
   },
@@ -336,7 +335,8 @@
           },
           "hugepages": {
             "hugepageSize2m": "2"
-          }
+          },
+          "transparentHugepageEnabled": "TRANSPARENT_HUGEPAGE_ENABLED_ALWAYS"
         },
         "loggingConfig": {
           "variantConfig": {
@@ -436,7 +436,8 @@
           },
           "hugepages": {
             "hugepageSize2m": "1"
-          }
+          },
+          "transparentHugepageEnabled": "TRANSPARENT_HUGEPAGE_ENABLED_NEVER"
         },
         "loggingConfig": {
           "variantConfig": {
@@ -525,7 +526,8 @@
           },
           "hugepages": {
             "hugepageSize2m": "1"
-          }
+          },
+          "transparentHugepageEnabled": "TRANSPARENT_HUGEPAGE_ENABLED_NEVER"
         },
         "loggingConfig": {
           "variantConfig": {
@@ -621,7 +623,8 @@
           },
           "hugepages": {
             "hugepageSize2m": "1"
-          }
+          },
+          "transparentHugepageEnabled": "TRANSPARENT_HUGEPAGE_ENABLED_NEVER"
         },
         "loggingConfig": {
           "variantConfig": {
@@ -718,7 +721,9 @@
           "hugepages": {
             "hugepageSize2m": "1",
             "hugepageSize1g": "2"
-          }
+          },
+          "transparentHugepageEnabled": "TRANSPARENT_HUGEPAGE_ENABLED_NEVER",
+          "transparentHugepageDefrag": "TRANSPARENT_HUGEPAGE_DEFRAG_ALWAYS"
         },
         "loggingConfig": {
           "variantConfig": {
@@ -784,7 +789,6 @@
     "pubsub": {}
   },
   "privateClusterConfig": {
-    "privateEndpoint": "10.0.0.2",
     "publicEndpoint": "KUBERNETES_ENDPOINT"
   },
   "rbacBindingConfig": {

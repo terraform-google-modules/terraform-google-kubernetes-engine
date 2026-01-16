@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/safer-cluster
-    version: 41.0.0
+    version: 43.0.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -80,6 +80,8 @@ spec:
         location: examples/simple_fleet_app_operator_permissions
       - name: simple_regional
         location: examples/simple_regional
+      - name: simple_regional_additional_ip_ranges
+        location: examples/simple_regional_additional_ip_ranges
       - name: simple_regional_beta
         location: examples/simple_regional_beta
       - name: simple_regional_cluster_autoscaling
@@ -333,14 +335,6 @@ spec:
         description: The IP range in CIDR notation to use for the hosted master network
         varType: string
         defaultValue: 10.0.0.0/28
-      - name: istio
-        description: (Beta) Enable Istio addon
-        varType: bool
-        defaultValue: false
-      - name: istio_auth
-        description: (Beta) The authentication type between services in Istio.
-        varType: string
-        defaultValue: AUTH_MUTUAL_TLS
       - name: dns_cache
         description: (Beta) The status of the NodeLocal DNSCache addon.
         varType: bool

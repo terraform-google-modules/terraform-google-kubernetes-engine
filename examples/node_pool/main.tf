@@ -42,7 +42,7 @@ resource "google_tags_tag_value" "value" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
-  version = "~> 40.0"
+  version = "~> 43.0"
 
   project_id                        = var.project_id
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -192,6 +192,15 @@ module "gke" {
 
   node_pools_hugepage_size_1g = {
     pool-05 = "2"
+  }
+
+  node_pools_transparent_hugepage_enabled = {
+    all     = "TRANSPARENT_HUGEPAGE_ENABLED_NEVER"
+    pool-01 = "TRANSPARENT_HUGEPAGE_ENABLED_ALWAYS"
+  }
+
+  node_pools_transparent_hugepage_defrag = {
+    pool-05 = "TRANSPARENT_HUGEPAGE_DEFRAG_ALWAYS"
   }
 }
 

@@ -25,11 +25,11 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.13"
+      version = ">= 2.10, < 4"
     }
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:workload-identity/v41.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:workload-identity/v43.0.0"
   }
 }

@@ -25,7 +25,7 @@ resource "google_service_account" "gke-sa" {
 
 module "net" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 12.0"
+  version = "~> 13.0"
 
   network_name                           = "gke-net-${random_id.rand.hex}"
   routing_mode                           = "GLOBAL"
@@ -143,7 +143,7 @@ module "net" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
-  version = "~> 40.0"
+  version = "~> 43.0"
 
   depends_on = [google_compute_instance.vm]
 

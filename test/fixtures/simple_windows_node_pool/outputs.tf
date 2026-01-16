@@ -42,7 +42,8 @@ output "master_kubernetes_version" {
 }
 
 output "kubernetes_endpoint" {
-  value = module.this.kubernetes_endpoint
+  value     = module.this.kubernetes_endpoint
+  sensitive = true
 }
 
 output "client_token" {

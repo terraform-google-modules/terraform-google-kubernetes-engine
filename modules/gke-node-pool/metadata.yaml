@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/gke-node-pool
-    version: 41.0.0
+    version: 43.0.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -80,6 +80,8 @@ spec:
         location: examples/simple_fleet_app_operator_permissions
       - name: simple_regional
         location: examples/simple_regional
+      - name: simple_regional_additional_ip_ranges
+        location: examples/simple_regional_additional_ip_ranges
       - name: simple_regional_beta
         location: examples/simple_regional_beta
       - name: simple_regional_cluster_autoscaling
@@ -329,15 +331,15 @@ spec:
               enable_private_nodes = optional(bool)
               pod_ipv4_cidr_block  = optional(string)
               pod_range            = optional(string)
-              additional_node_network_configs = optional(object({
+              additional_node_network_configs = optional(list(object({
                 network    = string
                 subnetwork = string
-              }))
-              additional_pod_network_configs = optional(object({
+              })))
+              additional_pod_network_configs = optional(list(object({
                 subnetwork          = string
                 secondary_pod_range = string
                 max_pods_per_node   = number
-              }))
+              })))
               pod_cidr_overprovision_config = optional(object({
                 disabled = bool
               }))
@@ -405,6 +407,8 @@ spec:
         description: The resource URLs of the managed instance groups associated with this node pool.
       - name: managed_instance_group_urls
         description: List of instance group URLs which have been assigned to this node pool.
+      - name: name
+        description: The name of the node pool.
   requirements:
     roles:
       - level: Project

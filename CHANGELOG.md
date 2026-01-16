@@ -6,6 +6,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [43.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v42.0.0...v43.0.0) (2025-12-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove istio and kalm ([#2505](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2505))
+* add sensitive endpoint for TPG v7.14 ([#2509](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2509))
+
+### Features
+
+* add support for provisioned_iops and provisioned_throughput ([#2510](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2510)) ([4579c46](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4579c46731c57d4f7f1a97b7a0abe375dc799169))
+* allow new hashicorp/kubernetes version 3.0.0 ([#2501](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2501)) ([841d889](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/841d8890c991e00f28e7d57a93ac62518a0ae61c))
+
+
+### Bug Fixes
+
+* add sensitive endpoint for TPG v7.14 ([#2509](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2509)) ([8d309be](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8d309be741a498721ef5cafc5bac0634e6d67a42))
+* Adding output types to metadata.yaml for gke-standard-cluster ([#2492](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2492)) ([0d4b38a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/0d4b38a8445ea79af36c5d506cd8be655ba41b4a))
+* **deps:** Update Terraform kubernetes to v3 ([#2504](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2504)) ([6c2d800](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6c2d8003acd34bc4f02ca9b748892dc364391a10))
+* remove istio and kalm ([#2505](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2505)) ([c6947f3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c6947f36b4d6cf2915a8552ea571bf9df151dbf8))
+
+## [42.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.2...v42.0.0) (2025-12-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* making location field as required for standard cluster ([#2495](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2495))
+* **gke-node-pool:** module to allow List configurations for fields ([#2496](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2496))
+* support enabling default compute class in cluster autoscaler ([#2442](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2442))
+
+### Features
+
+* add auto_monitoring_config in GKE managed_prometheus ([#2420](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2420)) ([04c88e6](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/04c88e647f676f23530d6cbc43e38840592aa6d1))
+* add network tier configuration ([#2497](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2497)) ([873d39e](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/873d39ec26e835b7ca2c7b63082ca786f9138df4))
+* add support for transparent huge pages configs ([#2464](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2464)) ([8297521](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/8297521f91715f262919a85d9c51d1a13af1d1d9))
+* support enabling default compute class in cluster autoscaler ([#2442](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2442)) ([3569f13](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3569f13ca21a2c2b4981cd708350962050ae330c))
+
+
+### Bug Fixes
+
+* additional_ip_ranges_config ([#2458](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2458)) ([839093c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/839093c484f34c0276240bf8a299b2dc5f5602f6))
+* **gke-node-pool:** module to allow List configurations for fields ([#2496](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2496)) ([dc798c1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/dc798c1dd7af055f1223915c949ac55cc23f89a4))
+* making location field as required for standard cluster ([#2495](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2495)) ([5f7d53c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5f7d53cd77dd593508856fd84472b7071bd7b779))
+
+## [41.0.2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.1...v41.0.2) (2025-11-07)
+
+
+### Bug Fixes
+
+* updated the option for evaluation mode ([#2482](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2482)) ([3d577fb](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/3d577fb8936782bf40075434155743283e640878))
+
+## [41.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v41.0.0...v41.0.1) (2025-10-28)
+
+
+### Bug Fixes
+
+* Regex for network, subnetwork, CIDR block and Workload Pool in standard and autopilot cluster ([#2479](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2479)) ([4f47d6a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/4f47d6a4b258300c64c1ae45191ec1b3b96d1ad2))
+
 ## [41.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v40.0.0...v41.0.0) (2025-10-16)
 
 

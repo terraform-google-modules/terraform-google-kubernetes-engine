@@ -14,7 +14,7 @@
 
 module "net" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 12.0"
+  version = "~> 13.0"
 
   for_each = { for k, v in var.gke_spokes : k => v }
 
@@ -163,13 +163,13 @@ resource "google_compute_network_attachment" "router_net_attachment" {
 
 module "cloud_router" {
   source   = "terraform-google-modules/cloud-router/google"
-  version  = "~> 7.0"
+  version  = "~> 8.0"
   for_each = { for k, v in var.gke_spokes : k => v }
 
-  name    = "router-${each.value["cluster_name"]}-${random_id.rand.hex}"
-  project = each.value["project_id"]
-  network = module.net[each.key].network_name
-  region  = var.region
+  name       = "router-${each.value["cluster_name"]}-${random_id.rand.hex}"
+  project_id = each.value["project_id"]
+  network    = module.net[each.key].network_name
+  region     = var.region
 }
 
 resource "google_compute_router_nat" "nat_type" {

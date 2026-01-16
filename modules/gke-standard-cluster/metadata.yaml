@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/gke-standard-cluster
-    version: 41.0.0
+    version: 43.0.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -80,6 +80,8 @@ spec:
         location: examples/simple_fleet_app_operator_permissions
       - name: simple_regional
         location: examples/simple_regional
+      - name: simple_regional_additional_ip_ranges
+        location: examples/simple_regional_additional_ip_ranges
       - name: simple_regional_beta
         location: examples/simple_regional_beta
       - name: simple_regional_cluster_autoscaling
@@ -140,6 +142,7 @@ spec:
       - name: location
         description: The location (region or zone) in which the cluster master will be created, as well as the default node location. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region, and with default node locations in those zones as well.
         varType: string
+        required: true
       - name: network
         description: The name or self_link of the Google Compute Engine network to which the cluster is connected. For Shared VPC, this network must be in the host project.
         varType: string
@@ -359,7 +362,7 @@ spec:
               }))
             })
       - name: master_authorized_networks_config
-        description: The desired configuration options for master authorized networks.
+        description: The desired configuration options for master authorized networks. Cidr Block must follow [Cidr notation](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation)
         varType: |-
           object({
               cidr_blocks = list(object({
@@ -971,44 +974,151 @@ spec:
     outputs:
       - name: addons_config
         description: The configuration for addons supported by GKE Autopilot.
+        type:
+          - list
+          - - object
+            - cloudrun_config:
+                - list
+                - - object
+                  - disabled: bool
+                    load_balancer_type: string
+              config_connector_config:
+                - list
+                - - object
+                  - enabled: bool
+              dns_cache_config:
+                - list
+                - - object
+                  - enabled: bool
+              gce_persistent_disk_csi_driver_config:
+                - list
+                - - object
+                  - enabled: bool
+              gcp_filestore_csi_driver_config:
+                - list
+                - - object
+                  - enabled: bool
+              gcs_fuse_csi_driver_config:
+                - list
+                - - object
+                  - enabled: bool
+              gke_backup_agent_config:
+                - list
+                - - object
+                  - enabled: bool
+              horizontal_pod_autoscaling:
+                - list
+                - - object
+                  - disabled: bool
+              http_load_balancing:
+                - list
+                - - object
+                  - disabled: bool
+              istio_config:
+                - list
+                - - object
+                  - auth: string
+                    disabled: bool
+              kalm_config:
+                - list
+                - - object
+                  - enabled: bool
+              lustre_csi_driver_config:
+                - list
+                - - object
+                  - enable_legacy_lustre_port: bool
+                    enabled: bool
+              network_policy_config:
+                - list
+                - - object
+                  - disabled: bool
+              parallelstore_csi_driver_config:
+                - list
+                - - object
+                  - enabled: bool
+              ray_operator_config:
+                - list
+                - - object
+                  - enabled: bool
+                    ray_cluster_logging_config:
+                      - list
+                      - - object
+                        - enabled: bool
+                    ray_cluster_monitoring_config:
+                      - list
+                      - - object
+                        - enabled: bool
+              stateful_ha_config:
+                - list
+                - - object
+                  - enabled: bool
       - name: ca_certificate
         description: Cluster ca certificate (base64 encoded)
+        type: string
       - name: cluster_id
         description: Cluster ID
+        type: string
       - name: cluster_name
         description: Cluster name
+        type: string
       - name: endpoint
         description: Cluster endpoint
+        type: string
       - name: endpoint_dns
         description: Cluster endpoint DNS
+        type: string
       - name: horizontal_pod_autoscaling_enabled
         description: Whether horizontal pod autoscaling enabled
+        type: bool
       - name: http_load_balancing_enabled
         description: Whether http load balancing enabled
+        type: bool
       - name: identity_service_enabled
         description: Whether Identity Service is enabled
+        type: bool
       - name: intranode_visibility_enabled
         description: Whether intra-node visibility is enabled
+        type: bool
       - name: location
         description: Cluster location (region if regional cluster, zone if zonal cluster)
+        type: string
       - name: logging_service
         description: Logging service used
+        type: string
       - name: master_authorized_networks_config
         description: Networks from which access to master is permitted
+        type:
+          - list
+          - - object
+            - cidr_blocks:
+                - list
+                - - object
+                  - cidr_block: string
+                    display_name: string
+              gcp_public_cidrs_access_enabled: bool
       - name: master_version
         description: Current master kubernetes version
+        type: string
       - name: min_master_version
         description: Minimum master kubernetes version
+        type: string
       - name: monitoring_service
         description: Monitoring service used
+        type: string
       - name: network_policy_enabled
         description: Whether network policy enabled
+        type: bool
       - name: node_locations
         description: The list of zones in which the cluster's nodes are located.
+        type:
+          - list
+          - string
       - name: secret_manager_addon_enabled
         description: Whether Secret Manager add-on is enabled
+        type: bool
       - name: vertical_pod_autoscaling_enabled
         description: Whether vertical pod autoscaling enabled
+        type: bool
   requirements:
     roles:
       - level: Project

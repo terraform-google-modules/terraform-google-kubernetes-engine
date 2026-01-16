@@ -500,10 +500,9 @@ variable "database_encryption" {
   }]
 }
 
-
 variable "default_compute_class_enabled" {
   type        = bool
-  description = "Enable Spot VMs as the default compute class for Node Auto-Provisioning"
+  description = "Enable default compute class for Node Auto-Provisioning"
   default     = null
 }
 
@@ -679,5 +678,15 @@ variable "rbac_binding_config" {
   default = {
     enable_insecure_binding_system_unauthenticated = null
     enable_insecure_binding_system_authenticated   = null
+  }
+}
+
+variable "network_tier_config" {
+  description = "Network tier configuration for the cluster"
+  type        = string
+  default     = null
+  validation {
+    condition     = var.network_tier_config == null ? true : contains(["NETWORK_TIER_DEFAULT", "NETWORK_TIER_STANDARD", "NETWORK_TIER_PREMIUM"], var.network_tier_config)
+    error_message = "Network tier allowed values are only NETWORK_TIER_DEFAULT, NETWORK_TIER_STANDARD or NETWORK_TIER_PREMIUM"
   }
 }
