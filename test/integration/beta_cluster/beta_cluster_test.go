@@ -84,7 +84,8 @@ func TestBetaCluster(t *testing.T) {
 
 		// verify SA
 		op = gcloud.Runf(t, "iam service-accounts describe %s --project %s", serviceAccount, projectId)
-		assert.Equal(fmt.Sprintf("Terraform-managed service account for cluster %s", clusterName), op.Get("displayName").String(), "has the correct displayname")
+		assert.Equal(fmt.Sprintf("Terraform-managed service account for cluster %s", clusterName), op.Get("description").String(), "has the correct description")
+		assert.Equal(serviceAccount, op.Get("displayName").String(), "has the correct displayname")
 
 	})
 	gke.Test()
