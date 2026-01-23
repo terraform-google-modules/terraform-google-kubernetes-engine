@@ -144,15 +144,15 @@ locals {
   cluster_region   = var.regional ? var.region : join("-", slice(split("-", local.cluster_location), 0, 2))
   cluster_zones    = sort(local.cluster_output_zones)
 
-  // node pool ID is in the form projects/<project-id>/locations/<location>/clusters/<cluster-name>/nodePools/<nodepool-name>
-  cluster_name_parts_from_nodepool           = split("/", element(values(google_container_node_pool.pools)[*].id, 0))
-  cluster_name_computed                      = element(local.cluster_name_parts_from_nodepool, length(local.cluster_name_parts_from_nodepool) - 3)
+  // cluster ID is in the form project/location/name
+  cluster_name_computed                      = element(split("/", local.cluster_id), length(split("/", local.cluster_id)) - 1)
   cluster_network_tag                        = "gke-${var.name}"
   cluster_ca_certificate                     = local.cluster_master_auth_map["cluster_ca_certificate"]
   cluster_master_version                     = local.cluster_output_master_version
   cluster_min_master_version                 = local.cluster_output_min_master_version
   cluster_logging_service                    = local.cluster_output_logging_service
   cluster_monitoring_service                 = local.cluster_output_monitoring_service
+  head_node_pool                             = length(var.node_pools) > 0 ? var.node_pools[0] : {}
   cluster_node_pools_names                   = local.cluster_output_node_pools_names
   cluster_node_pools_versions                = local.cluster_output_node_pools_versions
   cluster_network_policy_enabled             = !local.cluster_output_network_policy_enabled

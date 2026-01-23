@@ -120,6 +120,21 @@ steps:
     - verify simple-regional-private-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalPrivate --stage teardown --verbose']
+- id: apply simple-regional-private-no-pool-local
+  waitFor:
+    - init-all
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalPrivateNoPool --stage apply --verbose']
+- id: verify simple-regional-private-no-pool-local
+  waitFor:
+    - apply simple-regional-private-no-pool-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalPrivateNoPool --stage verify --verbose']
+- id: teardown simple-regional-private-no-pool-local
+  waitFor:
+    - verify simple-regional-private-no-pool-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalPrivateNoPool --stage teardown --verbose']
 - id: apply simple-regional-cluster-autoscaling
   waitFor:
     - init-all
