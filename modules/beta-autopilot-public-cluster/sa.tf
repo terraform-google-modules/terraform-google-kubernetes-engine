@@ -43,7 +43,8 @@ resource "google_service_account" "cluster_service_account" {
   count        = var.create_service_account ? 1 : 0
   project      = var.project_id
   account_id   = var.service_account_name == "" ? local.service_account_default_name : var.service_account_name
-  display_name = "Terraform-managed service account for cluster ${var.name}"
+  description  = "Terraform-managed service account for cluster ${var.name}"
+  display_name = var.service_account_name == "" ? local.service_account_default_name : var.service_account_name
 }
 
 resource "google_project_iam_member" "cluster_service_account_node_service_account" {
@@ -71,21 +72,21 @@ resource "google_project_iam_member" "cluster_service_account_gcr" {
   for_each = var.create_service_account && var.grant_registry_access ? toset(local.registry_projects_list) : []
   project  = each.key
   role     = "roles/storage.objectViewer"
-  member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
+  member   = google_service_account.cluster_service_account[0].member
 }
 
 resource "google_project_iam_member" "cluster_service_account_artifact_registry" {
   for_each = var.create_service_account && var.grant_registry_access ? toset(local.registry_projects_list) : []
   project  = each.key
   role     = "roles/artifactregistry.reader"
-  member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
+  member   = google_service_account.cluster_service_account[0].member
 }
 
 resource "google_project_iam_member" "cluster_service_account_service_usage_consumer" {
   for_each = var.create_service_account && var.grant_registry_access ? toset(local.registry_projects_list) : []
   project  = each.key
   role     = "roles/serviceusage.serviceUsageConsumer"
-  member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
+  member   = google_service_account.cluster_service_account[0].member
 }
 
 resource "google_project_service_identity" "fleet_project" {
@@ -99,5 +100,5 @@ resource "google_project_iam_member" "service_agent" {
   for_each = var.fleet_project_grant_service_agent ? toset(["roles/gkehub.serviceAgent", "roles/gkehub.crossProjectServiceAgent"]) : []
   project  = var.project_id
   role     = each.value
-  member   = "serviceAccount:${google_project_service_identity.fleet_project[0].email}"
+  member   = google_project_service_identity.fleet_project[0].member
 }

@@ -62,7 +62,7 @@ func TestSimpleWindowsNodePool(t *testing.T) {
 			g.JSONEq(assert, op, pth)
 		}
 		op1 := gcloud.Runf(t, "iam service-accounts describe %s --project %s ", serviceAccount, projectId)
-		assert.Contains(op1.Get("displayName").String(), fmt.Sprintf("Terraform-managed service account for cluster %s", clusterName), "Custom Service Account Created")
+		assert.Contains(op1.Get("description").String(), fmt.Sprintf("Terraform-managed service account for cluster %s", clusterName), "Custom Service Account Created")
 
 	})
 
