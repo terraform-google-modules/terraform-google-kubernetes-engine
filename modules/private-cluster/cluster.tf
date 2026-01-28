@@ -243,7 +243,7 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "secret_manager_config" {
-    for_each = var.secret_manager_addon.enable ? [var.secret_manager_addon] : []
+    for_each = var.secret_manager_addon.enabled ? [var.secret_manager_addon] : []
     content {
       enabled = secret_manager_config.value.enabled
       dynamic "rotation_config" {
