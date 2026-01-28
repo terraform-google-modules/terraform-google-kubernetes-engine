@@ -534,10 +534,18 @@ spec:
         description: Enable image streaming on cluster level.
         varType: bool
         defaultValue: false
-      - name: enable_secret_manager_addon
-        description: Enable the Secret Manager add-on for this cluster
-        varType: bool
-        defaultValue: false
+      - name: secret_manager_addon
+        description: Configure the Secret Manager add-on for this cluster
+        varType: |-
+          object({
+              enabled = bool,
+              rotation_config = optional(object({
+                enabled           = bool,
+                rotation_interval = string
+              }))
+            })
+        defaultValue:
+          enabled: false
       - name: workload_vulnerability_mode
         description: (beta) Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC.
         varType: string

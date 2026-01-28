@@ -553,10 +553,18 @@ spec:
         description: Enable image streaming on cluster level.
         varType: bool
         defaultValue: false
-      - name: enable_secret_manager_addon
-        description: Enable the Secret Manager add-on for this cluster
-        varType: bool
-        defaultValue: false
+      - name: secret_manager_addon
+        description: Configure the Secret Manager add-on for this cluster
+        varType: |-
+          object({
+              enabled = bool,
+              rotation_config = optional(object({
+                enabled           = bool,
+                rotation_interval = string
+              }))
+            })
+        defaultValue:
+          enabled: false
       - name: enable_fqdn_network_policy
         description: Enable FQDN Network Policies on the cluster
         varType: bool

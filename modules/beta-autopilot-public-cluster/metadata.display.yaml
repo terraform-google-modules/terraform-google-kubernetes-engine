@@ -289,6 +289,9 @@ spec:
         resource_usage_export_dataset_id:
           name: resource_usage_export_dataset_id
           title: Resource Usage Export Dataset Id
+        secret_manager_addon:
+          name: secret_manager_addon
+          title: Secret Manager Addon
         security_posture_mode:
           name: security_posture_mode
           title: Security Posture Mode

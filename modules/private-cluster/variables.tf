@@ -662,15 +662,15 @@ variable "enable_gcfs" {
 }
 
 variable "secret_manager_addon" {
-  description = "Enable the Secret Manager add-on for this cluster"
-  type        = object({ 
+  description = "Configure the Secret Manager add-on for this cluster"
+  type = object({
     enabled = bool,
     rotation_config = optional(object({
-      enabled = bool,
+      enabled           = bool,
       rotation_interval = string
     }))
   })
-  default     = { enabled = false  }
+  default = { enabled = false }
 }
 
 variable "enable_fqdn_network_policy" {
