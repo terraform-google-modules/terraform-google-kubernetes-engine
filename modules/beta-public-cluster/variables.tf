@@ -637,7 +637,7 @@ variable "secret_manager_addon" {
     enabled = bool,
     rotation_config = optional(object({
       enabled           = bool,
-      rotation_interval = string
+      rotation_interval = optional(string)
     }))
   })
   default = { enabled = false }
