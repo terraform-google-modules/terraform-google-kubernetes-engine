@@ -131,7 +131,7 @@ locals {
   cluster_output_vertical_pod_autoscaling_enabled   = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling[0].enabled : false
   cluster_output_intranode_visbility_enabled        = google_container_cluster.primary.enable_intranode_visibility
   cluster_output_identity_service_enabled           = google_container_cluster.primary.identity_service_config != null && length(google_container_cluster.primary.identity_service_config) == 1 ? google_container_cluster.primary.identity_service_config[0].enabled : false
-  cluster_output_secret_manager_addon       = google_container_cluster.primary.secret_manager_config != null && length(google_container_cluster.primary.secret_manager_config) == 1 ? google_container_cluster.primary.secret_manager_config[0] : { enabled = false }
+  cluster_output_secret_manager_addon       = google_container_cluster.primary.secret_manager_config != null && length(google_container_cluster.primary.secret_manager_config) == 1 ? google_container_cluster.primary.secret_manager_config[0] : { enabled = false, rotation_config = null }
 
   cluster_output_node_pools_names = concat(
     [for np in google_container_node_pool.pools : np.name], [""],
