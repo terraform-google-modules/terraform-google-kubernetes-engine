@@ -883,7 +883,7 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: ">= 7.0.0, < 8"
+        version: ">= 7.10.0, < 8"
       - source: hashicorp/kubernetes
         version: ">= 2.10, < 4"
       - source: hashicorp/random
