@@ -49,7 +49,7 @@ module "vpc" {
 
 module "cloud-nat" {
   source        = "terraform-google-modules/cloud-nat/google"
-  version       = "~> 5.0"
+  version       = "~> 6.0"
   project_id    = module.enabled_google_apis.project_id
   region        = var.region
   router        = "safer-router"
