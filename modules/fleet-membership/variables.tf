@@ -53,3 +53,9 @@ variable "membership_location" {
   type        = string
   default     = "global"
 }
+
+variable "resource_labels" {
+  description = "The resource labels (a map of key/value pairs) to be applied to the fleet membership. This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+  type        = map(string)
+  default     = null
+}
