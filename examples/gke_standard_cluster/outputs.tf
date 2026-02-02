@@ -55,3 +55,8 @@ output "master_version" {
   description = "The master Kubernetes version"
   value       = module.gke.master_version
 }
+
+output "node_pool_name" {
+  description = "The name of the node pool"
+  value       = module.node_pool.name
+}

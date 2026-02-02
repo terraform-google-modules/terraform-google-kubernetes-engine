@@ -51,6 +51,11 @@ output "cluster_name" {
   value       = module.example.cluster_name
 }
 
+output "node_pool_name" {
+  description = "The name of the node pool"
+  value       = module.example.node_pool_name
+}
+
 output "master_kubernetes_version" {
   description = "The master Kubernetes version"
   value       = module.example.master_version

@@ -90,6 +90,8 @@ spec:
         location: examples/simple_regional_private
       - name: simple_regional_private_beta
         location: examples/simple_regional_private_beta
+      - name: simple_regional_private_no_pool
+        location: examples/simple_regional_private_no_pool
       - name: simple_regional_private_with_cluster_version
         location: examples/simple_regional_private_with_cluster_version
       - name: simple_regional_with_gateway_api
@@ -867,7 +869,7 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: ">= 7.0.0, < 8"
+        version: ">= 7.10.0, < 8"
       - source: hashicorp/kubernetes
         version: ">= 2.10, < 4"
       - source: hashicorp/random
