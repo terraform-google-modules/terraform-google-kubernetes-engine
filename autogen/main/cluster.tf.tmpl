@@ -1068,6 +1068,13 @@ resource "google_container_node_pool" "windows_pools" {
     }
   }
 
+  dynamic "node_drain_config" {
+    for_each = lookup(each.value, "respect_pdb_during_node_pool_deletion", null) != null ? [each.value] : []
+    content {
+      respect_pdb_during_node_pool_deletion = lookup(each.value, "respect_pdb_during_node_pool_deletion", null)
+    }
+  }
+
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
     auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
