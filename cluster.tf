@@ -784,6 +784,13 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
+  dynamic "node_drain_config" {
+    for_each = lookup(each.value, "respect_pdb_during_node_pool_deletion", null) != null ? [each.value] : []
+    content {
+      respect_pdb_during_node_pool_deletion = lookup(each.value, "respect_pdb_during_node_pool_deletion", null)
+    }
+  }
+
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
     auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
@@ -1161,6 +1168,13 @@ resource "google_container_node_pool" "windows_pools" {
           total_egress_bandwidth_tier = lookup(network_config.value, "total_egress_bandwidth_tier", null)
         }
       }
+    }
+  }
+
+  dynamic "node_drain_config" {
+    for_each = lookup(each.value, "respect_pdb_during_node_pool_deletion", null) != null ? [each.value] : []
+    content {
+      respect_pdb_during_node_pool_deletion = lookup(each.value, "respect_pdb_during_node_pool_deletion", null)
     }
   }
 
