@@ -1072,3 +1072,9 @@ variable "network_tier_config" {
     error_message = "Network tier allowed values are only NETWORK_TIER_DEFAULT, NETWORK_TIER_STANDARD or NETWORK_TIER_PREMIUM"
   }
 }
+
+variable "exclude_ai_zones" {
+  description = "(Optional) Controls whether to exclude AI zones from the dynamically fetched google_compute_zones"
+  type        = bool
+  default     = false
+}
