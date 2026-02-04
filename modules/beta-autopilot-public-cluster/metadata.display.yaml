@@ -127,9 +127,6 @@ spec:
         enable_resource_consumption_export:
           name: enable_resource_consumption_export
           title: Enable Resource Consumption Export
-        enable_secret_manager_addon:
-          name: enable_secret_manager_addon
-          title: Enable Secret Manager Addon
         enable_tpu:
           name: enable_tpu
           title: Enable Tpu

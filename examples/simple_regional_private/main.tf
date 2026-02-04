@@ -47,7 +47,7 @@ module "gke" {
   service_account             = var.compute_engine_service_account
   enable_private_endpoint     = true
   enable_private_nodes        = true
-  enable_secret_manager_addon = true
+  secret_manager_addon        = { enabled = true }
   default_max_pods_per_node   = 20
   remove_default_node_pool    = true
   deletion_protection         = false
