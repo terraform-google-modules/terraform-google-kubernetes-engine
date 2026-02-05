@@ -181,9 +181,6 @@ spec:
         enable_resource_consumption_export:
           name: enable_resource_consumption_export
           title: Enable Resource Consumption Export
-        enable_secret_manager_addon:
-          name: enable_secret_manager_addon
-          title: Enable Secret Manager Addon
         enable_shielded_nodes:
           name: enable_shielded_nodes
           title: Enable Shielded Nodes
@@ -433,6 +430,9 @@ spec:
         sandbox_enabled:
           name: sandbox_enabled
           title: Sandbox Enabled
+        secret_manager_addon:
+          name: secret_manager_addon
+          title: Secret Manager Addon
         security_posture_mode:
           name: security_posture_mode
           title: Security Posture Mode
