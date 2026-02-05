@@ -711,9 +711,9 @@ variable "enable_gcfs" {
 variable "secret_manager_addon" {
   description = "Configure the Secret Manager add-on for this cluster"
   type        = object({ 
-    enabled = bool,
+    enabled         = bool,
     rotation_config = optional(object({
-      enabled = bool,
+      enabled           = bool,
       rotation_interval = optional(string)
     }))
   })

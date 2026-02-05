@@ -36,22 +36,22 @@ module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
   version = "~> 43.0"
 
-  project_id                  = var.project_id
-  name                        = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional                    = true
-  region                      = var.region
-  network                     = var.network
-  subnetwork                  = var.subnetwork
-  ip_range_pods               = var.ip_range_pods
-  create_service_account      = false
-  service_account             = var.compute_engine_service_account
-  enable_private_endpoint     = true
-  enable_private_nodes        = true
-  secret_manager_addon        = { enabled = true }
-  default_max_pods_per_node   = 20
-  remove_default_node_pool    = true
-  deletion_protection         = false
-  enable_k8s_beta_apis        = var.enable_k8s_beta_apis
+  project_id                = var.project_id
+  name                      = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
+  regional                  = true
+  region                    = var.region
+  network                   = var.network
+  subnetwork                = var.subnetwork
+  ip_range_pods             = var.ip_range_pods
+  create_service_account    = false
+  service_account           = var.compute_engine_service_account
+  enable_private_endpoint   = true
+  enable_private_nodes      = true
+  secret_manager_addon      = { enabled = true }
+  default_max_pods_per_node = 20
+  remove_default_node_pool  = true
+  deletion_protection       = false
+  enable_k8s_beta_apis      = var.enable_k8s_beta_apis
 
   cluster_autoscaling = {
     enabled                      = true

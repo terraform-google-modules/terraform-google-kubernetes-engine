@@ -575,9 +575,9 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/compute.admin
           - roles/container.admin
           - roles/iam.serviceAccountUser
+          - roles/compute.admin
     services:
       - compute.googleapis.com
       - container.googleapis.com

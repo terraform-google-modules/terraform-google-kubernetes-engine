@@ -312,7 +312,7 @@ resource "google_container_cluster" "primary" {
         for_each = secret_manager_config.value.rotation_config != null ? [secret_manager_config.value.rotation_config] : []
         content {
           enabled           = rotation_config.value.enabled
-          rotation_interval = rotation_config.value.rotation_interval
+          rotation_interval = rotation_config.value.rotation_interval != "" ? rotation_config.value.rotation_interval : null
         }
       }
     }
