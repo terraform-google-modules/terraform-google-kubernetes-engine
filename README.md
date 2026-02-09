@@ -11,6 +11,8 @@ The resources/services/activations/deletions that this module will create/trigge
 
 Sub modules are provided for creating private clusters, beta private clusters, and beta public clusters as well.  Beta sub modules allow for the use of various GKE beta features. See the modules directory for the various sub modules.
 
+For deploying on **alternate GCP universes** (e.g. sovereign or restricted clouds such as [S3ns Cloud de Confiance](https://www.s3ns.io)), see [docs/alternate_gcp_universes.md](docs/alternate_gcp_universes.md).
+
 ## Compatibility
 
 This module is meant for use with Terraform 1.3+ and tested using Terraform 1.10+.

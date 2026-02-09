@@ -50,6 +50,12 @@ variable "zones" {
   default     = []
 }
 
+variable "node_locations_use_api_default" {
+  type        = bool
+  description = "When true, regional cluster with no zones specified uses API default node_locations (empty list). Set to true for alternate GCP universes (e.g. sovereign/restricted clouds) where Compute zones may not match GKE API expectations."
+  default     = false
+}
+
 variable "network" {
   type        = string
   description = "The VPC network to host the cluster in (required)"
