@@ -814,6 +814,7 @@ spec:
                 enabled = optional(bool)
               }))
             })
+        required: true
       - name: private_cluster_config
         description: Configuration for private clusters, clusters with private nodes.
         varType: |-

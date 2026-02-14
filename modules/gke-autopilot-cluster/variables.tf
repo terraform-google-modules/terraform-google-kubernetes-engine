@@ -323,7 +323,6 @@ variable "control_plane_endpoints_config" {
       enabled = optional(bool)
     }))
   })
-  default = null
 }
 
 variable "private_cluster_config" {
