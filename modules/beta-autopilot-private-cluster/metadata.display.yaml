@@ -349,6 +349,9 @@ spec:
         workload_vulnerability_mode:
           name: workload_vulnerability_mode
           title: Workload Vulnerability Mode
+        node_locations_use_api_default:
+          name: node_locations_use_api_default
+          title: Node Locations Use Api Default
         zones:
           name: zones
           title: Zones
