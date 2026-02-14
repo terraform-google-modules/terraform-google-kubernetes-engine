@@ -164,11 +164,6 @@ spec:
         control_plane_endpoints_config:
           name: control_plane_endpoints_config
           title: Control Plane Endpoints Config
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value:
-                - dns_endpoint_config:
-                    allow_external_traffic: true
         cost_management_config:
           name: cost_management_config
           title: Cost Management Config
