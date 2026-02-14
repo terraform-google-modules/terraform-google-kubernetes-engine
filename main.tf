@@ -31,7 +31,10 @@ data "google_compute_zones" "available" {
 resource "random_shuffle" "available_zones" {
   count = local.zone_count == 0 ? 1 : 0
 
-  input        = data.google_compute_zones.available[0].names
+  input = var.exclude_ai_zones ? [
+    for zone in data.google_compute_zones.available[0].names : zone
+    if !can(regex("-ai\\d+[a-z]$", zone))
+  ] : data.google_compute_zones.available[0].names
   result_count = 3
 }
 
