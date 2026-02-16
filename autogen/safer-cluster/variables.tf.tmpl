@@ -325,7 +325,7 @@ variable "master_ipv4_cidr_block" {
 
 variable "private_endpoint_subnetwork" {
   type        = string
-  description = "The subnetwork to use for the hosted master network."
+  description = "The subnetwork to use for the hosted master network. If specified, `master_ipv4_cidr_block` is ignored."
   default     = null
 }
 

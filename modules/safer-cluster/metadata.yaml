@@ -338,7 +338,7 @@ spec:
         varType: string
         defaultValue: 10.0.0.0/28
       - name: private_endpoint_subnetwork
-        description: The subnetwork to use for the hosted master network.
+        description: The subnetwork to use for the hosted master network. If specified, `master_ipv4_cidr_block` is ignored.
         varType: string
       - name: dns_cache
         description: (Beta) The status of the NodeLocal DNSCache addon.
