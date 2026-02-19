@@ -1,10 +1,10 @@
 module github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration
 
-go 1.25.0
+go 1.26
 
 require (
 	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.18.0
-	github.com/gruntwork-io/terratest v0.55.0
+	github.com/gruntwork-io/terratest v0.56.0
 	github.com/hashicorp/terraform-json v0.27.2
 	github.com/stretchr/testify v1.11.1
 	github.com/tidwall/gjson v1.18.0
