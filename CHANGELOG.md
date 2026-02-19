@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [Unreleased]
+
+### Features
+
+* **Alternate GCP universes support:** Beta Autopilot modules (`beta-autopilot-private-cluster`, `beta-autopilot-public-cluster`) now support deployment on alternate GCP universes (e.g. sovereign or restricted clouds where API semantics differ from standard GCP):
+  * New variable `node_locations_use_api_default` (default `false`): when `true`, regional clusters with no zones specified use API default node_locations instead of Compute zones.
+  * Regional cluster container engine versions lookup now uses region as location for the zone data source, avoiding "Location does not exist" on APIs that only accept region-level.
+  * See [docs/alternate_gcp_universes.md](docs/alternate_gcp_universes.md).
+
 ## [43.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v42.0.0...v43.0.0) (2025-12-30)
 
 
