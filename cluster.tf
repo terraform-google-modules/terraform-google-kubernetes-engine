@@ -131,7 +131,7 @@ resource "google_container_cluster" "primary" {
     enabled                       = var.cluster_autoscaling.enabled
     default_compute_class_enabled = lookup(var.cluster_autoscaling, "enable_default_compute_class", false)
     dynamic "auto_provisioning_defaults" {
-      for_each = var.cluster_autoscaling.enabled ? [1] : []
+      for_each = var.cluster_autoscaling.enabled || lookup(var.cluster_autoscaling, "enable_default_compute_class", false) ? [1] : []
 
       content {
         service_account = local.service_account
