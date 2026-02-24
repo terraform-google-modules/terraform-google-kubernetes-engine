@@ -1,6 +1,6 @@
 # GKE Standard Cluster and Node Pool
 
-This example creates a GKE private cluster and Node Pool with beta features.
+This example creates a GKE private cluster and Node Pool with beta features. This example also adds an extra network to the Nodes configuration.
 For a full example see [simple_regional_private_beta](../simple_regional_private_beta/README.md) example.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
@@ -30,6 +30,7 @@ For a full example see [simple_regional_private_beta](../simple_regional_private
 | location | Cluster location |
 | master\_version | The master Kubernetes version |
 | node\_locations | Cluster node locations |
+| node\_pool\_name | The name of the node pool |
 | project\_id | The project ID the cluster is in |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

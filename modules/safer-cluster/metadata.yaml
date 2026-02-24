@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -90,6 +90,8 @@ spec:
         location: examples/simple_regional_private
       - name: simple_regional_private_beta
         location: examples/simple_regional_private_beta
+      - name: simple_regional_private_no_pool
+        location: examples/simple_regional_private_no_pool
       - name: simple_regional_private_with_cluster_version
         location: examples/simple_regional_private_with_cluster_version
       - name: simple_regional_with_gateway_api
@@ -335,6 +337,9 @@ spec:
         description: The IP range in CIDR notation to use for the hosted master network
         varType: string
         defaultValue: 10.0.0.0/28
+      - name: private_endpoint_subnetwork
+        description: The subnetwork to use for the hosted master network. If specified, `master_ipv4_cidr_block` is ignored.
+        varType: string
       - name: dns_cache
         description: (Beta) The status of the NodeLocal DNSCache addon.
         varType: bool

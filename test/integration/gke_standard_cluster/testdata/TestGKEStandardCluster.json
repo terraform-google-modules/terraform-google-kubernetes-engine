@@ -136,8 +136,10 @@
   "name": "CLUSTER_NAME",
   "network": "cft-gke-test-2sv7",
   "networkConfig": {
+    "datapathProvider": "ADVANCED_DATAPATH",
     "defaultEnablePrivateNodes": true,
     "defaultSnatStatus": {},
+    "enableMultiNetworking": true,
     "network": "projects/PROJECT_ID/global/networks/cft-gke-test-2sv7",
     "serviceExternalIpsConfig": {},
     "subnetwork": "projects/PROJECT_ID/regions/us-central1/subnetworks/cft-gke-test-2sv7"
