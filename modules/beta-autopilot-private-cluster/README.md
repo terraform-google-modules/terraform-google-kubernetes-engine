@@ -107,7 +107,6 @@ Then perform the following commands on the root folder:
 | enable\_private\_endpoint | Whether the master's internal IP address is used as the cluster endpoint | `bool` | `false` | no |
 | enable\_private\_nodes | Whether nodes have internal IP addresses only | `bool` | `true` | no |
 | enable\_resource\_consumption\_export | Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. | `bool` | `true` | no |
-| enable\_secret\_manager\_addon | Enable the Secret Manager add-on for this cluster | `bool` | `false` | no |
 | enable\_tpu | Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive! | `bool` | `false` | no |
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | `bool` | `true` | no |
 | enterprise\_config | (Optional) Enable or disable GKE enterprise. Valid values are STANDARD and ENTERPRISE. | `string` | `null` | no |
@@ -161,6 +160,7 @@ Then perform the following commands on the root folder:
 | release\_channel | The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`. | `string` | `"REGULAR"` | no |
 | resource\_manager\_tags | (Optional) - List of resource manager tags applied to autopilot and auto-provisioned node pools. A maximum of 5 tags can be specified. Tags must be in one of these formats: "tagKeys/{tag\_key\_id}"="tagValues/{tag\_value\_id}", "{org\_id}/{tag\_key\_name}"="{tag\_value\_name}", "{project\_id}/{tag\_key\_name}"="{tag\_value\_name}". | `map(string)` | `{}` | no |
 | resource\_usage\_export\_dataset\_id | The ID of a BigQuery Dataset for using BigQuery as the destination of resource usage export. | `string` | `""` | no |
+| secret\_manager\_addon | Configure the Secret Manager add-on for this cluster | <pre>object({<br>    enabled = bool,<br>    rotation_config = optional(object({<br>      enabled           = bool,<br>      rotation_interval = optional(string)<br>    }))<br>  })</pre> | <pre>{<br>  "enabled": false<br>}</pre> | no |
 | security\_posture\_mode | Security posture mode. Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`. | `string` | `"DISABLED"` | no |
 | security\_posture\_vulnerability\_mode | Security posture vulnerability mode. Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE`. Defaults to `VULNERABILITY_DISABLED`. | `string` | `"VULNERABILITY_DISABLED"` | no |
 | service\_account | The service account to run nodes as if not overridden in `node_pools`. The create\_service\_account variable default value (true) will cause a cluster-specific service account to be created. This service account should already exists and it will be used by the node pools. If you wish to only override the service account name, you can use service\_account\_name variable. | `string` | `""` | no |

@@ -631,10 +631,16 @@ variable "enable_gcfs" {
   default     = false
 }
 
-variable "enable_secret_manager_addon" {
-  description = "Enable the Secret Manager add-on for this cluster"
-  type        = bool
-  default     = false
+variable "secret_manager_addon" {
+  description = "Configure the Secret Manager add-on for this cluster"
+  type = object({
+    enabled = bool,
+    rotation_config = optional(object({
+      enabled           = bool,
+      rotation_interval = optional(string)
+    }))
+  })
+  default = { enabled = false }
 }
 
 variable "workload_vulnerability_mode" {
