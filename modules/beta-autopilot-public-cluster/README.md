@@ -137,6 +137,7 @@ Then perform the following commands on the root folder:
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | `string` | `""` | no |
 | network\_tags | (Optional) - List of network tags applied to autopilot and auto-provisioned node pools. | `list(string)` | `[]` | no |
 | network\_tier\_config | Network tier configuration for the cluster | `string` | `null` | no |
+| node\_locations\_use\_api\_default | When true, regional cluster with no zones uses API default node_locations. Set for alternate GCP universes (e.g. sovereign/restricted clouds). | `bool` | `false` | no |
 | node\_pools\_cgroup\_mode | Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management. | `string` | `null` | no |
 | notification\_config\_topic | The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}. | `string` | `""` | no |
 | notification\_filter\_event\_type | Choose what type of notifications you want to receive. If no filters are applied, you'll receive all notification types. Can be used to filter what notifications are sent. Accepted values are UPGRADE\_AVAILABLE\_EVENT, UPGRADE\_EVENT, and SECURITY\_BULLETIN\_EVENT. | `list(string)` | `[]` | no |
@@ -164,6 +165,10 @@ Then perform the following commands on the root folder:
 | workload\_config\_audit\_mode | (beta) Sets which mode of auditing should be used for the cluster's workloads. Accepted values are DISABLED, BASIC. | `string` | `"DISABLED"` | no |
 | workload\_vulnerability\_mode | (beta) Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC. | `string` | `""` | no |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | `list(string)` | `[]` | no |
+
+## Alternate GCP universes
+
+For deployment on **alternate GCP universes** (e.g. sovereign or restricted clouds), set `node_locations_use_api_default = true` when no zones are specified and set `identity_namespace` to the workload pool required by your environment. See [Alternate GCP universes](../../docs/alternate_gcp_universes.md) in the root docs.
 
 ## Outputs
 
