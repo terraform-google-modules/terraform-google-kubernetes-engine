@@ -164,7 +164,7 @@ resource "google_container_cluster" "primary" {
     enabled = var.cluster_autoscaling.enabled
     default_compute_class_enabled = lookup(var.cluster_autoscaling, "enable_default_compute_class", false)
     dynamic "auto_provisioning_defaults" {
-      for_each = var.cluster_autoscaling.enabled ? [1] : []
+      for_each = local.autoscaling_or_compute_class_enabled ? [1] : []
 
       content {
         service_account = local.service_account
@@ -373,10 +373,10 @@ resource "google_container_cluster" "primary" {
 
 {% if autopilot_cluster != true %}
   dynamic "node_pool_auto_config" {
-    for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode != null) ? [1] : []
+    for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode != null) ? [1] : []
     content {
       dynamic "network_tags" {
-        for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
+        for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
         content {
           tags = var.add_cluster_firewall_rules ? (concat(var.network_tags, [local.cluster_network_tag])) : var.network_tags
         }
