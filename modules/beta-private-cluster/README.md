@@ -444,6 +444,7 @@ The node_pools variable takes the following parameters:
 | local_ssd_encryption_mode | specifies the method used for encrypting the local SSDs attached to the node. Valid values are: "STANDARD_ENCRYPTION" and "EPHEMERAL_KEY_ENCRYPTION" | | Optional |
 | max_run_duration | The runtime of each node in the node pool in seconds, terminated by 's'. Example: "3600s". | null | Optional |
 | flex_start | Enables Flex Start provisioning model for the node pool | null | Optional |
+| respect_pdb_during_node_pool_deletion | Whether to respect Pod Disruption Budgets during node pool deletion. | null | Optional |
 
 ## windows_node_pools variable
 

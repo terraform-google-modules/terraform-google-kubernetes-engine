@@ -140,6 +140,7 @@ module "gke" {
   // We enable private endpoints to limit exposure.
   enable_private_endpoint       = var.enable_private_endpoint
   deploy_using_private_endpoint = true
+  private_endpoint_subnetwork   = var.private_endpoint_subnetwork
 
   // Private nodes better control public exposure, and reduce
   // the ability of nodes to reach to the Internet without
@@ -148,7 +149,7 @@ module "gke" {
 
   master_global_access_enabled = true
 
-  master_ipv4_cidr_block = var.master_ipv4_cidr_block
+  master_ipv4_cidr_block = var.private_endpoint_subnetwork != null ? null : var.master_ipv4_cidr_block
 
   cloudrun = var.cloudrun
 
