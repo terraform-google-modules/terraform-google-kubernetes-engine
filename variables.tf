@@ -1008,7 +1008,7 @@ variable "enable_identity_service" {
 }
 
 variable "allow_net_admin" {
-  description = "(Optional) Enable NET_ADMIN for the cluster."
+  description = "(Optional) Enable NET_ADMIN for containers in this cluster. This is a powerful capability. For more information, see https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#restrict_pod_permissions"
   type        = bool
   default     = null
 }
