@@ -41,7 +41,7 @@ resource "google_container_cluster" "main" {
   monitoring_service        = var.monitoring_service
 
 
-  allow_net_admin = false
+  allow_net_admin = var.allow_net_admin
   # enable_autopilot = false
 
   dynamic "addons_config" {

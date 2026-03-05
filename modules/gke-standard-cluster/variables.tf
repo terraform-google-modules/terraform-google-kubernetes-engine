@@ -907,6 +907,12 @@ variable "enable_multi_networking" {
   default     = null
 }
 
+variable "allow_net_admin" {
+  description = "(Optional) Enable NET_ADMIN for the cluster."
+  type        = bool
+  default     = false
+}
+
 variable "in_transit_encryption_config" {
   type        = string
   description = "Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`."

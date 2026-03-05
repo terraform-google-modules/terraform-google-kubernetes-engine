@@ -405,6 +405,8 @@ resource "google_container_cluster" "primary" {
 
   datapath_provider = var.datapath_provider
 
+  allow_net_admin = var.allow_net_admin
+
 
   security_posture_config {
     mode               = var.security_posture_mode

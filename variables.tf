@@ -1007,6 +1007,12 @@ variable "enable_identity_service" {
   default     = false
 }
 
+variable "allow_net_admin" {
+  description = "(Optional) Enable NET_ADMIN for the cluster."
+  type        = bool
+  default     = null
+}
+
 variable "fleet_project" {
   description = "(Optional) Register the cluster with the fleet in this project."
   type        = string

@@ -425,6 +425,8 @@ resource "google_container_cluster" "primary" {
 
   datapath_provider = var.datapath_provider
 
+  allow_net_admin = var.allow_net_admin
+
   networking_mode = "VPC_NATIVE"
 
   protect_config {
