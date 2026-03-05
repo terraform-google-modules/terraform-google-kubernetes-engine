@@ -1048,7 +1048,6 @@ variable "enable_identity_service" {
   description = "(Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API. NOTE: Starting on July 1, 2025, new Google Cloud organizations that you create won't support Identity Service for GKE."
   default     = false
 }
-
 variable "allow_net_admin" {
   description = "(Optional) Enable NET_ADMIN for containers in this cluster. This is a powerful capability. For more information, see https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#restrict_pod_permissions"
   type        = bool
