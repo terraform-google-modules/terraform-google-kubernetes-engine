@@ -891,6 +891,10 @@ spec:
       - name: enable_multi_networking
         description: Enable multi-networking for this cluster. This feature requires projects to have enabled GKE multi-networking series APIs. This feature is in public beta.
         varType: bool
+      - name: allow_net_admin
+        description: (Optional) Enable NET_ADMIN for containers in this cluster. This is a powerful capability. For more information, see https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#restrict_pod_permissions
+        varType: bool
+        defaultValue: false
       - name: in_transit_encryption_config
         description: Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`.
         varType: string
