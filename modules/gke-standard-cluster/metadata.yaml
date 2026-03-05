@@ -892,7 +892,7 @@ spec:
         description: Enable multi-networking for this cluster. This feature requires projects to have enabled GKE multi-networking series APIs. This feature is in public beta.
         varType: bool
       - name: allow_net_admin
-        description: (Optional) Enable NET_ADMIN for containers in this cluster. This is a powerful capability. For more information, see https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#restrict_pod_permissions
+        description: (Optional) Enable NET_ADMIN capability cluster-wide. Primarily intended for Autopilot clusters, where Autopilot's security model prevents pods from requesting privileged capabilities and this flag is the only way to grant NET_ADMIN. On Standard clusters, workloads can grant NET_ADMIN at the pod level via securityContext (e.g. for service meshes such as Linkerd or Istio running without CNI mode). Defaults to false. See https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#restrict_pod_permissions
         varType: bool
         defaultValue: false
       - name: in_transit_encryption_config
