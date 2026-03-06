@@ -620,7 +620,7 @@ variable "enable_multi_networking" {
 }
 
 variable "allow_net_admin" {
-  description = "(Optional) Enable NET_ADMIN for the cluster."
+  description = "(Optional) Enable NET_ADMIN capability cluster-wide. Primarily intended for Autopilot clusters, where Autopilot's security model prevents pods from requesting privileged capabilities and this flag is the only way to grant NET_ADMIN. On Standard clusters, workloads can grant NET_ADMIN at the pod level via securityContext (e.g. for service meshes such as Linkerd or Istio running without CNI mode). Defaults to false. See https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#restrict_pod_permissions"
   type        = bool
   default     = null
 }

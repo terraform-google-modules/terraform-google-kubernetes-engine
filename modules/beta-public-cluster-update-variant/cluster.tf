@@ -422,6 +422,7 @@ resource "google_container_cluster" "primary" {
       }
     }
   }
+  allow_net_admin = var.allow_net_admin
 
   datapath_provider = var.datapath_provider
 
