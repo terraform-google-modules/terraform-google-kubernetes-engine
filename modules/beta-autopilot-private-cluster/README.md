@@ -14,6 +14,16 @@ Sub modules are provided for creating private clusters, beta private clusters, a
 
 For details on configuring private clusters with this module, check the [troubleshooting guide](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/blob/master/docs/private_clusters.md).
 
+## Kubernetes version lookup
+
+When `kubernetes_version` is set to `"latest"`, the module resolves the version via the `google_container_engine_versions` data source. For **regional** clusters only a region-level lookup is performed. For **zonal** clusters a zone-level lookup is used. This allows the module to work in environments where the Container API accepts only region-level `location` (e.g. some sovereign or partner clouds).
+
+## Cluster location override
+
+When the API rejects the default cluster location (e.g. backends that validate `location` as a zone and reject a region), set `cluster_location_override` to the value the API accepts. For regional clusters, setting it to the first zone (e.g. `var.zones[0]`) creates the cluster as zonal from the API’s perspective; `node_locations` is then set to the remaining zones so nodes can still span multiple zones.
+
+When the API accepts the region as `location` but rejects explicit zone names at create (e.g. "Specified location is not a valid zone"), set `omit_node_locations_for_regional = true`. The module then creates the cluster with `node_locations = []` so the API accepts the request; the API populates zones automatically. A dedicated cluster resource variant with `lifecycle { ignore_changes = [node_locations] }` is used so subsequent applies do not drift and destroy/recreate works (create again sends `[]`, no update is attempted on node_locations).
+
 ## Compatibility
 
 This module is meant for use with Terraform 1.3+ and tested using Terraform 1.10+.

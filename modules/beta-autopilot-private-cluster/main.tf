@@ -36,20 +36,24 @@ resource "random_shuffle" "available_zones" {
 }
 
 locals {
-  // ID of the cluster
-  cluster_id = google_container_cluster.primary.id
+  cluster_id = local.cluster_self.id
 
-  // location
-  location = var.regional ? var.region : var.zones[0]
-  region   = var.regional ? var.region : join("-", slice(split("-", var.zones[0]), 0, 2))
-  // for regional cluster - use var.zones if provided, use available otherwise, for zonal cluster use var.zones with first element extracted
+  location       = var.regional ? var.region : var.zones[0]
+  region         = var.regional ? var.region : join("-", slice(split("-", var.zones[0]), 0, 2))
   node_locations = var.regional ? coalescelist(compact(var.zones), try(sort(random_shuffle.available_zones[0].result), [])) : slice(var.zones, 1, length(var.zones))
-  // Kubernetes version
+
+  cluster_location_input = coalesce(var.cluster_location_override, local.location)
+  use_zone_location      = var.cluster_location_override != null && var.regional && length(var.zones) > 0 && var.cluster_location_override == var.zones[0]
+
+  cluster_node_locations = var.omit_node_locations_for_regional && var.regional ? [] : (local.use_zone_location ? slice(var.zones, 1, length(var.zones)) : local.node_locations)
+
+  cluster_self = length(google_container_cluster.primary) > 0 ? google_container_cluster.primary[0] : google_container_cluster.primary_omit_nodelocs[0]
+
   master_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version
-  master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
+  master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : (var.regional ? local.master_version_regional : data.google_container_engine_versions.zone[0].latest_master_version)
   master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
 
-  fleet_membership = var.fleet_project != null ? google_container_cluster.primary.fleet[0].membership : null
+  fleet_membership = var.fleet_project != null ? local.cluster_self.fleet[0].membership : null
 
   release_channel    = var.release_channel != null ? [{ channel : var.release_channel }] : []
   gateway_api_config = var.gateway_api_channel != null ? [{ channel : var.gateway_api_channel }] : []
@@ -73,43 +77,38 @@ locals {
   }]
 
 
-  cluster_output_regional_zones = google_container_cluster.primary.node_locations
-  cluster_output_zones          = local.cluster_output_regional_zones
-
-  cluster_endpoint     = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (var.enable_private_endpoint || var.deploy_using_private_endpoint ? google_container_cluster.primary.private_cluster_config[0].private_endpoint : google_container_cluster.primary.private_cluster_config[0].public_endpoint) : google_container_cluster.primary.endpoint
-  cluster_peering_name = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? google_container_cluster.primary.private_cluster_config[0].peering_name : null
-  cluster_endpoint_for_nodes = (var.enable_private_nodes && length(google_container_cluster.primary.private_cluster_config) > 0) ? (
+  cluster_endpoint     = (var.enable_private_nodes && length(local.cluster_self.private_cluster_config) > 0) ? (var.enable_private_endpoint || var.deploy_using_private_endpoint ? local.cluster_self.private_cluster_config[0].private_endpoint : local.cluster_self.private_cluster_config[0].public_endpoint) : local.cluster_self.endpoint
+  cluster_peering_name = (var.enable_private_nodes && length(local.cluster_self.private_cluster_config) > 0) ? local.cluster_self.private_cluster_config[0].peering_name : null
+  cluster_endpoint_for_nodes = (var.enable_private_nodes && length(local.cluster_self.private_cluster_config) > 0) ? (
     var.private_endpoint_subnetwork != null ?
     data.google_compute_subnetwork.private_endpoint_subnetwork[0].ip_cidr_range :
     var.master_ipv4_cidr_block != null ?
-    google_container_cluster.primary.private_cluster_config[0].master_ipv4_cidr_block :
+    local.cluster_self.private_cluster_config[0].master_ipv4_cidr_block :
     local.cluster_subnet_cidr
   ) : local.cluster_subnet_cidr
 
-  cluster_output_master_auth                        = concat(google_container_cluster.primary[*].master_auth, [])
-  cluster_output_master_version                     = google_container_cluster.primary.master_version
-  cluster_output_min_master_version                 = google_container_cluster.primary.min_master_version
-  cluster_output_logging_service                    = google_container_cluster.primary.logging_service
-  cluster_output_monitoring_service                 = google_container_cluster.primary.monitoring_service
-  cluster_output_http_load_balancing_enabled        = coalescelist(lookup(coalescelist(google_container_cluster.primary.addons_config, [{}])[0], "http_load_balancing", [{}]), [{ disabled = false }])[0].disabled
-  cluster_output_horizontal_pod_autoscaling_enabled = coalescelist(lookup(coalescelist(google_container_cluster.primary.addons_config, [{}])[0], "horizontal_pod_autoscaling", [{}]), [{ disabled = false }])[0].disabled
-  cluster_output_vertical_pod_autoscaling_enabled   = google_container_cluster.primary.vertical_pod_autoscaling != null && length(google_container_cluster.primary.vertical_pod_autoscaling) == 1 ? google_container_cluster.primary.vertical_pod_autoscaling[0].enabled : false
-  cluster_output_intranode_visbility_enabled        = google_container_cluster.primary.enable_intranode_visibility
-  cluster_output_identity_service_enabled           = google_container_cluster.primary.identity_service_config != null && length(google_container_cluster.primary.identity_service_config) == 1 ? google_container_cluster.primary.identity_service_config[0].enabled : false
-  cluster_output_secret_manager_addon_enabled       = google_container_cluster.primary.secret_manager_config != null && length(google_container_cluster.primary.secret_manager_config) == 1 ? google_container_cluster.primary.secret_manager_config[0].enabled : false
+  cluster_output_master_auth = concat([local.cluster_self.master_auth], [])
+  cluster_output_master_version                     = local.cluster_self.master_version
+  cluster_output_min_master_version                 = local.cluster_self.min_master_version
+  cluster_output_logging_service                    = local.cluster_self.logging_service
+  cluster_output_monitoring_service                 = local.cluster_self.monitoring_service
+  cluster_output_http_load_balancing_enabled        = coalescelist(lookup(coalescelist(local.cluster_self.addons_config, [{}])[0], "http_load_balancing", [{}]), [{ disabled = false }])[0].disabled
+  cluster_output_horizontal_pod_autoscaling_enabled = coalescelist(lookup(coalescelist(local.cluster_self.addons_config, [{}])[0], "horizontal_pod_autoscaling", [{}]), [{ disabled = false }])[0].disabled
+  cluster_output_vertical_pod_autoscaling_enabled   = local.cluster_self.vertical_pod_autoscaling != null && length(local.cluster_self.vertical_pod_autoscaling) == 1 ? local.cluster_self.vertical_pod_autoscaling[0].enabled : false
+  cluster_output_intranode_visbility_enabled        = local.cluster_self.enable_intranode_visibility
+  cluster_output_identity_service_enabled           = local.cluster_self.identity_service_config != null && length(local.cluster_self.identity_service_config) == 1 ? local.cluster_self.identity_service_config[0].enabled : false
+  cluster_output_secret_manager_addon_enabled       = local.cluster_self.secret_manager_config != null && length(local.cluster_self.secret_manager_config) == 1 ? local.cluster_self.secret_manager_config[0].enabled : false
 
   # BETA features
-  cluster_output_pod_security_policy_enabled = google_container_cluster.primary.pod_security_policy_config != null && length(google_container_cluster.primary.pod_security_policy_config) == 1 ? google_container_cluster.primary.pod_security_policy_config[0].enabled : false
+  cluster_output_pod_security_policy_enabled = local.cluster_self.pod_security_policy_config != null && length(local.cluster_self.pod_security_policy_config) == 1 ? local.cluster_self.pod_security_policy_config[0].enabled : false
 
   # /BETA features
 
-  cluster_master_auth_list_layer1 = local.cluster_output_master_auth
-  cluster_master_auth_list_layer2 = local.cluster_master_auth_list_layer1[0]
-  cluster_master_auth_map         = local.cluster_master_auth_list_layer2[0]
+  cluster_master_auth_map = local.cluster_output_master_auth[0][0]
 
-  cluster_location = google_container_cluster.primary.location
+  cluster_location = local.cluster_self.location
   cluster_region   = var.regional ? var.region : join("-", slice(split("-", local.cluster_location), 0, 2))
-  cluster_zones    = sort(local.cluster_output_zones)
+  cluster_zones    = sort(local.cluster_self.node_locations)
 
   // cluster ID is in the form project/location/name
   cluster_name_computed                      = element(split("/", local.cluster_id), length(split("/", local.cluster_id)) - 1)
@@ -149,11 +148,10 @@ data "google_container_engine_versions" "region" {
   project  = var.project_id
 }
 
+// Only created for zonal clusters; regional clusters use region-level version lookup only (avoids zone-level API calls in environments that support only region-level location).
 data "google_container_engine_versions" "zone" {
-  // Work around to prevent a lack of zone declaration from causing regional cluster creation from erroring out due to error
-  //
-  //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
-  //
+  count = var.regional ? 0 : 1
+
   location = local.zone_count == 0 ? data.google_compute_zones.available[0].names[0] : var.zones[0]
   project  = var.project_id
 }

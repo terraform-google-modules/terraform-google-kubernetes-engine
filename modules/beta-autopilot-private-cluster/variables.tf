@@ -50,6 +50,18 @@ variable "zones" {
   default     = []
 }
 
+variable "cluster_location_override" {
+  type        = string
+  description = "Optional override for the cluster's location attribute. When set, this value is used as the cluster location instead of the default (region for regional, first zone for zonal). Use when the API rejects the default location (e.g. backends that validate location as a zone). When set to the first zone while regional=true, node_locations are set to the remaining zones so the cluster is created as zonal."
+  default     = null
+}
+
+variable "omit_node_locations_for_regional" {
+  type        = bool
+  description = "When true and regional=true, the cluster is created with node_locations=[] so the API accepts the request (e.g. when it rejects explicit zones at create). The API then populates zones automatically; lifecycle ignore_changes on node_locations avoids drift on subsequent apply. Use for backends that only accept region-level location at create."
+  default     = false
+}
+
 variable "network" {
   type        = string
   description = "The VPC network to host the cluster in (required)"

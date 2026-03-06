@@ -50,6 +50,18 @@ variable "zones" {
   default     = []
 }
 
+variable "cluster_location_override" {
+  type        = string
+  description = "Optional override for the cluster's location attribute. When set, this value is used as the cluster location instead of the default (region for regional, first zone for zonal). Use when the API rejects the default location (e.g. backends that validate location as a zone). When set to the first zone while regional=true, node_locations are set to the remaining zones so the cluster is created as zonal."
+  default     = null
+}
+
+variable "omit_node_locations_for_regional" {
+  type        = bool
+  description = "When true and regional=true, node_locations is set from var.zones so Terraform config matches the API-populated zones and avoids drift on subsequent apply. Use when the API only accepts region-level location at create and populates zones automatically; set var.zones to the region's zones so desired state matches the cluster after create."
+  default     = false
+}
+
 variable "network" {
   type        = string
   description = "The VPC network to host the cluster in (required)"
