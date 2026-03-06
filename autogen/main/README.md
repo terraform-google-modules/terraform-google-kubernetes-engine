@@ -44,6 +44,11 @@ The implications of this are that:
 - You will indeed need sufficient IP space (and compute capacity) to create both node pools
 
 {% endif %}
+
+## Kubernetes version lookup
+
+When `kubernetes_version` is set to `"latest"`, the module resolves the version via the `google_container_engine_versions` data source. For **regional** clusters only a region-level lookup is performed. For **zonal** clusters a zone-level lookup is used. This allows the module to work in environments where the Container API accepts only region-level `location` (e.g. some sovereign or partner clouds).
+
 ## Compatibility
 
 This module is meant for use with Terraform 1.3+ and tested using Terraform 1.10+.
