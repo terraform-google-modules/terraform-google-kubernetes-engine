@@ -167,14 +167,10 @@ variable "stack_type" {
 }
 
 variable "node_pools" {
-  type        = list(map(any))
+  type        = list(any)
   description = "List of maps containing node pools"
 
-  default = [
-    {
-      name = "default-node-pool"
-    },
-  ]
+  default = []
 }
 
 variable "windows_node_pools" {
