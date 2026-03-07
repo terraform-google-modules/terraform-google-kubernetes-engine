@@ -166,21 +166,16 @@ variable "stack_type" {
   default     = "IPV4"
 }
 
-variable "node_pools" {
-  type        = list(map(any))
-  description = "List of maps containing node pools"
-
-  default = [
-    {
-      name = "default-node-pool"
-    },
-  ]
-}
-
 variable "windows_node_pools" {
   type        = list(map(string))
   description = "List of maps containing Windows node pools"
   default     = []
+}
+variable "node_pools" {
+  type        = list(any)
+  description = "List of maps containing node pools"
+
+  default = []
 }
 
 variable "node_pools_labels" {
