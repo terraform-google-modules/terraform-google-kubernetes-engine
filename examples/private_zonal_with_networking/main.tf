@@ -61,7 +61,7 @@ data "google_compute_subnetwork" "subnetwork" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
-  version = "~> 43.0"
+  version = "~> 44.0"
 
   project_id = var.project_id
   name       = var.cluster_name
