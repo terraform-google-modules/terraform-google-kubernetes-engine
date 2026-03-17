@@ -501,6 +501,9 @@ spec:
       - name: dns_allow_external_traffic
         description: (Optional) Controls whether external traffic is allowed over the dns endpoint.
         varType: bool
+      - name: enable_k8s_tokens_via_dns
+        description: (Optional) Controls whether K8s tokens are enabled via the DNS endpoint. Defaults to true if dns_allow_external_traffic is set.
+        varType: bool
       - name: ip_endpoints_enabled
         description: (Optional) Controls whether to allow direct IP access. Defaults to `true`.
         varType: bool

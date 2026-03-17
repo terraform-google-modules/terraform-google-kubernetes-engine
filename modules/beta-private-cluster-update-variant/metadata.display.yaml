@@ -127,6 +127,9 @@ spec:
         dns_allow_external_traffic:
           name: dns_allow_external_traffic
           title: Dns Allow External Traffic
+        enable_k8s_tokens_via_dns:
+          name: enable_k8s_tokens_via_dns
+          title: Enable K8s Tokens Via Dns
         dns_cache:
           name: dns_cache
           title: Dns Cache

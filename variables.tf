@@ -1045,6 +1045,12 @@ variable "dns_allow_external_traffic" {
   default     = null
 }
 
+variable "enable_k8s_tokens_via_dns" {
+  description = "(Optional) Controls whether K8s tokens are enabled via the DNS endpoint. Defaults to true if dns_allow_external_traffic is set."
+  type        = bool
+  default     = null
+}
+
 variable "ip_endpoints_enabled" {
   description = "(Optional) Controls whether to allow direct IP access. Defaults to `true`."
   type        = bool
