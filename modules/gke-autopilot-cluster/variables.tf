@@ -317,7 +317,7 @@ variable "control_plane_endpoints_config" {
   description = "Configuration for all of the cluster's control plane endpoints."
   type = object({
     dns_endpoint_config = optional(object({
-      allow_external_traffic = optional(bool)
+      allow_external_traffic = optional(bool, true)
     }))
     ip_endpoints_config = optional(object({
       enabled = optional(bool)
