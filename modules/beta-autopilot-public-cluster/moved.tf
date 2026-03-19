@@ -17,7 +17,12 @@
 
 moved {
   from = kubernetes_config_map.ip-masq-agent
-  to   = kubernetes_config_map.ip_masq_agent
+  to   = kubernetes_config_map_v1.ip_masq_agent
+}
+
+moved {
+  from = kubernetes_config_map.ip_masq_agent
+  to   = kubernetes_config_map_v1.ip_masq_agent
 }
 
 moved {
