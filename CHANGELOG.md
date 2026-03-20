@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [44.0.1](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v44.0.0...v44.0.1) (2026-03-20)
+
+
+### Bug Fixes
+
+* missing default_compute_class_enabled from safer-cluster ([#2548](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2548)) ([51b04ad](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/51b04ad058df6eb20ee75ccdeb6343e74822ca9f))
+
 ## [44.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v43.0.0...v44.0.0) (2026-02-28)
 
 
