@@ -32,6 +32,7 @@ output "name" {
     * to be up.
     */
     google_container_cluster.primary,
+    google_container_cluster.primary_omit_nodelocs,
   ]
 }
 
@@ -67,12 +68,13 @@ output "endpoint" {
     * to be up.
     */
     google_container_cluster.primary,
+    google_container_cluster.primary_omit_nodelocs,
   ]
 }
 
 output "endpoint_dns" {
   description = "Cluster endpoint DNS"
-  value       = google_container_cluster.primary.control_plane_endpoints_config[0].dns_endpoint_config[0].endpoint
+  value       = local.cluster_self.control_plane_endpoints_config[0].dns_endpoint_config[0].endpoint
   depends_on = [
     /* Nominally, the endpoint is populated as soon as it is known to Terraform.
     * However, the cluster may not be in a usable state yet.  Therefore any
@@ -81,6 +83,7 @@ output "endpoint_dns" {
     * to be up.
     */
     google_container_cluster.primary,
+    google_container_cluster.primary_omit_nodelocs,
   ]
 }
 
@@ -101,7 +104,7 @@ output "monitoring_service" {
 
 output "master_authorized_networks_config" {
   description = "Networks from which access to master is permitted"
-  value       = google_container_cluster.primary.master_authorized_networks_config
+  value       = local.cluster_self.master_authorized_networks_config
 }
 
 output "master_version" {
@@ -152,20 +155,21 @@ output "identity_namespace" {
   description = "Workload Identity pool"
   value       = length(local.cluster_workload_identity_config) > 0 ? local.cluster_workload_identity_config[0].workload_pool : null
   depends_on = [
-    google_container_cluster.primary
+    google_container_cluster.primary,
+    google_container_cluster.primary_omit_nodelocs,
   ]
 }
 
 output "tpu_ipv4_cidr_block" {
   description = "The IP range in CIDR notation used for the TPUs"
-  value       = var.enable_tpu ? google_container_cluster.primary.tpu_ipv4_cidr_block : null
+  value       = var.enable_tpu ? local.cluster_self.tpu_ipv4_cidr_block : null
 }
 
 
 
 output "master_ipv4_cidr_block" {
   description = "The IP range in CIDR notation used for the hosted master network"
-  value       = var.enable_private_nodes ? google_container_cluster.primary.private_cluster_config[0].master_ipv4_cidr_block : null
+  value       = var.enable_private_nodes ? local.cluster_self.private_cluster_config[0].master_ipv4_cidr_block : null
 }
 
 output "peering_name" {
