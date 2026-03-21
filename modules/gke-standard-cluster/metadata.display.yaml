@@ -81,6 +81,9 @@ spec:
             stateful_ha_config:
               name: stateful_ha_config
               title: Stateful Ha Config
+        allow_net_admin:
+          name: allow_net_admin
+          title: Allow Net Admin
         authenticator_groups_config:
           name: authenticator_groups_config
           title: Authenticator Groups Config
