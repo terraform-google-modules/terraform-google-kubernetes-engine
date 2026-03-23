@@ -22,6 +22,7 @@ resource "google_gke_hub_membership" "primary" {
   project       = local.hub_project_id
   membership_id = local.gke_hub_membership_name
   location      = var.membership_location
+  labels        = var.resource_labels
 
   endpoint {
     gke_cluster {
