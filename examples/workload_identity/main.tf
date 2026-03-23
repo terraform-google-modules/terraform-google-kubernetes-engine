@@ -71,9 +71,6 @@ resource "kubernetes_service_account_v1" "test" {
   metadata {
     name = "foo-ksa"
   }
-  secret {
-    name = "bar"
-  }
 }
 
 module "workload_identity_existing_ksa" {
