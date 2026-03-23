@@ -49,7 +49,7 @@ resource "google_service_account" "cluster_service_account" {
   create_ignore_already_exists = var.gcp_sa_create_ignore_already_exists
 }
 
-resource "kubernetes_service_account" "main" {
+resource "kubernetes_service_account_v1" "main" {
   count = var.use_existing_k8s_sa ? 0 : 1
 
   automount_service_account_token = var.automount_service_account_token
