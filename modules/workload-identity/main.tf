@@ -23,8 +23,8 @@ locals {
 
   # This will cause Terraform to block returning outputs until the service account is created
   k8s_given_name       = var.k8s_sa_name != null ? var.k8s_sa_name : var.name
-  output_k8s_name      = var.use_existing_k8s_sa ? local.k8s_given_name : kubernetes_service_account.main[0].metadata[0].name
-  output_k8s_namespace = var.use_existing_k8s_sa ? var.namespace : kubernetes_service_account.main[0].metadata[0].namespace
+  output_k8s_name      = var.use_existing_k8s_sa ? local.k8s_given_name : kubernetes_service_account_v1.main[0].metadata[0].name
+  output_k8s_namespace = var.use_existing_k8s_sa ? var.namespace : kubernetes_service_account_v1.main[0].metadata[0].name
 
   k8s_sa_project_id       = var.k8s_sa_project_id != null ? var.k8s_sa_project_id : var.project_id
   k8s_sa_gcp_derived_name = "serviceAccount:${local.k8s_sa_project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
