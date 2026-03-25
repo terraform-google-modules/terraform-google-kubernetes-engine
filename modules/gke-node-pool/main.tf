@@ -277,7 +277,7 @@ resource "google_container_node_pool" "main" {
                     }
                   }
                   dynamic "client" {
-                    for_each = hosts.value.client != null ? host.value.client : []
+                    for_each = hosts.value.client != null ? hosts.value.client : []
                     content {
                       cert {
                         gcp_secret_manager_secret_uri = client.value.cert.gcp_secret_manager_secret_uri
