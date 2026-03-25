@@ -208,6 +208,30 @@ variable "node_config" {
           })
         }))
       }))
+      registry_hosts = optional(list(object({
+        server = string
+        hosts = list(object({
+          host          = string
+          capabilities  = optional(list(string))
+          override_path = optional(bool)
+          dial_timeout  = optional(string)
+          header = optional(list(object({
+            key   = string
+            value = list(string)
+          })))
+          ca = optional(list(object({
+            gcp_secret_manager_secret_uri = string
+          })))
+          client = optional(list(object({
+            cert = object({
+              gcp_secret_manager_secret_uri = string
+            })
+            key = object({
+              gcp_secret_manager_secret_uri = string
+            })
+          })))
+        }))
+      })))
     }))
     node_group = optional(string)
     sole_tenant_config = optional(object({

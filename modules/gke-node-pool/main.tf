@@ -239,12 +239,55 @@ resource "google_container_node_pool" "main" {
       dynamic "containerd_config" {
         for_each = node_config.value.containerd_config != null ? [node_config.value.containerd_config] : []
         content {
-          private_registry_access_config {
-            enabled = containerd_config.value.private_registry_access_config.enabled
-            certificate_authority_domain_config {
-              fqdns = containerd_config.value.private_registry_access_config.certificate_authority_domain_config.fqdns
-              gcp_secret_manager_certificate_config {
-                secret_uri = containerd_config.value.private_registry_access_config.certificate_authority_domain_config.gcp_secret_manager_certificate_config.secret_uri
+          dynamic "private_registry_access_config" {
+            for_each = containerd_config.value.private_registry_access_config != null ? [containerd_config.value.private_registry_access_config] : []
+            content {
+              enabled = private_registry_access_config.value.enabled
+              certificate_authority_domain_config {
+                fqdns = private_registry_access_config.value.certificate_authority_domain_config.fqdns
+                gcp_secret_manager_certificate_config {
+                  secret_uri = private_registry_access_config.value.certificate_authority_domain_config.gcp_secret_manager_certificate_config.secret_uri
+                }
+              }
+            }
+          }
+
+          dynamic "registry_hosts" {
+            for_each = containerd_config.value.registry_hosts != null ? containerd_config.value.registry_hosts : []
+            content {
+              server = registry_hosts.value.server
+              dynamic "hosts" {
+                for_each = registry_hosts.value.hosts
+                content {
+                  host          = hosts.value.host
+                  capabilities  = hosts.value.capabilities
+                  override_path = hosts.value.override_path
+                  dial_timeout  = hosts.value.dial_timeout
+                  dynamic "header" {
+                    for_each = hosts.value.header != null ? hosts.value.header : []
+                    content {
+                      key   = header.value.key
+                      value = header.value.value
+                    }
+                  }
+                  dynamic "ca" {
+                    for_each = hosts.value.ca != null ? hosts.value.ca : []
+                    content {
+                      gcp_secret_manager_secret_uri = ca.value.gcp_secret_manager_secret_uri
+                    }
+                  }
+                  dynamic "client" {
+                    for_each = hosts.value.client != null ? host.value.client : []
+                    content {
+                      cert {
+                        gcp_secret_manager_secret_uri = client.value.cert.gcp_secret_manager_secret_uri
+                      }
+                      key {
+                        gcp_secret_manager_secret_uri = client.value.key.gcp_secret_manager_secret_uri
+                      }
+                    }
+                  }
+                }
               }
             }
           }
