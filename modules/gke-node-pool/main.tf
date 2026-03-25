@@ -243,10 +243,13 @@ resource "google_container_node_pool" "main" {
             for_each = containerd_config.value.private_registry_access_config != null ? [containerd_config.value.private_registry_access_config] : []
             content {
               enabled = private_registry_access_config.value.enabled
-              certificate_authority_domain_config {
-                fqdns = private_registry_access_config.value.certificate_authority_domain_config.fqdns
-                gcp_secret_manager_certificate_config {
-                  secret_uri = private_registry_access_config.value.certificate_authority_domain_config.gcp_secret_manager_certificate_config.secret_uri
+              dynamic "certificate_authority_domain_config" {
+                for_each = private_registry_access_config.value.certificate_authority_domain_config != null ? private_registry_access_config.value.certificate_authority_domain_config : []
+                content {
+                  fqdns = certificate_authority_domain_config.value.fqdns
+                  gcp_secret_manager_certificate_config {
+                    secret_uri = certificate_authority_domain_config.value.gcp_secret_manager_certificate_config.secret_uri
+                  }
                 }
               }
             }

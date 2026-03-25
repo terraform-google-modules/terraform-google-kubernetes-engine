@@ -201,12 +201,12 @@ variable "node_config" {
     containerd_config = optional(object({
       private_registry_access_config = optional(object({
         enabled = bool
-        certificate_authority_domain_config = optional(object({
+        certificate_authority_domain_config = optional(list(object({
           fqdns = list(string)
           gcp_secret_manager_certificate_config = object({
             secret_uri = string
           })
-        }))
+        })))
       }))
       registry_hosts = optional(list(object({
         server = string
