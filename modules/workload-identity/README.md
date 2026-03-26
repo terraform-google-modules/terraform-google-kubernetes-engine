@@ -73,7 +73,7 @@ module "my-app-workload-identity" {
 An existing Kubernetes service account can optionally be used.
 
 ```hcl
-resource "kubernetes_service_account" "preexisting" {
+resource "kubernetes_service_account_v1" "preexisting" {
   metadata {
     name      = "preexisting-sa"
     namespace = "prod"
@@ -85,8 +85,8 @@ module "my-app-workload-identity" {
   use_existing_k8s_sa = true
   cluster_name        = "my-k8s-cluster-name"
   location            = "my-k8s-cluster-location"
-  name                = kubernetes_service_account.preexisting.metadata[0].name
-  namespace           = kubernetes_service_account.preexisting.metadata[0].namespace
+  name                = kubernetes_service_account_v1.preexisting.metadata[0].name
+  namespace           = kubernetes_service_account_v1.preexisting.metadata[0].namespace
   project_id          = var.project_id
 }
 ```
