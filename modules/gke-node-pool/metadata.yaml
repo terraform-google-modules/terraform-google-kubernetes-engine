@@ -354,7 +354,7 @@ spec:
               source: https://github.com/terraform-google-modules/terraform-google-network
               version: ">= 16.0.1"
             spec:
-              outputExpr: '{"additional_node_network_configs": [{"network": network_name, "subnetwork": subnets_names[0]}]}'
+              outputExpr: "{\"additional_node_network_configs\": [{\"network\": network_name, \"subnetwork\": subnets_names[0]}]}"
       - name: node_count
         description: The number of nodes per instance group. This field can be used to update the number of nodes per instance group but should not be used alongside autoscaling.
         varType: number
