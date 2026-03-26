@@ -149,10 +149,20 @@ spec:
         description: The name or self_link of the Google Compute Engine network to which the cluster is connected. For Shared VPC, this network must be in the host project.
         varType: string
         required: true
+        connections:
+        - source: https://github.com/terraform-google-modules/terraform-google-network
+          version: ">= 16.0.1"
+          spec:
+            outputExpr: network_name
       - name: subnetwork
         description: The name or self_link of the Google Compute Engine subnetwork in which the cluster's instances are launched.
         varType: string
         required: true
+        connections:
+        - source: https://github.com/terraform-google-modules/terraform-google-network
+          version: ">= 16.0.1"
+          spec:
+            outputExpr: subnets_names
       - name: node_locations
         description: The list of zones in which the cluster's nodes are located. Nodes are created in the region's zones by default. This list must be a subset of the compute/zones in the region to which the cluster belongs. This field is optional for Zonal clusters and required for Regional clusters.
         varType: list(string)
