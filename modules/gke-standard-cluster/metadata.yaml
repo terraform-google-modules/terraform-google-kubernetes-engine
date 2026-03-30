@@ -164,7 +164,7 @@ spec:
               source: https://github.com/terraform-google-modules/terraform-google-network
               version: ">= 16.0.1"
             spec:
-              outputExpr: subnets_names
+              outputExpr: subnets_names[0]
       - name: node_locations
         description: The list of zones in which the cluster's nodes are located. Nodes are created in the region's zones by default. This list must be a subset of the compute/zones in the region to which the cluster belongs. This field is optional for Zonal clusters and required for Regional clusters.
         varType: list(string)
