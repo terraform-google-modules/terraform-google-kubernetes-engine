@@ -134,9 +134,9 @@ This approach is required when managing multiple clusters. Omitting this step ca
 ```shell
 Error: Get "http://localhost/api/v1/namespaces/default/serviceaccounts/your-service-account": dial tcp [::1]:80: connect: connection refused
 │
-│   with module.your_workload_identity.kubernetes_service_account.main[0],
-│   on .terraform/modules/your_workload_identity/modules/workload-identity/main.tf line 50, in resource "kubernetes_service_account" "main":
-│   50: resource "kubernetes_service_account" "main" {
+│   with module.your_workload_identity.kubernetes_service_account_v1.main[0],
+│   on .terraform/modules/your_workload_identity/modules/workload-identity/main.tf line 50, in resource "kubernetes_service_account_v1" "main":
+│   50: resource "kubernetes_service_account_v1" "main" {
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
