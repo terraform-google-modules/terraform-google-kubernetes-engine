@@ -49,6 +49,11 @@ resource "google_service_account" "cluster_service_account" {
   create_ignore_already_exists = var.gcp_sa_create_ignore_already_exists
 }
 
+moved {
+  from = kubernetes_service_account.main
+  to   = kubernetes_service_account_v1.main
+}
+
 resource "kubernetes_service_account_v1" "main" {
   count = var.use_existing_k8s_sa ? 0 : 1
 
