@@ -713,6 +713,14 @@ variable "enable_secret_manager_addon" {
   type        = bool
   default     = false
 }
+
+{% if beta_cluster %}
+variable "enable_secret_sync" {
+  description = "Enable the Secret Sync add-on for this cluster."
+  type        = bool
+  default     = false
+}
+{% endif %}
 {% if beta_cluster %}
 
 variable "workload_vulnerability_mode" {
