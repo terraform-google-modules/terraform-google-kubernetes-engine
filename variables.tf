@@ -631,6 +631,7 @@ variable "enable_secret_manager_addon" {
   default     = false
 }
 
+
 variable "enable_fqdn_network_policy" {
   type        = bool
   description = "Enable FQDN Network Policies on the cluster"
