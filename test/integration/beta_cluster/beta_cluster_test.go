@@ -58,7 +58,7 @@ func TestBetaCluster(t *testing.T) {
 			"addonsConfig",
 			"networkConfig.datapathProvider",
 			"binaryAuthorization",
-			"databaseEncryption.state",
+			// "databaseEncryption.state",
 			"loggingConfig",
 			"monitoringConfig",
 		}

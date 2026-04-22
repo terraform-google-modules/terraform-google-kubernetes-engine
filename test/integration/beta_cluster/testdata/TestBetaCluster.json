@@ -35,7 +35,7 @@
   "currentNodeVersion": "1.26.5-gke.1200",
   "databaseEncryption": {
     "keyName": "projects/PROJECT_ID/locations/us-central1/keyRings/beta-cluster-qwc4-db/cryptoKeys/beta-cluster-qwc4",
-    "state": "ENCRYPTED"
+    "state": "ALL_OBJECTS_ENCRYPTION_ENABLED"
   },
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"

@@ -196,7 +196,7 @@ spec:
         description: Whether or not to set `insecure_kubelet_readonly_port_enabled` for node pool defaults and autopilot clusters.
         varType: bool
       - name: node_pools_cgroup_mode
-        description: Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management.
+        description: "Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management. Note: GKE is removing cgroup v1 support in 1.35."
         varType: string
       - name: maintenance_start_time
         description: Time window specified for daily or recurring maintenance operations in RFC3339 format

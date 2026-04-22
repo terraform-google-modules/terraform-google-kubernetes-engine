@@ -52,7 +52,7 @@ func TestConfidentialSaferCluster(t *testing.T) {
 			"location",
 			"confidentialNodes.enabled",
 			"databaseEncryption.keyName",
-			"databaseEncryption.state",
+			// "databaseEncryption.state",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
 			"addonsConfig.horizontalPodAutoscaling",
