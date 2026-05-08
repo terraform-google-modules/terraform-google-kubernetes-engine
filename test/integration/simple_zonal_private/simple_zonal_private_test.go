@@ -53,6 +53,7 @@ func TestSimpleZonalPrivate(t *testing.T) {
 			"privateClusterConfig.enablePrivateNodes",
 			"addonsConfig.horizontalPodAutoscaling",
 			"addonsConfig.httpLoadBalancing",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
 			"addonsConfig.kubernetesDashboard.disabled",
 			"addonsConfig.networkPolicyConfig.disabled",
 			"nodePools.name",

@@ -55,16 +55,20 @@ func TestBetaCluster(t *testing.T) {
 			"networkConfig.datapathProvider",
 			"databaseEncryption.state",
 			// "identityServiceConfig.enabled", TODO: b/378974729
-			"addonsConfig",
 			"networkConfig.datapathProvider",
 			"binaryAuthorization",
 			// "databaseEncryption.state",
 			"loggingConfig",
 			"monitoringConfig",
+			"addonsConfig.dnsCacheConfig.enabled",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
+
 		for _, np := range op.Get("nodePools").Array() {
 			npName := np.Get("name").String()
 			// sanitze current nodepool data
