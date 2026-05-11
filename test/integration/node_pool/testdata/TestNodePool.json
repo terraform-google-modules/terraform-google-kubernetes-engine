@@ -202,7 +202,7 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-balanced",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "gcfsConfig": {},
         "imageType": "COS_CONTAINERD",
         "loggingConfig": {
@@ -319,7 +319,7 @@
       "config": {
         "diskSizeGb": 100,
         "diskType": "pd-standard",
-        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V1",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "gcfsConfig": {},
         "imageType": "COS_CONTAINERD",
         "labels": {

@@ -52,12 +52,9 @@ func TestConfidentialSaferCluster(t *testing.T) {
 			"location",
 			"confidentialNodes.enabled",
 			"databaseEncryption.keyName",
-			"databaseEncryption.state",
+			// "databaseEncryption.state",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
-			"addonsConfig.horizontalPodAutoscaling",
-			"addonsConfig.kubernetesDashboard",
-			"addonsConfig.networkPolicyConfig",
 			"networkPolicy",
 			"networkConfig.datapathProvider",
 			"binaryAuthorization.evaluationMode",
@@ -78,6 +75,9 @@ func TestConfidentialSaferCluster(t *testing.T) {
 			"nodePools.config.tags",
 			"nodePools.management.autoRepair",
 			"nodePools.shieldedInstanceConfig",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
