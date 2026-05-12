@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [44.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v44.0.0...v44.1.0) (2026-05-11)
+
+
+### Features
+
+* Add missing vpc connection for GKE Standard Cluster ([#2564](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2564)) ([a04f3ee](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/a04f3ee33444669aef536fb1b48704ceaf652700))
+
+
+### Bug Fixes
+
+* missing default_compute_class_enabled from safer-cluster ([#2548](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2548)) ([51b04ad](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/51b04ad058df6eb20ee75ccdeb6343e74822ca9f))
+* update Cgroup V2 transition ([#2575](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2575)) ([c383b04](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/c383b040c04e68cbaed076e16202e28809bb3771))
+
 ## [44.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v43.0.0...v44.0.0) (2026-02-28)
 
 

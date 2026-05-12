@@ -193,6 +193,9 @@ spec:
         enable_secret_manager_addon:
           name: enable_secret_manager_addon
           title: Enable Secret Manager Addon
+        enable_secret_sync:
+          name: enable_secret_sync
+          title: Enable Secret Sync
         enable_shielded_nodes:
           name: enable_shielded_nodes
           title: Enable Shielded Nodes

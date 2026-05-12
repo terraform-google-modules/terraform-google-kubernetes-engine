@@ -441,6 +441,9 @@ spec:
         secret_manager_config:
           name: secret_manager_config
           title: Secret Manager Config
+        secret_sync_config:
+          name: secret_sync_config
+          title: Secret Sync Config
         security_posture_config:
           name: security_posture_config
           title: Security Posture Config

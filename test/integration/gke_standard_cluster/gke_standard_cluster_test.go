@@ -49,8 +49,6 @@ func TestGKEStandardCluster(t *testing.T) {
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
 			"defaultMaxPodsConstraint.maxPodsPerNode",
-			"addonsConfig.kubernetesDashboard.disabled",
-			"addonsConfig.networkPolicyConfig.disabled",
 			"nodePools.autoscaling.enabled",
 			"nodePools.autoscaling.minNodeCount",
 			"nodePools.autoscaling.maxNodeCount",
@@ -61,6 +59,8 @@ func TestGKEStandardCluster(t *testing.T) {
 			"nodePools.maxPodsConstraint.maxPodsPerNode",
 			"networkConfig.datapathProvider",
 			"networkConfig.enableMultiNetworking",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)

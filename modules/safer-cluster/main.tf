@@ -154,6 +154,7 @@ module "gke" {
 
   config_connector        = var.config_connector
   gke_backup_agent_config = var.gke_backup_agent_config
+  enable_secret_sync      = var.enable_secret_sync
 
   cluster_dns_provider = var.cluster_dns_provider
 

@@ -778,6 +778,14 @@ variable "secret_manager_config" {
 
 }
 
+variable "secret_sync_config" {
+  description = "Configuration for the Secret Sync add-on for this cluster."
+  type = object({
+    enabled = bool
+  })
+  default = null
+}
+
 variable "authenticator_groups_config" {
   description = "Configuration for the Google Groups for GKE feature. The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com."
   type = object({

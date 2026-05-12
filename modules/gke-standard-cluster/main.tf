@@ -1058,6 +1058,13 @@ resource "google_container_cluster" "main" {
     }
   }
 
+  dynamic "secret_sync_config" {
+    for_each = var.secret_sync_config != null ? [var.secret_sync_config] : []
+    content {
+      enabled = secret_sync_config.value.enabled
+    }
+  }
+
   dynamic "authenticator_groups_config" {
     for_each = var.authenticator_groups_config != null ? [var.authenticator_groups_config] : []
     content {

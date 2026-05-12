@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-autopilot-private-cluster
-    version: 44.0.0
+    version: 44.1.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -196,7 +196,7 @@ spec:
         description: Whether or not to set `insecure_kubelet_readonly_port_enabled` for node pool defaults and autopilot clusters.
         varType: bool
       - name: node_pools_cgroup_mode
-        description: Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management.
+        description: "Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management. Note: GKE is removing cgroup v1 support in 1.35."
         varType: string
       - name: maintenance_start_time
         description: Time window specified for daily or recurring maintenance operations in RFC3339 format
@@ -380,6 +380,10 @@ spec:
         defaultValue: ""
       - name: enable_secret_manager_addon
         description: Enable the Secret Manager add-on for this cluster
+        varType: bool
+        defaultValue: false
+      - name: enable_secret_sync
+        description: Enable the Secret Sync add-on for this cluster.
         varType: bool
         defaultValue: false
       - name: workload_vulnerability_mode
