@@ -637,6 +637,12 @@ variable "enable_secret_manager_addon" {
   default     = false
 }
 
+variable "enable_secret_sync" {
+  description = "Enable the Secret Sync add-on for this cluster."
+  type        = bool
+  default     = false
+}
+
 variable "workload_vulnerability_mode" {
   description = "(beta) Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC."
   type        = string

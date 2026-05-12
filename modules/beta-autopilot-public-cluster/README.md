@@ -99,6 +99,7 @@ Then perform the following commands on the root folder:
 | enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | `bool` | `false` | no |
 | enable\_resource\_consumption\_export | Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. | `bool` | `true` | no |
 | enable\_secret\_manager\_addon | Enable the Secret Manager add-on for this cluster | `bool` | `false` | no |
+| enable\_secret\_sync | Enable the Secret Sync add-on for this cluster. | `bool` | `false` | no |
 | enable\_tpu | Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive! | `bool` | `false` | no |
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | `bool` | `true` | no |
 | enterprise\_config | (Optional) Enable or disable GKE enterprise. Valid values are STANDARD and ENTERPRISE. | `string` | `null` | no |

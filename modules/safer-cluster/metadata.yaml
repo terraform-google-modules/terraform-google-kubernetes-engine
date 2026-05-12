@@ -454,6 +454,10 @@ spec:
         description: (Beta) Whether Backup for GKE agent is enabled for this cluster.
         varType: bool
         defaultValue: false
+      - name: enable_secret_sync
+        description: Enable the Secret Sync add-on for this cluster.
+        varType: bool
+        defaultValue: false
       - name: security_posture_mode
         description: Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`.
         varType: string
