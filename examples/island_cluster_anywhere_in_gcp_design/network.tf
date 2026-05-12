@@ -14,7 +14,7 @@
 
 module "net" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 16.0"
+  version = "~> 18.0"
 
   for_each = { for k, v in var.gke_spokes : k => v }
 
