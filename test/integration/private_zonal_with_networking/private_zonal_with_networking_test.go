@@ -62,7 +62,9 @@ func TestPrivateZonalWithNetworking(t *testing.T) {
 			"locations",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
-			"addonsConfig",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
