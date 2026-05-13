@@ -262,6 +262,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "secret_sync_config" {
+    for_each = var.enable_secret_sync ? [true] : []
+    content {
+      enabled = true
+    }
+  }
+
   dynamic "pod_autoscaling" {
     for_each = length(var.hpa_profile) > 0 ? [1] : []
     content {

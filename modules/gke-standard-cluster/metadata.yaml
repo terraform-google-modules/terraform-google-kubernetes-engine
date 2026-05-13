@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/gke-standard-cluster
-    version: 44.0.0
+    version: 44.1.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -805,6 +805,12 @@ spec:
             })
       - name: secret_manager_config
         description: Configuration for the SecretManagerConfig feature
+        varType: |-
+          object({
+              enabled = bool
+            })
+      - name: secret_sync_config
+        description: Configuration for the Secret Sync add-on for this cluster.
         varType: |-
           object({
               enabled = bool
