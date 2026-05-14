@@ -43,7 +43,7 @@ module "gke" {
   deletion_protection    = false
 }
 
-resource "kubernetes_pod" "nginx-example" {
+resource "kubernetes_pod_v1" "nginx-example" {
   metadata {
     name = "nginx-example"
 
@@ -63,14 +63,14 @@ resource "kubernetes_pod" "nginx-example" {
   depends_on = [module.gke]
 }
 
-resource "kubernetes_service" "nginx-example" {
+resource "kubernetes_service_v1" "nginx-example" {
   metadata {
     name = "terraform-example"
   }
 
   spec {
     selector = {
-      app = kubernetes_pod.nginx-example.metadata[0].labels.app
+      app = kubernetes_pod_v1.nginx-example.metadata[0].labels.app
     }
 
     session_affinity = "ClientIP"
