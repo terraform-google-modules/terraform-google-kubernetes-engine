@@ -94,6 +94,7 @@ Then perform the following commands on the root folder:
 | disable\_l4\_lb\_firewall\_reconciliation | Disable L4 Load Balancer firewall reconciliation | `bool` | `null` | no |
 | dns\_allow\_external\_traffic | (Optional) Controls whether external traffic is allowed over the dns endpoint. | `bool` | `null` | no |
 | dns\_cache | The status of the NodeLocal DNSCache addon. | `bool` | `true` | no |
+| dns\_enable\_k8s\_tokens\_via\_dns | (Optional) Controls whether Kubernetes ServiceAccount token authentication is allowed via the DNS endpoint. | `bool` | `null` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
 | enable\_cilium\_clusterwide\_network\_policy | Enable Cilium Cluster Wide Network Policies on the cluster | `bool` | `false` | no |
 | enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
