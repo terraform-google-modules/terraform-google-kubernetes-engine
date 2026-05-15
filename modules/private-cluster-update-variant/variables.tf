@@ -1081,6 +1081,12 @@ variable "dns_allow_external_traffic" {
   default     = null
 }
 
+variable "dns_enable_k8s_tokens_via_dns" {
+  description = "(Optional) Controls whether Kubernetes ServiceAccount token authentication is allowed via the DNS endpoint."
+  type        = bool
+  default     = null
+}
+
 variable "ip_endpoints_enabled" {
   description = "(Optional) Controls whether to allow direct IP access. Defaults to `true`."
   type        = bool
