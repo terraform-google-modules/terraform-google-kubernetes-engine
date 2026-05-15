@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [44.2.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v44.1.0...v44.2.0) (2026-05-15)
+
+
+### Features
+
+* Add secret_sync_config support to all beta cluster modules ([#2573](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2573)) ([405c465](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/405c465d19281ac932429eba843cc57d1b84ddde))
+* allow configurable mode for secondary_boot_disk ([#2580](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2580)) ([45bf691](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/45bf691cd9c6e3e5181fafc37a873a457847cb06))
+
 ## [44.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v44.0.0...v44.1.0) (2026-05-11)
 
 
