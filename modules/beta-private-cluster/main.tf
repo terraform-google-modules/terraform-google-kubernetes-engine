@@ -79,7 +79,7 @@ locals {
   default_auto_upgrade = var.regional || var.release_channel != "UNSPECIFIED" ? true : false
 
   cluster_subnet_cidr       = var.add_cluster_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
-  cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
+  cluster_alias_ranges_cidr = var.add_cluster_firewall_rules ? { for range in toset(coalesce(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range, [])) : range.range_name => range.ip_cidr_range } : {}
   pod_all_ip_ranges         = var.add_cluster_firewall_rules ? compact(concat([local.cluster_alias_ranges_cidr[var.ip_range_pods]], [for range in var.additional_ip_range_pods : local.cluster_alias_ranges_cidr[range] if length(range) > 0], [for k, v in merge(local.node_pools, local.windows_node_pools) : local.cluster_alias_ranges_cidr[v.pod_range] if length(lookup(v, "pod_range", "")) > 0])) : []
 
   cluster_network_policy = var.network_policy ? [{
@@ -90,7 +90,8 @@ locals {
     provider = null
   }]
   cluster_gce_pd_csi_config       = var.gce_pd_csi_driver ? [{ enabled = true }] : [{ enabled = false }]
-  logmon_config_is_set            = length(var.logging_enabled_components) > 0 || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus != null
+  logging_config_is_set           = var.logging_service == "none" || length(var.logging_enabled_components) > 0
+  logmon_config_is_set            = local.logging_config_is_set || length(var.monitoring_enabled_components) > 0 || var.monitoring_enable_managed_prometheus != null
   gcs_fuse_csi_driver_config      = var.gcs_fuse_csi_driver ? [{ enabled = true }] : []
   parallelstore_csi_driver_config = var.parallelstore_csi_driver != null ? [{ enabled = var.parallelstore_csi_driver }] : []
   gke_backup_agent_config         = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
