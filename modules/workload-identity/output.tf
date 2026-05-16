@@ -41,5 +41,10 @@ output "gcp_service_account_name" {
 
 output "gcp_service_account" {
   description = "GCP service account."
-  value       = var.use_existing_gcp_sa ? data.google_service_account.cluster_service_account[0] : google_service_account.cluster_service_account[0]
+  # Use one(concat(...)) instead of conditional to avoid type mismatch between
+  # data source and resource (one will always be empty based on count)
+  value = one(concat(
+    data.google_service_account.cluster_service_account,
+    google_service_account.cluster_service_account
+  ))
 }
