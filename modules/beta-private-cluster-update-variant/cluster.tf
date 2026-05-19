@@ -691,7 +691,7 @@ resource "google_container_cluster" "primary" {
       master_ipv4_cidr_block      = var.private_endpoint_subnetwork == null ? private_cluster_config.value.master_ipv4_cidr_block : null
       private_endpoint_subnetwork = private_cluster_config.value.private_endpoint_subnetwork
       dynamic "master_global_access_config" {
-        for_each = var.master_global_access_enabled ? [var.master_global_access_enabled] : []
+        for_each = var.master_global_access_enabled && var.enable_private_endpoint ? [var.master_global_access_enabled] : []
         content {
           enabled = master_global_access_config.value
         }
