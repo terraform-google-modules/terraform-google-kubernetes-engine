@@ -658,12 +658,13 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.dns_allow_external_traffic != null || var.ip_endpoints_enabled != null ? [1] : []
+    for_each = var.dns_allow_external_traffic != null || var.dns_enable_k8s_tokens_via_dns != null || var.ip_endpoints_enabled != null ? [1] : []
     content {
       dynamic "dns_endpoint_config" {
-        for_each = var.dns_allow_external_traffic != null ? [1] : []
+        for_each = var.dns_allow_external_traffic != null || var.dns_enable_k8s_tokens_via_dns != null ? [1] : []
         content {
-          allow_external_traffic = var.dns_allow_external_traffic
+          allow_external_traffic    = var.dns_allow_external_traffic
+          enable_k8s_tokens_via_dns = var.dns_enable_k8s_tokens_via_dns
         }
       }
       dynamic "ip_endpoints_config" {

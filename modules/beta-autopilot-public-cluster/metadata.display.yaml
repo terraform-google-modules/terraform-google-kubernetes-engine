@@ -94,6 +94,9 @@ spec:
         dns_cache:
           name: dns_cache
           title: Dns Cache
+        dns_enable_k8s_tokens_via_dns:
+          name: dns_enable_k8s_tokens_via_dns
+          title: Dns Enable K8s Tokens Via Dns
         enable_binary_authorization:
           name: enable_binary_authorization
           title: Enable Binary Authorization
