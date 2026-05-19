@@ -49,18 +49,21 @@ func TestSimpleRegional(t *testing.T) {
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
-			"addonsConfig",
 			"databaseEncryption",
 			"shieldedNodes",
 			"binaryAuthorization",
 			"nodePools.autoscaling",
 			"nodePools.config",
 			"nodePools.management",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
+			"addonsConfig.gcsFuseCsiDriverConfig.enabled",
+			"addonsConfig.statefulHaConfig.enabled",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
-
 	})
 
 	bpt.Test()

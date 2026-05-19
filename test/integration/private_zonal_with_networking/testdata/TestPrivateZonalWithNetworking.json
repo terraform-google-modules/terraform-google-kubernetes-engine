@@ -14,7 +14,8 @@
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "nodeReadinessConfig": {}
   },
   "autopilot": {},
   "autoscaling": {
@@ -253,7 +254,7 @@
           "gke-CLUSTER_NAME",
           "gke-CLUSTER_NAME-default-node-pool"
         ],
-        "windowsNodeConfig" : {},
+        "windowsNodeConfig": {},
         "workloadMetadataConfig": {
           "mode": "GKE_METADATA"
         }

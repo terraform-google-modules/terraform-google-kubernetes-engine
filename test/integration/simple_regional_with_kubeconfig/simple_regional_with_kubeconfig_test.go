@@ -49,10 +49,6 @@ func TestSimpleRegionalWithKubeConfig(t *testing.T) {
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
-			"addonsConfig.horizontalPodAutoscaling",
-			"addonsConfig.httpLoadBalancing",
-			"addonsConfig.kubernetesDashboard.disabled",
-			"addonsConfig.networkPolicyConfig.disabled",
 			"nodePools.autoscaling.enabled",
 			"nodePools.autoscaling.minNodeCount",
 			"nodePools.autoscaling.maxNodeCount",
@@ -63,6 +59,9 @@ func TestSimpleRegionalWithKubeConfig(t *testing.T) {
 			"nodePools.config.tags",
 			"nodePools.management.autoRepair",
 			"nodePools.management.autoUpgrade",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)

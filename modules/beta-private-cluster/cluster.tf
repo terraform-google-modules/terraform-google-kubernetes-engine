@@ -262,6 +262,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "secret_sync_config" {
+    for_each = var.enable_secret_sync ? [true] : []
+    content {
+      enabled = true
+    }
+  }
+
   dynamic "pod_autoscaling" {
     for_each = length(var.hpa_profile) > 0 ? [1] : []
     content {
@@ -988,7 +995,7 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
       content {
         disk_image = secondary_boot_disks.value
-        mode       = "CONTAINER_IMAGE_CACHE"
+        mode       = lookup(each.value, "secondary_boot_disk_mode", "CONTAINER_IMAGE_CACHE")
       }
     }
 
@@ -1388,7 +1395,7 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
       content {
         disk_image = secondary_boot_disks.value
-        mode       = "CONTAINER_IMAGE_CACHE"
+        mode       = lookup(each.value, "secondary_boot_disk_mode", "CONTAINER_IMAGE_CACHE")
       }
     }
 

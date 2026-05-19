@@ -18,6 +18,7 @@
     "networkPolicyConfig": {
       "disabled": true
     },
+    "nodeReadinessConfig": {},
     "statefulHaConfig": {
       "enabled": true
     }

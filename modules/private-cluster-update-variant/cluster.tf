@@ -1031,7 +1031,7 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
       content {
         disk_image = secondary_boot_disks.value
-        mode       = "CONTAINER_IMAGE_CACHE"
+        mode       = lookup(each.value, "secondary_boot_disk_mode", "CONTAINER_IMAGE_CACHE")
       }
     }
 
@@ -1419,7 +1419,7 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
       content {
         disk_image = secondary_boot_disks.value
-        mode       = "CONTAINER_IMAGE_CACHE"
+        mode       = lookup(each.value, "secondary_boot_disk_mode", "CONTAINER_IMAGE_CACHE")
       }
     }
 

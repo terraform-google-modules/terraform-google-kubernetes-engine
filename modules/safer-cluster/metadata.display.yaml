@@ -106,6 +106,9 @@ spec:
         enable_private_endpoint:
           name: enable_private_endpoint
           title: Enable Private Endpoint
+        enable_secret_sync:
+          name: enable_secret_sync
+          title: Enable Secret Sync
         enable_shielded_nodes:
           name: enable_shielded_nodes
           title: Enable Shielded Nodes

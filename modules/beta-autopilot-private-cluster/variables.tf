@@ -116,7 +116,7 @@ variable "insecure_kubelet_readonly_port_enabled" {
 
 variable "node_pools_cgroup_mode" {
   type        = string
-  description = "Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management."
+  description = "Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management. Note: GKE is removing cgroup v1 support in 1.35."
   validation {
     condition = var.node_pools_cgroup_mode == null || contains([
       "",
@@ -414,6 +414,12 @@ variable "hpa_profile" {
 
 variable "enable_secret_manager_addon" {
   description = "Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
+
+variable "enable_secret_sync" {
+  description = "Enable the Secret Sync add-on for this cluster."
   type        = bool
   default     = false
 }

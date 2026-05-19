@@ -14,7 +14,8 @@
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "nodeReadinessConfig": {}
   },
   "autopilot": {},
   "autoscaling": {

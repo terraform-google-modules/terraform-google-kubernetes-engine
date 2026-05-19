@@ -245,7 +245,7 @@ variable "node_pools_linux_node_configs_sysctls" {
 
 variable "node_pools_cgroup_mode" {
   type        = map(string)
-  description = "Map of strings containing cgroup node config by node-pool name"
+  description = "Map of strings containing cgroup node config by node-pool name. Note: GKE is removing cgroup v1 support in 1.35."
 
   # Default is being set in variables_defaults.tf
   default = {
@@ -669,6 +669,12 @@ variable "enable_gcfs" {
 
 variable "enable_secret_manager_addon" {
   description = "Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
+
+variable "enable_secret_sync" {
+  description = "Enable the Secret Sync add-on for this cluster."
   type        = bool
   default     = false
 }

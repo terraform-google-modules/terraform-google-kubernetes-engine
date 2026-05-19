@@ -108,6 +108,7 @@ Then perform the following commands on the root folder:
 | enable\_private\_nodes | Whether nodes have internal IP addresses only | `bool` | `true` | no |
 | enable\_resource\_consumption\_export | Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. | `bool` | `true` | no |
 | enable\_secret\_manager\_addon | Enable the Secret Manager add-on for this cluster | `bool` | `false` | no |
+| enable\_secret\_sync | Enable the Secret Sync add-on for this cluster. | `bool` | `false` | no |
 | enable\_tpu | Enable Cloud TPU resources in the cluster. WARNING: changing this after cluster creation is destructive! | `bool` | `false` | no |
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | `bool` | `true` | no |
 | enterprise\_config | (Optional) Enable or disable GKE enterprise. Valid values are STANDARD and ENTERPRISE. | `string` | `null` | no |
@@ -148,7 +149,7 @@ Then perform the following commands on the root folder:
 | network\_project\_id | The project ID of the shared VPC's host (for shared vpc support) | `string` | `""` | no |
 | network\_tags | (Optional) - List of network tags applied to autopilot and auto-provisioned node pools. | `list(string)` | `[]` | no |
 | network\_tier\_config | Network tier configuration for the cluster | `string` | `null` | no |
-| node\_pools\_cgroup\_mode | Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management. | `string` | `null` | no |
+| node\_pools\_cgroup\_mode | Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management. Note: GKE is removing cgroup v1 support in 1.35. | `string` | `null` | no |
 | notification\_config\_topic | The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}. | `string` | `""` | no |
 | notification\_filter\_event\_type | Choose what type of notifications you want to receive. If no filters are applied, you'll receive all notification types. Can be used to filter what notifications are sent. Accepted values are UPGRADE\_AVAILABLE\_EVENT, UPGRADE\_EVENT, and SECURITY\_BULLETIN\_EVENT. | `list(string)` | `[]` | no |
 | private\_endpoint\_subnetwork | The subnetwork to use for the hosted master network. | `string` | `null` | no |

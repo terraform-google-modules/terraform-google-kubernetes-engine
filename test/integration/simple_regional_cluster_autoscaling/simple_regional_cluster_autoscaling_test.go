@@ -45,7 +45,6 @@ func TestSimpleRegionalClusterAutoscaling(t *testing.T) {
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
-			"addonsConfig",
 			"databaseEncryption",
 			"shieldedNodes",
 			"binaryAuthorization",
@@ -53,6 +52,9 @@ func TestSimpleRegionalClusterAutoscaling(t *testing.T) {
 			"nodePools.config",
 			"nodePools.config.tags",
 			"nodePools.management",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)

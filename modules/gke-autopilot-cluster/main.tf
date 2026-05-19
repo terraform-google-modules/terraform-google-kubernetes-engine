@@ -167,6 +167,13 @@ resource "google_container_cluster" "main" {
     }
   }
 
+  dynamic "secret_sync_config" {
+    for_each = var.secret_sync_config != null ? [var.secret_sync_config] : []
+    content {
+      enabled = secret_sync_config.value.enabled
+    }
+  }
+
   dynamic "pod_autoscaling" {
     for_each = var.pod_autoscaling != null ? [var.pod_autoscaling] : []
     content {
