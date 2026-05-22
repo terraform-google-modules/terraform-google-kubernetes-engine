@@ -405,10 +405,12 @@ resource "google_container_cluster" "primary" {
 
   datapath_provider = var.datapath_provider
 
-
-  security_posture_config {
-    mode               = var.security_posture_mode
-    vulnerability_mode = var.security_posture_vulnerability_mode
+  dynamic "security_posture_config" {
+    for_each = var.security_posture_mode != null || var.security_posture_vulnerability_mode != null ? [1] : []
+    content {
+      mode               = var.security_posture_mode
+      vulnerability_mode = var.security_posture_vulnerability_mode
+    }
   }
 
   dynamic "fleet" {
