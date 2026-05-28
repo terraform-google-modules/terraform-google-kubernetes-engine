@@ -637,10 +637,16 @@ variable "enable_secret_manager_addon" {
   default     = false
 }
 
-variable "enable_secret_sync" {
-  description = "Enable the Secret Sync add-on for this cluster."
-  type        = bool
-  default     = false
+variable "secret_sync_config" {
+  description = "Configuration for the Secret Sync add-on for this cluster."
+  type = object({
+    enabled = bool
+    rotation_config = optional(object({
+      enabled           = optional(bool)
+      rotation_interval = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "workload_vulnerability_mode" {

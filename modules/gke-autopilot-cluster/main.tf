@@ -171,6 +171,13 @@ resource "google_container_cluster" "main" {
     for_each = var.secret_sync_config != null ? [var.secret_sync_config] : []
     content {
       enabled = secret_sync_config.value.enabled
+      dynamic "rotation_config" {
+        for_each = secret_sync_config.value.rotation_config != null ? [secret_sync_config.value.rotation_config] : []
+        content {
+          enabled           = rotation_config.value.enabled
+          rotation_interval = rotation_config.value.rotation_interval
+        }
+      }
     }
   }
 

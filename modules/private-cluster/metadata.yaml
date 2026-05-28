@@ -557,6 +557,16 @@ spec:
         description: Enable the Secret Manager add-on for this cluster
         varType: bool
         defaultValue: false
+      - name: secret_sync_config
+        description: Configuration for the Secret Sync add-on for this cluster.
+        varType: |-
+          object({
+              enabled = bool
+              rotation_config = optional(object({
+                enabled           = optional(bool)
+                rotation_interval = optional(string)
+              }))
+            })
       - name: enable_fqdn_network_policy
         description: Enable FQDN Network Policies on the cluster
         varType: bool
@@ -872,7 +882,7 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: ">= 7.17.0, < 8"
+        version: ">= 7.33.0, < 8"
       - source: hashicorp/kubernetes
         version: ">= 2.10, < 4"
       - source: hashicorp/random

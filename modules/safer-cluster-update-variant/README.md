@@ -227,7 +227,6 @@ For simplicity, we suggest using `roles/container.admin` and
 | enable\_mesh\_certificates | Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity. | `bool` | `false` | no |
 | enable\_pod\_security\_policy | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | `bool` | `false` | no |
 | enable\_private\_endpoint | When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable\_private\_nodes is true | `bool` | `true` | no |
-| enable\_secret\_sync | Enable the Secret Sync add-on for this cluster. | `bool` | `false` | no |
 | enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster. | `bool` | `true` | no |
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | `bool` | `false` | no |
 | filestore\_csi\_driver | The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes | `bool` | `false` | no |
@@ -275,6 +274,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | release\_channel | The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`. | `string` | `"REGULAR"` | no |
 | resource\_usage\_export\_dataset\_id | The dataset id for which network egress metering for this cluster will be enabled. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | `string` | `""` | no |
 | sandbox\_enabled | (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it). | `bool` | `false` | no |
+| secret\_sync\_config | Configuration for the Secret Sync add-on for this cluster. | <pre>object({<br>    enabled = bool<br>    rotation_config = optional(object({<br>      enabled           = optional(bool)<br>      rotation_interval = optional(string)<br>    }))<br>  })</pre> | `null` | no |
 | security\_posture\_mode | Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`. | `string` | `"DISABLED"` | no |
 | security\_posture\_vulnerability\_mode | Security posture vulnerability mode.  Accepted values are `VULNERABILITY_DISABLED`, `VULNERABILITY_BASIC`, and `VULNERABILITY_ENTERPRISE` | `string` | `null` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | `map(list(string))` | `{}` | no |
