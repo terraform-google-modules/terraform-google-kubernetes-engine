@@ -183,7 +183,6 @@ resource "google_container_cluster" "primary" {
       enabled = var.enable_managed_machine_learning_diagnostics
     }
   }
-
   dynamic "pod_autoscaling" {
     for_each = length(var.hpa_profile) > 0 ? [1] : []
     content {
