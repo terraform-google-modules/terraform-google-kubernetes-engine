@@ -667,6 +667,18 @@ variable "enable_secret_manager_addon" {
   default     = false
 }
 
+variable "secret_sync_config" {
+  description = "Configuration for the Secret Sync add-on for this cluster."
+  type = object({
+    enabled = bool
+    rotation_config = optional(object({
+      enabled           = optional(bool)
+      rotation_interval = optional(string)
+    }))
+  })
+  default = null
+}
+
 variable "enable_fqdn_network_policy" {
   type        = bool
   description = "Enable FQDN Network Policies on the cluster"
