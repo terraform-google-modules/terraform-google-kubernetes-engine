@@ -102,10 +102,10 @@ resource "google_container_cluster" "primary" {
     }
   }
   dynamic "logging_config" {
-    for_each = length(var.logging_enabled_components) > 0 ? [1] : []
+    for_each = local.logging_config_is_set ? [1] : []
 
     content {
-      enable_components = var.logging_enabled_components
+      enable_components = var.logging_service == "none" ? [] : var.logging_enabled_components
     }
   }
 
