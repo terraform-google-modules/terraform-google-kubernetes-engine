@@ -55,7 +55,7 @@ resource "kubernetes_pod" "nginx-example" {
 
   spec {
     container {
-      image = "nginx:1.30.0"
+      image = "nginx:1.31.0"
       name  = "nginx-example"
     }
   }
