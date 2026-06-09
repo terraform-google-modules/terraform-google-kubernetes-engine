@@ -866,6 +866,9 @@ resource "random_id" "name" {
           )
         )
       )
+    },
+    {
+      pod_cidr_overprovision_config_disabled = lookup(each.value, "pod_cidr_overprovision_config", null) != null ? tostring(lookup(each.value, "pod_cidr_overprovision_config", {})["disabled"]) : ""
     }
   )
 }
