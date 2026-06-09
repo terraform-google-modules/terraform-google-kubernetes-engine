@@ -113,12 +113,12 @@ module "gke" {
       strategy            = "SHORT_LIVED"
     },
     {
-      name                          = "pool-05"
-      disk_type                     = "pd-balanced"
-      machine_type                  = "c3-standard-4"
-      node_count                    = 1
-      enable_nested_virtualization  = true
-      pod_cidr_overprovision_config = { disabled = true }
+      name                            = "pool-05"
+      disk_type                       = "pd-balanced"
+      machine_type                    = "c3-standard-4"
+      node_count                      = 1
+      enable_nested_virtualization    = true
+      pod_cidr_overprovision_disabled = true
     },
     {
       name          = "pool-06"

@@ -810,7 +810,7 @@ resource "google_container_node_pool" "pools" {
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null || lookup(each.value, "pod_cidr_overprovision_config", null) != null ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null || lookup(each.value, "pod_cidr_overprovision_disabled", null) != null ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
@@ -823,9 +823,9 @@ resource "google_container_node_pool" "pools" {
       }
 
       dynamic "pod_cidr_overprovision_config" {
-        for_each = lookup(network_config.value, "pod_cidr_overprovision_config", null) != null ? [1] : []
+        for_each = lookup(network_config.value, "pod_cidr_overprovision_disabled", null) != null ? [1] : []
         content {
-          disabled = lookup(network_config.value, "pod_cidr_overprovision_config", {})["disabled"]
+          disabled = lookup(network_config.value, "pod_cidr_overprovision_disabled", null)
         }
       }
     }
@@ -1217,7 +1217,7 @@ resource "google_container_node_pool" "windows_pools" {
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null || lookup(each.value, "pod_cidr_overprovision_config", null) != null ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null || lookup(each.value, "pod_cidr_overprovision_disabled", null) != null ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", null)
@@ -1230,9 +1230,9 @@ resource "google_container_node_pool" "windows_pools" {
       }
 
       dynamic "pod_cidr_overprovision_config" {
-        for_each = lookup(network_config.value, "pod_cidr_overprovision_config", null) != null ? [1] : []
+        for_each = lookup(network_config.value, "pod_cidr_overprovision_disabled", null) != null ? [1] : []
         content {
-          disabled = lookup(network_config.value, "pod_cidr_overprovision_config", {})["disabled"]
+          disabled = lookup(network_config.value, "pod_cidr_overprovision_disabled", null)
         }
       }
     }
