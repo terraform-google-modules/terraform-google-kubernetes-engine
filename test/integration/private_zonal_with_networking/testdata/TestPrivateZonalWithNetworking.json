@@ -14,7 +14,8 @@
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "nodeReadinessConfig": {}
   },
   "autopilot": {},
   "autoscaling": {
@@ -161,6 +162,10 @@
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
+        "nodeImageConfig": {
+          "image": "NODE_IMAGE",
+          "imageProject": "gke-node-images"
+        },
         "oauthScopes": [
           "https://www.googleapis.com/auth/userinfo.email",
           "https://www.googleapis.com/auth/cloud-platform"
@@ -239,6 +244,10 @@
           "disable-legacy-endpoints": "true",
           "node_pool": "default-node-pool"
         },
+        "nodeImageConfig": {
+          "image": "NODE_IMAGE",
+          "imageProject": "gke-node-images"
+        },
         "oauthScopes": [
           "https://www.googleapis.com/auth/cloud-platform"
         ],
@@ -253,7 +262,7 @@
           "gke-CLUSTER_NAME",
           "gke-CLUSTER_NAME-default-node-pool"
         ],
-        "windowsNodeConfig" : {},
+        "windowsNodeConfig": {},
         "workloadMetadataConfig": {
           "mode": "GKE_METADATA"
         }

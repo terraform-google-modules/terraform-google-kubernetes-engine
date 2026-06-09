@@ -168,6 +168,7 @@ Then perform the following commands on the root folder:
 | disable\_legacy\_metadata\_endpoints | Disable the /0.1/ and /v1beta1/ metadata server endpoints on the node. Changing this value will cause all node pools to be recreated. | `bool` | `true` | no |
 | dns\_allow\_external\_traffic | (Optional) Controls whether external traffic is allowed over the dns endpoint. | `bool` | `null` | no |
 | dns\_cache | The status of the NodeLocal DNSCache addon. | `bool` | `false` | no |
+| dns\_enable\_k8s\_tokens\_via\_dns | (Optional) Controls whether Kubernetes ServiceAccount token authentication is allowed via the DNS endpoint. | `bool` | `null` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
 | enable\_cilium\_clusterwide\_network\_policy | Enable Cilium Cluster Wide Network Policies on the cluster | `bool` | `false` | no |
 | enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
@@ -240,7 +241,7 @@ Then perform the following commands on the root folder:
 | network\_tier\_config | Network tier configuration for the cluster | `string` | `null` | no |
 | node\_metadata | Specifies how node metadata is exposed to the workload running on the node | `string` | `"GKE_METADATA"` | no |
 | node\_pools | List of maps containing node pools | `list(map(any))` | <pre>[<br>  {<br>    "name": "default-node-pool"<br>  }<br>]</pre> | no |
-| node\_pools\_cgroup\_mode | Map of strings containing cgroup node config by node-pool name | `map(string)` | <pre>{<br>  "all": "",<br>  "default-node-pool": ""<br>}</pre> | no |
+| node\_pools\_cgroup\_mode | Map of strings containing cgroup node config by node-pool name. Note: GKE is removing cgroup v1 support in 1.35. | `map(string)` | <pre>{<br>  "all": "",<br>  "default-node-pool": ""<br>}</pre> | no |
 | node\_pools\_hugepage\_size\_1g | Map of strings containing hugepage size 1g config by node-pool name | `map(string)` | <pre>{<br>  "all": "",<br>  "default-node-pool": ""<br>}</pre> | no |
 | node\_pools\_hugepage\_size\_2m | Map of strings containing hugepage size 2m node config by node-pool name | `map(string)` | <pre>{<br>  "all": "",<br>  "default-node-pool": ""<br>}</pre> | no |
 | node\_pools\_labels | Map of maps containing node labels by node-pool name | `map(map(string))` | <pre>{<br>  "all": {},<br>  "default-node-pool": {}<br>}</pre> | no |
@@ -407,6 +408,7 @@ The node_pools variable takes the following parameters:
 | version | The Kubernetes version for the nodes in this pool. Should only be set if auto_upgrade is false | " " | Optional |
 | location_policy | [Location policy](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool#location_policy) specifies the algorithm used when scaling-up the node pool. Location policy is supported only in 1.24.1+ clusters. | " " | Optional |
 | secondary_boot_disk | Image of a secondary boot disk to preload container images and data on new nodes. For detail see [documentation](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#nested_secondary_boot_disks). `gcfs_config` must be `enabled=true` for this feature to work. | | Optional |
+| secondary_boot_disk_mode | Mode for the secondary boot disk. Defaults to `CONTAINER_IMAGE_CACHE` (preloads container images, requires `gcfs_config` enabled). Set to `null` to omit the field for data preloading (mounts data onto nodes for use via hostPath). | `"CONTAINER_IMAGE_CACHE"` | Optional |
 | queued_provisioning | Makes nodes obtainable through the ProvisioningRequest API exclusively. | | Optional |
 | gpu_sharing_strategy | The type of GPU sharing strategy to enable on the GPU node. Accepted values are: "TIME_SHARING" and "MPS". | | Optional |
 | max_shared_clients_per_gpu | The maximum number of containers that can share a GPU. | | Optional |
@@ -417,6 +419,7 @@ The node_pools variable takes the following parameters:
 | local_ssd_encryption_mode | specifies the method used for encrypting the local SSDs attached to the node. Valid values are: "STANDARD_ENCRYPTION" and "EPHEMERAL_KEY_ENCRYPTION" | | Optional |
 | max_run_duration | The runtime of each node in the node pool in seconds, terminated by 's'. Example: "3600s". | null | Optional |
 | flex_start | Enables Flex Start provisioning model for the node pool | null | Optional |
+| respect_pdb_during_node_pool_deletion | Whether to respect Pod Disruption Budgets during node pool deletion. | null | Optional |
 
 ## windows_node_pools variable
 

@@ -42,7 +42,7 @@ func TestConfidentialAutopilotPrivate(t *testing.T) {
 		assert.True(op.Get("autopilot.enabled").Bool(), "should be autopilot")
 		assert.Equal(op.Get("autoscaling.autoprovisioningNodePoolDefaults.bootDiskKmsKey").String(), key, "should have CMEK configured in boot disk")
 		assert.True(op.Get("confidentialNodes.enabled").Bool(), "should have confidential nodes enabled")
-		assert.Equal(op.Get("databaseEncryption.state").String(), "ENCRYPTED", "should have database encryption")
+		assert.Equal(op.Get("databaseEncryption.state").String(), "ALL_OBJECTS_ENCRYPTION_ENABLED", "should have database encryption")
 		assert.Equal(op.Get("databaseEncryption.keyName").String(), key, "should have CMEK configured in database")
 	})
 	bpt.Test()

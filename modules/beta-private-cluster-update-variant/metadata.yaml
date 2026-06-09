@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-private-cluster-update-variant
-    version: 43.0.0
+    version: 44.2.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -90,6 +90,8 @@ spec:
         location: examples/simple_regional_private
       - name: simple_regional_private_beta
         location: examples/simple_regional_private_beta
+      - name: simple_regional_private_no_pool
+        location: examples/simple_regional_private_no_pool
       - name: simple_regional_private_with_cluster_version
         location: examples/simple_regional_private_with_cluster_version
       - name: simple_regional_with_gateway_api
@@ -272,7 +274,7 @@ spec:
           all: {}
           default-node-pool: {}
       - name: node_pools_cgroup_mode
-        description: Map of strings containing cgroup node config by node-pool name
+        description: "Map of strings containing cgroup node config by node-pool name. Note: GKE is removing cgroup v1 support in 1.35."
         varType: map(string)
         defaultValue:
           all: ""
@@ -558,6 +560,10 @@ spec:
         description: Enable the Secret Manager add-on for this cluster
         varType: bool
         defaultValue: false
+      - name: enable_secret_sync
+        description: Enable the Secret Sync add-on for this cluster.
+        varType: bool
+        defaultValue: false
       - name: workload_vulnerability_mode
         description: (beta) Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC.
         varType: string
@@ -806,6 +812,9 @@ spec:
       - name: dns_allow_external_traffic
         description: (Optional) Controls whether external traffic is allowed over the dns endpoint.
         varType: bool
+      - name: dns_enable_k8s_tokens_via_dns
+        description: (Optional) Controls whether Kubernetes ServiceAccount token authentication is allowed via the DNS endpoint.
+        varType: bool
       - name: ip_endpoints_enabled
         description: (Optional) Controls whether to allow direct IP access. Defaults to `true`.
         varType: bool
@@ -902,9 +911,9 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: ">= 7.0.0, < 8"
+        version: ">= 7.17.0, < 8"
       - source: hashicorp/google-beta
-        version: ">= 7.0.0, < 8"
+        version: ">= 7.17.0, < 8"
       - source: hashicorp/kubernetes
         version: ">= 2.10, < 4"
       - source: hashicorp/random

@@ -17,7 +17,7 @@
 
 module "vpc" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 13.0"
+  version = "~> 18.0"
 
   project_id   = module.enabled_google_apis.project_id
   network_name = var.network_name
@@ -49,7 +49,7 @@ module "vpc" {
 
 module "cloud-nat" {
   source        = "terraform-google-modules/cloud-nat/google"
-  version       = "~> 5.0"
+  version       = "~> 7.0"
   project_id    = module.enabled_google_apis.project_id
   region        = var.region
   router        = "safer-router"

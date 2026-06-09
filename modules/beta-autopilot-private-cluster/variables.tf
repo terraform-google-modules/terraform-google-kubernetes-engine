@@ -116,7 +116,7 @@ variable "insecure_kubelet_readonly_port_enabled" {
 
 variable "node_pools_cgroup_mode" {
   type        = string
-  description = "Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management."
+  description = "Specifies the Linux cgroup mode for autopilot Kubernetes nodes in the cluster. Accepted values are `CGROUP_MODE_UNSPECIFIED`, `CGROUP_MODE_V1`, and `CGROUP_MODE_V2`, which determine the control group hierarchy used for resource management. Note: GKE is removing cgroup v1 support in 1.35."
   validation {
     condition = var.node_pools_cgroup_mode == null || contains([
       "",
@@ -418,6 +418,12 @@ variable "enable_secret_manager_addon" {
   default     = false
 }
 
+variable "enable_secret_sync" {
+  description = "Enable the Secret Sync add-on for this cluster."
+  type        = bool
+  default     = false
+}
+
 variable "workload_vulnerability_mode" {
   description = "(beta) Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC."
   type        = string
@@ -695,6 +701,12 @@ variable "enterprise_config" {
 
 variable "dns_allow_external_traffic" {
   description = "(Optional) Controls whether external traffic is allowed over the dns endpoint."
+  type        = bool
+  default     = null
+}
+
+variable "dns_enable_k8s_tokens_via_dns" {
+  description = "(Optional) Controls whether Kubernetes ServiceAccount token authentication is allowed via the DNS endpoint."
   type        = bool
   default     = null
 }

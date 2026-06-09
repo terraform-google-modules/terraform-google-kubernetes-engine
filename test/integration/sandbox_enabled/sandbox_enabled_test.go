@@ -50,10 +50,11 @@ func TestSandboxEnabled(t *testing.T) {
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
-			"addonsConfig",
 			"nodePools.config.labels",
 			"nodePools.config.taints",
 			"nodePools.config.tags",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)

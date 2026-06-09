@@ -15,6 +15,7 @@
 package testutils
 
 import (
+	"cmp"
 	"fmt"
 	"slices"
 	"strings"
@@ -112,3 +113,34 @@ func TGKEAssertGolden(assert *assert.Assertions, golden *golden.GoldenFile, clus
 		}
 	}
 }
+
+// GKEClusterSanitizer returns a Sanitizer that sanitizes common GKE cluster fields,
+// including dynamic node image versions.
+func GKEClusterSanitizer(serviceAccount, projectId, clusterName string, clusterJson gjson.Result) golden.Sanitizer {
+	return func(s string) string {
+		s = golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")(s)
+		s = golden.StringSanitizer(projectId, "PROJECT_ID")(s)
+		s = golden.StringSanitizer(clusterName, "CLUSTER_NAME")(s)
+
+		var images []string
+		for _, np := range clusterJson.Get("nodePools").Array() {
+			image := np.Get("config.nodeImageConfig.image").String()
+			if image != "" && !slices.Contains(images, image) {
+				images = append(images, image)
+			}
+		}
+
+		// Sort images by length descending to prevent substring collision
+		slices.SortFunc(images, func(a, b string) int {
+			return cmp.Compare(len(b), len(a))
+		})
+
+		for _, image := range images {
+			s = golden.StringSanitizer(image, "NODE_IMAGE")(s)
+		}
+		return s
+	}
+}
+
+
+

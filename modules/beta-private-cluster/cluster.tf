@@ -137,7 +137,7 @@ resource "google_container_cluster" "primary" {
     enabled                       = var.cluster_autoscaling.enabled
     default_compute_class_enabled = lookup(var.cluster_autoscaling, "enable_default_compute_class", false)
     dynamic "auto_provisioning_defaults" {
-      for_each = var.cluster_autoscaling.enabled ? [1] : []
+      for_each = local.autoscaling_or_compute_class_enabled ? [1] : []
 
       content {
         service_account = local.service_account
@@ -262,6 +262,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "secret_sync_config" {
+    for_each = var.enable_secret_sync ? [true] : []
+    content {
+      enabled = true
+    }
+  }
+
   dynamic "pod_autoscaling" {
     for_each = length(var.hpa_profile) > 0 ? [1] : []
     content {
@@ -292,10 +299,10 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "node_pool_auto_config" {
-    for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode != null) ? [1] : []
+    for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode != null) ? [1] : []
     content {
       dynamic "network_tags" {
-        for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
+        for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
         content {
           tags = var.add_cluster_firewall_rules ? (concat(var.network_tags, [local.cluster_network_tag])) : var.network_tags
         }
@@ -434,9 +441,12 @@ resource "google_container_cluster" "primary" {
     workload_vulnerability_mode = var.workload_vulnerability_mode
   }
 
-  security_posture_config {
-    mode               = var.security_posture_mode
-    vulnerability_mode = var.security_posture_vulnerability_mode
+  dynamic "security_posture_config" {
+    for_each = var.security_posture_mode != null || var.security_posture_vulnerability_mode != null ? [1] : []
+    content {
+      mode               = var.security_posture_mode
+      vulnerability_mode = var.security_posture_vulnerability_mode
+    }
   }
 
   dynamic "fleet" {
@@ -539,36 +549,36 @@ resource "google_container_cluster" "primary" {
     }
 
     node_config {
-      image_type                  = lookup(var.node_pools[0], "image_type", "COS_CONTAINERD")
-      machine_type                = lookup(var.node_pools[0], "machine_type", "e2-medium")
-      min_cpu_platform            = lookup(var.node_pools[0], "min_cpu_platform", "")
-      enable_confidential_storage = lookup(var.node_pools[0], "enable_confidential_storage", false)
-      disk_type                   = lookup(var.node_pools[0], "disk_type", null)
+      image_type                  = lookup(local.head_node_pool, "image_type", "COS_CONTAINERD")
+      machine_type                = lookup(local.head_node_pool, "machine_type", "e2-medium")
+      min_cpu_platform            = lookup(local.head_node_pool, "min_cpu_platform", "")
+      enable_confidential_storage = lookup(local.head_node_pool, "enable_confidential_storage", false)
+      disk_type                   = lookup(local.head_node_pool, "disk_type", null)
 
       dynamic "boot_disk" {
-        for_each = lookup(var.node_pools[0], "provisioned_iops", null) != null || lookup(var.node_pools[0], "provisioned_throughput", null) != null ? [1] : []
+        for_each = lookup(local.head_node_pool, "provisioned_iops", null) != null || lookup(local.head_node_pool, "provisioned_throughput", null) != null ? [1] : []
         content {
-          provisioned_iops       = lookup(var.node_pools[0], "provisioned_iops", null)
-          provisioned_throughput = lookup(var.node_pools[0], "provisioned_throughput", null)
+          provisioned_iops       = lookup(local.head_node_pool, "provisioned_iops", null)
+          provisioned_throughput = lookup(local.head_node_pool, "provisioned_throughput", null)
         }
       }
 
       dynamic "gcfs_config" {
-        for_each = lookup(var.node_pools[0], "enable_gcfs", null) != null ? [var.node_pools[0].enable_gcfs] : []
+        for_each = lookup(local.head_node_pool, "enable_gcfs", null) != null ? [local.head_node_pool.enable_gcfs] : []
         content {
           enabled = gcfs_config.value
         }
       }
 
       dynamic "gvnic" {
-        for_each = lookup(var.node_pools[0], "enable_gvnic", false) ? [true] : []
+        for_each = lookup(local.head_node_pool, "enable_gvnic", false) ? [true] : []
         content {
           enabled = gvnic.value
         }
       }
 
       dynamic "fast_socket" {
-        for_each = lookup(var.node_pools[0], "enable_fast_socket", null) != null ? [var.node_pools[0].enable_fast_socket] : []
+        for_each = lookup(local.head_node_pool, "enable_fast_socket", null) != null ? [local.head_node_pool.enable_fast_socket] : []
         content {
           enabled = fast_socket.value
         }
@@ -576,32 +586,32 @@ resource "google_container_cluster" "primary" {
 
       dynamic "kubelet_config" {
         for_each = length(setintersection(
-          keys(var.node_pools[0]),
+          keys(local.head_node_pool),
           ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls"]
         )) != 0 || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
 
         content {
-          cpu_manager_policy                     = lookup(var.node_pools[0], "cpu_manager_policy", "static")
-          cpu_cfs_quota                          = lookup(var.node_pools[0], "cpu_cfs_quota", null)
-          cpu_cfs_quota_period                   = lookup(var.node_pools[0], "cpu_cfs_quota_period", null)
-          insecure_kubelet_readonly_port_enabled = lookup(var.node_pools[0], "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled) != null ? upper(tostring(lookup(var.node_pools[0], "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled))) : null
-          pod_pids_limit                         = lookup(var.node_pools[0], "pod_pids_limit", null)
-          container_log_max_size                 = lookup(var.node_pools[0], "container_log_max_size", null)
-          container_log_max_files                = lookup(var.node_pools[0], "container_log_max_files", null)
-          image_gc_low_threshold_percent         = lookup(var.node_pools[0], "image_gc_low_threshold_percent", null)
-          image_gc_high_threshold_percent        = lookup(var.node_pools[0], "image_gc_high_threshold_percent", null)
-          image_minimum_gc_age                   = lookup(var.node_pools[0], "image_minimum_gc_age", null)
-          image_maximum_gc_age                   = lookup(var.node_pools[0], "image_maximum_gc_age", null)
-          allowed_unsafe_sysctls                 = lookup(var.node_pools[0], "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(var.node_pools[0], "allowed_unsafe_sysctls", null)) : trimspace(s)]
+          cpu_manager_policy                     = lookup(local.head_node_pool, "cpu_manager_policy", "static")
+          cpu_cfs_quota                          = lookup(local.head_node_pool, "cpu_cfs_quota", null)
+          cpu_cfs_quota_period                   = lookup(local.head_node_pool, "cpu_cfs_quota_period", null)
+          insecure_kubelet_readonly_port_enabled = lookup(local.head_node_pool, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled) != null ? upper(tostring(lookup(local.head_node_pool, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled))) : null
+          pod_pids_limit                         = lookup(local.head_node_pool, "pod_pids_limit", null)
+          container_log_max_size                 = lookup(local.head_node_pool, "container_log_max_size", null)
+          container_log_max_files                = lookup(local.head_node_pool, "container_log_max_files", null)
+          image_gc_low_threshold_percent         = lookup(local.head_node_pool, "image_gc_low_threshold_percent", null)
+          image_gc_high_threshold_percent        = lookup(local.head_node_pool, "image_gc_high_threshold_percent", null)
+          image_minimum_gc_age                   = lookup(local.head_node_pool, "image_minimum_gc_age", null)
+          image_maximum_gc_age                   = lookup(local.head_node_pool, "image_maximum_gc_age", null)
+          allowed_unsafe_sysctls                 = lookup(local.head_node_pool, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(local.head_node_pool, "allowed_unsafe_sysctls", null)) : trimspace(s)]
         }
       }
 
       dynamic "sole_tenant_config" {
         # node_affinity is currently the only member of sole_tenant_config
-        for_each = lookup(var.node_pools[0], "node_affinity", null) != null ? [true] : []
+        for_each = lookup(local.head_node_pool, "node_affinity", null) != null ? [true] : []
         content {
           dynamic "node_affinity" {
-            for_each = lookup(var.node_pools[0], "node_affinity", null) != null ? [lookup(var.node_pools[0], "node_affinity", null)] : []
+            for_each = lookup(local.head_node_pool, "node_affinity", null) != null ? [lookup(local.head_node_pool, "node_affinity", null)] : []
             content {
               key      = lookup(jsondecode(node_affinity.value), "key", null)
               operator = lookup(jsondecode(node_affinity.value), "operator", null)
@@ -611,16 +621,16 @@ resource "google_container_cluster" "primary" {
         }
       }
 
-      service_account = lookup(var.node_pools[0], "service_account", local.service_account)
+      service_account = lookup(local.head_node_pool, "service_account", local.service_account)
 
       tags = concat(
         lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
         lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-default-pool"] : [],
         lookup(local.node_pools_tags, "all", []),
-        lookup(local.node_pools_tags, var.node_pools[0].name, []),
+        length(var.node_pools) > 0 ? lookup(local.node_pools_tags, local.head_node_pool.name, []) : [],
       )
 
-      logging_variant = lookup(var.node_pools[0], "logging_variant", "DEFAULT")
+      logging_variant = lookup(local.head_node_pool, "logging_variant", "DEFAULT")
 
       dynamic "workload_metadata_config" {
         for_each = local.cluster_node_metadata_config
@@ -633,24 +643,24 @@ resource "google_container_cluster" "primary" {
       metadata = local.node_pools_metadata["all"]
 
       dynamic "sandbox_config" {
-        for_each = tobool((lookup(var.node_pools[0], "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
+        for_each = tobool((lookup(local.head_node_pool, "sandbox_enabled", var.sandbox_enabled))) ? ["gvisor"] : []
         content {
           sandbox_type = sandbox_config.value
         }
       }
 
-      boot_disk_kms_key = lookup(var.node_pools[0], "boot_disk_kms_key", var.boot_disk_kms_key)
+      boot_disk_kms_key = lookup(local.head_node_pool, "boot_disk_kms_key", var.boot_disk_kms_key)
 
-      storage_pools = lookup(var.node_pools[0], "storage_pools", null) != null ? [var.node_pools[0].storage_pools] : []
+      storage_pools = lookup(local.head_node_pool, "storage_pools", null) != null ? [local.head_node_pool.storage_pools] : []
 
       shielded_instance_config {
-        enable_secure_boot          = lookup(var.node_pools[0], "enable_secure_boot", false)
-        enable_integrity_monitoring = lookup(var.node_pools[0], "enable_integrity_monitoring", true)
+        enable_secure_boot          = lookup(local.head_node_pool, "enable_secure_boot", false)
+        enable_integrity_monitoring = lookup(local.head_node_pool, "enable_integrity_monitoring", true)
       }
 
-      local_ssd_encryption_mode = lookup(var.node_pools[0], "local_ssd_encryption_mode", null)
-      max_run_duration          = lookup(var.node_pools[0], "max_run_duration", null)
-      flex_start                = lookup(var.node_pools[0], "flex_start", null)
+      local_ssd_encryption_mode = lookup(local.head_node_pool, "local_ssd_encryption_mode", null)
+      max_run_duration          = lookup(local.head_node_pool, "max_run_duration", null)
+      flex_start                = lookup(local.head_node_pool, "flex_start", null)
     }
   }
 
@@ -684,7 +694,7 @@ resource "google_container_cluster" "primary" {
       master_ipv4_cidr_block      = var.private_endpoint_subnetwork == null ? private_cluster_config.value.master_ipv4_cidr_block : null
       private_endpoint_subnetwork = private_cluster_config.value.private_endpoint_subnetwork
       dynamic "master_global_access_config" {
-        for_each = var.master_global_access_enabled ? [var.master_global_access_enabled] : []
+        for_each = var.master_global_access_enabled && var.enable_private_endpoint ? [var.master_global_access_enabled] : []
         content {
           enabled = master_global_access_config.value
         }
@@ -693,12 +703,13 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.dns_allow_external_traffic != null || var.ip_endpoints_enabled != null ? [1] : []
+    for_each = var.dns_allow_external_traffic != null || var.dns_enable_k8s_tokens_via_dns != null || var.ip_endpoints_enabled != null ? [1] : []
     content {
       dynamic "dns_endpoint_config" {
-        for_each = var.dns_allow_external_traffic != null ? [1] : []
+        for_each = var.dns_allow_external_traffic != null || var.dns_enable_k8s_tokens_via_dns != null ? [1] : []
         content {
-          allow_external_traffic = var.dns_allow_external_traffic
+          allow_external_traffic    = var.dns_allow_external_traffic
+          enable_k8s_tokens_via_dns = var.dns_enable_k8s_tokens_via_dns
         }
       }
       dynamic "ip_endpoints_config" {
@@ -832,6 +843,13 @@ resource "google_container_node_pool" "pools" {
           total_egress_bandwidth_tier = lookup(network_config.value, "total_egress_bandwidth_tier", null)
         }
       }
+    }
+  }
+
+  dynamic "node_drain_config" {
+    for_each = lookup(each.value, "respect_pdb_during_node_pool_deletion", null) != null ? [each.value] : []
+    content {
+      respect_pdb_during_node_pool_deletion = lookup(each.value, "respect_pdb_during_node_pool_deletion", null)
     }
   }
 
@@ -981,7 +999,7 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
       content {
         disk_image = secondary_boot_disks.value
-        mode       = "CONTAINER_IMAGE_CACHE"
+        mode       = lookup(each.value, "secondary_boot_disk_mode", "CONTAINER_IMAGE_CACHE")
       }
     }
 
@@ -1228,6 +1246,13 @@ resource "google_container_node_pool" "windows_pools" {
     }
   }
 
+  dynamic "node_drain_config" {
+    for_each = lookup(each.value, "respect_pdb_during_node_pool_deletion", null) != null ? [each.value] : []
+    content {
+      respect_pdb_during_node_pool_deletion = lookup(each.value, "respect_pdb_during_node_pool_deletion", null)
+    }
+  }
+
   management {
     auto_repair  = lookup(each.value, "auto_repair", true)
     auto_upgrade = lookup(each.value, "auto_upgrade", local.default_auto_upgrade)
@@ -1374,7 +1399,7 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
       content {
         disk_image = secondary_boot_disks.value
-        mode       = "CONTAINER_IMAGE_CACHE"
+        mode       = lookup(each.value, "secondary_boot_disk_mode", "CONTAINER_IMAGE_CACHE")
       }
     }
 

@@ -32,7 +32,6 @@ output "name" {
     * to be up.
     */
     google_container_cluster.primary,
-    google_container_node_pool.pools,
   ]
 }
 
@@ -68,7 +67,6 @@ output "endpoint" {
     * to be up.
     */
     google_container_cluster.primary,
-    google_container_node_pool.pools,
   ]
 }
 
@@ -83,7 +81,6 @@ output "endpoint_dns" {
     * to be up.
     */
     google_container_cluster.primary,
-    google_container_node_pool.pools,
   ]
 }
 

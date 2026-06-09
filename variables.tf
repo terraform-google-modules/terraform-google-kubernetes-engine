@@ -245,7 +245,7 @@ variable "node_pools_linux_node_configs_sysctls" {
 
 variable "node_pools_cgroup_mode" {
   type        = map(string)
-  description = "Map of strings containing cgroup node config by node-pool name"
+  description = "Map of strings containing cgroup node config by node-pool name. Note: GKE is removing cgroup v1 support in 1.35."
 
   # Default is being set in variables_defaults.tf
   default = {
@@ -1041,6 +1041,12 @@ variable "enterprise_config" {
 
 variable "dns_allow_external_traffic" {
   description = "(Optional) Controls whether external traffic is allowed over the dns endpoint."
+  type        = bool
+  default     = null
+}
+
+variable "dns_enable_k8s_tokens_via_dns" {
+  description = "(Optional) Controls whether Kubernetes ServiceAccount token authentication is allowed via the DNS endpoint."
   type        = bool
   default     = null
 }

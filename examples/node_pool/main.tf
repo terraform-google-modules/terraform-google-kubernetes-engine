@@ -42,7 +42,7 @@ resource "google_tags_tag_value" "value" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
-  version = "~> 43.0"
+  version = "~> 44.0"
 
   project_id                        = var.project_id
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -181,8 +181,7 @@ module "gke" {
   }
 
   node_pools_cgroup_mode = {
-    all     = "CGROUP_MODE_V2"
-    pool-01 = "CGROUP_MODE_V1"
+    all = "CGROUP_MODE_V2"
   }
 
   node_pools_hugepage_size_2m = {

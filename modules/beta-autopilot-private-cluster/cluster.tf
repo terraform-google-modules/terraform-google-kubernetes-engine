@@ -163,6 +163,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "secret_sync_config" {
+    for_each = var.enable_secret_sync ? [true] : []
+    content {
+      enabled = true
+    }
+  }
+
   dynamic "pod_autoscaling" {
     for_each = length(var.hpa_profile) > 0 ? [1] : []
     content {
@@ -301,9 +308,12 @@ resource "google_container_cluster" "primary" {
     workload_vulnerability_mode = var.workload_vulnerability_mode
   }
 
-  security_posture_config {
-    mode               = var.security_posture_mode
-    vulnerability_mode = var.security_posture_vulnerability_mode
+  dynamic "security_posture_config" {
+    for_each = var.security_posture_mode != null || var.security_posture_vulnerability_mode != null ? [1] : []
+    content {
+      mode               = var.security_posture_mode
+      vulnerability_mode = var.security_posture_vulnerability_mode
+    }
   }
 
   dynamic "fleet" {
@@ -416,7 +426,7 @@ resource "google_container_cluster" "primary" {
       master_ipv4_cidr_block      = var.private_endpoint_subnetwork == null ? private_cluster_config.value.master_ipv4_cidr_block : null
       private_endpoint_subnetwork = private_cluster_config.value.private_endpoint_subnetwork
       dynamic "master_global_access_config" {
-        for_each = var.master_global_access_enabled ? [var.master_global_access_enabled] : []
+        for_each = var.master_global_access_enabled && var.enable_private_endpoint ? [var.master_global_access_enabled] : []
         content {
           enabled = master_global_access_config.value
         }
@@ -425,12 +435,13 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.dns_allow_external_traffic != null || var.ip_endpoints_enabled != null ? [1] : []
+    for_each = var.dns_allow_external_traffic != null || var.dns_enable_k8s_tokens_via_dns != null || var.ip_endpoints_enabled != null ? [1] : []
     content {
       dynamic "dns_endpoint_config" {
-        for_each = var.dns_allow_external_traffic != null ? [1] : []
+        for_each = var.dns_allow_external_traffic != null || var.dns_enable_k8s_tokens_via_dns != null ? [1] : []
         content {
-          allow_external_traffic = var.dns_allow_external_traffic
+          allow_external_traffic    = var.dns_allow_external_traffic
+          enable_k8s_tokens_via_dns = var.dns_enable_k8s_tokens_via_dns
         }
       }
       dynamic "ip_endpoints_config" {

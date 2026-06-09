@@ -37,15 +37,12 @@ func TestSimpleRegionalClusterAutoscaling(t *testing.T) {
 
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		g := golden.NewOrUpdate(t, op.String(),
-			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
-			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
+			golden.WithSanitizer(testutils.GKEClusterSanitizer(serviceAccount, projectId, clusterName, op)),
 		)
 		validateJSONPaths := []string{
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
-			"addonsConfig",
 			"databaseEncryption",
 			"shieldedNodes",
 			"binaryAuthorization",
@@ -53,6 +50,9 @@ func TestSimpleRegionalClusterAutoscaling(t *testing.T) {
 			"nodePools.config",
 			"nodePools.config.tags",
 			"nodePools.management",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)

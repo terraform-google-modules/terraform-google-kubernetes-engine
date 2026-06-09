@@ -50,9 +50,11 @@ func TestSimpleAutopilotPrivate(t *testing.T) {
 			"privateClusterConfig.enablePrivateNodes",
 			"addonsConfig.horizontalPodAutoscaling",
 			"addonsConfig.httpLoadBalancing",
+			"masterAuthorizedNetworksConfig.enabled",
+			"addonsConfig.dnsCacheConfig.enabled",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
 			"addonsConfig.kubernetesDashboard.disabled",
 			"addonsConfig.networkPolicyConfig.disabled",
-			"masterAuthorizedNetworksConfig.enabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
