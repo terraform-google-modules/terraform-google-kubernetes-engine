@@ -349,6 +349,9 @@ spec:
         total_egress_bandwidth_tier:
           name: total_egress_bandwidth_tier
           title: Total Egress Bandwidth Tier
+        user_managed_keys_config:
+          name: user_managed_keys_config
+          title: User Managed Keys Config
         workload_config_audit_mode:
           name: workload_config_audit_mode
           title: Workload Config Audit Mode
