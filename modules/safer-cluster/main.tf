@@ -217,4 +217,6 @@ module "gke" {
   // Enabling security posture
   security_posture_mode               = var.security_posture_mode
   security_posture_vulnerability_mode = var.security_posture_vulnerability_mode
+
+  user_managed_keys_config = var.user_managed_keys_config
 }
