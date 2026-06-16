@@ -316,6 +316,20 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "user_managed_keys_config" {
+    for_each = var.user_managed_keys_config != null ? [var.user_managed_keys_config] : []
+    content {
+      aggregation_ca                    = user_managed_keys_config.value.aggregation_ca
+      cluster_ca                        = user_managed_keys_config.value.cluster_ca
+      control_plane_disk_encryption_key = user_managed_keys_config.value.control_plane_disk_encryption_key
+      etcd_api_ca                       = user_managed_keys_config.value.etcd_api_ca
+      etcd_peer_ca                      = user_managed_keys_config.value.etcd_peer_ca
+      gkeops_etcd_backup_encryption_key = user_managed_keys_config.value.gkeops_etcd_backup_encryption_key
+      service_account_signing_keys      = user_managed_keys_config.value.service_account_signing_keys
+      service_account_verification_keys = user_managed_keys_config.value.service_account_verification_keys
+    }
+  }
+
   dynamic "fleet" {
     for_each = var.fleet_project != null ? [1] : []
     content {

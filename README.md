@@ -282,6 +282,7 @@ Then perform the following commands on the root folder:
 | timeouts | Timeout for cluster operations. | `map(string)` | `{}` | no |
 | total\_egress\_bandwidth\_tier | Specifies the total network bandwidth tier for NodePools in the cluster. Valid values are `TIER_UNSPECIFIED` and `TIER_1`. Defaults to `TIER_UNSPECIFIED`. | `string` | `null` | no |
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | `list(string)` | `[]` | no |
+| user\_managed\_keys\_config | The User Managed Keys configuration for the cluster. | <pre>object({<br>    aggregation_ca                    = optional(string)<br>    cluster_ca                        = optional(string)<br>    control_plane_disk_encryption_key = optional(string)<br>    etcd_api_ca                       = optional(string)<br>    etcd_peer_ca                      = optional(string)<br>    gkeops_etcd_backup_encryption_key = optional(string)<br>    service_account_signing_keys      = optional(list(string))<br>    service_account_verification_keys = optional(list(string))<br>  })</pre> | `null` | no |
 | windows\_node\_pools | List of maps containing Windows node pools | `list(map(string))` | `[]` | no |
 | zones | The zones to host the cluster in (optional if regional cluster / required if zonal) | `list(string)` | `[]` | no |
 

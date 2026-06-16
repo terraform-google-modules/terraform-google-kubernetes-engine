@@ -546,6 +546,19 @@ spec:
       - name: network_tier_config
         description: Network tier configuration for the cluster
         varType: string
+      - name: user_managed_keys_config
+        description: The User Managed Keys configuration for the cluster.
+        varType: |-
+          object({
+              aggregation_ca                    = optional(string)
+              cluster_ca                        = optional(string)
+              control_plane_disk_encryption_key = optional(string)
+              etcd_api_ca                       = optional(string)
+              etcd_peer_ca                      = optional(string)
+              gkeops_etcd_backup_encryption_key = optional(string)
+              service_account_signing_keys      = optional(list(string))
+              service_account_verification_keys = optional(list(string))
+            })
     outputs:
       - name: ca_certificate
         description: Cluster ca certificate (base64 encoded)
