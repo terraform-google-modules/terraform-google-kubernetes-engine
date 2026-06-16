@@ -281,6 +281,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | subnetwork | The subnetwork to host the cluster in | `string` | n/a | yes |
 | timeouts | Timeout for cluster operations. | `map(string)` | `{}` | no |
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | `list(string)` | `[]` | no |
+| user\_managed\_keys\_config | The User Managed Keys configuration for the cluster. | <pre>object({<br>    aggregation_ca                    = optional(string)<br>    cluster_ca                        = optional(string)<br>    control_plane_disk_encryption_key = optional(string)<br>    etcd_api_ca                       = optional(string)<br>    etcd_peer_ca                      = optional(string)<br>    gkeops_etcd_backup_encryption_key = optional(string)<br>    service_account_signing_keys      = optional(list(string))<br>    service_account_verification_keys = optional(list(string))<br>  })</pre> | `null` | no |
 | windows\_node\_pools | List of maps containing node pools | `list(map(string))` | `[]` | no |
 | workload\_config\_audit\_mode | (beta) Workload config audit mode. | `string` | `"DISABLED"` | no |
 | workload\_vulnerability\_mode | (beta) Vulnerability mode. | `string` | `""` | no |

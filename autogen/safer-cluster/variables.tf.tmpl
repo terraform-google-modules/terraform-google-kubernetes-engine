@@ -571,3 +571,19 @@ variable "enable_confidential_nodes" {
   description = "An optional flag to enable confidential node config."
   default     = false
 }
+
+variable "user_managed_keys_config" {
+  type = object({
+    aggregation_ca                    = optional(string)
+    cluster_ca                        = optional(string)
+    control_plane_disk_encryption_key = optional(string)
+    etcd_api_ca                       = optional(string)
+    etcd_peer_ca                      = optional(string)
+    gkeops_etcd_backup_encryption_key = optional(string)
+    service_account_signing_keys      = optional(list(string))
+    service_account_verification_keys = optional(list(string))
+  })
+  description = "The User Managed Keys configuration for the cluster."
+  default     = null
+}
+
