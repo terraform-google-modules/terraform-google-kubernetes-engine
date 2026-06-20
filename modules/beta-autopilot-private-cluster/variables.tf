@@ -679,6 +679,12 @@ variable "fleet_project_grant_service_agent" {
   default     = false
 }
 
+variable "managed_opentelemetry_scope" {
+  description = "(Optional, Beta) The scope of the GKE Managed OpenTelemetry pipeline. Accepted values are `SCOPE_UNSPECIFIED`, `NONE`, and `COLLECTION_AND_INSTRUMENTATION_COMPONENTS`. When `null`, the `managed_opentelemetry_config` block is omitted."
+  type        = string
+  default     = null
+}
+
 variable "monitoring_metric_writer_role" {
   description = "The monitoring metrics writer role to assign to the GKE node service account"
   type        = string
