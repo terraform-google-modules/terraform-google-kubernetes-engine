@@ -105,14 +105,14 @@ resource "google_container_cluster" "primary" {
     for_each = length(var.logging_enabled_components) > 0 ? [1] : []
 
     content {
-      enable_components = var.logging_enabled_components
+      enable_components = toset(var.logging_enabled_components)
     }
   }
 
   dynamic "monitoring_config" {
     for_each = local.cluster_telemetry_type_is_set || local.logmon_config_is_set ? [1] : []
     content {
-      enable_components = var.monitoring_enabled_components
+      enable_components = toset(var.monitoring_enabled_components)
       managed_prometheus {
         enabled = var.monitoring_enable_managed_prometheus == null ? false : var.monitoring_enable_managed_prometheus
         dynamic "auto_monitoring_config" {
@@ -141,7 +141,7 @@ resource "google_container_cluster" "primary" {
 
       content {
         service_account = local.service_account
-        oauth_scopes    = local.node_pools_oauth_scopes["all"]
+        oauth_scopes    = toset(local.node_pools_oauth_scopes["all"])
 
         boot_disk_kms_key = var.boot_disk_kms_key
 
@@ -304,7 +304,7 @@ resource "google_container_cluster" "primary" {
       dynamic "network_tags" {
         for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
         content {
-          tags = var.add_cluster_firewall_rules ? (concat(var.network_tags, [local.cluster_network_tag])) : var.network_tags
+          tags = var.add_cluster_firewall_rules ? toset(concat(var.network_tags, [local.cluster_network_tag])) : toset(var.network_tags)
         }
       }
 
@@ -637,12 +637,12 @@ resource "google_container_cluster" "primary" {
 
       service_account = lookup(local.head_node_pool, "service_account", local.service_account)
 
-      tags = concat(
+      tags = toset(concat(
         lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
         lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-default-pool"] : [],
         lookup(local.node_pools_tags, "all", []),
         length(var.node_pools) > 0 ? lookup(local.node_pools_tags, local.head_node_pool.name, []) : [],
-      )
+      ))
 
       logging_variant = lookup(local.head_node_pool, "logging_variant", "DEFAULT")
 
@@ -755,7 +755,7 @@ resource "google_container_cluster" "primary" {
       dynamic "filter" {
         for_each = length(var.notification_filter_event_type) > 0 ? [1] : []
         content {
-          event_type = var.notification_filter_event_type
+          event_type = toset(var.notification_filter_event_type)
         }
       }
     }
@@ -1030,12 +1030,12 @@ resource "google_container_node_pool" "pools" {
         value  = taint.value.value
       }
     }
-    tags = concat(
+    tags = toset(concat(
       lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
       lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-${each.value["name"]}"] : [],
       local.node_pools_tags["all"],
       local.node_pools_tags[each.value["name"]],
-    )
+    ))
 
     logging_variant = lookup(each.value, "logging_variant", "DEFAULT")
 
@@ -1431,12 +1431,12 @@ resource "google_container_node_pool" "windows_pools" {
         value  = taint.value.value
       }
     }
-    tags = concat(
+    tags = toset(concat(
       lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
       lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-${each.value["name"]}"] : [],
       local.node_pools_tags["all"],
       local.node_pools_tags[each.value["name"]],
-    )
+    ))
 
     logging_variant = lookup(each.value, "logging_variant", "DEFAULT")
 
