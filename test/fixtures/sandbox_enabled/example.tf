@@ -31,7 +31,7 @@ module "example" {
   node_pools = [
     {
       name         = "default-node-pool"
-      machine_type = "n1-standard-2"
+      machine_type = "e2-standard-2"
     },
   ]
 }

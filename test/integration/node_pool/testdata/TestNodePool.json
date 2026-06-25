@@ -415,7 +415,7 @@
         "accelerators": [
           {
             "acceleratorCount": "1",
-            "acceleratorType": "nvidia-tesla-p4",
+            "acceleratorType": "nvidia-tesla-t4",
             "gpuDriverInstallationConfig": {
               "gpuDriverVersion": "DEFAULT"
             }
@@ -444,7 +444,7 @@
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n1-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "cluster_name": "node-pool-cluster-RANDOM_STRING",
           "disable-legacy-endpoints": "false",
@@ -534,7 +534,7 @@
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n1-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "cluster_name": "node-pool-cluster-RANDOM_STRING",
           "disable-legacy-endpoints": "false",
