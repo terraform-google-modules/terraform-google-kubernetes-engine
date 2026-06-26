@@ -496,10 +496,16 @@ variable "gke_backup_agent_config" {
   default     = false
 }
 
-variable "enable_secret_sync" {
-  description = "Enable the Secret Sync add-on for this cluster."
-  type        = bool
-  default     = false
+variable "secret_sync_config" {
+  description = "Configuration for the Secret Sync add-on for this cluster."
+  type = object({
+    enabled = bool
+    rotation_config = optional(object({
+      enabled           = optional(bool)
+      rotation_interval = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "security_posture_mode" {
