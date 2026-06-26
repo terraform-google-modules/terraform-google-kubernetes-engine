@@ -115,7 +115,7 @@
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n1-standard-2",
+    "machineType": "e2-standard-2",
     "metadata": {
       "cluster_name": "CLUSTER_NAME",
       "disable-legacy-endpoints": "true",
@@ -175,7 +175,7 @@
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n1-standard-2",
+        "machineType": "e2-standard-2",
         "metadata": {
           "cluster_name": "CLUSTER_NAME",
           "disable-legacy-endpoints": "true",
