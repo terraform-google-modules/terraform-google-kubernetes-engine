@@ -773,6 +773,9 @@
       },
       "name": "pool-05",
       "networkConfig": {
+        "podCidrOverprovisionConfig": {
+          "disabled": true
+        },
         "podIpv4CidrBlock": "192.168.0.0/18",
         "podRange": "cft-gke-test-pods-RANDOM_STRING"
       },
