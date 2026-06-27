@@ -1067,6 +1067,12 @@ variable "fleet_project_grant_service_agent" {
   default     = false
 }
 
+variable "managed_opentelemetry_scope" {
+  description = "(Optional, Beta) The scope of the GKE Managed OpenTelemetry pipeline. Accepted values are `SCOPE_UNSPECIFIED`, `NONE`, and `COLLECTION_AND_INSTRUMENTATION_COMPONENTS`. When `null`, the `managed_opentelemetry_config` block is omitted."
+  type        = string
+  default     = null
+}
+
 variable "logging_variant" {
   description = "(Optional) The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT."
   type        = string
