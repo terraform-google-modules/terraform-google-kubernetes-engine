@@ -85,14 +85,14 @@ resource "google_container_cluster" "main" {
   dynamic "logging_config" {
     for_each = var.logging_config != null ? [var.logging_config] : []
     content {
-      enable_components = logging_config.value.enable_components
+      enable_components = toset(logging_config.value.enable_components)
     }
   }
 
   dynamic "monitoring_config" {
     for_each = var.monitoring_config != null ? [var.monitoring_config] : []
     content {
-      enable_components = monitoring_config.value.enable_components
+      enable_components = toset(monitoring_config.value.enable_components)
     }
   }
 
@@ -215,7 +215,7 @@ resource "google_container_cluster" "main" {
       dynamic "network_tags" {
         for_each = node_pool_auto_config.value.network_tags != null ? [node_pool_auto_config.value.network_tags] : []
         content {
-          tags = network_tags.value.tags
+          tags = toset(network_tags.value.tags)
         }
       }
       dynamic "linux_node_config" {
@@ -456,7 +456,7 @@ resource "google_container_cluster" "main" {
           dynamic "filter" {
             for_each = pubsub.value.filter != null ? [pubsub.value.filter] : []
             content {
-              event_type = filter.value.event_type
+              event_type = toset(filter.value.event_type)
             }
           }
         }

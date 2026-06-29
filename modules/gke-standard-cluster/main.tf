@@ -183,7 +183,7 @@ resource "google_container_cluster" "main" {
         for_each = cluster_autoscaling.value.auto_provisioning_defaults != null ? [cluster_autoscaling.value.auto_provisioning_defaults] : []
         content {
           min_cpu_platform  = auto_provisioning_defaults.value.min_cpu_platform
-          oauth_scopes      = auto_provisioning_defaults.value.oauth_scopes
+          oauth_scopes      = toset(auto_provisioning_defaults.value.oauth_scopes)
           service_account   = auto_provisioning_defaults.value.service_account
           boot_disk_kms_key = auto_provisioning_defaults.value.boot_disk_kms_key
           disk_size         = auto_provisioning_defaults.value.disk_size
@@ -294,7 +294,7 @@ resource "google_container_cluster" "main" {
     for_each = var.logging_config != null ? [var.logging_config] : []
 
     content {
-      enable_components = logging_config.value.enable_components
+      enable_components = toset(logging_config.value.enable_components)
     }
   }
 
@@ -365,7 +365,7 @@ resource "google_container_cluster" "main" {
     for_each = var.monitoring_config != null ? [var.monitoring_config] : []
 
     content {
-      enable_components = monitoring_config.value.enable_components
+      enable_components = toset(monitoring_config.value.enable_components)
     }
   }
 
@@ -402,7 +402,7 @@ resource "google_container_cluster" "main" {
       boot_disk_kms_key           = node_config.value.boot_disk_kms_key
       service_account             = node_config.value.service_account
       storage_pools               = node_config.value.storage_pools
-      tags                        = node_config.value.tags
+      tags                        = toset(node_config.value.tags)
       resource_manager_tags       = node_config.value.resource_manager_tags
       node_group                  = node_config.value.node_group
 
@@ -625,7 +625,7 @@ resource "google_container_cluster" "main" {
       dynamic "network_tags" {
         for_each = node_pool_auto_config.value.network_tags != null ? [node_pool_auto_config.value.network_tags] : []
         content {
-          tags = network_tags.value.tags
+          tags = toset(network_tags.value.tags)
         }
       }
       dynamic "linux_node_config" {
@@ -690,7 +690,7 @@ resource "google_container_cluster" "main" {
           boot_disk_kms_key           = node_config.value.boot_disk_kms_key
           service_account             = node_config.value.service_account
           storage_pools               = node_config.value.storage_pools
-          tags                        = node_config.value.tags
+          tags                        = toset(node_config.value.tags)
           resource_manager_tags       = node_config.value.resource_manager_tags
           node_group                  = node_config.value.node_group
           logging_variant             = node_config.value.logging_variant
@@ -1015,7 +1015,7 @@ resource "google_container_cluster" "main" {
           dynamic "filter" {
             for_each = pubsub.value.filter != null ? [pubsub.value.filter] : []
             content {
-              event_type = filter.value.event_type
+              event_type = toset(filter.value.event_type)
             }
           }
         }
