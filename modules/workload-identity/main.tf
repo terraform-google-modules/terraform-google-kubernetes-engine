@@ -27,7 +27,7 @@ locals {
   output_k8s_namespace = var.use_existing_k8s_sa ? var.namespace : kubernetes_service_account_v1.main[0].metadata[0].namespace
 
   k8s_sa_project_id       = var.k8s_sa_project_id != null ? var.k8s_sa_project_id : var.project_id
-  k8s_sa_gcp_derived_name = "serviceAccount:${local.k8s_sa_project_id}.svc.id.goog[${var.namespace}/${local.output_k8s_name}]"
+  k8s_sa_gcp_derived_name = "serviceAccount:${local.k8s_sa_project_id}.svc.id.goog[${var.namespace}/${local.k8s_given_name}]"
 
   sa_binding_additional_project = distinct(flatten([for project, roles in var.additional_projects : [for role in roles : { project_id = project, role_name = role }]]))
 }
@@ -74,30 +74,44 @@ resource "kubernetes_service_account_v1" "main" {
       "iam.gke.io/gcp-service-account" = local.gcp_sa_email
     }
   }
+
+  depends_on = [
+    google_service_account_iam_member.main,
+    var.module_depends_on,
+  ]
 }
 
-module "annotate-sa" {
-  source  = "terraform-google-modules/gcloud/google//modules/kubectl-wrapper"
-  version = "~> 4.0"
+resource "kubernetes_annotations" "main" {
+  count = var.use_existing_k8s_sa && var.annotate_k8s_sa ? 1 : 0
 
-  enabled                     = var.use_existing_k8s_sa && var.annotate_k8s_sa
-  skip_download               = true
-  cluster_name                = var.cluster_name
-  cluster_location            = var.location
-  project_id                  = local.k8s_sa_project_id
-  impersonate_service_account = var.impersonate_service_account
-  use_existing_context        = var.use_existing_context
+  api_version = "v1"
+  kind        = "ServiceAccount"
 
-  kubectl_create_command  = "kubectl annotate --overwrite sa -n ${local.output_k8s_namespace} ${local.k8s_given_name} iam.gke.io/gcp-service-account=${local.gcp_sa_email}"
-  kubectl_destroy_command = "kubectl annotate sa -n ${local.output_k8s_namespace} ${local.k8s_given_name} iam.gke.io/gcp-service-account-"
+  metadata {
+    name      = local.k8s_given_name
+    namespace = local.output_k8s_namespace
+  }
 
-  module_depends_on = var.module_depends_on
+  annotations = {
+    "iam.gke.io/gcp-service-account" = local.gcp_sa_email
+  }
+
+  force = true
+
+  depends_on = [
+    google_service_account_iam_member.main,
+    var.module_depends_on,
+  ]
 }
 
 resource "google_service_account_iam_member" "main" {
   service_account_id = var.use_existing_gcp_sa ? data.google_service_account.cluster_service_account[0].name : google_service_account.cluster_service_account[0].name
   role               = "roles/iam.workloadIdentityUser"
   member             = local.k8s_sa_gcp_derived_name
+
+  depends_on = [
+    var.module_depends_on,
+  ]
 }
 
 resource "google_project_iam_member" "workload_identity_sa_bindings" {
