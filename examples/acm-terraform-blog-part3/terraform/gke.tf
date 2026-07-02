@@ -50,9 +50,7 @@ module "wi" {
   source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version             = "~> 44.0"
   gcp_sa_name         = "cnrmsa"
-  cluster_name        = module.gke.name
   name                = "cnrm-controller-manager"
-  location            = var.zone
   use_existing_k8s_sa = true
   annotate_k8s_sa     = false
   namespace           = "cnrm-system"
