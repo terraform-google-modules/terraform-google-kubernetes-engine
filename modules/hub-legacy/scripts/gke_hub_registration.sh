@@ -32,7 +32,7 @@ tmp_file=$(mktemp)
 # shellcheck disable=SC2064
 trap "rm -rf $tmp_file" EXIT
 base64 --help | grep "\--decode" && B64_ARG="--decode" || B64_ARG="-d"
-echo "${SERVICE_ACCOUNT_KEY}" | base64 ${B64_ARG} > "$tmp_file"
+printf '%s' "${SERVICE_ACCOUNT_KEY}" | base64 "${B64_ARG}" > "$tmp_file"
 
 if [[ ${GKE_CLUSTER_FLAG} == 1 ]]; then
     echo "Registering GKE Cluster."

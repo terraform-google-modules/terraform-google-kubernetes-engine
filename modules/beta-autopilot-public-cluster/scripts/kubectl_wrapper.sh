@@ -41,7 +41,7 @@ export KUBECONFIG="${TMPDIR}/config"
 
 # shellcheck disable=SC1117
 base64 --help | grep "\--decode" && B64_ARG="--decode" || B64_ARG="-d"
-echo "${CA_CERTIFICATE}" | base64 ${B64_ARG} > "${TMPDIR}/ca_certificate"
+printf '%s' "${CA_CERTIFICATE}" | base64 "${B64_ARG}" > "${TMPDIR}/ca_certificate"
 
 kubectl config set-cluster kubectl-wrapper --server="${HOST}" --certificate-authority="${TMPDIR}/ca_certificate" --embed-certs=true 1>/dev/null
 rm -f "${TMPDIR}/ca_certificate"
