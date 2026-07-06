@@ -382,7 +382,7 @@ resource "google_container_cluster" "primary" {
 
 {% if autopilot_cluster != true %}
   dynamic "node_pool_auto_config" {
-    for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode != null) ? [1] : []
+    for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode["all"] != "") ? [1] : []
     content {
       dynamic "network_tags" {
         for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
