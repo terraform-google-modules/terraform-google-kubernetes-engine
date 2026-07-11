@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [Unreleased]
+
+### Bug Fixes
+
+* Replace deprecated `kubernetes_config_map` with `kubernetes_config_map_v1` for ip-masq-agent
+
 ## [44.3.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v44.2.0...v44.3.0) (2026-06-26)
 
 
