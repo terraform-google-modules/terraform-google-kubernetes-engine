@@ -382,12 +382,8 @@ resource "google_container_cluster" "primary" {
       }
     }
 
-    dynamic "agent_sandbox_config" {
-      for_each = var.agent_sandbox_enabled ? ["agent_sandbox_config"] : []
-
-      content {
-        enabled = true
-      }
+    agent_sandbox_config {
+      enabled = var.agent_sandbox_enabled
     }
 
     dynamic "stateful_ha_config" {
