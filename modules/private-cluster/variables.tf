@@ -787,6 +787,12 @@ variable "initial_node_count" {
   default     = 0
 }
 
+variable "skip_node_pool_refresh" {
+  type        = bool
+  description = "If true, do not refresh node pools into the cluster state. Use only when all node pools are managed with separate google_container_node_pool resources or GKE node auto-provisioning."
+  default     = false
+}
+
 variable "remove_default_node_pool" {
   type        = bool
   description = "Remove default node pool while setting up the cluster"

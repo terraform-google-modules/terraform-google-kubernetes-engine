@@ -27,11 +27,13 @@ resource "google_container_cluster" "primary" {
   project         = var.project_id
   resource_labels = var.cluster_resource_labels
 
-  location            = local.location
-  node_locations      = local.node_locations
-  cluster_ipv4_cidr   = var.cluster_ipv4_cidr
-  network             = "projects/${local.network_project_id}/global/networks/${var.network}"
-  deletion_protection = var.deletion_protection
+  location               = local.location
+  node_locations         = local.node_locations
+  cluster_ipv4_cidr      = var.cluster_ipv4_cidr
+  network                = "projects/${local.network_project_id}/global/networks/${var.network}"
+  deletion_protection    = var.deletion_protection
+  initial_node_count     = var.skip_node_pool_refresh ? max(1, var.initial_node_count) : null
+  skip_node_pool_refresh = var.skip_node_pool_refresh
 
   dynamic "enable_k8s_beta_apis" {
     for_each = length(var.enable_k8s_beta_apis) > 0 ? [1] : []
@@ -518,121 +520,124 @@ resource "google_container_cluster" "primary" {
     update = lookup(var.timeouts, "update", "45m")
     delete = lookup(var.timeouts, "delete", "45m")
   }
-  node_pool {
-    name               = "default-pool"
-    initial_node_count = var.initial_node_count
+  dynamic "node_pool" {
+    for_each = var.skip_node_pool_refresh ? [] : [1]
+    content {
+      name               = "default-pool"
+      initial_node_count = var.initial_node_count
 
-    management {
-      auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
-      auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
-    }
-
-    node_config {
-      image_type                  = lookup(local.head_node_pool, "image_type", "COS_CONTAINERD")
-      machine_type                = lookup(local.head_node_pool, "machine_type", "e2-medium")
-      min_cpu_platform            = lookup(local.head_node_pool, "min_cpu_platform", "")
-      enable_confidential_storage = lookup(local.head_node_pool, "enable_confidential_storage", false)
-      disk_type                   = lookup(local.head_node_pool, "disk_type", null)
-
-      dynamic "boot_disk" {
-        for_each = lookup(local.head_node_pool, "provisioned_iops", null) != null || lookup(local.head_node_pool, "provisioned_throughput", null) != null ? [1] : []
-        content {
-          provisioned_iops       = lookup(local.head_node_pool, "provisioned_iops", null)
-          provisioned_throughput = lookup(local.head_node_pool, "provisioned_throughput", null)
-        }
+      management {
+        auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
+        auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
       }
 
-      dynamic "gcfs_config" {
-        for_each = lookup(local.head_node_pool, "enable_gcfs", null) != null ? [local.head_node_pool.enable_gcfs] : []
-        content {
-          enabled = gcfs_config.value
+      node_config {
+        image_type                  = lookup(local.head_node_pool, "image_type", "COS_CONTAINERD")
+        machine_type                = lookup(local.head_node_pool, "machine_type", "e2-medium")
+        min_cpu_platform            = lookup(local.head_node_pool, "min_cpu_platform", "")
+        enable_confidential_storage = lookup(local.head_node_pool, "enable_confidential_storage", false)
+        disk_type                   = lookup(local.head_node_pool, "disk_type", null)
+
+        dynamic "boot_disk" {
+          for_each = lookup(local.head_node_pool, "provisioned_iops", null) != null || lookup(local.head_node_pool, "provisioned_throughput", null) != null ? [1] : []
+          content {
+            provisioned_iops       = lookup(local.head_node_pool, "provisioned_iops", null)
+            provisioned_throughput = lookup(local.head_node_pool, "provisioned_throughput", null)
+          }
         }
-      }
 
-      dynamic "gvnic" {
-        for_each = lookup(local.head_node_pool, "enable_gvnic", false) ? [true] : []
-        content {
-          enabled = gvnic.value
+        dynamic "gcfs_config" {
+          for_each = lookup(local.head_node_pool, "enable_gcfs", null) != null ? [local.head_node_pool.enable_gcfs] : []
+          content {
+            enabled = gcfs_config.value
+          }
         }
-      }
 
-      dynamic "fast_socket" {
-        for_each = lookup(local.head_node_pool, "enable_fast_socket", null) != null ? [local.head_node_pool.enable_fast_socket] : []
-        content {
-          enabled = fast_socket.value
+        dynamic "gvnic" {
+          for_each = lookup(local.head_node_pool, "enable_gvnic", false) ? [true] : []
+          content {
+            enabled = gvnic.value
+          }
         }
-      }
 
-      dynamic "kubelet_config" {
-        for_each = length(setintersection(
-          keys(local.head_node_pool),
-          ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls"]
-        )) != 0 || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
-
-        content {
-          cpu_manager_policy                     = lookup(local.head_node_pool, "cpu_manager_policy", "static")
-          cpu_cfs_quota                          = lookup(local.head_node_pool, "cpu_cfs_quota", null)
-          cpu_cfs_quota_period                   = lookup(local.head_node_pool, "cpu_cfs_quota_period", null)
-          insecure_kubelet_readonly_port_enabled = lookup(local.head_node_pool, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled) != null ? upper(tostring(lookup(local.head_node_pool, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled))) : null
-          pod_pids_limit                         = lookup(local.head_node_pool, "pod_pids_limit", null)
-          container_log_max_size                 = lookup(local.head_node_pool, "container_log_max_size", null)
-          container_log_max_files                = lookup(local.head_node_pool, "container_log_max_files", null)
-          image_gc_low_threshold_percent         = lookup(local.head_node_pool, "image_gc_low_threshold_percent", null)
-          image_gc_high_threshold_percent        = lookup(local.head_node_pool, "image_gc_high_threshold_percent", null)
-          image_minimum_gc_age                   = lookup(local.head_node_pool, "image_minimum_gc_age", null)
-          image_maximum_gc_age                   = lookup(local.head_node_pool, "image_maximum_gc_age", null)
-          allowed_unsafe_sysctls                 = lookup(local.head_node_pool, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(local.head_node_pool, "allowed_unsafe_sysctls", null)) : trimspace(s)]
+        dynamic "fast_socket" {
+          for_each = lookup(local.head_node_pool, "enable_fast_socket", null) != null ? [local.head_node_pool.enable_fast_socket] : []
+          content {
+            enabled = fast_socket.value
+          }
         }
-      }
 
-      dynamic "sole_tenant_config" {
-        # node_affinity is currently the only member of sole_tenant_config
-        for_each = lookup(local.head_node_pool, "node_affinity", null) != null ? [true] : []
-        content {
-          dynamic "node_affinity" {
-            for_each = lookup(local.head_node_pool, "node_affinity", null) != null ? [lookup(local.head_node_pool, "node_affinity", null)] : []
-            content {
-              key      = lookup(jsondecode(node_affinity.value), "key", null)
-              operator = lookup(jsondecode(node_affinity.value), "operator", null)
-              values   = lookup(jsondecode(node_affinity.value), "values", [])
+        dynamic "kubelet_config" {
+          for_each = length(setintersection(
+            keys(local.head_node_pool),
+            ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls"]
+          )) != 0 || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
+
+          content {
+            cpu_manager_policy                     = lookup(local.head_node_pool, "cpu_manager_policy", "static")
+            cpu_cfs_quota                          = lookup(local.head_node_pool, "cpu_cfs_quota", null)
+            cpu_cfs_quota_period                   = lookup(local.head_node_pool, "cpu_cfs_quota_period", null)
+            insecure_kubelet_readonly_port_enabled = lookup(local.head_node_pool, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled) != null ? upper(tostring(lookup(local.head_node_pool, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled))) : null
+            pod_pids_limit                         = lookup(local.head_node_pool, "pod_pids_limit", null)
+            container_log_max_size                 = lookup(local.head_node_pool, "container_log_max_size", null)
+            container_log_max_files                = lookup(local.head_node_pool, "container_log_max_files", null)
+            image_gc_low_threshold_percent         = lookup(local.head_node_pool, "image_gc_low_threshold_percent", null)
+            image_gc_high_threshold_percent        = lookup(local.head_node_pool, "image_gc_high_threshold_percent", null)
+            image_minimum_gc_age                   = lookup(local.head_node_pool, "image_minimum_gc_age", null)
+            image_maximum_gc_age                   = lookup(local.head_node_pool, "image_maximum_gc_age", null)
+            allowed_unsafe_sysctls                 = lookup(local.head_node_pool, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(local.head_node_pool, "allowed_unsafe_sysctls", null)) : trimspace(s)]
+          }
+        }
+
+        dynamic "sole_tenant_config" {
+          # node_affinity is currently the only member of sole_tenant_config
+          for_each = lookup(local.head_node_pool, "node_affinity", null) != null ? [true] : []
+          content {
+            dynamic "node_affinity" {
+              for_each = lookup(local.head_node_pool, "node_affinity", null) != null ? [lookup(local.head_node_pool, "node_affinity", null)] : []
+              content {
+                key      = lookup(jsondecode(node_affinity.value), "key", null)
+                operator = lookup(jsondecode(node_affinity.value), "operator", null)
+                values   = lookup(jsondecode(node_affinity.value), "values", [])
+              }
             }
           }
         }
-      }
 
-      service_account = lookup(local.head_node_pool, "service_account", local.service_account)
+        service_account = lookup(local.head_node_pool, "service_account", local.service_account)
 
-      tags = concat(
-        lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
-        lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-default-pool"] : [],
-        lookup(local.node_pools_tags, "all", []),
-        length(var.node_pools) > 0 ? lookup(local.node_pools_tags, local.head_node_pool.name, []) : [],
-      )
+        tags = concat(
+          lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
+          lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-default-pool"] : [],
+          lookup(local.node_pools_tags, "all", []),
+          length(var.node_pools) > 0 ? lookup(local.node_pools_tags, local.head_node_pool.name, []) : [],
+        )
 
-      logging_variant = lookup(local.head_node_pool, "logging_variant", "DEFAULT")
+        logging_variant = lookup(local.head_node_pool, "logging_variant", "DEFAULT")
 
-      dynamic "workload_metadata_config" {
-        for_each = local.cluster_node_metadata_config
+        dynamic "workload_metadata_config" {
+          for_each = local.cluster_node_metadata_config
 
-        content {
-          mode = workload_metadata_config.value.mode
+          content {
+            mode = workload_metadata_config.value.mode
+          }
         }
+
+        metadata = local.node_pools_metadata["all"]
+
+        boot_disk_kms_key = lookup(local.head_node_pool, "boot_disk_kms_key", var.boot_disk_kms_key)
+
+        storage_pools = lookup(local.head_node_pool, "storage_pools", null) != null ? [local.head_node_pool.storage_pools] : []
+
+        shielded_instance_config {
+          enable_secure_boot          = lookup(local.head_node_pool, "enable_secure_boot", false)
+          enable_integrity_monitoring = lookup(local.head_node_pool, "enable_integrity_monitoring", true)
+        }
+
+        local_ssd_encryption_mode = lookup(local.head_node_pool, "local_ssd_encryption_mode", null)
+        max_run_duration          = lookup(local.head_node_pool, "max_run_duration", null)
+        flex_start                = lookup(local.head_node_pool, "flex_start", null)
       }
-
-      metadata = local.node_pools_metadata["all"]
-
-      boot_disk_kms_key = lookup(local.head_node_pool, "boot_disk_kms_key", var.boot_disk_kms_key)
-
-      storage_pools = lookup(local.head_node_pool, "storage_pools", null) != null ? [local.head_node_pool.storage_pools] : []
-
-      shielded_instance_config {
-        enable_secure_boot          = lookup(local.head_node_pool, "enable_secure_boot", false)
-        enable_integrity_monitoring = lookup(local.head_node_pool, "enable_integrity_monitoring", true)
-      }
-
-      local_ssd_encryption_mode = lookup(local.head_node_pool, "local_ssd_encryption_mode", null)
-      max_run_duration          = lookup(local.head_node_pool, "max_run_duration", null)
-      flex_start                = lookup(local.head_node_pool, "flex_start", null)
     }
   }
 
@@ -693,7 +698,7 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  remove_default_node_pool = var.remove_default_node_pool
+  remove_default_node_pool = var.skip_node_pool_refresh ? true : var.remove_default_node_pool
 
   dynamic "database_encryption" {
     for_each = var.database_encryption

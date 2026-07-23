@@ -36,6 +36,10 @@ resource "google_container_cluster" "primary" {
   cluster_ipv4_cidr   = var.cluster_ipv4_cidr
   network             = "projects/${local.network_project_id}/global/networks/${var.network}"
   deletion_protection = var.deletion_protection
+  {% if node_pool_refresh_skip_option %}
+  initial_node_count     = var.skip_node_pool_refresh ? max(1, var.initial_node_count) : null
+  skip_node_pool_refresh = var.skip_node_pool_refresh
+  {% endif %}
 
   dynamic "enable_k8s_beta_apis" {
     for_each = length(var.enable_k8s_beta_apis) > 0 ? [1] : []
@@ -661,7 +665,13 @@ resource "google_container_cluster" "primary" {
     delete = lookup(var.timeouts, "delete", "45m")
   }
   {% if autopilot_cluster != true %}
+  {% if node_pool_refresh_skip_option %}
+  dynamic "node_pool" {
+    for_each = var.skip_node_pool_refresh ? [] : [1]
+    content {
+  {% else %}
   node_pool {
+  {% endif %}
     name               = "default-pool"
     initial_node_count = var.initial_node_count
 
@@ -786,6 +796,9 @@ resource "google_container_cluster" "primary" {
       max_run_duration          = lookup(local.head_node_pool, "max_run_duration", null)
       flex_start                = lookup(local.head_node_pool, "flex_start", null)
     }
+  {% if node_pool_refresh_skip_option %}
+    }
+  {% endif %}
   }
   {% endif %}
 
@@ -849,7 +862,11 @@ resource "google_container_cluster" "primary" {
   }
 
   {% if autopilot_cluster != true %}
+  {% if node_pool_refresh_skip_option %}
+  remove_default_node_pool = var.skip_node_pool_refresh ? true : var.remove_default_node_pool
+  {% else %}
   remove_default_node_pool = var.remove_default_node_pool
+  {% endif %}
   {% endif %}
 
   dynamic "database_encryption" {

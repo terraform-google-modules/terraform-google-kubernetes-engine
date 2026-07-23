@@ -1,6 +1,6 @@
 # Simple Regional Private Cluster with No Node Pools
 
-This example illustrates how to create a regional private cluster while skipping the creation of node pools and enabling the default compute class.
+This example illustrates how to create a regional private cluster while skipping the creation and refresh of node pools and enabling the default compute class.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

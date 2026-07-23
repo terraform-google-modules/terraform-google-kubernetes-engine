@@ -11,7 +11,8 @@
     "path": "./modules/private-cluster",
     "options": {
       "module_path": "//modules/private-cluster",
-      "private_cluster": true
+      "private_cluster": true,
+      "node_pool_refresh_skip_option": true
     }
   },
   {

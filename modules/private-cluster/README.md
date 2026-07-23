@@ -15,6 +15,17 @@ Sub modules are provided for creating private clusters, beta private clusters, a
 
 For details on configuring private clusters with this module, check the [troubleshooting guide](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/blob/master/docs/private_clusters.md).
 
+## Skipping Node Pool Refresh
+
+Set `skip_node_pool_refresh = true` when every node pool is managed through
+separate `google_container_node_pool` resources or GKE node auto-provisioning.
+This prevents the provider from materializing those pools in the cluster state,
+which avoids slow refreshes and false diffs for ephemeral auto-provisioned
+pools.
+
+When enabled, the module omits its inline node pool configuration and
+automatically removes the one-node bootstrap default pool required by GKE.
+
 ## Compatibility
 
 This module is meant for use with Terraform 1.3+ and tested using Terraform 1.10+.
@@ -287,6 +298,7 @@ Then perform the following commands on the root folder:
 | service\_external\_ips | Whether external ips specified by a service will be allowed in this cluster | `bool` | `false` | no |
 | shadow\_firewall\_rules\_log\_config | The log\_config for shadow firewall rules. You can set this variable to `null` to disable logging. | <pre>object({<br>    metadata = string<br>  })</pre> | <pre>{<br>  "metadata": "INCLUDE_ALL_METADATA"<br>}</pre> | no |
 | shadow\_firewall\_rules\_priority | The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000. | `number` | `999` | no |
+| skip\_node\_pool\_refresh | If true, do not refresh node pools into the cluster state. Use only when all node pools are managed with separate google_container_node_pool resources or GKE node auto-provisioning. | `bool` | `false` | no |
 | stack\_type | The stack type to use for this cluster. Either `IPV4` or `IPV4_IPV6`. Defaults to `IPV4`. | `string` | `"IPV4"` | no |
 | stateful\_ha | Whether the Stateful HA Addon is enabled for this cluster. | `bool` | `false` | no |
 | stub\_domains | Map of stub domains and their resolvers to forward DNS queries for a certain domain to an external DNS server | `map(list(string))` | `{}` | no |
@@ -464,7 +476,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
-- [Terraform Provider for GCP][terraform-provider-google] v6.47+
+- [Terraform Provider for GCP][terraform-provider-google] v7.38+
 
 #### gcloud
 

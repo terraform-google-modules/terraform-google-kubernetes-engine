@@ -20,6 +20,19 @@ Sub modules are provided for creating private clusters, beta private clusters, a
 For details on configuring private clusters with this module, check the [troubleshooting guide](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/blob/master/docs/private_clusters.md).
 
 {% endif %}
+{% if node_pool_refresh_skip_option %}
+## Skipping Node Pool Refresh
+
+Set `skip_node_pool_refresh = true` when every node pool is managed through
+separate `google_container_node_pool` resources or GKE node auto-provisioning.
+This prevents the provider from materializing those pools in the cluster state,
+which avoids slow refreshes and false diffs for ephemeral auto-provisioned
+pools.
+
+When enabled, the module omits its inline node pool configuration and
+automatically removes the one-node bootstrap default pool required by GKE.
+
+{% endif %}
 {% if update_variant %}
 ## Node Pool Update Variant
 
@@ -324,7 +337,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 {% if beta_cluster %}
 - [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.47+
 {% else %}
-- [Terraform Provider for GCP][terraform-provider-google] v6.47+
+- [Terraform Provider for GCP][terraform-provider-google] v{% if node_pool_refresh_skip_option %}7.38{% else %}6.47{% endif %}+
 {% endif %}
 
 #### gcloud
