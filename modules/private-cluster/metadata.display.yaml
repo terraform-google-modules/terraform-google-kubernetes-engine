@@ -457,6 +457,9 @@ spec:
         shadow_firewall_rules_priority:
           name: shadow_firewall_rules_priority
           title: Shadow Firewall Rules Priority
+        skip_node_pool_refresh:
+          name: skip_node_pool_refresh
+          title: Skip Node Pool Refresh
         stack_type:
           name: stack_type
           title: Stack Type

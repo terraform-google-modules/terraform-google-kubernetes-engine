@@ -631,6 +631,10 @@ spec:
         description: The number of nodes to create in this cluster's default node pool.
         varType: number
         defaultValue: 0
+      - name: skip_node_pool_refresh
+        description: If true, do not refresh node pools into the cluster state. Use only when all node pools are managed with separate google_container_node_pool resources or GKE node auto-provisioning.
+        varType: bool
+        defaultValue: false
       - name: remove_default_node_pool
         description: Remove default node pool while setting up the cluster
         varType: bool
@@ -885,7 +889,7 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: ">= 7.17.0, < 8"
+        version: ">= 7.38.0, < 8"
       - source: hashicorp/kubernetes
         version: ">= 2.10, < 4"
       - source: hashicorp/random
