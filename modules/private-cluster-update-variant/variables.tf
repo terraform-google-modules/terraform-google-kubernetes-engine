@@ -879,6 +879,12 @@ variable "gke_backup_agent_config" {
   default     = false
 }
 
+variable "pod_snapshot_config" {
+  type        = bool
+  description = "Whether the Pod Snapshot addon is enabled for this cluster."
+  default     = false
+}
+
 variable "stateful_ha" {
   type        = bool
   description = "Whether the Stateful HA Addon is enabled for this cluster."

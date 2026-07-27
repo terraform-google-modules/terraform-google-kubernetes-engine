@@ -226,6 +226,9 @@ spec:
         notification_config_topic:
           name: notification_config_topic
           title: Notification Config Topic
+        pod_snapshot_config:
+          name: pod_snapshot_config
+          title: Pod Snapshot Config
         private_endpoint_subnetwork:
           name: private_endpoint_subnetwork
           title: Private Endpoint Subnetwork
