@@ -254,7 +254,7 @@ variable "notification_config" {
       enabled = bool
       topic   = optional(string)
       filter = optional(object({
-        event_type = optional(string)
+        event_type = list(string)
       }))
     })
   })

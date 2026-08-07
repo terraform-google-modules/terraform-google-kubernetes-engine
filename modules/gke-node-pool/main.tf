@@ -179,7 +179,7 @@ resource "google_container_node_pool" "main" {
       }
 
       storage_pools         = node_config.value.storage_pools
-      tags                  = node_config.value.tags
+      tags                  = toset(node_config.value.tags)
       resource_manager_tags = node_config.value.resource_manager_tags
 
       dynamic "taint" {

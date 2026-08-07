@@ -91,14 +91,14 @@ resource "google_container_cluster" "primary" {
     for_each = length(var.logging_enabled_components) > 0 ? [1] : []
 
     content {
-      enable_components = var.logging_enabled_components
+      enable_components = toset(var.logging_enabled_components)
     }
   }
 
   dynamic "monitoring_config" {
     for_each = length(var.monitoring_enabled_components) > 0 ? [1] : []
     content {
-      enable_components = var.monitoring_enabled_components
+      enable_components = toset(var.monitoring_enabled_components)
     }
   }
 
@@ -205,7 +205,7 @@ resource "google_container_cluster" "primary" {
       dynamic "network_tags" {
         for_each = length(var.network_tags) > 0 || var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? [1] : []
         content {
-          tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? concat(var.network_tags, [local.cluster_network_tag]) : length(var.network_tags) > 0 ? var.network_tags : null
+          tags = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules || var.add_shadow_firewall_rules ? toset(concat(var.network_tags, [local.cluster_network_tag])) : length(var.network_tags) > 0 ? toset(var.network_tags) : null
         }
       }
 
@@ -479,7 +479,7 @@ resource "google_container_cluster" "primary" {
       dynamic "filter" {
         for_each = length(var.notification_filter_event_type) > 0 ? [1] : []
         content {
-          event_type = var.notification_filter_event_type
+          event_type = toset(var.notification_filter_event_type)
         }
       }
     }
