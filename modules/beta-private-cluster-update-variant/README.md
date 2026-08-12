@@ -389,7 +389,7 @@ The node_pools variable takes the following parameters:
 | auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
 | storage_pools | The list of Storage Pools where boot disks are provisioned. | | Optional |
 | boot_disk_kms_key | The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. | " " | Optional |
-| cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". | "static" | Optional |
+| cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". The module sends `kubelet_config` only when the node pool sets at least one kubelet field. If the node pool sets no kubelet field, the module sends no value and GKE applies its own default of "none". | "static", but only when the node pool sets another kubelet field | Optional |
 | cpu_cfs_quota | Enforces the Pod's CPU limit. Setting this value to false means that the CPU limits for Pods are ignored | null | Optional |
 | cpu_cfs_quota_period | The CPU CFS quota period value, which specifies the period of how often a cgroup's access to CPU resources should be reallocated | null | Optional |
 | pod_pids_limit | Controls the maximum number of processes allowed to run in a pod. The value must be greater than or equal to 1024 and less than 4194304. | null | Optional |
