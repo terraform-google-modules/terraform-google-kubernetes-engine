@@ -17,7 +17,17 @@ Extending the adopted spec, each change should have a link to its corresponding 
 
 ### Bug Fixes
 
-* Replace deprecated `kubernetes_config_map` with `kubernetes_config_map_v1` for ip-masq-agent ([#2619](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2619))
+* Replace deprecated `kubernetes_config_map` with `kubernetes_config_map_v1` for ip-masq-agent ([#2627](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2627))
+
+  **Migration note:** The `hashicorp/kubernetes` provider does not implement `MoveResourceState` for this resource type, so automatic state migration via `moved` blocks is not possible. Users with `configure_ip_masq = true` must migrate state manually after upgrading:
+
+  ```bash
+  terraform state pull > state.json
+  jq '.resources |= map(if .type == "kubernetes_config_map" and (.instances[].attributes.metadata[0].name == "ip-masq-agent") then .type = "kubernetes_config_map_v1" else . end) | .serial += 1' state.json > state.new.json
+  terraform state push state.new.json
+  ```
+
+  Alternatively, the ConfigMap holds no persistent data and can safely be allowed to be recreated (`terraform apply` will destroy and recreate it).
 * avoid empty security_posture_config block ([#2593](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2593)) ([6997f1c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6997f1cd677c49dac1b750736e6218bd49ff5ade))
 * avoid master_global_access_config drift when private endpoint is disabled ([#2591](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2591)) ([94bdc6a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/94bdc6a2e5529432bfebd3051cf660789ebeff5a))
 * prevent unnecessary node_pool_auto_config creation when cgroup mode is unset ([#2598](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2598)) ([2640d00](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2640d0089ef31a52ad9e891e5609878378a86a94))
