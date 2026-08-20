@@ -36,7 +36,6 @@ moved {
   to   = kubernetes_config_map.ip_masq_agent
 }
 
-
 moved {
   from = google_project_iam_member.cluster_service_account-nodeService_account
   to   = google_project_iam_member.cluster_service_account_node_service_account
