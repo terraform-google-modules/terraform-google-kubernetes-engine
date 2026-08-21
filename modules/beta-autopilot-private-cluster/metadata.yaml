@@ -517,6 +517,9 @@ spec:
         description: (Optional) Grant the fleet project service identity the `roles/gkehub.serviceAgent` and `roles/gkehub.crossProjectServiceAgent` roles.
         varType: bool
         defaultValue: false
+      - name: managed_opentelemetry_scope
+        description: (Optional, Beta) The scope of the GKE Managed OpenTelemetry pipeline. Accepted values are `SCOPE_UNSPECIFIED`, `NONE`, and `COLLECTION_AND_INSTRUMENTATION_COMPONENTS`. When `null`, the `managed_opentelemetry_config` block is omitted.
+        varType: string
       - name: monitoring_metric_writer_role
         description: The monitoring metrics writer role to assign to the GKE node service account
         varType: string
