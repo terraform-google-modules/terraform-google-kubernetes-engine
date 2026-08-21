@@ -79,8 +79,6 @@ module "workload_identity_existing_ksa" {
 
   project_id          = var.project_id
   name                = "existing-${module.gke.name}"
-  cluster_name        = module.gke.name
-  location            = module.gke.location
   namespace           = "default"
   use_existing_k8s_sa = true
   k8s_sa_name         = kubernetes_service_account_v1.test.metadata[0].name
@@ -101,5 +99,8 @@ module "workload_identity_existing_gsa" {
   use_existing_gcp_sa = true
   # wait till custom GSA is created to force module data source read during apply
   # https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1059
-  depends_on = [google_service_account.custom]
+  depends_on = [
+    google_service_account.custom,
+    module.gke,
+  ]
 }

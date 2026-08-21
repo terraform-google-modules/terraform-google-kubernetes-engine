@@ -36,20 +36,9 @@ variable "use_existing_gcp_sa" {
   default     = false
 }
 
-variable "cluster_name" {
-  description = "Cluster name. Required if using existing KSA."
-  type        = string
-  default     = ""
-}
-
-variable "location" {
-  description = "Cluster location (region if regional cluster, zone if zonal cluster). Required if using existing KSA."
-  type        = string
-  default     = ""
-}
 
 variable "k8s_sa_name" {
-  description = "Name for the Kubernetes service account; overrides `var.name`. `cluster_name` and `location` must be set when this input is specified."
+  description = "Name for the Kubernetes service account; overrides `var.name`."
   type        = string
   default     = null
 }
@@ -96,17 +85,6 @@ variable "roles" {
   default     = []
 }
 
-variable "impersonate_service_account" {
-  description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
-  type        = string
-  default     = ""
-}
-
-variable "use_existing_context" {
-  description = "An optional flag to use local kubectl config context."
-  type        = bool
-  default     = false
-}
 
 variable "module_depends_on" {
   description = "List of modules or resources to depend on before annotating KSA. If multiple, all items must be the same type."

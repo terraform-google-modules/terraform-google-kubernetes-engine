@@ -37,9 +37,6 @@ spec:
         automount_service_account_token:
           name: automount_service_account_token
           title: Automount Service Account Token
-        cluster_name:
-          name: cluster_name
-          title: Cluster Name
         gcp_sa_create_ignore_already_exists:
           name: gcp_sa_create_ignore_already_exists
           title: Gcp Sa Create Ignore Already Exists
@@ -55,18 +52,12 @@ spec:
         image_pull_secrets:
           name: image_pull_secrets
           title: Image Pull Secrets
-        impersonate_service_account:
-          name: impersonate_service_account
-          title: Impersonate Service Account
         k8s_sa_name:
           name: k8s_sa_name
           title: K8s Sa Name
         k8s_sa_project_id:
           name: k8s_sa_project_id
           title: K8s Sa Project Id
-        location:
-          name: location
-          title: Location
         module_depends_on:
           name: module_depends_on
           title: Module Depends On
@@ -82,9 +73,6 @@ spec:
         roles:
           name: roles
           title: Roles
-        use_existing_context:
-          name: use_existing_context
-          title: Use Existing Context
         use_existing_gcp_sa:
           name: use_existing_gcp_sa
           title: Use Existing Gcp Sa

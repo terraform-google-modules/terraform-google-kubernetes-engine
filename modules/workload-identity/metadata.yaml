@@ -145,16 +145,8 @@ spec:
         description: Use an existing Google service account instead of creating one
         varType: bool
         defaultValue: false
-      - name: cluster_name
-        description: Cluster name. Required if using existing KSA.
-        varType: string
-        defaultValue: ""
-      - name: location
-        description: Cluster location (region if regional cluster, zone if zonal cluster). Required if using existing KSA.
-        varType: string
-        defaultValue: ""
       - name: k8s_sa_name
-        description: Name for the Kubernetes service account; overrides `var.name`. `cluster_name` and `location` must be set when this input is specified.
+        description: Name for the Kubernetes service account; overrides `var.name`.
         varType: string
       - name: k8s_sa_project_id
         description: GCP project ID of the k8s service account; overrides `var.project_id`.
@@ -183,14 +175,6 @@ spec:
         description: A list of roles to be added to the created service account
         varType: list(string)
         defaultValue: []
-      - name: impersonate_service_account
-        description: An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials.
-        varType: string
-        defaultValue: ""
-      - name: use_existing_context
-        description: An optional flag to use local kubectl config context.
-        varType: bool
-        defaultValue: false
       - name: module_depends_on
         description: List of modules or resources to depend on before annotating KSA. If multiple, all items must be the same type.
         varType: list(any)
