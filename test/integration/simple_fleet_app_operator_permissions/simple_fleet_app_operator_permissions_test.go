@@ -22,6 +22,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
@@ -49,29 +50,37 @@ func TestSimpleFleetAppOperatorPermissions(t *testing.T) {
 		filterFormat := "\"bindings.members:%s\""
 		flattenOpt := "bindings[].members"
 
-		scopeRrbList := gcloud.Runf(t, "container fleet scopes rbacrolebindings list --scope %s --project %s", scopeId, projectId).String()
-		assert.Equal(strings.Contains(scopeRrbList, appOperatorEmail), true, "app operator email should be in the list of Scope RBAC Role Bindings")
-		assert.Equal(strings.Contains(scopeRrbList, customAppOperatorEmail), true, "custom app operator email should be in the list of Scope RBAC Role Bindings")
+		utils.Poll(t, func() (bool, error) {
+			scopeRrbList := gcloud.Runf(t, "container fleet scopes rbacrolebindings list --scope %s --project %s", scopeId, projectId).String()
+			if !strings.Contains(scopeRrbList, appOperatorEmail) || !strings.Contains(scopeRrbList, customAppOperatorEmail) {
+				return true, fmt.Errorf("waiting for Scope RBAC Role Bindings")
+			}
 
-		scopeIam := gcloud.Runf(t, "container fleet scopes get-iam-policy %s --project %s --filter %s", scopeId, projectId, fmt.Sprintf(filterFormat, appOperatorPrincipal)).String()
-		assert.Equal(strings.Contains(scopeIam, scopeLevelRole), true, "app operator Scope role should be in the Scope IAM policy")
+			scopeIam := gcloud.Runf(t, "container fleet scopes get-iam-policy %s --project %s --filter %s", scopeId, projectId, fmt.Sprintf(filterFormat, appOperatorPrincipal)).String()
+			if !strings.Contains(scopeIam, scopeLevelRole) {
+				return true, fmt.Errorf("waiting for app operator Scope role in Scope IAM policy")
+			}
 
-		customScopeIam := gcloud.Runf(t, "container fleet scopes get-iam-policy %s --project %s --filter %s", scopeId, projectId, fmt.Sprintf(filterFormat, customAppOperatorPrincipal)).String()
-		assert.Equal(strings.Contains(customScopeIam, customScopeLevelRole), true, "custom app operator Scope role should be in the Scope IAM policy")
+			customScopeIam := gcloud.Runf(t, "container fleet scopes get-iam-policy %s --project %s --filter %s", scopeId, projectId, fmt.Sprintf(filterFormat, customAppOperatorPrincipal)).String()
+			if !strings.Contains(customScopeIam, customScopeLevelRole) {
+				return true, fmt.Errorf("waiting for custom app operator Scope role in Scope IAM policy")
+			}
 
-		projectIam := gcloud.Runf(t, "projects get-iam-policy %s --filter %s --flatten %s", projectId, fmt.Sprintf(filterFormat, appOperatorPrincipal), flattenOpt).String()
-		assert.Equal(strings.Contains(projectIam, projectLevelRole), true, "app operator Scope role should be in the project IAM policy")
-		assert.Equal(strings.Contains(projectIam, logViewRole), true, "app operator log view role should be in the project IAM policy")
-		assert.Equal(strings.Contains(projectIam, logViewContainerBucket), true, "app operator log view container bucket should be in the project IAM policy")
-		assert.Equal(strings.Contains(projectIam, logViewPodBucket), true, "app operator log view pod bucket should be in the project IAM policy")
+			projectIam := gcloud.Runf(t, "projects get-iam-policy %s --filter %s --flatten %s", projectId, fmt.Sprintf(filterFormat, appOperatorPrincipal), flattenOpt).String()
+			if !strings.Contains(projectIam, projectLevelRole) || !strings.Contains(projectIam, logViewRole) ||
+				!strings.Contains(projectIam, logViewContainerBucket) || !strings.Contains(projectIam, logViewPodBucket) {
+				return true, fmt.Errorf("waiting for app operator project IAM policy")
+			}
 
-		customProjectIam := gcloud.Runf(t, "projects get-iam-policy %s --filter %s --flatten %s", projectId, fmt.Sprintf(filterFormat, customAppOperatorPrincipal), flattenOpt).String()
-		assert.Equal(strings.Contains(customProjectIam, customProjectLevelRole), true, "custom app operator Scope role should be in the project IAM policy")
-		assert.Equal(strings.Contains(customProjectIam, logViewRole), true, "custom app operator log view role should be in the project IAM policy")
-		assert.Equal(strings.Contains(customProjectIam, logViewContainerBucket), true, "custom app operator log view container bucket should be in the project IAM policy")
-		assert.Equal(strings.Contains(customProjectIam, logViewPodBucket), true, "custom app operator log view pod bucket should be in the project IAM policy")
+			customProjectIam := gcloud.Runf(t, "projects get-iam-policy %s --filter %s --flatten %s", projectId, fmt.Sprintf(filterFormat, customAppOperatorPrincipal), flattenOpt).String()
+			if !strings.Contains(customProjectIam, customProjectLevelRole) || !strings.Contains(customProjectIam, logViewRole) ||
+				!strings.Contains(customProjectIam, logViewContainerBucket) || !strings.Contains(customProjectIam, logViewPodBucket) {
+				return true, fmt.Errorf("waiting for custom app operator project IAM policy")
+			}
+
+			return false, nil
+		}, 20, 5*time.Second)
 	})
 
 	appOppT.Test()
 }
-

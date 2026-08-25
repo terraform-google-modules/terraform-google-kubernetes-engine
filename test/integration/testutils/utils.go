@@ -32,23 +32,51 @@ import (
 
 var (
 	RetryableTransientErrors = map[string]string{
-		// Error 409: unable to queue the operation
-		".*Error 409.*unable to queue the operation": "Unable to queue operation.",
+		// Error 409: Operation / Policy conflicts
+		".*Error 409.*unable to queue the operation":            "Unable to queue operation.",
+		".*Error 409.*There were concurrent policy changes.*":   "Concurrent policy changes.",
+		".*Error 409.*Another operation is already in progress": "Another operation in progress.",
+		".*Error 409.*is in use":                                "Resource in use.",
 
-		// Error code 409 for concurrent policy changes.
-		".*Error 409.*There were concurrent policy changes.*": "Concurrent policy changes.",
+		// Rate limiting & Quotas
+		".*rateLimitExceeded.*":        "Rate limit exceeded.",
+		".*quotaExceeded.*":            "Quota exceeded.",
+		".*RESOURCE_EXHAUSTED.*":       "Resource exhausted.",
+		".*User Rate Limit Exceeded.*": "User rate limit exceeded.",
 
-		// API Rate limit exceeded errors can be retried.
-		".*rateLimitExceeded.*": "Rate limit exceeded.",
-
-		// Internal errors can be retried
+		// 5xx and Internal Server Errors
+		".*Error 500.*":    "Internal server error.",
+		".*Error 502.*":    "Bad gateway.",
+		".*Error 503.*":    "Service unavailable.",
+		".*backendError.*": "Backend error.",
 		".*Error code 13, message: an internal error has occurred": "Internal error.",
 
-		// Incompatible operation in progress
-		".*Error 400: Cluster is running incompatible operation.*": "Incompatible operation.",
+		// GKE Cluster update/lock conflicts
+		".*Error 400: Cluster is running incompatible operation.*":      "Incompatible operation.",
+		".*Error 400.*Master is being updated.*":                        "Master is being updated.",
+		".*Error 400.*Cluster is being updated.*":                       "Cluster is being updated.",
+		".*Error 400.*Cluster is not ready for operation.*":             "Cluster not ready.",
+		".*resource is currently locked as part of another operation.*": "Resource locked.",
+
+		// Transient IAM / SA replication
+		".*Permission.*denied on resource.*":   "IAM permission replication delay.",
+		".*Caller is missing IAM permission.*": "IAM permission replication delay.",
+		".*serviceAccount.*does not exist.*":   "Service account replication delay.",
+
+		// Transport / Network drops
+		".*connection reset by peer.*":       "Connection reset by peer.",
+		".*TLS handshake timeout.*":          "TLS handshake timeout.",
+		".*transport: Error while dialing.*": "Transport dialing error.",
+		".*i/o timeout.*":                    "I/O timeout.",
 	}
 
-	ClusterAlwaysExemptPaths = []string{"nodePools"} // node pools are separately checked by name
+	ClusterAlwaysExemptPaths = []string{
+		"nodePools", // node pools are separately checked by name
+		"monitoringConfig.componentConfig.enableComponents",
+		"labelFingerprint",
+		"maintenancePolicy.resourceVersion",
+		"etag",
+	}
 )
 
 func GetTestProjectFromSetup(t *testing.T, idx int) string {
@@ -141,6 +169,3 @@ func GKEClusterSanitizer(serviceAccount, projectId, clusterName string, clusterJ
 		return s
 	}
 }
-
-
-

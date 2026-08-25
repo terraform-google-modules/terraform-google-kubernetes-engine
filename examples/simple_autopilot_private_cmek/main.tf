@@ -30,6 +30,12 @@ data "google_project" "main" {
   project_id = var.project_id
 }
 
+resource "random_string" "suffix" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
 module "kms" {
   source  = "terraform-google-modules/kms/google"
   version = "~> 4.0"
@@ -37,7 +43,7 @@ module "kms" {
   project_id           = var.project_id
   key_protection_level = "HSM"
   location             = "us-central1"
-  keyring              = "keyring"
+  keyring              = "keyring-${random_string.suffix.result}"
   keys                 = ["key"]
   prevent_destroy      = false
 }
