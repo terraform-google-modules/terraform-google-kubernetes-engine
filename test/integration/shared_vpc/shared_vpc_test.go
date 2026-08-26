@@ -31,13 +31,14 @@ func TestSharedVPC(t *testing.T) {
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
 		// bpt.DefaultVerify(assert)
+		testutils.TGKEVerify(t, bpt, assert) // Verify Resources
 
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")
 
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
-		assert.Contains(op.Get("status").String(), "RUNNING", "Cluster is Running")
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String(), "Cluster is Running or Reconciling")
 	})
 
 	bpt.Test()

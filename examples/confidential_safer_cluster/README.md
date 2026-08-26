@@ -18,7 +18,6 @@ with confidential nodes enabled and database encrypted with KMS key.
 | ca\_certificate | The cluster ca certificate (base64 encoded). |
 | client\_token | The bearer token for auth. |
 | cluster\_name | Cluster name. |
-| explicit\_k8s\_version | Explicit version used for cluster creation. |
 | keyring | The name of the keyring. |
 | kms\_key\_name | KMS Key Name. |
 | kubernetes\_endpoint | The cluster endpoint. |

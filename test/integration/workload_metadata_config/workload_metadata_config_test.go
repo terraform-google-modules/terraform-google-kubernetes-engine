@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package node_pool
+package workload_metadata_config
 
 import (
 	"fmt"
@@ -21,8 +21,10 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
+	"github.com/tidwall/gjson"
 )
 
 func TestWorkloadMetadataConfig(t *testing.T) {
@@ -47,8 +49,7 @@ func TestWorkloadMetadataConfig(t *testing.T) {
 
 		// Setup golden image with sanitizers
 		g := golden.NewOrUpdate(t, cluster.String(),
-			golden.WithSanitizer(golden.StringSanitizer(nodeServiceAccount, "NODE_SERVICE_ACCOUNT")),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
+			golden.WithSanitizer(testutils.GKEClusterSanitizer(nodeServiceAccount, projectId, clusterName, cluster)),
 			golden.WithSanitizer(golden.StringSanitizer(randomString, "RANDOM_STRING")),
 			golden.WithSanitizer(golden.StringSanitizer(kubernetesEndpoint, "KUBERNETES_ENDPOINT")),
 		)
@@ -63,9 +64,21 @@ func TestWorkloadMetadataConfig(t *testing.T) {
 		serviceAccount := bpt.GetStringOutput("service_account")
 
 		for _, registryProjectId := range registryProjectIds.Array() {
-			imaPolicy := gcloud.Runf(t, "projects get-iam-policy %s", registryProjectId.String())
-			assert.Contains(imaPolicy.Get("bindings.#(role==\"roles/storage.objectViewer\").members").Value().([]interface{}), fmt.Sprintf("serviceAccount:%s", serviceAccount))
-			assert.Contains(imaPolicy.Get("bindings.#(role==\"roles/artifactregistry.reader\").members").Value().([]interface{}), fmt.Sprintf("serviceAccount:%s", serviceAccount))
+			regProj := registryProjectId.String()
+			utils.Poll(t, func() (bool, error) {
+				iamPolicyOutput, err := gcloud.RunCmdE(t, fmt.Sprintf("projects get-iam-policy %s", regProj))
+				if err != nil {
+					return true, err
+				}
+				iamPolicy := gjson.Parse(iamPolicyOutput)
+				saMember := fmt.Sprintf("serviceAccount:%s", serviceAccount)
+				hasStorageViewer := iamPolicy.Get("bindings.#(role==\"roles/storage.objectViewer\").members.#(==\"" + saMember + "\")").Exists()
+				hasArtifactReader := iamPolicy.Get("bindings.#(role==\"roles/artifactregistry.reader\").members.#(==\"" + saMember + "\")").Exists()
+				if !hasStorageViewer || !hasArtifactReader {
+					return true, fmt.Errorf("waiting for IAM bindings on project %s", regProj)
+				}
+				return false, nil
+			}, 20, 5*time.Second)
 		}
 	})
 	bpt.Test()
