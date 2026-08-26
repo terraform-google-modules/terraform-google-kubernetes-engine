@@ -75,7 +75,3 @@ output "project_id" {
   value       = var.project_id
 }
 
-output "explicit_k8s_version" {
-  description = "Explicit version used for cluster creation"
-  value       = random_shuffle.version.result[0]
-}
