@@ -32,6 +32,9 @@ import (
 
 var (
 	RetryableTransientErrors = map[string]string{
+		// HTTP/2 transport connection drops
+		".*http2: client connection lost.*": "HTTP/2 connection lost.",
+
 		// Error 409: unable to queue the operation
 		".*Error 409.*unable to queue the operation": "Unable to queue operation.",
 
