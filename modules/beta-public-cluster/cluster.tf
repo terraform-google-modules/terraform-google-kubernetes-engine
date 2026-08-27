@@ -269,6 +269,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "managed_machine_learning_diagnostics_config" {
+    for_each = var.enable_managed_machine_learning_diagnostics != null ? [1] : []
+    content {
+      enabled = var.enable_managed_machine_learning_diagnostics
+    }
+  }
+
   dynamic "pod_autoscaling" {
     for_each = length(var.hpa_profile) > 0 ? [1] : []
     content {

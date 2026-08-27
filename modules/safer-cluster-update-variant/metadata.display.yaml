@@ -97,6 +97,9 @@ spec:
         enable_l4_ilb_subsetting:
           name: enable_l4_ilb_subsetting
           title: Enable L4 Ilb Subsetting
+        enable_managed_machine_learning_diagnostics:
+          name: enable_managed_machine_learning_diagnostics
+          title: Enable Managed Machine Learning Diagnostics
         enable_mesh_certificates:
           name: enable_mesh_certificates
           title: Enable Mesh Certificates
