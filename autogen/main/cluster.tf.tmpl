@@ -483,6 +483,14 @@ resource "google_container_cluster" "primary" {
       }
     }
 
+    dynamic "pod_snapshot_config" {
+      for_each = local.pod_snapshot_config
+
+      content {
+        enabled = pod_snapshot_config.value.enabled
+      }
+    }
+
     dynamic "ray_operator_config" {
       for_each = local.ray_operator_config
 

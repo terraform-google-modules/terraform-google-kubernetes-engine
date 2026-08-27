@@ -567,6 +567,12 @@ variable "stateful_ha" {
   default     = false
 }
 
+variable "pod_snapshot_config" {
+  type        = bool
+  description = "Whether the Pod Snapshot addon is enabled for this cluster."
+  default     = false
+}
+
 
 variable "ray_operator_config" {
   type = object({

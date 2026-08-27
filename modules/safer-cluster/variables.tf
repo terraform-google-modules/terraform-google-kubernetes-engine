@@ -496,6 +496,12 @@ variable "gke_backup_agent_config" {
   default     = false
 }
 
+variable "pod_snapshot_config" {
+  type        = bool
+  description = "(Beta) Whether the Pod Snapshot addon is enabled for this cluster."
+  default     = false
+}
+
 variable "enable_secret_sync" {
   description = "Enable the Secret Sync add-on for this cluster."
   type        = bool

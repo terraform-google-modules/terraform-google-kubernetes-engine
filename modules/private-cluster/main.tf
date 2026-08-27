@@ -95,6 +95,7 @@ locals {
   parallelstore_csi_driver_config = var.parallelstore_csi_driver != null ? [{ enabled = var.parallelstore_csi_driver }] : []
   gke_backup_agent_config         = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
   stateful_ha_config              = var.stateful_ha ? [{ enabled = true }] : []
+  pod_snapshot_config             = var.pod_snapshot_config ? [{ enabled = true }] : [{ enabled = false }]
   ray_operator_config             = length(var.ray_operator_config) > 0 && lookup(var.ray_operator_config, "enabled", false) ? [var.ray_operator_config] : []
 
   cluster_authenticator_security_group = var.authenticator_security_group == null ? [] : [{

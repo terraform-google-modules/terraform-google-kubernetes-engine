@@ -473,6 +473,10 @@ spec:
         description: Whether the Stateful HA Addon is enabled for this cluster.
         varType: bool
         defaultValue: false
+      - name: pod_snapshot_config
+        description: Whether the Pod Snapshot addon is enabled for this cluster.
+        varType: bool
+        defaultValue: false
       - name: ray_operator_config
         description: The Ray Operator Addon configuration for this cluster.
         varType: |-

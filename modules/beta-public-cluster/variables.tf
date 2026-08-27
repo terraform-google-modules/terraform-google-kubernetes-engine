@@ -873,6 +873,12 @@ variable "stateful_ha" {
   default     = false
 }
 
+variable "pod_snapshot_config" {
+  type        = bool
+  description = "Whether the Pod Snapshot addon is enabled for this cluster."
+  default     = false
+}
+
 variable "parallelstore_csi_driver" {
   type        = bool
   description = "Whether the Parallelstore CSI driver Addon is enabled for this cluster."
