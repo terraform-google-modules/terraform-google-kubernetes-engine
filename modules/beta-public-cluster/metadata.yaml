@@ -710,7 +710,7 @@ spec:
         varType: list(string)
         defaultValue: []
       - name: logging_enabled_components
-        description: "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, KCP_CONNECTION, KCP_SSHD, KCP_HPA, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
+        description: "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, KCP_CONNECTION, KCP_SSHD, KCP_HPA, KCP_VPA, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
         varType: list(string)
         defaultValue: []
       - name: monitoring_enable_managed_prometheus
