@@ -25,6 +25,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
+	"github.com/tidwall/gjson"
 )
 
 func TestNodePool(t *testing.T) {
@@ -49,8 +50,7 @@ func TestNodePool(t *testing.T) {
 
 		// Setup golden image with sanitizers
 		g := golden.NewOrUpdate(t, cluster.String(),
-			golden.WithSanitizer(golden.StringSanitizer(nodeServiceAccount, "NODE_SERVICE_ACCOUNT")),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
+			golden.WithSanitizer(testutils.GKEClusterSanitizer(nodeServiceAccount, projectId, clusterName, cluster)),
 			golden.WithSanitizer(golden.StringSanitizer(randomString, "RANDOM_STRING")),
 			golden.WithSanitizer(golden.StringSanitizer(kubernetesEndpoint, "KUBERNETES_ENDPOINT")),
 		)
@@ -68,9 +68,21 @@ func TestNodePool(t *testing.T) {
 		gcloud.Runf(t, "container clusters get-credentials %s --region %s --project %s", clusterName, location, projectId)
 		k8sOpts := k8s.NewKubectlOptions(fmt.Sprintf("gke_%s_%s_%s", projectId, location, clusterName), "", "")
 
-		nodesOutput, err := k8s.RunKubectlAndGetOutputE(t, k8sOpts, "get", "nodes", "-o", "json")
-		assert.NoError(err)
-		nodes := utils.ParseKubectlJSONResult(t, nodesOutput)
+		var nodes gjson.Result
+		utils.Poll(t, func() (bool, error) {
+			nodesOutput, err := k8s.RunKubectlAndGetOutputE(t, k8sOpts, "get", "nodes", "-o", "json")
+			if err != nil {
+				return true, err
+			}
+			nodes = utils.ParseKubectlJSONResult(t, nodesOutput)
+			pool01Taints := nodes.Get("items.#(metadata.labels.node_pool==\"pool-01\").spec.taints")
+			pool02Taints := nodes.Get("items.#(metadata.labels.node_pool==\"pool-02\").spec.taints")
+			pool03Taints := nodes.Get("items.#(metadata.labels.node_pool==\"pool-03\").spec.taints")
+			if !pool01Taints.Exists() || !pool02Taints.Exists() || !pool03Taints.Exists() {
+				return true, fmt.Errorf("waiting for node pools to register nodes with taints")
+			}
+			return false, nil
+		}, 30, 10*time.Second)
 
 		assert.JSONEq(`[
 				{

@@ -458,6 +458,9 @@ spec:
         description: Enable the Secret Sync add-on for this cluster.
         varType: bool
         defaultValue: false
+      - name: enable_managed_machine_learning_diagnostics
+        description: (beta) Enable Managed Machine Learning Diagnostics on the cluster.
+        varType: bool
       - name: security_posture_mode
         description: Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`.
         varType: string
