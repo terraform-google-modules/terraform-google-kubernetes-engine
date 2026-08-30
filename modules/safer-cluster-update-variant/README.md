@@ -224,9 +224,11 @@ For simplicity, we suggest using `roles/container.admin` and
 | enable\_gcfs | Enable image streaming on cluster level. | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
 | enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
+| enable\_managed\_machine\_learning\_diagnostics | (beta) Enable Managed Machine Learning Diagnostics on the cluster. | `bool` | `null` | no |
 | enable\_mesh\_certificates | Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity. | `bool` | `false` | no |
 | enable\_pod\_security\_policy | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | `bool` | `false` | no |
 | enable\_private\_endpoint | When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable\_private\_nodes is true | `bool` | `true` | no |
+| enable\_secret\_sync | Enable the Secret Sync add-on for this cluster. | `bool` | `false` | no |
 | enable\_shielded\_nodes | Enable Shielded Nodes features on all nodes in this cluster. | `bool` | `true` | no |
 | enable\_vertical\_pod\_autoscaling | Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it | `bool` | `false` | no |
 | filestore\_csi\_driver | The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes | `bool` | `false` | no |
@@ -280,6 +282,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | subnetwork | The subnetwork to host the cluster in | `string` | n/a | yes |
 | timeouts | Timeout for cluster operations. | `map(string)` | `{}` | no |
 | upstream\_nameservers | If specified, the values replace the nameservers taken by default from the node’s /etc/resolv.conf | `list(string)` | `[]` | no |
+| user\_managed\_keys\_config | The User Managed Keys configuration for the cluster. | <pre>object({<br>    aggregation_ca                    = optional(string)<br>    cluster_ca                        = optional(string)<br>    control_plane_disk_encryption_key = optional(string)<br>    etcd_api_ca                       = optional(string)<br>    etcd_peer_ca                      = optional(string)<br>    gkeops_etcd_backup_encryption_key = optional(string)<br>    service_account_signing_keys      = optional(list(string))<br>    service_account_verification_keys = optional(list(string))<br>  })</pre> | `null` | no |
 | windows\_node\_pools | List of maps containing node pools | `list(map(string))` | `[]` | no |
 | workload\_config\_audit\_mode | (beta) Workload config audit mode. | `string` | `"DISABLED"` | no |
 | workload\_vulnerability\_mode | (beta) Vulnerability mode. | `string` | `""` | no |

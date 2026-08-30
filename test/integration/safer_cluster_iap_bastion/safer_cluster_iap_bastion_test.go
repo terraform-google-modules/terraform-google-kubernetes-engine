@@ -21,8 +21,10 @@ import (
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
+	"github.com/tidwall/gjson"
 )
 
 func TestSaferClusterIapBastion(t *testing.T) {
@@ -37,16 +39,23 @@ func TestSaferClusterIapBastion(t *testing.T) {
 
 		testCommand, _ := strings.CutPrefix(bpt.GetStringOutput("test_command"), "gcloud ")
 
-		// pre run ssh command so that ssh-keygen can run
-		gcloud.RunCmd(t, testCommand,
-			gcloud.WithCommonArgs([]string{}),
-		)
-
 		clusterVersion := fmt.Sprintf("v%s", bpt.GetStringOutput("cluster_version"))
 
-		op := gcloud.Run(t, testCommand,
-			gcloud.WithCommonArgs([]string{}),
-		)
+		var op gjson.Result
+		utils.Poll(t, func() (bool, error) {
+			cmdOp, err := gcloud.RunCmdE(t, testCommand,
+				gcloud.WithCommonArgs([]string{}),
+			)
+			if err != nil {
+				t.Logf("Waiting for SSH connectivity via IAP: %v", err)
+				return true, err
+			}
+			op = gjson.Parse(cmdOp)
+			if !op.Get("gitVersion").Exists() {
+				return true, fmt.Errorf("gitVersion not yet present in output")
+			}
+			return false, nil
+		}, 20, 10*time.Second)
 
 		assert.Equal(clusterVersion, op.Get("gitVersion").String(), "SSH into VM and verify connectivity to GKE")
 	})

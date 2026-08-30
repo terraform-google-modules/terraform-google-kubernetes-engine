@@ -127,6 +127,9 @@ spec:
         dns_cache:
           name: dns_cache
           title: Dns Cache
+        dns_enable_k8s_tokens_via_dns:
+          name: dns_enable_k8s_tokens_via_dns
+          title: Dns Enable K8s Tokens Via Dns
         enable_binary_authorization:
           name: enable_binary_authorization
           title: Enable Binary Authorization
@@ -166,6 +169,9 @@ spec:
         enable_legacy_lustre_port:
           name: enable_legacy_lustre_port
           title: Enable Legacy Lustre Port
+        enable_managed_machine_learning_diagnostics:
+          name: enable_managed_machine_learning_diagnostics
+          title: Enable Managed Machine Learning Diagnostics
         enable_mesh_certificates:
           name: enable_mesh_certificates
           title: Enable Mesh Certificates
@@ -184,6 +190,9 @@ spec:
         enable_secret_manager_addon:
           name: enable_secret_manager_addon
           title: Enable Secret Manager Addon
+        enable_secret_sync:
+          name: enable_secret_sync
+          title: Enable Secret Sync
         enable_shielded_nodes:
           name: enable_shielded_nodes
           title: Enable Shielded Nodes
@@ -475,6 +484,9 @@ spec:
         upstream_nameservers:
           name: upstream_nameservers
           title: Upstream Nameservers
+        user_managed_keys_config:
+          name: user_managed_keys_config
+          title: User Managed Keys Config
         windows_node_pools:
           name: windows_node_pools
           title: Windows Node Pools

@@ -15,6 +15,7 @@
 package private_zonal_with_networking
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -51,22 +52,22 @@ func TestPrivateZonalWithNetworking(t *testing.T) {
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 
 		g := golden.NewOrUpdate(t, op.String(),
-			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
-			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
+			golden.WithSanitizer(testutils.GKEClusterSanitizer(serviceAccount, projectId, clusterName, op)),
 		)
 		assert.Equal(peeringName, op.Get("privateClusterConfig.peeringName").String(), "has the correct PeeringName")
 		validateJSONPaths := []string{
-			"status",
 			"location",
 			"locations",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
-			"addonsConfig",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
 
 		for _, np := range op.Get("nodePools").Array() {
 			npName := np.Get("name").String()
@@ -84,11 +85,8 @@ func TestPrivateZonalWithNetworking(t *testing.T) {
 		}
 
 		sOp := gcloud.Runf(t, "compute networks subnets describe %s --project=%s --region=%s", subnetName, projectId, region)
-		assert.Contains(sOp.Get("secondaryIpRanges").Array()[0].Get("rangeName").String(), ipRangePodsName, "Contains Pod Address Name")
-		assert.Contains(sOp.Get("secondaryIpRanges").Array()[0].Get("ipCidrRange").String(), "192.168.0.0/18", "Contains Pod Address")
-		assert.Contains(sOp.Get("secondaryIpRanges").Array()[1].Get("rangeName").String(), ipRangeServicesName, "Contains SVC Address Name")
-		assert.Contains(sOp.Get("secondaryIpRanges").Array()[1].Get("ipCidrRange").String(), "192.168.64.0/18", "Contains SVC Address")
-
+		assert.Equal("192.168.0.0/18", sOp.Get(fmt.Sprintf("secondaryIpRanges.#(rangeName==\"%s\").ipCidrRange", ipRangePodsName)).String(), "Contains Pod Address")
+		assert.Equal("192.168.64.0/18", sOp.Get(fmt.Sprintf("secondaryIpRanges.#(rangeName==\"%s\").ipCidrRange", ipRangeServicesName)).String(), "Contains SVC Address")
 	})
 
 	bpt.Test()

@@ -11,14 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package node_pool
+package stub_domains
 
 import (
 	"fmt"
 	"testing"
 	"time"
 
-	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/cai"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
@@ -45,19 +44,12 @@ func TestStubDomains(t *testing.T) {
 		kubernetesEndpoint := bpt.GetStringOutput("kubernetes_endpoint")
 		nodeServiceAccount := bpt.GetStringOutput("compute_engine_service_account")
 
-		// Retrieve Project CAI
-		projectCAI := cai.GetProjectResources(t, projectId, cai.WithAssetTypes([]string{"container.googleapis.com/Cluster"}))
-
-		// Retrieve Cluster from CAI
-		// Equivalent gcloud describe command (classic)
-		// cluster := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
-		clusterResourceName := fmt.Sprintf("//container.googleapis.com/projects/%s/locations/%s/clusters/%s", projectId, location, clusterName)
-		cluster := projectCAI.Get("#(name=\"" + clusterResourceName + "\").resource.data")
+		// Retrieve Cluster
+		cluster := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 
 		// Setup golden image with sanitizers
 		g := golden.NewOrUpdate(t, cluster.String(),
-			golden.WithSanitizer(golden.StringSanitizer(nodeServiceAccount, "NODE_SERVICE_ACCOUNT")),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
+			golden.WithSanitizer(testutils.GKEClusterSanitizer(nodeServiceAccount, projectId, clusterName, cluster)),
 			golden.WithSanitizer(golden.StringSanitizer(randomString, "RANDOM_STRING")),
 			golden.WithSanitizer(golden.StringSanitizer(kubernetesEndpoint, "KUBERNETES_ENDPOINT")),
 		)
@@ -76,7 +68,7 @@ func TestStubDomains(t *testing.T) {
 		assert.NoError(err)
 		kubeDnsCM := utils.ParseKubectlJSONResult(t, listKubeDnsConfigMap)
 		assert.Contains("kube-dns", kubeDnsCM.Get("metadata.name").String(), "kube-dns configmap is present")
-		assert.Equal("Terraform", kubeDnsCM.Get("metadata.managedFields.0.manager").String(), "kube-dns configmap is managed by Terraform")
+		assert.True(kubeDnsCM.Get("metadata.managedFields.#(manager==\"Terraform\")").Exists(), "kube-dns configmap is managed by Terraform")
 		//assert.Equal("[\"8.8.8.8\",\"8.8.4.4\"]\n", kubeDnsCM.Get("data.stubDomains").String(), "kube-dns configmap reflects the upstream_nameservers configuration")
 
 		assert.JSONEq(`{
@@ -89,7 +81,7 @@ func TestStubDomains(t *testing.T) {
 				"10.254.154.12"
 			]
 		}`,
-		kubeDnsCM.Get("data.stubDomains").String(), "kube-dns configmap the expected stubdomains")
+			kubeDnsCM.Get("data.stubDomains").String(), "kube-dns configmap the expected stubdomains")
 
 		// ip-masq-agent
 		listIpMasqAgentConfigMap, err := k8s.RunKubectlAndGetOutputE(t, k8sOpts, "get", "configmap", "ip-masq-agent", "-n", "kube-system", "-o", "json", "--show-managed-fields")

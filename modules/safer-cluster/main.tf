@@ -152,8 +152,10 @@ module "gke" {
   dns_cache = var.dns_cache
 
 
-  config_connector        = var.config_connector
-  gke_backup_agent_config = var.gke_backup_agent_config
+  config_connector                            = var.config_connector
+  gke_backup_agent_config                     = var.gke_backup_agent_config
+  enable_secret_sync                          = var.enable_secret_sync
+  enable_managed_machine_learning_diagnostics = var.enable_managed_machine_learning_diagnostics
 
   cluster_dns_provider = var.cluster_dns_provider
 
@@ -216,4 +218,6 @@ module "gke" {
   // Enabling security posture
   security_posture_mode               = var.security_posture_mode
   security_posture_vulnerability_mode = var.security_posture_vulnerability_mode
+
+  user_managed_keys_config = var.user_managed_keys_config
 }

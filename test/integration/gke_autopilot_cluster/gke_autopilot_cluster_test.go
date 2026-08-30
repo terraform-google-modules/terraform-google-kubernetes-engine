@@ -46,10 +46,15 @@ func TestGKEAutopilotCluster(t *testing.T) {
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
-			"addonsConfig.kubernetesDashboard.disabled",
-			"addonsConfig.networkPolicyConfig.disabled",
 			"confidentialNodes.enabled",
 			"masterAuthorizedNetworksConfig.enabled",
+			"addonsConfig.dnsCacheConfig.enabled",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
+			"addonsConfig.gcsFuseCsiDriverConfig.enabled",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
+			"addonsConfig.parallelstoreCsiDriverConfig.enabled",
+			"addonsConfig.statefulHaConfig.enabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)

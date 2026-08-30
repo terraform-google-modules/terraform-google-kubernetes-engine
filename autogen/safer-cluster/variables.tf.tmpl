@@ -496,6 +496,18 @@ variable "gke_backup_agent_config" {
   default     = false
 }
 
+variable "enable_secret_sync" {
+  description = "Enable the Secret Sync add-on for this cluster."
+  type        = bool
+  default     = false
+}
+
+variable "enable_managed_machine_learning_diagnostics" {
+  type        = bool
+  description = "(beta) Enable Managed Machine Learning Diagnostics on the cluster."
+  default     = null
+}
+
 variable "security_posture_mode" {
   description = "Security posture mode.  Accepted values are `DISABLED` and `BASIC`. Defaults to `DISABLED`."
   type        = string
@@ -565,3 +577,19 @@ variable "enable_confidential_nodes" {
   description = "An optional flag to enable confidential node config."
   default     = false
 }
+
+variable "user_managed_keys_config" {
+  type = object({
+    aggregation_ca                    = optional(string)
+    cluster_ca                        = optional(string)
+    control_plane_disk_encryption_key = optional(string)
+    etcd_api_ca                       = optional(string)
+    etcd_peer_ca                      = optional(string)
+    gkeops_etcd_backup_encryption_key = optional(string)
+    service_account_signing_keys      = optional(list(string))
+    service_account_verification_keys = optional(list(string))
+  })
+  description = "The User Managed Keys configuration for the cluster."
+  default     = null
+}
+

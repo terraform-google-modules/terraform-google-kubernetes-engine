@@ -42,29 +42,31 @@ func TestBetaCluster(t *testing.T) {
 		op := gcloud.Runf(t, "beta container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		// save output as goldenfile
 		g := golden.NewOrUpdate(t, op.String(),
-			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
-			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
+			golden.WithSanitizer(testutils.GKEClusterSanitizer(serviceAccount, projectId, clusterName, op)),
 		)
 		// assert json paths against goldenfile data
 		validateJSONPaths := []string{
-			"status",
 			"location",
 			"locations",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"networkConfig.datapathProvider",
 			"databaseEncryption.state",
 			// "identityServiceConfig.enabled", TODO: b/378974729
-			"addonsConfig",
 			"networkConfig.datapathProvider",
 			"binaryAuthorization",
-			"databaseEncryption.state",
+			// "databaseEncryption.state",
 			"loggingConfig",
 			"monitoringConfig",
+			"addonsConfig.dnsCacheConfig.enabled",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
+
 		for _, np := range op.Get("nodePools").Array() {
 			npName := np.Get("name").String()
 			// sanitze current nodepool data

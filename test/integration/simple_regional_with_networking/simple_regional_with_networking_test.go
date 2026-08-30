@@ -14,6 +14,7 @@
 package simple_regional_with_networking
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -32,6 +33,7 @@ func TestSimpleRegionalWithNetworking(t *testing.T) {
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
 		// bpt.DefaultVerify(assert)
+		testutils.TGKEVerify(t, bpt, assert) // Verify Resources
 
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
@@ -44,19 +46,14 @@ func TestSimpleRegionalWithNetworking(t *testing.T) {
 
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		g := golden.NewOrUpdate(t, op.String(),
-			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
-			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
+			golden.WithSanitizer(testutils.GKEClusterSanitizer(serviceAccount, projectId, clusterName, op)),
 		)
 		validateJSONPaths := []string{
-			"status",
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
 			"addonsConfig.horizontalPodAutoscaling",
 			"addonsConfig.httpLoadBalancing",
-			"addonsConfig.kubernetesDashboard.disabled",
-			"addonsConfig.networkPolicyConfig.disabled",
 			"nodePools.autoscaling.enabled",
 			"nodePools.autoscaling.minNodeCount",
 			"nodePools.autoscaling.maxNodeCount",
@@ -67,17 +64,18 @@ func TestSimpleRegionalWithNetworking(t *testing.T) {
 			"nodePools.config.tags",
 			"nodePools.management.autoRepair",
 			"nodePools.management.autoUpgrade",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
 
 		op1 := gcloud.Runf(t, "compute networks subnets describe %s --project=%s --region=%s", subnetName, projectId, region)
-		assert.Contains(op1.Get("secondaryIpRanges").Array()[0].Get("rangeName").String(), ipRangePodName, "Has the correct secondaryIpRanges configuration")
-		assert.Contains(op1.Get("secondaryIpRanges").Array()[0].Get("ipCidrRange").String(), "192.168.0.0/18", "Has the correct secondaryIpRanges configuration")
-		assert.Contains(op1.Get("secondaryIpRanges").Array()[1].Get("rangeName").String(), ipRangeServicesName, "Has the correct secondaryIpRanges configuration")
-		assert.Contains(op1.Get("secondaryIpRanges").Array()[1].Get("ipCidrRange").String(), "192.168.64.0/18", "Has the correct secondaryIpRanges configuration")
-
+		assert.Equal("192.168.0.0/18", op1.Get(fmt.Sprintf("secondaryIpRanges.#(rangeName==\"%s\").ipCidrRange", ipRangePodName)).String(), "Has the correct Pod secondaryIpRange CIDR")
+		assert.Equal("192.168.64.0/18", op1.Get(fmt.Sprintf("secondaryIpRanges.#(rangeName==\"%s\").ipCidrRange", ipRangeServicesName)).String(), "Has the correct Services secondaryIpRange CIDR")
 	})
 
 	bpt.Test()

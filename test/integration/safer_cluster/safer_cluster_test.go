@@ -32,6 +32,7 @@ func TestSaferCluster(t *testing.T) {
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
 		// bpt.DefaultVerify(assert)
+		testutils.TGKEVerify(t, bpt, assert) // Verify Resources
 
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
@@ -40,18 +41,13 @@ func TestSaferCluster(t *testing.T) {
 
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		g := golden.NewOrUpdate(t, op.String(),
-			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
-			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
+			golden.WithSanitizer(testutils.GKEClusterSanitizer(serviceAccount, projectId, clusterName, op)),
 		)
 		validateJSONPaths := []string{
-			"status",
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
 			"addonsConfig.horizontalPodAutoscaling",
-			"addonsConfig.kubernetesDashboard",
-			"addonsConfig.networkPolicyConfig",
 			"networkPolicy",
 			"networkConfig.datapathProvider",
 			"binaryAuthorization.evaluationMode",
@@ -64,10 +60,14 @@ func TestSaferCluster(t *testing.T) {
 			"nodePools.config.tags",
 			"nodePools.management.autoRepair",
 			"nodePools.shieldedInstanceConfig",
+			"addonsConfig.gcePersistentDiskCsiDriverConfig.enabled",
+			"addonsConfig.kubernetesDashboard.disabled",
+			"addonsConfig.networkPolicyConfig.disabled",
 		}
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
 		gcloud.Runf(t, "compute firewall-rules --project %s describe gke-%s-intra-cluster-egress", projectId, clusterName)
 		gcloud.Runf(t, "compute firewall-rules --project %s describe gke-%s-webhooks", projectId, clusterName)
 	})

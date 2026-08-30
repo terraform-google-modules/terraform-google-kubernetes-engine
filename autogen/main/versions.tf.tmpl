@@ -24,11 +24,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 7.17.0, < 8"
+      version = ">= 7.39.0, < 8"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 7.17.0, < 8"
+      version = ">= 7.39.0, < 8"
     }
 {% elif beta_cluster and autopilot_cluster %}
   required_providers {
@@ -50,7 +50,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 7.17.0, < 8"
+      version = ">= 7.39.0, < 8"
     }
 {% endif %}
     kubernetes = {
@@ -63,6 +63,6 @@ terraform {
     }
   }
   provider_meta "{% if beta_cluster %}google-beta{% else %}google{% endif %}" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v44.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine{% if module_registry_name %}:{{ module_registry_name }}{% endif %}/v44.3.0"
   }
 }

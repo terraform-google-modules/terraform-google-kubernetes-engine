@@ -245,7 +245,7 @@ variable "node_pools_linux_node_configs_sysctls" {
 
 variable "node_pools_cgroup_mode" {
   type        = map(string)
-  description = "Map of strings containing cgroup node config by node-pool name"
+  description = "Map of strings containing cgroup node config by node-pool name. Note: GKE is removing cgroup v1 support in 1.35."
 
   # Default is being set in variables_defaults.tf
   default = {
@@ -1045,6 +1045,12 @@ variable "dns_allow_external_traffic" {
   default     = null
 }
 
+variable "dns_enable_k8s_tokens_via_dns" {
+  description = "(Optional) Controls whether Kubernetes ServiceAccount token authentication is allowed via the DNS endpoint."
+  type        = bool
+  default     = null
+}
+
 variable "ip_endpoints_enabled" {
   description = "(Optional) Controls whether to allow direct IP access. Defaults to `true`."
   type        = bool
@@ -1071,4 +1077,19 @@ variable "network_tier_config" {
     condition     = var.network_tier_config == null ? true : contains(["NETWORK_TIER_DEFAULT", "NETWORK_TIER_STANDARD", "NETWORK_TIER_PREMIUM"], var.network_tier_config)
     error_message = "Network tier allowed values are only NETWORK_TIER_DEFAULT, NETWORK_TIER_STANDARD or NETWORK_TIER_PREMIUM"
   }
+}
+
+variable "user_managed_keys_config" {
+  type = object({
+    aggregation_ca                    = optional(string)
+    cluster_ca                        = optional(string)
+    control_plane_disk_encryption_key = optional(string)
+    etcd_api_ca                       = optional(string)
+    etcd_peer_ca                      = optional(string)
+    gkeops_etcd_backup_encryption_key = optional(string)
+    service_account_signing_keys      = optional(list(string))
+    service_account_verification_keys = optional(list(string))
+  })
+  description = "The User Managed Keys configuration for the cluster."
+  default     = null
 }

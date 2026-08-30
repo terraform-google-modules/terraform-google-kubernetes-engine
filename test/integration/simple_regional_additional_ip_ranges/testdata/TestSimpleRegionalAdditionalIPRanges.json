@@ -61,7 +61,9 @@
     "additionalIpRangesConfigs": [
       {
         "subnetwork": "projects/PROJECT_ID/regions/us-west1/subnetworks/cft-gke-test-2-RANDOM_STRING",
-        "podIpv4RangeNames": ["test2"]
+        "podIpv4RangeNames": [
+          "test2"
+        ]
       }
     ]
   },
@@ -172,6 +174,10 @@
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
+        "nodeImageConfig": {
+          "image": "NODE_IMAGE",
+          "imageProject": "gke-node-images"
+        },
         "oauthScopes": [
           "https://www.googleapis.com/auth/userinfo.email",
           "https://www.googleapis.com/auth/cloud-platform"
@@ -248,6 +254,10 @@
           "cluster_name": "CLUSTER_NAME",
           "disable-legacy-endpoints": "true",
           "node_pool": "default-node-pool"
+        },
+        "nodeImageConfig": {
+          "image": "NODE_IMAGE",
+          "imageProject": "gke-node-images"
         },
         "oauthScopes": [
           "https://www.googleapis.com/auth/cloud-platform"

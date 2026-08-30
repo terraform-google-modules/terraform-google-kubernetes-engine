@@ -262,6 +262,20 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "secret_sync_config" {
+    for_each = var.enable_secret_sync ? [true] : []
+    content {
+      enabled = true
+    }
+  }
+
+  dynamic "managed_machine_learning_diagnostics_config" {
+    for_each = var.enable_managed_machine_learning_diagnostics != null ? [1] : []
+    content {
+      enabled = var.enable_managed_machine_learning_diagnostics
+    }
+  }
+
   dynamic "pod_autoscaling" {
     for_each = length(var.hpa_profile) > 0 ? [1] : []
     content {
@@ -292,7 +306,7 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "node_pool_auto_config" {
-    for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode != null) ? [1] : []
+    for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode["all"] != "") ? [1] : []
     content {
       dynamic "network_tags" {
         for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
@@ -434,9 +448,26 @@ resource "google_container_cluster" "primary" {
     workload_vulnerability_mode = var.workload_vulnerability_mode
   }
 
-  security_posture_config {
-    mode               = var.security_posture_mode
-    vulnerability_mode = var.security_posture_vulnerability_mode
+  dynamic "security_posture_config" {
+    for_each = var.security_posture_mode != null || var.security_posture_vulnerability_mode != null ? [1] : []
+    content {
+      mode               = var.security_posture_mode
+      vulnerability_mode = var.security_posture_vulnerability_mode
+    }
+  }
+
+  dynamic "user_managed_keys_config" {
+    for_each = var.user_managed_keys_config != null ? [var.user_managed_keys_config] : []
+    content {
+      aggregation_ca                    = user_managed_keys_config.value.aggregation_ca
+      cluster_ca                        = user_managed_keys_config.value.cluster_ca
+      control_plane_disk_encryption_key = user_managed_keys_config.value.control_plane_disk_encryption_key
+      etcd_api_ca                       = user_managed_keys_config.value.etcd_api_ca
+      etcd_peer_ca                      = user_managed_keys_config.value.etcd_peer_ca
+      gkeops_etcd_backup_encryption_key = user_managed_keys_config.value.gkeops_etcd_backup_encryption_key
+      service_account_signing_keys      = user_managed_keys_config.value.service_account_signing_keys
+      service_account_verification_keys = user_managed_keys_config.value.service_account_verification_keys
+    }
   }
 
   dynamic "fleet" {
@@ -577,22 +608,24 @@ resource "google_container_cluster" "primary" {
       dynamic "kubelet_config" {
         for_each = length(setintersection(
           keys(local.head_node_pool),
-          ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls"]
+          ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds"]
         )) != 0 || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
 
         content {
-          cpu_manager_policy                     = lookup(local.head_node_pool, "cpu_manager_policy", "static")
-          cpu_cfs_quota                          = lookup(local.head_node_pool, "cpu_cfs_quota", null)
-          cpu_cfs_quota_period                   = lookup(local.head_node_pool, "cpu_cfs_quota_period", null)
-          insecure_kubelet_readonly_port_enabled = lookup(local.head_node_pool, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled) != null ? upper(tostring(lookup(local.head_node_pool, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled))) : null
-          pod_pids_limit                         = lookup(local.head_node_pool, "pod_pids_limit", null)
-          container_log_max_size                 = lookup(local.head_node_pool, "container_log_max_size", null)
-          container_log_max_files                = lookup(local.head_node_pool, "container_log_max_files", null)
-          image_gc_low_threshold_percent         = lookup(local.head_node_pool, "image_gc_low_threshold_percent", null)
-          image_gc_high_threshold_percent        = lookup(local.head_node_pool, "image_gc_high_threshold_percent", null)
-          image_minimum_gc_age                   = lookup(local.head_node_pool, "image_minimum_gc_age", null)
-          image_maximum_gc_age                   = lookup(local.head_node_pool, "image_maximum_gc_age", null)
-          allowed_unsafe_sysctls                 = lookup(local.head_node_pool, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(local.head_node_pool, "allowed_unsafe_sysctls", null)) : trimspace(s)]
+          cpu_manager_policy                          = lookup(local.head_node_pool, "cpu_manager_policy", "static")
+          cpu_cfs_quota                               = lookup(local.head_node_pool, "cpu_cfs_quota", null)
+          cpu_cfs_quota_period                        = lookup(local.head_node_pool, "cpu_cfs_quota_period", null)
+          insecure_kubelet_readonly_port_enabled      = lookup(local.head_node_pool, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled) != null ? upper(tostring(lookup(local.head_node_pool, "insecure_kubelet_readonly_port_enabled", var.insecure_kubelet_readonly_port_enabled))) : null
+          pod_pids_limit                              = lookup(local.head_node_pool, "pod_pids_limit", null)
+          container_log_max_size                      = lookup(local.head_node_pool, "container_log_max_size", null)
+          container_log_max_files                     = lookup(local.head_node_pool, "container_log_max_files", null)
+          image_gc_low_threshold_percent              = lookup(local.head_node_pool, "image_gc_low_threshold_percent", null)
+          image_gc_high_threshold_percent             = lookup(local.head_node_pool, "image_gc_high_threshold_percent", null)
+          image_minimum_gc_age                        = lookup(local.head_node_pool, "image_minimum_gc_age", null)
+          image_maximum_gc_age                        = lookup(local.head_node_pool, "image_maximum_gc_age", null)
+          allowed_unsafe_sysctls                      = lookup(local.head_node_pool, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(local.head_node_pool, "allowed_unsafe_sysctls", null)) : trimspace(s)]
+          shutdown_grace_period_seconds               = lookup(local.head_node_pool, "shutdown_grace_period_seconds", null)
+          shutdown_grace_period_critical_pods_seconds = lookup(local.head_node_pool, "shutdown_grace_period_critical_pods_seconds", null)
         }
       }
 
@@ -684,7 +717,7 @@ resource "google_container_cluster" "primary" {
       master_ipv4_cidr_block      = var.private_endpoint_subnetwork == null ? private_cluster_config.value.master_ipv4_cidr_block : null
       private_endpoint_subnetwork = private_cluster_config.value.private_endpoint_subnetwork
       dynamic "master_global_access_config" {
-        for_each = var.master_global_access_enabled ? [var.master_global_access_enabled] : []
+        for_each = var.master_global_access_enabled && var.enable_private_endpoint ? [var.master_global_access_enabled] : []
         content {
           enabled = master_global_access_config.value
         }
@@ -693,12 +726,13 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "control_plane_endpoints_config" {
-    for_each = var.dns_allow_external_traffic != null || var.ip_endpoints_enabled != null ? [1] : []
+    for_each = var.dns_allow_external_traffic != null || var.dns_enable_k8s_tokens_via_dns != null || var.ip_endpoints_enabled != null ? [1] : []
     content {
       dynamic "dns_endpoint_config" {
-        for_each = var.dns_allow_external_traffic != null ? [1] : []
+        for_each = var.dns_allow_external_traffic != null || var.dns_enable_k8s_tokens_via_dns != null ? [1] : []
         content {
-          allow_external_traffic = var.dns_allow_external_traffic
+          allow_external_traffic    = var.dns_allow_external_traffic
+          enable_k8s_tokens_via_dns = var.dns_enable_k8s_tokens_via_dns
         }
       }
       dynamic "ip_endpoints_config" {
@@ -821,7 +855,7 @@ resource "google_container_node_pool" "pools" {
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null || lookup(each.value, "pod_cidr_overprovision_disabled", null) != null ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", var.enable_private_nodes)
@@ -830,6 +864,13 @@ resource "google_container_node_pool" "pools" {
         for_each = lookup(network_config.value, "total_egress_bandwidth_tier", "") != "" ? [1] : []
         content {
           total_egress_bandwidth_tier = lookup(network_config.value, "total_egress_bandwidth_tier", null)
+        }
+      }
+
+      dynamic "pod_cidr_overprovision_config" {
+        for_each = lookup(network_config.value, "pod_cidr_overprovision_disabled", null) != null ? [1] : []
+        content {
+          disabled = lookup(network_config.value, "pod_cidr_overprovision_disabled", null)
         }
       }
     }
@@ -988,7 +1029,7 @@ resource "google_container_node_pool" "pools" {
       for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
       content {
         disk_image = secondary_boot_disks.value
-        mode       = "CONTAINER_IMAGE_CACHE"
+        mode       = lookup(each.value, "secondary_boot_disk_mode", "CONTAINER_IMAGE_CACHE")
       }
     }
 
@@ -1049,22 +1090,24 @@ resource "google_container_node_pool" "pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds"]
       )) != 0 ? [1] : []
 
       content {
-        cpu_manager_policy                     = lookup(each.value, "cpu_manager_policy", "static")
-        cpu_cfs_quota                          = lookup(each.value, "cpu_cfs_quota", null)
-        cpu_cfs_quota_period                   = lookup(each.value, "cpu_cfs_quota_period", null)
-        insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null) != null ? upper(tostring(each.value.insecure_kubelet_readonly_port_enabled)) : null
-        pod_pids_limit                         = lookup(each.value, "pod_pids_limit", null)
-        container_log_max_size                 = lookup(each.value, "container_log_max_size", null)
-        container_log_max_files                = lookup(each.value, "container_log_max_files", null)
-        image_gc_low_threshold_percent         = lookup(each.value, "image_gc_low_threshold_percent", null)
-        image_gc_high_threshold_percent        = lookup(each.value, "image_gc_high_threshold_percent", null)
-        image_minimum_gc_age                   = lookup(each.value, "image_minimum_gc_age", null)
-        image_maximum_gc_age                   = lookup(each.value, "image_maximum_gc_age", null)
-        allowed_unsafe_sysctls                 = lookup(each.value, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(each.value, "allowed_unsafe_sysctls", null)) : trimspace(s)]
+        cpu_manager_policy                          = lookup(each.value, "cpu_manager_policy", "static")
+        cpu_cfs_quota                               = lookup(each.value, "cpu_cfs_quota", null)
+        cpu_cfs_quota_period                        = lookup(each.value, "cpu_cfs_quota_period", null)
+        insecure_kubelet_readonly_port_enabled      = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null) != null ? upper(tostring(each.value.insecure_kubelet_readonly_port_enabled)) : null
+        pod_pids_limit                              = lookup(each.value, "pod_pids_limit", null)
+        container_log_max_size                      = lookup(each.value, "container_log_max_size", null)
+        container_log_max_files                     = lookup(each.value, "container_log_max_files", null)
+        image_gc_low_threshold_percent              = lookup(each.value, "image_gc_low_threshold_percent", null)
+        image_gc_high_threshold_percent             = lookup(each.value, "image_gc_high_threshold_percent", null)
+        image_minimum_gc_age                        = lookup(each.value, "image_minimum_gc_age", null)
+        image_maximum_gc_age                        = lookup(each.value, "image_maximum_gc_age", null)
+        allowed_unsafe_sysctls                      = lookup(each.value, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(each.value, "allowed_unsafe_sysctls", null)) : trimspace(s)]
+        shutdown_grace_period_seconds               = lookup(each.value, "shutdown_grace_period_seconds", null)
+        shutdown_grace_period_critical_pods_seconds = lookup(each.value, "shutdown_grace_period_critical_pods_seconds", null)
       }
     }
 
@@ -1221,7 +1264,7 @@ resource "google_container_node_pool" "windows_pools" {
   }
 
   dynamic "network_config" {
-    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null ? [each.value] : []
+    for_each = length(lookup(each.value, "pod_range", "")) > 0 || lookup(each.value, "enable_private_nodes", null) != null || lookup(each.value, "total_egress_bandwidth_tier", null) != null || lookup(each.value, "pod_cidr_overprovision_disabled", null) != null ? [each.value] : []
     content {
       pod_range            = lookup(network_config.value, "pod_range", null)
       enable_private_nodes = lookup(network_config.value, "enable_private_nodes", var.enable_private_nodes)
@@ -1230,6 +1273,13 @@ resource "google_container_node_pool" "windows_pools" {
         for_each = lookup(network_config.value, "total_egress_bandwidth_tier", "") != "" ? [1] : []
         content {
           total_egress_bandwidth_tier = lookup(network_config.value, "total_egress_bandwidth_tier", null)
+        }
+      }
+
+      dynamic "pod_cidr_overprovision_config" {
+        for_each = lookup(network_config.value, "pod_cidr_overprovision_disabled", null) != null ? [1] : []
+        content {
+          disabled = lookup(network_config.value, "pod_cidr_overprovision_disabled", null)
         }
       }
     }
@@ -1388,7 +1438,7 @@ resource "google_container_node_pool" "windows_pools" {
       for_each = lookup(each.value, "secondary_boot_disk", "") != "" ? [each.value.secondary_boot_disk] : []
       content {
         disk_image = secondary_boot_disks.value
-        mode       = "CONTAINER_IMAGE_CACHE"
+        mode       = lookup(each.value, "secondary_boot_disk_mode", "CONTAINER_IMAGE_CACHE")
       }
     }
 
@@ -1449,22 +1499,24 @@ resource "google_container_node_pool" "windows_pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds"]
       )) != 0 ? [1] : []
 
       content {
-        cpu_manager_policy                     = lookup(each.value, "cpu_manager_policy", "static")
-        cpu_cfs_quota                          = lookup(each.value, "cpu_cfs_quota", null)
-        cpu_cfs_quota_period                   = lookup(each.value, "cpu_cfs_quota_period", null)
-        insecure_kubelet_readonly_port_enabled = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null) != null ? upper(tostring(each.value.insecure_kubelet_readonly_port_enabled)) : null
-        pod_pids_limit                         = lookup(each.value, "pod_pids_limit", null)
-        container_log_max_size                 = lookup(each.value, "container_log_max_size", null)
-        container_log_max_files                = lookup(each.value, "container_log_max_files", null)
-        image_gc_low_threshold_percent         = lookup(each.value, "image_gc_low_threshold_percent", null)
-        image_gc_high_threshold_percent        = lookup(each.value, "image_gc_high_threshold_percent", null)
-        image_minimum_gc_age                   = lookup(each.value, "image_minimum_gc_age", null)
-        image_maximum_gc_age                   = lookup(each.value, "image_maximum_gc_age", null)
-        allowed_unsafe_sysctls                 = lookup(each.value, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(each.value, "allowed_unsafe_sysctls", null)) : trimspace(s)]
+        cpu_manager_policy                          = lookup(each.value, "cpu_manager_policy", "static")
+        cpu_cfs_quota                               = lookup(each.value, "cpu_cfs_quota", null)
+        cpu_cfs_quota_period                        = lookup(each.value, "cpu_cfs_quota_period", null)
+        insecure_kubelet_readonly_port_enabled      = lookup(each.value, "insecure_kubelet_readonly_port_enabled", null) != null ? upper(tostring(each.value.insecure_kubelet_readonly_port_enabled)) : null
+        pod_pids_limit                              = lookup(each.value, "pod_pids_limit", null)
+        container_log_max_size                      = lookup(each.value, "container_log_max_size", null)
+        container_log_max_files                     = lookup(each.value, "container_log_max_files", null)
+        image_gc_low_threshold_percent              = lookup(each.value, "image_gc_low_threshold_percent", null)
+        image_gc_high_threshold_percent             = lookup(each.value, "image_gc_high_threshold_percent", null)
+        image_minimum_gc_age                        = lookup(each.value, "image_minimum_gc_age", null)
+        image_maximum_gc_age                        = lookup(each.value, "image_maximum_gc_age", null)
+        allowed_unsafe_sysctls                      = lookup(each.value, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(each.value, "allowed_unsafe_sysctls", null)) : trimspace(s)]
+        shutdown_grace_period_seconds               = lookup(each.value, "shutdown_grace_period_seconds", null)
+        shutdown_grace_period_critical_pods_seconds = lookup(each.value, "shutdown_grace_period_critical_pods_seconds", null)
       }
     }
 
