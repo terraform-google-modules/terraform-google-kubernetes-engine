@@ -124,6 +124,9 @@ spec:
         enable_legacy_lustre_port:
           name: enable_legacy_lustre_port
           title: Enable Legacy Lustre Port
+        enable_managed_machine_learning_diagnostics:
+          name: enable_managed_machine_learning_diagnostics
+          title: Enable Managed Machine Learning Diagnostics
         enable_multi_networking:
           name: enable_multi_networking
           title: Enable Multi Networking

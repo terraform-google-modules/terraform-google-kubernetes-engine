@@ -721,6 +721,12 @@ variable "enable_secret_sync" {
   default     = false
 }
 
+variable "enable_managed_machine_learning_diagnostics" {
+  type        = bool
+  description = "(beta) Enable Managed Machine Learning Diagnostics on the cluster."
+  default     = null
+}
+
 variable "workload_vulnerability_mode" {
   description = "(beta) Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC."
   type        = string
