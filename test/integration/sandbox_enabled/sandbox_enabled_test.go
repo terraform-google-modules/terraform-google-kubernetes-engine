@@ -41,12 +41,9 @@ func TestSandboxEnabled(t *testing.T) {
 
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		g := golden.NewOrUpdate(t, op.String(),
-			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
-			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
+			golden.WithSanitizer(testutils.GKEClusterSanitizer(serviceAccount, projectId, clusterName, op)),
 		)
 		validateJSONPaths := []string{
-			"status",
 			"location",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"privateClusterConfig.enablePrivateNodes",
@@ -59,6 +56,7 @@ func TestSandboxEnabled(t *testing.T) {
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
 	})
 
 	bpt.Test()

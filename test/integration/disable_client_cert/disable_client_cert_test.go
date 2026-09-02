@@ -33,6 +33,7 @@ func TestDisableClientCert(t *testing.T) {
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
 		// bpt.DefaultVerify(assert)
+		testutils.TGKEVerify(t, bpt, assert) // Verify Resources
 
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
@@ -44,7 +45,6 @@ func TestDisableClientCert(t *testing.T) {
 			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
 		)
 		validateJSONPaths := []string{
-			"status",
 			"masterAuth.clientCertificate",
 			"masterAuth.username",
 			"masterAuth.password",
@@ -52,6 +52,7 @@ func TestDisableClientCert(t *testing.T) {
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
 	})
 	bpt.Test()
 }

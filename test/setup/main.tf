@@ -74,7 +74,7 @@ module "gke-project-1" {
 
   deletion_policy = "DELETE"
 
-  auto_create_network = true
+  auto_create_network = false
 
   activate_apis = local.apis
   activate_api_identities = [
