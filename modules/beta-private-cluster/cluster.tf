@@ -608,7 +608,7 @@ resource "google_container_cluster" "primary" {
       dynamic "kubelet_config" {
         for_each = length(setintersection(
           keys(local.head_node_pool),
-          ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds"]
+          ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds", "single_process_oom_kill"]
         )) != 0 || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
 
         content {
@@ -626,6 +626,7 @@ resource "google_container_cluster" "primary" {
           allowed_unsafe_sysctls                      = lookup(local.head_node_pool, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(local.head_node_pool, "allowed_unsafe_sysctls", null)) : trimspace(s)]
           shutdown_grace_period_seconds               = lookup(local.head_node_pool, "shutdown_grace_period_seconds", null)
           shutdown_grace_period_critical_pods_seconds = lookup(local.head_node_pool, "shutdown_grace_period_critical_pods_seconds", null)
+          single_process_oom_kill                     = lookup(local.head_node_pool, "single_process_oom_kill", null)
         }
       }
 
@@ -1090,7 +1091,7 @@ resource "google_container_node_pool" "pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds", "single_process_oom_kill"]
       )) != 0 ? [1] : []
 
       content {
@@ -1108,6 +1109,7 @@ resource "google_container_node_pool" "pools" {
         allowed_unsafe_sysctls                      = lookup(each.value, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(each.value, "allowed_unsafe_sysctls", null)) : trimspace(s)]
         shutdown_grace_period_seconds               = lookup(each.value, "shutdown_grace_period_seconds", null)
         shutdown_grace_period_critical_pods_seconds = lookup(each.value, "shutdown_grace_period_critical_pods_seconds", null)
+        single_process_oom_kill                     = lookup(each.value, "single_process_oom_kill", null)
       }
     }
 
@@ -1499,7 +1501,7 @@ resource "google_container_node_pool" "windows_pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds", "single_process_oom_kill"]
       )) != 0 ? [1] : []
 
       content {
@@ -1517,6 +1519,7 @@ resource "google_container_node_pool" "windows_pools" {
         allowed_unsafe_sysctls                      = lookup(each.value, "allowed_unsafe_sysctls", null) == null ? null : [for s in split(",", lookup(each.value, "allowed_unsafe_sysctls", null)) : trimspace(s)]
         shutdown_grace_period_seconds               = lookup(each.value, "shutdown_grace_period_seconds", null)
         shutdown_grace_period_critical_pods_seconds = lookup(each.value, "shutdown_grace_period_critical_pods_seconds", null)
+        single_process_oom_kill                     = lookup(each.value, "single_process_oom_kill", null)
       }
     }
 
