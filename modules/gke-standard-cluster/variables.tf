@@ -787,7 +787,7 @@ variable "secret_sync_config" {
   type = object({
     enabled = bool
     rotation_config = optional(object({
-      enabled           = optional(bool)
+      enabled           = bool
       rotation_interval = optional(string)
     }))
   })
