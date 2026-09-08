@@ -17,6 +17,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 
@@ -41,28 +42,49 @@ func TestDeployService(t *testing.T) {
 		clusterName := bpt.GetStringOutput("cluster_name")
 		gcloud.Runf(t, "container clusters get-credentials %s --region %s --project %s", clusterName, location, projectId)
 		k8sOpts := k8s.KubectlOptions{}
-		listServices, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "svc", "terraform-example", "-o", "json")
-		assert.NoError(err)
-		kubeService := utils.ParseKubectlJSONResult(t, listServices)
-		serviceIp := kubeService.Get("status.loadBalancer.ingress").Array()[0].Get("ip")
+
+		var serviceIp string
+		utils.Poll(t, func() (bool, error) {
+			listServices, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "svc", "terraform-example", "-o", "json")
+			if err != nil {
+				return true, err
+			}
+			kubeService := utils.ParseKubectlJSONResult(t, listServices)
+			ip := kubeService.Get("status.loadBalancer.ingress.0.ip").String()
+			if ip == "" {
+				return true, fmt.Errorf("waiting for load balancer IP allocation")
+			}
+			serviceIp = ip
+			return false, nil
+		}, 30, 10*time.Second)
+
 		serviceUrl := fmt.Sprintf("http://%s:8080", serviceIp)
 
+		var responseData []byte
 		pollHTTPEndPoint := func(cmd string) func() (bool, error) {
 			return func() (bool, error) {
-				_, err := http.Get(cmd)
+				resp, err := http.Get(cmd)
 				if err != nil {
 					t.Logf("%s", err)
 					return true, err
 				}
+				defer resp.Body.Close()
+				if resp.StatusCode != http.StatusOK {
+					return true, fmt.Errorf("expected status 200, got %d", resp.StatusCode)
+				}
+				body, err := io.ReadAll(resp.Body)
+				if err != nil {
+					return true, err
+				}
+				if !strings.Contains(string(body), "Thank you for using nginx.") {
+					return true, fmt.Errorf("response body does not yet contain expected content")
+				}
+				responseData = body
 				return false, nil
 			}
 		}
 
 		utils.Poll(t, pollHTTPEndPoint(serviceUrl), 20, 10*time.Second)
-		response, err := http.Get(serviceUrl)
-		assert.NoError(err)
-		responseData, err := io.ReadAll(response.Body)
-		assert.NoError(err)
 		assert.Contains(string(responseData), "Thank you for using nginx.", "Service is Functional")
 	})
 

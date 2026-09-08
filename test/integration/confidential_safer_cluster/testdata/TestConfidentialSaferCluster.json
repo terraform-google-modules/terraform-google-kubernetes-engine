@@ -311,7 +311,9 @@
     "enableInsecureBindingSystemAuthenticated": true,
     "enableInsecureBindingSystemUnauthenticated": true
   },
-  "releaseChannel": {},
+  "releaseChannel": {
+    "channel": "REGULAR"
+  },
   "resourceLabels": {
     "goog-terraform-provisioned": "true"
   },

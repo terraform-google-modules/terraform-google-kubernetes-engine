@@ -56,6 +56,3 @@ output "service_account" {
   value       = module.example.service_account
 }
 
-output "explicit_k8s_version" {
-  value = module.example.explicit_k8s_version
-}

@@ -23,9 +23,10 @@ module "gke-network" {
 
   subnets = [
     {
-      subnet_name   = "random-gke-subnet"
-      subnet_ip     = "10.0.0.0/24"
-      subnet_region = "us-west1"
+      subnet_name           = "random-gke-subnet"
+      subnet_ip             = "10.0.0.0/24"
+      subnet_region         = "us-west1"
+      subnet_private_access = "true"
     },
   ]
 

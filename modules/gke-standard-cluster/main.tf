@@ -531,17 +531,19 @@ resource "google_container_cluster" "main" {
       dynamic "kubelet_config" {
         for_each = node_config.value.kubelet_config != null ? [node_config.value.kubelet_config] : []
         content {
-          cpu_manager_policy                     = kubelet_config.value.cpu_manager_policy
-          cpu_cfs_quota                          = kubelet_config.value.cpu_cfs_quota
-          cpu_cfs_quota_period                   = kubelet_config.value.cpu_cfs_quota_period
-          insecure_kubelet_readonly_port_enabled = upper(tostring(kubelet_config.value.insecure_kubelet_readonly_port_enabled))
-          pod_pids_limit                         = kubelet_config.value.pod_pids_limit
-          container_log_max_size                 = kubelet_config.value.container_log_max_size
-          container_log_max_files                = kubelet_config.value.container_log_max_files
-          image_gc_low_threshold_percent         = kubelet_config.value.image_gc_low_threshold_percent
-          image_gc_high_threshold_percent        = kubelet_config.value.image_gc_high_threshold_percent
-          image_minimum_gc_age                   = kubelet_config.value.image_minimum_gc_age
-          allowed_unsafe_sysctls                 = kubelet_config.value.allowed_unsafe_sysctls
+          cpu_manager_policy                          = kubelet_config.value.cpu_manager_policy
+          cpu_cfs_quota                               = kubelet_config.value.cpu_cfs_quota
+          cpu_cfs_quota_period                        = kubelet_config.value.cpu_cfs_quota_period
+          insecure_kubelet_readonly_port_enabled      = upper(tostring(kubelet_config.value.insecure_kubelet_readonly_port_enabled))
+          pod_pids_limit                              = kubelet_config.value.pod_pids_limit
+          container_log_max_size                      = kubelet_config.value.container_log_max_size
+          container_log_max_files                     = kubelet_config.value.container_log_max_files
+          image_gc_low_threshold_percent              = kubelet_config.value.image_gc_low_threshold_percent
+          image_gc_high_threshold_percent             = kubelet_config.value.image_gc_high_threshold_percent
+          image_minimum_gc_age                        = kubelet_config.value.image_minimum_gc_age
+          allowed_unsafe_sysctls                      = kubelet_config.value.allowed_unsafe_sysctls
+          shutdown_grace_period_seconds               = kubelet_config.value.shutdown_grace_period_seconds
+          shutdown_grace_period_critical_pods_seconds = kubelet_config.value.shutdown_grace_period_critical_pods_seconds
         }
       }
 
@@ -820,17 +822,19 @@ resource "google_container_cluster" "main" {
           dynamic "kubelet_config" {
             for_each = node_config.value.kubelet_config != null ? [node_config.value.kubelet_config] : []
             content {
-              cpu_manager_policy                     = kubelet_config.value.cpu_manager_policy
-              cpu_cfs_quota                          = kubelet_config.value.cpu_cfs_quota
-              cpu_cfs_quota_period                   = kubelet_config.value.cpu_cfs_quota_period
-              insecure_kubelet_readonly_port_enabled = upper(tostring(kubelet_config.value.insecure_kubelet_readonly_port_enabled))
-              pod_pids_limit                         = kubelet_config.value.pod_pids_limit
-              container_log_max_size                 = kubelet_config.value.container_log_max_size
-              container_log_max_files                = kubelet_config.value.container_log_max_files
-              image_gc_low_threshold_percent         = kubelet_config.value.image_gc_low_threshold_percent
-              image_gc_high_threshold_percent        = kubelet_config.value.image_gc_high_threshold_percent
-              image_minimum_gc_age                   = kubelet_config.value.image_minimum_gc_age
-              allowed_unsafe_sysctls                 = kubelet_config.value.allowed_unsafe_sysctls
+              cpu_manager_policy                          = kubelet_config.value.cpu_manager_policy
+              cpu_cfs_quota                               = kubelet_config.value.cpu_cfs_quota
+              cpu_cfs_quota_period                        = kubelet_config.value.cpu_cfs_quota_period
+              insecure_kubelet_readonly_port_enabled      = upper(tostring(kubelet_config.value.insecure_kubelet_readonly_port_enabled))
+              pod_pids_limit                              = kubelet_config.value.pod_pids_limit
+              container_log_max_size                      = kubelet_config.value.container_log_max_size
+              container_log_max_files                     = kubelet_config.value.container_log_max_files
+              image_gc_low_threshold_percent              = kubelet_config.value.image_gc_low_threshold_percent
+              image_gc_high_threshold_percent             = kubelet_config.value.image_gc_high_threshold_percent
+              image_minimum_gc_age                        = kubelet_config.value.image_minimum_gc_age
+              allowed_unsafe_sysctls                      = kubelet_config.value.allowed_unsafe_sysctls
+              shutdown_grace_period_seconds               = kubelet_config.value.shutdown_grace_period_seconds
+              shutdown_grace_period_critical_pods_seconds = kubelet_config.value.shutdown_grace_period_critical_pods_seconds
             }
           }
 

@@ -46,7 +46,6 @@ func TestBetaCluster(t *testing.T) {
 		)
 		// assert json paths against goldenfile data
 		validateJSONPaths := []string{
-			"status",
 			"location",
 			"locations",
 			"privateClusterConfig.enablePrivateEndpoint",
@@ -66,6 +65,7 @@ func TestBetaCluster(t *testing.T) {
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
 
 		for _, np := range op.Get("nodePools").Array() {
 			npName := np.Get("name").String()

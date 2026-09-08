@@ -33,6 +33,7 @@ func TestSimpleWindowsNodePool(t *testing.T) {
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		//Skipping Default Verify as the Verify Stage fails due to change in Client Cert Token
 		// bpt.DefaultVerify(assert)
+		testutils.TGKEVerify(t, bpt, assert) // Verify Resources
 
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
@@ -41,12 +42,9 @@ func TestSimpleWindowsNodePool(t *testing.T) {
 
 		op := gcloud.Runf(t, "beta container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
 		g := golden.NewOrUpdate(t, op.String(),
-			golden.WithSanitizer(golden.StringSanitizer(serviceAccount, "SERVICE_ACCOUNT")),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
-			golden.WithSanitizer(golden.StringSanitizer(clusterName, "CLUSTER_NAME")),
+			golden.WithSanitizer(testutils.GKEClusterSanitizer(serviceAccount, projectId, clusterName, op)),
 		)
 		validateJSONPaths := []string{
-			"status",
 			"location",
 			"releaseChannel.channel",
 			"node_pools.name",
@@ -61,9 +59,9 @@ func TestSimpleWindowsNodePool(t *testing.T) {
 		for _, pth := range validateJSONPaths {
 			g.JSONEq(assert, op, pth)
 		}
+		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
 		op1 := gcloud.Runf(t, "iam service-accounts describe %s --project %s ", serviceAccount, projectId)
 		assert.Contains(op1.Get("description").String(), fmt.Sprintf("Terraform-managed service account for cluster %s", clusterName), "Custom Service Account Created")
-
 	})
 
 	bpt.Test()

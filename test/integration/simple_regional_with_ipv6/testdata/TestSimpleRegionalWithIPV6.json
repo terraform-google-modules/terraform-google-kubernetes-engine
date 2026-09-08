@@ -110,7 +110,7 @@
     }
   },
   "monitoringService": "monitoring.googleapis.com/kubernetes",
-  "name": "simple-regional-ipv6-cluster-RANDOM_STRING",
+  "name": "CLUSTER_NAME",
   "network": "cft-gke-test-RANDOM_STRING",
   "networkConfig": {
     "defaultSnatStatus": {},
@@ -141,8 +141,8 @@
       "enableIntegrityMonitoring": true
     },
     "tags": [
-      "gke-simple-regional-ipv6-cluster-RANDOM_STRING",
-      "gke-simple-regional-ipv6-cluster-RANDOM_STRING-default-pool"
+      "gke-CLUSTER_NAME",
+      "gke-CLUSTER_NAME-default-pool"
     ],
     "windowsNodeConfig": {},
     "workloadMetadataConfig": {
@@ -174,7 +174,7 @@
         "gcfsConfig": {},
         "imageType": "COS_CONTAINERD",
         "labels": {
-          "cluster_name": "simple-regional-gatewayapi-cluster-RANDOM_STRING",
+          "cluster_name": "CLUSTER_NAME",
           "node_pool": "default-node-pool"
         },
         "loggingConfig": {
@@ -190,13 +190,13 @@
           "https://www.googleapis.com/auth/userinfo.email",
           "https://www.googleapis.com/auth/cloud-platform"
         ],
-        "serviceAccount": "NODE_SERVICE_ACCOUNT",
+        "serviceAccount": "SERVICE_ACCOUNT",
         "shieldedInstanceConfig": {
           "enableIntegrityMonitoring": true
         },
         "tags": [
-          "gke-node-pool-cluster-RANDOM_STRING",
-          "gke-node-pool-cluster-RANDOM_STRING-default-pool"
+          "gke-CLUSTER_NAME",
+          "gke-CLUSTER_NAME-default-pool"
         ],
         "windowsNodeConfig": {},
         "workloadMetadataConfig": {
@@ -219,7 +219,7 @@
         "podRange": "cft-gke-test-pods-RANDOM_STRING"
       },
       "podIpv4CidrSize": 24,
-      "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/europe-west4/clusters/node-pool-cluster-RANDOM_STRING/nodePools/default-pool",
+      "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/europe-west4/clusters/CLUSTER_NAME/nodePools/default-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -250,7 +250,7 @@
     "mode": "DISABLED",
     "vulnerabilityMode": "VULNERABILITY_DISABLED"
   },
-  "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/us-central1/clusters/simple-regional-ipv6-cluster-RANDOM_STRING",
+  "selfLink": "https://container.googleapis.com/v1/projects/PROJECT_ID/locations/us-central1/clusters/CLUSTER_NAME",
   "servicesIpv4Cidr": "192.168.64.0/18",
   "shieldedNodes": {
     "enabled": true

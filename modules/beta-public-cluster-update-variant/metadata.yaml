@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-kubernetes-engine.git
       sourceType: git
       dir: /modules/beta-public-cluster-update-variant
-    version: 44.3.0
+    version: 45.0.0
     actuationTool:
       flavor: Terraform
       version: ">=1.3"
@@ -542,6 +542,9 @@ spec:
         description: Enable the Secret Sync add-on for this cluster.
         varType: bool
         defaultValue: false
+      - name: enable_managed_machine_learning_diagnostics
+        description: (beta) Enable Managed Machine Learning Diagnostics on the cluster.
+        varType: bool
       - name: workload_vulnerability_mode
         description: (beta) Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC.
         varType: string
@@ -898,9 +901,9 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: ">= 7.17.0, < 8"
+        version: ">= 7.39.0, < 8"
       - source: hashicorp/google-beta
-        version: ">= 7.17.0, < 8"
+        version: ">= 7.39.0, < 8"
       - source: hashicorp/kubernetes
         version: ">= 2.10, < 4"
       - source: hashicorp/random

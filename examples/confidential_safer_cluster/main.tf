@@ -38,20 +38,8 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(module.gke.ca_certificate)
 }
 
-// A random valid k8s version is retrived
-// to specify as an explicit version.
-data "google_container_engine_versions" "current" {
-  project  = var.project_id
-  location = var.region
-}
-
 data "google_project" "main" {
   project_id = var.project_id
-}
-
-resource "random_shuffle" "version" {
-  input        = data.google_container_engine_versions.current.valid_master_versions
-  result_count = 1
 }
 
 resource "google_kms_crypto_key_iam_member" "main" {
@@ -75,8 +63,6 @@ module "gke" {
   master_ipv4_cidr_block     = "172.16.0.0/28"
   add_cluster_firewall_rules = true
   firewall_inbound_ports     = ["9443", "15017"]
-  kubernetes_version         = random_shuffle.version.result[0]
-  release_channel            = "UNSPECIFIED"
   deletion_protection        = false
   enable_private_endpoint    = true
   enable_confidential_nodes  = true

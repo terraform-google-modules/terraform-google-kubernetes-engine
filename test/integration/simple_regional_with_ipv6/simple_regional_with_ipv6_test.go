@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package node_pool
+package simple_regional_with_ipv6
 
 import (
 	"testing"
@@ -24,7 +24,7 @@ import (
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
 
-func TestSimpleRegionalWithGatewayAPI(t *testing.T) {
+func TestSimpleRegionalWithIPV6(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t,
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
 	)
@@ -46,8 +46,7 @@ func TestSimpleRegionalWithGatewayAPI(t *testing.T) {
 
 		// Setup golden image with sanitizers
 		g := golden.NewOrUpdate(t, cluster.String(),
-			golden.WithSanitizer(golden.StringSanitizer(nodeServiceAccount, "NODE_SERVICE_ACCOUNT")),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
+			golden.WithSanitizer(testutils.GKEClusterSanitizer(nodeServiceAccount, projectId, clusterName, cluster)),
 			golden.WithSanitizer(golden.StringSanitizer(randomString, "RANDOM_STRING")),
 			golden.WithSanitizer(golden.StringSanitizer(kubernetesEndpoint, "KUBERNETES_ENDPOINT")),
 		)

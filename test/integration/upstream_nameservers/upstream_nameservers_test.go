@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package node_pool
+package upstream_nameservers
 
 import (
 	"fmt"
@@ -49,8 +49,7 @@ func TestUpstreamNameservers(t *testing.T) {
 
 		// Setup golden image with sanitizers
 		g := golden.NewOrUpdate(t, cluster.String(),
-			golden.WithSanitizer(golden.StringSanitizer(nodeServiceAccount, "NODE_SERVICE_ACCOUNT")),
-			golden.WithSanitizer(golden.StringSanitizer(projectId, "PROJECT_ID")),
+			golden.WithSanitizer(testutils.GKEClusterSanitizer(nodeServiceAccount, projectId, clusterName, cluster)),
 			golden.WithSanitizer(golden.StringSanitizer(randomString, "RANDOM_STRING")),
 			golden.WithSanitizer(golden.StringSanitizer(kubernetesEndpoint, "KUBERNETES_ENDPOINT")),
 		)
@@ -69,7 +68,7 @@ func TestUpstreamNameservers(t *testing.T) {
 		assert.NoError(err)
 		kubeDnsCM := utils.ParseKubectlJSONResult(t, listKubeDnsConfigMap)
 		assert.Contains("kube-dns", kubeDnsCM.Get("metadata.name").String(), "kube-dns configmap is present")
-		assert.Equal("Terraform", kubeDnsCM.Get("metadata.managedFields.0.manager").String(), "kube-dns configmap is managed by Terraform")
+		assert.True(kubeDnsCM.Get("metadata.managedFields.#(manager==\"Terraform\")").Exists(), "kube-dns configmap is managed by Terraform")
 		assert.Equal("[\"8.8.8.8\",\"8.8.4.4\"]\n", kubeDnsCM.Get("data.upstreamNameservers").String(), "kube-dns configmap reflects the upstream_nameservers configuration")
 
 		// ip-masq-agent
