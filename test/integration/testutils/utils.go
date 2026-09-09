@@ -57,6 +57,8 @@ var (
 		".*Error 400.*Cluster is being updated.*":                       "Cluster is being updated.",
 		".*Error 400.*Cluster is not ready for operation.*":             "Cluster not ready.",
 		".*resource is currently locked as part of another operation.*": "Resource locked.",
+		".*NodePool.*was created in the error state.*":                  "Node pool creation failed in error state.",
+		".*Cluster.*was created in the error state.*":                   "Cluster creation failed in error state.",
 
 		// Transient IAM / SA replication
 		".*Permission.*denied on resource.*":   "IAM permission replication delay.",
