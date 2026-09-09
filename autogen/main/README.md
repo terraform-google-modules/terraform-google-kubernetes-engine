@@ -46,7 +46,7 @@ The implications of this are that:
 {% endif %}
 ## Compatibility
 
-This module is meant for use with Terraform 1.3+ and tested using Terraform 1.10+.
+This module is meant for use with Terraform 1.3+ and tested using Terraform 1.14+.
 If you find incompatibilities using Terraform `>=1.3`, please open an issue.
 
 If you haven't [upgraded to 1.3][terraform-1.3-upgrade] and need a Terraform
@@ -324,9 +324,9 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
 {% if beta_cluster %}
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.47+
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v7.39+
 {% else %}
-- [Terraform Provider for GCP][terraform-provider-google] v6.47+
+- [Terraform Provider for GCP][terraform-provider-google] v7.39+
 {% endif %}
 
 #### gcloud
@@ -363,6 +363,7 @@ In order to operate with the Service Account you must activate the following API
 {% else %}
 [terraform-provider-google]: <https://github.com/terraform-providers/terraform-provider-google>
 {% endif %}
+[27.0.0]: <https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/27.0.0>
 [12.3.0]: <https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/12.3.0>
 [terraform-0.13-upgrade]: <https://www.terraform.io/upgrade-guides/0-13.html>
 [terraform-1.3-upgrade]: <https://developer.hashicorp.com/terraform/language/v1.3.x/upgrade-guides>
