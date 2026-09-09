@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [45.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v45.0.0...v45.1.0) (2026-09-09)
+
+
+### Features
+
+* add single_process_oom_kill to node pool kubelet_config ([#2631](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2631)) ([35d8d08](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/35d8d084fe41e2489b86b1f79d13e3adfeb91565))
+
 ## [45.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v44.3.0...v45.0.0) (2026-08-27)
 
 
