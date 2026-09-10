@@ -5,7 +5,7 @@ This module creates the infrastructure and Attestors necessary to generate attes
 ## Compatibility/Requirements
 
 * GCP Project ID where the project has an active billing account associated with it
-* Terraform version 0.12+
+* Terraform version 1.3+
 * Google Kubernetes Engine cluster with "Binary Authorization" enabled
 
 ## Usage

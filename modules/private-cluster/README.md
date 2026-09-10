@@ -17,7 +17,7 @@ For details on configuring private clusters with this module, check the [trouble
 
 ## Compatibility
 
-This module is meant for use with Terraform 1.3+ and tested using Terraform 1.10+.
+This module is meant for use with Terraform 1.3+ and tested using Terraform 1.14+.
 If you find incompatibilities using Terraform `>=1.3`, please open an issue.
 
 If you haven't [upgraded to 1.3][terraform-1.3-upgrade] and need a Terraform
@@ -466,7 +466,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
-- [Terraform Provider for GCP][terraform-provider-google] v6.47+
+- [Terraform Provider for GCP][terraform-provider-google] v7.39+
 
 #### gcloud
 
@@ -498,6 +498,7 @@ In order to operate with the Service Account you must activate the following API
 - Kubernetes Engine API - container.googleapis.com
 
 [terraform-provider-google]: <https://github.com/terraform-providers/terraform-provider-google>
+[27.0.0]: <https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/27.0.0>
 [12.3.0]: <https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/12.3.0>
 [terraform-0.13-upgrade]: <https://www.terraform.io/upgrade-guides/0-13.html>
 [terraform-1.3-upgrade]: <https://developer.hashicorp.com/terraform/language/v1.3.x/upgrade-guides>
