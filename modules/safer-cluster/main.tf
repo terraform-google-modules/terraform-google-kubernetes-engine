@@ -220,4 +220,8 @@ module "gke" {
   security_posture_vulnerability_mode = var.security_posture_vulnerability_mode
 
   user_managed_keys_config = var.user_managed_keys_config
+
+  dns_allow_external_traffic    = var.dns_allow_external_traffic
+  dns_enable_k8s_tokens_via_dns = var.dns_enable_k8s_tokens_via_dns
+  ip_endpoints_enabled          = var.ip_endpoints_enabled
 }

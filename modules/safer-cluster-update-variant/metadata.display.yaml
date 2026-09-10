@@ -79,9 +79,15 @@ spec:
         disable_default_snat:
           name: disable_default_snat
           title: Disable Default Snat
+        dns_allow_external_traffic:
+          name: dns_allow_external_traffic
+          title: Dns Allow External Traffic
         dns_cache:
           name: dns_cache
           title: Dns Cache
+        dns_enable_k8s_tokens_via_dns:
+          name: dns_enable_k8s_tokens_via_dns
+          title: Dns Enable K8s Tokens Via Dns
         enable_confidential_nodes:
           name: enable_confidential_nodes
           title: Enable Confidential Nodes
@@ -151,6 +157,9 @@ spec:
         initial_node_count:
           name: initial_node_count
           title: Initial Node Count
+        ip_endpoints_enabled:
+          name: ip_endpoints_enabled
+          title: Ip Endpoints Enabled
         ip_range_pods:
           name: ip_range_pods
           title: Ip Range Pods
