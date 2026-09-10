@@ -235,6 +235,9 @@ spec:
         maintenance_start_time:
           name: maintenance_start_time
           title: Maintenance Start Time
+        managed_opentelemetry_scope:
+          name: managed_opentelemetry_scope
+          title: Managed Opentelemetry Scope
         master_authorized_networks:
           name: master_authorized_networks
           title: Master Authorized Networks
