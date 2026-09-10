@@ -382,10 +382,16 @@ spec:
         description: Enable the Secret Manager add-on for this cluster
         varType: bool
         defaultValue: false
-      - name: enable_secret_sync
-        description: Enable the Secret Sync add-on for this cluster.
-        varType: bool
-        defaultValue: false
+      - name: secret_sync_config
+        description: Configuration for the Secret Sync add-on for this cluster.
+        varType: |-
+          object({
+              enabled = bool
+              rotation_config = optional(object({
+                enabled           = bool
+                rotation_interval = optional(string)
+              }))
+            })
       - name: enable_managed_machine_learning_diagnostics
         description: (beta) Enable Managed Machine Learning Diagnostics on the cluster.
         varType: bool

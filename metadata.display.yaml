@@ -417,6 +417,9 @@ spec:
         resource_usage_export_dataset_id:
           name: resource_usage_export_dataset_id
           title: Resource Usage Export Dataset Id
+        secret_sync_config:
+          name: secret_sync_config
+          title: Secret Sync Config
         security_posture_mode:
           name: security_posture_mode
           title: Security Posture Mode
