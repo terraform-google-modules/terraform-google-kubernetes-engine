@@ -195,6 +195,6 @@ spec:
           - roles/editor
     providerVersions:
       - source: hashicorp/google
-        version: < 9
+        version: ">= 5.0.0, < 9"
       - source: hashicorp/google-beta
-        version: < 9
+        version: ">= 5.0.0, < 9"
