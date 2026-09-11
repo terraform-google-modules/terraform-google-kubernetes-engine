@@ -608,7 +608,7 @@ resource "google_container_cluster" "primary" {
       dynamic "kubelet_config" {
         for_each = length(setintersection(
           keys(local.head_node_pool),
-          ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds", "single_process_oom_kill"]
+          ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds", "single_process_oom_kill", "registry_pull_qps", "registry_burst", "event_record_qps", "event_burst"]
         )) != 0 || var.insecure_kubelet_readonly_port_enabled != null ? [1] : []
 
         content {
@@ -627,6 +627,10 @@ resource "google_container_cluster" "primary" {
           shutdown_grace_period_seconds               = lookup(local.head_node_pool, "shutdown_grace_period_seconds", null)
           shutdown_grace_period_critical_pods_seconds = lookup(local.head_node_pool, "shutdown_grace_period_critical_pods_seconds", null)
           single_process_oom_kill                     = lookup(local.head_node_pool, "single_process_oom_kill", null)
+          registry_pull_qps                           = lookup(local.head_node_pool, "registry_pull_qps", null)
+          registry_burst                              = lookup(local.head_node_pool, "registry_burst", null)
+          event_record_qps                            = lookup(local.head_node_pool, "event_record_qps", null)
+          event_burst                                 = lookup(local.head_node_pool, "event_burst", null)
         }
       }
 
@@ -1158,7 +1162,7 @@ resource "google_container_node_pool" "pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds", "single_process_oom_kill"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds", "single_process_oom_kill", "registry_pull_qps", "registry_burst", "event_record_qps", "event_burst"]
       )) != 0 ? [1] : []
 
       content {
@@ -1177,6 +1181,10 @@ resource "google_container_node_pool" "pools" {
         shutdown_grace_period_seconds               = lookup(each.value, "shutdown_grace_period_seconds", null)
         shutdown_grace_period_critical_pods_seconds = lookup(each.value, "shutdown_grace_period_critical_pods_seconds", null)
         single_process_oom_kill                     = lookup(each.value, "single_process_oom_kill", null)
+        registry_pull_qps                           = lookup(each.value, "registry_pull_qps", null)
+        registry_burst                              = lookup(each.value, "registry_burst", null)
+        event_record_qps                            = lookup(each.value, "event_record_qps", null)
+        event_burst                                 = lookup(each.value, "event_burst", null)
       }
     }
 
@@ -1569,7 +1577,7 @@ resource "google_container_node_pool" "windows_pools" {
     dynamic "kubelet_config" {
       for_each = length(setintersection(
         keys(each.value),
-        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds", "single_process_oom_kill"]
+        ["cpu_manager_policy", "cpu_cfs_quota", "cpu_cfs_quota_period", "insecure_kubelet_readonly_port_enabled", "pod_pids_limit", "container_log_max_size", "container_log_max_files", "image_gc_low_threshold_percent", "image_gc_high_threshold_percent", "image_minimum_gc_age", "image_maximum_gc_age", "allowed_unsafe_sysctls", "shutdown_grace_period_seconds", "shutdown_grace_period_critical_pods_seconds", "single_process_oom_kill", "registry_pull_qps", "registry_burst", "event_record_qps", "event_burst"]
       )) != 0 ? [1] : []
 
       content {
@@ -1588,6 +1596,10 @@ resource "google_container_node_pool" "windows_pools" {
         shutdown_grace_period_seconds               = lookup(each.value, "shutdown_grace_period_seconds", null)
         shutdown_grace_period_critical_pods_seconds = lookup(each.value, "shutdown_grace_period_critical_pods_seconds", null)
         single_process_oom_kill                     = lookup(each.value, "single_process_oom_kill", null)
+        registry_pull_qps                           = lookup(each.value, "registry_pull_qps", null)
+        registry_burst                              = lookup(each.value, "registry_burst", null)
+        event_record_qps                            = lookup(each.value, "event_record_qps", null)
+        event_burst                                 = lookup(each.value, "event_burst", null)
       }
     }
 
