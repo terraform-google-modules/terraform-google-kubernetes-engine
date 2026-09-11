@@ -2,21 +2,21 @@
 
 This is Part2 of the tutorial to accompany a short series of  blog articles explaining how to enable [Anthos Config Management (ACM)](https://cloud.google.com/anthos/config-management) with Terraform.
 
-In the [previous article](../acm-terraform-blog-part1), we'll explain how to use Teraform to create a cluster and manage its config from git via [Config Sync](https://cloud.google.com/anthos-config-management/docs/config-sync-overview).
+In the [previous article](../acm-terraform-blog-part1), we'll explain how to use Terraform to create a cluster and manage its config from git via [Config Sync](https://cloud.google.com/anthos-config-management/docs/config-sync-overview).
 
-This article will build on that to add guard rails for the cluster via [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller). We will focus on enabling an ongoing audit of cluster resources using the Policy Controller's built in [Policy Library](http://cloud/anthos-config-management/docs/reference/constraint-template-library) and a bundle of constraints enforcings [CIS Kubernetes Benchmark v.1.5.1](https://cloud.google.com/kubernetes-engine/docs/concepts/cis-benchmarks).
+This article will build on that to add guard rails for the cluster via [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller). We will focus on enabling an ongoing audit of cluster resources using the Policy Controller's built in [Policy Library](http://cloud/anthos-config-management/docs/reference/constraint-template-library) and a bundle of constraints enforcing [CIS Kubernetes Benchmark v.1.5.1](https://cloud.google.com/kubernetes-engine/docs/concepts/cis-benchmarks).
 
-Subsequent articles will discuss other aspects of ACM to manage your GCP infrastrcuture.
+Subsequent articles will discuss other aspects of ACM to manage your GCP infrastructure.
 
 ## Enforce Cluster Guardrails with ACM Policy Controller
 
-1. Set a variables for the project from [part1](../acm-terraform-blog-part1). We will re-use that project but create a new cluster since we cleaned up at the end of the first section. If you are working in a different project, enable required GCP APIs, as described in [part1/README.md](../part1/README.md).
+1. Set a variables for the project from [part1](../acm-terraform-blog-part1). We will re-use that project but create a new cluster since we cleaned up at the end of the first section. If you are working in a different project, enable required GCP APIs, as described in [part1/README.md](../acm-terraform-blog-part1/README.md).
 
     ```bash
     PROJECT_ID = [PROJECT_ID]
     ```
 
-1. As before, cluster using terraform using defaults other than the project. The main difference in the [terraform](terraform) files is that we turn on [PolicyController](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) and also install the build in [Policy Libary](https://cloud.google.com/anthos-config-management/docs/reference/constraint-template-library).
+1. As before, cluster using terraform using defaults other than the project. The main difference in the [terraform](terraform) files is that we turn on [PolicyController](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) and also install the built-in [Policy Library](https://cloud.google.com/anthos-config-management/docs/reference/constraint-template-library).
 
     ```bash
     # obtain user access credentials to use for Terraform commands

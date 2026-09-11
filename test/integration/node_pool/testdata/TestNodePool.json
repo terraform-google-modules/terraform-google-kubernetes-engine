@@ -407,9 +407,9 @@
     {
       "autoscaling": {
         "enabled": true,
-        "locationPolicy": "BALANCED",
-        "maxNodeCount": 2,
-        "minNodeCount": 1
+        "locationPolicy": "ANY",
+        "totalMaxNodeCount": 2,
+        "totalMinNodeCount": 1
       },
       "config": {
         "accelerators": [
@@ -481,7 +481,9 @@
       },
       "initialNodeCount": 1,
       "locations": [
-        "europe-west4-b"
+        "europe-west4-a",
+        "europe-west4-b",
+        "europe-west4-c"
       ],
       "management": {
         "autoUpgrade": true
