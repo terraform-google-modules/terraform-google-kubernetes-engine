@@ -751,6 +751,12 @@ variable "filestore_csi_driver" {
   default     = false
 }
 
+variable "agent_sandbox_enabled" {
+  type        = bool
+  description = "The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later and a gVisor-enabled node pool for Standard clusters)"
+  default     = false
+}
+
 variable "lustre_csi_driver" {
   type        = bool
   description = "The status of the Lustre CSI driver addon, which allows the usage of a Lustre instances as volumes"
