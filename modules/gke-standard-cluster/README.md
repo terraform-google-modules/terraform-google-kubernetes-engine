@@ -1,6 +1,6 @@
 # GKE Standard Cluster
 
-This submodule creates basic a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters). Beta features are enabled in this submodule.
+This submodule creates a basic [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters). Beta features are enabled in this submodule.
 
 For a module with a complete configuration of a Google Cloud Platform Kubernetes Engine private cluster including GKE cluster, GKE Node Pool(s), DNS configuration, IP masq, Service account creation, and Firewall configuration see the module [beta-private-cluster](../beta-private-cluster/README.md).
 

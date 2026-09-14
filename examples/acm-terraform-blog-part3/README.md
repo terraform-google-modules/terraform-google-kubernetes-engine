@@ -10,12 +10,12 @@ In this article we'll demonstrate how, using Config Connector, you can provision
 
 ## Provision GCP resources
 
-1. Set the variable for the project from [part two](../acm-terraform-blog-part2). We will re-use that project but create a new cluster since we cleaned up at the end of the first section. If you are working in a different project, enable required GCP APIs, as described in [part one](../part1/README.md).
+1. Set the variable for the project from [part two](../acm-terraform-blog-part2). We will re-use that project but create a new cluster since we cleaned up at the end of the first section. If you are working in a different project, enable required GCP APIs, as described in [part one](../acm-terraform-blog-part1/README.md).
 
     ```bash
     PROJECT_ID = [PROJECT_ID]
     ```
-1. Note that [wordpress-bundle.yaml](./config-root/wordpress-bundle) was updated to use GCP MySQL database. Also we added [configconnector.yaml](./config-root/configconnector.yaml) to initialize the instance of Config Connector add-on on the cluster.
+1. Note that [wordpress-bundle.yaml](./config-root/wordpress-bundle.yaml) was updated to use GCP MySQL database. Also we added [configconnector.yaml](./config-root/configconnector.yaml) to initialize the instance of Config Connector add-on on the cluster.
 
 1. Use [kpt](https://kpt.dev) to customize the `config-root` directory that will be configured as the source of the objects installed on the cluster.
 
@@ -26,10 +26,10 @@ In this article we'll demonstrate how, using Config Connector, you can provision
 1. Submit the updated configuration into your branch.
 1. Ensure that `sync_repo` and `sync_branch` variables are updated in [terraform.tfvars](./terraform/terraform.tfvars)
 1. Before running Terraform, notice the changes in [gke.tf](./terraform/gke.tf):
-     - We are using the `[beta-public-cluster](../modules/beta-public-cluster)` module
+     - We are using the [`beta-public-cluster`](../../modules/beta-public-cluster) module
      - `config_connector` variable is set to true
-     - We are using `workload-identity` module to create a Google Service Account and connect it to a Kubernetes Service Account that is running in Config Connector `cnrm-system` namespace, allowing Config Connector to create GCP resource.
-1. As as in the previous part, create the cluster using Terraform:
+     - We are using `workload-identity` module to create a Google Service Account and connect it to a Kubernetes Service Account that is running in Config Connector `cnrm-system` namespace, allowing Config Connector to create GCP resources.
+1. As in the previous part, create the cluster using Terraform:
 
     ```bash
     # obtain user access credentials to use for Terraform commands
@@ -62,7 +62,7 @@ In this article we'll demonstrate how, using Config Connector, you can provision
     export CLUSTER_ZONE=$(terraform output -raw cluster_location)
     export CLUSTER_NAME=$(terraform output -raw cluster_name)
 
-    # then get creditials for it
+    # then get credentials for it
     gcloud container clusters get-credentials $CLUSTER_NAME --zone $CLUSTER_ZONE --project $PROJECT_ID
 
     ```
@@ -87,3 +87,4 @@ In this article we'll demonstrate how, using Config Connector, you can provision
     ```bash
     curl -L $( kubectl get service wordpress-external -n wp -o=json | \
             jq -r '.status["loadBalancer"]["ingress"][0]["ip"]')
+    ```

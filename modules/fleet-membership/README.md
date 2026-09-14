@@ -6,7 +6,7 @@ Specifically, this module automates the following steps for [registering a clust
 
 ## Usage
 
-There is [GKE full example](../../examples/simple_zonal_with_asm) and a [Generic K8s example](../../examples/simple_zonal_with_hub_kubeconfig) provided. Simple usage is as follows:
+There is a [GKE full example](../../examples/simple_zonal_with_hub) and a [Generic K8s example](../../examples/simple_zonal_with_hub_kubeconfig) provided. Simple usage is as follows:
 
 ```tf
 module "hub" {
