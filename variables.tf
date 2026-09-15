@@ -104,8 +104,8 @@ variable "http_load_balancing" {
 
 variable "service_external_ips" {
   type        = bool
-  description = "Whether external ips specified by a service will be allowed in this cluster"
-  default     = false
+  description = "Whether external ips specified by a service will be allowed in this cluster. Set to null to leave the setting unmanaged."
+  default     = null
 }
 
 variable "insecure_kubelet_readonly_port_enabled" {
