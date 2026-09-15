@@ -368,6 +368,10 @@ The node_pools variable takes the following parameters:
 | initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
 | insecure_kubelet_readonly_port_enabled | (boolean) Whether or not to enable the insecure Kubelet readonly port. | null | Optional |
 | single_process_oom_kill | (boolean) On cgroupv2 nodes, defines whether processes in the container are OOM killed individually (true) or as a group (false, the kubelet default). Leave null to keep the kubelet default. | null | Optional |
+| registry_pull_qps | The limit of image registry pulls per second per node. Set to 0 for no limit. Leave null to keep the kubelet default (5 pulls/s). | null | Optional |
+| registry_burst | The maximum burst size for image registry pulls above registry_pull_qps per node. Leave null to keep the kubelet default (10). | null | Optional |
+| event_record_qps | The limit of events created per second per node. Set to 0 for no limit. Leave null to keep the kubelet default (50 events/s). | null | Optional |
+| event_burst | The maximum burst size for events above event_record_qps per node. Leave null to keep the kubelet default (100). | null | Optional |
 | key | The key required for the taint | | Required |
 | logging_variant | The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT. | DEFAULT | Optional |
 | local_ssd_count | The amount of local SSD disks that will be attached to each cluster node and may be used as a `hostpath` volume or a `local` PersistentVolume. | 0 | Optional |
