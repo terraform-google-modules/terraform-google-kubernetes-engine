@@ -593,3 +593,20 @@ variable "user_managed_keys_config" {
   default     = null
 }
 
+variable "dns_allow_external_traffic" {
+  description = "(Optional) Controls whether external traffic is allowed over the dns endpoint."
+  type        = bool
+  default     = null
+}
+
+variable "dns_enable_k8s_tokens_via_dns" {
+  description = "(Optional) Controls whether Kubernetes ServiceAccount token authentication is allowed via the DNS endpoint."
+  type        = bool
+  default     = null
+}
+
+variable "ip_endpoints_enabled" {
+  description = "(Optional) Controls whether to allow direct IP access. Defaults to `true`."
+  type        = bool
+  default     = null
+}
