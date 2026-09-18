@@ -189,9 +189,8 @@ spec:
         varType: bool
         defaultValue: true
       - name: service_external_ips
-        description: Whether external ips specified by a service will be allowed in this cluster
+        description: Whether external ips specified by a service will be allowed in this cluster. Set to null to leave the setting unmanaged.
         varType: bool
-        defaultValue: false
       - name: insecure_kubelet_readonly_port_enabled
         description: "Whether or not to set `insecure_kubelet_readonly_port_enabled` for node pool defaults and autopilot clusters. Note: this can be set at the node pool level separately within `node_pools`."
         varType: bool
