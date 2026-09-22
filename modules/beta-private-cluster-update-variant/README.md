@@ -389,6 +389,7 @@ The node_pools variable takes the following parameters:
 | auto_repair | Whether the nodes will be automatically repaired | true | Optional |
 | autoscaling | Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage | true | Optional |
 | auto_upgrade | Whether the nodes will be automatically upgraded | true (if cluster is regional) | Optional |
+| exclusion_until_end_of_support | Whether to set a node pool maintenance exclusion that prevents GKE from auto-upgrading the node pool until its version's end of support. Standard clusters on a release channel only. | false | Optional |
 | storage_pools | The list of Storage Pools where boot disks are provisioned. | | Optional |
 | boot_disk_kms_key | The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. | " " | Optional |
 | cpu_manager_policy | The CPU manager policy on the node. One of "none" or "static". The module sends `kubelet_config` only when the node pool sets at least one kubelet field. If the node pool sets no kubelet field, the module sends no value and GKE applies its own default of "none". | "static", but only when the node pool sets another kubelet field | Optional |
