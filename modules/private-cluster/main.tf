@@ -44,10 +44,11 @@ locals {
   region   = var.regional ? var.region : join("-", slice(split("-", var.zones[0]), 0, 2))
   // for regional cluster - use var.zones if provided, use available otherwise, for zonal cluster use var.zones with first element extracted
   node_locations = var.regional ? coalescelist(compact(var.zones), try(sort(random_shuffle.available_zones[0].result), [])) : slice(var.zones, 1, length(var.zones))
-  // Kubernetes version
-  master_version_regional = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.region.latest_master_version
-  master_version_zonal    = var.kubernetes_version != "latest" ? var.kubernetes_version : data.google_container_engine_versions.zone.latest_master_version
-  master_version          = var.regional ? local.master_version_regional : local.master_version_zonal
+  // Kubernetes version. The zone data source below is not created for regional
+  // clusters, so its attributes must stay in the unused branch of this conditional.
+  master_version = var.kubernetes_version != "latest" ? var.kubernetes_version : (
+    var.regional ? data.google_container_engine_versions.region.latest_master_version : data.google_container_engine_versions.zone[0].latest_master_version
+  )
   // Build a map of maps of node pools from a list of objects
   node_pools         = { for np in var.node_pools : np.name => np }
   windows_node_pools = { for np in var.windows_node_pools : np.name => np }
@@ -194,10 +195,11 @@ data "google_container_engine_versions" "region" {
 }
 
 data "google_container_engine_versions" "zone" {
-  // Work around to prevent a lack of zone declaration from causing regional cluster creation from erroring out due to error
-  //
-  //     data.google_container_engine_versions.zone: Cannot determine zone: set in this resource, or set provider-level zone.
-  //
-  location = local.zone_count == 0 ? data.google_compute_zones.available[0].names[0] : var.zones[0]
+  // Zonal clusters resolve "latest" from the cluster zone. Regional clusters use
+  // the region data source above, so this lookup is skipped: querying a zone
+  // fails in environments where zonal GKE clusters are not available.
+  count = var.regional ? 0 : 1
+
+  location = var.zones[0]
   project  = var.project_id
 }
