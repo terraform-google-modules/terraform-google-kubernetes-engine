@@ -17,3 +17,31 @@ terraform state push state.new.json
 ```
 
 Alternatively, the ConfigMap holds no persistent data and can safely be allowed to be recreated (`terraform apply` will destroy and recreate it).
+
+### Update variant random ID keepers updated
+
+The `*-update-variant` modules (`private-cluster-update-variant`, `beta-private-cluster-update-variant`, `beta-public-cluster-update-variant`) have added `"subnetwork"` to `force_node_pool_recreation_resources`. Because `network_config.subnetwork` is a `ForceNew` field on `google_container_node_pool`, this keeper is required so that `create_before_destroy` can produce a clean replacement when a pool's subnet changes.
+
+However, adding any key to the `random_id.name` keepers causes the id to roll for **all** node pools in those modules, forcing recreation even for pools that do not use `subnetwork`. This matches the behaviour documented in the [v29.0 upgrade guide](upgrading_to_v29.0.md).
+
+To avoid recreation, edit the `random_id` keeper state after upgrading:
+
+1. Perform a `terraform plan` to identify the `random_id` resources changing:
+```tf
+      ~ keepers     = { # forces replacement
+          + "subnetwork"  = ""
+            # (N unchanged elements hidden)
+        }
+```
+2. Pull the remote state: `terraform state pull > default.tfstate`
+3. Back up: `cp default.tfstate original.tfstate`
+4. Add the new key to each `random_id` resource in the state:
+```diff
+"keepers": {
+  ...
++ "subnetwork": "",
+},
+```
+5. Bump the `serial` number at the top of the file.
+6. Push: `terraform state push default.tfstate`
+7. Confirm `terraform plan` no longer shows the `random_id` (or the corresponding node pool) as changing.
