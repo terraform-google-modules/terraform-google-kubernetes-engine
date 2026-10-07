@@ -496,6 +496,12 @@ variable "gke_backup_agent_config" {
   default     = false
 }
 
+variable "enable_secret_manager_addon" {
+  description = "Enable the Secret Manager add-on for this cluster"
+  type        = bool
+  default     = false
+}
+
 variable "enable_secret_sync" {
   description = "Enable the Secret Sync add-on for this cluster."
   type        = bool
