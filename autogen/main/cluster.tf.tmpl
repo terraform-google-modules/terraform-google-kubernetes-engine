@@ -481,6 +481,12 @@ resource "google_container_cluster" "primary" {
         enabled = gke_backup_agent_config.value.enabled
       }
     }
+    {% if beta_cluster and autopilot_cluster != true %}
+
+    agent_sandbox_config {
+      enabled = var.agent_sandbox_enabled
+    }
+    {% endif %}
 
     dynamic "stateful_ha_config" {
       for_each = local.stateful_ha_config
