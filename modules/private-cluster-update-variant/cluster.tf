@@ -954,6 +954,15 @@ resource "google_container_node_pool" "pools" {
     }
   }
 
+  dynamic "maintenance_policy" {
+    for_each = lookup(each.value, "exclusion_until_end_of_support", false) ? [true] : []
+    content {
+      exclusion_until_end_of_support {
+        enabled = lookup(each.value, "exclusion_until_end_of_support", null)
+      }
+    }
+  }
+
   node_config {
     image_type                  = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type                = lookup(each.value, "machine_type", "e2-medium")
@@ -1349,6 +1358,15 @@ resource "google_container_node_pool" "windows_pools" {
     for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
     content {
       enabled = lookup(each.value, "queued_provisioning", null)
+    }
+  }
+
+  dynamic "maintenance_policy" {
+    for_each = lookup(each.value, "exclusion_until_end_of_support", false) ? [true] : []
+    content {
+      exclusion_until_end_of_support {
+        enabled = lookup(each.value, "exclusion_until_end_of_support", null)
+      }
     }
   }
 
