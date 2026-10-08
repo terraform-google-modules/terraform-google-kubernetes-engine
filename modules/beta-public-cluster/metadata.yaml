@@ -609,7 +609,7 @@ spec:
         varType: bool
         defaultValue: false
       - name: agent_sandbox_enabled
-        description: The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later and a gVisor-enabled node pool for Standard clusters)
+        description: The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later and a gVisor-enabled node pool)
         varType: bool
       - name: lustre_csi_driver
         description: The status of the Lustre CSI driver addon, which allows the usage of a Lustre instances as volumes

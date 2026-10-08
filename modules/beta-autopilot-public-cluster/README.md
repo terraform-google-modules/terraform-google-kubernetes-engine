@@ -72,6 +72,7 @@ Then perform the following commands on the root folder:
 | add\_shadow\_firewall\_rules | Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled). | `bool` | `false` | no |
 | additional\_ip\_range\_pods | List of _names_ of the additional secondary subnet ip ranges to use for pods | `list(string)` | `[]` | no |
 | additional\_ip\_ranges\_config | the configuration for individual additional subnetworks attached to the cluster | `list(object({ subnetwork = string, pod_ipv4_range_names = list(string) }))` | `[]` | no |
+| agent\_sandbox\_enabled | The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later) | `bool` | `null` | no |
 | allow\_net\_admin | (Optional) Enable NET\_ADMIN for the cluster. | `bool` | `null` | no |
 | anonymous\_authentication\_config\_mode | Allows users to restrict or enable anonymous access to the cluster. Valid values are `ENABLED` and `LIMITED`. | `string` | `null` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
