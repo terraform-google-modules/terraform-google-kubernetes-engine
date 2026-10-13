@@ -37,6 +37,12 @@ resource "random_shuffle" "available_zones" {
 
   input        = data.google_compute_zones.available[0].names
   result_count = 3
+
+  // Keep the selected zones when the region's available zones change, so the
+  // cluster's node_locations don't change with them.
+  lifecycle {
+    ignore_changes = [input]
+  }
 }
 
 locals {
