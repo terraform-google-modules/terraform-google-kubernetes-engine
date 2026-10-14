@@ -28,7 +28,7 @@ func TestSimpleAutopilotPrivateCMEK(t *testing.T) {
 	projectID := testutils.GetTestProjectFromSetup(t, 1)
 	bpt := tft.NewTFBlueprintTest(t,
 		tft.WithVars(map[string]interface{}{"project_id": projectID}),
-		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
+		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
