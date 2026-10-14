@@ -11,6 +11,7 @@ This example illustrates how to create a simple cluster with beta features.
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | `any` | n/a | yes |
 | database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key\_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key\_name is the name of a CloudKMS key. | `list(object({ state = string, key_name = string }))` | <pre>[<br>  {<br>    "key_name": "",<br>    "state": "DECRYPTED"<br>  }<br>]</pre> | no |
 | dns\_cache | (Beta) The status of the NodeLocal DNSCache addon. | `bool` | `false` | no |
+| enable\_agent\_sandbox | Enable the managed Agent Sandbox add-on for this cluster. | `bool` | `null` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
 | enable\_pod\_security\_policy | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | `bool` | `false` | no |
 | gce\_pd\_csi\_driver | (Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. | `bool` | `false` | no |

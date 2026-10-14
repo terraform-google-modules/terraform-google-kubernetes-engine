@@ -313,6 +313,14 @@ resource "google_container_cluster" "primary" {
   }
 
   addons_config {
+    dynamic "agent_sandbox_config" {
+      for_each = var.enable_agent_sandbox == null ? [] : [var.enable_agent_sandbox]
+
+      content {
+        enabled = agent_sandbox_config.value
+      }
+    }
+
     http_load_balancing {
       disabled = !var.http_load_balancing
     }

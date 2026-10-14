@@ -38,6 +38,7 @@ module "gke" {
   dns_cache                   = var.dns_cache
   gce_pd_csi_driver           = var.gce_pd_csi_driver
   sandbox_enabled             = var.sandbox_enabled
+  enable_agent_sandbox        = var.enable_agent_sandbox
   remove_default_node_pool    = var.remove_default_node_pool
   node_pools                  = var.node_pools
   database_encryption         = var.database_encryption

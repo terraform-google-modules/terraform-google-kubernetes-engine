@@ -175,6 +175,7 @@ Then perform the following commands on the root folder:
 | dns\_allow\_external\_traffic | (Optional) Controls whether external traffic is allowed over the dns endpoint. | `bool` | `null` | no |
 | dns\_cache | The status of the NodeLocal DNSCache addon. | `bool` | `false` | no |
 | dns\_enable\_k8s\_tokens\_via\_dns | (Optional) Controls whether Kubernetes ServiceAccount token authentication is allowed via the DNS endpoint. | `bool` | `null` | no |
+| enable\_agent\_sandbox | Enable the managed Agent Sandbox add-on for this cluster. Set to null to leave the existing configuration unchanged. | `bool` | `null` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
 | enable\_cilium\_clusterwide\_network\_policy | Enable Cilium Cluster Wide Network Policies on the cluster | `bool` | `false` | no |
 | enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |

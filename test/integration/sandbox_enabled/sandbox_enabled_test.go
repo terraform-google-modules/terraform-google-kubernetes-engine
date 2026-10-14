@@ -40,6 +40,7 @@ func TestSandboxEnabled(t *testing.T) {
 		serviceAccount := bpt.GetStringOutput("service_account")
 
 		op := gcloud.Runf(t, "container clusters describe %s --zone %s --project %s", clusterName, location, projectId)
+		assert.True(op.Get("addonsConfig.agentSandboxConfig.enabled").Bool(), "Agent Sandbox add-on must be enabled")
 		g := golden.NewOrUpdate(t, op.String(),
 			golden.WithSanitizer(testutils.GKEClusterSanitizer(serviceAccount, projectId, clusterName, op)),
 		)
