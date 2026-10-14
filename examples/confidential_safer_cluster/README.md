@@ -10,6 +10,7 @@ with confidential nodes enabled and database encrypted with KMS key.
 |------|-------------|------|---------|:--------:|
 | project\_id | The project ID to host the cluster in. | `string` | n/a | yes |
 | region | The region to host the cluster in. | `string` | `"us-central1"` | no |
+| zones | The zones to host the cluster in. | `list(string)` | `[]` | no |
 
 ## Outputs
 
