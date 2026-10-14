@@ -192,7 +192,7 @@ module "gke" {
   enable_vertical_pod_autoscaling = var.enable_vertical_pod_autoscaling
 
   // We enable Workload Identity by default.
-  identity_namespace = "${var.project_id}.svc.id.goog"
+  identity_namespace = "${data.google_project.project.project_id}.svc.id.goog"
 
   // Enabling mesh certificates requires Workload Identity
   enable_mesh_certificates = var.enable_mesh_certificates
