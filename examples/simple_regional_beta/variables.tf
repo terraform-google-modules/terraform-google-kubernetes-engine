@@ -65,6 +65,12 @@ variable "sandbox_enabled" {
   default     = false
 }
 
+variable "enable_agent_sandbox" {
+  type        = bool
+  description = "Enable the managed Agent Sandbox add-on for this cluster."
+  default     = null
+}
+
 variable "remove_default_node_pool" {
   type        = bool
   description = "Remove default node pool while setting up the cluster"

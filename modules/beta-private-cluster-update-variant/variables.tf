@@ -903,6 +903,12 @@ variable "gcs_fuse_csi_driver" {
   description = "Whether GCE FUSE CSI driver is enabled for this cluster."
   default     = false
 }
+variable "enable_agent_sandbox" {
+  type        = bool
+  description = "Enable the managed Agent Sandbox add-on for this cluster. Set to null to leave the existing configuration unchanged."
+  default     = null
+}
+
 variable "gke_backup_agent_config" {
   type        = bool
   description = "Whether Backup for GKE agent is enabled for this cluster."

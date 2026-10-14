@@ -468,6 +468,9 @@ spec:
         description: Enable BinAuthZ Admission controller
         varType: bool
         defaultValue: false
+      - name: enable_agent_sandbox
+        description: Enable the managed Agent Sandbox add-on for this cluster. Set to null to leave the existing configuration unchanged.
+        varType: bool
       - name: gke_backup_agent_config
         description: Whether Backup for GKE agent is enabled for this cluster.
         varType: bool
@@ -634,7 +637,7 @@ spec:
       - source: hashicorp/google
         version: ">= 7.28.0, < 9"
       - source: hashicorp/google-beta
-        version: ">= 7.28.0, < 9"
+        version: ">= 7.39.0, < 9"
       - source: hashicorp/kubernetes
         version: ">= 2.10, < 4"
       - source: hashicorp/random
