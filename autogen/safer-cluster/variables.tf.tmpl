@@ -107,6 +107,12 @@ variable "datapath_provider" {
   default     = "ADVANCED_DATAPATH"
 }
 
+variable "enable_fqdn_network_policy" {
+  type        = bool
+  description = "Enable FQDN Network Policies on the cluster"
+  default     = null
+}
+
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily maintenance operations in RFC3339 format"
