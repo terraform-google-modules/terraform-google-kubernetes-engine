@@ -192,6 +192,9 @@ spec:
         description: The desired datapath provider for this cluster. By default, `ADVANCED_DATAPATH` enables Dataplane-V2 feature. `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation as a fallback since upgrading to V2 requires a cluster re-creation.
         varType: string
         defaultValue: ADVANCED_DATAPATH
+      - name: enable_fqdn_network_policy
+        description: Enable FQDN Network Policies on the cluster
+        varType: bool
       - name: maintenance_start_time
         description: Time window specified for daily maintenance operations in RFC3339 format
         varType: string

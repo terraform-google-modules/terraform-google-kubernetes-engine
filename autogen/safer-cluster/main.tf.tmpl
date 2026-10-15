@@ -78,6 +78,9 @@ module "gke" {
   // allows for network policy logging of allowed and denied requests to Pods.
   datapath_provider = var.datapath_provider
 
+  // Allow egress NetworkPolicies to match on fully qualified domain names.
+  enable_fqdn_network_policy = var.enable_fqdn_network_policy
+
   maintenance_start_time = var.maintenance_start_time
   maintenance_end_time   = var.maintenance_end_time
   maintenance_recurrence = var.maintenance_recurrence
