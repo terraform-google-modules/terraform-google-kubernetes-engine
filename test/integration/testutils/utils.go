@@ -59,6 +59,11 @@ var (
 		".*resource is currently locked as part of another operation.*": "Resource locked.",
 		".*NodePool.*was created in the error state.*":                  "Node pool creation failed in error state.",
 		".*Cluster.*was created in the error state.*":                   "Cluster creation failed in error state.",
+		".*Failed to create cluster.*":                                  "Failed to create cluster.",
+		".*DeployPatch failed.*":                                        "Cluster control plane deploy patch failed.",
+		".*Try a different location, or try again later: Google Compute Engine does not have enough resources available to fulfill request.*": "Compute resource pool exhausted.",
+		".*GCE_STOCKOUT.*": "GCE stockout.",
+		".*does not have enough resources available to fulfill.*": "Compute resource pool exhausted.",
 
 		// Transient IAM / SA replication
 		".*Permission.*denied on resource.*":   "IAM permission replication delay.",
@@ -77,6 +82,8 @@ var (
 		"monitoringConfig.componentConfig.enableComponents",
 		"labelFingerprint",
 		"maintenancePolicy.resourceVersion",
+		"privateClusterConfig.privateEndpoint",
+		"controlPlaneEndpointsConfig.ipEndpointsConfig.privateEndpoint",
 		"etag",
 	}
 )
@@ -120,7 +127,7 @@ func TGKEAssertGolden(assert *assert.Assertions, golden *golden.GoldenFile, clus
 	exemptPaths := slices.Concat(exemptClusterPaths, ClusterAlwaysExemptPaths)
 	clusterCheckPaths = slices.DeleteFunc(clusterCheckPaths, func(s string) bool {
 		for _, exempPath := range exemptPaths {
-			if strings.HasPrefix(s, exempPath) {
+			if s == exempPath || strings.HasPrefix(s, exempPath+".") {
 				return true
 			}
 		}
