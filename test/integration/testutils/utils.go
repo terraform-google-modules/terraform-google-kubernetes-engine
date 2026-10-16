@@ -80,6 +80,8 @@ var (
 		"monitoringConfig.componentConfig.enableComponents",
 		"labelFingerprint",
 		"maintenancePolicy.resourceVersion",
+		"privateClusterConfig.privateEndpoint",
+		"controlPlaneEndpointsConfig.ipEndpointsConfig.privateEndpoint",
 		"etag",
 	}
 )
@@ -123,7 +125,7 @@ func TGKEAssertGolden(assert *assert.Assertions, golden *golden.GoldenFile, clus
 	exemptPaths := slices.Concat(exemptClusterPaths, ClusterAlwaysExemptPaths)
 	clusterCheckPaths = slices.DeleteFunc(clusterCheckPaths, func(s string) bool {
 		for _, exempPath := range exemptPaths {
-			if strings.HasPrefix(s, exempPath) {
+			if s == exempPath || strings.HasPrefix(s, exempPath+".") {
 				return true
 			}
 		}
