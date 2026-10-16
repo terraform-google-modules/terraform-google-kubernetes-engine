@@ -78,7 +78,6 @@ module "gke" {
     {
       name              = "pool-02"
       machine_type      = "g2-standard-4"
-      node_locations    = "${var.region}-a,${var.region}-b,${var.region}-c"
       total_min_count   = 1
       total_max_count   = 2
       location_policy   = "ANY"

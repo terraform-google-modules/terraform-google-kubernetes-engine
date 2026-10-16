@@ -61,6 +61,7 @@ var (
 		".*Cluster.*was created in the error state.*":                   "Cluster creation failed in error state.",
 		".*Failed to create cluster.*":                                  "Failed to create cluster.",
 		".*DeployPatch failed.*":                                        "Cluster control plane deploy patch failed.",
+		".*Try a different location, or try again later: Google Compute Engine does not have enough resources available to fulfill request.*": "Compute resource pool exhausted.",
 
 		// Transient IAM / SA replication
 		".*Permission.*denied on resource.*":   "IAM permission replication delay.",
