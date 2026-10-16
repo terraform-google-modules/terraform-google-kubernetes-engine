@@ -19,5 +19,5 @@ module "example" {
 
   project_id = var.project_ids[1]
   region     = var.region
-  zones      = ["us-central1-a"]
+  zones      = ["us-central1-c"]
 }
