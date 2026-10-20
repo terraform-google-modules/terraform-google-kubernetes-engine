@@ -190,6 +190,9 @@ module "gke" {
   // Sandbox can also provide increased protection in other cases, at some performance cost.
   sandbox_enabled = var.sandbox_enabled
 
+  // Agent Sandbox runs untrusted agent workloads in isolated, gVisor-backed sandboxes.
+  agent_sandbox_enabled = var.agent_sandbox_enabled
+
   // Intranode Visibility enables you to capture flow logs for traffic between pods and create FW rules that apply to traffic between pods.
   enable_intranode_visibility = var.enable_intranode_visibility
 

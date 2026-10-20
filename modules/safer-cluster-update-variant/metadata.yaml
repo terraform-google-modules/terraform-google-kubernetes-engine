@@ -384,6 +384,9 @@ spec:
         description: (Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it).
         varType: bool
         defaultValue: false
+      - name: agent_sandbox_enabled
+        description: The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later and a gVisor-enabled node pool for Standard clusters)
+        varType: bool
       - name: enable_intranode_visibility
         description: Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network
         varType: bool
