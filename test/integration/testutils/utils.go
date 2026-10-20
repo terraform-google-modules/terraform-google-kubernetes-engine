@@ -30,6 +30,10 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+const (
+	RetriesOnTransientErrors int = 5
+)
+
 var (
 	RetryableTransientErrors = map[string]string{
 		// Error 409: Operation / Policy conflicts
@@ -39,10 +43,10 @@ var (
 		".*Error 409.*is in use":                                "Resource in use.",
 
 		// Rate limiting & Quotas
-		".*rateLimitExceeded.*":        "Rate limit exceeded.",
-		".*quotaExceeded.*":            "Quota exceeded.",
-		".*RESOURCE_EXHAUSTED.*":       "Resource exhausted.",
-		".*User Rate Limit Exceeded.*": "User rate limit exceeded.",
+		".*rateLimitExceeded.*":                        "Rate limit exceeded.",
+		".*quotaExceeded.*":                            "Quota exceeded.",
+		".*RESOURCE_EXHAUSTED.*":                       "Resource exhausted.",
+		".*User Rate Limit Exceeded.*":                 "User rate limit exceeded.",
 
 		// 5xx and Internal Server Errors
 		".*Error 500.*":    "Internal server error.",
@@ -90,7 +94,7 @@ var (
 
 func GetTestProjectFromSetup(t *testing.T, idx int) string {
 	setup := tft.NewTFBlueprintTest(t,
-		tft.WithRetryableTerraformErrors(RetryableTransientErrors, 3, 2*time.Minute),
+		tft.WithRetryableTerraformErrors(RetryableTransientErrors, RetriesOnTransientErrors, 2*time.Minute),
 	)
 	projectIDs := setup.GetTFSetupOutputListVal("project_ids")
 	if len(projectIDs)-1 < idx {
