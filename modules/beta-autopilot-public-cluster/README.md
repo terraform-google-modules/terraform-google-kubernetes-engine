@@ -12,7 +12,7 @@ Sub modules are provided for creating private clusters, beta private clusters, a
 
 ## Compatibility
 
-This module is meant for use with Terraform 1.3+ and tested using Terraform 1.10+.
+This module is meant for use with Terraform 1.3+ and tested using Terraform 1.14+.
 If you find incompatibilities using Terraform `>=1.3`, please open an issue.
 
 If you haven't [upgraded to 1.3][terraform-1.3-upgrade] and need a Terraform
@@ -96,6 +96,7 @@ Then perform the following commands on the root folder:
 | enable\_k8s\_beta\_apis | (Optional) - List of Kubernetes Beta APIs to enable in cluster. | `list(string)` | `[]` | no |
 | enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
 | enable\_legacy\_lustre\_port | Set it to true for GKE cluster runs a version earlier than 1.33.2-gke.4780000. Allows the Lustre CSI driver to initialize LNet (the virtual network layer for Lustre kernel module) using port 6988. This flag is required to workaround a port conflict with the gke-metadata-server on GKE nodes | `bool` | `false` | no |
+| enable\_managed\_machine\_learning\_diagnostics | (beta) Enable Managed Machine Learning Diagnostics on the cluster. | `bool` | `null` | no |
 | enable\_multi\_networking | Whether multi-networking is enabled for this cluster | `bool` | `null` | no |
 | enable\_network\_egress\_export | Whether to enable network egress metering for this cluster. If enabled, a daemonset will be created in the cluster to meter network egress traffic. | `bool` | `false` | no |
 | enable\_resource\_consumption\_export | Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. | `bool` | `true` | no |
@@ -225,7 +226,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
-- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v6.47+
+- [Terraform Provider for GCP Beta][terraform-provider-google-beta] v7.39+
 
 #### gcloud
 
@@ -257,6 +258,7 @@ In order to operate with the Service Account you must activate the following API
 - Kubernetes Engine API - container.googleapis.com
 
 [terraform-provider-google-beta]: <https://github.com/terraform-providers/terraform-provider-google-beta>
+[27.0.0]: <https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/27.0.0>
 [12.3.0]: <https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/12.3.0>
 [terraform-0.13-upgrade]: <https://www.terraform.io/upgrade-guides/0-13.html>
 [terraform-1.3-upgrade]: <https://developer.hashicorp.com/terraform/language/v1.3.x/upgrade-guides>

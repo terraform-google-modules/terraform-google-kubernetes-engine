@@ -1,6 +1,6 @@
 # GKE Autopilot Cluster
 
-This submodule creates basic a [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters) with [Autopilot](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview) enabled. Beta features are enabled in this submodule.
+This submodule creates a basic [private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters) with [Autopilot](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview) enabled. Beta features are enabled in this submodule.
 
 For a module with a complete configuration of a Google Cloud Platform Kubernetes Engine private cluster with Autopilot including GKE cluster, IP masq, Service account creation and Firewall configuration see the module [beta-autopilot-private-cluster](../beta-autopilot-private-cluster/README.md).
 

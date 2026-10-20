@@ -50,12 +50,13 @@ resource "google_kms_crypto_key_iam_member" "main" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/safer-cluster"
-  version = "~> 44.0"
+  version = "~> 45.0"
 
   project_id                 = var.project_id
   name                       = "${local.cluster_type}-cluster-${random_string.suffix.result}"
   regional                   = true
   region                     = var.region
+  zones                      = var.zones
   network                    = module.gcp-network.network_name
   subnetwork                 = local.subnet_names[index(module.gcp-network.subnets_names, local.subnet_name)]
   ip_range_pods              = local.pods_range_name

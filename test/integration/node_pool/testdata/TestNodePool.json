@@ -407,9 +407,8 @@
     {
       "autoscaling": {
         "enabled": true,
-        "locationPolicy": "BALANCED",
-        "maxNodeCount": 2,
-        "minNodeCount": 1
+        "locationPolicy": "ANY",
+        "totalMaxNodeCount": 2
       },
       "config": {
         "accelerators": [
@@ -479,7 +478,6 @@
           "mode": "GKE_METADATA"
         }
       },
-      "initialNodeCount": 1,
       "locations": [
         "europe-west4-b"
       ],

@@ -6,6 +6,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [46.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v45.0.0...v46.0.0) (2026-10-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* Preserve pool names when ForceNew inputs are unset ([#2653](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2653))
+* **deps:** Update Terraform Google Provider to v8 ([#2641](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2641))
+
+### Features
+
+* add single_process_oom_kill to node pool kubelet_config ([#2631](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2631)) ([35d8d08](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/35d8d084fe41e2489b86b1f79d13e3adfeb91565))
+* **deps:** Update Terraform Google Provider to v8 ([#2641](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2641)) ([bf549f5](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/bf549f598d2b8731d837c29ce98e8349f4c88504))
+
+
+### Bug Fixes
+
+* Preserve pool names when ForceNew inputs are unset ([#2653](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2653)) ([068af04](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/068af04e164ab3d0061d70b809ff603027e944b8))
+
+## [45.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v44.3.0...v45.0.0) (2026-08-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=7.39:** add support for shutdown_grace_period_seconds and shutdown_grac… ([#2613](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2613))
+
+### Features
+
+* add pod_cidr_overprovision_config support ([#2594](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2594)) ([b1f2719](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/b1f2719ac4e57785ed6b7985e3df0d08c15c4910))
+* add support for managed machine learning diagnostics config ([#2634](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2634)) ([e1f99a3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e1f99a3caa095bd9ca1bf779106d9ac199c1758d))
+* **TPG>=7.39:** add support for shutdown_grace_period_seconds and shutdown_grac… ([#2613](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2613)) ([8091076](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/809107643ef596b4efd199f40c216ea420e005bf))
+
+
+### Bug Fixes
+
+* bump ip-masq-agent configmap to kubernetes_config_map_v1 ([#2627](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2627)) ([ae63c62](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/ae63c62bec157eb46d97568edb60413c83bee2fb))
+* make add_shadow_firewall_rules independent of add_cluster_firewall_rules ([#2617](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2617)) ([24236b3](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/24236b3134362cb114b02025db6cd5e93867cce9))
+
 ## [44.3.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v44.2.0...v44.3.0) (2026-06-26)
 
 

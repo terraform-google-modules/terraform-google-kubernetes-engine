@@ -643,6 +643,12 @@ variable "enable_secret_sync" {
   default     = false
 }
 
+variable "enable_managed_machine_learning_diagnostics" {
+  type        = bool
+  description = "(beta) Enable Managed Machine Learning Diagnostics on the cluster."
+  default     = null
+}
+
 variable "workload_vulnerability_mode" {
   description = "(beta) Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC."
   type        = string
@@ -743,6 +749,12 @@ variable "filestore_csi_driver" {
   type        = bool
   description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
   default     = false
+}
+
+variable "agent_sandbox_enabled" {
+  type        = bool
+  description = "The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later and a gVisor-enabled node pool for Standard clusters)"
+  default     = null
 }
 
 variable "lustre_csi_driver" {

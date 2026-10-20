@@ -10,8 +10,8 @@ The module fixes a set of parameters to values suggested in the
 [GKE hardening guide](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster),
 the CIS framework, and other best practices.
 
-The motivation for each setting, and its relation to harderning guides or other recommendations
-is outline in `main.tf` as comments over individual settings. When security-relevant settings
+The motivation for each setting, and its relation to hardening guides or other recommendations
+is outlined in `main.tf` as comments over individual settings. When security-relevant settings
 are available for configuration, recommendations on their settings are documented in the `variables.tf` file.
 
 ## Project Setup and Cloud IAM policy for GKE
@@ -22,7 +22,7 @@ are available for configuration, recommendations on their settings are documente
     not need to communicate with each other (e.g., dev and prod instances of the
     same application) should be placed in different clusters.
 
-    -   This approach will limit the blast radius of errors. An security problem
+    -   This approach will limit the blast radius of errors. A security problem
         in dev shouldn't impact production data.
 
 -   If applications need to communicate (e.g., a frontend system calling
@@ -172,8 +172,8 @@ You can add the following binding to the `myproduct-prod` project.
 
 ```
 - members:
-  role: roles/container.clusterViewer`
-  - group:<produdct team group>
+  role: roles/container.clusterViewer
+  - group:<product team group>
   - group:<cluster team group>
 ```
 
@@ -190,10 +190,10 @@ For simplicity, we suggest using `roles/container.admin` and
 ```
 - members:
   role: roles/container.admin
-  - group:<oncall for cluster tean>
+  - group:<oncall for cluster team>
 - members:
   role: roles/compute.admin
-  - group:<oncall for cluster tean>
+  - group:<oncall for cluster team>
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
@@ -224,6 +224,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | enable\_gcfs | Enable image streaming on cluster level. | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
 | enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
+| enable\_managed\_machine\_learning\_diagnostics | (beta) Enable Managed Machine Learning Diagnostics on the cluster. | `bool` | `null` | no |
 | enable\_mesh\_certificates | Controls the issuance of workload mTLS certificates. When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. Requires Workload Identity. | `bool` | `false` | no |
 | enable\_pod\_security\_policy | enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. | `bool` | `false` | no |
 | enable\_private\_endpoint | When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable\_private\_nodes is true | `bool` | `true` | no |

@@ -113,5 +113,5 @@ module "enabling-client-certificate" {
 }
 ```
 
-[gsc-backend]: https://www.terraform.io/docs/backends/types/gcs.html
+[gcs-backend]: https://www.terraform.io/docs/backends/types/gcs.html
 [sensitive-data]: https://www.terraform.io/docs/state/sensitive-data.html

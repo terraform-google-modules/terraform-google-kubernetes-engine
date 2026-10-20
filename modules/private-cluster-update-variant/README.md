@@ -39,7 +39,7 @@ The implications of this are that:
 
 ## Compatibility
 
-This module is meant for use with Terraform 1.3+ and tested using Terraform 1.10+.
+This module is meant for use with Terraform 1.3+ and tested using Terraform 1.14+.
 If you find incompatibilities using Terraform `>=1.3`, please open an issue.
 
 If you haven't [upgraded to 1.3][terraform-1.3-upgrade] and need a Terraform
@@ -174,6 +174,7 @@ Then perform the following commands on the root folder:
 | additional\_ip\_range\_pods | List of _names_ of the additional secondary subnet ip ranges to use for pods | `list(string)` | `[]` | no |
 | additional\_ip\_ranges\_config | the configuration for individual additional subnetworks attached to the cluster | `list(object({ subnetwork = string, pod_ipv4_range_names = list(string) }))` | `[]` | no |
 | additive\_vpc\_scope\_dns\_domain | This will enable Cloud DNS additive VPC scope. Must provide a domain name that is unique within the VPC. For this to work cluster\_dns = `CLOUD_DNS` and cluster\_dns\_scope = `CLUSTER_SCOPE` must both be set as well. | `string` | `""` | no |
+| agent\_sandbox\_enabled | The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later and a gVisor-enabled node pool for Standard clusters) | `bool` | `null` | no |
 | anonymous\_authentication\_config\_mode | Allows users to restrict or enable anonymous access to the cluster. Valid values are `ENABLED` and `LIMITED`. | `string` | `null` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
 | boot\_disk\_kms\_key | The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool, if not overridden in `node_pools`. This should be of the form projects/[KEY\_PROJECT\_ID]/locations/[LOCATION]/keyRings/[RING\_NAME]/cryptoKeys/[KEY\_NAME]. For more information about protecting resources with Cloud KMS Keys please see: https://cloud.google.com/compute/docs/disks/customer-managed-encryption | `string` | `null` | no |
@@ -403,6 +404,7 @@ The node_pools variable takes the following parameters:
 | image_type | The image type to use for this node. Note that changing the image type will delete and recreate all nodes in the node pool | COS_CONTAINERD | Optional |
 | initial_node_count | The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. Defaults to the value of min_count | " " | Optional |
 | insecure_kubelet_readonly_port_enabled | (boolean) Whether or not to enable the insecure Kubelet readonly port. | null | Optional |
+| single_process_oom_kill | (boolean) On cgroupv2 nodes, defines whether processes in the container are OOM killed individually (true) or as a group (false, the kubelet default). Leave null to keep the kubelet default. | null | Optional |
 | key | The key required for the taint | | Required |
 | logging_variant | The type of logging agent that is deployed by default for newly created node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT. | DEFAULT | Optional |
 | local_ssd_count | The amount of local SSD disks that will be attached to each cluster node and may be used as a `hostpath` volume or a `local` PersistentVolume. | 0 | Optional |
@@ -488,7 +490,7 @@ The [project factory](https://github.com/terraform-google-modules/terraform-goog
 #### Terraform and Plugins
 
 - [Terraform](https://www.terraform.io/downloads.html) 1.3+
-- [Terraform Provider for GCP][terraform-provider-google] v6.47+
+- [Terraform Provider for GCP][terraform-provider-google] v7.39+
 
 #### gcloud
 
@@ -520,6 +522,7 @@ In order to operate with the Service Account you must activate the following API
 - Kubernetes Engine API - container.googleapis.com
 
 [terraform-provider-google]: <https://github.com/terraform-providers/terraform-provider-google>
+[27.0.0]: <https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/27.0.0>
 [12.3.0]: <https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/12.3.0>
 [terraform-0.13-upgrade]: <https://www.terraform.io/upgrade-guides/0-13.html>
 [terraform-1.3-upgrade]: <https://developer.hashicorp.com/terraform/language/v1.3.x/upgrade-guides>

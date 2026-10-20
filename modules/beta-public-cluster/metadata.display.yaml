@@ -49,6 +49,9 @@ spec:
         additive_vpc_scope_dns_domain:
           name: additive_vpc_scope_dns_domain
           title: Additive Vpc Scope Dns Domain
+        agent_sandbox_enabled:
+          name: agent_sandbox_enabled
+          title: Agent Sandbox Enabled
         anonymous_authentication_config_mode:
           name: anonymous_authentication_config_mode
           title: Anonymous Authentication Config Mode
@@ -169,6 +172,9 @@ spec:
         enable_legacy_lustre_port:
           name: enable_legacy_lustre_port
           title: Enable Legacy Lustre Port
+        enable_managed_machine_learning_diagnostics:
+          name: enable_managed_machine_learning_diagnostics
+          title: Enable Managed Machine Learning Diagnostics
         enable_mesh_certificates:
           name: enable_mesh_certificates
           title: Enable Mesh Certificates
