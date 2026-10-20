@@ -47,8 +47,6 @@ var (
 		".*quotaExceeded.*":                            "Quota exceeded.",
 		".*RESOURCE_EXHAUSTED.*":                       "Resource exhausted.",
 		".*User Rate Limit Exceeded.*":                 "User rate limit exceeded.",
-		".*GCE_STOCKOUT.*":                             "GCE stock out.",
-		".*does not have enough resources available.*": "No resources available.",
 
 		// 5xx and Internal Server Errors
 		".*Error 500.*":    "Internal server error.",
