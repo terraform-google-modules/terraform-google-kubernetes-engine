@@ -25,6 +25,6 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:auth/v45.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:auth/v46.0.0"
   }
 }

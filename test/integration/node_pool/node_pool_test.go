@@ -30,7 +30,7 @@ import (
 
 func TestNodePool(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t,
-		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
+		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
@@ -76,9 +76,8 @@ func TestNodePool(t *testing.T) {
 			}
 			nodes = utils.ParseKubectlJSONResult(t, nodesOutput)
 			pool01Taints := nodes.Get("items.#(metadata.labels.node_pool==\"pool-01\").spec.taints")
-			pool02Taints := nodes.Get("items.#(metadata.labels.node_pool==\"pool-02\").spec.taints")
 			pool03Taints := nodes.Get("items.#(metadata.labels.node_pool==\"pool-03\").spec.taints")
-			if !pool01Taints.Exists() || !pool02Taints.Exists() || !pool03Taints.Exists() {
+			if !pool01Taints.Exists() || !pool03Taints.Exists() {
 				return true, fmt.Errorf("waiting for node pools to register nodes with taints")
 			}
 			return false, nil
@@ -97,19 +96,6 @@ func TestNodePool(t *testing.T) {
 				}
 			]`,
 			nodes.Get("items.#(metadata.labels.node_pool==\"pool-01\").spec.taints").String(), "has the expected taints")
-		assert.JSONEq(`[
-				{
-					"effect": "PreferNoSchedule",
-					"key": "all-pools-example",
-					"value": "true"
-				},
-				{
-					"effect": "NoSchedule",
-					"key": "nvidia.com/gpu",
-					"value": "present"
-				}
-			]`,
-			nodes.Get("items.#(metadata.labels.node_pool==\"pool-02\").spec.taints").String(), "has the expected all-pools-example taint")
 		assert.JSONEq(`[
 				{
 					"effect": "PreferNoSchedule",

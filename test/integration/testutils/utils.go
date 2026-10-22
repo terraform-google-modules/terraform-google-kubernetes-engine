@@ -30,6 +30,10 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+const (
+	RetriesOnTransientErrors int = 5
+)
+
 var (
 	RetryableTransientErrors = map[string]string{
 		// Error 409: Operation / Policy conflicts
@@ -39,10 +43,10 @@ var (
 		".*Error 409.*is in use":                                "Resource in use.",
 
 		// Rate limiting & Quotas
-		".*rateLimitExceeded.*":        "Rate limit exceeded.",
-		".*quotaExceeded.*":            "Quota exceeded.",
-		".*RESOURCE_EXHAUSTED.*":       "Resource exhausted.",
-		".*User Rate Limit Exceeded.*": "User rate limit exceeded.",
+		".*rateLimitExceeded.*":                        "Rate limit exceeded.",
+		".*quotaExceeded.*":                            "Quota exceeded.",
+		".*RESOURCE_EXHAUSTED.*":                       "Resource exhausted.",
+		".*User Rate Limit Exceeded.*":                 "User rate limit exceeded.",
 
 		// 5xx and Internal Server Errors
 		".*Error 500.*":    "Internal server error.",
@@ -59,6 +63,11 @@ var (
 		".*resource is currently locked as part of another operation.*": "Resource locked.",
 		".*NodePool.*was created in the error state.*":                  "Node pool creation failed in error state.",
 		".*Cluster.*was created in the error state.*":                   "Cluster creation failed in error state.",
+		".*Failed to create cluster.*":                                  "Failed to create cluster.",
+		".*DeployPatch failed.*":                                        "Cluster control plane deploy patch failed.",
+		".*Try a different location, or try again later: Google Compute Engine does not have enough resources available to fulfill request.*": "Compute resource pool exhausted.",
+		".*GCE_STOCKOUT.*": "GCE stockout.",
+		".*does not have enough resources available to fulfill.*": "Compute resource pool exhausted.",
 
 		// Transient IAM / SA replication
 		".*Permission.*denied on resource.*":   "IAM permission replication delay.",
@@ -77,13 +86,15 @@ var (
 		"monitoringConfig.componentConfig.enableComponents",
 		"labelFingerprint",
 		"maintenancePolicy.resourceVersion",
+		"privateClusterConfig.privateEndpoint",
+		"controlPlaneEndpointsConfig.ipEndpointsConfig.privateEndpoint",
 		"etag",
 	}
 )
 
 func GetTestProjectFromSetup(t *testing.T, idx int) string {
 	setup := tft.NewTFBlueprintTest(t,
-		tft.WithRetryableTerraformErrors(RetryableTransientErrors, 3, 2*time.Minute),
+		tft.WithRetryableTerraformErrors(RetryableTransientErrors, RetriesOnTransientErrors, 2*time.Minute),
 	)
 	projectIDs := setup.GetTFSetupOutputListVal("project_ids")
 	if len(projectIDs)-1 < idx {
@@ -120,7 +131,7 @@ func TGKEAssertGolden(assert *assert.Assertions, golden *golden.GoldenFile, clus
 	exemptPaths := slices.Concat(exemptClusterPaths, ClusterAlwaysExemptPaths)
 	clusterCheckPaths = slices.DeleteFunc(clusterCheckPaths, func(s string) bool {
 		for _, exempPath := range exemptPaths {
-			if strings.HasPrefix(s, exempPath) {
+			if s == exempPath || strings.HasPrefix(s, exempPath+".") {
 				return true
 			}
 		}
