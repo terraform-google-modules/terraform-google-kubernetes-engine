@@ -400,6 +400,12 @@ variable "sandbox_enabled" {
   default     = false
 }
 
+variable "agent_sandbox_enabled" {
+  type        = bool
+  description = "The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later and a gVisor-enabled node pool for Standard clusters)"
+  default     = null
+}
+
 variable "enable_intranode_visibility" {
   type        = bool
   description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
