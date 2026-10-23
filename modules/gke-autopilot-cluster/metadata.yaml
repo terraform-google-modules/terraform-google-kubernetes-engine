@@ -157,6 +157,7 @@ spec:
       - name: node_locations
         description: The list of zones in which the cluster's nodes are located. Nodes are created in the region's zones by default. This list must be a subset of the compute/zones in the region to which the cluster belongs. This field is optional for Zonal clusters and required for Regional clusters.
         varType: list(string)
+        defaultValue: null
       - name: deletion_protection
         description: Whether Terraform will be prevented from destroying the cluster. Deleting this cluster via terraform destroy or terraform apply will only succeed if this field is false in the Terraform state.
         varType: bool
@@ -181,9 +182,11 @@ spec:
                 }))
               }))
             })
+        defaultValue: null
       - name: cluster_ipv4_cidr
         description: The IP address range of the Kubernetes pods in this cluster in CIDR notation (e.g. 10.96.0.0/14). Leave blank to have one automatically chosen or specify a /14 block in 10.0.0.0/8. This field will only work for routes-based clusters, where ip_allocation_policy is not defined.
         varType: string
+        defaultValue: null
       - name: cluster_autoscaling
         description: Per-cluster configuration of Node Auto-Provisioning with Cluster Autoscaler to automatically adjust the size of the cluster.
         varType: |-
@@ -193,12 +196,14 @@ spec:
                 boot_disk_kms_key = optional(string)
               }))
             })
+        defaultValue: null
       - name: binary_authorization
         description: Configuration options for the Binary Authorization feature. Can be `PROJECT_SINGLETON_POLICY_ENFORCE` or `DISABLED`
         varType: |-
           object({
               evaluation_mode = optional(string)
             })
+        defaultValue: null
       - name: service_external_ips_config
         description: Configuration for controlling how IPs are allocated to Service objects.
         varType: |-
@@ -213,6 +218,7 @@ spec:
           object({
               enable_certificates = optional(bool)
             })
+        defaultValue: null
       - name: database_encryption
         description: Application-layer Secrets Encryption settings.
         varType: |-
@@ -220,12 +226,14 @@ spec:
               state    = optional(string)
               key_name = optional(string)
             })
+        defaultValue: null
       - name: enable_k8s_beta_apis
         description: Configuration for Kubernetes Beta APIs.
         varType: |-
           object({
               enabled_apis = list(string)
             })
+        defaultValue: null
       - name: ip_allocation_policy
         description: "Configuration of cluster IP allocation for VPC-native clusters. If this block is unset during creation, it will be set by the GKE backend. "
         varType: |-
@@ -239,12 +247,14 @@ spec:
                 pod_range_names = list(string)
               }))
             })
+        defaultValue: null
       - name: logging_config
         description: "The GKE components exposing logs. Supported values include: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS."
         varType: |-
           object({
               enable_components = optional(list(string))
             })
+        defaultValue: null
       - name: maintenance_policy
         description: The maintenance policy to use for the cluster.
         varType: |-
@@ -277,6 +287,7 @@ spec:
                 issue_client_certificate = optional(bool)
               }))
             })
+        defaultValue: null
       - name: master_authorized_networks_config
         description: The desired configuration options for master authorized networks. Cidr Block must follow [Cidr notation](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation)
         varType: |-
@@ -292,12 +303,14 @@ spec:
       - name: min_master_version
         description: The minimum version of the master. GKE will auto-update the master to new versions, so this does not guarantee the master version--use the read-only master_version field to obtain a current version. If unset, the server's default version will be used.
         varType: string
+        defaultValue: null
       - name: monitoring_config
         description: "(Optional) The GKE components exposing metrics. Supported values include: SYSTEM_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET, KUBELET, CADVISOR, DCGM and JOBSET. "
         varType: |-
           object({
               enable_components = optional(list(string))
             })
+        defaultValue: null
       - name: node_pool_auto_config
         description: Node pool auto-configuration for the cluster. This block contains settings for managing Kubelet, resource manager tags, network tags, and Linux node configurations for automatically provisioned node pools.
         varType: |-
@@ -328,24 +341,28 @@ spec:
                 }))
               })
             })
+        defaultValue: null
       - name: confidential_nodes
         description: "Configuration for [Confidential Nodes](https://cloud.google.com/kubernetes-engine/docs/how-to/confidential-gke-nodes) feature. "
         varType: |-
           object({
               enabled = bool
             })
+        defaultValue: null
       - name: pod_security_policy_config
         description: Configuration for the [PodSecurityPolicy](https://cloud.google.com/kubernetes-engine/docs/how-to/pod-security-policies) feature.
         varType: |-
           object({
               enabled = bool
             })
+        defaultValue: null
       - name: pod_autoscaling
         description: Enable the Horizontal Pod Autoscaling profile for this cluster.Acceptable values are:'NONE' - Customers explicitly opt-out of HPA profiles, 'PERFORMANCE' - PERFORMANCE is used when customers opt-in to the performance HPA profile. In this profile we support a higher number of HPAs per cluster and faster metrics collection for workload autoscaling. See HPAProfile for more details.
         varType: |-
           object({
               hpa_profile = string
             })
+        defaultValue: null
       - name: vertical_pod_autoscaling
         description: Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it.
         varType: |-
@@ -360,18 +377,21 @@ spec:
           object({
               enabled = bool
             })
+        defaultValue: null
       - name: secret_sync_config
         description: Configuration for the Secret Sync add-on for this cluster.
         varType: |-
           object({
               enabled = bool
             })
+        defaultValue: null
       - name: authenticator_groups_config
         description: Configuration for the Google Groups for GKE feature. The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com.
         varType: |-
           object({
               security_group = string
             })
+        defaultValue: null
       - name: control_plane_endpoints_config
         description: Configuration for all of the cluster's control plane endpoints.
         varType: |-
@@ -383,6 +403,7 @@ spec:
                 enabled = optional(bool)
               }))
             })
+        defaultValue: null
       - name: private_cluster_config
         description: Configuration for private clusters, clusters with private nodes.
         varType: |-
@@ -406,6 +427,7 @@ spec:
           object({
               type = string
             })
+        defaultValue: null
       - name: release_channel
         description: The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`.
         varType: |-
@@ -417,12 +439,14 @@ spec:
       - name: resource_labels
         description: "The GCE resource labels (a map of key/value pairs) to be applied to the cluster. Note: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
         varType: map(string)
+        defaultValue: null
       - name: cost_management_config
         description: The Cost Management configuration for the cluster.
         varType: |-
           object({
               enabled = optional(bool)
             })
+        defaultValue: null
       - name: resource_usage_export_config
         description: Configuration for the [ResourceUsageExportConfig](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-usage-metering) feature.
         varType: |-
@@ -433,6 +457,7 @@ spec:
                 dataset_id = string
               })
             })
+        defaultValue: null
       - name: workload_identity_config
         description: Configuration for the use of Kubernetes Service Accounts in GCP IAM policies.
         varType: |-
@@ -446,36 +471,46 @@ spec:
           object({
               enabled = optional(bool)
             })
+        defaultValue: null
       - name: enable_l4_ilb_subsetting
         description: Enables L4 ILB subsetting. L4 ILB subsetting can be used with clusters of all sizes. This feature is in public beta.
         varType: bool
+        defaultValue: null
       - name: disable_l4_lb_firewall_reconciliation
         description: If true, stops GKE from reconciling firewall rules for L4 ILB Services.
         varType: bool
+        defaultValue: null
       - name: enable_multi_networking
         description: Enable multi-networking for this cluster. This feature requires projects to have enabled GKE multi-networking series APIs. This feature is in public beta.
         varType: bool
+        defaultValue: null
       - name: in_transit_encryption_config
         description: Defines the config of in-transit encryption. Valid values are `IN_TRANSIT_ENCRYPTION_DISABLED` and `IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT`.
         varType: string
+        defaultValue: null
       - name: enable_fqdn_network_policy
         description: Whether FQDN Network Policy is enabled on this cluster.
         varType: bool
+        defaultValue: null
       - name: enable_cilium_clusterwide_network_policy
         description: Enables Cilium-based GKE Dataplane V2 wide network policy. This feature is in public beta.
         varType: bool
+        defaultValue: null
       - name: private_ipv6_google_access
         description: The desired state of IPv6 access to Google Services. By default, no private IPv6 access to or from Google Services (all access will be via IPv4).
         varType: string
+        defaultValue: null
       - name: datapath_provider
         description: The desired datapath provider for this cluster. This is set to LEGACY_DATAPATH by default, which uses the IPTables-based kube-proxy implementation. Set to ADVANCED_DATAPATH to enable Dataplane v2.
         varType: string
+        defaultValue: null
       - name: default_snat_status
         description: "[GKE SNAT](https://cloud.google.com/kubernetes-engine/docs/how-to/ip-masquerade-agent#how_ipmasq_works) DefaultSnatStatus contains the desired state of whether default sNAT should be disabled on the cluster, [API doc](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#networkconfig). In-node sNAT rules will be disabled when defaultSnatStatus is disabled.When disabled is set to false, default IP masquerade rules will be applied to the nodes to prevent sNAT on cluster internal traffic"
         varType: |-
           object({
               disabled = bool
             })
+        defaultValue: null
       - name: dns_config
         description: Configuration for Cloud DNS for GKE.
         varType: |-
@@ -486,12 +521,14 @@ spec:
               cluster_dns_domain            = optional(string)
 
             })
+        defaultValue: null
       - name: gateway_api_config
         description: Configuration for the Gateway API, which manages access to Kubernetes services.
         varType: |-
           object({
               channel = string
             })
+        defaultValue: null
       - name: protect_config
         description: Enable/Disable Protect API features for the cluster.
         varType: |-
@@ -501,6 +538,7 @@ spec:
               })
               workload_vulnerability_mode = optional(string)
             })
+        defaultValue: null
       - name: security_posture_config
         description: Security posture configuration for the cluster. mode - Sets the mode of the Kubernetes security posture API's off-cluster features. Available options include DISABLED, BASIC, and ENTERPRISE. vulnerability_mode - Sets the mode of the Kubernetes security posture API's workload vulnerability scanning. Available options include VULNERABILITY_DISABLED, VULNERABILITY_BASIC and VULNERABILITY_ENTERPRISE.
         varType: |-
@@ -508,24 +546,28 @@ spec:
               mode               = optional(string)
               vulnerability_mode = optional(string)
             })
+        defaultValue: null
       - name: fleet
         description: Fleet configuration for the cluster. The name of the Fleet host project where this cluster will be registered.
         varType: |-
           object({
               project = optional(string)
             })
+        defaultValue: null
       - name: workload_alts_config
         description: Workload ALTS configuration for the cluster. Whether the alts handshaker should be enabled or not for direct-path. Requires Workload Identity (workloadPool) must be non-empty
         varType: |-
           object({
               enable_alts = bool
             })
+        defaultValue: null
       - name: enterprise_config
         description: Enterprise configuration for the cluster. Sets the tier of the cluster. Available options include STANDARD and ENTERPRISE.
         varType: |-
           object({
               desired_tier = string
             })
+        defaultValue: null
       - name: allow_net_admin
         description: (Optional) Enable NET_ADMIN for the cluster.
         varType: bool
