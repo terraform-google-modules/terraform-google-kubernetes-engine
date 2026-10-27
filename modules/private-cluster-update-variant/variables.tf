@@ -120,6 +120,12 @@ variable "datapath_provider" {
   default     = "DATAPATH_PROVIDER_UNSPECIFIED"
 }
 
+variable "ignore_node_count_changes" {
+  type        = bool
+  description = "When true, the provider ignores external changes to the node count on the cluster resource and skips the related Instance Group Manager API queries, which can shorten plan times on clusters with many instance groups and saves API quota. This applies to the node pools defined on the cluster resource itself, so the modules `instance_group_urls` output, which reads the separate `google_container_node_pool` resources, is unaffected. A permadiff on this field was fixed in provider 7.44.0."
+  default     = null
+}
+
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"

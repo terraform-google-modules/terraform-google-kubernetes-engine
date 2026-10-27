@@ -446,6 +446,8 @@ resource "google_container_cluster" "primary" {
 
   datapath_provider = var.datapath_provider
 
+  ignore_node_count_changes = var.ignore_node_count_changes
+
   networking_mode = "VPC_NATIVE"
 
   protect_config {
