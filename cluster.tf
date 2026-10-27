@@ -412,6 +412,14 @@ resource "google_container_cluster" "primary" {
 
   datapath_provider = var.datapath_provider
 
+  dynamic "node_creation_config" {
+    for_each = var.node_creation_mode != null ? [1] : []
+
+    content {
+      node_creation_mode = var.node_creation_mode
+    }
+  }
+
 
   dynamic "security_posture_config" {
     for_each = var.security_posture_mode != null || var.security_posture_vulnerability_mode != null ? [1] : []
