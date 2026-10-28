@@ -62,7 +62,22 @@ locals {
 
   cluster_subnet_cidr       = var.add_cluster_firewall_rules || var.add_shadow_firewall_rules ? data.google_compute_subnetwork.gke_subnetwork[0].ip_cidr_range : null
   cluster_alias_ranges_cidr = var.add_cluster_firewall_rules || var.add_shadow_firewall_rules ? { for range in toset(data.google_compute_subnetwork.gke_subnetwork[0].secondary_ip_range) : range.range_name => range.ip_cidr_range } : {}
-  pod_all_ip_ranges         = var.add_cluster_firewall_rules || var.add_shadow_firewall_rules ? compact(concat([local.cluster_alias_ranges_cidr[var.ip_range_pods]], [for range in var.additional_ip_range_pods : local.cluster_alias_ranges_cidr[range] if length(range) > 0])) : []
+  cluster_subnet_cidrs      = var.add_cluster_firewall_rules || var.add_shadow_firewall_rules ? concat([local.cluster_subnet_cidr], [for subnet in data.google_compute_subnetwork.additional_gke_subnetwork : subnet.ip_cidr_range]) : []
+
+  // Secondary range names are only unique within a subnet.
+  cluster_alias_ranges_cidr_by_subnet = merge(
+    { (basename(var.subnetwork)) = local.cluster_alias_ranges_cidr },
+    [for subnet in data.google_compute_subnetwork.additional_gke_subnetwork : {
+      (subnet.name) = { for range in subnet.secondary_ip_range : range.range_name => range.ip_cidr_range }
+    }]...
+  )
+  pod_all_ip_ranges = var.add_cluster_firewall_rules || var.add_shadow_firewall_rules ? compact(concat(
+    [local.cluster_alias_ranges_cidr[var.ip_range_pods]],
+    [for range in var.additional_ip_range_pods : local.cluster_alias_ranges_cidr[range] if length(range) > 0],
+    flatten([for config in var.additional_ip_ranges_config : [
+      for range in config.pod_ipv4_range_names : local.cluster_alias_ranges_cidr_by_subnet[basename(config.subnetwork)][range]
+    ]]),
+  )) : []
 
   gke_backup_agent_config = var.gke_backup_agent_config ? [{ enabled = true }] : [{ enabled = false }]
   stateful_ha_config      = var.stateful_ha ? [{ enabled = true }] : []
