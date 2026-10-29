@@ -1055,9 +1055,10 @@ variable "enable_pod_security_policy" {
   default     = false
 }
 
+
 variable "sandbox_enabled" {
   type        = bool
-  description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
+  description = "Enable GKE Sandbox. Requires `image_type` = `COS_CONTAINERD` on the node pools it applies to, and GKE requires at least one node pool without it. Can be set per node pool with the `sandbox_enabled` key in `node_pools`."
   default     = false
 }
 
