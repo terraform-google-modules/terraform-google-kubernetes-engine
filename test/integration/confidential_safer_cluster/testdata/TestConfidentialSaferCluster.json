@@ -57,7 +57,7 @@
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_ENCRYPTED",
     "keyName": "KEY_NAME",
-    "state": "ALL_OBJECTS_ENCRYPTION_ENABLED"
+    "state": "ENCRYPTED"
   },
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"

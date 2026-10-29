@@ -50,7 +50,7 @@ func TestBetaCluster(t *testing.T) {
 			"locations",
 			"privateClusterConfig.enablePrivateEndpoint",
 			"networkConfig.datapathProvider",
-			"databaseEncryption.state",
+			// "databaseEncryption.state",
 			// "identityServiceConfig.enabled", TODO: b/378974729
 			"networkConfig.datapathProvider",
 			"binaryAuthorization",
@@ -66,6 +66,7 @@ func TestBetaCluster(t *testing.T) {
 			g.JSONEq(assert, op, pth)
 		}
 		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
+		assert.Contains([]string{"ENCRYPTED", "ALL_OBJECTS_ENCRYPTION_ENABLED"}, op.Get("databaseEncryption.state").String())
 
 		for _, np := range op.Get("nodePools").Array() {
 			npName := np.Get("name").String()
