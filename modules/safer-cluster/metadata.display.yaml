@@ -91,6 +91,9 @@ spec:
         enable_cost_allocation:
           name: enable_cost_allocation
           title: Enable Cost Allocation
+        enable_fqdn_network_policy:
+          name: enable_fqdn_network_policy
+          title: Enable Fqdn Network Policy
         enable_gcfs:
           name: enable_gcfs
           title: Enable Gcfs
