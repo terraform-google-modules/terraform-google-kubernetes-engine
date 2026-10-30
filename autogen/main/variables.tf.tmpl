@@ -138,6 +138,21 @@ variable "datapath_provider" {
   default     = "DATAPATH_PROVIDER_UNSPECIFIED"
 }
 
+variable "node_creation_mode" {
+  type        = string
+  description = "The mode used to create nodes. `VIA_KUBELET` has the kubelet register the node itself. `VIA_CONTROL_PLANE` has gcp-controller-manager create the node object after CSR approval. Leave null to use the GKE default."
+  default     = null
+
+  validation {
+    condition = var.node_creation_mode == null || contains([
+      "MODE_UNSPECIFIED",
+      "VIA_KUBELET",
+      "VIA_CONTROL_PLANE"
+    ], var.node_creation_mode)
+    error_message = "node_creation_mode must be one of MODE_UNSPECIFIED, VIA_KUBELET or VIA_CONTROL_PLANE."
+  }
+}
+
 {% endif %}
 variable "maintenance_start_time" {
   type        = string
