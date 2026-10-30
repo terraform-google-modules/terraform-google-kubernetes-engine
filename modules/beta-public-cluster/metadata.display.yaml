@@ -256,6 +256,9 @@ spec:
         identity_namespace:
           name: identity_namespace
           title: Identity Namespace
+        ignore_node_count_changes:
+          name: ignore_node_count_changes
+          title: Ignore Node Count Changes
         in_transit_encryption_config:
           name: in_transit_encryption_config
           title: In Transit Encryption Config

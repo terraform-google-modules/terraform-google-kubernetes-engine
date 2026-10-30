@@ -540,6 +540,8 @@ resource "google_container_cluster" "primary" {
   {% if autopilot_cluster != true %}
 
   datapath_provider = var.datapath_provider
+
+  ignore_node_count_changes = var.ignore_node_count_changes
   {% endif %}
 
   {% if beta_cluster %}
