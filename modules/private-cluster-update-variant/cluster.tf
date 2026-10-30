@@ -631,6 +631,13 @@ resource "google_container_cluster" "primary" {
 
       metadata = local.node_pools_metadata["all"]
 
+      dynamic "sandbox_config" {
+        for_each = tobool((lookup(local.head_node_pool, "sandbox_enabled", var.sandbox_enabled))) ? ["GVISOR"] : []
+        content {
+          type = sandbox_config.value
+        }
+      }
+
       boot_disk_kms_key = lookup(local.head_node_pool, "boot_disk_kms_key", var.boot_disk_kms_key)
 
       storage_pools = lookup(local.head_node_pool, "storage_pools", null) != null ? [local.head_node_pool.storage_pools] : []
@@ -1165,6 +1172,13 @@ resource "google_container_node_pool" "pools" {
       }
     }
 
+    dynamic "sandbox_config" {
+      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["GVISOR"] : []
+      content {
+        type = sandbox_config.value
+      }
+    }
+
     dynamic "windows_node_config" {
       for_each = lookup(each.value, "windows_node_config_os_version", null) != null ? [true] : []
 
@@ -1560,6 +1574,13 @@ resource "google_container_node_pool" "windows_pools" {
             values   = lookup(jsondecode(node_affinity.value), "values", [])
           }
         }
+      }
+    }
+
+    dynamic "sandbox_config" {
+      for_each = tobool((lookup(each.value, "sandbox_enabled", var.sandbox_enabled))) ? ["GVISOR"] : []
+      content {
+        type = sandbox_config.value
       }
     }
 
