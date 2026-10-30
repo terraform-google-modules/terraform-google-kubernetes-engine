@@ -6,6 +6,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [47.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v46.0.0...v47.0.0) (2026-10-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=7.34:** Agent Sandbox support for Autopilot ([#2666](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2666))
+
+### Features
+
+* add agent_sandbox_enabled to safer-cluster modules ([#2683](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2683)) ([5deebf2](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/5deebf2af2bc1723daa9740bb383c7891ff2f363))
+* Add agent_sandbox_enabled variable to beta-public-cluster ([#2659](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2659)) ([bbe778c](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/bbe778c183dd25b7bb1ca98df4793e22cefc999f))
+* add enable_fqdn_network_policy to safer cluster modules ([#2675](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2675)) ([6aef5ee](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/6aef5ee505469f7f6f91b2401ffe60a08f89e5fd))
+* **TPG>=7.34:** Agent Sandbox support for Autopilot ([#2666](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2666)) ([e9a9d33](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/e9a9d3347009003b4579c0b06bfd2f4f079ad70f))
+
+
+### Bug Fixes
+
+* allow explicitly disabling service external IPs ([#2644](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2644)) ([2543115](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/2543115aa6eb43b3776bcbc8c6ec7edc7fb084ea))
+
 ## [46.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v45.0.0...v46.0.0) (2026-10-16)
 
 
