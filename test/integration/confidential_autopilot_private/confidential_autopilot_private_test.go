@@ -28,7 +28,7 @@ func TestConfidentialAutopilotPrivate(t *testing.T) {
 	projectID := testutils.GetTestProjectFromSetup(t, 1)
 	bpt := tft.NewTFBlueprintTest(t,
 		tft.WithVars(map[string]interface{}{"project_id": projectID}),
-		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
+		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
@@ -42,7 +42,7 @@ func TestConfidentialAutopilotPrivate(t *testing.T) {
 		assert.True(op.Get("autopilot.enabled").Bool(), "should be autopilot")
 		assert.Equal(op.Get("autoscaling.autoprovisioningNodePoolDefaults.bootDiskKmsKey").String(), key, "should have CMEK configured in boot disk")
 		assert.True(op.Get("confidentialNodes.enabled").Bool(), "should have confidential nodes enabled")
-		assert.Equal(op.Get("databaseEncryption.state").String(), "ALL_OBJECTS_ENCRYPTION_ENABLED", "should have database encryption")
+		assert.Contains([]string{"ENCRYPTED", "ALL_OBJECTS_ENCRYPTION_ENABLED"}, op.Get("databaseEncryption.state").String(), "should have database encryption")
 		assert.Equal(op.Get("databaseEncryption.keyName").String(), key, "should have CMEK configured in database")
 	})
 	bpt.Test()

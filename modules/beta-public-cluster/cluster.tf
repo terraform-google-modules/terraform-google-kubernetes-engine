@@ -333,9 +333,9 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "service_external_ips_config" {
-    for_each = var.service_external_ips ? [1] : []
+    for_each = var.service_external_ips == null ? [] : [var.service_external_ips]
     content {
-      enabled = var.service_external_ips
+      enabled = service_external_ips_config.value
     }
   }
 
@@ -393,6 +393,13 @@ resource "google_container_cluster" "primary" {
 
       content {
         enabled = gke_backup_agent_config.value.enabled
+      }
+    }
+
+    dynamic "agent_sandbox_config" {
+      for_each = var.agent_sandbox_enabled != null ? [1] : []
+      content {
+        enabled = var.agent_sandbox_enabled
       }
     }
 

@@ -107,6 +107,12 @@ variable "datapath_provider" {
   default     = "ADVANCED_DATAPATH"
 }
 
+variable "enable_fqdn_network_policy" {
+  type        = bool
+  description = "Enable FQDN Network Policies on the cluster"
+  default     = null
+}
+
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily maintenance operations in RFC3339 format"
@@ -392,6 +398,12 @@ variable "sandbox_enabled" {
   type        = bool
   description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
   default     = false
+}
+
+variable "agent_sandbox_enabled" {
+  type        = bool
+  description = "The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later and a gVisor-enabled node pool for Standard clusters)"
+  default     = null
 }
 
 variable "enable_intranode_visibility" {

@@ -333,9 +333,9 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "service_external_ips_config" {
-    for_each = var.service_external_ips ? [1] : []
+    for_each = var.service_external_ips == null ? [] : [var.service_external_ips]
     content {
-      enabled = var.service_external_ips
+      enabled = service_external_ips_config.value
     }
   }
 
@@ -393,6 +393,13 @@ resource "google_container_cluster" "primary" {
 
       content {
         enabled = gke_backup_agent_config.value.enabled
+      }
+    }
+
+    dynamic "agent_sandbox_config" {
+      for_each = var.agent_sandbox_enabled != null ? [1] : []
+      content {
+        enabled = var.agent_sandbox_enabled
       }
     }
 
@@ -841,6 +848,7 @@ locals {
     "flex_start",
     "local_ssd_ephemeral_storage_count",
     "ephemeral_storage_local_ssd_data_cache_count",
+    "pod_cidr_overprovision_disabled",
   ]
 }
 
@@ -853,10 +861,10 @@ resource "random_id" "name" {
   byte_length = 2
   prefix      = "${each.key}-"
   keepers = merge(
-    zipmap(
-      local.force_node_pool_recreation_resources,
-      [for keeper in local.force_node_pool_recreation_resources : lookup(each.value, keeper, "")]
-    ),
+    {
+      for keeper in local.force_node_pool_recreation_resources : keeper => lookup(each.value, keeper, "")
+      if contains(keys(each.value), keeper)
+    },
     {
       taints = join(",",
         sort(
@@ -890,9 +898,6 @@ resource "random_id" "name" {
           )
         )
       )
-    },
-    {
-      pod_cidr_overprovision_disabled = tostring(lookup(each.value, "pod_cidr_overprovision_disabled", ""))
     }
   )
 }

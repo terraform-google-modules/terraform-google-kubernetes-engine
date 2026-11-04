@@ -202,6 +202,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | add\_cluster\_firewall\_rules | Create additional firewall rules | `bool` | `false` | no |
+| agent\_sandbox\_enabled | The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later and a gVisor-enabled node pool for Standard clusters) | `bool` | `null` | no |
 | authenticator\_security\_group | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
 | cloudrun | (Beta) Enable CloudRun addon | `bool` | `false` | no |
 | cluster\_autoscaling | Cluster autoscaling configuration. See [more details](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters#clusterautoscaling) | <pre>object({<br>    enabled                      = bool<br>    autoscaling_profile          = string<br>    min_cpu_cores                = number<br>    max_cpu_cores                = number<br>    min_memory_gb                = number<br>    max_memory_gb                = number<br>    gpu_resources                = list(object({ resource_type = string, minimum = number, maximum = number }))<br>    auto_repair                  = bool<br>    auto_upgrade                 = bool<br>    enable_default_compute_class = optional(bool, false)<br>  })</pre> | <pre>{<br>  "auto_repair": true,<br>  "auto_upgrade": true,<br>  "autoscaling_profile": "BALANCED",<br>  "enable_default_compute_class": false,<br>  "enabled": false,<br>  "gpu_resources": [],<br>  "max_cpu_cores": 0,<br>  "max_memory_gb": 0,<br>  "min_cpu_cores": 0,<br>  "min_memory_gb": 0<br>}</pre> | no |
@@ -221,6 +222,7 @@ For simplicity, we suggest using `roles/container.admin` and
 | dns\_cache | (Beta) The status of the NodeLocal DNSCache addon. | `bool` | `false` | no |
 | enable\_confidential\_nodes | An optional flag to enable confidential node config. | `bool` | `false` | no |
 | enable\_cost\_allocation | Enables Cost Allocation Feature and the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery | `bool` | `false` | no |
+| enable\_fqdn\_network\_policy | Enable FQDN Network Policies on the cluster | `bool` | `null` | no |
 | enable\_gcfs | Enable image streaming on cluster level. | `bool` | `false` | no |
 | enable\_intranode\_visibility | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network | `bool` | `false` | no |
 | enable\_l4\_ilb\_subsetting | Enable L4 ILB Subsetting on the cluster | `bool` | `false` | no |
