@@ -26,7 +26,7 @@ import (
 
 func TestSimpleRegionalWithIPV6(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t,
-		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, 3, 2*time.Minute),
+		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {

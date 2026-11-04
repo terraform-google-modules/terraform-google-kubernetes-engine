@@ -46,6 +46,9 @@ spec:
         additional_pod_ranges_config:
           name: additional_pod_ranges_config
           title: Additional Pod Ranges Config
+        agent_sandbox_enabled:
+          name: agent_sandbox_enabled
+          title: Agent Sandbox Enabled
         allow_net_admin:
           name: allow_net_admin
           title: Allow Net Admin

@@ -31,6 +31,9 @@ spec:
         add_cluster_firewall_rules:
           name: add_cluster_firewall_rules
           title: Add Cluster Firewall Rules
+        agent_sandbox_enabled:
+          name: agent_sandbox_enabled
+          title: Agent Sandbox Enabled
         authenticator_security_group:
           name: authenticator_security_group
           title: Authenticator Security Group

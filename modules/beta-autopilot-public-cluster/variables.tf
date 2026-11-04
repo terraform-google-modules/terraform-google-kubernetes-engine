@@ -104,8 +104,8 @@ variable "http_load_balancing" {
 
 variable "service_external_ips" {
   type        = bool
-  description = "Whether external ips specified by a service will be allowed in this cluster"
-  default     = false
+  description = "Whether external ips specified by a service will be allowed in this cluster. Set to null to leave the setting unmanaged."
+  default     = null
 }
 
 variable "insecure_kubelet_readonly_port_enabled" {
@@ -488,6 +488,12 @@ variable "filestore_csi_driver" {
   type        = bool
   description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
   default     = false
+}
+
+variable "agent_sandbox_enabled" {
+  type        = bool
+  description = "The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later)"
+  default     = null
 }
 
 variable "lustre_csi_driver" {
