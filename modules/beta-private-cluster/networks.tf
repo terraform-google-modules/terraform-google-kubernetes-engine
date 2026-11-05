@@ -25,6 +25,15 @@ data "google_compute_subnetwork" "gke_subnetwork" {
   project = local.network_project_id
 }
 
+data "google_compute_subnetwork" "additional_gke_subnetwork" {
+  provider = google
+
+  for_each = var.add_cluster_firewall_rules || var.add_shadow_firewall_rules ? { for index, config in var.additional_ip_ranges_config : tostring(index) => config } : {}
+  name     = basename(each.value.subnetwork)
+  region   = try(regex("projects/([^/]+)/regions/([^/]+)/subnetworks/[^/]+$", each.value.subnetwork)[1], local.region)
+  project  = try(regex("projects/([^/]+)/regions/([^/]+)/subnetworks/[^/]+$", each.value.subnetwork)[0], local.network_project_id)
+}
+
 data "google_compute_subnetwork" "private_endpoint_subnetwork" {
   provider = google
 

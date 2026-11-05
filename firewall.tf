@@ -34,10 +34,9 @@ resource "google_compute_firewall" "intra_egress" {
   direction   = "EGRESS"
 
   target_tags = [local.cluster_network_tag]
-  destination_ranges = concat([
-    local.cluster_endpoint_for_nodes,
-    local.cluster_subnet_cidr,
-    ],
+  destination_ranges = concat(
+    [local.cluster_endpoint_for_nodes],
+    local.cluster_subnet_cidrs,
     local.pod_all_ip_ranges
   )
 
@@ -190,7 +189,7 @@ resource "google_compute_firewall" "shadow_allow_nodes" {
   priority    = var.shadow_firewall_rules_priority
   direction   = "INGRESS"
 
-  source_ranges = [local.cluster_subnet_cidr]
+  source_ranges = local.cluster_subnet_cidrs
   target_tags   = [local.cluster_network_tag]
 
   allow {
