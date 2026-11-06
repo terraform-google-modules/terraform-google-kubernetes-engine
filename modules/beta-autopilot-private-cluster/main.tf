@@ -124,7 +124,7 @@ locals {
   cluster_vertical_pod_autoscaling_enabled   = local.cluster_output_vertical_pod_autoscaling_enabled
   workload_identity_enabled                  = !(var.identity_namespace == null || var.identity_namespace == "null")
   cluster_workload_identity_config = !local.workload_identity_enabled ? [] : var.identity_namespace == "enabled" ? [{
-    workload_pool = "${var.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
+    workload_pool = "${data.google_project.project.project_id}.svc.id.goog" }] : [{ workload_pool = var.identity_namespace
   }]
   confidential_node_config             = var.enable_confidential_nodes == true ? [{ enabled = true }] : []
   cluster_intranode_visibility_enabled = local.cluster_output_intranode_visbility_enabled
