@@ -40,7 +40,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/safer-cluster"
-  version = "~> 46.0"
+  version = "~> 47.0"
 
   project_id                 = var.project_id
   name                       = "${local.cluster_type}-cluster-${random_string.suffix.result}"
