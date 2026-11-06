@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [47.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v47.0.0...v47.1.0) (2026-11-06)
+
+
+### Features
+
+* Add support for logging component KCP_VPA ([#2637](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2637)) ([793dd8d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/793dd8d7562a48523ee3cdc312388296f5d10fdb))
+
+
+### Bug Fixes
+
+* use null checks for queued_provisioning and advanced_machine_features ([#2696](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2696)) ([d470131](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d470131234bdc9403f85084324fc1a1a765032fb))
+
 ## [47.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v46.0.0...v47.0.0) (2026-10-30)
 
 
