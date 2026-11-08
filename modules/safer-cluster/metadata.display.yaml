@@ -166,6 +166,9 @@ spec:
         logging_service:
           name: logging_service
           title: Logging Service
+        maintenance_disruption_budget:
+          name: maintenance_disruption_budget
+          title: Maintenance Disruption Budget
         maintenance_end_time:
           name: maintenance_end_time
           title: Maintenance End Time

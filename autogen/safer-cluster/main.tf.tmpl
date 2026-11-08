@@ -86,6 +86,8 @@ module "gke" {
   maintenance_recurrence = var.maintenance_recurrence
   maintenance_exclusions = var.maintenance_exclusions
 
+  maintenance_disruption_budget = var.maintenance_disruption_budget
+
   // We suggest removing the default node pool, as it cannot be modified without
   // destroying the cluster.
   remove_default_node_pool = true

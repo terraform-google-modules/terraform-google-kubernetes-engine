@@ -213,6 +213,13 @@ spec:
         description: Frequency of the recurring maintenance window in RFC5545 format.
         varType: string
         defaultValue: ""
+      - name: maintenance_disruption_budget
+        description: Minimum time between two control plane upgrades of the same type, as a duration in seconds with an `s` suffix (for example `2592000s` for 30 days). `minor_version_disruption_interval` applies to minor version upgrades and `patch_version_disruption_interval` to patch version upgrades.
+        varType: |-
+          object({
+              minor_version_disruption_interval = optional(string)
+              patch_version_disruption_interval = optional(string)
+            })
       - name: ip_range_pods
         description: The _name_ of the secondary subnet ip range to use for pods
         varType: string
