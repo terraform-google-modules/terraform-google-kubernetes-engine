@@ -104,8 +104,8 @@ variable "http_load_balancing" {
 
 variable "service_external_ips" {
   type        = bool
-  description = "Whether external ips specified by a service will be allowed in this cluster"
-  default     = false
+  description = "Whether external ips specified by a service will be allowed in this cluster. Set to null to leave the setting unmanaged."
+  default     = null
 }
 
 variable "insecure_kubelet_readonly_port_enabled" {
@@ -751,6 +751,12 @@ variable "filestore_csi_driver" {
   default     = false
 }
 
+variable "agent_sandbox_enabled" {
+  type        = bool
+  description = "The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later and a gVisor-enabled node pool)"
+  default     = null
+}
+
 variable "lustre_csi_driver" {
   type        = bool
   description = "The status of the Lustre CSI driver addon, which allows the usage of a Lustre instances as volumes"
@@ -940,7 +946,7 @@ variable "monitoring_enabled_components" {
 
 variable "logging_enabled_components" {
   type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, KCP_CONNECTION, KCP_SSHD, KCP_HPA, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, KCP_CONNECTION, KCP_SSHD, KCP_HPA, KCP_VPA, SCHEDULER, and WORKLOADS. Empty list is default GKE configuration."
   default     = []
   validation {
     condition = alltrue([
@@ -953,10 +959,11 @@ variable "logging_enabled_components" {
         "KCP_CONNECTION",
         "KCP_SSHD",
         "KCP_HPA",
+        "KCP_VPA",
         "WORKLOADS"
       ], c)
     ])
-    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, KCP_CONNECTION, KCP_SSHD, KCP_HPA and WORKLOADS."
+    error_message = "Valid values are SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, KCP_CONNECTION, KCP_SSHD, KCP_HPA, KCP_VPA and WORKLOADS."
   }
 }
 
