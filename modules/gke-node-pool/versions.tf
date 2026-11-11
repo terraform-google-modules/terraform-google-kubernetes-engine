@@ -20,10 +20,10 @@ terraform {
   required_providers {
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 6.33.0, < 8"
+      version = ">= 7.39.0, < 9"
     }
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:gke-node-pool/v45.0.0"
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:gke-node-pool/v47.0.0"
   }
 }

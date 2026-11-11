@@ -107,6 +107,12 @@ variable "datapath_provider" {
   default     = "ADVANCED_DATAPATH"
 }
 
+variable "enable_fqdn_network_policy" {
+  type        = bool
+  description = "Enable FQDN Network Policies on the cluster"
+  default     = null
+}
+
 variable "maintenance_start_time" {
   type        = string
   description = "Time window specified for daily maintenance operations in RFC3339 format"
@@ -394,6 +400,12 @@ variable "sandbox_enabled" {
   default     = false
 }
 
+variable "agent_sandbox_enabled" {
+  type        = bool
+  description = "The status of the Agent Sandbox addon, which isolates untrusted code execution (requires GKE version 1.35.2-gke.1269000 or later and a gVisor-enabled node pool for Standard clusters)"
+  default     = null
+}
+
 variable "enable_intranode_visibility" {
   type        = bool
   description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
@@ -493,6 +505,12 @@ variable "config_connector" {
 variable "gke_backup_agent_config" {
   type        = bool
   description = "(Beta) Whether Backup for GKE agent is enabled for this cluster."
+  default     = false
+}
+
+variable "enable_secret_manager_addon" {
+  description = "Enable the Secret Manager add-on for this cluster"
+  type        = bool
   default     = false
 }
 

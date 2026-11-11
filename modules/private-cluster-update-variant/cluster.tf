@@ -306,9 +306,9 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "service_external_ips_config" {
-    for_each = var.service_external_ips ? [1] : []
+    for_each = var.service_external_ips == null ? [] : [var.service_external_ips]
     content {
-      enabled = var.service_external_ips
+      enabled = service_external_ips_config.value
     }
   }
 
@@ -366,6 +366,13 @@ resource "google_container_cluster" "primary" {
 
       content {
         enabled = gke_backup_agent_config.value.enabled
+      }
+    }
+
+    dynamic "agent_sandbox_config" {
+      for_each = var.agent_sandbox_enabled != null ? [1] : []
+      content {
+        enabled = var.agent_sandbox_enabled
       }
     }
 
@@ -790,6 +797,7 @@ locals {
     "flex_start",
     "local_ssd_ephemeral_storage_count",
     "ephemeral_storage_local_ssd_data_cache_count",
+    "pod_cidr_overprovision_disabled",
     "local_nvme_ssd_count",
     "threads_per_core",
     "enable_nested_virtualization",
@@ -807,10 +815,10 @@ resource "random_id" "name" {
   byte_length = 2
   prefix      = "${each.key}-"
   keepers = merge(
-    zipmap(
-      local.force_node_pool_recreation_resources,
-      [for keeper in local.force_node_pool_recreation_resources : lookup(each.value, keeper, "")]
-    ),
+    {
+      for keeper in local.force_node_pool_recreation_resources : keeper => lookup(each.value, keeper, "")
+      if contains(keys(each.value), keeper)
+    },
     {
       taints = join(",",
         sort(
@@ -844,9 +852,6 @@ resource "random_id" "name" {
           )
         )
       )
-    },
-    {
-      pod_cidr_overprovision_disabled = tostring(lookup(each.value, "pod_cidr_overprovision_disabled", ""))
     }
   )
 }
@@ -955,7 +960,7 @@ resource "google_container_node_pool" "pools" {
   }
 
   dynamic "queued_provisioning" {
-    for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+    for_each = lookup(each.value, "queued_provisioning", null) != null ? [true] : []
     content {
       enabled = lookup(each.value, "queued_provisioning", null)
     }
@@ -1109,7 +1114,7 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "advanced_machine_features" {
-      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) || lookup(each.value, "performance_monitoring_unit", null) != null ? [1] : []
+      for_each = lookup(each.value, "threads_per_core", null) != null || lookup(each.value, "enable_nested_virtualization", null) != null || lookup(each.value, "performance_monitoring_unit", null) != null ? [1] : []
       content {
         threads_per_core             = lookup(each.value, "threads_per_core", 0)
         enable_nested_virtualization = lookup(each.value, "enable_nested_virtualization", null)
@@ -1353,7 +1358,7 @@ resource "google_container_node_pool" "windows_pools" {
   }
 
   dynamic "queued_provisioning" {
-    for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+    for_each = lookup(each.value, "queued_provisioning", null) != null ? [true] : []
     content {
       enabled = lookup(each.value, "queued_provisioning", null)
     }
@@ -1507,7 +1512,7 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     dynamic "advanced_machine_features" {
-      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) || lookup(each.value, "performance_monitoring_unit", null) != null ? [1] : []
+      for_each = lookup(each.value, "threads_per_core", null) != null || lookup(each.value, "enable_nested_virtualization", null) != null || lookup(each.value, "performance_monitoring_unit", null) != null ? [1] : []
       content {
         threads_per_core             = lookup(each.value, "threads_per_core", 0)
         enable_nested_virtualization = lookup(each.value, "enable_nested_virtualization", null)

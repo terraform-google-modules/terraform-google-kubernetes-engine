@@ -31,6 +31,9 @@ spec:
         add_cluster_firewall_rules:
           name: add_cluster_firewall_rules
           title: Add Cluster Firewall Rules
+        agent_sandbox_enabled:
+          name: agent_sandbox_enabled
+          title: Agent Sandbox Enabled
         authenticator_security_group:
           name: authenticator_security_group
           title: Authenticator Security Group
@@ -109,6 +112,9 @@ spec:
         enable_private_endpoint:
           name: enable_private_endpoint
           title: Enable Private Endpoint
+        enable_secret_manager_addon:
+          name: enable_secret_manager_addon
+          title: Enable Secret Manager Addon
         enable_secret_sync:
           name: enable_secret_sync
           title: Enable Secret Sync
