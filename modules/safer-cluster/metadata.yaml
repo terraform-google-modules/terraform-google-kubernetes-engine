@@ -195,6 +195,10 @@ spec:
       - name: enable_fqdn_network_policy
         description: Enable FQDN Network Policies on the cluster
         varType: bool
+      - name: enable_cilium_clusterwide_network_policy
+        description: Enable Cilium Cluster Wide Network Policies on the cluster
+        varType: bool
+        defaultValue: false
       - name: maintenance_start_time
         description: Time window specified for daily maintenance operations in RFC3339 format
         varType: string

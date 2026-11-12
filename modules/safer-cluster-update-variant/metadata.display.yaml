@@ -85,12 +85,18 @@ spec:
         dns_cache:
           name: dns_cache
           title: Dns Cache
+        enable_cilium_clusterwide_network_policy:
+          name: enable_cilium_clusterwide_network_policy
+          title: Enable Cilium Clusterwide Network Policy
         enable_confidential_nodes:
           name: enable_confidential_nodes
           title: Enable Confidential Nodes
         enable_cost_allocation:
           name: enable_cost_allocation
           title: Enable Cost Allocation
+        enable_fqdn_network_policy:
+          name: enable_fqdn_network_policy
+          title: Enable Fqdn Network Policy
         enable_gcfs:
           name: enable_gcfs
           title: Enable Gcfs
