@@ -72,6 +72,12 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  dynamic "managed_opentelemetry_config" {
+    for_each = var.managed_opentelemetry_scope != null ? [1] : []
+    content {
+      scope = var.managed_opentelemetry_scope
+    }
+  }
   dynamic "confidential_nodes" {
     for_each = local.confidential_node_config
     content {
