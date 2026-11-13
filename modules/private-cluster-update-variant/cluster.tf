@@ -798,6 +798,11 @@ locals {
     "local_ssd_ephemeral_storage_count",
     "ephemeral_storage_local_ssd_data_cache_count",
     "pod_cidr_overprovision_disabled",
+    "local_nvme_ssd_count",
+    "threads_per_core",
+    "enable_nested_virtualization",
+    "performance_monitoring_unit",
+    "node_affinity",
   ]
 }
 
