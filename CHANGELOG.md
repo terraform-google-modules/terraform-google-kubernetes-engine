@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Extending the adopted spec, each change should have a link to its corresponding pull request appended.
 
+## [47.1.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v47.0.0...v47.1.0) (2026-11-13)
+
+
+### Features
+
+* Add support for logging component KCP_VPA ([#2637](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2637)) ([793dd8d](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/793dd8d7562a48523ee3cdc312388296f5d10fdb))
+* expose enable_secret_manager_addon on safer-cluster modules ([#2664](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2664)) ([042821a](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/042821a4302204d1fb2b19eb58da7558877c8c48))
+
+
+### Bug Fixes
+
+* skip zonal GKE version lookup on regional clusters ([#2657](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2657)) ([889f5ae](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/889f5ae57ce5af5f888e7f6ac6848d3c55f65954))
+* use null checks for queued_provisioning and advanced_machine_features ([#2696](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2696)) ([d470131](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/commit/d470131234bdc9403f85084324fc1a1a765032fb))
+
 ## [47.0.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/compare/v46.0.0...v47.0.0) (2026-10-30)
 
 
