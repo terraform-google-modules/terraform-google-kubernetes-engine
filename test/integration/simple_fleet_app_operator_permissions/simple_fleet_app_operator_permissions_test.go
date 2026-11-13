@@ -29,10 +29,11 @@ import (
 
 func TestSimpleFleetAppOperatorPermissions(t *testing.T) {
 	appOppT := tft.NewTFBlueprintTest(t,
+		tft.WithParallelism(testutils.DefaultTerraformParallelism),
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 	appOppT.DefineVerify(func(assert *assert.Assertions) {
-		appOppT.DefaultVerify(assert)
+		testutils.TGKEVerify(t, appOppT, assert)
 
 		projectId := appOppT.GetStringOutput("project_id")
 		scopeId := "app-operator-team"
@@ -79,7 +80,7 @@ func TestSimpleFleetAppOperatorPermissions(t *testing.T) {
 			}
 
 			return false, nil
-		}, 20, 5*time.Second)
+		}, 30, 10*time.Second)
 	})
 
 	appOppT.Test()

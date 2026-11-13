@@ -17,6 +17,6 @@
 module "example" {
   source = "../../../examples/autopilot_private_firewalls"
 
-  project_id = var.project_ids[0]
+  project_id = var.project_ids[6]
   region     = var.region
 }

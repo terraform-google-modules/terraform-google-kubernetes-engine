@@ -29,11 +29,12 @@ import (
 
 func TestBetaCluster(t *testing.T) {
 	gke := tft.NewTFBlueprintTest(t,
+		tft.WithParallelism(testutils.DefaultTerraformParallelism),
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 
 	gke.DefineVerify(func(assert *assert.Assertions) {
-		gke.DefaultVerify(assert)
+		testutils.TGKEVerify(t, gke, assert)
 
 		projectId := gke.GetStringOutput("project_id")
 		location := gke.GetStringOutput("location")

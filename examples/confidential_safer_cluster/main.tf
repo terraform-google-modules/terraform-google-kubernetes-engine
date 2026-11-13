@@ -48,6 +48,12 @@ resource "google_kms_crypto_key_iam_member" "main" {
   member        = "serviceAccount:service-${data.google_project.main.number}@compute-system.iam.gserviceaccount.com"
 }
 
+resource "time_sleep" "wait_for_kms_iam" {
+  create_duration = "45s"
+
+  depends_on = [google_kms_crypto_key_iam_member.main]
+}
+
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/safer-cluster"
   version = "~> 47.0"
@@ -67,6 +73,7 @@ module "gke" {
   deletion_protection        = false
   enable_private_endpoint    = true
   enable_confidential_nodes  = true
+  depends_on                 = [time_sleep.wait_for_kms_iam]
 
   master_authorized_networks = [
     {

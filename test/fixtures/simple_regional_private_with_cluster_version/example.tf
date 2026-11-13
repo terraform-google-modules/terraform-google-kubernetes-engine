@@ -17,7 +17,7 @@
 module "example" {
   source = "../../../examples/simple_regional_private_with_cluster_version"
 
-  project_id                     = var.project_ids[1]
+  project_id                     = var.project_ids[2]
   cluster_name_suffix            = "-${random_string.suffix.result}"
   kubernetes_version             = var.kubernetes_version
   region                         = var.region
@@ -25,6 +25,6 @@ module "example" {
   subnetwork                     = google_compute_subnetwork.main.name
   ip_range_pods                  = google_compute_subnetwork.main.secondary_ip_range[0].range_name
   ip_range_services              = google_compute_subnetwork.main.secondary_ip_range[1].range_name
-  compute_engine_service_account = var.compute_engine_service_accounts[1]
+  compute_engine_service_account = var.compute_engine_service_accounts[2]
 }
 

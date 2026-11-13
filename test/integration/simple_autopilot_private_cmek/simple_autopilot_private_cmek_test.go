@@ -25,14 +25,15 @@ import (
 )
 
 func TestSimpleAutopilotPrivateCMEK(t *testing.T) {
-	projectID := testutils.GetTestProjectFromSetup(t, 1)
+	projectID := testutils.GetTestProjectFromSetup(t, 5)
 	bpt := tft.NewTFBlueprintTest(t,
 		tft.WithVars(map[string]interface{}{"project_id": projectID}),
+		tft.WithParallelism(testutils.DefaultTerraformParallelism),
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
-		bpt.DefaultVerify(assert)
+		testutils.TGKEVerify(t, bpt, assert)
 
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")

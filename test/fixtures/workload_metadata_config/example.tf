@@ -17,7 +17,7 @@
 module "example" {
   source = "../../../examples/workload_metadata_config"
 
-  project_id           = var.project_ids[1]
+  project_id           = var.project_ids[5]
   cluster_name_suffix  = "-${random_string.suffix.result}"
   region               = var.region
   zones                = slice(var.zones, 0, 1)

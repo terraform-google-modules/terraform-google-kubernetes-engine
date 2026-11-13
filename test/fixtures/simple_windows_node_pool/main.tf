@@ -16,5 +16,5 @@
 
 module "this" {
   source     = "../../../examples/simple_windows_node_pool"
-  project_id = var.project_ids[0]
+  project_id = var.project_ids[4]
 }

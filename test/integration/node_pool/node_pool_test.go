@@ -30,6 +30,7 @@ import (
 
 func TestNodePool(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t,
+		tft.WithParallelism(testutils.DefaultTerraformParallelism),
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 
@@ -65,8 +66,7 @@ func TestNodePool(t *testing.T) {
 		assert.Equal("value-"+randomString, cluster.Get(tagKeyPath).String())
 
 		// K8s Assertions
-		gcloud.Runf(t, "container clusters get-credentials %s --region %s --project %s", clusterName, location, projectId)
-		k8sOpts := k8s.NewKubectlOptions(fmt.Sprintf("gke_%s_%s_%s", projectId, location, clusterName), "", "")
+		k8sOpts := testutils.GetIsolatedKubectlOptions(t, projectId, location, clusterName, true)
 
 		var nodes gjson.Result
 		utils.Poll(t, func() (bool, error) {

@@ -20,6 +20,8 @@ resource "random_id" "random_project_id_suffix" {
 
 locals {
   apis = [
+    "compute.googleapis.com",
+    "iam.googleapis.com",
     "cloudkms.googleapis.com",
     "cloudresourcemanager.googleapis.com",
     "container.googleapis.com",
@@ -31,11 +33,9 @@ locals {
     "logging.googleapis.com",
     "meshca.googleapis.com",
     "meshconfig.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
     "monitoring.googleapis.com",
     "stackdriver.googleapis.com",
     "cloudtrace.googleapis.com",
-    "meshca.googleapis.com",
     "iamcredentials.googleapis.com",
     "gkeconnect.googleapis.com",
     "privateca.googleapis.com",
@@ -99,11 +99,13 @@ module "gke-project-2" {
 
   deletion_policy = "DELETE"
 
+  auto_create_network = false
+
   activate_apis = local.apis
   activate_api_identities = [
     {
       api   = "container.googleapis.com"
-      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent"]
+      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent", "roles/resourcemanager.tagUser", "roles/resourcemanager.tagHoldAdmin"]
     },
   ]
 }
@@ -123,7 +125,15 @@ module "gke-project-asm" {
 
   deletion_policy = "DELETE"
 
+  auto_create_network = false
+
   activate_apis = local.apis
+  activate_api_identities = [
+    {
+      api   = "container.googleapis.com"
+      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent", "roles/resourcemanager.tagUser", "roles/resourcemanager.tagHoldAdmin"]
+    },
+  ]
 }
 
 module "gke-project-fleet" {
@@ -140,6 +150,83 @@ module "gke-project-fleet" {
 
   deletion_policy = "DELETE"
 
+  auto_create_network = false
+
   activate_apis = local.apis
+}
+
+module "gke-project-4" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 18.0"
+
+  name              = "ci-gke-${random_id.random_project_id_suffix.hex}"
+  random_project_id = true
+  org_id            = var.org_id
+  folder_id         = var.folder_id
+  billing_account   = var.billing_account
+  # due to https://github.com/hashicorp/terraform-provider-google/issues/9505 for AP
+  default_service_account = "keep"
+
+  deletion_policy = "DELETE"
+
+  auto_create_network = false
+
+  activate_apis = local.apis
+  activate_api_identities = [
+    {
+      api   = "container.googleapis.com"
+      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent", "roles/resourcemanager.tagUser", "roles/resourcemanager.tagHoldAdmin"]
+    },
+  ]
+}
+
+module "gke-project-5" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 18.0"
+
+  name              = "ci-gke-${random_id.random_project_id_suffix.hex}"
+  random_project_id = true
+  org_id            = var.org_id
+  folder_id         = var.folder_id
+  billing_account   = var.billing_account
+  # due to https://github.com/hashicorp/terraform-provider-google/issues/9505 for AP
+  default_service_account = "keep"
+
+  deletion_policy = "DELETE"
+
+  auto_create_network = false
+
+  activate_apis = local.apis
+  activate_api_identities = [
+    {
+      api   = "container.googleapis.com"
+      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent", "roles/resourcemanager.tagUser", "roles/resourcemanager.tagHoldAdmin"]
+    },
+  ]
+}
+
+module "gke-project-6" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 18.0"
+
+  name              = "ci-gke-${random_id.random_project_id_suffix.hex}"
+  random_project_id = true
+  org_id            = var.org_id
+  folder_id         = var.folder_id
+  billing_account   = var.billing_account
+  # due to https://github.com/hashicorp/terraform-provider-google/issues/9505 for AP
+  default_service_account = "keep"
+
+  deletion_policy = "DELETE"
+
+  auto_create_network = false
+
+  activate_apis = local.apis
+  activate_api_identities = [
+    {
+      api   = "container.googleapis.com"
+      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent", "roles/resourcemanager.tagUser", "roles/resourcemanager.tagHoldAdmin"]
+    },
+  ]
 }
 

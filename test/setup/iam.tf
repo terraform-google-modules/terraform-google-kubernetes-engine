@@ -119,6 +119,30 @@ resource "google_service_account" "gke_sa_asm" {
   display_name = "gke-sa-int-test-asm"
 }
 
+resource "google_service_account" "gke_sa_fleet" {
+  project      = module.gke-project-fleet.project_id
+  account_id   = "gke-sa-int-test-fleet-${random_id.random_suffix.hex}"
+  display_name = "gke-sa-int-test-fleet"
+}
+
+resource "google_service_account" "gke_sa_4" {
+  project      = module.gke-project-4.project_id
+  account_id   = "gke-sa-int-test-p4-${random_id.random_suffix.hex}"
+  display_name = "gke-sa-int-test-p4"
+}
+
+resource "google_service_account" "gke_sa_5" {
+  project      = module.gke-project-5.project_id
+  account_id   = "gke-sa-int-test-p5-${random_id.random_suffix.hex}"
+  display_name = "gke-sa-int-test-p5"
+}
+
+resource "google_service_account" "gke_sa_6" {
+  project      = module.gke-project-6.project_id
+  account_id   = "gke-sa-int-test-p6-${random_id.random_suffix.hex}"
+  display_name = "gke-sa-int-test-p6"
+}
+
 resource "google_project_iam_member" "int_test_1" {
   count = length(local.int_required_roles)
 
@@ -151,12 +175,51 @@ resource "google_project_iam_member" "int_test_fleet" {
   member  = "serviceAccount:${google_service_account.int_test.email}"
 }
 
+resource "google_project_iam_member" "int_test_4" {
+  for_each = toset(local.int_required_roles)
+
+  project = module.gke-project-4.project_id
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.int_test.email}"
+}
+
+resource "google_project_iam_member" "int_test_5" {
+  for_each = toset(local.int_required_roles)
+
+  project = module.gke-project-5.project_id
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.int_test.email}"
+}
+
+resource "google_project_iam_member" "int_test_6" {
+  for_each = toset(local.int_required_roles)
+
+  project = module.gke-project-6.project_id
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.int_test.email}"
+}
+
 resource "google_service_account_key" "int_test" {
   service_account_id = google_service_account.int_test.id
 }
 
-resource "google_project_iam_member" "kubernetes_engine_kms_access" {
-  project = module.gke-project-1.project_id
-  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member  = "serviceAccount:service-${module.gke-project-1.project_number}@container-engine-robot.iam.gserviceaccount.com"
+resource "time_sleep" "wait_for_iam_propagation" {
+  create_duration = "60s"
+
+  depends_on = [
+    google_project_iam_member.int_test_1,
+    google_project_iam_member.int_test_2,
+    google_project_iam_member.int_test_asm,
+    google_project_iam_member.int_test_fleet,
+    google_project_iam_member.int_test_4,
+    google_project_iam_member.int_test_5,
+    google_project_iam_member.int_test_6,
+    google_service_account.gke_sa_1,
+    google_service_account.gke_sa_2,
+    google_service_account.gke_sa_asm,
+    google_service_account.gke_sa_fleet,
+    google_service_account.gke_sa_4,
+    google_service_account.gke_sa_5,
+    google_service_account.gke_sa_6,
+  ]
 }
