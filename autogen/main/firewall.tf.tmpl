@@ -159,11 +159,9 @@ resource "google_compute_firewall" "shadow_allow_pods" {
     }
   }
 
-  {% if not private_cluster %}
   depends_on = [
     google_container_cluster.primary,
   ]
-  {% endif %}
 }
 
 resource "google_compute_firewall" "shadow_allow_master" {
@@ -191,11 +189,9 @@ resource "google_compute_firewall" "shadow_allow_master" {
     }
   }
 
-  {% if not private_cluster %}
   depends_on = [
     google_container_cluster.primary,
   ]
-  {% endif %}
 }
 
 resource "google_compute_firewall" "shadow_allow_nodes" {
@@ -232,11 +228,9 @@ resource "google_compute_firewall" "shadow_allow_nodes" {
     }
   }
 
-  {% if not private_cluster %}
   depends_on = [
     google_container_cluster.primary,
   ]
-  {% endif %}
 }
 
 resource "google_compute_firewall" "shadow_allow_inkubelet" {
@@ -265,11 +259,9 @@ resource "google_compute_firewall" "shadow_allow_inkubelet" {
     }
   }
 
-  {% if not private_cluster %}
   depends_on = [
     google_container_cluster.primary,
   ]
-  {% endif %}
 }
 
 resource "google_compute_firewall" "shadow_deny_exkubelet" {
@@ -297,9 +289,7 @@ resource "google_compute_firewall" "shadow_deny_exkubelet" {
     }
   }
 
-  {% if not private_cluster %}
   depends_on = [
     google_container_cluster.primary,
   ]
-  {% endif %}
 }

@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
+	"github.com/tidwall/gjson"
 )
 
 func TestSimpleFleetAppOperatorPermissions(t *testing.T) {
@@ -52,28 +53,48 @@ func TestSimpleFleetAppOperatorPermissions(t *testing.T) {
 		flattenOpt := "bindings[].members"
 
 		utils.Poll(t, func() (bool, error) {
-			scopeRrbList := gcloud.Runf(t, "container fleet scopes rbacrolebindings list --scope %s --project %s", scopeId, projectId).String()
+			out, err := gcloud.RunCmdE(t, fmt.Sprintf("container fleet scopes rbacrolebindings list --scope %s --project %s", scopeId, projectId))
+			if err != nil {
+				return true, err
+			}
+			scopeRrbList := gjson.Parse(out).String()
 			if !strings.Contains(scopeRrbList, appOperatorEmail) || !strings.Contains(scopeRrbList, customAppOperatorEmail) {
 				return true, fmt.Errorf("waiting for Scope RBAC Role Bindings")
 			}
 
-			scopeIam := gcloud.Runf(t, "container fleet scopes get-iam-policy %s --project %s --filter %s", scopeId, projectId, fmt.Sprintf(filterFormat, appOperatorPrincipal)).String()
+			out, err = gcloud.RunCmdE(t, fmt.Sprintf("container fleet scopes get-iam-policy %s --project %s --filter %s", scopeId, projectId, fmt.Sprintf(filterFormat, appOperatorPrincipal)))
+			if err != nil {
+				return true, err
+			}
+			scopeIam := gjson.Parse(out).String()
 			if !strings.Contains(scopeIam, scopeLevelRole) {
 				return true, fmt.Errorf("waiting for app operator Scope role in Scope IAM policy")
 			}
 
-			customScopeIam := gcloud.Runf(t, "container fleet scopes get-iam-policy %s --project %s --filter %s", scopeId, projectId, fmt.Sprintf(filterFormat, customAppOperatorPrincipal)).String()
+			out, err = gcloud.RunCmdE(t, fmt.Sprintf("container fleet scopes get-iam-policy %s --project %s --filter %s", scopeId, projectId, fmt.Sprintf(filterFormat, customAppOperatorPrincipal)))
+			if err != nil {
+				return true, err
+			}
+			customScopeIam := gjson.Parse(out).String()
 			if !strings.Contains(customScopeIam, customScopeLevelRole) {
 				return true, fmt.Errorf("waiting for custom app operator Scope role in Scope IAM policy")
 			}
 
-			projectIam := gcloud.Runf(t, "projects get-iam-policy %s --filter %s --flatten %s", projectId, fmt.Sprintf(filterFormat, appOperatorPrincipal), flattenOpt).String()
+			out, err = gcloud.RunCmdE(t, fmt.Sprintf("projects get-iam-policy %s --filter %s --flatten %s", projectId, fmt.Sprintf(filterFormat, appOperatorPrincipal), flattenOpt))
+			if err != nil {
+				return true, err
+			}
+			projectIam := gjson.Parse(out).String()
 			if !strings.Contains(projectIam, projectLevelRole) || !strings.Contains(projectIam, logViewRole) ||
 				!strings.Contains(projectIam, logViewContainerBucket) || !strings.Contains(projectIam, logViewPodBucket) {
 				return true, fmt.Errorf("waiting for app operator project IAM policy")
 			}
 
-			customProjectIam := gcloud.Runf(t, "projects get-iam-policy %s --filter %s --flatten %s", projectId, fmt.Sprintf(filterFormat, customAppOperatorPrincipal), flattenOpt).String()
+			out, err = gcloud.RunCmdE(t, fmt.Sprintf("projects get-iam-policy %s --filter %s --flatten %s", projectId, fmt.Sprintf(filterFormat, customAppOperatorPrincipal), flattenOpt))
+			if err != nil {
+				return true, err
+			}
+			customProjectIam := gjson.Parse(out).String()
 			if !strings.Contains(customProjectIam, customProjectLevelRole) || !strings.Contains(customProjectIam, logViewRole) ||
 				!strings.Contains(customProjectIam, logViewContainerBucket) || !strings.Contains(customProjectIam, logViewPodBucket) {
 				return true, fmt.Errorf("waiting for custom app operator project IAM policy")

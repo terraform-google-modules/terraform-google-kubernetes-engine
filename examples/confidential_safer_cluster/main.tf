@@ -51,7 +51,10 @@ resource "google_kms_crypto_key_iam_member" "main" {
 resource "time_sleep" "wait_for_kms_iam" {
   create_duration = "45s"
 
-  depends_on = [google_kms_crypto_key_iam_member.main]
+  depends_on = [
+    google_kms_crypto_key_iam_member.main,
+    google_kms_crypto_key_iam_member.sm_sa_encrypter_decrypter,
+  ]
 }
 
 module "gke" {

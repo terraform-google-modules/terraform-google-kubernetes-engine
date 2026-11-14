@@ -31,7 +31,7 @@ func TestSimpleAutopilotPublic(t *testing.T) {
 	)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
-		bpt.DefaultVerify(assert)
+		testutils.TGKEVerify(t, bpt, assert)
 
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")

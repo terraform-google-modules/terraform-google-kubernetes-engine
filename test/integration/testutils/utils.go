@@ -46,7 +46,6 @@ var (
 		".*Error 409.*There were concurrent policy changes.*":   "Concurrent policy changes.",
 		".*Error 409.*Another operation is already in progress": "Another operation in progress.",
 		".*Error 409.*is in use":                                "Resource in use.",
-		".*Error 409.*already exists.*":                         "Transient resource already exists conflict.",
 
 		// Rate limiting & Quotas
 		".*rateLimitExceeded.*":        "Rate limit exceeded.",
@@ -63,7 +62,7 @@ var (
 		".*Error code 13, message: an internal error has occurred": "Internal error.",
 
 		// GKE Cluster update/lock conflicts
-		".*Error 400: Cluster is running incompatible operation.*":      "Incompatible operation.",
+		".*Error 400.*Cluster is running incompatible operation.*":      "Incompatible operation.",
 		".*Error 400.*Master is being updated.*":                        "Master is being updated.",
 		".*Error 400.*Cluster is being updated.*":                       "Cluster is being updated.",
 		".*Error 400.*Cluster is not ready for operation.*":             "Cluster not ready.",

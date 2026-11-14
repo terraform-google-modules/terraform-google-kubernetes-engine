@@ -153,6 +153,12 @@ module "gke-project-fleet" {
   auto_create_network = false
 
   activate_apis = local.apis
+  activate_api_identities = [
+    {
+      api   = "container.googleapis.com"
+      roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/container.serviceAgent", "roles/resourcemanager.tagUser", "roles/resourcemanager.tagHoldAdmin"]
+    },
+  ]
 }
 
 module "gke-project-4" {

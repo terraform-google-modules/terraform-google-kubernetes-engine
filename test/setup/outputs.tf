@@ -34,7 +34,8 @@ output "sa_key" {
 }
 
 output "int_sa" {
-  value = google_service_account.int_test.email
+  value      = google_service_account.int_test.email
+  depends_on = [time_sleep.wait_for_iam_propagation]
 }
 
 output "compute_engine_service_accounts" {
@@ -51,5 +52,6 @@ output "compute_engine_service_accounts" {
 }
 
 output "registry_project_ids" {
-  value = [module.gke-project-1.project_id]
+  value      = [module.gke-project-1.project_id]
+  depends_on = [time_sleep.wait_for_iam_propagation]
 }
