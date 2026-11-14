@@ -17,13 +17,13 @@
 module "example" {
   source = "../../../examples/simple_regional_private"
 
-  project_id                     = var.project_ids[1]
+  project_id                     = var.project_ids[2]
   cluster_name_suffix            = "-${random_string.suffix.result}"
   region                         = var.region
   network                        = google_compute_network.main.name
   subnetwork                     = google_compute_subnetwork.main.name
   ip_range_pods                  = google_compute_subnetwork.main.secondary_ip_range[0].range_name
-  compute_engine_service_account = var.compute_engine_service_accounts[1]
+  compute_engine_service_account = var.compute_engine_service_accounts[2]
   enable_k8s_beta_apis           = var.enable_k8s_beta_apis
 }
 

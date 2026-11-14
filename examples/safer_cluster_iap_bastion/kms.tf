@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
+resource "random_string" "kms_suffix" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
 module "kms" {
   source          = "terraform-google-modules/kms/google"
   version         = "~> 4.0"
   project_id      = var.project_id
   location        = var.region
-  keyring         = "gke-keyring"
-  keys            = ["gke-key"]
+  keyring         = "gke-keyring-${random_string.kms_suffix.result}"
+  keys            = ["gke-key-${random_string.kms_suffix.result}"]
   prevent_destroy = false
 }

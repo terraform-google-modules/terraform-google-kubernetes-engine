@@ -29,6 +29,7 @@ import (
 
 func TestSaferClusterIapBastion(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t,
+		tft.WithParallelism(testutils.DefaultTerraformParallelism),
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 
@@ -55,7 +56,7 @@ func TestSaferClusterIapBastion(t *testing.T) {
 				return true, fmt.Errorf("gitVersion not yet present in output")
 			}
 			return false, nil
-		}, 20, 10*time.Second)
+		}, 36, 10*time.Second)
 
 		assert.Equal(clusterVersion, op.Get("gitVersion").String(), "SSH into VM and verify connectivity to GKE")
 	})

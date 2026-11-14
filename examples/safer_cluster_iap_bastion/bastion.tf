@@ -28,6 +28,7 @@ module "bastion" {
   project        = module.enabled_google_apis.project_id
   host_project   = module.enabled_google_apis.project_id
   name           = local.bastion_name
+  region         = var.region
   zone           = local.bastion_zone
   image_project  = "debian-cloud"
   machine_type   = "e2-small"

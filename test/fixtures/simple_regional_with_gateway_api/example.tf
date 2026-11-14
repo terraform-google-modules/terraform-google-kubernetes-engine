@@ -15,7 +15,7 @@
  */
 
 locals {
-  cluster_index = 1
+  cluster_index = 6
 }
 
 module "example" {

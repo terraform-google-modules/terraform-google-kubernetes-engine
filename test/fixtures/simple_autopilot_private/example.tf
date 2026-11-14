@@ -17,6 +17,6 @@
 module "example" {
   source = "../../../examples/simple_autopilot_private"
 
-  project_id = var.project_ids[0]
+  project_id = var.project_ids[5]
   region     = var.region
 }
