@@ -144,6 +144,15 @@ variable "maintenance_recurrence" {
   default     = ""
 }
 
+variable "maintenance_disruption_budget" {
+  type = object({
+    minor_version_disruption_interval = optional(string)
+    patch_version_disruption_interval = optional(string)
+  })
+  description = "Minimum time between two control plane upgrades of the same type, as a duration in seconds with an `s` suffix (for example `2592000s` for 30 days). `minor_version_disruption_interval` applies to minor version upgrades and `patch_version_disruption_interval` to patch version upgrades."
+  default     = null
+}
+
 variable "ip_range_pods" {
   type        = string
   description = "The _name_ of the secondary subnet ip range to use for pods"
