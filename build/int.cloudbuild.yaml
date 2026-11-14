@@ -25,8 +25,8 @@ steps:
   - |
     source /usr/local/bin/task_helper_functions.sh
     for attempt in 1 2 3; do
-      prepare_environment || true
-      if terraform -chdir=test/setup output -json project_ids 2>/dev/null | grep -q 'ci-gke-'; then
+      (cd /workspace && prepare_environment) || true
+      if terraform -chdir=/workspace/test/setup output -json project_ids 2>/dev/null | grep -q 'ci-gke-'; then
         break
       fi
       echo "prepare_environment attempt ${attempt} did not produce project_ids; retrying in 30s..."
