@@ -14,7 +14,6 @@
 package stub_domains_upstream_nameservers
 
 import (
-	"fmt"
 	"testing"
 	"time"
 
@@ -29,6 +28,7 @@ import (
 
 func TestStubDomainsUpstreamNameservers(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t,
+		tft.WithParallelism(testutils.DefaultTerraformParallelism),
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 
@@ -60,12 +60,18 @@ func TestStubDomainsUpstreamNameservers(t *testing.T) {
 
 		// K8s Assertions
 		// CAI does not include k8s.io/ConfigMap
-		gcloud.Runf(t, "container clusters get-credentials %s --region %s --project %s", clusterName, location, projectId)
-		k8sOpts := k8s.NewKubectlOptions(fmt.Sprintf("gke_%s_%s_%s", projectId, location, clusterName), "", "")
+		k8sOpts := testutils.GetIsolatedKubectlOptions(t, projectId, location, clusterName, true)
 
 		// kube-dns
-		listKubeDnsConfigMap, err := k8s.RunKubectlAndGetOutputE(t, k8sOpts, "get", "configmap", "kube-dns", "-n", "kube-system", "-o", "json", "--show-managed-fields")
-		assert.NoError(err)
+		var listKubeDnsConfigMap string
+		utils.Poll(t, func() (bool, error) {
+			output, err := k8s.RunKubectlAndGetOutputE(t, k8sOpts, "get", "configmap", "kube-dns", "-n", "kube-system", "-o", "json", "--show-managed-fields")
+			if err != nil {
+				return true, err
+			}
+			listKubeDnsConfigMap = output
+			return false, nil
+		}, 12, 5*time.Second)
 		kubeDnsCM := utils.ParseKubectlJSONResult(t, listKubeDnsConfigMap)
 		assert.Contains("kube-dns", kubeDnsCM.Get("metadata.name").String(), "kube-dns configmap is present")
 		assert.True(kubeDnsCM.Get("metadata.managedFields.#(manager==\"Terraform\")").Exists(), "kube-dns configmap is managed by Terraform")
@@ -84,8 +90,15 @@ func TestStubDomainsUpstreamNameservers(t *testing.T) {
 			kubeDnsCM.Get("data.stubDomains").String(), "kube-dns configmap the expected stubdomains")
 
 		// ip-masq-agent
-		listIpMasqAgentConfigMap, err := k8s.RunKubectlAndGetOutputE(t, k8sOpts, "get", "configmap", "ip-masq-agent", "-n", "kube-system", "-o", "json", "--show-managed-fields")
-		assert.NoError(err)
+		var listIpMasqAgentConfigMap string
+		utils.Poll(t, func() (bool, error) {
+			output, err := k8s.RunKubectlAndGetOutputE(t, k8sOpts, "get", "configmap", "ip-masq-agent", "-n", "kube-system", "-o", "json", "--show-managed-fields")
+			if err != nil {
+				return true, err
+			}
+			listIpMasqAgentConfigMap = output
+			return false, nil
+		}, 12, 5*time.Second)
 		ipMasqAgentConfigMap := utils.ParseKubectlJSONResult(t, listIpMasqAgentConfigMap)
 		assert.Contains("ip-masq-agent", ipMasqAgentConfigMap.Get("metadata.name").String(), "ip-masq-agent configmap is present")
 		assert.Equal("terraform", ipMasqAgentConfigMap.Get("metadata.labels.maintained_by").String(), "ip-masq-agent configmap is maintained_by Terraform")

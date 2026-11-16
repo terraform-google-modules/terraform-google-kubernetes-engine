@@ -25,9 +25,10 @@ import (
 )
 
 func TestConfidentialAutopilotPrivate(t *testing.T) {
-	projectID := testutils.GetTestProjectFromSetup(t, 1)
+	projectID := testutils.GetTestProjectFromSetup(t, 6)
 	bpt := tft.NewTFBlueprintTest(t,
 		tft.WithVars(map[string]interface{}{"project_id": projectID}),
+		tft.WithParallelism(testutils.DefaultTerraformParallelism),
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 

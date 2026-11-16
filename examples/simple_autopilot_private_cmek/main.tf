@@ -54,6 +54,12 @@ resource "google_kms_crypto_key_iam_member" "main" {
   member        = "serviceAccount:service-${data.google_project.main.number}@compute-system.iam.gserviceaccount.com"
 }
 
+resource "time_sleep" "wait_for_kms_iam" {
+  create_duration = "45s"
+
+  depends_on = [google_kms_crypto_key_iam_member.main]
+}
+
 provider "kubernetes" {
   host                   = "https://${module.gke.endpoint}"
   token                  = data.google_client_config.default.access_token
@@ -80,5 +86,5 @@ module "gke" {
   node_pools_cgroup_mode          = "CGROUP_MODE_V2"
   deletion_protection             = false
   boot_disk_kms_key               = values(module.kms.keys)[0]
-  depends_on                      = [google_kms_crypto_key_iam_member.main]
+  depends_on                      = [time_sleep.wait_for_kms_iam]
 }

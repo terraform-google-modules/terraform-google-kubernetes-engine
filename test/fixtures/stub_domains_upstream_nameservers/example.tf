@@ -15,13 +15,13 @@
  */
 
 locals {
-  compute_engine_service_account = var.compute_engine_service_accounts[1]
+  compute_engine_service_account = var.compute_engine_service_accounts[5]
 }
 
 module "example" {
   source = "../../../examples/stub_domains_upstream_nameservers"
 
-  project_id                     = var.project_ids[1]
+  project_id                     = var.project_ids[5]
   cluster_name_suffix            = "-${random_string.suffix.result}"
   region                         = var.region
   network                        = google_compute_network.main.name

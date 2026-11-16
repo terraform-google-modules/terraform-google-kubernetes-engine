@@ -122,10 +122,12 @@ module "gke" {
       enable_nested_virtualization = true
     },
     {
-      name          = "pool-06"
-      node_count    = 1
-      machine_type  = "c2-standard-30"
-      node_affinity = "{\"key\": \"compute.googleapis.com/node-group-name\", \"operator\": \"IN\", \"values\": [\"${google_compute_node_group.soletenant-nodes.name}\"]}"
+      name               = "pool-06"
+      initial_node_count = 0
+      min_count          = 0
+      max_count          = 1
+      machine_type       = "c2-standard-30"
+      node_affinity      = "{\"key\": \"compute.googleapis.com/node-group-name\", \"operator\": \"IN\", \"values\": [\"${google_compute_node_group.soletenant-nodes.name}\"]}"
     },
   ]
 
@@ -216,6 +218,6 @@ resource "google_compute_node_group" "soletenant-nodes" {
   name = "soletenant-node-group-${var.cluster_name_suffix}"
   zone = var.zones[0]
 
-  initial_size  = 1
+  initial_size  = 0
   node_template = google_compute_node_template.soletenant-tmpl.id
 }
