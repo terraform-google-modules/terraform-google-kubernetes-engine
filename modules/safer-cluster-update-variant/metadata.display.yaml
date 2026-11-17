@@ -85,6 +85,9 @@ spec:
         dns_cache:
           name: dns_cache
           title: Dns Cache
+        enable_cilium_clusterwide_network_policy:
+          name: enable_cilium_clusterwide_network_policy
+          title: Enable Cilium Clusterwide Network Policy
         enable_confidential_nodes:
           name: enable_confidential_nodes
           title: Enable Confidential Nodes
