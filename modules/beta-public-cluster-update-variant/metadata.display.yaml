@@ -94,6 +94,9 @@ spec:
         configure_ip_masq:
           name: configure_ip_masq
           title: Configure Ip Masq
+        containerd_registry_hosts:
+          name: containerd_registry_hosts
+          title: Containerd Registry Hosts
         create_service_account:
           name: create_service_account
           title: Create Service Account

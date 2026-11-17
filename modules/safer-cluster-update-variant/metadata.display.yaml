@@ -61,6 +61,9 @@ spec:
         config_connector:
           name: config_connector
           title: Config Connector
+        containerd_registry_hosts:
+          name: containerd_registry_hosts
+          title: Containerd Registry Hosts
         create_service_account:
           name: create_service_account
           title: Create Service Account

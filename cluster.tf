@@ -736,6 +736,59 @@ resource "google_container_cluster" "primary" {
         enabled = var.enable_gcfs
       }
       insecure_kubelet_readonly_port_enabled = var.insecure_kubelet_readonly_port_enabled != null ? upper(tostring(var.insecure_kubelet_readonly_port_enabled)) : null
+
+      dynamic "containerd_config" {
+        for_each = var.containerd_registry_hosts == null ? [] : [var.containerd_registry_hosts]
+        content {
+          dynamic "registry_hosts" {
+            for_each = containerd_config.value
+            content {
+              server = registry_hosts.value.server
+
+              dynamic "hosts" {
+                for_each = registry_hosts.value.hosts
+                content {
+                  host          = hosts.value.host
+                  capabilities  = hosts.value.capabilities
+                  override_path = hosts.value.override_path
+                  dial_timeout  = hosts.value.dial_timeout
+
+                  dynamic "header" {
+                    for_each = hosts.value.header
+                    content {
+                      key   = header.value.key
+                      value = header.value.value
+                    }
+                  }
+
+                  dynamic "ca" {
+                    for_each = hosts.value.ca
+                    content {
+                      gcp_secret_manager_secret_uri = ca.value.gcp_secret_manager_secret_uri
+                    }
+                  }
+
+                  dynamic "client" {
+                    for_each = hosts.value.client
+                    content {
+                      cert {
+                        gcp_secret_manager_secret_uri = client.value.cert.gcp_secret_manager_secret_uri
+                      }
+
+                      dynamic "key" {
+                        for_each = client.value.key == null ? [] : [client.value.key]
+                        content {
+                          gcp_secret_manager_secret_uri = key.value.gcp_secret_manager_secret_uri
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 

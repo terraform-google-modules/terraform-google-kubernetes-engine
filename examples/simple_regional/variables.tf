@@ -47,6 +47,35 @@ variable "compute_engine_service_account" {
   description = "Service account to associate to the nodes in the cluster"
 }
 
+variable "containerd_registry_hosts" {
+  type = list(object({
+    server = string
+    hosts = optional(list(object({
+      host          = string
+      capabilities  = optional(list(string))
+      override_path = optional(bool)
+      dial_timeout  = optional(string)
+      header = optional(list(object({
+        key   = string
+        value = list(string)
+      })), [])
+      ca = optional(list(object({
+        gcp_secret_manager_secret_uri = string
+      })), [])
+      client = optional(list(object({
+        cert = object({
+          gcp_secret_manager_secret_uri = string
+        })
+        key = optional(object({
+          gcp_secret_manager_secret_uri = string
+        }))
+      })), [])
+    })), [])
+  }))
+  description = "Cluster-level containerd registry hosts inherited by node pools without overrides. Requires GKE 1.34.1-gke.2980000 or later. Updating this configuration can recreate managed nodes."
+  default     = null
+}
+
 variable "enable_binary_authorization" {
   description = "Enable BinAuthZ Admission controller"
   default     = false
