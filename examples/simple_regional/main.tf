@@ -46,4 +46,5 @@ module "gke" {
   fleet_project               = var.project_id
   deletion_protection         = false
   stateful_ha                 = true
+  containerd_registry_hosts   = var.containerd_registry_hosts
 }

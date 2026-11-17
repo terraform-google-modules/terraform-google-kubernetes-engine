@@ -44,6 +44,39 @@ The implications of this are that:
 - You will indeed need sufficient IP space (and compute capacity) to create both node pools
 
 {% endif %}
+{% if autopilot_cluster != true %}
+## Containerd registry hosts
+
+`containerd_registry_hosts` configures containerd registries at the cluster level.
+GKE node pools inherit these defaults unless they have their own configuration.
+Requires Linux nodes running GKE **1.34.1-gke.2980000 or later**; updates can recreate
+managed nodes. See [GKE containerd configuration](https://cloud.google.com/kubernetes-engine/docs/how-to/customize-containerd-configuration#registryHosts).
+
+For example, in the module block:
+
+```hcl
+containerd_registry_hosts = [{
+  server = "docker.io"
+  hosts = [{
+    host         = "https://mirror.gcr.io"
+    capabilities = ["HOST_CAPABILITY_PULL", "HOST_CAPABILITY_RESOLVE"]
+  }]
+}]
+```
+
+The default `null` omits containerd configuration. An explicit empty list renders
+an empty containerd block; verify provider/API behavior before relying on it to
+clear existing settings. This input does not configure individual node-pool
+overrides or guarantee authenticated private-mirror pulls or mirror-only egress.
+Credential renewal and registry fallback behavior must be verified separately.
+
+Optional host fields include API-root paths (`override_path`), timeouts, headers,
+CA certificates and client certificates/keys referenced through Secret Manager.
+A client certificate is required for each client entry; its key is optional.
+Header values may be stored in Terraform state, so do not put credentials in
+examples or assume headers are runtime-only secrets.
+
+{% endif %}
 ## Compatibility
 
 This module is meant for use with Terraform 1.3+ and tested using Terraform 1.14+.

@@ -9,6 +9,7 @@ This example illustrates how to create a simple cluster.
 |------|-------------|------|---------|:--------:|
 | cluster\_name\_suffix | A suffix to append to the default cluster name | `string` | `""` | no |
 | compute\_engine\_service\_account | Service account to associate to the nodes in the cluster | `any` | n/a | yes |
+| containerd\_registry\_hosts | Cluster-level containerd registry hosts inherited by node pools without overrides. Requires GKE 1.34.1-gke.2980000 or later. Updating this configuration can recreate managed nodes. | <pre>list(object({<br>    server = string<br>    hosts = optional(list(object({<br>      host          = string<br>      capabilities  = optional(list(string))<br>      override_path = optional(bool)<br>      dial_timeout  = optional(string)<br>      header = optional(list(object({<br>        key   = string<br>        value = list(string)<br>      })), [])<br>      ca = optional(list(object({<br>        gcp_secret_manager_secret_uri = string<br>      })), [])<br>      client = optional(list(object({<br>        cert = object({<br>          gcp_secret_manager_secret_uri = string<br>        })<br>        key = optional(object({<br>          gcp_secret_manager_secret_uri = string<br>        }))<br>      })), [])<br>    })), [])<br>  }))</pre> | `null` | no |
 | enable\_binary\_authorization | Enable BinAuthZ Admission controller | `bool` | `false` | no |
 | ip\_range\_pods | The secondary ip range to use for pods | `any` | n/a | yes |
 | ip\_range\_services | The secondary ip range to use for services | `any` | n/a | yes |

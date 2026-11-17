@@ -15,6 +15,37 @@ Sub modules are provided for creating private clusters, beta private clusters, a
 
 For details on configuring private clusters with this module, check the [troubleshooting guide](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/blob/master/docs/private_clusters.md).
 
+## Containerd registry hosts
+
+`containerd_registry_hosts` configures containerd registries at the cluster level.
+GKE node pools inherit these defaults unless they have their own configuration.
+Requires Linux nodes running GKE **1.34.1-gke.2980000 or later**; updates can recreate
+managed nodes. See [GKE containerd configuration](https://cloud.google.com/kubernetes-engine/docs/how-to/customize-containerd-configuration#registryHosts).
+
+For example, in the module block:
+
+```hcl
+containerd_registry_hosts = [{
+  server = "docker.io"
+  hosts = [{
+    host         = "https://mirror.gcr.io"
+    capabilities = ["HOST_CAPABILITY_PULL", "HOST_CAPABILITY_RESOLVE"]
+  }]
+}]
+```
+
+The default `null` omits containerd configuration. An explicit empty list renders
+an empty containerd block; verify provider/API behavior before relying on it to
+clear existing settings. This input does not configure individual node-pool
+overrides or guarantee authenticated private-mirror pulls or mirror-only egress.
+Credential renewal and registry fallback behavior must be verified separately.
+
+Optional host fields include API-root paths (`override_path`), timeouts, headers,
+CA certificates and client certificates/keys referenced through Secret Manager.
+A client certificate is required for each client entry; its key is optional.
+Header values may be stored in Terraform state, so do not put credentials in
+examples or assume headers are runtime-only secrets.
+
 ## Compatibility
 
 This module is meant for use with Terraform 1.3+ and tested using Terraform 1.14+.
@@ -169,6 +200,7 @@ Then perform the following commands on the root folder:
 | cluster\_telemetry\_type | Available options include ENABLED, DISABLED, and SYSTEM\_ONLY | `string` | `null` | no |
 | config\_connector | Whether ConfigConnector is enabled for this cluster. | `bool` | `false` | no |
 | configure\_ip\_masq | Enables the installation of ip masquerading, which is usually no longer required when using aliasied IP addresses. IP masquerading uses a kubectl call, so when you have a private cluster, you will need access to the API server. | `bool` | `false` | no |
+| containerd\_registry\_hosts | Cluster-level containerd registry hosts inherited by node pools without overrides. Requires GKE 1.34.1-gke.2980000 or later. Updating this configuration can recreate managed nodes. | <pre>list(object({<br>    server = string<br>    hosts = optional(list(object({<br>      host          = string<br>      capabilities  = optional(list(string))<br>      override_path = optional(bool)<br>      dial_timeout  = optional(string)<br>      header = optional(list(object({<br>        key   = string<br>        value = list(string)<br>      })), [])<br>      ca = optional(list(object({<br>        gcp_secret_manager_secret_uri = string<br>      })), [])<br>      client = optional(list(object({<br>        cert = object({<br>          gcp_secret_manager_secret_uri = string<br>        })<br>        key = optional(object({<br>          gcp_secret_manager_secret_uri = string<br>        }))<br>      })), [])<br>    })), [])<br>  }))</pre> | `null` | no |
 | create\_service\_account | Defines if service account specified to run nodes should be created. | `bool` | `true` | no |
 | database\_encryption | Application-layer Secrets Encryption settings. The object format is {state = string, key\_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key\_name is the name of a CloudKMS key. | `list(object({ state = string, key_name = string }))` | <pre>[<br>  {<br>    "key_name": "",<br>    "state": "DECRYPTED"<br>  }<br>]</pre> | no |
 | datapath\_provider | The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature. | `string` | `"DATAPATH_PROVIDER_UNSPECIFIED"` | no |
