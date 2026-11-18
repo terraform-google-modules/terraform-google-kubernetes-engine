@@ -244,7 +244,7 @@ spec:
         defaultValue: "05:00"
       - name: maintenance_exclusions
         description: List of maintenance exclusions. A cluster can have up to three
-        varType: list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string }))
+        varType: list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string, exclusion_end_time_behavior = optional(string) }))
         defaultValue: []
       - name: maintenance_end_time
         description: Time window specified for recurring maintenance operations in RFC3339 format
