@@ -891,7 +891,7 @@ resource "google_container_node_pool" "pools" {
 
   cluster = google_container_cluster.primary.name
 
-  version = lookup(each.value, "auto_upgrade", local.default_auto_upgrade) ? "" : lookup(
+  version = lookup(each.value, "auto_upgrade", local.default_auto_upgrade) && !contains(keys(each.value), "version") ? "" : lookup(
     each.value,
     "version",
     google_container_cluster.primary.min_master_version,
@@ -1302,7 +1302,7 @@ resource "google_container_node_pool" "windows_pools" {
 
   cluster = google_container_cluster.primary.name
 
-  version = lookup(each.value, "auto_upgrade", local.default_auto_upgrade) ? "" : lookup(
+  version = lookup(each.value, "auto_upgrade", local.default_auto_upgrade) && !contains(keys(each.value), "version") ? "" : lookup(
     each.value,
     "version",
     google_container_cluster.primary.min_master_version,
