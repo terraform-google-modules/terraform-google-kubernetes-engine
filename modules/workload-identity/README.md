@@ -135,8 +135,29 @@ This approach is required when managing multiple clusters. Omitting this step ca
 Error: Get "http://localhost/api/v1/namespaces/default/serviceaccounts/your-service-account": dial tcp [::1]:80: connect: connection refused
 │
 │   with module.your_workload_identity.kubernetes_service_account_v1.main[0],
-│   on .terraform/modules/your_workload_identity/modules/workload-identity/main.tf line 57, in resource "kubernetes_service_account_v1" "main":
-│   57: resource "kubernetes_service_account_v1" "main" {
+│   on .terraform/modules/your_workload_identity/modules/workload-identity/main.tf line 52, in resource "kubernetes_service_account_v1" "main":
+│   52: resource "kubernetes_service_account_v1" "main" {
+```
+
+## Upgrading from 44.2.0 or earlier
+
+Since 44.3.0 the Kubernetes service account is `kubernetes_service_account_v1.main`. Before that it was `kubernetes_service_account.main`. The `hashicorp/kubernetes` provider does not implement `MoveResourceState` for this resource type, so Terraform cannot move the state by itself ([#2616](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2616)).
+
+If your state still has the old address, the plan replaces the service account: the old object is deleted and a new one with the same name is created. To keep the existing object, change the type in the state before you plan:
+
+```bash
+terraform state pull > state.json
+jq '.resources |= map(if .type == "kubernetes_service_account" and .name == "main" and (.module == "module.workload_identity" or (.module // "" | startswith("module.workload_identity["))) then .type = "kubernetes_service_account_v1" else . end) | .serial += 1' state.json > state.new.json
+terraform state push state.new.json
+```
+
+Replace `module.workload_identity` with the address of your module call as `terraform state list` shows it, without the trailing `["key"]` part. The `startswith` check picks up calls that use `count` or `for_each`. Both resource types have the same schema, so changing the type is enough.
+
+You can also move one service account at a time:
+
+```bash
+terraform state rm 'module.workload_identity.kubernetes_service_account.main[0]'
+terraform import 'module.workload_identity.kubernetes_service_account_v1.main[0]' my-namespace/my-service-account
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
