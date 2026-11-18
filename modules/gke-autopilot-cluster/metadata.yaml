@@ -262,7 +262,8 @@ spec:
                 start_time     = optional(string)
                 end_time       = optional(string)
                 exclusion_options = optional(object({
-                  scope = optional(string)
+                  scope             = optional(string)
+                  end_time_behavior = optional(string)
                 }))
               })))
             })
@@ -589,4 +590,4 @@ spec:
       - container.googleapis.com
     providerVersions:
       - source: hashicorp/google-beta
-        version: ">= 7.9.0, < 9"
+        version: ">= 7.12.0, < 9"

@@ -290,7 +290,8 @@ variable "maintenance_policy" {
       start_time     = optional(string)
       end_time       = optional(string)
       exclusion_options = optional(object({
-        scope = optional(string)
+        scope             = optional(string)
+        end_time_behavior = optional(string)
       }))
     })))
   })
