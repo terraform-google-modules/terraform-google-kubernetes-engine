@@ -333,6 +333,9 @@ spec:
         network_tier_config:
           name: network_tier_config
           title: Network Tier Config
+        node_creation_mode:
+          name: node_creation_mode
+          title: Node Creation Mode
         node_metadata:
           name: node_metadata
           title: Node Metadata
