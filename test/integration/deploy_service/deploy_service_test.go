@@ -21,7 +21,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/gruntwork-io/terratest/modules/k8s"
@@ -31,6 +30,7 @@ import (
 
 func TestDeployService(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t,
+		tft.WithParallelism(testutils.DefaultTerraformParallelism),
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 
@@ -40,12 +40,11 @@ func TestDeployService(t *testing.T) {
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")
-		gcloud.Runf(t, "container clusters get-credentials %s --region %s --project %s", clusterName, location, projectId)
-		k8sOpts := k8s.KubectlOptions{}
+		k8sOpts := testutils.GetIsolatedKubectlOptions(t, projectId, location, clusterName, true)
 
 		var serviceIp string
 		utils.Poll(t, func() (bool, error) {
-			listServices, err := k8s.RunKubectlAndGetOutputE(t, &k8sOpts, "get", "svc", "terraform-example", "-o", "json")
+			listServices, err := k8s.RunKubectlAndGetOutputE(t, k8sOpts, "get", "svc", "terraform-example", "-o", "json")
 			if err != nil {
 				return true, err
 			}
@@ -56,7 +55,7 @@ func TestDeployService(t *testing.T) {
 			}
 			serviceIp = ip
 			return false, nil
-		}, 30, 10*time.Second)
+		}, 45, 10*time.Second)
 
 		serviceUrl := fmt.Sprintf("http://%s:8080", serviceIp)
 
@@ -84,7 +83,7 @@ func TestDeployService(t *testing.T) {
 			}
 		}
 
-		utils.Poll(t, pollHTTPEndPoint(serviceUrl), 20, 10*time.Second)
+		utils.Poll(t, pollHTTPEndPoint(serviceUrl), 30, 10*time.Second)
 		assert.Contains(string(responseData), "Thank you for using nginx.", "Service is Functional")
 	})
 

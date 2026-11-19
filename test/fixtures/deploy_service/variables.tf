@@ -21,13 +21,13 @@ variable "project_ids" {
 
 variable "region" {
   description = "The GCP region to create and test resources in"
-  default     = "us-central1"
+  default     = "us-east1"
 }
 
 variable "zones" {
   type        = list(string)
   description = "The GCP zones to create and test resources in, for applicable tests"
-  default     = ["us-central1-a", "us-central1-b", "us-central1-c"]
+  default     = ["us-east1-b", "us-east1-c", "us-east1-d"]
 }
 
 variable "compute_engine_service_accounts" {

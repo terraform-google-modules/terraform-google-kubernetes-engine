@@ -21,16 +21,19 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
+	"github.com/tidwall/gjson"
 )
 
 func TestAutopilotPrivateFirewalls(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t,
+		tft.WithParallelism(testutils.DefaultTerraformParallelism),
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 	bpt.DefineVerify(func(assert *assert.Assertions) {
-		bpt.DefaultVerify(assert)
+		testutils.TGKEVerify(t, bpt, assert)
 		projectId := bpt.GetStringOutput("project_id")
 		location := bpt.GetStringOutput("location")
 		clusterName := bpt.GetStringOutput("cluster_name")
@@ -67,7 +70,15 @@ func TestAutopilotPrivateFirewalls(t *testing.T) {
 		assert.Contains(op.Get("nodePoolAutoConfig.networkTags.tags").String(), clusterNetworkTag)   // the cluster_network_tag attached
 
 		for _, n := range fws {
-			fw := gcloud.Runf(t, "compute firewall-rules --project %s describe %s", projectId, n)
+			var fw gjson.Result
+			utils.Poll(t, func() (bool, error) {
+				op, err := gcloud.RunCmdE(t, fmt.Sprintf("compute firewall-rules --project %s describe %s", projectId, n), gcloud.WithCommonArgs([]string{"--format", "json"}))
+				if err != nil {
+					return true, err
+				}
+				fw = gjson.Parse(op)
+				return false, nil
+			}, 6, 5*time.Second)
 			assert.Contains(fw.Get("targetTags").String(), clusterNetworkTag) // firewall target tag is the cluster_network_tag
 		}
 	})

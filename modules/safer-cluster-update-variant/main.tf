@@ -77,6 +77,9 @@ module "gke" {
   // Allow egress NetworkPolicies to match on fully qualified domain names.
   enable_fqdn_network_policy = var.enable_fqdn_network_policy
 
+  // Allow CiliumClusterwideNetworkPolicy resources (requires Dataplane V2).
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+
   maintenance_start_time = var.maintenance_start_time
   maintenance_end_time   = var.maintenance_end_time
   maintenance_recurrence = var.maintenance_recurrence
@@ -157,6 +160,7 @@ module "gke" {
 
   config_connector                            = var.config_connector
   gke_backup_agent_config                     = var.gke_backup_agent_config
+  enable_secret_manager_addon                 = var.enable_secret_manager_addon
   enable_secret_sync                          = var.enable_secret_sync
   enable_managed_machine_learning_diagnostics = var.enable_managed_machine_learning_diagnostics
 

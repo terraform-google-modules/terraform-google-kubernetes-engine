@@ -14,18 +14,21 @@
 package safer_cluster
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/golden"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-kubernetes-engine/test/integration/testutils"
 )
 
 func TestSaferCluster(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t,
+		tft.WithParallelism(testutils.DefaultTerraformParallelism),
 		tft.WithRetryableTerraformErrors(testutils.RetryableTransientErrors, testutils.RetriesOnTransientErrors, 2*time.Minute),
 	)
 
@@ -68,8 +71,15 @@ func TestSaferCluster(t *testing.T) {
 			g.JSONEq(assert, op, pth)
 		}
 		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
-		gcloud.Runf(t, "compute firewall-rules --project %s describe gke-%s-intra-cluster-egress", projectId, clusterName)
-		gcloud.Runf(t, "compute firewall-rules --project %s describe gke-%s-webhooks", projectId, clusterName)
+		for _, rule := range []string{"intra-cluster-egress", "webhooks"} {
+			utils.Poll(t, func() (bool, error) {
+				_, err := gcloud.RunCmdE(t, fmt.Sprintf("compute firewall-rules --project %s describe gke-%s-%s", projectId, clusterName, rule))
+				if err != nil {
+					return true, err
+				}
+				return false, nil
+			}, 6, 5*time.Second)
+		}
 	})
 
 	bpt.Test()
