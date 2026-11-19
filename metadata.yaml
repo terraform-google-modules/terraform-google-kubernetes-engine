@@ -238,6 +238,9 @@ spec:
         description: The desired datapath provider for this cluster. By default, `DATAPATH_PROVIDER_UNSPECIFIED` enables the IPTables-based kube-proxy implementation. `ADVANCED_DATAPATH` enables Dataplane-V2 feature.
         varType: string
         defaultValue: DATAPATH_PROVIDER_UNSPECIFIED
+      - name: ignore_node_count_changes
+        description: When true, the provider ignores external changes to the node count on the cluster resource and skips the related Instance Group Manager API queries, which can shorten plan times on clusters with many instance groups and saves API quota. This applies to the node pools defined on the cluster resource itself, so the modules `instance_group_urls` output, which reads the separate `google_container_node_pool` resources, is unaffected. A permadiff on this field was fixed in provider 7.44.0.
+        varType: bool
       - name: maintenance_start_time
         description: Time window specified for daily or recurring maintenance operations in RFC3339 format
         varType: string
