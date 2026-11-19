@@ -366,6 +366,10 @@ spec:
                   scope = optional(string)
                 }))
               })))
+              disruption_budget = optional(object({
+                minor_version_disruption_interval = optional(string)
+                patch_version_disruption_interval = optional(string)
+              }))
             })
       - name: master_auth
         description: The authentication information for accessing the Kubernetes master.

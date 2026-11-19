@@ -182,6 +182,10 @@ variable "maintenance_policy" {
         scope = optional(string)
       }))
     })))
+    disruption_budget = optional(object({
+      minor_version_disruption_interval = optional(string)
+      patch_version_disruption_interval = optional(string)
+    }))
   })
   default = {
     daily_maintenance_window = {
