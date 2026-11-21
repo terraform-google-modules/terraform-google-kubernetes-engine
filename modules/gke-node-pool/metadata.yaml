@@ -147,6 +147,7 @@ spec:
       - name: location
         description: The location (region or zone) of the cluster.
         varType: string
+        defaultValue: null
       - name: autoscaling
         description: Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage.
         varType: |-
@@ -163,6 +164,7 @@ spec:
       - name: initial_node_count
         description: The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone.
         varType: number
+        defaultValue: null
       - name: management
         description: |
           Node management configuration, wherein auto-repair and auto-upgrade is configured.
@@ -179,15 +181,19 @@ spec:
       - name: max_pods_per_node
         description: The maximum number of pods per node in this node pool. Note that this does not work on node pools which are 'route-based' - that is, node pools belonging to clusters that do not have IP Aliasing enabled. See the [official documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr) for more information.
         varType: number
+        defaultValue: null
       - name: node_locations
         description: "The list of zones in which the node pool's nodes should be located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If unspecified, the cluster-level node_locations will be used. Note: node_locations will not revert to the cluster's default set of zones upon being unset. You must manually reconcile the list of zones with your cluster."
         varType: list(string)
+        defaultValue: null
       - name: name
         description: The name of the node pool. If left blank, Terraform will auto-generate a unique name.
         varType: string
+        defaultValue: null
       - name: name_prefix
         description: Creates a unique name for the node pool beginning with the specified prefix. Conflicts with name.
         varType: string
+        defaultValue: null
       - name: node_config
         description: Parameters used in creating the node pool.
         varType: |-
@@ -351,6 +357,7 @@ spec:
                 total_egress_bandwidth_tier = string
               }))
             })
+        defaultValue: null
       - name: node_count
         description: The number of nodes per instance group. This field can be used to update the number of nodes per instance group but should not be used alongside autoscaling.
         varType: number
@@ -378,6 +385,7 @@ spec:
       - name: kubernetes_version
         description: The Kubernetes version for the nodes in this pool. Note that if this field and auto_upgrade are both specified, they will fight each other for what the node version should be, so setting both is highly discouraged. While a fuzzy version can be specified, it's recommended that you specify explicit versions as Terraform will see spurious diffs when fuzzy versions are used. See the google_container_engine_versions data source's version_prefix field to approximate fuzzy versions in a Terraform-compatible way.
         varType: string
+        defaultValue: null
       - name: placement_policy
         description: "  Specifies a custom placement policy for the nodes.\n    - type: The type of the policy. Supports a single value: COMPACT. Specifying COMPACT placement policy type places node pool's nodes in a closer physical proximity in order to reduce network latency between nodes.\n    - policy_name: If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. If not found, InvalidArgument error is returned.\n    - tpu_topology: The TPU topology like \"2x4\" or \"2x2x2\".\n"
         varType: |-
@@ -386,12 +394,14 @@ spec:
               policy_name  = optional(string)
               tpu_topology = optional(string)
             })
+        defaultValue: null
       - name: queued_provisioning
         description: "  Specifies node pool-level settings of queued provisioning.\n    - enabled (Required) - Makes nodes obtainable through the ProvisioningRequest API exclusively.\n"
         varType: |-
           object({
               enabled = bool
             })
+        defaultValue: null
       - name: timeouts
         description: Timeout for cluster operations.
         varType: |-
