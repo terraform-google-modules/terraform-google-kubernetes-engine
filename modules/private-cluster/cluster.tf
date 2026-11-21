@@ -962,10 +962,10 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "ephemeral_storage_local_ssd_config" {
-      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 || lookup(each.value, "ephemeral_storage_local_ssd_data_cache_count", 0) > 0 ? [1] : []
+      for_each = coalesce(lookup(each.value, "local_ssd_ephemeral_storage_count", 0), 0) > 0 || coalesce(lookup(each.value, "ephemeral_storage_local_ssd_data_cache_count", 0), 0) > 0 ? [1] : []
       content {
-        local_ssd_count  = lookup(each.value, "local_ssd_ephemeral_storage_count", 0)
-        data_cache_count = lookup(each.value, "ephemeral_storage_local_ssd_data_cache_count", 0)
+        local_ssd_count  = coalesce(lookup(each.value, "local_ssd_ephemeral_storage_count", 0), 0)
+        data_cache_count = coalesce(lookup(each.value, "ephemeral_storage_local_ssd_data_cache_count", 0), 0)
       }
     }
 
@@ -1359,10 +1359,10 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     dynamic "ephemeral_storage_local_ssd_config" {
-      for_each = lookup(each.value, "local_ssd_ephemeral_storage_count", 0) > 0 || lookup(each.value, "ephemeral_storage_local_ssd_data_cache_count", 0) > 0 ? [1] : []
+      for_each = coalesce(lookup(each.value, "local_ssd_ephemeral_storage_count", 0), 0) > 0 || coalesce(lookup(each.value, "ephemeral_storage_local_ssd_data_cache_count", 0), 0) > 0 ? [1] : []
       content {
-        local_ssd_count  = lookup(each.value, "local_ssd_ephemeral_storage_count", 0)
-        data_cache_count = lookup(each.value, "ephemeral_storage_local_ssd_data_cache_count", 0)
+        local_ssd_count  = coalesce(lookup(each.value, "local_ssd_ephemeral_storage_count", 0), 0)
+        data_cache_count = coalesce(lookup(each.value, "ephemeral_storage_local_ssd_data_cache_count", 0), 0)
       }
     }
 
