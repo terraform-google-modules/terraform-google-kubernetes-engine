@@ -21,7 +21,7 @@ resource "random_string" "suffix" {
 }
 
 provider "google" {
-  project = var.project_ids[1]
+  project = var.project_ids[5]
 }
 
 resource "google_compute_network" "main" {
