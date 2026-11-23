@@ -24,3 +24,9 @@ variable "region" {
   description = "The region to host the cluster in."
   default     = "us-central1"
 }
+
+variable "zones" {
+  type        = list(string)
+  description = "The zones to host the cluster in."
+  default     = []
+}
