@@ -759,6 +759,10 @@ spec:
       - name: enable_multi_networking
         description: Whether multi-networking is enabled for this cluster
         varType: bool
+      - name: sandbox_enabled
+        description: Enable GKE Sandbox. Requires `image_type` = `COS_CONTAINERD` on the node pools it applies to, and GKE requires at least one node pool without it. Can be set per node pool with the `sandbox_enabled` key in `node_pools`.
+        varType: bool
+        defaultValue: false
       - name: enable_identity_service
         description: "(Optional) Enable the Identity Service component, which allows customers to use external identity providers with the K8S API. NOTE: Starting on July 1, 2025, new Google Cloud organizations that you create won't support Identity Service for GKE."
         varType: bool
