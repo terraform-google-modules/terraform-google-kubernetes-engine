@@ -28,7 +28,7 @@ provider "kubernetes" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
-  version = "~> 44.0"
+  version = "~> 47.0"
 
   project_id = var.project_id
   regional   = false
@@ -63,7 +63,7 @@ module "gke" {
       autoscaling  = false
       auto_upgrade = true
       node_count   = 1
-      machine_type = "n2-standard-8"
+      machine_type = "n2-standard-2"
       image_type   = "WINDOWS_LTSC_CONTAINERD"
     },
   ]

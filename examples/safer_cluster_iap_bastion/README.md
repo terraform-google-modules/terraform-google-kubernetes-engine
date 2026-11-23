@@ -45,7 +45,7 @@ To deploy this example:
 | ip\_range\_services\_name | The secondary ip range to use for pods | `string` | `"ip-range-svc"` | no |
 | network\_name | The name of the network being created to host the cluster in | `string` | `"safer-cluster-network"` | no |
 | project\_id | The project ID to host the cluster in | `string` | n/a | yes |
-| region | The region to host the cluster in | `string` | `"us-central1"` | no |
+| region | The region to host the cluster in | `string` | `"us-west1"` | no |
 | subnet\_ip | The cidr range of the subnet | `string` | `"10.10.10.0/24"` | no |
 | subnet\_name | The name of the subnet being created to host the cluster in | `string` | `"safer-cluster-subnet"` | no |
 
