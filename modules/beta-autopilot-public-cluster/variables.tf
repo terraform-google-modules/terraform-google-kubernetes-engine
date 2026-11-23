@@ -136,9 +136,14 @@ variable "maintenance_start_time" {
 }
 
 variable "maintenance_exclusions" {
-  type        = list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string, exclusion_end_time_behavior = optional(string) }))
+  type        = list(object({ name = string, start_time = string, end_time = optional(string), exclusion_scope = string, exclusion_end_time_behavior = optional(string) }))
   description = "List of maintenance exclusions. A cluster can have up to three"
   default     = []
+
+  validation {
+    condition     = alltrue([for e in var.maintenance_exclusions : e.exclusion_end_time_behavior == null || e.exclusion_scope != null])
+    error_message = "exclusion_end_time_behavior requires exclusion_scope to be set."
+  }
 }
 
 variable "maintenance_end_time" {
