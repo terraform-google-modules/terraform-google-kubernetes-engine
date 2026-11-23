@@ -143,15 +143,50 @@ Error: Get "http://localhost/api/v1/namespaces/default/serviceaccounts/your-serv
 
 Since 44.3.0 the Kubernetes service account is `kubernetes_service_account_v1.main`. Before that it was `kubernetes_service_account.main`. The `hashicorp/kubernetes` provider does not implement `MoveResourceState` for this resource type, so Terraform cannot move the state by itself ([#2616](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/2616)).
 
-If your state still has the old address, the plan replaces the service account: the old object is deleted and a new one with the same name is created. To keep the existing object, change the type in the state before you plan:
+If you set `use_existing_k8s_sa = true`, the module does not manage the Kubernetes service account and you do not need to do anything.
 
-```bash
-terraform state pull > state.json
-jq '.resources |= map(if .type == "kubernetes_service_account" and .name == "main" and (.module == "module.workload_identity" or (.module // "" | startswith("module.workload_identity["))) then .type = "kubernetes_service_account_v1" else . end) | .serial += 1' state.json > state.new.json
-terraform state push state.new.json
-```
+> **Warning:** If your state still has the old address and you apply without migrating it, Terraform deletes the old service account and creates a new one with the same name as two independent changes. The create can run first and fail with an "already exists" error, so a second apply is needed. The new service account also gets a new UID, which invalidates the Workload Identity tokens bound to it on running pods until the kubelet refreshes them or the pods restart.
 
-Replace `module.workload_identity` with the address of your module call as `terraform state list` shows it, without the trailing `["key"]` part. The `startswith` check picks up calls that use `count` or `for_each`. Both resource types have the same schema, so changing the type is enough.
+To keep the existing object, change the type in the state before you plan. Pause any automated Terraform runs for this configuration while you do this.
+
+1. Pull the state and write a changed copy, then review the diff:
+
+   ```bash
+   (
+     set -e
+     umask 077
+     terraform state pull > state.tfstate
+     jq --arg mod 'module.workload_identity' '
+       def target:
+         .mode == "managed"
+         and .type == "kubernetes_service_account"
+         and .name == "main"
+         and (.module == $mod or (.module // "" | startswith($mod + "[")));
+       if ([.resources[] | select(target)] | length) == 0 then
+         error("no matching kubernetes_service_account.main resources found for " + $mod)
+       else
+         .resources |= map(if target then .type = "kubernetes_service_account_v1" else . end)
+         | .serial += 1
+       end
+     ' state.tfstate > state.new.tfstate
+   ) && diff -u <(jq . state.tfstate) state.new.tfstate
+   ```
+
+   Set `mod` to the address of your module call as `terraform state list` shows it, without the trailing `["key"]` part, for example `module.env["prod"].module.wi`. The `startswith` check picks up calls that use `count` or `for_each`. The diff should only change `type` on the matching resources and increase `serial` by one. Both resource types have the same schema, so changing the type is enough.
+
+2. Push the changed state:
+
+   ```bash
+   terraform state push state.new.tfstate
+   ```
+
+3. Run `terraform plan` and check that it does not replace the service account.
+
+4. Delete the local state copies:
+
+   ```bash
+   rm -f state.tfstate state.new.tfstate
+   ```
 
 You can also move one service account at a time:
 
