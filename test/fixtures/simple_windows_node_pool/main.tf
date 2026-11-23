@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
+resource "random_string" "suffix" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
 module "this" {
-  source     = "../../../examples/simple_windows_node_pool"
-  project_id = var.project_ids[0]
+  source              = "../../../examples/simple_windows_node_pool"
+  project_id          = var.project_ids[4]
+  cluster_name_suffix = "-${random_string.suffix.result}"
 }

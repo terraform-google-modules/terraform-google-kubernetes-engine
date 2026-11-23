@@ -306,10 +306,11 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "node_pool_auto_config" {
-    for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || length(var.resource_manager_tags) > 0 || var.add_cluster_firewall_rules || local.node_pools_cgroup_mode["all"] != "") ? [1] : []
+    for_each = (var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules)) || (local.autoscaling_or_compute_class_enabled && (length(var.resource_manager_tags) > 0 || local.node_pools_cgroup_mode["all"] != "")) ? [1] : []
     content {
+      # The API accepts network tags only with node auto-provisioning (or Autopilot), not with only the default compute class
       dynamic "network_tags" {
-        for_each = local.autoscaling_or_compute_class_enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
+        for_each = var.cluster_autoscaling.enabled && (length(var.network_tags) > 0 || var.add_cluster_firewall_rules) ? [1] : []
         content {
           tags = var.add_cluster_firewall_rules ? (concat(var.network_tags, [local.cluster_network_tag])) : var.network_tags
         }
@@ -333,9 +334,9 @@ resource "google_container_cluster" "primary" {
   }
 
   dynamic "service_external_ips_config" {
-    for_each = var.service_external_ips ? [1] : []
+    for_each = var.service_external_ips == null ? [] : [var.service_external_ips]
     content {
-      enabled = var.service_external_ips
+      enabled = service_external_ips_config.value
     }
   }
 
@@ -393,6 +394,13 @@ resource "google_container_cluster" "primary" {
 
       content {
         enabled = gke_backup_agent_config.value.enabled
+      }
+    }
+
+    dynamic "agent_sandbox_config" {
+      for_each = var.agent_sandbox_enabled != null ? [1] : []
+      content {
+        enabled = var.agent_sandbox_enabled
       }
     }
 
@@ -977,7 +985,7 @@ resource "google_container_node_pool" "pools" {
   }
 
   dynamic "queued_provisioning" {
-    for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+    for_each = lookup(each.value, "queued_provisioning", null) != null ? [true] : []
     content {
       enabled = lookup(each.value, "queued_provisioning", null)
     }
@@ -1137,7 +1145,7 @@ resource "google_container_node_pool" "pools" {
     }
 
     dynamic "advanced_machine_features" {
-      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) || lookup(each.value, "performance_monitoring_unit", null) != null ? [1] : []
+      for_each = lookup(each.value, "threads_per_core", null) != null || lookup(each.value, "enable_nested_virtualization", null) != null || lookup(each.value, "performance_monitoring_unit", null) != null ? [1] : []
       content {
         threads_per_core             = lookup(each.value, "threads_per_core", 0)
         enable_nested_virtualization = lookup(each.value, "enable_nested_virtualization", null)
@@ -1388,7 +1396,7 @@ resource "google_container_node_pool" "windows_pools" {
   }
 
   dynamic "queued_provisioning" {
-    for_each = lookup(each.value, "queued_provisioning", false) ? [true] : []
+    for_each = lookup(each.value, "queued_provisioning", null) != null ? [true] : []
     content {
       enabled = lookup(each.value, "queued_provisioning", null)
     }
@@ -1548,7 +1556,7 @@ resource "google_container_node_pool" "windows_pools" {
     }
 
     dynamic "advanced_machine_features" {
-      for_each = lookup(each.value, "threads_per_core", 0) > 0 || lookup(each.value, "enable_nested_virtualization", false) || lookup(each.value, "performance_monitoring_unit", null) != null ? [1] : []
+      for_each = lookup(each.value, "threads_per_core", null) != null || lookup(each.value, "enable_nested_virtualization", null) != null || lookup(each.value, "performance_monitoring_unit", null) != null ? [1] : []
       content {
         threads_per_core             = lookup(each.value, "threads_per_core", 0)
         enable_nested_virtualization = lookup(each.value, "enable_nested_virtualization", null)

@@ -42,7 +42,7 @@ resource "google_tags_tag_value" "value" {
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
-  version = "~> 44.0"
+  version = "~> 47.0"
 
   project_id                        = var.project_id
   name                              = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
@@ -76,19 +76,19 @@ module "gke" {
       logging_variant = "DEFAULT"
     },
     {
-      name              = "pool-02"
-      machine_type      = "g2-standard-4"
-      node_locations    = "${var.region}-a,${var.region}-b,${var.region}-c"
-      total_min_count   = 1
-      total_max_count   = 2
-      location_policy   = "ANY"
-      local_ssd_count   = 0
-      disk_size_gb      = 30
-      disk_type         = "pd-standard"
-      accelerator_count = 1
-      accelerator_type  = "nvidia-l4"
-      auto_repair       = false
-      service_account   = var.compute_engine_service_account
+      name               = "pool-02"
+      machine_type       = "g2-standard-4"
+      initial_node_count = 0
+      total_min_count    = 0
+      total_max_count    = 2
+      location_policy    = "ANY"
+      local_ssd_count    = 0
+      disk_size_gb       = 30
+      disk_type          = "pd-standard"
+      accelerator_count  = 1
+      accelerator_type   = "nvidia-l4"
+      auto_repair        = false
+      service_account    = var.compute_engine_service_account
     },
     {
       name                                   = "pool-03"
@@ -122,10 +122,12 @@ module "gke" {
       enable_nested_virtualization = true
     },
     {
-      name          = "pool-06"
-      node_count    = 1
-      machine_type  = "c2-standard-30"
-      node_affinity = "{\"key\": \"compute.googleapis.com/node-group-name\", \"operator\": \"IN\", \"values\": [\"${google_compute_node_group.soletenant-nodes.name}\"]}"
+      name               = "pool-06"
+      initial_node_count = 0
+      min_count          = 0
+      max_count          = 1
+      machine_type       = "c2-standard-30"
+      node_affinity      = "{\"key\": \"compute.googleapis.com/node-group-name\", \"operator\": \"IN\", \"values\": [\"${google_compute_node_group.soletenant-nodes.name}\"]}"
     },
   ]
 
@@ -216,6 +218,6 @@ resource "google_compute_node_group" "soletenant-nodes" {
   name = "soletenant-node-group-${var.cluster_name_suffix}"
   zone = var.zones[0]
 
-  initial_size  = 1
+  initial_size  = 0
   node_template = google_compute_node_template.soletenant-tmpl.id
 }

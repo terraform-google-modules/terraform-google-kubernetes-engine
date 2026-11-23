@@ -151,6 +151,10 @@ resource "google_compute_firewall" "shadow_allow_pods" {
       metadata = log_config.value.metadata
     }
   }
+
+  depends_on = [
+    google_container_cluster.primary,
+  ]
 }
 
 resource "google_compute_firewall" "shadow_allow_master" {
@@ -177,6 +181,10 @@ resource "google_compute_firewall" "shadow_allow_master" {
       metadata = log_config.value.metadata
     }
   }
+
+  depends_on = [
+    google_container_cluster.primary,
+  ]
 }
 
 resource "google_compute_firewall" "shadow_allow_nodes" {
@@ -212,6 +220,10 @@ resource "google_compute_firewall" "shadow_allow_nodes" {
       metadata = log_config.value.metadata
     }
   }
+
+  depends_on = [
+    google_container_cluster.primary,
+  ]
 }
 
 resource "google_compute_firewall" "shadow_allow_inkubelet" {
@@ -239,6 +251,10 @@ resource "google_compute_firewall" "shadow_allow_inkubelet" {
       metadata = log_config.value.metadata
     }
   }
+
+  depends_on = [
+    google_container_cluster.primary,
+  ]
 }
 
 resource "google_compute_firewall" "shadow_deny_exkubelet" {
@@ -265,4 +281,8 @@ resource "google_compute_firewall" "shadow_deny_exkubelet" {
       metadata = log_config.value.metadata
     }
   }
+
+  depends_on = [
+    google_container_cluster.primary,
+  ]
 }
