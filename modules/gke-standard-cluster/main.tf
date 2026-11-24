@@ -325,7 +325,8 @@ resource "google_container_cluster" "main" {
           dynamic "exclusion_options" {
             for_each = maintenance_exclusion.value.exclusion_options != null ? [maintenance_exclusion.value.exclusion_options] : []
             content {
-              scope = exclusion_options.value.scope
+              scope             = exclusion_options.value.scope
+              end_time_behavior = exclusion_options.value.end_time_behavior
             }
           }
         }
