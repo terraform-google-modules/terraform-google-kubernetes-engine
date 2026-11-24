@@ -330,6 +330,13 @@ resource "google_container_cluster" "main" {
           }
         }
       }
+      dynamic "disruption_budget" {
+        for_each = maintenance_policy.value.disruption_budget != null ? [maintenance_policy.value.disruption_budget] : []
+        content {
+          minor_version_disruption_interval = disruption_budget.value.minor_version_disruption_interval
+          patch_version_disruption_interval = disruption_budget.value.patch_version_disruption_interval
+        }
+      }
     }
   }
 
