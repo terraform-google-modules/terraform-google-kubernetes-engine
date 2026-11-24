@@ -46,4 +46,11 @@ module "gke" {
   fleet_project               = var.project_id
   deletion_protection         = false
   stateful_ha                 = true
+
+  maintenance_exclusions = [{
+    name                        = "no-minor-until-eos"
+    start_time                  = "2026-01-01T00:00:00Z"
+    exclusion_scope             = "NO_MINOR_UPGRADES"
+    exclusion_end_time_behavior = "UNTIL_END_OF_SUPPORT"
+  }]
 }

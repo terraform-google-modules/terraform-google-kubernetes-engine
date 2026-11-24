@@ -64,6 +64,10 @@ func TestSimpleRegional(t *testing.T) {
 			g.JSONEq(assert, op, pth)
 		}
 		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String())
+
+		exclusion := op.Get("maintenancePolicy.window.maintenanceExclusions.no-minor-until-eos.maintenanceExclusionOptions")
+		assert.Equal("NO_MINOR_UPGRADES", exclusion.Get("scope").String())
+		assert.Equal("UNTIL_END_OF_SUPPORT", exclusion.Get("endTimeBehavior").String())
 	})
 
 	bpt.Test()
