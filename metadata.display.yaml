@@ -57,6 +57,9 @@ spec:
         authenticator_security_group:
           name: authenticator_security_group
           title: Authenticator Security Group
+        auto_ipam_enabled:
+          name: auto_ipam_enabled
+          title: Auto Ipam Enabled
         boot_disk_kms_key:
           name: boot_disk_kms_key
           title: Boot Disk Kms Key

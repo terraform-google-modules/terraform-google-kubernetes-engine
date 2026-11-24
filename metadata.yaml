@@ -269,6 +269,9 @@ spec:
       - name: ip_range_services
         description: The _name_ of the secondary subnet range to use for services. If not provided, the default `34.118.224.0/20` range will be used.
         varType: string
+      - name: auto_ipam_enabled
+        description: Whether Auto IPAM is enabled for this cluster. When enabled, GKE manages the IP addresses for nodes and Pods, starting from a smaller range and dynamically adding or removing non-overlapping cluster level ranges as the cluster scales, instead of relying on secondary ranges sized for peak up front. Note that a Pod CIDR range cannot be overprovisioned on a cluster using Auto IPAM. Leave null to use the GKE default.
+        varType: bool
       - name: stack_type
         description: The stack type to use for this cluster. Either `IPV4` or `IPV4_IPV6`. Defaults to `IPV4`.
         varType: string
