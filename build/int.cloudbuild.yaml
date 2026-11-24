@@ -107,10 +107,26 @@ steps:
     - verify simple-regional-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegional --stage teardown --verbose']
-- id: apply simple-regional-additional-local
+- id: apply containerd-registry-hosts-local
   waitFor:
     - init-all
     - teardown simple-regional-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestContainerdRegistryHosts --stage apply --verbose || (rc=$$?; cft test run TestContainerdRegistryHosts --stage teardown --verbose || true; exit $$rc)']
+- id: verify containerd-registry-hosts-local
+  waitFor:
+    - apply containerd-registry-hosts-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestContainerdRegistryHosts --stage verify --verbose || (rc=$$?; cft test run TestContainerdRegistryHosts --stage teardown --verbose || true; exit $$rc)']
+- id: teardown containerd-registry-hosts-local
+  waitFor:
+    - verify containerd-registry-hosts-local
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestContainerdRegistryHosts --stage teardown --verbose']
+- id: apply simple-regional-additional-local
+  waitFor:
+    - init-all
+    - teardown containerd-registry-hosts-local
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleRegionalAdditionalIPRanges --stage apply --verbose || (rc=$$?; cft test run TestSimpleRegionalAdditionalIPRanges --stage teardown --verbose || true; exit $$rc)']
 - id: verify simple-regional-additional-local
