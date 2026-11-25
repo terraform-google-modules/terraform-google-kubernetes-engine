@@ -160,6 +160,12 @@ variable "initial_node_count" {
   default     = 0
 }
 
+variable "skip_default_node_pool" {
+  type        = bool
+  description = "Create the cluster without a default node pool instead of creating and then removing it. Requires GKE 1.36.4-gke.1469000 or later."
+  default     = false
+}
+
 variable "node_pools" {
   type        = list(map(string))
   description = "List of maps containing node pools"

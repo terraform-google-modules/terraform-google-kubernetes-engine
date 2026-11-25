@@ -226,6 +226,10 @@ spec:
         description: The number of nodes to create in this cluster's default node pool.
         varType: number
         defaultValue: 0
+      - name: skip_default_node_pool
+        description: Create the cluster without a default node pool instead of creating and then removing it. Requires GKE 1.36.4-gke.1469000 or later.
+        varType: bool
+        defaultValue: false
       - name: node_pools
         description: List of maps containing node pools
         varType: list(map(string))
