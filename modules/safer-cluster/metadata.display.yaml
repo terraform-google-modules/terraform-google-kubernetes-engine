@@ -271,6 +271,9 @@ spec:
         security_posture_vulnerability_mode:
           name: security_posture_vulnerability_mode
           title: Security Posture Vulnerability Mode
+        skip_default_node_pool:
+          name: skip_default_node_pool
+          title: Skip Default Node Pool
         stub_domains:
           name: stub_domains
           title: Stub Domains

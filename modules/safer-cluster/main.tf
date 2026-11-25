@@ -89,7 +89,8 @@ module "gke" {
   // destroying the cluster.
   remove_default_node_pool = true
   // If removing the default node pool, initial_node_count should be at least 1.
-  initial_node_count = (var.initial_node_count == 0) ? 1 : var.initial_node_count
+  initial_node_count     = (var.initial_node_count == 0) ? 1 : var.initial_node_count
+  skip_default_node_pool = var.skip_default_node_pool
 
   node_pools                 = var.node_pools
   windows_node_pools         = var.windows_node_pools

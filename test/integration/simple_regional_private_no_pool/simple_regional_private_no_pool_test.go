@@ -64,6 +64,10 @@ func TestSimpleRegionalPrivateNoPool(t *testing.T) {
 		}
 
 		assert.Contains([]string{"RUNNING", "RECONCILING"}, op.Get("status").String()) // comes up healthy
+
+		for _, np := range op.Get("nodePools").Array() {
+			assert.NotEqual("default-pool", np.Get("name").String(), "default node pool should not be created")
+		}
 	})
 
 	bpt.Test()

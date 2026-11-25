@@ -49,7 +49,7 @@ module "gke" {
   enable_private_nodes        = true
   enable_secret_manager_addon = true
   default_max_pods_per_node   = 20
-  remove_default_node_pool    = true
+  skip_default_node_pool      = true
   deletion_protection         = false
   enable_k8s_beta_apis        = var.enable_k8s_beta_apis
 
