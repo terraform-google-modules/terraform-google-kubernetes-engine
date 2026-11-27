@@ -88,12 +88,12 @@ spec:
         dns_cache:
           name: dns_cache
           title: Dns Cache
-        enable_cilium_clusterwide_network_policy:
-          name: enable_cilium_clusterwide_network_policy
-          title: Enable Cilium Clusterwide Network Policy
         dns_enable_k8s_tokens_via_dns:
           name: dns_enable_k8s_tokens_via_dns
           title: Dns Enable K8s Tokens Via Dns
+        enable_cilium_clusterwide_network_policy:
+          name: enable_cilium_clusterwide_network_policy
+          title: Enable Cilium Clusterwide Network Policy
         enable_confidential_nodes:
           name: enable_confidential_nodes
           title: Enable Confidential Nodes
